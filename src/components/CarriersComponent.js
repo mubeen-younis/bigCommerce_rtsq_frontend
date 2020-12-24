@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { postData } from "../Actions/Action";
+import { getServices } from "../Actions/Carriers";
 import { Form, Table, Button, Space} from 'antd';
 
 const columns = [
@@ -33,6 +34,10 @@ class CarriersComponent extends React.Component {
     selectedRowKeys: [], // Check here to configure the default column
     loading: false,
   };
+  
+  componentDidMount(){
+    this.props.getServices()
+  }
 
   onSelectChange = selectedRowKeys => {
     console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -70,7 +75,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      postData: (data, type, url) => dispatch(postData(data, type, url))
+      postData: (data, type, url) => dispatch(postData(data, type, url)),
+      getServices: () => dispatch(getServices())
   }
 }
 

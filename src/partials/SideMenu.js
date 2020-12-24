@@ -1,5 +1,6 @@
 import React from 'react';
 import { Layout, Menu, Typography } from 'antd';
+import { Link } from "react-router-dom";  
 const { SubMenu } = Menu;
 const { Sider } = Layout;
 const { Title } = Typography;
@@ -26,7 +27,8 @@ function SideMenu(){
             <Menu.Item key="4">UPS LTL Freight Quotes</Menu.Item>
           </SubMenu>
            */}
-          <Menu.Item key="9">WWE LTL Freight Quotes</Menu.Item>
+          <Menu.Item key="1"><Link to={`/1`}>WWE LTL Freight Quotes</Link></Menu.Item>
+          <Menu.Item key="2"><Link to={`/2`}>FedEx LTL Freight Quotes</Link></Menu.Item>
         </Menu>
       </Sider>
     );

@@ -1,9 +1,14 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import { Form, Input, Button, Space} from 'antd';
 import { connect } from "react-redux";
-import { postData } from "../../../Actions/Action";
+import { postData, getConnectionSettings } from "../../../Actions/Action";
 
 function ConnectionSettingsComponent(props){
+
+    useEffect(()=> {
+        props.getConnectionSettings()
+    })
+
     const [connectionState, setConnectionState] = useState({
         testType: false
     })
@@ -75,7 +80,8 @@ const mapStateToProps = (state) => {
   
 const mapDispatchToProps = (dispatch) => {
     return {
-        postData: (data) => dispatch(postData(data, 'GET_CONNECTION_SETTINGS', 'submit_connection_settings'))
+        postData: (data) => dispatch(postData(data, 'GET_CONNECTION_SETTINGS', 'submit_connection_settings')),
+        getConnectionSettings: () => dispatch(getConnectionSettings())
     }
   }
   

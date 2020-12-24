@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import { 
     Select,
     Typography,
@@ -16,7 +16,7 @@ import {
 } from 'antd';
 
 import { connect } from "react-redux";
-import { postData } from "../../../Actions/Action";
+import { postData, getQuoteSettings } from "../../../Actions/Action";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -27,6 +27,10 @@ function QuoteSettingsComponentWwe(props){
     const onChange = e => {
         setValue(e.target.value);
     };
+
+    useEffect(() => {
+        props.getSettings()
+    })
 
     const [ratingMethod, setRatingMethod] = useState(1)
 
@@ -297,7 +301,8 @@ function QuoteSettingsComponentWwe(props){
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        postData: (data) => dispatch(postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings'))
+        postData: (data) => dispatch(postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings')),
+        getSettings: () => dispatch(getQuoteSettings())
     }
   }
   

@@ -1,18 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Layout, Menu } from 'antd';
 import './App.css';
 import SideMenu from './partials/SideMenu';
-import TabsLayout from './tabs_layout/tabs';
 import { BrowserRouter as Router,
   Switch,
-  Route,
-  Link } from "react-router-dom";
+  Route } from "react-router-dom";
 import { connect } from "react-redux";
+import { getLocations } from "./Actions/Action";
+import RendorCarrier from "./components/RendorCarrier";
 
 
 const { Header, Content} = Layout;
 
-function App() {
+function App(props) {
+
+  useEffect(() =>{
+    props.locations()
+  })
+
   return (
     <>
       <Router>
@@ -21,7 +26,12 @@ function App() {
         <Layout>
           <Header className={"top-header"} style={{ padding: 0 }} />
           <Content className={"body-content"}>
-            <TabsLayout />
+            <Switch>
+              <Route path="/:carrier_id">
+                <RendorCarrier />
+              </Route>
+            </Switch>
+            
           </Content>
         </Layout>
       </Layout>
@@ -38,7 +48,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    locations: () => dispatch(getLocations()),
   }
 }
 

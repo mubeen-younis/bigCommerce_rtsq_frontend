@@ -23,11 +23,21 @@ const Reducer = (state = initialState, action) => {
                 ...state,
                 locations: action.payload 
             }
+        case 'GET_SERVICES': // We had to change the term cause in BigCommerce we call CARRIERS as Eniture Apps
+            return {
+                ...state,
+                services: action.payload 
+            }
         case 'GET_CARRIERS':
             return {
                 ...state,
                 carrriers: action.payload 
-            }
+            }  
+        case 'GET_CARRIER_DETAILS':
+            return {
+                ...state,
+                carrierDetails: action.payload
+            }        
 
         default:
             break;

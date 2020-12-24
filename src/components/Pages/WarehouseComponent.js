@@ -297,7 +297,7 @@ function WarehouseComponent(){
                                     <Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
                                         <Space>
                                             <Button type="link" size={"large"} onClick={() => setVisibleWarehouse(false)}>Cancel</Button>
-                                            <Button type="primary" size={"large"} htmlType="submit">Apply</Button>
+                                            <Button type="primary" size={"large"} htmlType="submit">Save</Button>
                                         </Space>
                                     </Form.Item>
                                 </Col>
