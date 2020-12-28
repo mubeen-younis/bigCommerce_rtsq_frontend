@@ -332,16 +332,6 @@ function WarehouseComponent(){
                                 <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
                                     <Form.Item
                                         className={"mb-2"}
-                                        label="Nickname"
-                                        name="nickname"
-                                        rules={[{ required: true, message: 'Nickname Required' }]}
-                                    >
-                                        <Input placeholder="Nickname" />
-                                    </Form.Item>
-                                </Col>
-                                <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-                                    <Form.Item
-                                        className={"mb-2"}
                                         label="City"
                                         name="city"
                                         rules={[{ required: true, message: 'City' }]}
@@ -377,6 +367,149 @@ function WarehouseComponent(){
                                         rules={[{ required: true, message: 'Country' }]}
                                     >
                                         <Input placeholder="Country" />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={30}>
+                                <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
+                                    <Title level={4}>In-store pick up</Title>
+                                </Col>
+                            </Row>
+                            <Row gutter={30} align="middle">
+                                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                                    <label className={"text-gray"}>Enable in-store pick up</label>
+                                </Col>
+                                <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
+                                    <Form.Item name="enable_in_store_pick_up" className={"mb-0"}>
+                                        <Checkbox name="enable_in_store_pick_up" checked="checked"></Checkbox>
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={30} align="middle" className={"mb-2"}>
+                                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                                    <label className={"text-gray"}>Offer if address is within (miles):</label>
+                                </Col>
+                                <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
+                                    <Form.Item
+                                        className={"mb-0"}
+                                        name="in_stock_postal_email"
+                                        rules={[{ required: true, message: 'Email Required' }]}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={30} align="middle" className={"mb-2"}>
+                                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                                    <label className={"text-gray"}>Offer if postal code matches:</label>
+                                </Col>
+                                <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
+                                    <Form.Item
+                                        className={"mb-0"}
+                                        name="in_stock_postal_code"
+                                        rules={[{ required: true, message: 'Costal Code Required' }]}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={30} align="middle" className={"mb-2"}>
+                                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                                    <label className={"text-gray"}>Checkout description:</label>
+                                </Col>
+                                <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
+                                    <Form.Item
+                                        className={"mb-0"}
+                                        name="in_stock_checkout_description"
+                                        rules={[{ required: true, message: 'Checkout Description Required' }]}
+                                    >
+                                        <Input placeholder="In-stock pick up" />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={30}>
+                                <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
+                                    <Title level={4}>Local Delivery</Title>
+                                </Col>
+                            </Row>
+                            <Row gutter={30} align="middle">
+                                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                                    <label className={"text-gray"}>Enable local delivery</label>
+                                </Col>
+                                <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
+                                    <Form.Item name="enable_enable_local_delivery" className={"mb-0"}>
+                                        <Checkbox name="enable_local_delivery" checked="checked"></Checkbox>
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={30} align="middle" className={"mb-2"}>
+                                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                                    <label className={"text-gray"}>Offer if address is within (miles):</label>
+                                </Col>
+                                <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
+                                    <Form.Item
+                                        className={"mb-0"}
+                                        name="local_delivery_postal_email"
+                                        rules={[{ required: true, message: 'Email Required' }]}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={30} align="middle" className={"mb-2"}>
+                                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                                    <label className={"text-gray"}>Offer if postal code matches:</label>
+                                </Col>
+                                <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
+                                    <Form.Item
+                                        className={"mb-0"}
+                                        name="local_delivery_postal_code"
+                                        rules={[{ required: true, message: 'Costal Code Required' }]}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={30} align="middle" className={"mb-2"}>
+                                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                                    <label className={"text-gray"}>Checkout description:</label>
+                                </Col>
+                                <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
+                                    <Form.Item
+                                        className={"mb-0"}
+                                        name="local_delivery_checkout_description"
+                                        rules={[{ required: true, message: 'Checkout Description Required' }]}
+                                    >
+                                        <Input placeholder="In-stock pick up" />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={30} align="middle" className={"mb-2"}>
+                                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                                    <label className={"text-gray"}>Local delivery fee</label>
+                                </Col>
+                                <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
+                                    <Form.Item
+                                        className={"mb-0"}
+                                        name="local_delivery_free"
+                                        rules={[{ required: true, message: 'Local delivery fee Required' }]}
+                                    >
+                                        <Input placeholder="In-stock pick up" />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={30} align="middle">
+                                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                                    <label className={"text-gray"}>
+                                        Suppress other rates  
+                                        <Tooltip placement="top" title={"This setting only suppresses rate that would otherwise be returned by this app."}>
+                                            <Button className={"text-gray"} type="link">[?]</Button>
+                                        </Tooltip>
+                                    </label>
+                                </Col>
+                                <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
+                                    <Form.Item name="enable_enable_local_delivery" className={"mb-0"}>
+                                        <Checkbox name="enable_local_delivery" checked="checked"></Checkbox>
                                     </Form.Item>
                                 </Col>
                             </Row>
