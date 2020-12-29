@@ -8,6 +8,7 @@ import { BrowserRouter as Router,
 import { connect } from "react-redux";
 import { getLocations } from "./Actions/Action";
 import RendorCarrier from "./components/RendorCarrier";
+import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent';
 
 
 const { Header, Content} = Layout;
@@ -26,6 +27,7 @@ function App(props) {
         <Layout>
           <Header className={"top-header"} style={{ padding: 0 }} />
           <Content className={"body-content"}>
+            <ShippingCarriersComponent />
             <Switch>
               <Route path="/:carrier_id">
                 <RendorCarrier />

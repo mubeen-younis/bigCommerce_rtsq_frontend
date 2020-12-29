@@ -303,3 +303,35 @@ color: #212529;
   margin: 0 0 20px 0;
   background-color: #eaeaea;
 }
+.card-custom{
+  position: relative;
+  min-height: 200px;
+  border-radius: 0;
+  border-color: #ddd;
+  background-color: #fbfbfb;
+}
+.card-custom .ant-card-body{
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+.card-custom a{
+  display: block;
+  height: 100%;
+}
+.card-custom .ant-card-body .card-inner{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+.card-custom .ant-card-body .card-inner figure{
+  margin: 0 0 25px 0;
+}
+
