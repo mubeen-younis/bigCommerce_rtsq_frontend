@@ -1,35 +1,28 @@
 import axios  from "axios";
 
 export const postData = (data, type, url) => {
-    console.log(data)
-    const token = '';
-    const config = {
-        headers: { 
-            'Access-Control-Allow-Origin': '*',
-            'Content-type': 'application/json',
-         } //Authorization: `Bearer ${token}`
-    };
     return dispatch => {
-        axios.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`,config, {
-            data
-        })
+        axios.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data)
         .then(({data}) => {
             console.log(data)
+            console.log(JSON.parse(data.data.value))
+            if (!data.error) {
+                if (data.value != undefined) {
+                    dispatch({
+                        type: type,
+                        payload: JSON.parse(data.data.value)
+                    })
+                }
+            }
         })
         .catch((error) => {
 
         })
+
     }
 }
 
 export const getCarrierDetails = (data) => {
-    const token = '';
-    const config = {
-        headers: { 
-            'Access-Control-Allow-Origin': '*',
-            'Content-type': 'application/json',
-         } //Authorization: `Bearer ${token}`
-    };
     return dispatch => {
         axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_carrier_info`, {
             data
@@ -43,19 +36,12 @@ export const getCarrierDetails = (data) => {
             }
         })
         .catch((error) => {
-
+            console.log(error)
         })
     }   
 }
 
 export const getConnectionSettings = () => {
-    const token = '';
-    const config = {
-        headers: { 
-            'Access-Control-Allow-Origin': '*',
-            'Content-type': 'application/json',
-         } //Authorization: `Bearer ${token}`
-    };
     const data = {
         shop: 'dev-azm-1.mybigcommerce.com',
         carrierId: 1
@@ -66,15 +52,22 @@ export const getConnectionSettings = () => {
             data
         })
         .then(({data}) => {
-            if (data.settings.length > 0) {
-                dispatch({
-                    type: 'GET_CONNECTION_SETTINGS',
-                    payload: data.settings
-                })
-            }
+            console.log(data)
+            console.log(JSON.parse(data.data.value))
+            dispatch({
+                type: 'GET_CONNECTION_SETTINGS',
+                payload: JSON.parse(data.data.value)
+            })
+            dispatch({
+                type: 'SKELETON_LOADING',
+                payload: false
+            })
         })
         .catch((error) => {
-
+            dispatch({
+                type: 'SKELETON_LOADING',
+                payload: false
+            })
         })
     }
 }

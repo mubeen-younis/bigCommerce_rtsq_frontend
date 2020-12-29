@@ -2,7 +2,8 @@ const initialState = {
     connectionSettings: null,
     locations: null,
     quoteSettings: null,
-    carrriers: null
+    carrriers: null,
+    skeleton_loading: true
 }
 
 const Reducer = (state = initialState, action) => {
@@ -10,7 +11,7 @@ const Reducer = (state = initialState, action) => {
         case 'GET_CONNECTION_SETTINGS':
             return {
                 ...state,
-                connectionSettings: action.payload 
+                connectionSettings: action.payload
             }
 
         case 'GET_QUOTE_SETTINGS':
@@ -37,7 +38,12 @@ const Reducer = (state = initialState, action) => {
             return {
                 ...state,
                 carrierDetails: action.payload
-            }        
+            }
+        case 'SKELETON_LOADING':
+            return {
+                ...state,
+                skeleton_loading: action.payload
+            }
 
         default:
             break;

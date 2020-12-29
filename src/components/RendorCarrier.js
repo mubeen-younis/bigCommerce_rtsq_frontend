@@ -6,18 +6,18 @@ import { getCarrierDetails } from "../Actions/Action";
 
 function RendorCarrier(props) {
     const carrierId = useParams().carrierId
-    console.log(carrierId)
     useEffect(()=> {
-        const data = {
-            carrierId: carrierId,
-            shop: 'dev-azm-1.myshopify.com'
+        if (carrierId !== undefined) {
+            const data = {
+                carrierId: carrierId,
+                shop: 'dev-azm-1.myshopify.com'
+            }
+            props.getCarrierDetails(data)
         }
-        props.getCarrierDetails(data)
     })
-    
     return (
         <>
-            <TabsLayout />
+          <TabsLayout />
         </>
     )
 }

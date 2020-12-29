@@ -1,26 +1,40 @@
 import React, {Fragment, useState, useEffect} from 'react';
-import { Form, Input, Button, Space} from 'antd';
+import { Form, Input, Button, Space, Skeleton} from 'antd';
 import { connect } from "react-redux";
 import { postData, getConnectionSettings } from "../../../Actions/Action";
 
 function ConnectionSettingsComponent(props){
 
-    useEffect(()=> {
-        props.getConnectionSettings()
-    })
-
     const [connectionState, setConnectionState] = useState({
-        testType: false
+        testType: false,
+        skeleton_loading: true
+    })
+    useEffect(()=> {
+        if (props.connectionSettings == null) {
+            props.getConnectionSettings()    
+        }
     })
     const handleTypeChange = (type) =>{
         setConnectionState({...connectionState, testType: type})
     }
     const onFinish = values => {
         values.testType = connectionState.testType
+        values.installed_carrier_id = props.carrierId;
         props.postData(values)
     };
+    console.log('props', props)
+    if (props.skeleton_loading && props.connectionSettings === null) {
+        return (
+            <>
+                <Skeleton active />
+            </>
+        )
+    }
+
     return(
         <Fragment>
+            {console.log('props 1', props)}
+            {console.log(props.connectionSettings)}
             <div className={"note-bx"}>
                 <strong>Note!</strong> You must have a World Wide Express account to use this application. If you do not have one, click here to access the new account request form.
             </div>
@@ -37,28 +51,35 @@ function ConnectionSettingsComponent(props){
                     name="account_number"
                     rules={[{ required: true, message: 'Account Number' }]}
                 >
-                    <Input placeholder="Account Number" />
+                    <Input placeholder="Account Number" defaultValue={props.connectionSettings.account_number} />
                 </Form.Item>
                 <Form.Item
                     label="Username"
                     name="username"
                     rules={[{ required: true, message: 'Username' }]}
                 >
-                    <Input placeholder="Username"/>
+                    <Input placeholder="Username" defaultValue={props.connectionSettings.username}/>
                 </Form.Item>
                 <Form.Item
                     label="Password"
                     name="password"
                     rules={[{ required: true, message: 'Please input your Password!' }]}
                 >
-                    <Input type="password" placeholder="Password"/>
+                    <Input type="password" placeholder="Password" defaultValue={props.connectionSettings.password}/>
                 </Form.Item>
                 <Form.Item
                     label="Authentication Key"
                     name="authentication_key"
                     rules={[{ required: true, message: 'Authentication Key' }]}
                 >
-                    <Input placeholder="Authentication Key" />
+                    <Input placeholder="Authentication Key" defaultValue={props.connectionSettings.authentication_key} />
+                </Form.Item>
+                <Form.Item
+                    label="License Key"
+                    name="license_key"
+                    rules={[{ required: true, message: 'License Key' }]}
+                >
+                    <Input placeholder="License Key" defaultValue={props.connectionSettings.license_key} />
                 </Form.Item>
                 <Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
                     <Space>
@@ -74,7 +95,8 @@ function ConnectionSettingsComponent(props){
 
 const mapStateToProps = (state) => {
     return {
-        connectionSettings: state.connectionSettings
+        connectionSettings: state.connectionSettings,
+        skeleton_loading: state.skeleton_loading
     }
   }
   
