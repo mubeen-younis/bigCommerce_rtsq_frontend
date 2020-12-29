@@ -21,96 +21,88 @@ function ShippingCarriersComponent(){
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
             </Row>
@@ -122,96 +114,88 @@ function ShippingCarriersComponent(){
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
                 <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
                     >
-                        <Link>
-                            <div className={"card-inner"}>
-                                <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
-                                <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
-                            </div>
-                        </Link>
+                        <div className={"card-inner"}>
+                            <figure><img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} /></figure>
+                            <Meta title="WWE LTL Freight Quotes" description="Cortigo Edition for Magento 2.x" />                              
+                            <Button className={"mt-3"} type="primary">Install</Button>
+                        </div>
                     </Card>
                 </Col>
             </Row>
