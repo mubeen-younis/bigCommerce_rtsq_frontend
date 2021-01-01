@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import { postData } from "../Actions/Action";
 import { getServices } from "../Actions/Carriers";
-import { Form, Table, Button, Space} from 'antd';
+import { Form, Table, Button, Space, Skeleton} from 'antd';
 
 const columns = [
   {
@@ -19,28 +19,27 @@ const columns = [
   },
 ];
 
-const data = [];
-for (let i = 1; i < 30; i++) {
-  data.push({
-    key: i,
-    sr_no: i,
-    carrier_name: `UPS Freight`,
-    carrier_logo: <img style={{ height: '70px' }} src={"../../images/fedex.png"} alt={"text alt"} />,
-  });
-}
-
 class CarriersComponent extends React.Component {
   state = {
     selectedRowKeys: [], // Check here to configure the default column
-    loading: false,
+    loading: true,
+    carrierServices: []
   };
   
   componentDidMount(){
-    this.props.getServices()
+    this.getServices()  
+  }
+
+  getServices = () => {
+    if (this.props.services === undefined) {
+      this.props.getServices() 
+    }
+    if (this.props.services !== null && this.props.services !== undefined) {
+      this.setState({loading: false})
+    }
   }
 
   onSelectChange = selectedRowKeys => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   };
 
@@ -54,9 +53,18 @@ class CarriersComponent extends React.Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
+    
+    if (this.state.loading && this.props.services === undefined) {
+      return (
+          <>
+              <Skeleton active />
+          </>
+      )
+    }
+
     return (
         <>
-          <Table className="custom-table" rowSelection={rowSelection} columns={columns} dataSource={data} total={50} />
+          <Table className="custom-table" rowSelection={rowSelection} columns={columns} dataSource={this.props.services} total={50} />
           <Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
                     <Space>
                         <Button type="primary" size={"large"} htmlType="submit" name={`test`} onClick={this.saveCarriers}>Save Settings</Button>
@@ -69,14 +77,16 @@ class CarriersComponent extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    carrriers: state.carrriers
+    services: state.services,
+    skeleton_loading: state.skeleton_loading
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
       postData: (data, type, url) => dispatch(postData(data, type, url)),
-      getServices: () => dispatch(getServices())
+      getServices: () => dispatch(getServices()),
+      dismissSkeleton: () => dispatch({type: 'SKELETON_LOADING', payload: true})
   }
 }
 

@@ -6,13 +6,11 @@ import {
     Col,
     Space,
     Button,
-    Modal,
     Form,
     Input,
     Checkbox,
-    Table,
-    Tooltip,
-    Radio
+    Radio,
+    Skeleton
 } from 'antd';
 
 import { connect } from "react-redux";
@@ -24,20 +22,41 @@ const { Title } = Typography;
 function QuoteSettingsComponentWwe(props){
     const [visible1, setVisibleWarehouse] = useState(false);
     const [value, setValue] = useState(1);
+    const [loading, setLoading] = useState(true);
     const onChange = e => {
         setValue(e.target.value);
     };
 
     useEffect(() => {
-        props.getSettings()
+        getQuoteSettings()
     })
+
+    const getQuoteSettings = () => {
+        console.log('props.quoteSettings ', props.quoteSettings)
+        if (props.quoteSettings === null || props.quoteSettings === undefined) {
+            props.getSettings()
+        }
+          
+        if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
+            setLoading(false)
+        }
+    }
 
     const [ratingMethod, setRatingMethod] = useState(1)
 
     const onFinish = data => {
+        //data.method = ratingMethod
         props.postData(data)
     };
     
+    if (loading && (props.quoteSettings === undefined || props.quoteSettings === null )) {
+        return (
+            <>
+                <Skeleton active />
+            </>
+        )
+    }
+
     return(
         <Fragment>
             <Form
@@ -56,10 +75,11 @@ function QuoteSettingsComponentWwe(props){
                             className={"mb-0"}
                             name="method"
                         >
-                            <Select defaultValue="Cheapest" size={"large"} style={{ width: '100%' }} onChange={ value => setRatingMethod(value)}>
-                                <Option value="1">Cheapest</Option>
-                                <Option value="2">Cheapest Options</Option>
-                                <Option value="3">Average</Option>
+                    
+                            <Select defaultValue={props.quoteSettings.method !== undefined ? props.quoteSettings.method : 1 } name="method" size={"large"} style={{ width: '100%' }} onChange={(value) => setRatingMethod(value)}>
+                                <Option value={1}>Cheapest</Option>
+                                <Option value={2}>Cheapest Options</Option>
+                                <Option value={3}>Average</Option>
                             </Select>
                         </Form.Item>
                         <div className={"text-gray"}>Display a least expensive option.</div>
@@ -76,7 +96,7 @@ function QuoteSettingsComponentWwe(props){
                                 className={"mb-0"}
                                 name="number_of_options"
                             >
-                                <Select defaultValue="1" size={"large"} style={{ width: '100%' }}>
+                                <Select name="number_of_options" defaultValue="1" size={"large"} style={{ width: '100%' }}>
                                     <Option value="1">1</Option>
                                     <Option value="2">2</Option>
                                     <Option value="3">3</Option>
@@ -105,7 +125,7 @@ function QuoteSettingsComponentWwe(props){
                                 className={"mb-0"}
                                 name="label_as"
                             >
-                                <Input />                            
+                                <Input name="label_as" defaultValue={props.quoteSettings.label_as} />
                             </Form.Item>
                             <div className={"text-gray"}>what the user sees during checkout, e.g. "Freight". Leave blank to display the carrier name.</div>
                         </Col>
@@ -118,7 +138,7 @@ function QuoteSettingsComponentWwe(props){
                     </Col>
                     <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={18}>
                         <Form.Item className={"mb-0"}>
-                            <Checkbox name="show_delivery_estimate">Show Delivery Estimate With Shipping Services.</Checkbox>
+                            <Checkbox name="show_delivery_estimate" value={0}>Show Delivery Estimate With Shipping Services.</Checkbox>
                         </Form.Item>
                     </Col>
                 </Row>
@@ -299,6 +319,13 @@ function QuoteSettingsComponentWwe(props){
 }
 
 
+
+const mapStateToProps = (state) => {
+    return {
+      quoteSettings: state.quoteSettings
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
         postData: (data) => dispatch(postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings')),
@@ -306,4 +333,4 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
   
-export default connect(null, mapDispatchToProps)(QuoteSettingsComponentWwe);
+export default connect(mapStateToProps, mapDispatchToProps)(QuoteSettingsComponentWwe);

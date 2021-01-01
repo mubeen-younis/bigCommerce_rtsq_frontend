@@ -23,27 +23,22 @@ function handleChange(value) {
   console.log(`selected ${value}`);
 }
 
-function WarehouseComponent(){
+function WarehouseComponent(props){
     const [visible1, setVisibleWarehouse] = useState(false);
     const [visible2, setVisibledropship] = useState(false);
     const onFinish = values => {
         console.log('Received values of form: ', values);
+        props.postData(values, 'GET_LOCATIONS', 'submit_location')
     };
+
+    const deleteLocation = (id) => {}
+
+    const editLocation = (id) => {
+        setVisibleWarehouse(true)
+    }
+
     const data = [
-        {
-            key: '1',
-            city: 'Lahore',
-            state: 'Punjab',
-            zip: 54000,
-            country: 'Pakistan'
-        },
-        {
-            key: '2',
-            city: 'Karachi',
-            state: 'Sindh',
-            zip: 85000,
-            country: 'Pakistan'
-        }
+        
     ];
       
     const columns = [
@@ -72,8 +67,8 @@ function WarehouseComponent(){
             title: 'Action',
             render: (text, record) => (
             <Space size="middle">
-                <a href="#">Edit</a>
-                <a href="#" className={"btn-danger"}>Delete</a>
+                <Button onClick={() => editLocation(1)}>Edit</Button>
+                <Button onClick={() => deleteLocation(1)} className={"btn-danger"}>Delete</Button>
             </Space>
             ),
         }
@@ -113,7 +108,7 @@ function WarehouseComponent(){
                                         className={"mb-2"}
                                         label="City"
                                         name="city"
-                                        rules={[{ required: true, message: 'City' }]}
+                                        rules={[{ required: false, message: 'City' }]}
                                     >
                                         <Input placeholder="City" />
                                     </Form.Item>
@@ -123,7 +118,7 @@ function WarehouseComponent(){
                                         className={"mb-2"}
                                         label="State"
                                         name="state"
-                                        rules={[{ required: true, message: 'State' }]}
+                                        rules={[{ required: false, message: 'State' }]}
                                     >
                                         <Input placeholder="State" />
                                     </Form.Item>
@@ -133,7 +128,7 @@ function WarehouseComponent(){
                                         className={"mb-2"}
                                         label="Zip Code"
                                         name="zipcode"
-                                        rules={[{ required: true, message: 'Zip Code' }]}
+                                        rules={[{ required: false, message: 'Zip Code' }]}
                                     >
                                         <Input placeholder="Zip Code" />
                                     </Form.Item>
@@ -143,7 +138,7 @@ function WarehouseComponent(){
                                         className={"mb-2"}
                                         label="Country"
                                         name="country"
-                                        rules={[{ required: true, message: 'Country' }]}
+                                        rules={[{ required: false, message: 'Country' }]}
                                     >
                                         <Input placeholder="Country" />
                                     </Form.Item>
@@ -172,7 +167,7 @@ function WarehouseComponent(){
                                     <Form.Item
                                         className={"mb-0"}
                                         name="in_stock_postal_email"
-                                        rules={[{ required: true, message: 'Email Required' }]}
+                                        rules={[{ required: false, message: 'Email Required' }]}
                                     >
                                         <Input />
                                     </Form.Item>
@@ -186,7 +181,7 @@ function WarehouseComponent(){
                                     <Form.Item
                                         className={"mb-0"}
                                         name="in_stock_postal_code"
-                                        rules={[{ required: true, message: 'Costal Code Required' }]}
+                                        rules={[{ required: false, message: 'Costal Code Required' }]}
                                     >
                                         <Input />
                                     </Form.Item>
@@ -200,7 +195,7 @@ function WarehouseComponent(){
                                     <Form.Item
                                         className={"mb-0"}
                                         name="in_stock_checkout_description"
-                                        rules={[{ required: true, message: 'Checkout Description Required' }]}
+                                        rules={[{ required: false, message: 'Checkout Description Required' }]}
                                     >
                                         <Input placeholder="In-stock pick up" />
                                     </Form.Item>
@@ -229,7 +224,7 @@ function WarehouseComponent(){
                                     <Form.Item
                                         className={"mb-0"}
                                         name="local_delivery_postal_email"
-                                        rules={[{ required: true, message: 'Email Required' }]}
+                                        rules={[{ required: false, message: 'Email Required' }]}
                                     >
                                         <Input />
                                     </Form.Item>
@@ -243,7 +238,7 @@ function WarehouseComponent(){
                                     <Form.Item
                                         className={"mb-0"}
                                         name="local_delivery_postal_code"
-                                        rules={[{ required: true, message: 'Costal Code Required' }]}
+                                        rules={[{ required: false, message: 'Costal Code Required' }]}
                                     >
                                         <Input />
                                     </Form.Item>
@@ -257,7 +252,7 @@ function WarehouseComponent(){
                                     <Form.Item
                                         className={"mb-0"}
                                         name="local_delivery_checkout_description"
-                                        rules={[{ required: true, message: 'Checkout Description Required' }]}
+                                        rules={[{ required: false, message: 'Checkout Description Required' }]}
                                     >
                                         <Input placeholder="In-stock pick up" />
                                     </Form.Item>
@@ -271,7 +266,7 @@ function WarehouseComponent(){
                                     <Form.Item
                                         className={"mb-0"}
                                         name="local_delivery_free"
-                                        rules={[{ required: true, message: 'Local delivery fee Required' }]}
+                                        rules={[{ required: false, message: 'Local delivery fee Required' }]}
                                     >
                                         <Input placeholder="In-stock pick up" />
                                     </Form.Item>

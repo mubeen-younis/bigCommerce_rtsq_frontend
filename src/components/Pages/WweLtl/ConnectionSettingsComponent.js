@@ -49,37 +49,37 @@ function ConnectionSettingsComponent(props){
                 <Form.Item
                     label="Account Number"
                     name="account_number"
-                    rules={[{ required: true, message: 'Account Number' }]}
+                    rules={[{ required: false, message: 'Account Number' }]}
                 >
-                    <Input placeholder="Account Number" defaultValue={props.connectionSettings.account_number} />
+                    <Input placeholder="Account Number" defaultValue={props.connectionSettings != null ? props.connectionSettings.account_number : null} />
                 </Form.Item>
                 <Form.Item
                     label="Username"
                     name="username"
-                    rules={[{ required: true, message: 'Username' }]}
+                    rules={[{ required: false, message: 'Username' }]}
                 >
-                    <Input placeholder="Username" defaultValue={props.connectionSettings.username}/>
+                    <Input placeholder="Username" defaultValue={props.connectionSettings != null ? props.connectionSettings.username : null}/>
                 </Form.Item>
                 <Form.Item
                     label="Password"
                     name="password"
-                    rules={[{ required: true, message: 'Please input your Password!' }]}
+                    rules={[{ required: false, message: 'Please input your Password!' }]}
                 >
-                    <Input type="password" placeholder="Password" defaultValue={props.connectionSettings.password}/>
+                    <Input type="password" placeholder="Password" defaultValue={props.connectionSettings != null ? props.connectionSettings.password : null}/>
                 </Form.Item>
                 <Form.Item
                     label="Authentication Key"
                     name="authentication_key"
-                    rules={[{ required: true, message: 'Authentication Key' }]}
+                    rules={[{ required: false, message: 'Authentication Key' }]}
                 >
-                    <Input placeholder="Authentication Key" defaultValue={props.connectionSettings.authentication_key} />
+                    <Input placeholder="Authentication Key" defaultValue={props.connectionSettings != null ? props.connectionSettings.authentication_key : null} />
                 </Form.Item>
                 <Form.Item
                     label="License Key"
                     name="license_key"
-                    rules={[{ required: true, message: 'License Key' }]}
+                    rules={[{ required: false, message: 'License Key' }]}
                 >
-                    <Input placeholder="License Key" defaultValue={props.connectionSettings.license_key} />
+                    <Input placeholder="License Key" defaultValue={props.connectionSettings != null ? props.connectionSettings.license_key : null} />
                 </Form.Item>
                 <Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
                     <Space>

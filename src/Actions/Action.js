@@ -4,8 +4,6 @@ export const postData = (data, type, url) => {
     return dispatch => {
         axios.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data)
         .then(({data}) => {
-            console.log(data)
-            console.log(JSON.parse(data.data.value))
             if (!data.error) {
                 if (data.value != undefined) {
                     dispatch({
@@ -14,6 +12,15 @@ export const postData = (data, type, url) => {
                     })
                 }
             }
+            console.log('data' , data)
+            dispatch({
+                type: 'ALERT_MESSAGE',
+                payload: {
+                    alertMessage: data.message,
+                    showAlertMessage: true,
+                    alertMessageType: data.error ? 'error' : 'success'
+                }
+            })
         })
         .catch((error) => {
 
@@ -119,15 +126,40 @@ export const getQuoteSettings = () => {
             data
         })
         .then(({data}) => {
-            if (data.settings.length > 0) {
+            
+            //if (data.data.length > 0) {
                 dispatch({
                     type: 'GET_QUOTE_SETTINGS',
-                    payload: data.settings
+                    payload: JSON.parse(data.data.value)
                 })
-            }
+            //}
         })
         .catch((error) => {
 
+        })
+    }
+}
+
+export const dismissAlert = () => {
+    return dispatch => {
+        dispatch({
+            type: 'ALERT_MESSAGE',
+            payload: {
+                alertMessage: null,
+                showAlertMessage: false,
+                alertMessageType: null
+            }
+        })
+    }
+}
+
+export const setStore = (store) => {
+    console.log('store action', store)
+    localStorage.setItem('store', store)
+    return dispatch => {
+        dispatch({
+            type: 'STORE',
+            payload: store
         })
     }
 }

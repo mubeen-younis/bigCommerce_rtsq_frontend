@@ -13,16 +13,29 @@ export const getServices = () => {
     }
 
     return dispatch => {
-        axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_carriers`, {
+        axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_carrier_services`, {
             data
         })
         .then(({data}) => {
-            if (data.carriers.length > 0) {
+            if (data.data.length > 0) {
+                let carrierServices = [];
+                data.data.map((value, index) => {
+                    carrierServices.push({
+                      key: value.speed_freight_carrierSCAC,
+                      sr_no: index,
+                      carrier_name: value.speed_freight_carrierName,
+                      carrier_logo: <img style={{ height: '40px' }} src={`../../Carrier_Logos/${value.carrier_logo}`} alt={value.speed_freight_carrierName} />,
+                    });
+                  })
                 dispatch({
                     type: 'GET_SERVICES',
-                    payload: data.carriers
+                    payload: carrierServices
                 })
             }
+            dispatch({
+                type: 'SKELETON_LOADING',
+                payload: false
+            })
         })
         .catch((error) => {
 

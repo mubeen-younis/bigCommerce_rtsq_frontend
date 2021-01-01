@@ -3,11 +3,19 @@ const initialState = {
     locations: null,
     quoteSettings: null,
     carrriers: null,
-    skeleton_loading: true
+    skeleton_loading: true,
+    showAlertMessage: false,
+    alertMessageType: null,
+    alertMessage: null
 }
 
 const Reducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'STORE':
+            return {
+                ...state,
+                store: action.payload
+        }
         case 'GET_CONNECTION_SETTINGS':
             return {
                 ...state,
@@ -32,7 +40,7 @@ const Reducer = (state = initialState, action) => {
         case 'GET_CARRIERS':
             return {
                 ...state,
-                carrriers: action.payload 
+                services: action.payload 
             }  
         case 'GET_CARRIER_DETAILS':
             return {
@@ -44,6 +52,14 @@ const Reducer = (state = initialState, action) => {
                 ...state,
                 skeleton_loading: action.payload
             }
+
+        case 'ALERT_MESSAGE':
+            return {
+                ...state,
+                showAlertMessage: action.payload.showAlertMessage,
+                alertMessage: action.payload.alertMessage,
+                alertMessageType: action.payload.alertMessageType
+            }    
 
         default:
             break;
