@@ -65,6 +65,7 @@ function QuoteSettingsComponentWwe(props){
             className="form-wrp"
             size={"large"}
             onFinish={onFinish}
+            initialValues={props.quoteSettings}
             >
                 <Row gutter={30} className={"mb-3"}>
                     <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={6}>
