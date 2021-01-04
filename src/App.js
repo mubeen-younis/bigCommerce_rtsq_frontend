@@ -40,10 +40,8 @@ function App(props) {
           <Header className={"top-header"} style={{ padding: 0 }} />
           <Content className={"body-content"}>
             <Switch>
-              <Route exact path={`/`} component={ShippingCarriersComponent} />
-              <Route path="/:carrier_id">
-                <RendorCarrier />
-              </Route>
+              <Route exact path="/" component={ShippingCarriersComponent} />
+              <Route exact path="/:carrier_id" component={RendorCarrier} />
             </Switch>
             
           </Content>

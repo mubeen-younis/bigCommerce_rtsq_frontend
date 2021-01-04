@@ -30,6 +30,7 @@ function QuoteSettingsComponentWwe(props){
     useEffect(() => {
         getQuoteSettings()
     })
+    const [ratingMethod, setRatingMethod] = useState(1)
 
     const getQuoteSettings = () => {
         console.log('props.quoteSettings ', props.quoteSettings)
@@ -39,11 +40,11 @@ function QuoteSettingsComponentWwe(props){
           
         if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
             setLoading(false)
+            let ratingMethodInit = props.quoteSettings.method !== undefined ? props.quoteSettings.method : 1;
+            setRatingMethod(ratingMethodInit)
         }
     }
-
-    const [ratingMethod, setRatingMethod] = useState(1)
-
+    
     const onFinish = data => {
         //data.method = ratingMethod
         props.postData(data)

@@ -59,7 +59,19 @@ const Reducer = (state = initialState, action) => {
                 showAlertMessage: action.payload.showAlertMessage,
                 alertMessage: action.payload.alertMessage,
                 alertMessageType: action.payload.alertMessageType
-            }    
+            }
+            
+        case 'GET_EN_CARRIERS':
+            return {
+                ...state,
+                enitureCarriers: action.payload
+            }
+
+        case 'GET_INSTALLED_CARRIERS':
+            return {
+                ...state,
+                installedCarriers: action.payload
+            }
 
         default:
             break;
