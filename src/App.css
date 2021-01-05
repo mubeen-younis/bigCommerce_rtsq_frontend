@@ -53,6 +53,9 @@ color: #212529;
   float: left;
   width: 100%;
 }
+.text-center{
+  text-align: center;
+}
 .text-gray {
   color: #888686 !important;
 }
@@ -318,5 +321,30 @@ color: #212529;
 
 .card-custom .ant-card-body .card-inner figure{
   margin: 0 0 25px 0;
+}
+.no-data {
+  background-color: #f2f7fa;
+  border: 1px solid #409391;
+  clear: both;
+  color: #409391;
+  padding: 5px 20px;
+  text-align: center;
+  display: inline-block;
+  min-width: 150px;
+  border-radius: 50px;
+}
+
+.no-data.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.ant-alert{
+  margin: 0 0 20px 0;
 }
 

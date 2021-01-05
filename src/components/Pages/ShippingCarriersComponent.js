@@ -62,7 +62,7 @@ function ShippingCarriersComponent(props){
                 <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
                     <Title level={4}>Installed Carriers</Title>
                 </Col>
-                {(props.installedCarriers !== undefined) ? shippingCarriersState.installedCarriers : 'No carrier installed' }
+                {(props.installedCarriers !== undefined) ? shippingCarriersState.installedCarriers : <Col className="gutter-row w-100 mb-3" xs={24} sm={24} md={24} lg={24} xl={24}><span className={"no-data"}>No carrier installed</span></Col> }
                 
             </Row>
             <Row gutter={25}>
@@ -70,7 +70,7 @@ function ShippingCarriersComponent(props){
                     <Title level={4}>Recommended Carriers</Title>
                 </Col>
                 
-                {(props.enitureCarriers !== undefined) ? shippingCarriersState.enitureCarriers : 'No carrier Found' }
+                {(props.enitureCarriers !== undefined) ? shippingCarriersState.enitureCarriers : <Col className="gutter-row w-100 mb-3" xs={24} sm={24} md={24} lg={24} xl={24}><span className={"no-data"}>No carrier Found</span></Col> }
                 
             </Row>
         </Fragment>
