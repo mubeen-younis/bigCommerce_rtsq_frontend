@@ -6,11 +6,9 @@ import {
     Col,
     Space,
     Button,
-    Modal,
     Form,
     Input,
     Checkbox,
-    Table,
     Tooltip,
     Radio
 } from 'antd';

@@ -1,6 +1,5 @@
 import React, {Fragment, useState} from 'react';
 import { Row, Col, Button, Typography, Card } from 'antd';
-import { Link } from "react-router-dom";  
 import { connect } from "react-redux";
 const { Title } = Typography;
 const { Meta } = Card;

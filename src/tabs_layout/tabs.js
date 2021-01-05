@@ -4,7 +4,6 @@ import CarriersComponent from '../components/CarriersComponent';
 import ConnectionSettingsComponent from '../components/Pages/WweLtl/ConnectionSettingsComponent';
 import WarehouseComponent from '../components/Pages/WarehouseComponent';
 import QuoteSettingsComponentWwe from '../components/Pages/WweLtl/QuoteSettingsComponentWwe';
-import ImportCsvComponent from '../components/Pages/ImportCsvComponent';
 import UserGuideComponent from '../components/Pages/UserGuideComponent';
 import AlertMessage from "../Utilities/AlertMessage";
 
