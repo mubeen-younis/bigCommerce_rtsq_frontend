@@ -40,7 +40,7 @@ const Reducer = (state = initialState, action) => {
         case 'GET_CARRIERS':
             return {
                 ...state,
-                services: action.payload 
+                carriers: action.payload 
             }  
         case 'GET_CARRIER_DETAILS':
             return {

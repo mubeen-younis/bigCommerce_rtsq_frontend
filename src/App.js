@@ -8,7 +8,11 @@ import {
   Route
 } from "react-router-dom";
 import { connect } from "react-redux";
-import { getLocations, setStore } from "./Actions/Action";
+import { 
+  getLocations,
+  setStore,
+  getAllCarriers
+ } from "./Actions/Action";
 import RendorCarrier from "./components/RendorCarrier";
 import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent';
 
@@ -30,6 +34,7 @@ function App(props) {
 
   props.locations()
   props.setStore(store)
+  props.getAllCarriers(store)
 
   return (
     <>
@@ -61,7 +66,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     locations: () => dispatch(getLocations()),
-    setStore: (store) => dispatch(setStore(store))
+    setStore: (store) => dispatch(setStore(store)),
+    getAllCarriers: (store) => dispatch(getAllCarriers({store:store}))
   }
 }
 

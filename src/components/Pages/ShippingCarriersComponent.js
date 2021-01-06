@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment} from 'react';
 import { Row, Col, Button, Typography, Card } from 'antd';
 import { connect } from "react-redux";
 const { Title } = Typography;
@@ -6,13 +6,13 @@ const { Meta } = Card;
 
 function ShippingCarriersComponent(props){
 
-    const [shippingCarriersState, setShippingCarriersState] = useState({
-        installedCarriers: null,
-        enitureCarriers: null
-    })
+    // const [shippingCarriersState, setShippingCarriersState] = useState({
+    //     installedCarriers: null,
+    //     enitureCarriers: null
+    // })
 
     const getInstalledCarriers = () => {
-        props.installedCarriers.map((value, index) => {
+        return props.installedCarriers.map((value, index) => {
             return <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
@@ -28,7 +28,7 @@ function ShippingCarriersComponent(props){
     }
 
     const getEnitureCarriers = () => {
-        props.enitureCarriers.map((value, index) => {
+        return props.enitureCarriers.map((value, index) => {
             return <Col className="gutter-row mb-3" xs={24} sm={24} md={12} lg={12} xl={6}>
                     <Card className={"card-custom"} 
                     style={{ width: '100%' }}
@@ -62,7 +62,7 @@ function ShippingCarriersComponent(props){
                 <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
                     <Title level={4}>Installed Carriers</Title>
                 </Col>
-                {(props.installedCarriers !== undefined) ? shippingCarriersState.installedCarriers : <Col className="gutter-row w-100 mb-3" xs={24} sm={24} md={24} lg={24} xl={24}><span className={"no-data"}>No carrier installed</span></Col> }
+                {(props.installedCarriers !== undefined) ? getInstalledCarriers() : <Col className="gutter-row w-100 mb-3" xs={24} sm={24} md={24} lg={24} xl={24}><span className={"no-data"}>No carrier installed</span></Col> }
                 
             </Row>
             <Row gutter={25}>
@@ -70,7 +70,7 @@ function ShippingCarriersComponent(props){
                     <Title level={4}>Recommended Carriers</Title>
                 </Col>
                 
-                {(props.enitureCarriers !== undefined) ? shippingCarriersState.enitureCarriers : <Col className="gutter-row w-100 mb-3" xs={24} sm={24} md={24} lg={24} xl={24}><span className={"no-data"}>No carrier Found</span></Col> }
+                {(props.enitureCarriers !== undefined) ? getEnitureCarriers() : <Col className="gutter-row w-100 mb-3" xs={24} sm={24} md={24} lg={24} xl={24}><span className={"no-data"}>No carrier Found</span></Col> }
                 
             </Row>
         </Fragment>

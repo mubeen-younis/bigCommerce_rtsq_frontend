@@ -163,3 +163,35 @@ export const setStore = (store) => {
         })
     }
 }
+
+
+export const getAllCarriers = (data) => {
+    return dispatch => {
+        axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/getAllCarriers`, data)
+        .then(({data}) => {
+            if (!data.error) {
+                dispatch({
+                    type: 'GET_EN_CARRIERS',
+                    payload: JSON.parse(data.enitureCarriers)
+                })
+                dispatch({
+                    type: 'GET_INSTALLED_CARRIERS',
+                    payload: JSON.parse(data.installedCarriers)
+                })
+            }
+            console.log('data' , data)
+            dispatch({
+                type: 'ALERT_MESSAGE',
+                payload: {
+                    alertMessage: data.message,
+                    showAlertMessage: true,
+                    alertMessageType: data.error ? 'error' : 'success'
+                }
+            })
+        })
+        .catch((error) => {
+
+        })
+
+    }
+}
