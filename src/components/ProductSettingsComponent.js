@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import { connect } from "react-redux";
-import { Table, Button, Space} from 'antd';
+import { Table, Button, Space, Form, Input} from 'antd';
 
 
 
@@ -125,6 +125,10 @@ class ProductSettingsComponent extends React.Component {
         )
       },
     ];
+
+    const onFinish = values => {
+      console.log('Received values of form: ', values);
+    };
     
     return (
         <Fragment>
@@ -132,6 +136,24 @@ class ProductSettingsComponent extends React.Component {
             <Button onClick={this.setSkuSort}>Sort Product SKU</Button>
             <Button onClick={this.clearFilters}>Clear filters</Button>
             <Button onClick={this.clearAll}>Clear filters and sorters</Button>
+            <Form
+              name="customized_form_controls"
+              layout="inline"
+              onFinish={onFinish}
+              initialValues={{
+                price: {
+                  number: 0,
+                  currency: 'rmb',
+                },
+              }}
+            >
+              <Form.Item>
+                <Input placeholder={"Search"} type="text"/>
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" htmlType="submit">Search</Button>
+              </Form.Item>
+            </Form>
           </Space>
           <Table className="custom-table" rowSelection={rowSelection} columns={columns} dataSource={data} onChange={this.handleChange} />
         </Fragment>
