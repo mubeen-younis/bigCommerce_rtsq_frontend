@@ -299,7 +299,8 @@ color: #212529;
   padding: 10px 24px;
   color: #5E637A;
 	background-color: #F6F7FC;
-	font-weight: 800 !important;
+  font-weight: 800 !important;
+  margin: 0 !important;
 }
 .note-bx{
   padding: 7px 10px;

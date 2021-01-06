@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs } from 'antd';
 import CarriersComponent from '../components/CarriersComponent';
+import ProductSettingsComponent from '../components/ProductSettingsComponent';
 import ConnectionSettingsComponent from '../components/Pages/WweLtl/ConnectionSettingsComponent';
 import WarehouseComponent from '../components/Pages/WarehouseComponent';
 import QuoteSettingsComponentWwe from '../components/Pages/WweLtl/QuoteSettingsComponentWwe';
@@ -33,7 +34,10 @@ function TabsLayout(){
                     <AlertMessage />
                     <QuoteSettingsComponentWwe />
                 </TabPane>
-                {/* <TabPane tab="Import CSV" key="5">
+                <TabPane tab="Product Settings" key="5">
+                   <ProductSettingsComponent />
+                </TabPane>
+                {/* <TabPane tab="Import CSV" key="6">
                     <AlertMessage />
                     <ImportCsvComponent />
                 </TabPane>

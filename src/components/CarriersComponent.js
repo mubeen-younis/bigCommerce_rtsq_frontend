@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { connect } from "react-redux";
 import { postData } from "../Actions/Action";
 import { getServices } from "../Actions/Carriers";
@@ -27,12 +27,12 @@ class CarriersComponent extends React.Component {
   };
   
   componentDidMount(){
-    this.getServices()  
+    this.getServices()
   }
 
   getServices = () => {
     if (this.props.services === undefined) {
-      this.props.getServices() 
+      this.props.getServices()
     }
     if (this.props.services !== null && this.props.services !== undefined) {
       this.setState({loading: false})
@@ -56,21 +56,21 @@ class CarriersComponent extends React.Component {
     
     if (this.state.loading && this.props.services === undefined) {
       return (
-          <>
+          <Fragment>
               <Skeleton active />
-          </>
+          </Fragment>
       )
     }
 
     return (
-        <>
+        <Fragment>
           <Table className="custom-table" rowSelection={rowSelection} columns={columns} dataSource={this.props.services} total={50} />
           <Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
-                    <Space>
-                        <Button type="primary" size={"large"} htmlType="submit" name={`test`} onClick={this.saveCarriers}>Save Settings</Button>
-                    </Space>
-                </Form.Item>
-        </>
+              <Space>
+                <Button type="primary" size={"large"} htmlType="submit" name={`test`} onClick={this.saveCarriers}>Save Settings</Button>
+              </Space>
+          </Form.Item>
+        </Fragment>
     );
   }
 }
