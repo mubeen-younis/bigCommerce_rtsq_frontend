@@ -1,8 +1,12 @@
 import React, {Fragment} from 'react';
 import { connect } from "react-redux";
-import { Table, Button, Space, Form, Input} from 'antd';
+import { Table, Button, Space, Form, Input, Select} from 'antd';
 
+const { Option } = Select;
 
+function handleChange(value) {
+  console.log(`selected ${value}`);
+}
 
 class ProductSettingsComponent extends React.Component {
   state = {
@@ -136,6 +140,11 @@ class ProductSettingsComponent extends React.Component {
             <Button onClick={this.setSkuSort}>Sort Product SKU</Button>
             <Button onClick={this.clearFilters}>Clear filters</Button>
             <Button onClick={this.clearAll}>Clear filters and sorters</Button>
+            <Select defaultValue="Category" style={{ width: 120 }} onChange={handleChange}>
+              <Option value="category_1">category 1</Option>
+              <Option value="category_2">category 2</Option>
+              <Option value="category_3">category 3</Option>
+            </Select>
             <Form
               name="customized_form_controls"
               layout="inline"
