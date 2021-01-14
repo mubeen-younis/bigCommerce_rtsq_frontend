@@ -161,7 +161,7 @@ class ProductSettingsComponent extends React.Component {
     
     return (
         <Fragment>
-          <Space className={"mb-2"}>
+          <Space className={"mb-2"} className="product-filters">
             <Button onClick={this.setSkuSort}>Sort Product SKU</Button>
             <Button onClick={this.clearFilters}>Clear filters</Button>
             <Button onClick={this.clearAll}>Clear filters and sorters</Button>

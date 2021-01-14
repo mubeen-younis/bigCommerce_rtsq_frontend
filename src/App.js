@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout } from 'antd';
 import './App.css';
+import './responsive.css';
 import SideMenu from './partials/SideMenu';
 import { 
   BrowserRouter as Router,
