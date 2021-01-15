@@ -1,5 +1,6 @@
 import React, {Fragment, useState} from 'react';
 import { connect } from "react-redux";
+
 import { 
   Table,
   Button,
@@ -14,6 +15,9 @@ import {
 } from 'antd';
 
 const { Option } = Select;
+function handleChange(value) {
+  console.log(`selected ${value}`);
+}
 
 function ProductSettingsComponent(props){
   const [state, setState] = useState({
@@ -172,6 +176,11 @@ function ProductSettingsComponent(props){
             <Button onClick={setSkuSort}>Sort Product SKU</Button>
             <Button onClick={clearFilters}>Clear filters</Button>
             <Button onClick={clearAll}>Clear filters and sorters</Button>
+            <Select defaultValue="Category" style={{ width: 120 }} onChange={handleChange}>
+              <Option value="category_1">category 1</Option>
+              <Option value="category_2">category 2</Option>
+              <Option value="category_3">category 3</Option>
+            </Select>
             <Form
               name="customized_form_controls"
               layout="inline"
