@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import { connect } from "react-redux";
 import { 
   Table,
@@ -10,53 +10,65 @@ import {
   Col,
   Row,
   Select,
-  DatePicker
+  Checkbox
 } from 'antd';
 
 const { Option } = Select;
 
-class ProductSettingsComponent extends React.Component {
-  state = {
+function ProductSettingsComponent(props){
+  const [state, setState] = useState({
     filteredInfo: null,
     sortedInfo: null,
-    selectedRowKeys: []
-  };
+    selectedRowKeys: [],
+    showDropship: false,
+    visible: false
+  })
 
-  state = { visible: false };
-
-  showDrawer = () => {
-    this.setState({
+  const showDrawer = () => {
+    setState({
+      ...state,
       visible: true,
     });
   };
 
-  onClose = () => {
-    this.setState({
+  const onClose = () => {
+    setState({
+      ...state,
       visible: false,
     });
   };
 
-  handleChange = (pagination, filters, sorter) => {
+  const saveSettings = () => {
+    alert('DAta submit')
+  }
+
+  const onChange = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+  }
+
+  const handleChange = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination, filters, sorter);
-    this.setState({
+    setState({
       filteredInfo: filters,
       sortedInfo: sorter,
     });
   };
 
-  clearFilters = () => {
-    this.setState({ filteredInfo: null });
+  const clearFilters = () => {
+    setState({ ...state, filteredInfo: null });
   };
 
-  clearAll = () => {
-    this.setState({
+  const clearAll = () => {
+    setState({
+      ...state,
       filteredInfo: null,
       sortedInfo: null,
     });
   };
 
-  setSkuSort = () => {
-    this.setState({
+  const setSkuSort = () => {
+    setState({
+      ...state,
       sortedInfo: {
         order: 'descend',
         columnKey: 'product_sku',
@@ -64,15 +76,14 @@ class ProductSettingsComponent extends React.Component {
     });
   };
 
-  onSelectChange = selectedRowKeys => {
-    this.setState({ selectedRowKeys });
+  const onSelectChange = selectedRowKeys => {
+    setState({ ...state, selectedRowKeys });
   };
   
-  render() {
-    const { selectedRowKeys } = this.state;
+    const { selectedRowKeys } = state;
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectChange,
+      onChange: onSelectChange,
     };
     const data = [
       {
@@ -106,7 +117,7 @@ class ProductSettingsComponent extends React.Component {
     ];
 
 
-    let { sortedInfo, filteredInfo } = this.state;
+    let { sortedInfo, filteredInfo } = state;
     sortedInfo = sortedInfo || {};
     filteredInfo = filteredInfo || {};
     const columns = [
@@ -145,7 +156,7 @@ class ProductSettingsComponent extends React.Component {
         key: 'action',
         render: (text, record) => (
         <Space size="middle">
-            <Button onClick={this.showDrawer}>Edit</Button>
+            <Button onClick={showDrawer}>Edit</Button>
         </Space>
         )
       },
@@ -158,9 +169,9 @@ class ProductSettingsComponent extends React.Component {
     return (
         <Fragment>
           <Space className={"mb-2"}>
-            <Button onClick={this.setSkuSort}>Sort Product SKU</Button>
-            <Button onClick={this.clearFilters}>Clear filters</Button>
-            <Button onClick={this.clearAll}>Clear filters and sorters</Button>
+            <Button onClick={setSkuSort}>Sort Product SKU</Button>
+            <Button onClick={clearFilters}>Clear filters</Button>
+            <Button onClick={clearAll}>Clear filters and sorters</Button>
             <Form
               name="customized_form_controls"
               layout="inline"
@@ -180,14 +191,14 @@ class ProductSettingsComponent extends React.Component {
               </Form.Item>
             </Form>
           </Space>
-          <Table className="custom-table" rowSelection={rowSelection} columns={columns} dataSource={data} onChange={this.handleChange} />
+          <Table className="custom-table" rowSelection={rowSelection} columns={columns} dataSource={data} onChange={handleChange} />
 
           {/* ================ */}
           <Drawer
-          title="Create a new account"
+          title="Product Settings"
           width={720}
-          onClose={this.onClose}
-          visible={this.state.visible}
+          onClose={onClose}
+          visible={state.visible}
           bodyStyle={{ paddingBottom: 80 }}
           footer={
             <div
@@ -195,10 +206,10 @@ class ProductSettingsComponent extends React.Component {
                 textAlign: 'right',
               }}
             >
-              <Button onClick={this.onClose} style={{ marginRight: 8 }}>
+              <Button onClick={onClose} style={{ marginRight: 8 }}>
                 Cancel
               </Button>
-              <Button onClick={this.onClose} type="primary">
+              <Button onClick={saveSettings} type="primary">
                 Save
               </Button>
             </div>
@@ -207,104 +218,104 @@ class ProductSettingsComponent extends React.Component {
           <Form layout="vertical" hideRequiredMark>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item
-                  name="name"
-                  label="Name"
-                  rules={[{ required: true, message: 'Please enter user name' }]}
-                >
-                  <Input placeholder="Please enter user name" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="url"
-                  label="Url"
-                  rules={[{ required: true, message: 'Please enter url' }]}
-                >
-                  <Input
-                    style={{ width: '100%' }}
-                    addonBefore="http://"
-                    addonAfter=".com"
-                    placeholder="Please enter url"
-                  />
-                </Form.Item>
+                <Checkbox onChange={onChange}>Quote as an LTL shipment</Checkbox>
               </Col>
             </Row>
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  name="owner"
-                  label="Owner"
-                  rules={[{ required: true, message: 'Please select an owner' }]}
+                  name="freight_class"
+                  label="Freight Class"
+                  rules={[{ required: false, message: 'Please select an owner' }]}
                 >
-                  <Select placeholder="Please select an owner">
-                    <Option value="xiao">Xiaoxiao Fu</Option>
-                    <Option value="mao">Maomao Zhou</Option>
+                  <Select placeholder="Freight Class">
+                    <Option value="">No Freight Class</Option>
+                    <Option value="50">50</Option>
+                    <Option value="55">55</Option>
+                    <Option value="60">60</Option>
+                    <Option value="65">65</Option>
+                    <Option value="70">70</Option>
+                    <Option value="85">85</Option>
+                    <Option value="92.5">92.5</Option>
+                    <Option value="density_based">Density Based</Option>
                   </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item
-                  name="type"
-                  label="Type"
-                  rules={[{ required: true, message: 'Please choose the type' }]}
+              <Form.Item
+                  name="weight"
+                  label="Weight (lbs)"
                 >
-                  <Select placeholder="Please choose the type">
-                    <Option value="private">Private</Option>
-                    <Option value="public">Public</Option>
-                  </Select>
+                  <Input placeholder="Weight (lbs)" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={8}>
+                <Form.Item
+                  name="length"
+                  label="Length (inches)"
+                >
+                  <Input placeholder="Length (inches)" />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  name="width"
+                  label="Width (inches)"
+                >
+                  <Input placeholder="Width (inches)" />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  name="height"
+                  label="Height (inches)"
+                >
+                  <Input placeholder="Height (inches)" />
                 </Form.Item>
               </Col>
             </Row>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item
-                  name="approver"
-                  label="Approver"
-                  rules={[{ required: true, message: 'Please choose the approver' }]}
-                >
-                  <Select placeholder="Please choose the approver">
-                    <Option value="jack">Jack Ma</Option>
-                    <Option value="tom">Tom Liu</Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="dateTime"
-                  label="DateTime"
-                  rules={[{ required: true, message: 'Please choose the dateTime' }]}
-                >
-                  <DatePicker.RangePicker
-                    style={{ width: '100%' }}
-                    getPopupContainer={trigger => trigger.parentElement}
-                  />
-                </Form.Item>
+                <Checkbox onChange={onChange}>Hazardous Material</Checkbox>
               </Col>
             </Row>
             <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item
-                  name="description"
-                  label="Description"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please enter url description',
-                    },
-                  ]}
+              <Col span={12}>
+                <Checkbox onChange={() => setState({showDropship: !state.showDropship})}>Dropship this product</Checkbox>
+              </Col>
+            </Row>
+            {
+              state.showDropship ?
+              <Row gutter={16}>
+              <Col span={12}>
+              <Form.Item
+                  name="dropship_location"
+                  label="Dropship Location"
                 >
-                  <Input.TextArea rows={4} placeholder="please enter url description" />
+                  <Select placeholder="Dropship Location">
+                    <Option value="1">ds name 1</Option>
+                    <Option value="2">ds name 2</Option>
+                  </Select>
                 </Form.Item>
               </Col>
             </Row>
+            : null
+            }
+            <Row gutter={16}>
+              <Col span={12}>
+                <Checkbox onChange={onChange}>Insurance</Checkbox>
+              </Col>
+            </Row>
+            
           </Form>
         </Drawer>
           {/* ================ */}
 
         </Fragment>
     );
-  }
+  
 }
 
 const mapStateToProps = (state) => {

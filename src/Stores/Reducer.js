@@ -6,7 +6,8 @@ const initialState = {
     skeleton_loading: true,
     showAlertMessage: false,
     alertMessageType: null,
-    alertMessage: null
+    alertMessage: null,
+    googleLocationResponse: null
 }
 
 const Reducer = (state = initialState, action) => {
@@ -71,6 +72,12 @@ const Reducer = (state = initialState, action) => {
             return {
                 ...state,
                 installedCarriers: action.payload
+            }
+
+        case 'GET_GOOGLE_LOCATION_RESPONSE':
+            return {
+                ...state,
+                googleLocationResponse: action.payload
             }
 
         default:
