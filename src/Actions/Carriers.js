@@ -22,7 +22,7 @@ export const getServices = () => {
                 data.data.map((value, index) => {
                     carrierServices.push({
                       key: value.speed_freight_carrierSCAC,
-                      sr_no: index,
+                      sr_no: index+1,
                       carrier_name: value.speed_freight_carrierName,
                       carrier_logo: <img style={{ height: '40px' }} src={`../../Carrier_Logos/${value.carrier_logo}`} alt={value.speed_freight_carrierName} />,
                     });
