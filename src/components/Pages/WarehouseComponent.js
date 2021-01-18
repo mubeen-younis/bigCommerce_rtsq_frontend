@@ -26,13 +26,15 @@ function handleChange(value) {
 
 function WarehouseComponent(props){
     const [visible1, setVisibleWarehouse] = useState(false);
+    const [locationType, setLocationType] = useState();
     const [visible2, setVisibledropship] = useState(false);
 
     const [locationDetail, setLocationDetail] = useState({})
 
     const onFinish = values => {
         console.log('Received values of form: ', values);
-        props.postData(values, 'GET_LOCATIONS', 'submit_location')
+        values.location_type = locationType;
+        props.postData(values, 'GET_LOCATIONS', 'save_location')
     };
 
     const getGoogleLocation = (zipcode) => {
@@ -40,6 +42,11 @@ function WarehouseComponent(props){
             props.getGoogleResponse({zipcode})
             console.log('zipcode ', zipcode)   
         }
+    }
+
+    const openLocationModal = (location_type) => {
+        setLocationType(location_type);
+        setVisibleWarehouse(true);
     }
 
     const deleteLocation = (id) => {}
@@ -326,7 +333,7 @@ function WarehouseComponent(props){
                         </Form>
                     </Modal>
                     <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-                        <Title level={4}>Warehouses <Button type="primary" onClick={() => setVisibleWarehouse(true)}>Add</Button></Title>
+                        <Title level={4}>Warehouses <Button type="primary" onClick={() => openLocationModal(1)}>Add</Button></Title>
                         <p>Warehouses that inventory all products not otherwise indentified as drop shipped items. The warehouse with lowest shipping cost to the destination is used for quoting purpose.</p>
                         <Table className={"custom-table"} dataSource={data} columns={columns} />
                     </Col>
@@ -335,7 +342,7 @@ function WarehouseComponent(props){
             <Space direction="vertical" size={"large"} className={"w-100"}>
                 <Row gutter={30}>
                     <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-                        <Title level={4}>Drop Ships <Button type="primary" onClick={() => setVisibledropship(true)}>Add</Button></Title>
+                        <Title level={4}>Drop Ships <Button type="primary" onClick={() => openLocationModal(2)}>Add</Button></Title>
                         <p>Location that inventory specific items that are drop shipped to the destination. Use the product's settings page to identify it as a drop shipped and it associated drop ship location. Orders that includes drop shipped items will display a single figure for the shipping rate estimate that is equal to the sum of the cheapest option of each shipment required to fullfil the order.</p>
                         <Table className={"custom-table"} dataSource={data} columns={columns} />
                     </Col>

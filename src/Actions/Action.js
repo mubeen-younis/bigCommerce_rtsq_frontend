@@ -1,8 +1,14 @@
 import axios  from "axios";
-
+const config = {
+    headers: { 
+        'Access-Control-Allow-Origin': '*',
+        'Content-type': 'application/json',
+        'Authorization' : 1234
+     } //Authorization: `Bearer ${token}`
+};
 export const postData = (data, type, url) => {
     return dispatch => {
-        axios.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data)
+        axios.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data, config)
         .then(({data}) => {
             if (!data.error) {
                 if (data.value != undefined) {
@@ -80,21 +86,12 @@ export const getConnectionSettings = () => {
 }
 
 export const getLocations = () => {
-    const token = '';
-    const config = {
-        headers: { 
-            'Access-Control-Allow-Origin': '*',
-            'Content-type': 'application/json',
-         } //Authorization: `Bearer ${token}`
-    };
     const data = {
         shop: 'dev-azm-1.mybigcommerce.com'
     }
 
     return dispatch => {
-        axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_locations`, {
-            data
-        })
+        axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_locations`, config, data )
         .then(({data}) => {
             if (data.locations.length > 0) {
                 dispatch({

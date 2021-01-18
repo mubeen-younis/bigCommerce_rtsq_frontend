@@ -10,7 +10,7 @@ export const submitConnectionSettings = (data) => {
     };
     return dispatch => {
         //${process.env.ENITURE_API_URL}
-        axios.post(`http://127.0.0.1:8000/api/submit_connection_settings`,config, {
+        axios.post(`${process.env.ENITURE_API_URL}/submit_connection_settings`,config, {
             data
         })
         .then(({data}) => {
