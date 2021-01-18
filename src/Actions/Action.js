@@ -1,9 +1,7 @@
 import axios  from "axios";
 const config = {
-    headers: { 
-        'Access-Control-Allow-Origin': '*',
-        'Content-type': 'application/json',
-        'Authorization' : 1234
+    headers: {
+        Authorization : `Bearer asdaskhdaskdh`
      } //Authorization: `Bearer ${token}`
 };
 export const postData = (data, type, url) => {
