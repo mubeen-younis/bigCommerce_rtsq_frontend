@@ -29,7 +29,10 @@ function WarehouseComponent(props){
     const [locationType, setLocationType] = useState();
     const [visible2, setVisibledropship] = useState(false);
 
-    const [locationDetail, setLocationDetail] = useState({})
+    const [locationDetail, setLocationDetail] = useState({
+        enable_instore: false,
+        enable_ld: false,
+    })
 
     const onFinish = values => {
         console.log('Received values of form: ', values);
@@ -37,21 +40,53 @@ function WarehouseComponent(props){
         props.postData(values, 'GET_LOCATIONS', 'save_location')
     };
 
-    const getGoogleLocation = (zipcode) => {
-        if (zipcode.length > 3) {
-            props.getGoogleResponse({zipcode})
-            console.log('zipcode ', zipcode)   
+    const getGoogleLocation = (zip_code) => {
+        if (zip_code.length > 4) {
+            props.getGoogleResponse(zip_code)
+            if (props.alertMessageType !== 'loading' && !props.showAlertMessage) {
+                setLocationDetail({
+                    ...locationDetail,
+                    city: props.googleLocationResponse.city[0],
+                    state: props.googleLocationResponse.state,
+                    country: props.googleLocationResponse.country,
+                })   
+            }
         }
     }
 
     const openLocationModal = (location_type) => {
+        setLocationDetail({})
         setLocationType(location_type);
         setVisibleWarehouse(true);
     }
 
-    const deleteLocation = (id) => {}
+    const deleteLocation = (data) => {
+        console.log(data)
+        if (data.type === 2) {
+            props.confirmModalAction(true, 'Delete Dropship', 'Are you sure you want to delete this dropship?')
+        }
+    }
 
-    const editLocation = (id) => {
+    const editLocation = (data) => {
+        let additional = JSON.parse(data.additionals)
+        setLocationDetail({
+            id: data.id,
+            city: data.city,
+            state: data.state,
+            country: data.country,
+            nickname: data.nickname,
+            zip_code: data.zip_code,
+            enable_instore: additional.enable_instore ?? false,
+            instore_miles: additional.instore_miles ?? null,
+            instore_zipcodes: additional.instore_zipcodes ?? null,
+            instock_description: additional.instock_description ?? null,
+            enable_ld: additional.enable_ld ?? false,
+            ld_miles: additional.ld_miles ?? null,
+            ld_zipcodes: additional.ld_zipcodes ?? null,
+            ld_description: additional.ld_description ?? null,
+            ld_fee: additional.ld_fee ?? null,
+            ld_enable_supress: additional.ld_enable_supress ?? false,
+        })
         setVisibleWarehouse(true)
     }
 
@@ -61,7 +96,7 @@ function WarehouseComponent(props){
       
     const columns = [
         {
-            key: 'key',
+            key: 'state',
             title: 'City',
             dataIndex: 'city',
         },
@@ -85,8 +120,8 @@ function WarehouseComponent(props){
             title: 'Action',
             render: (text, record) => (
             <Space size="middle">
-                <Button onClick={() => editLocation(1)}>Edit</Button>
-                <Button onClick={() => deleteLocation(1)} className={"btn-danger"}>Delete</Button>
+                <Button onClick={() => editLocation(text)}>Edit</Button>
+                <Button onClick={() => deleteLocation(text)} className={"btn-danger"}>Delete</Button>
             </Space>
             ),
         }
@@ -136,7 +171,7 @@ function WarehouseComponent(props){
                                     <Form.Item
                                         className={"mb-2"}
                                         label="Zip Code"
-                                        name="zipcode"
+                                        name="zip_code"
                                         rules={[{ required: true, message: 'Zip Code' }]}
                                     >
                                         <Input 
@@ -187,8 +222,8 @@ function WarehouseComponent(props){
                                     <label className={"text-gray"}>Enable in-store pick up</label>
                                 </Col>
                                 <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
-                                    <Form.Item name="enable_in_store_pick_up" className={"mb-0"}>
-                                        <Checkbox name="enable_in_store_pick_up"></Checkbox>
+                                    <Form.Item name="enable_instore" className={"mb-0"}>
+                                        <Checkbox name="enable_instore" checked={locationDetail.enable_instore}></Checkbox>
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -199,7 +234,7 @@ function WarehouseComponent(props){
                                 <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
                                     <Form.Item
                                         className={"mb-0"}
-                                        name="in_stock_postal_email"
+                                        name="instore_miles"
                                         rules={[{ required: false, message: 'Email Required' }]}
                                     >
                                         <Input />
@@ -213,10 +248,10 @@ function WarehouseComponent(props){
                                 <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
                                     <Form.Item
                                         className={"mb-0"}
-                                        name="in_stock_postal_code"
+                                        name="instore_zipcodes"
                                         rules={[{ required: false, message: 'Costal Code Required' }]}
                                     >
-                                        <Input />
+                                        <Select mode="tags" style={{ width: '100%' }} onChange={handleChange} tokenSeparators={[',']} />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -227,7 +262,7 @@ function WarehouseComponent(props){
                                 <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
                                     <Form.Item
                                         className={"mb-0"}
-                                        name="in_stock_checkout_description"
+                                        name="instock_description"
                                         rules={[{ required: false, message: 'Checkout Description Required' }]}
                                     >
                                         <Input placeholder="In-stock pick up" />
@@ -244,8 +279,8 @@ function WarehouseComponent(props){
                                     <label className={"text-gray"}>Enable local delivery</label>
                                 </Col>
                                 <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
-                                    <Form.Item name="enable_enable_local_delivery" className={"mb-0"}>
-                                        <Checkbox name="enable_local_delivery" ></Checkbox>
+                                    <Form.Item name="enable_ld" className={"mb-0"}>
+                                        <Checkbox name="enable_ld" checked={locationDetail.enable_ld}></Checkbox>
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -256,8 +291,7 @@ function WarehouseComponent(props){
                                 <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
                                     <Form.Item
                                         className={"mb-0"}
-                                        name="local_delivery_postal_email"
-                                        rules={[{ required: false, message: 'Email Required' }]}
+                                        name="ld_miles"
                                     >
                                         <Input />
                                     </Form.Item>
@@ -270,10 +304,10 @@ function WarehouseComponent(props){
                                 <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
                                     <Form.Item
                                         className={"mb-0"}
-                                        name="local_delivery_postal_code"
+                                        name="ld_zipcodes"
                                         rules={[{ required: false, message: 'Costal Code Required' }]}
                                     >
-                                        <Input />
+                                        <Select mode="tags" style={{ width: '100%' }} onChange={handleChange} tokenSeparators={[',']} />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -284,10 +318,10 @@ function WarehouseComponent(props){
                                 <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
                                     <Form.Item
                                         className={"mb-0"}
-                                        name="local_delivery_checkout_description"
+                                        name="ld_description"
                                         rules={[{ required: false, message: 'Checkout Description Required' }]}
                                     >
-                                        <Input placeholder="In-stock pick up" />
+                                        <Input placeholder="Local delivery" />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -298,10 +332,10 @@ function WarehouseComponent(props){
                                 <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
                                     <Form.Item
                                         className={"mb-0"}
-                                        name="local_delivery_free"
+                                        name="ld_fee"
                                         rules={[{ required: false, message: 'Local delivery fee Required' }]}
                                     >
-                                        <Input placeholder="In-stock pick up" />
+                                        <Input />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -315,8 +349,8 @@ function WarehouseComponent(props){
                                     </label>
                                 </Col>
                                 <Col className="gutter-row" xs={24} sm={16} md={16} lg={16} xl={16}>
-                                    <Form.Item name="enable_enable_local_delivery" className={"mb-0"}>
-                                        <Checkbox name="enable_local_delivery" ></Checkbox>
+                                    <Form.Item name="ld_enable_supress" className={"mb-0"}>
+                                        <Checkbox name="ld_enable_supress" ></Checkbox>
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -335,7 +369,7 @@ function WarehouseComponent(props){
                     <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
                         <Title level={4}>Warehouses <Button type="primary" onClick={() => openLocationModal(1)}>Add</Button></Title>
                         <p>Warehouses that inventory all products not otherwise indentified as drop shipped items. The warehouse with lowest shipping cost to the destination is used for quoting purpose.</p>
-                        <Table className={"custom-table"} dataSource={data} columns={columns} />
+                        <Table className={"custom-table"} dataSource={props.warehouse} columns={columns} />
                     </Col>
                 </Row>
             </Space>
@@ -344,7 +378,7 @@ function WarehouseComponent(props){
                     <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
                         <Title level={4}>Drop Ships <Button type="primary" onClick={() => openLocationModal(2)}>Add</Button></Title>
                         <p>Location that inventory specific items that are drop shipped to the destination. Use the product's settings page to identify it as a drop shipped and it associated drop ship location. Orders that includes drop shipped items will display a single figure for the shipping rate estimate that is equal to the sum of the cheapest option of each shipment required to fullfil the order.</p>
-                        <Table className={"custom-table"} dataSource={data} columns={columns} />
+                        <Table className={"custom-table"} dataSource={props.dropships} columns={columns} />
                     </Col>
                 </Row>
             </Space>
@@ -354,15 +388,25 @@ function WarehouseComponent(props){
 
 const mapStateToProps = (state) => {
     return {
-        locations: state.locations,
-        googleLocationResponse: state.googleLocationResponse
+        warehouse: state.warehouse,
+        dropships: state.dropships,
+        googleLocationResponse: state.googleLocationResponse,
+        showAlertMessage: state.showAlertMessage,
+        alertMessageType: state.alertMessageType,
+        confirmModal: state.confirmModal
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         postData: (data, type, url) => dispatch(postData(data, type, url)),
-        getGoogleResponse: (data) => dispatch(getGoogleResponse(data))
+        getGoogleResponse: (data) => dispatch(getGoogleResponse(data)),
+
+        confirmModalAction: (on, title, body) => dispatch({type: 'CONFIRM_MODAL', payload: {
+            on: on,
+            title: title,
+            body: body
+        }})
     }
 }
   

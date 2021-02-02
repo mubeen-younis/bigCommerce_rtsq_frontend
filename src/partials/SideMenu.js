@@ -19,7 +19,7 @@ function SideMenu(){
         className={"sidemenu"}
       >
         <h4 className={"app-logo"}>Eniture Shipping</h4>
-        <Menu mode="inline" defaultSelectedKeys={['2']} defaultOpenKeys={['sub1']}>
+        <Menu mode="inline" defaultSelectedKeys={['1']}>
         <Menu.Item key="1"><Link to={`/`}>Eniture App Store</Link></Menu.Item>
           <Title className={"carriers-name"} level={6}>Installed Carriers</Title>
           {/* <SubMenu key="sub1" title="Carrier 1">
@@ -28,8 +28,10 @@ function SideMenu(){
             <Menu.Item key="4">UPS LTL Freight Quotes</Menu.Item>
           </SubMenu>
            */}
-          <Menu.Item key="2"><Link to={`/2`}>WWE LTL Freight Quotes</Link></Menu.Item>
-          <Menu.Item key="3"><Link to={`/3`}>FedEx LTL Freight Quotes</Link></Menu.Item>
+          <Menu.Item key="2"><Link to={`/1`}>WWE LTL Freight Quotes</Link></Menu.Item>
+
+          <Title className={"carriers-name"} level={6}>Installed Addons</Title>
+          <Menu.Item key="3"><Link to={`/3` }>Auto Detect Residential</Link></Menu.Item>
         </Menu>
       </Sider>
     );

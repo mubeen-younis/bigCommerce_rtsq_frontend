@@ -9,7 +9,6 @@ import {
     Form,
     Input,
     Checkbox,
-    Radio,
     Skeleton
 } from 'antd';
 
@@ -20,17 +19,24 @@ const { Option } = Select;
 const { Title } = Typography;
 
 function QuoteSettingsComponentWwe(props){
-    const [visible1, setVisibleWarehouse] = useState(false);
-    const [value, setValue] = useState(1);
     const [loading, setLoading] = useState(true);
-    const onChange = e => {
-        setValue(e.target.value);
-    };
 
     useEffect(() => {
         getQuoteSettings()
     })
     const [ratingMethod, setRatingMethod] = useState(1)
+
+    const [quoteSettingsState, setQuoteSettingsState] = useState({
+        showDeliveryEstimate: false,
+        residentialPickup: false,
+        alwaysResidentialDelivery: false,
+        autoDetectedResidentialAddresses: false,
+        alwaysLiftGatePickup: false,
+        alwaysLiftGateDelivery: false,
+        offerLiftGateDelivery: false,
+        autoDetectedResidentialAddressesLfg: false,
+        returnRates: false
+    })
 
     const getQuoteSettings = () => {
         console.log('props.quoteSettings ', props.quoteSettings)
@@ -42,11 +48,13 @@ function QuoteSettingsComponentWwe(props){
             setLoading(false)
             let ratingMethodInit = props.quoteSettings.method !== undefined ? props.quoteSettings.method : 1;
             setRatingMethod(ratingMethodInit)
+            //setQuoteSettingsState({...quoteSettingsState, showDeliveryEstimate: props.quoteSettings.show_delivery_estimate !== undefined ? true : false})
         }
     }
     
     const onFinish = data => {
         //data.method = ratingMethod
+        data = {...data, ...quoteSettingsState}
         props.postData(data)
     };
     
@@ -57,6 +65,18 @@ function QuoteSettingsComponentWwe(props){
             </>
         )
     }
+
+    // setQuoteSettingsState({
+    //     showDeliveryEstimate: props.quoteSettings.showDeliveryEstimate,
+    //     residentialPickup: props.quoteSettings.residentialPickup,
+    //     alwaysResidentialDelivery: props.quoteSettings.alwaysResidentialDelivery,
+    //     autoDetectedResidentialAddresses: props.quoteSettings.autoDetectedResidentialAddresses,
+    //     alwaysLiftGatePickup: props.quoteSettings.alwaysLiftGatePickup,
+    //     alwaysLiftGateDelivery: props.quoteSettings.alwaysLiftGateDelivery,
+    //     offerLiftGateDelivery: props.quoteSettings.offerLiftGateDelivery,
+    //     autoDetectedResidentialAddressesLfg: props.quoteSettings.autoDetectedResidentialAddressesLfg,
+    //     returnRates: props.quoteSettings.returnRates
+    // })
 
     return(
         <Fragment>
@@ -140,7 +160,12 @@ function QuoteSettingsComponentWwe(props){
                     </Col>
                     <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={18}>
                         <Form.Item className={"mb-0"}>
-                            <Checkbox name="show_delivery_estimate" value={0}>Show Delivery Estimate With Shipping Services.</Checkbox>
+                            <Checkbox 
+                                name="show_delivery_estimate"
+                                value={true}
+                                checked={quoteSettingsState.showDeliveryEstimate}
+                                onClick={() => setQuoteSettingsState({...quoteSettingsState, showDeliveryEstimate: !quoteSettingsState.showDeliveryEstimate})}
+                            >Show Delivery Estimate With Shipping Services.</Checkbox>
                         </Form.Item>
                     </Col>
                 </Row>
@@ -153,7 +178,12 @@ function QuoteSettingsComponentWwe(props){
                     </Col>
                     <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={18}>
                         <Form.Item className={"mb-0"}>
-                            <Checkbox name="residential_pickup"></Checkbox>
+                            <Checkbox 
+                                name="residential_pickup"
+                                value={true}
+                                checked={quoteSettingsState.residentialPickup}
+                                onClick={() => setQuoteSettingsState({...quoteSettingsState, residentialPickup: !quoteSettingsState.residentialPickup})}    
+                            ></Checkbox>
                         </Form.Item>
                     </Col>
                     <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={6}>
@@ -161,7 +191,12 @@ function QuoteSettingsComponentWwe(props){
                     </Col>
                     <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={18}>
                         <Form.Item className={"mb-0"}>
-                            <Checkbox name="residential_delivery"></Checkbox>
+                            <Checkbox 
+                                name="always_residential_delivery"
+                                value={true}
+                                checked={quoteSettingsState.alwaysResidentialDelivery}
+                                onClick={() => setQuoteSettingsState({...quoteSettingsState, alwaysResidentialDelivery: !quoteSettingsState.alwaysResidentialDelivery})}
+                            ></Checkbox>
                         </Form.Item>
                     </Col>
                     <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={6}>
@@ -169,7 +204,12 @@ function QuoteSettingsComponentWwe(props){
                     </Col>
                     <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={18}>
                         <Form.Item className={"mb-0"}>
-                            <Checkbox name="auto_detected_residential_addresses"><a href="" className="stnd-plan text-danger">Standard plan required</a></Checkbox>
+                            <Checkbox 
+                                name="auto_detected_residential_addresses"
+                                value={true}
+                                checked={quoteSettingsState.autoDetectedResidentialAddresses}
+                                onClick={() => setQuoteSettingsState({...quoteSettingsState, autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses})}
+                            ><a href="" className="stnd-plan text-danger">Standard plan required</a></Checkbox>
                         </Form.Item>
                     </Col>
                 </Row>
@@ -182,7 +222,12 @@ function QuoteSettingsComponentWwe(props){
                     </Col>
                     <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={18}>
                         <Form.Item className={"mb-0"}>
-                            <Checkbox name="lift_gate_pick_up"></Checkbox>
+                            <Checkbox  
+                                name="always_lift_gate_pickup"
+                                value={true}
+                                checked={quoteSettingsState.alwaysLiftGatePickup}
+                                onClick={() => setQuoteSettingsState({...quoteSettingsState, alwaysLiftGatePickup: !quoteSettingsState.alwaysLiftGatePickup})}
+                            ></Checkbox>
                         </Form.Item>
                     </Col>
                     <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={6}>
@@ -190,7 +235,12 @@ function QuoteSettingsComponentWwe(props){
                     </Col>
                     <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={18}>
                         <Form.Item className={"mb-0"}>
-                            <Checkbox name="residential_delivery"></Checkbox>
+                            <Checkbox 
+                                name="always_lift_gate_delivery"
+                                value={true}
+                                checked={quoteSettingsState.alwaysLiftGateDelivery}
+                                onClick={() => setQuoteSettingsState({...quoteSettingsState, alwaysLiftGateDelivery: !quoteSettingsState.alwaysLiftGateDelivery})}
+                            ></Checkbox>
                         </Form.Item>
                     </Col>
                     <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={6}>
@@ -198,7 +248,12 @@ function QuoteSettingsComponentWwe(props){
                     </Col>
                     <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={18}>
                         <Form.Item className={"mb-0"}>
-                            <Checkbox name="auto_detected_residential_addresses"><a href="" className="stnd-plan text-danger">Standard plan required</a></Checkbox>
+                            <Checkbox 
+                                name="offer_lift_gate_delivery"
+                                value={true}
+                                checked={quoteSettingsState.offerLiftGateDelivery}
+                                onClick={() => setQuoteSettingsState({...quoteSettingsState, offerLiftGateDelivery: !quoteSettingsState.offerLiftGateDelivery})}
+                            ><a href="" className="stnd-plan text-danger">Standard plan required</a></Checkbox>
                         </Form.Item>
                     </Col>
                     <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={6}>
@@ -206,7 +261,12 @@ function QuoteSettingsComponentWwe(props){
                     </Col>
                     <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={18}>
                         <Form.Item className={"mb-0"}>
-                            <Checkbox name="auto_detected_residential_addresses"><a href="" className="stnd-plan text-danger">Standard plan required</a></Checkbox>
+                            <Checkbox 
+                                name="auto_detected_residential_addresses_lfg"
+                                value={true}
+                                checked={quoteSettingsState.autoDetectedResidentialAddressesLfg}
+                                onClick={() => setQuoteSettingsState({...quoteSettingsState, autoDetectedResidentialAddressesLfg: !quoteSettingsState.autoDetectedResidentialAddressesLfg})}    
+                            ><a href="" className="stnd-plan text-danger">Standard plan required</a></Checkbox>
                         </Form.Item>
                     </Col>
                 </Row>
@@ -219,9 +279,20 @@ function QuoteSettingsComponentWwe(props){
                             className={"mb-0"}
                             name="insurance_category"
                         >
-                            <Select defaultValue="Insurance Category" size={"large"} style={{ width: '100%' }}>
-                                <Option value="insurance_category">Category 1</Option>
-                                <Option value="insurance_category">Category 2</Option>
+                            <Select name="insurance_category" defaultValue={`84`} size={"large"} style={{ width: '100%' }}>
+                                <Option value="84">General Merchandise</Option>
+                                <Option value="85">Antiques / Art / Collectibles</Option>
+                                <Option value="86">Commercial Electronics (Audio; Computer: Hardware, Servers, Parts & Accessories)</Option>
+                                <Option value="87">Consumer Electronics (laptops, cellphones, PDAs, iPads, tablets, notebooks, etc.)</Option>
+                                <Option value="88">Fragile Goods (Glass, Ceramic, Porcelain, etc.)</Option>
+                                <Option value="89">Furniture (Pianos, Glassware, Tableware, Outdoor Furniture)</Option>
+                                <Option value="90">Machinery, Appliances and Equipment (Medical, Restaurant, Industrial, Scientific)</Option>
+                                <Option value="91">Miscellaneous / Other / Mixed</Option>
+                                <Option value="92">Non-Perishable Foods / Beverages / Commodities / Vitamins</Option>
+                                <Option value="93">Radioactive / Hazardous / Restricted or Controlled Items</Option>
+                                <Option value="94">Sewing Machines, Equipment and Accessories</Option>
+                                <Option value="95">Stone Products (Marble, Tile, Stonework, Granite, etc.)</Option>
+                                <Option value="96">Wine / Spirits / Alcohol / Beer</Option>
                             </Select>
                         </Form.Item>
                         <div className={"text-gray"}><a href="" className="stnd-plan text-danger">Standard plan required</a></div>
@@ -275,35 +346,13 @@ function QuoteSettingsComponentWwe(props){
                     </Col>
                     <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={18}>
                         <Form.Item className={"mb-0"}>
-                            <Checkbox name="return_rates"><a href="" className="stnd-plan text-danger">Standard plan required</a></Checkbox>
+                            <Checkbox 
+                                name="return_rates"
+                                value={true}
+                                checked={quoteSettingsState.returnRates}
+                                onClick={() => setQuoteSettingsState({...quoteSettingsState, returnRates: !quoteSettingsState.returnRates})}
+                            ><a href="" className="stnd-plan text-danger">Standard plan required</a></Checkbox>
                         </Form.Item>
-                    </Col>
-                </Row>
-                <Row gutter={30}>
-                    <Col className="gutter-row mt-1" xs={24} sm={24} md={24} lg={24} xl={6}>
-                        <Title level={4}>Quote Details</Title>
-                    </Col>
-                    <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={18}>
-                        <Row gutter={30}>
-                            <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-                                <Radio.Group onChange={onChange} value={value} className={"w-100"}>
-                                    <Row gutter={30}>
-                                        <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-                                            <Form.Item className={"mb-0"}>
-                                                <Radio value={11}>Write the quote details to the Additional Detail widget</Radio>
-                                            </Form.Item>
-                                        </Col>
-                                    </Row>
-                                    <Row gutter={30}>
-                                        <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-                                            <Form.Item className={"mb-0"}>
-                                                <Radio value={13}>Write the quote details to the More Action {">"} Shipping quote details page</Radio>
-                                            </Form.Item>
-                                        </Col>
-                                    </Row>
-                                </Radio.Group>
-                            </Col>
-                        </Row>
                     </Col>
                 </Row>
                 <Row gutter={30} className={"mt-3"}>

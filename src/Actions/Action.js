@@ -1,11 +1,18 @@
 import axios  from "axios";
 const config = {
     headers: {
-        Authorization : `Bearer asdaskhdaskdh`
+        authorization : `Bearer eyJpdiI6Inl2aERGVi9td2dvTzlaRTl0aGFxelE9PSIsInZhbHVlIjoiMjJIZXF0ekdQUzB5d1M4ZXAyZTBYZz09IiwibWFjIjoi`
      } //Authorization: `Bearer ${token}`
 };
 export const postData = (data, type, url) => {
     return dispatch => {
+        dispatch({
+            type: 'ALERT_MESSAGE',
+            payload: {
+                showAlertMessage: true,
+                alertMessageType: 'loading'
+            }
+        })
         axios.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data, config)
         .then(({data}) => {
             if (!data.error) {
@@ -90,11 +97,23 @@ export const getLocations = () => {
 
     return dispatch => {
         axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_locations`, config, data )
-        .then(({data}) => {
-            if (data.locations.length > 0) {
+        .then(async ({data}) => {
+            if (data.data.length > 0) {
+                let dropships = []
+                let warehouse = []
+                await data.data.map((value) => {
+                    if (value.type === 1) {
+                        warehouse = [...warehouse, value]
+                    }else{
+                        dropships = [...dropships, value]                        
+                    }
+                })
                 dispatch({
                     type: 'GET_LOCATIONS',
-                    payload: data.locations
+                    payload: {
+                        dropships: dropships,
+                        warehouse: warehouse
+                    }
                 })
             }
         })
@@ -131,6 +150,25 @@ export const getQuoteSettings = () => {
         })
         .catch((error) => {
 
+        })
+    }
+}
+
+export const getAllProducts = () => {
+    return dispatch => {
+        axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_products`, config)
+        .then(({data}) => {
+            //if (data.data.length > 0) {
+                dispatch({
+                    type: 'GET_ALL_PRODUCTS',
+                    payload: data.data
+                })
+            //}
+        }).catch((error) => {
+            dispatch({
+                type: 'GET_ALL_PRODUCTS',
+                payload: []
+            })
         })
     }
 }

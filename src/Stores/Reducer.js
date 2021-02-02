@@ -1,13 +1,17 @@
 const initialState = {
     connectionSettings: null,
-    locations: null,
+    warehouse: null,
+    dropships: null,
     quoteSettings: null,
     carrriers: null,
     skeleton_loading: true,
     showAlertMessage: false,
     alertMessageType: null,
     alertMessage: null,
-    googleLocationResponse: null
+    googleLocationResponse: null,
+    allProducts: null,
+    token: null,
+    confirmModal: null
 }
 
 const Reducer = (state = initialState, action) => {
@@ -16,6 +20,11 @@ const Reducer = (state = initialState, action) => {
             return {
                 ...state,
                 store: action.payload
+        }
+        case 'TOKEN':
+            return {
+                ...state,
+                token: action.payload
         }
         case 'GET_CONNECTION_SETTINGS':
             return {
@@ -31,7 +40,8 @@ const Reducer = (state = initialState, action) => {
         case 'GET_LOCATIONS':
             return {
                 ...state,
-                locations: action.payload 
+                warehouse: action.payload.warehouse,
+                dropships: action.payload.dropships
             }
         case 'GET_SERVICES': // We had to change the term cause in BigCommerce we call CARRIERS as Eniture Apps
             return {
@@ -79,6 +89,22 @@ const Reducer = (state = initialState, action) => {
                 ...state,
                 googleLocationResponse: action.payload
             }
+        case 'GET_ALL_PRODUCTS':
+            return {
+                ...state,
+                allProducts: action.payload
+            }
+        case 'CONFIRM_MODAL':
+            return {
+                ...state,
+                confirmModal: {
+                    on: action.payload.on,
+                    ok: action.payload.ok,
+                    cancel: action.payload.cancel,
+                    title: action.payload.title,
+                    body: action.payload.body
+                }
+            }    
 
         default:
             break;

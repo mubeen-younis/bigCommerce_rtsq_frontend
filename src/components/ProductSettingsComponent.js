@@ -1,6 +1,7 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import { connect } from "react-redux";
-
+import { getAllProducts } from "../Actions/Action";
+import { submitProductSettings } from "../Actions/ProductSettings";
 import { 
   Table,
   Button,
@@ -11,28 +12,43 @@ import {
   Col,
   Row,
   Select,
-  Checkbox
+  Checkbox,
+  Skeleton
 } from 'antd';
 
 const { Option } = Select;
-function handleChange(value) {
-  console.log(`selected ${value}`);
-}
 
 function ProductSettingsComponent(props){
+  const [loading, setLoading] = useState(true);
+  const [loadProduct, setLoadProduct] = useState(false)
   const [state, setState] = useState({
     filteredInfo: null,
     sortedInfo: null,
     selectedRowKeys: [],
     showDropship: false,
-    visible: false
+    visible: false,
+    products: [],
+    productDetail: [],
+    postData: []
+  })
+  
+  useEffect(() => {
+    if (props.allProducts === null) {
+      props.getAllProducts()
+    }
+    if (props.allProducts !== null && props.allProducts !== undefined) {
+      setLoading(false)
+    }
   })
 
-  const showDrawer = () => {
+  const showProductDetails = (id, product) => {
+    setLoadProduct(true)
     setState({
       ...state,
       visible: true,
+      productDetail: product.settings
     });
+    setLoadProduct(false)
   };
 
   const onClose = () => {
@@ -43,7 +59,7 @@ function ProductSettingsComponent(props){
   };
 
   const saveSettings = () => {
-    alert('DAta submit')
+    props.submitProductSettings({}, props.token)
   }
 
   const onChange = (e) => {
@@ -89,37 +105,6 @@ function ProductSettingsComponent(props){
       selectedRowKeys,
       onChange: onSelectChange,
     };
-    const data = [
-      {
-        key: '1',
-        image: <img style={{ height: '30px' }} src={"../../images/fedex.png"} alt={"text alt"} />,
-        product_sku: 'CTC',
-        product_name: 'New York No. 1 Lake Park',
-        price: '125'
-      },
-      {
-        key: '2',
-        image: <img style={{ height: '30px' }} src={"../../images/fedex.png"} alt={"text alt"} />,
-        product_sku: 'FCSB',
-        product_name: 'London No. 1 Lake Park',
-        price: '125'
-      },
-      {
-        key: '3',
-        image: <img style={{ height: '30px' }} src={"../../images/fedex.png"} alt={"text alt"} />,
-        product_sku: 'FCSBB',
-        product_name: 'Sidney No. 1 Lake Park',
-        price: '125'
-      },
-      {
-        key: '4',
-        image: <img style={{ height: '30px' }} src={"../../images/fedex.png"} alt={"text alt"} />,
-        product_sku: 'CLGB',
-        product_name: 'London No. 2 Lake Park',
-        price: '125'
-      },
-    ];
-
 
     let { sortedInfo, filteredInfo } = state;
     sortedInfo = sortedInfo || {};
@@ -135,18 +120,18 @@ function ProductSettingsComponent(props){
       },
       {
         title: 'Product SKU',
-        dataIndex: 'product_sku',
-        key: 'product_sku',
-        sorter: (a, b) => a.product_sku - b.product_sku,
-        sortOrder: sortedInfo.columnKey === 'product_sku' && sortedInfo.order,
+        dataIndex: 'sku',
+        key: 'sku',
+        sorter: (a, b) => a.sku - b.sku,
+        sortOrder: sortedInfo.columnKey === 'sku' && sortedInfo.order,
         ellipsis: true,
       },
       {
         title: 'Product Name',
-        dataIndex: 'product_name',
-        key: 'product_name',
-        sorter: (a, b) => a.product_name.length - b.product_name.length,
-        sortOrder: sortedInfo.columnKey === 'product_name' && sortedInfo.order,
+        dataIndex: 'name',
+        key: 'name',
+        sorter: (a, b) => a.name.length - b.name.length,
+        sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
         ellipsis: true,
       },
       {
@@ -156,19 +141,28 @@ function ProductSettingsComponent(props){
       },
       {
         title: 'Action',
-        dataIndex: 'action',
-        key: 'action',
-        render: (text, record) => (
+        dataIndex: 'id',
+        key: 'id',
+        render: (id, record) => (
         <Space size="middle">
-            <Button onClick={showDrawer}>Edit</Button>
+            <Button onClick={() => showProductDetails(id, record)}>Edit</Button>
         </Space>
         )
       },
     ];
 
+    //This is for filter form
     const onFinish = values => {
       console.log('Received values of form: ', values);
     };
+
+    if (loading && (props.allProducts === undefined || props.allProducts === null )) {
+      return (
+          <>
+              <Skeleton active />
+          </>
+      )
+    }
     
     return (
         <Fragment>
@@ -200,7 +194,7 @@ function ProductSettingsComponent(props){
               </Form.Item>
             </Form>
           </Space>
-          <Table className="custom-table" rowSelection={rowSelection} columns={columns} dataSource={data} onChange={handleChange} />
+          <Table className="custom-table" rowSelection={rowSelection} columns={columns} dataSource={props.allProducts} onChange={handleChange} />
 
           {/* ================ */}
           <Drawer
@@ -224,101 +218,120 @@ function ProductSettingsComponent(props){
             </div>
           }
         >
-          <Form layout="vertical" hideRequiredMark>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Checkbox onChange={onChange}>Quote as an LTL shipment</Checkbox>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="freight_class"
-                  label="Freight Class"
-                  rules={[{ required: false, message: 'Please select an owner' }]}
-                >
-                  <Select placeholder="Freight Class">
-                    <Option value="">No Freight Class</Option>
-                    <Option value="50">50</Option>
-                    <Option value="55">55</Option>
-                    <Option value="60">60</Option>
-                    <Option value="65">65</Option>
-                    <Option value="70">70</Option>
-                    <Option value="85">85</Option>
-                    <Option value="92.5">92.5</Option>
-                    <Option value="density_based">Density Based</Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
+          {loadProduct ? 
+            <Skeleton active />
+          : 
+          <Form layout="vertical" hideRequiredMark initialValues={state.productDetail}>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Checkbox onChange={onChange}>Quote as an LTL shipment</Checkbox>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
               <Form.Item
-                  name="weight"
-                  label="Weight (lbs)"
-                >
-                  <Input placeholder="Weight (lbs)" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={8}>
-                <Form.Item
-                  name="length"
-                  label="Length (inches)"
-                >
-                  <Input placeholder="Length (inches)" />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  name="width"
-                  label="Width (inches)"
-                >
-                  <Input placeholder="Width (inches)" />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  name="height"
-                  label="Height (inches)"
-                >
-                  <Input placeholder="Height (inches)" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Checkbox onChange={onChange}>Hazardous Material</Checkbox>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Checkbox onChange={() => setState({showDropship: !state.showDropship})}>Dropship this product</Checkbox>
-              </Col>
-            </Row>
-            {
-              state.showDropship ?
-              <Row gutter={16}>
-              <Col span={12}>
+                name="freight_class"
+                label="Freight Class"
+                rules={[{ required: false, message: 'Please select an owner' }]}
+              >
+                <Select placeholder="Freight Class">
+                  <Option value="">No Freight Class</Option>
+                  <Option value="50">50</Option>
+                  <Option value="55">55</Option>
+                  <Option value="60">60</Option>
+                  <Option value="65">65</Option>
+                  <Option value="70">70</Option>
+                  <Option value="85">85</Option>
+                  <Option value="92.5">92.5</Option>
+                  <Option value="100">100</Option>
+                  <Option value="110">110</Option>
+                  <Option value="125">125</Option>
+                  <Option value="150">150</Option>
+                  <Option value="175">175</Option>
+                  <Option value="200">200</Option>
+                  <Option value="225">225</Option>
+                  <Option value="300">300</Option>
+                  <Option value="400">400</Option>
+                  <Option value="500">500</Option>
+                  <Option value="density_based">Density Based</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+            <Form.Item
+                name="weight"
+                label="Weight (lbs)"
+              >
+                <Input placeholder="Weight (lbs)" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={8}>
               <Form.Item
-                  name="dropship_location"
-                  label="Dropship Location"
-                >
-                  <Select placeholder="Dropship Location">
-                    <Option value="1">ds name 1</Option>
-                    <Option value="2">ds name 2</Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-            </Row>
-            : null
-            }
+                name="length"
+                label="Length (inches)"
+              >
+                <Input placeholder="Length (inches)" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                name="width"
+                label="Width (inches)"
+              >
+                <Input placeholder="Width (inches)" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                name="height"
+                label="Height (inches)"
+              >
+                <Input placeholder="Height (inches)" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Checkbox onChange={onChange}>Hazardous Material</Checkbox>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Checkbox onChange={() => setState({...state, showDropship: !state.showDropship})}>Dropship this product</Checkbox>
+            </Col>
+          </Row>
+          {
+            state.showDropship ?
             <Row gutter={16}>
-              <Col span={12}>
-                <Checkbox onChange={onChange}>Insurance</Checkbox>
-              </Col>
-            </Row>
-            
-          </Form>
+            <Col span={12}>
+            <Form.Item
+                name="dropship_location"
+                label="Dropship Location"
+              >
+                {console.log('props.locations ', props.dropships)}
+                <Select placeholder="Dropship Location">
+                  {props.dropships !== null ? props.dropships.map((value, index) => {
+                    if (value.type === 2) {
+                      return <Option value={index}>{`${value.city} ${value.state} ${value.zip_code}`}</Option> 
+                    }
+                  })
+                  : null}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+          : null
+          }
+          <Row gutter={16}>
+            <Col span={12}>
+              <Checkbox onChange={onChange}>Insurance</Checkbox>
+            </Col>
+          </Row>
+          
+        </Form>
+          }
         </Drawer>
           {/* ================ */}
 
@@ -329,13 +342,16 @@ function ProductSettingsComponent(props){
 
 const mapStateToProps = (state) => {
   return {
-   
+    allProducts: state.allProducts,
+    token: state.token,
+    dropships: state.dropships
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    
+    getAllProducts: () => dispatch(getAllProducts()),
+    submitProductSettings: (data, token) => dispatch(submitProductSettings(data, token))
   }
 }
 

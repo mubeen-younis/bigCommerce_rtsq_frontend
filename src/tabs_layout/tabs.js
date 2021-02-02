@@ -19,19 +19,15 @@ function TabsLayout(){
             
             <Tabs className={"tabs-wrp"} onChange={callback} type="card">
                 <TabPane tab="Connection Settinngs" key="1">
-                    <AlertMessage />
                     <ConnectionSettingsComponent />
                 </TabPane>
                 <TabPane tab="Carriers" key="2">
-                    <AlertMessage />
                     <CarriersComponent />
                 </TabPane>
                 <TabPane tab="Warehouse" key="3">
-                    <AlertMessage />
                     <WarehouseComponent />
                 </TabPane>
                 <TabPane tab="Quote Settings" key="4">
-                    <AlertMessage />
                     <QuoteSettingsComponentWwe />
                 </TabPane>
                 <TabPane tab="Product Settings" key="5">
