@@ -28,7 +28,7 @@ function ProductSettingsComponent(props){
     showDropship: false,
     visible: false,
     products: [],
-    productDetail: [],
+    productDetail: {},
     postData: []
   })
   
@@ -46,7 +46,7 @@ function ProductSettingsComponent(props){
     setState({
       ...state,
       visible: true,
-      productDetail: product.settings
+      productDetail: JSON.parse(product.settings)
     });
     setLoadProduct(false)
   };
@@ -59,11 +59,20 @@ function ProductSettingsComponent(props){
   };
 
   const saveSettings = () => {
+    console.log(state.productDetail)
     props.submitProductSettings({}, props.token)
   }
 
   const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
+    console.log(`checked = ${e.target.name}`);
+    console.log(state.productDetail);
+    setState({
+      ...state,
+      //[e.target.name]:e.target.value
+      //productDetail.insurance: !state.productDetail.insurance
+      productDetail: [...state.productDetail, {insurance:e.target.value}]
+    });
+    
   }
 
   const handleChange = (pagination, filters, sorter) => {
@@ -224,7 +233,11 @@ function ProductSettingsComponent(props){
           <Form layout="vertical" hideRequiredMark initialValues={state.productDetail}>
           <Row gutter={16}>
             <Col span={12}>
-              <Checkbox onChange={onChange}>Quote as an LTL shipment</Checkbox>
+              <Form.Item
+                  name="freight_enabled"
+                >
+                <Checkbox name="freight_enabled" onChange={onChange} checked={state.productDetail.freight_enabled}>Quote as an LTL shipment</Checkbox>
+              </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
@@ -234,7 +247,7 @@ function ProductSettingsComponent(props){
                 label="Freight Class"
                 rules={[{ required: false, message: 'Please select an owner' }]}
               >
-                <Select placeholder="Freight Class">
+                <Select placeholder="Freight Class" >
                   <Option value="">No Freight Class</Option>
                   <Option value="50">50</Option>
                   <Option value="55">55</Option>
@@ -294,12 +307,12 @@ function ProductSettingsComponent(props){
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Checkbox onChange={onChange}>Hazardous Material</Checkbox>
+              <Checkbox onChange={onChange} name="hazardous_enabled" checked={state.productDetail.hazardous_enabled}>Hazardous Material</Checkbox>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Checkbox onChange={() => setState({...state, showDropship: !state.showDropship})}>Dropship this product</Checkbox>
+              <Checkbox onChange={() => setState({...state, showDropship: !state.showDropship})} name="dropship_enabled" checked={state.productDetail.dropship_enabled}>Dropship this product</Checkbox>
             </Col>
           </Row>
           {
@@ -326,7 +339,7 @@ function ProductSettingsComponent(props){
           }
           <Row gutter={16}>
             <Col span={12}>
-              <Checkbox onChange={onChange}>Insurance</Checkbox>
+              <Checkbox onChange={onChange} name="insurance" checked={state.productDetail.insurance}>Insurance</Checkbox>
             </Col>
           </Row>
           
