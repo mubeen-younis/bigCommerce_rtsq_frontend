@@ -42,12 +42,14 @@ function ProductSettingsComponent(props){
   })
 
   const showProductDetails = (id, product) => {
+    console.log(state.productDetail)
     setLoadProduct(true)
     setState({
       ...state,
       visible: true,
-      productDetail: JSON.parse(product.settings)
+      productDetail: product.settings ? JSON.parse(product.settings) : {},
     });
+    console.log(state.productDetail)
     setLoadProduct(false)
   };
 
@@ -59,20 +61,17 @@ function ProductSettingsComponent(props){
   };
 
   const saveSettings = () => {
-    console.log(state.productDetail)
-    props.submitProductSettings({}, props.token)
+    props.submitProductSettings({...state.productDetail}, props.token)
   }
 
   const onChange = (e) => {
-    console.log(`checked = ${e.target.name}`);
-    console.log(state.productDetail);
     setState({
       ...state,
-      //[e.target.name]:e.target.value
-      //productDetail.insurance: !state.productDetail.insurance
-      productDetail: [...state.productDetail, {insurance:e.target.value}]
+      productDetail: {
+        ...state.productDetail, 
+        [e.target.name]: !state.productDetail[e.target.name]
+      }
     });
-    
   }
 
   const handleChange = (pagination, filters, sorter) => {
@@ -106,6 +105,7 @@ function ProductSettingsComponent(props){
   };
 
   const onSelectChange = selectedRowKeys => {
+    console.log(selectedRowKeys)
     setState({ ...state, selectedRowKeys });
   };
   
@@ -240,7 +240,7 @@ function ProductSettingsComponent(props){
               </Form.Item>
             </Col>
           </Row>
-          <Row gutter={16}>
+          <Row gutter={16} key={Math.random()}>
             <Col span={12}>
               <Form.Item
                 name="freight_class"
@@ -275,7 +275,7 @@ function ProductSettingsComponent(props){
                 name="weight"
                 label="Weight (lbs)"
               >
-                <Input placeholder="Weight (lbs)" />
+                <Input name="weight" placeholder="Weight (lbs)" value={state.productDetail.weight} />
               </Form.Item>
             </Col>
           </Row>
@@ -312,11 +312,18 @@ function ProductSettingsComponent(props){
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Checkbox onChange={() => setState({...state, showDropship: !state.showDropship})} name="dropship_enabled" checked={state.productDetail.dropship_enabled}>Dropship this product</Checkbox>
+              <Checkbox onChange={() => setState({
+                ...state, 
+                showDropship: !state.showDropship, 
+                productDetail: {
+                  ...state.productDetail,
+                  dropship_enabled: !state.productDetail.dropship_enabled,
+                },
+              })} name="dropship_enabled" checked={state.productDetail.dropship_enabled}>Dropship this product</Checkbox>
             </Col>
           </Row>
           {
-            state.showDropship ?
+            state.productDetail.dropship_enabled ?
             <Row gutter={16}>
             <Col span={12}>
             <Form.Item
