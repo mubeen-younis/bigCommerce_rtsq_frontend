@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getAllProducts } from '../Actions/Action';
-import { submitProductSettings } from '../Actions/ProductSettings';
+import { submitProductSettings, getProduct } from '../Actions/ProductSettings';
 import {
 	Table,
 	Button,
@@ -50,26 +50,9 @@ function ProductSettingsComponent(props) {
 		setState({
 			...state,
 			visible: true,
-			// productDetail: JSON.parse(product.settings),
 		});
 
-		const config = {
-			headers: {
-				authorization: `Bearer eyJpdiI6Inl2aERGVi9td2dvTzlaRTl0aGFxelE9PSIsInZhbHVlIjoiMjJIZXF0ekdQUzB5d1M4ZXAyZTBYZz09IiwibWFjIjoi`,
-			}, //Authorization: `Bearer ${token}`
-			params: {
-				product_id: id,
-			},
-		};
-
-		axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_product`, config)
-			.then((res) => {
-				console.log(res.data.data[0].settings);
-				setselectedProductDetail(JSON.parse(res.data.data[0].settings));
-				console.log(selectedProductDetail);
-				setLoadProduct(false);
-			});
+		getProduct(id, setselectedProductDetail, setLoadProduct);
 	};
 
 	const onClose = () => {
@@ -80,13 +63,11 @@ function ProductSettingsComponent(props) {
 	};
 
 	const saveSettings = () => {
-		console.log(state.productDetail);
-		props.submitProductSettings({}, props.token);
+		props.submitProductSettings(selectedProductDetail, props.token);
 	};
 
 	const onChange = (e) => {
 		console.log(`checked = ${e.target.name}`);
-		console.log(state.productDetail);
 		setState({
 			...state,
 			//[e.target.name]:e.target.value
