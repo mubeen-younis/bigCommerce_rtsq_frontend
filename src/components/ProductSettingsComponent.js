@@ -168,6 +168,19 @@ function ProductSettingsComponent(props) {
 	const onFinish = (values) => {
 		console.log('Received values of form: ', values);
 	};
+	
+	/**
+	 * to make distinct every one
+	 * @param {*} allProducts 
+	 */
+	function addKeyToProduct(arr) {
+		return arr.map((el, key) => {
+			return {
+				...el,
+				key: key + 1,
+			};
+		});
+	}
 
 	if (
 		loading &&
@@ -220,7 +233,7 @@ function ProductSettingsComponent(props) {
 				className='custom-table'
 				rowSelection={rowSelection}
 				columns={columns}
-				dataSource={props.allProducts}
+				dataSource={addKeyToProduct(props.allProducts)}
 				onChange={handleChange}
 			/>
 
