@@ -31,7 +31,7 @@ function SideMenu(){
           <Menu.Item key="2"><Link to={`/1`}>WWE LTL Freight Quotes</Link></Menu.Item>
 
           <Title className={"carriers-name"} level={6}>Installed Addons</Title>
-          <Menu.Item key="3"><Link to={`/3` }>Auto Detect Residential</Link></Menu.Item>
+          <Menu.Item key="3"><Link to={`/ard` }>Auto Detect Residential</Link></Menu.Item>
         </Menu>
       </Sider>
     );
