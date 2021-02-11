@@ -16,6 +16,7 @@ import {
  } from "./Actions/Action";
 import RendorCarrier from "./components/RendorCarrier";
 import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent';
+import AutoDetectResidentialComponennt from './components/AutoDetectResidentialComponennt';
 
 
 const { Header, Content} = Layout;
@@ -76,6 +77,7 @@ function App(props) {
           <Content className={"body-content"}>
             <Switch>
               <Route exact path="/" component={ShippingCarriersComponent} />
+              <Route exact path="/ard" component={AutoDetectResidentialComponennt} />
               <Route exact path="/:carrier_id" component={RendorCarrier} />
             </Switch>
             <Modal
