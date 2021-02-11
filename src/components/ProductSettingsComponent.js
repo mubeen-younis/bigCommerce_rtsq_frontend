@@ -45,7 +45,7 @@ function ProductSettingsComponent(props) {
 		}
 	}, []);
 
-	const showProductDetails = async (id, product) => {
+	const showProductDetails =  (id, product) => {
 		setLoadProduct(true);
 		setState({
 			...state,
@@ -413,7 +413,7 @@ function ProductSettingsComponent(props) {
 								</Checkbox>
 							</Col>
 						</Row>
-						{state.showDropship ? (
+						{selectedProductDetail.dropship_enabled ? (
 							<Row gutter={16}>
 								<Col span={12}>
 									<Form.Item name='dropship_location' label='Dropship Location'>
@@ -424,7 +424,7 @@ function ProductSettingsComponent(props) {
 														if (value.type === 2) {
 															return (
 																<Option
-																	value={index}
+																	value={value.state}
 																>{`${value.city} ${value.state} ${value.zip_code}`}</Option>
 															);
 														}

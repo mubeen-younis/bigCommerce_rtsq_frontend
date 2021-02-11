@@ -27,7 +27,7 @@ export const submitProductSettings = (data, token) => {
 export const getProduct = (id, setselectedProductDetail, setLoadProduct) => {
 	const config = {
 		headers: {
-			authorization: `Bearer eyJpdiI6Inl2aERGVi9td2dvTzlaRTl0aGFxelE9PSIsInZhbHVlIjoiMjJIZXF0ekdQUzB5d1M4ZXAyZTBYZz09IiwibWFjIjoi`,
+			authorization: `Bearer eyJpdiI6IlIyWC9zeUZBTnBXeE50ODd0aFlqdnc9PSIsInZhbHVlIjoiS0RLOGNlUUN0Z1ZTTEdFRmpibWFaUT09IiwibWFjIjoi`,
 		},
 		params: {
 			product_id: id,
