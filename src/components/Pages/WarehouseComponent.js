@@ -20,9 +20,6 @@ import { getGoogleResponse, getWarehouse } from "../../Actions/Warehouse";
 
 const { Option } = Select;
 const { Title } = Typography;
-function handleChange(value) {
-  console.log(`selected ${value}`);
-}
 
 function WarehouseComponent(props) {
   const [visible1, setVisibleWarehouse] = useState(false);
@@ -35,10 +32,7 @@ function WarehouseComponent(props) {
   });
 
   const onFinish = (values) => {
-    setLocationDetail({
-      ...locationDetail,
-      location_type: locationType,
-    });
+    console.log("location Detail", locationDetail);
     props.postData(locationDetail, "GET_LOCATIONS", "save_location");
   };
 
@@ -61,20 +55,25 @@ function WarehouseComponent(props) {
   };
 
   const openLocationModal = (location_type) => {
-    setLocationDetail({});
-    setLocationType(location_type);
+    setLocationDetail({
+      ...locationDetail,
+      location_type: location_type,
+    });
     setVisibleWarehouse(true);
   };
 
   const deleteLocation = (data) => {
     console.log(data);
+    var confirmMessage,
+      confirmTitle = "";
     if (data.type === 2) {
-      props.confirmModalAction(
-        true,
-        "Delete Dropship",
-        "Are you sure you want to delete this dropship?"
-      );
+      confirmMessage = "Are you sure you want to delete this dropship?";
+      confirmTitle = "Delete dropship";
+    } else {
+      confirmMessage = "Are you sure you want to delete this warehouse?";
+      confirmTitle = "Delete warehouse";
     }
+    props.confirmModalAction(true, confirmTitle, confirmMessage);
   };
 
   const editLocation = (data) => {
@@ -88,6 +87,14 @@ function WarehouseComponent(props) {
       [e.target.name]: e.target.value,
     });
   };
+
+  const handleChange = (name, e) => {
+    setLocationDetail({
+      ...locationDetail,
+      [name]: e,
+    });
+  };
+
   const columns = [
     {
       key: "state",
@@ -357,7 +364,7 @@ function WarehouseComponent(props) {
                       value={locationDetail.instore_zipcodes}
                       mode="tags"
                       style={{ width: "100%" }}
-                      onChange={handleChange}
+                      onChange={(e) => handleChange("instore_zipcodes", e)}
                       tokenSeparators={[","]}
                     />
                   </Form.Item>
@@ -479,7 +486,7 @@ function WarehouseComponent(props) {
                       value={locationDetail.ld_zipcodes}
                       mode="tags"
                       style={{ width: "100%" }}
-                      onChange={handleChange}
+                      onChange={(e) => handleChange("ld_zipcodes", e)}
                       tokenSeparators={[","]}
                     />
                   </Form.Item>
