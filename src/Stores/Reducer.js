@@ -43,6 +43,14 @@ const Reducer = (state = initialState, action) => {
 				warehouse: action.payload.warehouse,
 				dropships: action.payload.dropships,
 			};
+
+		case 'DELETE_LOCATION':
+			return {
+				...state,
+				warehouse: state.warehouse.filter((wh) => wh.id !== action.payload),
+				dropships: state.dropships.filter((wh) => wh.id !== action.payload),
+			};
+
 		case 'GET_SERVICES': // We had to change the term cause in BigCommerce we call CARRIERS as Eniture Apps
 			return {
 				...state,
