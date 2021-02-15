@@ -64,13 +64,17 @@ export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse) => {
 
         enable_instore: additional.instore_pickup ?? false,
         instore_miles: additional.instore_pickup_data.miles ?? null,
-        instore_zipcodes: additional.instore_pickup_data.postalCodes ?? null,
+        instore_zipcodes: additional.instore_pickup_data.postalCodes
+          ? additional.instore_pickup_data.postalCodes.split(",")
+          : null,
         instock_description:
           additional.instore_pickup_data.checkout_description ?? null,
 
         enable_ld: additional.local_delivery ?? false,
         ld_miles: additional.local_delivery_data.miles ?? null,
-        ld_zipcodes: additional.local_delivery_data.postalCodes ?? null,
+        ld_zipcodes: additional.local_delivery_data.postalCodes
+          ? additional.local_delivery_data.postalCodes.split(",")
+          : null,
         ld_description:
           additional.local_delivery_data.checkout_description ?? null,
         ld_fee: additional.local_delivery_data.local_delivery_fee ?? null,
