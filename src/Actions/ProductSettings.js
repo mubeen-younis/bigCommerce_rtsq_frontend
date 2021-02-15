@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-export const submitProductSettings = (data, token) => {
-	const config = {
-		headers: {
-			authorization: `Bearer eyJpdiI6IlIyWC9zeUZBTnBXeE50ODd0aFlqdnc9PSIsInZhbHVlIjoiS0RLOGNlUUN0Z1ZTTEdFRmpibWFaUT09IiwibWFjIjoi`,
-		},
-	};
+const config = {
+	headers: {
+		authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
+	},
+};
 
+export const submitProductSettings = (data, token) => {
 	return (dispatch) => {
 		axios
 			.post(
@@ -25,17 +25,13 @@ export const submitProductSettings = (data, token) => {
 };
 
 export const getProduct = (id, setselectedProductDetail, setLoadProduct) => {
-	const config = {
-		headers: {
-			authorization: `Bearer eyJpdiI6IlIyWC9zeUZBTnBXeE50ODd0aFlqdnc9PSIsInZhbHVlIjoiS0RLOGNlUUN0Z1ZTTEdFRmpibWFaUT09IiwibWFjIjoi`,
-		},
-		params: {
-			product_id: id,
-		},
-	};
-
 	axios
-		.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_product`, config)
+		.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_product`, {
+			...config,
+			params: {
+				product_id: id,
+			},
+		})
 		.then((res) => {
 			let data = JSON.parse(res.data.data[0].settings);
 			data = { ...data, product_id: id };

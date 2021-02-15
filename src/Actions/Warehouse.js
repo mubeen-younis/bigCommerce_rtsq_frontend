@@ -1,9 +1,11 @@
 import axios from 'axios';
+
 const config = {
 	headers: {
-		authorization: `Bearer eyJpdiI6Inl2aERGVi9td2dvTzlaRTl0aGFxelE9PSIsInZhbHVlIjoiMjJIZXF0ekdQUzB5d1M4ZXAyZTBYZz09IiwibWFjIjoi`,
-	}, //Authorization: `Bearer ${token}`
+		authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
+	},
 };
+
 export const getGoogleResponse = (zipcode) => {
 	return (dispatch) => {
 		dispatch({
@@ -41,17 +43,13 @@ export const getGoogleResponse = (zipcode) => {
 
 export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse) => {
 	return (dispatch) => {
-		const config = {
-			headers: {
-				authorization: `Bearer eyJpdiI6IlIyWC9zeUZBTnBXeE50ODd0aFlqdnc9PSIsInZhbHVlIjoiS0RLOGNlUUN0Z1ZTTEdFRmpibWFaUT09IiwibWFjIjoi`,
-			},
-			params: {
-				location_id: id,
-			},
-		};
-
 		axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_location`, config)
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_location`, {
+				...config,
+				params: {
+					location_id: id,
+				},
+			})
 			.then((res) => {
 				const { data } = res.data;
 				let additional = JSON.parse(data.additionals);
@@ -99,12 +97,6 @@ export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse) => {
 
 export const deleteLocation = (id, setDeleteWarehouseModal) => {
 	return (dispatch) => {
-		const config = {
-			headers: {
-				authorization: `Bearer eyJpdiI6IlIyWC9zeUZBTnBXeE50ODd0aFlqdnc9PSIsInZhbHVlIjoiS0RLOGNlUUN0Z1ZTTEdFRmpibWFaUT09IiwibWFjIjoi`,
-			},
-		};
-
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
