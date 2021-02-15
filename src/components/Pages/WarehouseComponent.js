@@ -20,9 +20,12 @@ import { getGoogleResponse, getWarehouse } from '../../Actions/Warehouse';
 
 const { Option } = Select;
 const { Title } = Typography;
+<<<<<<< HEAD
 function handleChange(value) {
 	console.log(`selected ${value}`);
 }
+=======
+>>>>>>> 12368b246af73e4f6da0bd562998cf9daae419de
 
 function WarehouseComponent(props) {
 	const [visible1, setVisibleWarehouse] = useState(false);
@@ -34,6 +37,7 @@ function WarehouseComponent(props) {
 		enable_ld: false,
 	});
 
+<<<<<<< HEAD
 	const onFinish = (values) => {
 		setLocationDetail({
 			...locationDetail,
@@ -41,6 +45,12 @@ function WarehouseComponent(props) {
 		});
 		props.postData(locationDetail, 'GET_LOCATIONS', 'save_location');
 	};
+=======
+  const onFinish = (values) => {
+    console.log("location Detail", locationDetail);
+    props.postData(locationDetail, "GET_LOCATIONS", "save_location");
+  };
+>>>>>>> 12368b246af73e4f6da0bd562998cf9daae419de
 
 	const getGoogleLocation = (zip_code) => {
 		if (zip_code.length > 4) {
@@ -60,6 +70,7 @@ function WarehouseComponent(props) {
 		}
 	};
 
+<<<<<<< HEAD
 	const openLocationModal = (location_type) => {
 		setLocationDetail({});
 		setLocationType(location_type);
@@ -76,11 +87,35 @@ function WarehouseComponent(props) {
 			);
 		}
 	};
+=======
+  const openLocationModal = (location_type) => {
+    setLocationDetail({
+      ...locationDetail,
+      location_type: location_type,
+    });
+    setVisibleWarehouse(true);
+  };
+
+  const deleteLocation = (data) => {
+    console.log(data);
+    var confirmMessage,
+      confirmTitle = "";
+    if (data.type === 2) {
+      confirmMessage = "Are you sure you want to delete this dropship?";
+      confirmTitle = "Delete dropship";
+    } else {
+      confirmMessage = "Are you sure you want to delete this warehouse?";
+      confirmTitle = "Delete warehouse";
+    }
+    props.confirmModalAction(true, confirmTitle, confirmMessage);
+  };
+>>>>>>> 12368b246af73e4f6da0bd562998cf9daae419de
 
 	const editLocation = (data) => {
 		getWarehouse(data.id, setLocationDetail, setVisibleWarehouse);
 	};
 
+<<<<<<< HEAD
 	const data = [];
 
 	const changeValue = (e) => {
@@ -129,6 +164,61 @@ function WarehouseComponent(props) {
 		<Fragment>
 			<Space direction='vertical' size={'large'} className={'w-100'}>
 				{/* <Row gutter={30}>
+=======
+  const data = [];
+  const changeValue = (e) => {
+    setLocationDetail({
+      ...locationDetail,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleChange = (name, e) => {
+    setLocationDetail({
+      ...locationDetail,
+      [name]: e,
+    });
+  };
+
+  const columns = [
+    {
+      key: "state",
+      title: "City",
+      dataIndex: "city",
+    },
+    {
+      key: "state",
+      title: "State",
+      dataIndex: "state",
+    },
+    {
+      key: "zip_code",
+      title: "Zip",
+      dataIndex: "zip_code",
+    },
+    {
+      key: "Country",
+      title: "Country",
+      dataIndex: "country",
+    },
+    {
+      key: "zip",
+      title: "Action",
+      render: (text, record) => (
+        <Space size="middle">
+          <Button onClick={() => editLocation(text)}>Edit</Button>
+          <Button onClick={() => deleteLocation(text)} className={"btn-danger"}>
+            Delete
+          </Button>
+        </Space>
+      ),
+    },
+  ];
+  return (
+    <Fragment>
+      <Space direction="vertical" size={"large"} className={"w-100"}>
+        {/* <Row gutter={30}>
+>>>>>>> 12368b246af73e4f6da0bd562998cf9daae419de
                     <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
                         <Title level={4}>Shipment Origins</Title>
                         <p>How will your shipment origins be indentified?</p>
@@ -335,6 +425,7 @@ function WarehouseComponent(props) {
 								</Col>
 							</Row>
 
+<<<<<<< HEAD
 							<Row gutter={30} align='middle' className={'mb-2'}>
 								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
 									<label className={'text-gray'}>
@@ -659,6 +750,332 @@ function WarehouseComponent(props) {
 			</Space>
 		</Fragment>
 	);
+=======
+              <Row gutter={30} align="middle" className={"mb-2"}>
+                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                  <label className={"text-gray"}>
+                    Offer if postal code matches:
+                  </label>
+                </Col>
+                <Col
+                  className="gutter-row"
+                  xs={24}
+                  sm={16}
+                  md={16}
+                  lg={16}
+                  xl={16}
+                >
+                  <Form.Item
+                    className={"mb-0"}
+                    rules={[
+                      { required: false, message: "Costal Code Required" },
+                    ]}
+                  >
+                    <Select
+                      name="instore_zipcodes"
+                      value={locationDetail.instore_zipcodes}
+                      mode="tags"
+                      style={{ width: "100%" }}
+                      onChange={(e) => handleChange("instore_zipcodes", e)}
+                      tokenSeparators={[","]}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={30} align="middle" className={"mb-2"}>
+                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                  <label className={"text-gray"}>Checkout description:</label>
+                </Col>
+                <Col
+                  className="gutter-row"
+                  xs={24}
+                  sm={16}
+                  md={16}
+                  lg={16}
+                  xl={16}
+                >
+                  <Form.Item
+                    className={"mb-0"}
+                    rules={[
+                      {
+                        required: false,
+                        message: "Checkout Description Required",
+                      },
+                    ]}
+                  >
+                    <Input
+                      name="instock_description"
+                      value={locationDetail.instock_description}
+                      placeholder="In-stock pick up"
+                      onChange={changeValue}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={30}>
+                <Col
+                  className="gutter-row"
+                  xs={24}
+                  sm={24}
+                  md={24}
+                  lg={24}
+                  xl={24}
+                >
+                  <Title level={4}>Local Delivery</Title>
+                </Col>
+              </Row>
+              <Row gutter={30} align="middle">
+                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                  <label className={"text-gray"}>Enable local delivery</label>
+                </Col>
+                <Col
+                  className="gutter-row"
+                  xs={24}
+                  sm={16}
+                  md={16}
+                  lg={16}
+                  xl={16}
+                >
+                  <Form.Item className={"mb-0"}>
+                    <Checkbox
+                      name="enable_ld"
+                      checked={locationDetail.enable_ld}
+                      onChange={(e) =>
+                        setLocationDetail({
+                          ...locationDetail,
+                          enable_ld: !locationDetail.enable_ld,
+                        })
+                      }
+                    ></Checkbox>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={30} align="middle" className={"mb-2"}>
+                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                  <label className={"text-gray"}>
+                    Offer if address is within (miles):
+                  </label>
+                </Col>
+                <Col
+                  className="gutter-row"
+                  xs={24}
+                  sm={16}
+                  md={16}
+                  lg={16}
+                  xl={16}
+                >
+                  <Form.Item className={"mb-0"}>
+                    <Input
+                      name="ld_miles"
+                      value={locationDetail.ld_miles}
+                      onChange={changeValue}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={30} align="middle" className={"mb-2"}>
+                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                  <label className={"text-gray"}>
+                    Offer if postal code matches:
+                  </label>
+                </Col>
+                <Col
+                  className="gutter-row"
+                  xs={24}
+                  sm={16}
+                  md={16}
+                  lg={16}
+                  xl={16}
+                >
+                  <Form.Item
+                    className={"mb-0"}
+                    rules={[
+                      { required: false, message: "Costal Code Required" },
+                    ]}
+                  >
+                    <Select
+                      name="ld_zipcodes"
+                      value={locationDetail.ld_zipcodes}
+                      mode="tags"
+                      style={{ width: "100%" }}
+                      onChange={(e) => handleChange("ld_zipcodes", e)}
+                      tokenSeparators={[","]}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={30} align="middle" className={"mb-2"}>
+                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                  <label className={"text-gray"}>Checkout description:</label>
+                </Col>
+                <Col
+                  className="gutter-row"
+                  xs={24}
+                  sm={16}
+                  md={16}
+                  lg={16}
+                  xl={16}
+                >
+                  <Form.Item
+                    className={"mb-0"}
+                    rules={[
+                      {
+                        required: false,
+                        message: "Checkout Description Required",
+                      },
+                    ]}
+                  >
+                    <Input
+                      name="ld_description"
+                      value={locationDetail.ld_description}
+                      placeholder="Local delivery"
+                      onChange={changeValue}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={30} align="middle" className={"mb-2"}>
+                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                  <label className={"text-gray"}>Local delivery fee</label>
+                </Col>
+                <Col
+                  className="gutter-row"
+                  xs={24}
+                  sm={16}
+                  md={16}
+                  lg={16}
+                  xl={16}
+                >
+                  <Form.Item
+                    className={"mb-0"}
+                    rules={[
+                      {
+                        required: false,
+                        message: "Local delivery fee Required",
+                      },
+                    ]}
+                  >
+                    <Input
+                      name="ld_fee"
+                      value={locationDetail.ld_fee}
+                      onChange={changeValue}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={30} align="middle">
+                <Col className="gutter-row" xs={24} sm={8} md={8} lg={8} xl={8}>
+                  <label className={"text-gray"}>
+                    Suppress other rates
+                    <Tooltip
+                      placement="top"
+                      title={
+                        "This setting only suppresses rate that would otherwise be returned by this app."
+                      }
+                    >
+                      <Button className={"text-gray"} type="link">
+                        [?]
+                      </Button>
+                    </Tooltip>
+                  </label>
+                </Col>
+                <Col
+                  className="gutter-row"
+                  xs={24}
+                  sm={16}
+                  md={16}
+                  lg={16}
+                  xl={16}
+                >
+                  <Form.Item className={"mb-0"}>
+                    <Checkbox
+                      name="ld_enable_supress"
+                      checked={locationDetail.ld_enable_supress}
+                      onChange={(e) =>
+                        setLocationDetail({
+                          ...locationDetail,
+                          ld_enable_supress: !locationDetail.ld_enable_supress,
+                        })
+                      }
+                    ></Checkbox>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={30} align="middle" className={"mt-3"}>
+                <Col
+                  className="gutter-row"
+                  xs={24}
+                  sm={24}
+                  md={24}
+                  lg={24}
+                  xl={24}
+                >
+                  <Form.Item style={{ textAlign: "right", marginBottom: "0" }}>
+                    <Space>
+                      <Button
+                        type="link"
+                        size={"large"}
+                        onClick={() => setVisibleWarehouse(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button type="primary" size={"large"} htmlType="submit">
+                        Save
+                      </Button>
+                    </Space>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </Modal>
+          <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Title level={4}>
+              Warehouses{" "}
+              <Button type="primary" onClick={() => openLocationModal(1)}>
+                Add
+              </Button>
+            </Title>
+            <p>
+              Warehouses that inventory all products not otherwise indentified
+              as drop shipped items. The warehouse with lowest shipping cost to
+              the destination is used for quoting purpose.
+            </p>
+            <Table
+              className={"custom-table"}
+              dataSource={props.warehouse}
+              columns={columns}
+            />
+          </Col>
+        </Row>
+      </Space>
+      <Space direction="vertical" size={"large"} className={"w-100"}>
+        <Row gutter={30}>
+          <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Title level={4}>
+              Drop Ships{" "}
+              <Button type="primary" onClick={() => openLocationModal(2)}>
+                Add
+              </Button>
+            </Title>
+            <p>
+              Location that inventory specific items that are drop shipped to
+              the destination. Use the product's settings page to identify it as
+              a drop shipped and it associated drop ship location. Orders that
+              includes drop shipped items will display a single figure for the
+              shipping rate estimate that is equal to the sum of the cheapest
+              option of each shipment required to fullfil the order.
+            </p>
+            <Table
+              className={"custom-table"}
+              dataSource={props.dropships}
+              columns={columns}
+            />
+          </Col>
+        </Row>
+      </Space>
+    </Fragment>
+  );
+>>>>>>> 12368b246af73e4f6da0bd562998cf9daae419de
 }
 
 const mapStateToProps = (state) => {
