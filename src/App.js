@@ -19,15 +19,13 @@ function App(props) {
 			? urlParams.get('store')
 			: localStorage.getItem('store');
 
-	console.log('store ', store);
-
 	useEffect(() => {
 		if (props.token === undefined && store !== undefined) {
 			props.setToken(store);
 		}
 		props.locations();
 		props.getAllCarriers(store);
-	}, []);
+	}, [props, store]);
 
 	message.config({
 		maxCount: 1,

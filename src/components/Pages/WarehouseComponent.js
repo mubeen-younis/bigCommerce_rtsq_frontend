@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import {
 	Select,
 	Typography,
@@ -19,41 +19,50 @@ import { postData } from '../../Actions/Action';
 import {
 	getGoogleResponse,
 	getWarehouse,
-	deleteWarehouse,
+	deleteLocation,
 } from '../../Actions/Warehouse';
 
-const { Option } = Select;
 const { Title } = Typography;
 
 function WarehouseComponent(props) {
 	const [visible1, setVisibleWarehouse] = useState(false);
-	// const [locationType, setLocationType] = useState();
 	const [warehouseDeleteModal, setDeleteWarehouseModal] = useState(false);
 	const [warehouseID, setWarehouseID] = useState(null);
-
 	const [locationDetail, setLocationDetail] = useState({
 		enable_instore: false,
 		enable_ld: false,
 	});
 
+	const {
+		postData,
+		getGoogleResponse,
+		alertMessageType,
+		showAlertMessage,
+		googleLocationResponse,
+		getWarehouse,
+		deleteLocation,
+		warehouse,
+		dropships,
+	} = props;
+
 	const onFinish = (values) => {
 		console.log('location Detail', locationDetail);
-		props.postData(locationDetail, 'GET_LOCATIONS', 'save_location');
+		postData(locationDetail, 'GET_LOCATIONS', 'save_location');
 	};
 
 	const getGoogleLocation = (zip_code) => {
 		if (zip_code.length > 4) {
-			props.getGoogleResponse(zip_code);
+			getGoogleResponse(zip_code);
 			if (
-				props.alertMessageType !== 'loading' &&
-				!props.showAlertMessage &&
-				props.googleLocationResponse !== null
+				alertMessageType !== 'loading' &&
+				showAlertMessage &&
+				googleLocationResponse !== null
 			) {
 				setLocationDetail({
 					...locationDetail,
-					city: props.googleLocationResponse.city[0],
-					state: props.googleLocationResponse.state,
-					country: props.googleLocationResponse.country,
+					city: googleLocationResponse.city[0],
+					state: googleLocationResponse.state,
+					country: googleLocationResponse.country,
 				});
 			}
 		}
@@ -66,34 +75,9 @@ function WarehouseComponent(props) {
 		setVisibleWarehouse(true);
 	};
 
-	const deleteLocation = (data) => {
-		/* console.log(data);
-
-		var confirmMessage,
-			confirmTitle = '';
-		if (data.type === 2) {
-			confirmMessage = 'Are you sure you want to delete this dropship?';
-			confirmTitle = 'Delete dropship';
-		} else {
-			confirmMessage = 'Are you sure you want to delete this warehouse?';
-			confirmTitle = 'Delete warehouse';
-		}
-
-		props.confirmModalAction(
-			true,
-			confirmTitle,
-			confirmMessage,
-			deleteWarehouse(1)
-		); */
-
+	const openDeleteLocationModal = (data) => {
 		setDeleteWarehouseModal(true);
 		setWarehouseID(data.id);
-	};
-
-	const confirmModal = (ok, cancel) => {
-		// props.confirmModalAction(ok, cancel);
-
-		deleteWarehouse(warehouseID, setDeleteWarehouseModal);
 	};
 
 	const editLocation = (data) => {
@@ -141,7 +125,10 @@ function WarehouseComponent(props) {
 			render: (text, record) => (
 				<Space size='middle'>
 					<Button onClick={() => editLocation(text)}>Edit</Button>
-					<Button onClick={() => deleteLocation(text)} className={'btn-danger'}>
+					<Button
+						onClick={() => openDeleteLocationModal(text)}
+						className={'btn-danger'}
+					>
 						Delete
 					</Button>
 				</Space>
@@ -165,7 +152,7 @@ function WarehouseComponent(props) {
 					<Modal
 						title={
 							<Title className={'mb-0'} level={4}>
-								{locationDetail.location_type == 1
+								{locationDetail.location_type === 1
 									? 'Warehouse info'
 									: 'Dropship info'}
 							</Title>
@@ -651,7 +638,7 @@ function WarehouseComponent(props) {
 						</p>
 						<Table
 							className={'custom-table'}
-							dataSource={props.warehouse}
+							dataSource={warehouse}
 							columns={columns}
 						/>
 					</Col>
@@ -676,21 +663,21 @@ function WarehouseComponent(props) {
 						</p>
 						<Table
 							className={'custom-table'}
-							dataSource={props.dropships}
+							dataSource={dropships}
 							columns={columns}
 						/>
 					</Col>
 				</Row>
 			</Space>
 			<Modal
-				title='Delete warehouse'
+				title='Confirm Delete'
 				visible={warehouseDeleteModal}
-				onOk={() => confirmModal(true, false)}
+				onOk={() => deleteLocation(warehouseID, setDeleteWarehouseModal)}
 				onCancel={() => setDeleteWarehouseModal(false)}
 				okText='Confirm'
 				cancelText='Cancel'
 			>
-				<p>Are you sure you want to delete this warehouse?</p>
+				<p>Are you sure you want to delete this?</p>
 			</Modal>
 		</Fragment>
 	);
@@ -707,22 +694,12 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		postData: (data, type, url) => dispatch(postData(data, type, url)),
-		getGoogleResponse: (data) => dispatch(getGoogleResponse(data)),
-
-		confirmModalAction: (on, title, body, deleteWarehouse) =>
-			dispatch({
-				type: 'CONFIRM_MODAL',
-				payload: {
-					on,
-					title,
-					body,
-					ok: (id) => deleteWarehouse(id),
-				},
-			}),
-	};
-};
+const mapDispatchToProps = (dispatch) => ({
+	postData: (data, type, url) => dispatch(postData(data, type, url)),
+	getGoogleResponse: (data) => dispatch(getGoogleResponse(data)),
+	getWarehouse: (id, locationDetail, visibility) =>
+		dispatch(getWarehouse(id, locationDetail, visibility)),
+	deleteLocation: (id, visibility) => dispatch(deleteLocation(id, visibility)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(WarehouseComponent);
