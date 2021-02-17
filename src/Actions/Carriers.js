@@ -66,7 +66,7 @@ export const getAddTabSettings = () => {
       .then(({ data }) => {
         dispatch({
           type: "GET_ADD_TAB_SETTING",
-          payload: data.data[0].value,
+          payload: JSON.parse(data.data[0].value),
         });
         dispatch({
           type: "SKELETON_LOADING",

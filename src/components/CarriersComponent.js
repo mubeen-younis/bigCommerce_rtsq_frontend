@@ -43,7 +43,6 @@ class CarriersComponent extends React.Component {
   };
 
   onSelectChange = (selectedRowKeys) => {
-    console.log("carriersSettings2", this.props.carriersSettings);
     this.setState({ selectedRowKeys });
   };
 
@@ -57,17 +56,14 @@ class CarriersComponent extends React.Component {
 
   render() {
     const { selectedRowKeys } = this.state;
-    console.log(this.props.carriersSettings);
     let rowSelection = {};
     if (this.props.carriersSettings !== null) {
       rowSelection = {
         selectedRowKeys: [...selectedRowKeys, ...this.props.carriersSettings],
-        //selectedRowKeys,
         onChange: this.onSelectChange,
       };
     } else {
       rowSelection = {
-        // selectedRowKeys: [...selectedRowKeys, ...this.props.carriersSettings],
         selectedRowKeys,
         onChange: this.onSelectChange,
       };
