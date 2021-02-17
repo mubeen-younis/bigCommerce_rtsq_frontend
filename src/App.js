@@ -5,7 +5,7 @@ import './responsive.css';
 import SideMenu from './partials/SideMenu';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getLocations, setStore, getAllCarriers } from './Actions/Action';
+import { getLocations, /* setStore, */ getAllCarriers } from './Actions/Action';
 import RendorCarrier from './components/RendorCarrier';
 import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent';
 import AutoDetectResidentialComponennt from './components/AutoDetectResidentialComponennt';
@@ -32,13 +32,13 @@ function App(props) {
 	});
 
 	const showMessageNotice = () => {
-		if (props.alertMessageType == 'success') {
+		if (props.alertMessageType === 'success') {
 			message.success(props.alertMessage);
-		} else if (props.alertMessageType == 'error') {
+		} else if (props.alertMessageType === 'error') {
 			message.error(props.alertMessage);
-		} else if (props.alertMessageType == 'warning') {
+		} else if (props.alertMessageType === 'warning') {
 			message.warning(props.alertMessage);
-		} else if (props.alertMessageType == 'loading') {
+		} else if (props.alertMessageType === 'loading') {
 			message.loading('Loading. Please wait...');
 		}
 	};
@@ -64,6 +64,7 @@ function App(props) {
 			<Router>
 				<Layout>
 					<SideMenu />
+
 					<Layout>
 						<Header className={'top-header'} style={{ padding: 0 }} />
 						<Content className={'body-content'}>
@@ -76,6 +77,7 @@ function App(props) {
 								/>
 								<Route exact path='/:carrier_id' component={RendorCarrier} />
 							</Switch>
+
 							<Modal
 								title={
 									props.confirmModal !== null ? props.confirmModal.title : ''

@@ -15,7 +15,7 @@ import {
 	Checkbox,
 	Skeleton,
 } from 'antd';
-import axios from 'axios';
+import addKeysToList from '../Utilities/addKey';
 
 const { Option } = Select;
 
@@ -43,9 +43,9 @@ function ProductSettingsComponent(props) {
 		if (props.allProducts != null && props.allProducts !== undefined) {
 			setLoading(false);
 		}
-	}, []);
+	}, [props]);
 
-	const showProductDetails =  (id, product) => {
+	const showProductDetails = (id, product) => {
 		setLoadProduct(true);
 		setState({
 			...state,
@@ -66,18 +66,17 @@ function ProductSettingsComponent(props) {
 		props.submitProductSettings(selectedProductDetail, props.token);
 	};
 
-	const onChange = (e) => {
+	/* const onChange = (e) => {
 		console.log(`checked = ${e.target.name}`);
 		setState({
 			...state,
-			//[e.target.name]:e.target.value
-			//productDetail.insurance: !state.productDetail.insurance
+
 			productDetail: {
 				...state.productDetail,
 				[e.target.name]: state.productDetail[e.target.value],
 			},
 		});
-	};
+	}; */
 
 	const handleChange = (pagination, filters, sorter) => {
 		console.log('Various parameters', pagination, filters, sorter);
@@ -168,19 +167,6 @@ function ProductSettingsComponent(props) {
 	const onFinish = (values) => {
 		console.log('Received values of form: ', values);
 	};
-	
-	/**
-	 * to make distinct every one
-	 * @param {*} allProducts 
-	 */
-	function addKeyToProduct(arr) {
-		return arr.map((el, key) => {
-			return {
-				...el,
-				key: key + 1,
-			};
-		});
-	}
 
 	if (
 		loading &&
@@ -233,7 +219,7 @@ function ProductSettingsComponent(props) {
 				className='custom-table'
 				rowSelection={rowSelection}
 				columns={columns}
-				dataSource={addKeyToProduct(props.allProducts)}
+				dataSource={addKeysToList(props.allProducts)}
 				onChange={handleChange}
 			/>
 
@@ -418,6 +404,7 @@ function ProductSettingsComponent(props) {
 								<Col span={12}>
 									<Form.Item name='dropship_location' label='Dropship Location'>
 										{console.log('props.locations ', props.dropships)}
+
 										<Select placeholder='Dropship Location'>
 											{props.dropships !== null
 												? props.dropships.map((value, index) => {
