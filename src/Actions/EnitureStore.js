@@ -27,6 +27,31 @@ export const installCarrier = (data) => {
 	};
 };
 
+export const getInstalledCarriers = () => {
+	return (dispatch) => {
+		axios
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getInstalledCarriers`)
+			.then(({ data }) => {
+				dispatch({
+					type: 'GET_INSTALLED_CARRIERS',
+					payload: data.data.installedCarriers,
+				});
+
+				/* dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: data.message,
+						showAlertMessage: true,
+						alertMessageType: data.error ? 'error' : 'success',
+					},
+				}); */
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+};
+
 export const changeCarrierStatus = (carrier_id) => {
 	return (dispatch) => {
 		axios
@@ -47,31 +72,6 @@ export const changeCarrierStatus = (carrier_id) => {
 						alertMessageType: data.error ? 'error' : 'success',
 					},
 				});
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
-};
-
-export const getInstalledCarriers = () => {
-	return (dispatch) => {
-		axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getInstalledCarriers`)
-			.then(({ data }) => {
-				dispatch({
-					type: 'GET_INSTALLED_CARRIERS',
-					payload: data.data.installedCarriers,
-				});
-
-				/* dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						alertMessage: data.message,
-						showAlertMessage: true,
-						alertMessageType: data.error ? 'error' : 'success',
-					},
-				}); */
 			})
 			.catch((err) => {
 				console.log(err);

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import {
 	Select,
 	Typography,
@@ -16,6 +16,9 @@ import {
 
 import { connect } from 'react-redux';
 import { postData } from '../../Actions/Action';
+
+import addKeysToList from './../../Utilities/addKey';
+
 import {
 	getGoogleResponse,
 	getWarehouse,
@@ -32,6 +35,16 @@ function WarehouseComponent(props) {
 		enable_instore: false,
 		enable_ld: false,
 	});
+
+	/* const [form] = Form.useForm();
+
+	useEffect(() => {
+		form.setFieldsValue({
+			city: '',
+			state: '',
+			country: '',
+		});
+	}, [form]); */
 
 	const {
 		postData,
@@ -53,9 +66,10 @@ function WarehouseComponent(props) {
 	const getGoogleLocation = (zip_code) => {
 		if (zip_code.length > 4) {
 			getGoogleResponse(zip_code);
+
 			if (
 				alertMessageType !== 'loading' &&
-				showAlertMessage &&
+				!showAlertMessage &&
 				googleLocationResponse !== null
 			) {
 				setLocationDetail({
@@ -638,7 +652,7 @@ function WarehouseComponent(props) {
 						</p>
 						<Table
 							className={'custom-table'}
-							dataSource={warehouse}
+							dataSource={addKeysToList(warehouse)}
 							columns={columns}
 						/>
 					</Col>
@@ -663,7 +677,7 @@ function WarehouseComponent(props) {
 						</p>
 						<Table
 							className={'custom-table'}
-							dataSource={dropships}
+							dataSource={addKeysToList(dropships)}
 							columns={columns}
 						/>
 					</Col>

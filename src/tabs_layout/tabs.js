@@ -6,46 +6,45 @@ import ConnectionSettingsComponent from '../components/Pages/WweLtl/ConnectionSe
 import WarehouseComponent from '../components/Pages/WarehouseComponent';
 import QuoteSettingsComponentWwe from '../components/Pages/WweLtl/QuoteSettingsComponentWwe';
 import UserGuideComponent from '../components/Pages/UserGuideComponent';
-import AlertMessage from "../Utilities/AlertMessage";
+// import AlertMessage from "../Utilities/AlertMessage";
 
 const { TabPane } = Tabs;
 function callback(key) {
-  console.log(key);
+	console.log(key);
 }
 
-function TabsLayout(){
-    return(
-        <>
-            
-            <Tabs className={"tabs-wrp"} onChange={callback} type="card">
-                <TabPane tab="Connection Settinngs" key="1">
-                    <ConnectionSettingsComponent />
-                </TabPane>
-                <TabPane tab="Carriers" key="2">
-                    <CarriersComponent />
-                </TabPane>
-                <TabPane tab="Warehouse" key="3">
-                    <WarehouseComponent />
-                </TabPane>
-                <TabPane tab="Quote Settings" key="4">
-                    <QuoteSettingsComponentWwe />
-                </TabPane>
-                <TabPane tab="Product Settings" key="5">
-                   <ProductSettingsComponent />
-                </TabPane>
-                {/* <TabPane tab="Import CSV" key="6">
+function TabsLayout() {
+	return (
+		<>
+			<Tabs className={'tabs-wrp'} onChange={callback} type='card'>
+				<TabPane tab='Connection Settinngs' key='1'>
+					<ConnectionSettingsComponent />
+				</TabPane>
+				<TabPane tab='Carriers' key='2'>
+					<CarriersComponent />
+				</TabPane>
+				<TabPane tab='Warehouse' key='3'>
+					<WarehouseComponent />
+				</TabPane>
+				<TabPane tab='Quote Settings' key='4'>
+					<QuoteSettingsComponentWwe />
+				</TabPane>
+				<TabPane tab='Product Settings' key='5'>
+					<ProductSettingsComponent />
+				</TabPane>
+				{/* <TabPane tab="Import CSV" key="6">
                     <AlertMessage />
                     <ImportCsvComponent />
                 </TabPane>
                 <TabPane tab="Box Sizes" key="7">
                     <BoxSizesComponent />
                 </TabPane> */}
-                <TabPane tab="User Guide" key="6">
-                    <UserGuideComponent />
-                </TabPane>
-            </Tabs>
-        </>
-    );
+				<TabPane tab='User Guide' key='6'>
+					<UserGuideComponent />
+				</TabPane>
+			</Tabs>
+		</>
+	);
 }
 
 export default TabsLayout;
