@@ -1,21 +1,21 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { postData } from "../Actions/Action";
-import { getServices } from "../Actions/Carriers";
-import { Form, Table, Button, Space, Skeleton} from 'antd';
+import { getServices, getAddTabSettings } from "../Actions/Carriers";
+import { Form, Table, Button, Space, Skeleton } from "antd";
 
 const columns = [
   {
-    title: 'Sr#',
-    dataIndex: 'sr_no',
+    title: "Sr#",
+    dataIndex: "sr_no",
   },
   {
-    title: 'Name',
-    dataIndex: 'carrier_name',
+    title: "Name",
+    dataIndex: "carrier_name",
   },
   {
-    title: 'Logo',
-    dataIndex: 'carrier_logo',
+    title: "Logo",
+    dataIndex: "carrier_logo",
   },
 ];
 
@@ -23,54 +23,87 @@ class CarriersComponent extends React.Component {
   state = {
     selectedRowKeys: [], // Check here to configure the default column
     loading: true,
-    carrierServices: []
+    carrierServices: [],
   };
-  
-  componentDidMount(){
-    this.getServices()
-  }
 
+  componentDidMount() {
+    this.getServices();
+    this.getAddTabSettings();
+  }
+  getAddTabSettings = () => {
+    this.props.getAddTabSettings();
+  };
   getServices = () => {
     if (this.props.services === undefined) {
-      this.props.getServices()
+      this.props.getServices();
     }
     if (this.props.services !== null && this.props.services !== undefined) {
-      this.setState({loading: false})
+      this.setState({ loading: false });
     }
-  }
+  };
 
-  onSelectChange = selectedRowKeys => {
+  onSelectChange = (selectedRowKeys) => {
+    console.log("carriersSettings2", this.props.carriersSettings);
     this.setState({ selectedRowKeys });
   };
 
   saveCarriers = () => {
-    this.props.postData(this.state.selectedRowKeys,'GET_CARRIERS','submit_carriers')
+    this.props.postData(
+      this.state.selectedRowKeys,
+      "GET_CARRIERS",
+      "submit_carriers"
+    );
   };
 
   render() {
     const { selectedRowKeys } = this.state;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-    };
-    
+    console.log(this.props.carriersSettings);
+    let rowSelection = {};
+    if (this.props.carriersSettings !== null) {
+      rowSelection = {
+        selectedRowKeys: [...selectedRowKeys, ...this.props.carriersSettings],
+        //selectedRowKeys,
+        onChange: this.onSelectChange,
+      };
+    } else {
+      rowSelection = {
+        // selectedRowKeys: [...selectedRowKeys, ...this.props.carriersSettings],
+        selectedRowKeys,
+        onChange: this.onSelectChange,
+      };
+    }
+
     if (this.state.loading && this.props.services === undefined) {
       return (
-          <Fragment>
-              <Skeleton active />
-          </Fragment>
-      )
+        <Fragment>
+          <Skeleton active />
+        </Fragment>
+      );
     }
 
     return (
-        <Fragment>
-          <Table className="custom-table" rowSelection={rowSelection} columns={columns} dataSource={this.props.services} total={50} />
-          <Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
-              <Space>
-                <Button type="primary" size={"large"} htmlType="submit" name={`test`} onClick={this.saveCarriers}>Save Settings</Button>
-              </Space>
-          </Form.Item>
-        </Fragment>
+      <Fragment>
+        <Table
+          className="custom-table"
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={this.props.services}
+          total={50}
+        />
+        <Form.Item style={{ textAlign: "right", marginBottom: "0" }}>
+          <Space>
+            <Button
+              type="primary"
+              size={"large"}
+              htmlType="submit"
+              name={`test`}
+              onClick={this.saveCarriers}
+            >
+              Save Settings
+            </Button>
+          </Space>
+        </Form.Item>
+      </Fragment>
     );
   }
 }
@@ -78,16 +111,19 @@ class CarriersComponent extends React.Component {
 const mapStateToProps = (state) => {
   return {
     services: state.services,
-    skeleton_loading: state.skeleton_loading
-  }
-}
+    skeleton_loading: state.skeleton_loading,
+    carriersSettings: state.carriersSettings,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      postData: (data, type, url) => dispatch(postData(data, type, url)),
-      getServices: () => dispatch(getServices()),
-      dismissSkeleton: () => dispatch({type: 'SKELETON_LOADING', payload: true})
-  }
-}
+    postData: (data, type, url) => dispatch(postData(data, type, url)),
+    getServices: () => dispatch(getServices()),
+    getAddTabSettings: () => dispatch(getAddTabSettings()),
+    dismissSkeleton: () =>
+      dispatch({ type: "SKELETON_LOADING", payload: true }),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CarriersComponent);
