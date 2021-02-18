@@ -181,7 +181,7 @@ function ProductSettingsComponent(props) {
 
 	return (
 		<Fragment>
-			<Space className={'mb-2'}>
+			{/* <Space className={'mb-2'}>
 				<Button onClick={setSkuSort}>Sort Product SKU</Button>
 				<Button onClick={clearFilters}>Clear filters</Button>
 				<Button onClick={clearAll}>Clear filters and sorters</Button>
@@ -214,7 +214,7 @@ function ProductSettingsComponent(props) {
 						</Button>
 					</Form.Item>
 				</Form>
-			</Space>
+			</Space> */}
 			<Table
 				className='custom-table'
 				rowSelection={rowSelection}
