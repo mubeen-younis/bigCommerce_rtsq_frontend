@@ -41,7 +41,7 @@ function SideMenu(props) {
 				{props.installedCarriers
 					? props.installedCarriers.map((carrier, key) => (
 							<Menu.Item key={key}>
-								<Link to={`/${key}`}>{carrier.name}</Link>
+								<Link to={`/${carrier.id}`}>{carrier.name}</Link>
 							</Menu.Item>
 					  ))
 					: null}
