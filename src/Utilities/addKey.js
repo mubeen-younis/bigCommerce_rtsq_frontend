@@ -1,8 +1,12 @@
 export default function addKeysToList(arr) {
-	return arr.map((el, key) => {
-		return {
-			...el,
-			key: key + 1,
-		};
-	});
+	if (arr !== null && arr.length > 0) {
+		return arr.map((el, key) => {
+			return {
+				...el,
+				key: key + 1,
+			};
+		});
+	}else{
+		return [];
+	}
 }
