@@ -37,7 +37,7 @@ function ProductSettingsComponent(props) {
 
 	useEffect(() => {
 		if (props.allProducts == null) {
-			props.getAllProducts();
+			props.getAllProducts(props.token);
 		}
 
 		if (props.allProducts != null && props.allProducts !== undefined) {
@@ -468,7 +468,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getAllProducts: () => dispatch(getAllProducts()),
+		getAllProducts: (token) => dispatch(getAllProducts(token)),
 		submitProductSettings: (data, token) =>
 			dispatch(submitProductSettings(data, token)),
 	};

@@ -27,6 +27,12 @@ const Reducer = (state = initialState, action) => {
         ...state,
         token: action.payload,
       };
+    
+    case "CARRIER_ID":
+      return {
+        ...state,
+        carrierId: action.payload,
+      };  
     case "GET_CONNECTION_SETTINGS":
       return {
         ...state,

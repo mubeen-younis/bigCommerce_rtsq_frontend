@@ -50,13 +50,15 @@ class CarriersComponent extends React.Component {
     this.props.postData(
       this.state.selectedRowKeys,
       "GET_CARRIERS",
-      "submit_carriers"
+      "submit_carriers",
+      this.props.token
     );
   };
 
   render() {
     const { selectedRowKeys } = this.state;
     let rowSelection = {};
+    console.log('selectedRowKeys ', selectedRowKeys)
     if (this.props.carriersSettings !== null) {
       rowSelection = {
         selectedRowKeys: [...selectedRowKeys, ...this.props.carriersSettings],
@@ -68,6 +70,8 @@ class CarriersComponent extends React.Component {
         onChange: this.onSelectChange,
       };
     }
+
+    console.log('rowSelection ', rowSelection)
 
     if (this.state.loading && this.props.services === undefined) {
       return (
@@ -109,12 +113,13 @@ const mapStateToProps = (state) => {
     services: state.services,
     skeleton_loading: state.skeleton_loading,
     carriersSettings: state.carriersSettings,
+    token: state.token
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    postData: (data, type, url) => dispatch(postData(data, type, url)),
+    postData: (data, type, url, token) => dispatch(postData(data, type, url, token)),
     getServices: () => dispatch(getServices()),
     getAddTabSettings: () => dispatch(getAddTabSettings()),
     dismissSkeleton: () =>

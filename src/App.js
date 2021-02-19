@@ -14,18 +14,15 @@ const { Header, Content } = Layout;
 
 function App(props) {
 	const urlParams = new URLSearchParams(window.location.search);
-	const store =
-		urlParams.get('store') !== (undefined || null)
-			? urlParams.get('store')
-			: localStorage.getItem('store');
-
 	useEffect(() => {
-		if (props.token === undefined && store !== undefined) {
+		const store = urlParams.get('store') !== (undefined || null) ? urlParams.get('store') : localStorage.getItem('store');
+		console.log('store ', store)
+		if (props.token === (undefined || null) && store !== undefined) {
 			props.setToken(store);
 		}
-		props.locations();
+		props.locations(store);
 		props.getAllCarriers(store);
-	}, [props, store]);
+	}, [props]);
 
 	message.config({
 		maxCount: 1,
@@ -50,8 +47,8 @@ function App(props) {
 	const confirmModal = (ok, cancel) => {
 		props.confirmModalAction(ok, cancel);
 	};
-
-	if (store === null || store === undefined) {
+	console.log('props ', props)
+	if (props.token === null || props.token === undefined) {
 		return (
 			<>
 				<p>Invalid store.</p>
@@ -115,9 +112,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		locations: () => dispatch(getLocations()),
+		locations: (token) => dispatch(getLocations(token)),
 		getAllCarriers: (store) => dispatch(getAllCarriers({ store: store })),
-		setToken: (token) => dispatch({ type: 'TOKEN', payload: token }),
+		setToken: (token) => {
+			localStorage.setItem('store', token)
+			dispatch({ type: 'TOKEN', payload: token })
+		},
 		confirmModalAction: (ok, cancel) =>
 			dispatch({
 				type: 'CONFIRM_MODAL',

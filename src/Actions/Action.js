@@ -1,10 +1,10 @@
 import axios from 'axios';
-const config = {
-	headers: {
-		authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`
-	}, //Authorization: `Bearer ${token}`
-};
-export const postData = (data, type, url) => {
+export const postData = (data, type, url, token) => {
+	const config = {
+		headers: {
+			authorization: `Bearer ${token}`
+		}, //Authorization: `Bearer ${token}`
+	};
 	return (dispatch) => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
@@ -90,17 +90,18 @@ export const getConnectionSettings = () => {
 	};
 };
 
-export const getLocations = () => {
-	const data = {
-		shop: 'dev-azm-1.mybigcommerce.com',
+export const getLocations = (token) => {
+	const config = {
+		headers: {
+			authorization: `Bearer ${token}`
+		}
 	};
 
 	return (dispatch) => {
 		axios
 			.get(
 				`${process.env.REACT_APP_ENITURE_API_URL}/get_locations`,
-				config,
-				data
+				config
 			)
 			.then(async ({ data }) => {
 				if (data.data.length > 0) {
@@ -126,23 +127,16 @@ export const getLocations = () => {
 	};
 };
 
-export const getQuoteSettings = () => {
-	const token = '';
+export const getQuoteSettings = (token, carrierId) => {
 	const config = {
 		headers: {
-			'Access-Control-Allow-Origin': '*',
-			'Content-type': 'application/json',
-		}, //Authorization: `Bearer ${token}`
-	};
-	const data = {
-		shop: 'dev-azm-1.mybigcommerce.com',
+			authorization: `Bearer ${token}`
+		}
 	};
 
 	return (dispatch) => {
 		axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_qoute_settings`, {
-				data,
-			})
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_qoute_settings/${carrierId}`,config)
 			.then(({ data }) => {
 				//if (data.data.length > 0) {
 				dispatch({
@@ -155,7 +149,12 @@ export const getQuoteSettings = () => {
 	};
 };
 
-export const getAllProducts = () => {
+export const getAllProducts = (token) => {
+	const config = {
+		headers: {
+			authorization: `Bearer ${token}`
+		}
+	};
 	return (dispatch) => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_products`, config)

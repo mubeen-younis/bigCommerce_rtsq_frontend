@@ -79,13 +79,13 @@ function ImportCsvComponent(){
 
 const mapStateToProps = (state) => {
     return {
-      
+      token: state.token
     }
   }
   
   const mapDispatchToProps = (dispatch) => {
     return {
-        postData: (data, type, url) => dispatch(postData(data, type, url))
+        postData: (data, type, url, token) => dispatch(postData(data, type, url, token))
     }
   }
   

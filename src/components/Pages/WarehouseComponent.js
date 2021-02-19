@@ -57,11 +57,12 @@ function WarehouseComponent(props) {
 		deleteLocation,
 		warehouse,
 		dropships,
+		token
 	} = props;
 
 	const onFinish = (values) => {
 		console.log('location Detail', locationDetail);
-		postData(locationDetail, 'GET_LOCATIONS', 'save_location');
+		postData(locationDetail, 'GET_LOCATIONS', 'save_location', token);
 	};
 
 	if (
@@ -715,11 +716,12 @@ const mapStateToProps = (state) => {
 		showAlertMessage: state.showAlertMessage,
 		alertMessageType: state.alertMessageType,
 		confirmModal: state.confirmModal,
+		token: state.token
 	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	postData: (data, type, url) => dispatch(postData(data, type, url)),
+	postData: (data, type, url, token) => dispatch(postData(data, type, url, token)),
 	getGoogleResponse: (data) => dispatch(getGoogleResponse(data)),
 	getWarehouse: (id, locationDetail, visibility) =>
 		dispatch(getWarehouse(id, locationDetail, visibility)),

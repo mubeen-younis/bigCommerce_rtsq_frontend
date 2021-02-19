@@ -5,16 +5,18 @@ import TabsLayout from '../tabs_layout/tabs';
 import { getCarrierDetails } from "../Actions/Action";
 
 function RendorCarrier(props) {
-    const carrierId = useParams().carrierId
+    const {carrier_id} = useParams()
     useEffect(()=> {
-        if (carrierId !== undefined) {
+      console.log('carrierId ', carrier_id)
+        if (carrier_id !== undefined) {
+          props.setCarrierId(carrier_id)
             const data = {
-                carrierId: carrierId,
+                carrierId: carrier_id,
                 shop: 'dev-azm-1.myshopify.com'
             }
             props.getCarrierDetails(data)
         }
-    })
+    }, [])
     return (
         <>
           <TabsLayout />
@@ -24,13 +26,15 @@ function RendorCarrier(props) {
 
 const mapStateToProps = (state) => {
     return {
-        
+        token: state.token,
+        carrierId: state.carrierId
     }
   }
   
   const mapDispatchToProps = (dispatch) => {
     return {
       getCarrierDetails: () => dispatch(getCarrierDetails()),
+      setCarrierId: (carrierId) => dispatch({type: 'CARRIER_ID', payload: carrierId})
     }
   }
   

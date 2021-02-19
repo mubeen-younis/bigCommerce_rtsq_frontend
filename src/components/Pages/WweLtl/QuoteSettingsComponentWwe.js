@@ -35,14 +35,14 @@ function QuoteSettingsComponentWwe(props) {
 	const [ratingMethod, setRatingMethod] = useState(1);
 
 	useEffect(() => {
-		getQuoteSettings();
+		getQuoteSettings(props.token, props.carrierId);
 	}, [props.quoteSettings]);
 
 	const getQuoteSettings = () => {
 		console.log('props.quoteSettings ', props.quoteSettings);
 
 		if (props.quoteSettings === null || props.quoteSettings === undefined) {
-			props.getSettings();
+			props.getSettings(props.token, props.carrierId);
 		}
 
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -73,7 +73,7 @@ function QuoteSettingsComponentWwe(props) {
 	const onFinish = (data) => {
 		//data.method = ratingMethod
 		data = { ...data, ...quoteSettingsState };
-		props.postData(data);
+		props.postData(data, props.token);
 	};
 
 	/* if (props.quoteSettings === undefined || props.quoteSettings === null) {
@@ -513,13 +513,15 @@ function QuoteSettingsComponentWwe(props) {
 const mapStateToProps = (state) => {
 	return {
 		quoteSettings: state.quoteSettings,
+		token:state.token,
+		carrierId: state.carrierId
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		postData: (data) =>
-			dispatch(postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings')),
+		postData: (data, token) =>
+			dispatch(postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)),
 		getSettings: () => dispatch(getQuoteSettings()),
 	};
 };

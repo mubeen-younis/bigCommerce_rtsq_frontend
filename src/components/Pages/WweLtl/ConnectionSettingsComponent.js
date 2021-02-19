@@ -20,7 +20,7 @@ function ConnectionSettingsComponent(props){
     const onFinish = values => {
         values.testType = connectionState.testType
         values.installed_carrier_id = props.carrierId;
-        props.postData(values)
+        props.postData(values, props.token)
     };
     console.log('props', props)
     if (props.skeleton_loading && props.connectionSettings === null) {
@@ -96,13 +96,14 @@ function ConnectionSettingsComponent(props){
 const mapStateToProps = (state) => {
     return {
         connectionSettings: state.connectionSettings,
-        skeleton_loading: state.skeleton_loading
+        skeleton_loading: state.skeleton_loading,
+        token: state.token
     }
   }
   
 const mapDispatchToProps = (dispatch) => {
     return {
-        postData: (data) => dispatch(postData(data, 'GET_CONNECTION_SETTINGS', 'submit_connection_settings')),
+        postData: (data, token) => dispatch(postData(data, 'GET_CONNECTION_SETTINGS', 'submit_connection_settings', token)),
         getConnectionSettings: () => dispatch(getConnectionSettings())
     }
   }
