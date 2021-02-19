@@ -1,7 +1,7 @@
 import axios from 'axios';
 const config = {
 	headers: {
-		authorization: `Bearer eyJpdiI6IlIyWC9zeUZBTnBXeE50ODd0aFlqdnc9PSIsInZhbHVlIjoiS0RLOGNlUUN0Z1ZTTEdFRmpibWFaUT09IiwibWFjIjoi`,
+		authorization: `Bearer eyJpdiI6IjFRV1BBdmpXVXJXOFY0MW9yVlVPbEE9PSIsInZhbHVlIjoiUHI4bnNSM2NaTkRBMlhwYy9HaEUxUT09IiwibWFjIjoi`,
 	}, //Authorization: `Bearer ${token}`
 };
 export const postData = (data, type, url) => {

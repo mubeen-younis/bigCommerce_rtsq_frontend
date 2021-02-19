@@ -28,6 +28,7 @@ import {
 const { Title } = Typography;
 
 function WarehouseComponent(props) {
+	const [getLocationOn, setGetLocationOn] = useState(true)
 	const [visible1, setVisibleWarehouse] = useState(false);
 	const [warehouseDeleteModal, setDeleteWarehouseModal] = useState(false);
 	const [warehouseID, setWarehouseID] = useState(null);
@@ -63,22 +64,26 @@ function WarehouseComponent(props) {
 		postData(locationDetail, 'GET_LOCATIONS', 'save_location');
 	};
 
+	if (
+		alertMessageType !== 'loading' &&
+		!showAlertMessage &&
+		googleLocationResponse !== null &&
+		getLocationOn
+	) {
+		console.log('googleLocationResponse', googleLocationResponse)
+		setLocationDetail({
+			...locationDetail,
+			city: googleLocationResponse.city[0],
+			state: googleLocationResponse.state,
+			country: googleLocationResponse.country,
+		});
+		setGetLocationOn(false)
+	}
+
 	const getGoogleLocation = (zip_code) => {
 		if (zip_code.length > 4) {
 			getGoogleResponse(zip_code);
-
-			if (
-				alertMessageType !== 'loading' &&
-				!showAlertMessage &&
-				googleLocationResponse !== null
-			) {
-				setLocationDetail({
-					...locationDetail,
-					city: googleLocationResponse.city[0],
-					state: googleLocationResponse.state,
-					country: googleLocationResponse.country,
-				});
-			}
+			setGetLocationOn(true)
 		}
 	};
 
@@ -114,7 +119,12 @@ function WarehouseComponent(props) {
 
 	const columns = [
 		{
-			key: 'state',
+			key: 'nickname',
+			title: 'NickName',
+			dataIndex: 'nickname',
+		},
+		{
+			key: 'city',
 			title: 'City',
 			dataIndex: 'city',
 		},
