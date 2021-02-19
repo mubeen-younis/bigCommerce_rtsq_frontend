@@ -181,7 +181,7 @@ function ProductSettingsComponent(props) {
 
 	return (
 		<Fragment>
-			<Space className={'mb-2'}>
+			{/* <Space className={'mb-2'}>
 				<Button onClick={setSkuSort}>Sort Product SKU</Button>
 				<Button onClick={clearFilters}>Clear filters</Button>
 				<Button onClick={clearAll}>Clear filters and sorters</Button>
@@ -214,7 +214,7 @@ function ProductSettingsComponent(props) {
 						</Button>
 					</Form.Item>
 				</Form>
-			</Space>
+			</Space> */}
 			<Table
 				className='custom-table'
 				rowSelection={rowSelection}
@@ -403,15 +403,27 @@ function ProductSettingsComponent(props) {
 							<Row gutter={16}>
 								<Col span={12}>
 									<Form.Item name='dropship_location' label='Dropship Location'>
-										{console.log('props.locations ', props.dropships)}
+										{/* {console.log('props.locations ', props.dropships)} */}
 
-										<Select placeholder='Dropship Location'>
+										<Select
+											placeholder='Dropship Location'
+											size={'large'}
+											style={{ width: '100%' }}
+											name='dropship_location'
+											onChange={(location) =>
+												setselectedProductDetail({
+													...selectedProductDetail,
+													dropship_location: location,
+												})
+											}
+										>
 											{props.dropships !== null
-												? props.dropships.map((value, index) => {
+												? props.dropships.map((value) => {
 														if (value.type === 2) {
 															return (
 																<Option
-																	value={value.state}
+																	value={`${value.city} ${value.state} ${value.zip_code}`}
+																	key={value.id}
 																>{`${value.city} ${value.state} ${value.zip_code}`}</Option>
 															);
 														}

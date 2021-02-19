@@ -652,7 +652,7 @@ function WarehouseComponent(props) {
 						</p>
 						<Table
 							className={'custom-table'}
-							dataSource={addKeysToList(warehouse)}
+							dataSource={warehouse ? addKeysToList(warehouse) : []}
 							columns={columns}
 						/>
 					</Col>
@@ -677,7 +677,7 @@ function WarehouseComponent(props) {
 						</p>
 						<Table
 							className={'custom-table'}
-							dataSource={addKeysToList(dropships)}
+							dataSource={dropships ? addKeysToList(dropships) : []}
 							columns={columns}
 						/>
 					</Col>

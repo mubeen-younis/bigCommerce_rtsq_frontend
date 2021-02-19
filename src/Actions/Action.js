@@ -1,7 +1,7 @@
 import axios from 'axios';
 const config = {
 	headers: {
-		authorization: `Bearer eyJpdiI6IlIyWC9zeUZBTnBXeE50ODd0aFlqdnc9PSIsInZhbHVlIjoiS0RLOGNlUUN0Z1ZTTEdFRmpibWFaUT09IiwibWFjIjoi`,
+		authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
 	}, //Authorization: `Bearer ${token}`
 };
 export const postData = (data, type, url) => {
@@ -17,7 +17,7 @@ export const postData = (data, type, url) => {
 			.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data, config)
 			.then(({ data }) => {
 				if (!data.error) {
-					if (data.value !== undefined) {
+					if (data.data.value !== undefined) {
 						dispatch({
 							type: type,
 							payload: JSON.parse(data.data.value),
