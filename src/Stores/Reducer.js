@@ -106,6 +106,20 @@ const Reducer = (state = initialState, action) => {
         ),
       };
 
+    case "GET_INSTALLED_ADDONS":
+      return {
+        ...state,
+        installedAddons: action.payload,
+      };
+
+    case "CHANGE_ADDON_STATUS":
+      return {
+        ...state,
+        installedAddons: state.installedAddons.map((ic) =>
+          ic.addon_id === action.payload.addon_id ? action.payload : ic
+        ),
+      };
+
     case "GET_GOOGLE_LOCATION_RESPONSE":
       return {
         ...state,
