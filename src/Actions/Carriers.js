@@ -16,6 +16,9 @@ export const getServices = () => {
   const data = {
     shop: "dev-azm-1.mybigcommerce.com",
   };
+  const store = {
+    store: "uann2u",
+  };
 
   return (dispatch) => {
     axios
@@ -60,10 +63,11 @@ export const getAddTabSettings = () => {
       .get(`${process.env.REACT_APP_ENITURE_API_URL}/get_add_tab_sett_store`, {
         ...config,
         params: {
-          store_id: 1,
+          store: "uann2u", //localStorage.getItem("store"),
         },
       })
       .then(({ data }) => {
+        console.log(JSON.parse(data.data[0].value));
         dispatch({
           type: "GET_ADD_TAB_SETTING",
           payload: JSON.parse(data.data[0].value),
