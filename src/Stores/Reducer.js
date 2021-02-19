@@ -130,6 +130,11 @@ const Reducer = (state = initialState, action) => {
         ...state,
         allProducts: action.payload,
       };
+    case "GET_PLANS_INFO":
+      return {
+        ...state,
+        plansInfo: action.payload,
+      };
     case "CONFIRM_MODAL":
       return {
         ...state,
