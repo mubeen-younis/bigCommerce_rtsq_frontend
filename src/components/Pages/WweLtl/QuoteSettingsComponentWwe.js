@@ -513,16 +513,19 @@ function QuoteSettingsComponentWwe(props) {
 const mapStateToProps = (state) => {
 	return {
 		quoteSettings: state.quoteSettings,
-		token:state.token,
-		carrierId: state.carrierId
+		token: state.token,
+		carrierId: state.carrierId,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		postData: (data, token) =>
-			dispatch(postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)),
-		getSettings: () => dispatch(getQuoteSettings()),
+			dispatch(
+				postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)
+			),
+		getSettings: (token, carrier_id) =>
+			dispatch(getQuoteSettings(token, carrier_id)),
 	};
 };
 
