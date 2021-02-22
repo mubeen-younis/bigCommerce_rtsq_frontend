@@ -8,14 +8,14 @@ const { Sider } = Layout;
 const { Title } = Typography;
 
 function SideMenu(props) {
-	useEffect(() => {
+	/* useEffect(() => {
 		if (
 			props.installedCarriers === null ||
 			props.installedCarriers === undefined
 		) {
 			props.getInstalledCarriers();
 		}
-	}, [props]);
+	}, [props]); */
 
 	return (
 		<Sider
@@ -59,6 +59,14 @@ function SideMenu(props) {
 				<Title className={'carriers-name'} level={6}>
 					Installed Addons
 				</Title>
+				{props.installedAddons
+					? props.installedAddons.map((addon) => (
+							<Menu.Item key={addon.name}>
+								<Link to={`/${addon.id}`}>{addon.name}</Link>
+							</Menu.Item>
+					  ))
+					: null}
+
 				<Menu.Item key='3'>
 					<Link to={`/ard`}>Auto Detect Residential</Link>
 				</Menu.Item>
@@ -70,14 +78,15 @@ function SideMenu(props) {
 const mapStateToProps = (state) => {
 	return {
 		installedCarriers: state.installedCarriers,
+		installedAddons: state.installedAddons,
 		enitureCarriers: state.enitureCarriers,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+/* const mapDispatchToProps = (dispatch) => {
 	return {
 		getInstalledCarriers: () => dispatch(getInstalledCarriers()),
 	};
-};
+}; */
 
-export default connect(mapStateToProps, mapDispatchToProps)(SideMenu);
+export default connect(mapStateToProps, null)(SideMenu);
