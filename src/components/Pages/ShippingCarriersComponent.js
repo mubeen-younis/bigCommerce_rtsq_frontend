@@ -16,7 +16,7 @@ function ShippingCarriersComponent(props) {
 	//     enitureCarriers: null
 	// })
 
-	useEffect(() => {
+	/* useEffect(() => {
 		if (
 			props.installedCarriers === null ||
 			props.installedCarriers === undefined
@@ -26,7 +26,7 @@ function ShippingCarriersComponent(props) {
 		if (props.installedAddons === null || props.installedAddons === undefined) {
 			props.getInstalledAddons(props.token);
 		}
-	}, [props]);
+	}, [props]); */
 
 	const getInstalledCarriers = () => {
 		return props.installedCarriers.map((value, key) => {
@@ -231,7 +231,7 @@ function ShippingCarriersComponent(props) {
 					<Title level={4}>Recommended Carriers</Title>
 				</Col>
 
-				{props.carriers !== undefined || props.carriers !== null ? (
+				{props.carriers ? (
 					getEnitureCarriers()
 				) : (
 					<Col
