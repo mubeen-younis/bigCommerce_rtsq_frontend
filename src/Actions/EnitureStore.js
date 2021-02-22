@@ -35,8 +35,6 @@ export const installCarrier = (data) => {
 };
 
 export const getInstalledCarriers = (data) => {
-	console.log(data);
-
 	return (dispatch) => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getInstalledCarriers`, {
@@ -101,8 +99,6 @@ export const changeCarrierStatus = (carrier_id, token) => {
 };
 
 export const getInstalledAddons = (data) => {
-	console.log(data);
-
 	return (dispatch) => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_installed_addons`, {
@@ -147,6 +143,8 @@ export const changeAddonStatus = (addon_id, token) => {
 				}
 			)
 			.then(({ data }) => {
+				console.log(data);
+
 				dispatch({
 					type: 'CHANGE_ADDON_STATUS',
 					payload: data.data,

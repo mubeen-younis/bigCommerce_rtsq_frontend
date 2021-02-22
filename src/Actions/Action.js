@@ -275,8 +275,6 @@ export const getAllCarriers = (data) => {
 };
 
 export const getAllAddons = (data) => {
-	console.log(data);
-
 	const config = {
 		headers: {
 			authorization: `Bearer ${data.store}`,

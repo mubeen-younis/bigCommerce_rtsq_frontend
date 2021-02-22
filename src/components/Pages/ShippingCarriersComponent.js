@@ -53,9 +53,9 @@ function ShippingCarriersComponent(props) {
 							<Button
 								className={'mt-3'}
 								type='primary'
-								onClick={() =>
-									props.changeCarrierStatus(value.carrier_id, props.token)
-								}
+								onClick={() => {
+									props.changeCarrierStatus(value.carrier_id, props.token);
+								}}
 							>
 								{value.is_enabled === 1 ? 'Disable' : 'Enable'}
 							</Button>
@@ -285,9 +285,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		getInstalledCarriers: () => dispatch(getInstalledCarriers()),
-		changeCarrierStatus: (data) => dispatch(changeCarrierStatus(data)),
+		changeCarrierStatus: (data, token) =>
+			dispatch(changeCarrierStatus(data, token)),
 		getInstalledAddons: () => dispatch(getInstalledAddons()),
-		changeAddonStatus: (data) => dispatch(changeAddonStatus(data)),
+		changeAddonStatus: (data, token) =>
+			dispatch(changeAddonStatus(data, token)),
 	};
 };
 

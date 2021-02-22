@@ -108,7 +108,9 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				installedCarriers: state.installedCarriers.map((ic) =>
-					ic.carrier_id === action.payload.carrier_id ? action.payload : ic
+					ic.carrier_id === action.payload.carrier_id
+						? { ...ic, is_enabled: action.payload.is_enabled }
+						: ic
 				),
 			};
 
@@ -128,7 +130,9 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				installedAddons: state.installedAddons.map((ic) =>
-					ic.addon_id === action.payload.addon_id ? action.payload : ic
+					ic.addon_id === action.payload.addon_id
+						? { ...ic, is_enabled: action.payload.is_enabled }
+						: ic
 				),
 			};
 
