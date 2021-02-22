@@ -152,6 +152,12 @@ const Reducer = (state = initialState, action) => {
           body: action.payload.body,
         },
       };
+    
+    case "RAD_PLANS":
+      return {
+        ...state,
+        radPlans: action.payload
+      };  
 
     default:
       break;
