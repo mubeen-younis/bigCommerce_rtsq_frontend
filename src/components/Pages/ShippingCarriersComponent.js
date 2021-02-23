@@ -81,6 +81,13 @@ function ShippingCarriersComponent(props) {
 				>
 					<Card className={'card-custom'} style={{ width: '100%' }}>
 						<div className={'card-inner'}>
+							<figure>
+								<img
+									style={{ height: '70px' }}
+									src={`images/rad.jpg`}
+									alt={'text alt'}
+								/>
+							</figure>
 							<Meta title={value.name} description='' />
 							<Button
 								className={'mt-3'}

@@ -64,6 +64,7 @@ function WarehouseComponent(props) {
 	const onFinish = (values) => {
 		console.log('location Detail', locationDetail);
 		postData(locationDetail, 'GET_LOCATIONS', 'save_location', token);
+		setVisibleWarehouse(false);
 	};
 
 	if (

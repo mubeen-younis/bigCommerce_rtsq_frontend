@@ -62,8 +62,11 @@ export const getWarehouse = (
 				},
 			})
 			.then((res) => {
+				setVisibleWarehouse(true);
+
 				const { data } = res.data;
 				let additional = JSON.parse(data.additionals);
+
 				setLocationDetail({
 					id: data.id ?? '',
 					city: data.city ?? '',
@@ -92,7 +95,6 @@ export const getWarehouse = (
 
 					ld_enable_supress: additional.suppress_rates ?? false,
 				});
-				setVisibleWarehouse(true);
 
 				dispatch({
 					type: 'ALERT_MESSAGE',
