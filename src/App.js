@@ -133,7 +133,7 @@ function App(props) {
 								<Route exact path='/' component={ShippingCarriersComponent} />
 								<Route
 									exact
-									path='/ard'
+									path='/addon/:addon_id'
 									component={AutoDetectResidentialComponennt}
 								/>
 								<Route exact path='/:carrier_id' component={RendorCarrier} />

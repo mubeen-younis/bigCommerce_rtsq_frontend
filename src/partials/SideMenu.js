@@ -62,14 +62,14 @@ function SideMenu(props) {
 				{props.installedAddons
 					? props.installedAddons.map((addon) => (
 							<Menu.Item key={addon.name}>
-								<Link to={`/${addon.id}`}>{addon.name}</Link>
+								<Link to={`/addon/${addon.id}`}>{addon.name}</Link>
 							</Menu.Item>
 					  ))
 					: null}
 
-				<Menu.Item key='3'>
+				{/* <Menu.Item key='3'>
 					<Link to={`/ard`}>Auto Detect Residential</Link>
-				</Menu.Item>
+				</Menu.Item> */}
 			</Menu>
 		</Sider>
 	);

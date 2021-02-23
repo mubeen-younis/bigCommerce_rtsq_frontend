@@ -165,9 +165,9 @@ function ShippingCarriersComponent(props) {
 								className={'mt-3'}
 								type='primary'
 								// onClick={() => installCarrier(value.id)}
-								disabled={true}
+								disabled={value.status ? false : true}
 							>
-								Coming Soon
+								{value.status ? 'Install' : 'Coming Soon'}
 							</Button>
 						</div>
 					</Card>
