@@ -23,7 +23,11 @@ export const submitProductSettings = (data, token) => {
 					...data,
 					product_id: data.product_id,
 				},
-				config
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
 			)
 			.then(({ data }) => {
 				dispatch({
