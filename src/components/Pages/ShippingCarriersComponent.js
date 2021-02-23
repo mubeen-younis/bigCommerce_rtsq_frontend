@@ -168,8 +168,6 @@ function ShippingCarriersComponent(props) {
 		});
 	};
 
-	// const changeCarrierStatus = (carrierId, status) => {};
-
 	return (
 		<Fragment>
 			<Row gutter={25}>
@@ -231,7 +229,7 @@ function ShippingCarriersComponent(props) {
 					<Title level={4}>Recommended Carriers</Title>
 				</Col>
 
-				{props.carriers ? (
+				{props.carriers && props.carriers.length > 0 ? (
 					getEnitureCarriers()
 				) : (
 					<Col

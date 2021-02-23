@@ -133,55 +133,6 @@ const Reducer = (state = initialState, action) => {
 				addons: action.payload,
 			};
 
-    case "GET_GOOGLE_LOCATION_RESPONSE":
-      return {
-        ...state,
-        googleLocationResponse: action.payload,
-      };
-    case "GET_ALL_PRODUCTS":
-      return {
-        ...state,
-        allProducts: action.payload,
-      };
-    case "GET_PLANS_INFO":
-      return {
-        ...state,
-        plansInfo: action.payload,
-      };
-    case "CONFIRM_MODAL":
-      return {
-        ...state,
-        confirmModal: {
-          on: action.payload.on,
-          ok: action.payload.ok,
-          cancel: action.payload.cancel,
-          title: action.payload.title,
-          body: action.payload.body,
-        },
-      };
-    
-    case "RAD_PLANS":
-      return {
-        ...state,
-        radPlans: action.payload
-      };
-
-		case 'GET_INSTALLED_ADDONS':
-			return {
-				...state,
-				installedAddons: action.payload,
-			};
-
-		case 'CHANGE_ADDON_STATUS':
-			return {
-				...state,
-				installedAddons: state.installedAddons.map((addon) =>
-					addon.id === action.payload.id
-						? { ...addon, is_enabled: action.payload.is_enabled }
-						: addon
-				),
-			};
-
 		case 'GET_GOOGLE_LOCATION_RESPONSE':
 			return {
 				...state,
@@ -208,6 +159,55 @@ const Reducer = (state = initialState, action) => {
 					body: action.payload.body,
 				},
 			};
+
+		case 'RAD_PLANS':
+			return {
+				...state,
+				radPlans: action.payload,
+			};
+
+		case 'GET_INSTALLED_ADDONS':
+			return {
+				...state,
+				installedAddons: action.payload,
+			};
+
+		case 'CHANGE_ADDON_STATUS':
+			return {
+				...state,
+				installedAddons: state.installedAddons.map((addon) =>
+					addon.id === action.payload.id
+						? { ...addon, is_enabled: action.payload.is_enabled }
+						: addon
+				),
+			};
+
+		/* case 'GET_GOOGLE_LOCATION_RESPONSE':
+			return {
+				...state,
+				googleLocationResponse: action.payload,
+			};
+		case 'GET_ALL_PRODUCTS':
+			return {
+				...state,
+				allProducts: action.payload,
+			};
+		case 'GET_PLANS_INFO':
+			return {
+				...state,
+				plansInfo: action.payload,
+			};
+		case 'CONFIRM_MODAL':
+			return {
+				...state,
+				confirmModal: {
+					on: action.payload.on,
+					ok: action.payload.ok,
+					cancel: action.payload.cancel,
+					title: action.payload.title,
+					body: action.payload.body,
+				},
+			}; */
 
 		default:
 			break;

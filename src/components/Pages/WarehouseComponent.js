@@ -84,7 +84,7 @@ function WarehouseComponent(props) {
 
 	const getGoogleLocation = (zip_code) => {
 		if (zip_code.length > 4) {
-			getGoogleResponse(zip_code);
+			getGoogleResponse(zip_code, token);
 			setGetLocationOn(true);
 		}
 	};
@@ -708,7 +708,7 @@ function WarehouseComponent(props) {
 			<Modal
 				title='Confirm Delete'
 				visible={warehouseDeleteModal}
-				onOk={() => deleteLocation(warehouseID, setDeleteWarehouseModal)}
+				onOk={() => deleteLocation(warehouseID, setDeleteWarehouseModal, token)}
 				onCancel={() => setDeleteWarehouseModal(false)}
 				okText='Confirm'
 				cancelText='Cancel'
@@ -735,10 +735,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
 	postData: (data, type, url, token) =>
 		dispatch(postData(data, type, url, token)),
-	getGoogleResponse: (data) => dispatch(getGoogleResponse(data)),
+	getGoogleResponse: (data, token) => dispatch(getGoogleResponse(data, token)),
 	getWarehouse: (id, locationDetail, visibility, token) =>
 		dispatch(getWarehouse(id, locationDetail, visibility, token)),
-	deleteLocation: (id, visibility) => dispatch(deleteLocation(id, visibility)),
+	deleteLocation: (id, visibility, token) =>
+		dispatch(deleteLocation(id, visibility, token)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WarehouseComponent);

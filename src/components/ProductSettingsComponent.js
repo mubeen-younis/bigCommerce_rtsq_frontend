@@ -52,7 +52,7 @@ function ProductSettingsComponent(props) {
 			visible: true,
 		});
 
-		getProduct(id, setselectedProductDetail, setLoadProduct);
+		getProduct(id, setselectedProductDetail, setLoadProduct, props.token);
 	};
 
 	const onClose = () => {

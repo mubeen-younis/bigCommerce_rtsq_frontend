@@ -6,7 +6,7 @@ const config = {
 	},
 };
 
-export const getGoogleResponse = (zipcode) => {
+export const getGoogleResponse = (zipcode, token) => {
 	return (dispatch) => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
@@ -19,7 +19,11 @@ export const getGoogleResponse = (zipcode) => {
 		axios
 			.get(
 				`${process.env.REACT_APP_ENITURE_API_URL}/get_loc_from_zip/${zipcode}`,
-				config
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
 			)
 			.then(({ data }) => {
 				if (!data.error) {
@@ -102,7 +106,7 @@ export const getWarehouse = (
 	};
 };
 
-export const deleteLocation = (id, setDeleteWarehouseModal) => {
+export const deleteLocation = (id, setDeleteWarehouseModal, token) => {
 	return (dispatch) => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
@@ -118,7 +122,11 @@ export const deleteLocation = (id, setDeleteWarehouseModal) => {
 				{
 					location_id: id,
 				},
-				config
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
 			)
 			.then(({ data }) => {
 				dispatch({

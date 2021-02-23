@@ -1,57 +1,64 @@
-import axios from "axios";
+import axios from 'axios';
 
 const config = {
-  headers: {
-    authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
-  },
+	headers: {
+		authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
+	},
 };
 
 export const submitProductSettings = (data, token) => {
-  return (dispatch) => {
-    dispatch({
-      type: "ALERT_MESSAGE",
-      payload: {
-        showAlertMessage: true,
-        alertMessageType: "loading",
-      },
-    });
+	return (dispatch) => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		});
 
-    axios
-      .post(
-        `${process.env.REACT_APP_ENITURE_API_URL}/update_product`,
-        {
-          ...data,
-          product_id: data.product_id,
-        },
-        config
-      )
-      .then(({ data }) => {
-        dispatch({
-          type: "ALERT_MESSAGE",
-          payload: {
-            alertMessage: data.message,
-            showAlertMessage: true,
-            alertMessageType: data.error ? "error" : "success",
-          },
-        });
-      })
-      .catch((error) => {});
-  };
+		axios
+			.post(
+				`${process.env.REACT_APP_ENITURE_API_URL}/update_product`,
+				{
+					...data,
+					product_id: data.product_id,
+				},
+				config
+			)
+			.then(({ data }) => {
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: data.message,
+						showAlertMessage: true,
+						alertMessageType: data.error ? 'error' : 'success',
+					},
+				});
+			})
+			.catch((error) => {});
+	};
 };
 
-export const getProduct = (id, setselectedProductDetail, setLoadProduct) => {
-  axios
-    .get(`${process.env.REACT_APP_ENITURE_API_URL}/get_product`, {
-      ...config,
-      params: {
-        product_id: id,
-      },
-    })
-    .then((res) => {
-      let data = JSON.parse(res.data.data[0].settings);
-      data = { ...data, product_id: id };
+export const getProduct = (
+	id,
+	setselectedProductDetail,
+	setLoadProduct,
+	token
+) => {
+	axios
+		.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_product`, {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+			params: {
+				product_id: id,
+			},
+		})
+		.then((res) => {
+			let data = JSON.parse(res.data.data[0].settings);
+			data = { ...data, product_id: id };
 
-      setselectedProductDetail(data);
-      setLoadProduct(false);
-    });
+			setselectedProductDetail(data);
+			setLoadProduct(false);
+		});
 };
