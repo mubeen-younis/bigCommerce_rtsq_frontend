@@ -41,13 +41,20 @@ export const getGoogleResponse = (zipcode) => {
 	};
 };
 
-export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse) => {
+export const getWarehouse = (
+	id,
+	setLocationDetail,
+	setVisibleWarehouse,
+	token
+) => {
 	return (dispatch) => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_location`, {
-				...config,
 				params: {
 					location_id: id,
+				},
+				headers: {
+					authorization: `Bearer ${token}`,
 				},
 			})
 			.then((res) => {

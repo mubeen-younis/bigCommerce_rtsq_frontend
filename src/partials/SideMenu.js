@@ -39,8 +39,8 @@ function SideMenu(props) {
 				</Title>
 
 				{props.installedCarriers
-					? props.installedCarriers.map((carrier, key) => (
-							<Menu.Item key={key}>
+					? props.installedCarriers.map((carrier) => (
+							<Menu.Item key={carrier.name}>
 								<Link to={`/${carrier.id}`}>{carrier.name}</Link>
 							</Menu.Item>
 					  ))

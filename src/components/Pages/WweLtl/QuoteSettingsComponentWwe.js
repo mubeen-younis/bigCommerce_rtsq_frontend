@@ -251,7 +251,6 @@ function QuoteSettingsComponentWwe(props) {
 						<Form.Item className={'mb-0'}>
 							<Checkbox
 								name='auto_detected_residential_addresses'
-								value={true}
 								checked={quoteSettingsState.autoDetectedResidentialAddresses}
 								onChange={() =>
 									setQuoteSettingsState({
@@ -259,6 +258,7 @@ function QuoteSettingsComponentWwe(props) {
 										autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses,
 									})
 								}
+								disabled={props.plansInfo !== undefined ? false : true}
 							>
 								<a href='#!' className='stnd-plan text-danger'>
 									Standard plan required
@@ -321,7 +321,6 @@ function QuoteSettingsComponentWwe(props) {
 						<Form.Item className={'mb-0'}>
 							<Checkbox
 								name='offer_lift_gate_delivery'
-								value={true}
 								checked={quoteSettingsState.offerLiftGateDelivery}
 								onChange={() =>
 									setQuoteSettingsState({
@@ -329,6 +328,7 @@ function QuoteSettingsComponentWwe(props) {
 										offerLiftGateDelivery: !quoteSettingsState.offerLiftGateDelivery,
 									})
 								}
+								disabled={props.plansInfo !== undefined ? false : true}
 							>
 								<a href='#!' className='stnd-plan text-danger'>
 									Standard plan required
@@ -346,7 +346,6 @@ function QuoteSettingsComponentWwe(props) {
 						<Form.Item className={'mb-0'}>
 							<Checkbox
 								name='auto_detected_residential_addresses_lfg'
-								value={true}
 								checked={quoteSettingsState.autoDetectedResidentialAddressesLfg}
 								onChange={() =>
 									setQuoteSettingsState({
@@ -354,6 +353,7 @@ function QuoteSettingsComponentWwe(props) {
 										autoDetectedResidentialAddressesLfg: !quoteSettingsState.autoDetectedResidentialAddressesLfg,
 									})
 								}
+								disabled={props.plansInfo !== undefined ? false : true}
 							>
 								<a href='#!' className='stnd-plan text-danger'>
 									Standard plan required
@@ -374,6 +374,7 @@ function QuoteSettingsComponentWwe(props) {
 								defaultValue={`84`}
 								size={'large'}
 								style={{ width: '100%' }}
+								disabled={props.plansInfo !== undefined ? false : true}
 							>
 								<Option value='84'>General Merchandise</Option>
 								<Option value='85'>Antiques / Art / Collectibles</Option>
@@ -477,7 +478,6 @@ function QuoteSettingsComponentWwe(props) {
 						<Form.Item className={'mb-0'}>
 							<Checkbox
 								name='return_rates'
-								value={true}
 								checked={quoteSettingsState.returnRates}
 								onChange={() =>
 									setQuoteSettingsState({
@@ -485,6 +485,7 @@ function QuoteSettingsComponentWwe(props) {
 										returnRates: !quoteSettingsState.returnRates,
 									})
 								}
+								disabled={props.plansInfo !== undefined ? false : true}
 							>
 								<a href='#!' className='stnd-plan text-danger'>
 									Standard plan required
@@ -515,6 +516,7 @@ const mapStateToProps = (state) => {
 		quoteSettings: state.quoteSettings,
 		token: state.token,
 		carrierId: state.carrierId,
+		plansInfo: state.plansInfo,
 	};
 };
 

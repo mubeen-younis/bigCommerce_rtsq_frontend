@@ -98,6 +98,19 @@ const Reducer = (state = initialState, action) => {
 				enitureCarriers: action.payload,
 			};
 
+		case 'INSTALL_CARRIER':
+			const newInstalledCarrier = state.carriers.filter(
+				(carrier) => carrier.id === action.payload
+			);
+
+			return {
+				...state,
+				installedCarriers: [...state.installedCarriers, ...newInstalledCarrier],
+				carriers: state.carriers.filter(
+					(carrier) => carrier.id !== action.payload
+				),
+			};
+
 		case 'GET_INSTALLED_CARRIERS':
 			return {
 				...state,
@@ -129,10 +142,10 @@ const Reducer = (state = initialState, action) => {
 		case 'CHANGE_ADDON_STATUS':
 			return {
 				...state,
-				installedAddons: state.installedAddons.map((ic) =>
-					ic.addon_id === action.payload.addon_id
-						? { ...ic, is_enabled: action.payload.is_enabled }
-						: ic
+				installedAddons: state.installedAddons.map((addon) =>
+					addon.id === action.payload.id
+						? { ...addon, is_enabled: action.payload.is_enabled }
+						: addon
 				),
 			};
 

@@ -1,7 +1,9 @@
 import React, { Fragment, useEffect } from 'react';
 import { Row, Col, Button, Typography, Card } from 'antd';
 import { connect } from 'react-redux';
+
 import {
+	installCarrier,
 	getInstalledCarriers,
 	changeCarrierStatus,
 	changeAddonStatus,
@@ -118,7 +120,7 @@ function ShippingCarriersComponent(props) {
 							<Button
 								className={'mt-3'}
 								type='primary'
-								onClick={() => installCarrier(value.id)}
+								onClick={() => props.installCarrier(value.id, props.token)}
 							>
 								Install
 							</Button>
@@ -165,8 +167,6 @@ function ShippingCarriersComponent(props) {
 			);
 		});
 	};
-
-	const installCarrier = (carrierId) => {};
 
 	// const changeCarrierStatus = (carrierId, status) => {};
 
@@ -290,6 +290,7 @@ const mapDispatchToProps = (dispatch) => {
 		getInstalledAddons: () => dispatch(getInstalledAddons()),
 		changeAddonStatus: (data, token) =>
 			dispatch(changeAddonStatus(data, token)),
+		installCarrier: (id, token) => dispatch(installCarrier(id, token)),
 	};
 };
 

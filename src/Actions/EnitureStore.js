@@ -7,20 +7,28 @@ const config = {
 const data = {
 	store: 'uann2u',
 };
-export const installCarrier = (data) => {
+export const installCarrier = (carrier_id, token) => {
 	return (dispatch) => {
 		axios
-			.post(`${process.env.REACT_APP_ENITURE_API_URL}/${'url'}`, data)
+			.post(
+				`${process.env.REACT_APP_ENITURE_API_URL}/installCarrier`,
+				{
+					carrier_id,
+				},
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+			)
 			.then(({ data }) => {
 				if (!data.error) {
-					if (data.value !== undefined) {
-						dispatch({
-							type: 'type',
-							payload: JSON.parse(data.data.value),
-						});
-					}
+					dispatch({
+						type: 'INSTALL_CARRIER',
+						payload: data.data,
+					});
 				}
-				console.log('data', data);
+				console.log(data);
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
@@ -143,8 +151,6 @@ export const changeAddonStatus = (addon_id, token) => {
 				}
 			)
 			.then(({ data }) => {
-				console.log(data);
-
 				dispatch({
 					type: 'CHANGE_ADDON_STATUS',
 					payload: data.data,
