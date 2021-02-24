@@ -20,6 +20,7 @@ function ConnectionSettingsComponent(props){
     const onFinish = values => {
         values.testType = connectionState.testType
         values.installed_carrier_id = props.carrierId;
+        values.carrierId = props.carrierId
         props.postData(values, props.token)
     };
     console.log('props', props)
@@ -97,7 +98,8 @@ const mapStateToProps = (state) => {
     return {
         connectionSettings: state.connectionSettings,
         skeleton_loading: state.skeleton_loading,
-        token: state.token
+        token: state.token,
+        carrierId: state.carrierId
     }
   }
   
