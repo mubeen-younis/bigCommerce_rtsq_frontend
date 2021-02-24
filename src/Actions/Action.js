@@ -278,7 +278,7 @@ export const getAllAddons = (data) => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${data.store}`,
-		}, //Authorization: `Bearer ${token}`
+		},
 	};
 
 	return (dispatch) => {
@@ -288,21 +288,10 @@ export const getAllAddons = (data) => {
 				config
 			)
 			.then(({ data }) => {
-				if (!data.error) {
-					dispatch({
-						type: 'GET_ADDONS',
-						payload: data.addons,
-					});
-				}
-
-				/* dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						alertMessage: data.message,
-						showAlertMessage: true,
-						alertMessageType: data.error ? 'error' : 'success',
-					},
-				}); */
+				dispatch({
+					type: 'GET_ADDONS',
+					payload: data.data,
+				});
 			})
 			.catch((error) => {});
 	};

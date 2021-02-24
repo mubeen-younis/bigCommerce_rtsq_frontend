@@ -343,7 +343,9 @@ function WarehouseComponent(props) {
 													enable_instore: !locationDetail.enable_instore,
 												})
 											}
-											disabled={plansInfo !== undefined ? false : true}
+											disabled={
+												plansInfo && plansInfo.plan_type === 3 ? false : true
+											}
 										></Checkbox>
 									</Form.Item>
 								</Col>
@@ -370,7 +372,9 @@ function WarehouseComponent(props) {
 											name='instore_miles'
 											value={locationDetail.instore_miles}
 											onChange={changeValue}
-											disabled={plansInfo !== undefined ? false : true}
+											disabled={
+												plansInfo && plansInfo.plan_type === 3 ? false : true
+											}
 										/>
 									</Form.Item>
 								</Col>
@@ -403,7 +407,9 @@ function WarehouseComponent(props) {
 											style={{ width: '100%' }}
 											onChange={(e) => handleChange('instore_zipcodes', e)}
 											tokenSeparators={[',']}
-											disabled={plansInfo !== undefined ? false : true}
+											disabled={
+												plansInfo && plansInfo.plan_type === 3 ? false : true
+											}
 										/>
 									</Form.Item>
 								</Col>
@@ -434,7 +440,9 @@ function WarehouseComponent(props) {
 											value={locationDetail.instock_description}
 											placeholder='In-stock pick up'
 											onChange={changeValue}
-											disabled={plansInfo !== undefined ? false : true}
+											disabled={
+												plansInfo && plansInfo.plan_type === 3 ? false : true
+											}
 										/>
 									</Form.Item>
 								</Col>
@@ -473,7 +481,9 @@ function WarehouseComponent(props) {
 													enable_ld: !locationDetail.enable_ld,
 												})
 											}
-											disabled={plansInfo !== undefined ? false : true}
+											disabled={
+												plansInfo && plansInfo.plan_type === 3 ? false : true
+											}
 										></Checkbox>
 									</Form.Item>
 								</Col>
@@ -497,7 +507,9 @@ function WarehouseComponent(props) {
 											name='ld_miles'
 											value={locationDetail.ld_miles}
 											onChange={changeValue}
-											disabled={plansInfo !== undefined ? false : true}
+											disabled={
+												plansInfo && plansInfo.plan_type === 3 ? false : true
+											}
 										/>
 									</Form.Item>
 								</Col>
@@ -529,7 +541,9 @@ function WarehouseComponent(props) {
 											style={{ width: '100%' }}
 											onChange={(e) => handleChange('ld_zipcodes', e)}
 											tokenSeparators={[',']}
-											disabled={plansInfo !== undefined ? false : true}
+											disabled={
+												plansInfo && plansInfo.plan_type === 3 ? false : true
+											}
 										/>
 									</Form.Item>
 								</Col>
@@ -560,7 +574,9 @@ function WarehouseComponent(props) {
 											value={locationDetail.ld_description}
 											placeholder='Local delivery'
 											onChange={changeValue}
-											disabled={plansInfo !== undefined ? false : true}
+											disabled={
+												plansInfo && plansInfo.plan_type === 3 ? false : true
+											}
 										/>
 									</Form.Item>
 								</Col>
@@ -590,7 +606,9 @@ function WarehouseComponent(props) {
 											name='ld_fee'
 											value={locationDetail.ld_fee}
 											onChange={changeValue}
-											disabled={plansInfo !== undefined ? false : true}
+											disabled={
+												plansInfo && plansInfo.plan_type === 3 ? false : true
+											}
 										/>
 									</Form.Item>
 								</Col>
@@ -629,7 +647,9 @@ function WarehouseComponent(props) {
 													ld_enable_supress: !locationDetail.ld_enable_supress,
 												})
 											}
-											disabled={plansInfo !== undefined ? false : true}
+											disabled={
+												plansInfo && plansInfo.plan_type === 3 ? false : true
+											}
 										></Checkbox>
 									</Form.Item>
 								</Col>

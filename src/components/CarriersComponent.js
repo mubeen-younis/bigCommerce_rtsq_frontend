@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { postData } from '../Actions/Action';
 import { getServices, getAddTabSettings } from '../Actions/Carriers';
@@ -56,7 +56,9 @@ class CarriersComponent extends React.Component {
 	render() {
 		const { selectedRowKeys } = this.state;
 		let rowSelection = {};
+
 		console.log('selectedRowKeys ', selectedRowKeys);
+
 		if (this.props.carriersSettings !== null) {
 			rowSelection = {
 				selectedRowKeys: [...selectedRowKeys, ...this.props.carriersSettings],
