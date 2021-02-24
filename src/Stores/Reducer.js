@@ -111,6 +111,17 @@ const Reducer = (state = initialState, action) => {
 				),
 			};
 
+		case 'INSTALL_ADDON':
+			const newInstalledAddon = state.addons.filter(
+				(add) => add.id === action.payload
+			);
+
+			return {
+				...state,
+				installedAddons: [...state.installedAddons, ...newInstalledAddon],
+				addons: state.addons.filter((add) => add.id !== action.payload),
+			};
+
 		case 'GET_INSTALLED_CARRIERS':
 			return {
 				...state,
@@ -181,33 +192,6 @@ const Reducer = (state = initialState, action) => {
 						: addon
 				),
 			};
-
-		/* case 'GET_GOOGLE_LOCATION_RESPONSE':
-			return {
-				...state,
-				googleLocationResponse: action.payload,
-			};
-		case 'GET_ALL_PRODUCTS':
-			return {
-				...state,
-				allProducts: action.payload,
-			};
-		case 'GET_PLANS_INFO':
-			return {
-				...state,
-				plansInfo: action.payload,
-			};
-		case 'CONFIRM_MODAL':
-			return {
-				...state,
-				confirmModal: {
-					on: action.payload.on,
-					ok: action.payload.ok,
-					cancel: action.payload.cancel,
-					title: action.payload.title,
-					body: action.payload.body,
-				},
-			}; */
 
 		default:
 			break;

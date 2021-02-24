@@ -42,6 +42,41 @@ export const installCarrier = (carrier_id, token) => {
 	};
 };
 
+export const installAddon = (addon_id, token) => {
+	return (dispatch) => {
+		axios
+			.post(
+				`${process.env.REACT_APP_ENITURE_API_URL}/installAddon`,
+				{
+					addon_id,
+				},
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.then(({ data }) => {
+				if (!data.error) {
+					dispatch({
+						type: 'INSTALL_ADDON',
+						payload: data.data,
+					});
+				}
+				console.log(data);
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: data.message,
+						showAlertMessage: true,
+						alertMessageType: data.error ? 'error' : 'success',
+					},
+				});
+			})
+			.catch((error) => {});
+	};
+};
+
 export const getInstalledCarriers = (data) => {
 	return (dispatch) => {
 		axios
@@ -51,10 +86,17 @@ export const getInstalledCarriers = (data) => {
 				},
 			})
 			.then(({ data }) => {
-				dispatch({
-					type: 'GET_INSTALLED_CARRIERS',
-					payload: data.data.installedCarriers,
-				});
+				if (data.data.installedCarriers) {
+					dispatch({
+						type: 'GET_INSTALLED_CARRIERS',
+						payload: data.data.installedCarriers,
+					});
+				} else {
+					dispatch({
+						type: 'GET_INSTALLED_CARRIERS',
+						payload: data.data,
+					});
+				}
 
 				/* dispatch({
 					type: 'ALERT_MESSAGE',
@@ -115,20 +157,10 @@ export const getInstalledAddons = (data) => {
 				},
 			})
 			.then(({ data }) => {
-				//console.log("addons", data.data[0]);
 				dispatch({
 					type: 'GET_INSTALLED_ADDONS',
 					payload: data.data,
 				});
-
-				/* dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						alertMessage: data.message,
-						showAlertMessage: true,
-						alertMessageType: data.error ? 'error' : 'success',
-					},
-				}); */
 			})
 			.catch((err) => {
 				console.log(err);

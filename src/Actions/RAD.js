@@ -2,8 +2,8 @@ import axios from 'axios';
 export const getRadPlans = (token) => {
 	const config = {
 		headers: {
-			authorization: `Bearer ${token}`
-		}
+			authorization: `Bearer ${token}`,
+		},
 	};
 	return (dispatch) => {
 		dispatch({
@@ -20,11 +20,11 @@ export const getRadPlans = (token) => {
 					if (data.data !== undefined) {
 						dispatch({
 							type: 'RAD_PLANS',
-							payload: data.data,
+							payload: data.data.plans,
 						});
 					}
 				}
-				console.log('data', data);
+
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
