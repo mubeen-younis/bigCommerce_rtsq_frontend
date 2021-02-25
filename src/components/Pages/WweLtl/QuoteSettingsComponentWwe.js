@@ -43,6 +43,7 @@ function QuoteSettingsComponentWwe(props) {
 
 		if (props.quoteSettings === null || props.quoteSettings === undefined) {
 			props.getSettings(props.token, props.carrierId);
+			setLoading(false);
 		}
 
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -76,14 +77,6 @@ function QuoteSettingsComponentWwe(props) {
 		props.postData(data, props.token);
 	};
 
-	/* if (props.quoteSettings === undefined || props.quoteSettings === null) {
-		return (
-			<>
-				<Skeleton active />
-			</>
-		);
-	} */
-
 	return loading &&
 		(props.quoteSettings === undefined || props.quoteSettings) === null ? (
 		<>
@@ -107,6 +100,7 @@ function QuoteSettingsComponentWwe(props) {
 						<Form.Item className={'mb-0'} name='method'>
 							<Select
 								defaultValue={
+									props.quoteSettings &&
 									props.quoteSettings.method !== undefined
 										? props.quoteSettings.method
 										: 1
@@ -167,7 +161,12 @@ function QuoteSettingsComponentWwe(props) {
 						</Col>
 						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 							<Form.Item className={'mb-0'} name='label_as'>
-								<Input name='label_as' value={props.quoteSettings.label_as} />
+								<Input
+									name='label_as'
+									value={
+										props.quoteSettings ? props.quoteSettings.label_as : ''
+									}
+								/>
 							</Form.Item>
 							<div className={'text-gray'}>
 								what the user sees during checkout, e.g. "Freight". Leave blank
