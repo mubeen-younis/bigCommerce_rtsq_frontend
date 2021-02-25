@@ -99,27 +99,45 @@ const Reducer = (state = initialState, action) => {
 			};
 
 		case 'INSTALL_CARRIER':
-			const newInstalledCarrier = state.carriers.filter(
-				(carrier) => carrier.id === action.payload
-			);
+			let newInstalledCarrier = {};
+
+			state.carriers.forEach((carr) => {
+				if (carr.id === action.payload.carrier_id) {
+					newInstalledCarrier = {
+						...action.payload,
+						name: carr.name,
+						logo: carr.logo,
+					};
+				}
+			});
 
 			return {
 				...state,
-				installedCarriers: [...state.installedCarriers, ...newInstalledCarrier],
+				installedCarriers: [...state.installedCarriers, newInstalledCarrier],
 				carriers: state.carriers.filter(
-					(carrier) => carrier.id !== action.payload
+					(carrier) => carrier.id !== action.payload.carrier_id
 				),
 			};
 
 		case 'INSTALL_ADDON':
-			const newInstalledAddon = state.addons.filter(
-				(add) => add.id === action.payload
-			);
+			let newInstalledAddon = {};
+
+			state.addons.forEach((add) => {
+				if (add.id === action.payload.addon_id) {
+					newInstalledAddon = {
+						...action.payload,
+						name: add.name,
+						logo: add.logo,
+					};
+				}
+			});
 
 			return {
 				...state,
-				installedAddons: [...state.installedAddons, ...newInstalledAddon],
-				addons: state.addons.filter((add) => add.id !== action.payload),
+				installedAddons: [...state.installedAddons, newInstalledAddon],
+				addons: state.addons.filter(
+					(add) => add.id !== action.payload.addon_id
+				),
 			};
 
 		case 'GET_INSTALLED_CARRIERS':
@@ -132,7 +150,7 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				installedCarriers: state.installedCarriers.map((ic) =>
-					ic.carrier_id === action.payload.carrier_id
+					ic.id === action.payload.id
 						? { ...ic, is_enabled: action.payload.is_enabled }
 						: ic
 				),

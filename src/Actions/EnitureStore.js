@@ -22,13 +22,15 @@ export const installCarrier = (carrier_id, token) => {
 				}
 			)
 			.then(({ data }) => {
+				console.log(data);
+
 				if (!data.error) {
 					dispatch({
 						type: 'INSTALL_CARRIER',
 						payload: data.data,
 					});
 				}
-				console.log(data);
+
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {

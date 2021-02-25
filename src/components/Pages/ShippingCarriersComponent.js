@@ -40,7 +40,7 @@ function ShippingCarriersComponent(props) {
 								className={'mt-3'}
 								type='primary'
 								onClick={() => {
-									props.changeCarrierStatus(value.carrier_id, props.token);
+									props.changeCarrierStatus(value.id, props.token);
 								}}
 							>
 								{value.is_enabled === 1 ? 'Disable' : 'Enable'}
@@ -150,7 +150,7 @@ function ShippingCarriersComponent(props) {
 							<Button
 								className={'mt-3'}
 								type='primary'
-								onClick={() => installAddon(value.id, props.token)}
+								onClick={() => props.installAddon(value.id, props.token)}
 								disabled={value.status ? false : true}
 							>
 								{value.status ? 'Install' : 'Coming Soon'}
