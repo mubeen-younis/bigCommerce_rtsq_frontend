@@ -34,8 +34,6 @@ function ConnectionSettingsComponent(props){
 
     return(
         <Fragment>
-            {console.log('props 1', props)}
-            {console.log(props.connectionSettings)}
             <div className={"note-bx"}>
                 <strong>Note!</strong> You must have a World Wide Express account to use this application. If you do not have one, click here to access the new account request form.
             </div>
