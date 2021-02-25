@@ -16,14 +16,24 @@ export const getRadPlans = (token) => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/rad/get_plans`, config)
 			.then(({ data }) => {
-				if (!data.error) {
-					if (data.data !== undefined) {
+				/* if (!data.error && data.data.length === 0) {
+					if (data.data.plans) {
 						dispatch({
 							type: 'RAD_PLANS',
 							payload: data.data.plans,
 						});
+					} else {
+						dispatch({
+							type: 'RAD_PLANS',
+							payload: data.data,
+						});
 					}
-				}
+				} */
+
+				dispatch({
+					type: 'RAD_PLANS',
+					payload: data.data,
+				});
 
 				dispatch({
 					type: 'ALERT_MESSAGE',

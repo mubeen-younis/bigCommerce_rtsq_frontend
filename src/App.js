@@ -96,7 +96,6 @@ function App(props) {
 	}
 
 	if (
-		alertMessageType === 'loading' ||
 		installedCarriers === undefined ||
 		installedAddons === undefined ||
 		carriers === undefined ||
