@@ -28,7 +28,7 @@ class CarriersComponent extends React.Component {
 
 	componentDidMount() {
 		this.getServices();
-		this.props.getAddTabSettings(this.props.token);
+		this.props.getAddTabSettings(this.props.token, this.props.carrierId);
 	}
 
 	getServices = () => {
@@ -114,6 +114,7 @@ const mapStateToProps = (state) => {
 		skeleton_loading: state.skeleton_loading,
 		carriersSettings: state.carriersSettings,
 		token: state.token,
+		carrierId: state.carrierId,
 	};
 };
 
@@ -122,7 +123,7 @@ const mapDispatchToProps = (dispatch) => {
 		postData: (data, type, url, token) =>
 			dispatch(postData(data, type, url, token)),
 		getServices: () => dispatch(getServices()),
-		getAddTabSettings: (token) => dispatch(getAddTabSettings(token)),
+		getAddTabSettings: (token, carrierId) => dispatch(getAddTabSettings(token, carrierId)),
 		dismissSkeleton: () =>
 			dispatch({ type: 'SKELETON_LOADING', payload: true }),
 	};
