@@ -37,16 +37,6 @@ function WarehouseComponent(props) {
 		enable_ld: false,
 	});
 
-	/* const [form] = Form.useForm();
-
-	useEffect(() => {
-		form.setFieldsValue({
-			city: '',
-			state: '',
-			country: '',
-		});
-	}, [form]); */
-
 	const {
 		postData,
 		getGoogleResponse,
@@ -162,6 +152,7 @@ function WarehouseComponent(props) {
 			),
 		},
 	];
+
 	return (
 		<Fragment>
 			<Space direction='vertical' size={'large'} className={'w-100'}>
@@ -347,6 +338,9 @@ function WarehouseComponent(props) {
 												plansInfo && plansInfo.plan_type === 3 ? false : true
 											}
 										></Checkbox>
+										<a href='#!' className='stnd-plan text-danger'>
+											Advance plan required
+										</a>
 									</Form.Item>
 								</Col>
 							</Row>
@@ -485,6 +479,9 @@ function WarehouseComponent(props) {
 												plansInfo && plansInfo.plan_type === 3 ? false : true
 											}
 										></Checkbox>
+										<a href='#!' className='stnd-plan text-danger'>
+											Advance plan required
+										</a>
 									</Form.Item>
 								</Col>
 							</Row>

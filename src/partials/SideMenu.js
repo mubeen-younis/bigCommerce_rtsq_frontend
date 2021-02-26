@@ -1,22 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Layout, Menu, Typography } from 'antd';
 import { Link } from 'react-router-dom';
-import { getInstalledCarriers } from '../Actions/EnitureStore';
 import { connect } from 'react-redux';
-// const { SubMenu } = Menu;
 const { Sider } = Layout;
 const { Title } = Typography;
 
 function SideMenu(props) {
-	/* useEffect(() => {
-		if (
-			props.installedCarriers === null ||
-			props.installedCarriers === undefined
-		) {
-			props.getInstalledCarriers();
-		}
-	}, [props]); */
-
 	return (
 		<Sider
 			breakpoint='lg'
@@ -42,22 +31,14 @@ function SideMenu(props) {
 				) : null}
 
 				{props.installedCarriers
-					? props.installedCarriers.map((carrier) => (
-							<Menu.Item key={carrier.name}>
-								<Link to={`/${carrier.id}`}>{carrier.name}</Link>
-							</Menu.Item>
-					  ))
+					? props.installedCarriers.map((carrier) =>
+							carrier.is_enabled ? (
+								<Menu.Item key={carrier.name}>
+									<Link to={`/${carrier.id}`}>{carrier.name}</Link>
+								</Menu.Item>
+							) : null
+					  )
 					: null}
-
-				{/* <SubMenu key="sub1" title="Carrier 1">
-            <Menu.Item key="2">FedEx LTL Freight Quotes</Menu.Item>
-            <Menu.Item key="3">WWE LTL Freight Quotes</Menu.Item>
-            <Menu.Item key="4">UPS LTL Freight Quotes</Menu.Item>
-          </SubMenu>
-           */}
-				{/* <Menu.Item key='2'>
-					<Link to={`/1`}>WWE LTL Freight Quotes</Link>
-				</Menu.Item> */}
 
 				<Title className={'carriers-name'} level={6}>
 					Installed Addons
@@ -67,16 +48,14 @@ function SideMenu(props) {
 				) : null}
 
 				{props.installedAddons
-					? props.installedAddons.map((addon) => (
-							<Menu.Item key={addon.name}>
-								<Link to={`/addon/${addon.id}`}>{addon.name}</Link>
-							</Menu.Item>
-					  ))
+					? props.installedAddons.map((addon) =>
+							addon.is_enabled ? (
+								<Menu.Item key={addon.name}>
+									<Link to={`/addon/${addon.id}`}>{addon.name}</Link>
+								</Menu.Item>
+							) : null
+					  )
 					: null}
-
-				{/* <Menu.Item key='3'>
-					<Link to={`/ard`}>Auto Detect Residential</Link>
-				</Menu.Item> */}
 			</Menu>
 		</Sider>
 	);
@@ -89,11 +68,5 @@ const mapStateToProps = (state) => {
 		enitureCarriers: state.enitureCarriers,
 	};
 };
-
-/* const mapDispatchToProps = (dispatch) => {
-	return {
-		getInstalledCarriers: () => dispatch(getInstalledCarriers()),
-	};
-}; */
 
 export default connect(mapStateToProps, null)(SideMenu);

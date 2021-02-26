@@ -51,6 +51,42 @@ const Reducer = (state = initialState, action) => {
 				dropships: action.payload.dropships,
 			};
 
+		case 'SAVE_LOCATION':
+			const location = [...state.warehouse, ...state.dropships].filter(
+				(loc) => loc.id === action.payload.id
+			);
+
+			if (location && location.length) {
+				if (action.payload.type === 1) {
+					return {
+						...state,
+						warehouse: state.warehouse.map((wh) =>
+							wh.id === action.payload.id ? action.payload : wh
+						),
+					};
+				} else if (action.payload.type === 2) {
+					return {
+						...state,
+						dropships: state.dropships.map((ds) =>
+							ds.id === action.payload.id ? action.payload : ds
+						),
+					};
+				}
+			} else {
+				if (action.payload.type === 1) {
+					return {
+						...state,
+						warehouse: [...state.warehouse, action.payload],
+					};
+				} else if (action.payload.type === 2) {
+					return {
+						...state,
+						dropships: [...state.dropships, action.payload],
+					};
+				}
+			}
+			break;
+
 		case 'DELETE_LOCATION':
 			return {
 				...state,
