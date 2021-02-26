@@ -30,7 +30,7 @@ function ShippingCarriersComponent(props) {
 						<div className={'card-inner'}>
 							<figure>
 								<img
-									style={{ height: '200px' }}
+									style={{ height: '175px' }}
 									src={`../../images/${value.logo}`}
 									alt={`logo`}
 								/>
@@ -68,7 +68,7 @@ function ShippingCarriersComponent(props) {
 						<div className={'card-inner'}>
 							<figure>
 								<img
-									style={{ height: '200px' }}
+									style={{ height: '175px' }}
 									src={`images/rad.jpg`}
 									alt={'text alt'}
 								/>
@@ -104,7 +104,7 @@ function ShippingCarriersComponent(props) {
 						<div className={'card-inner'}>
 							<figure>
 								<img
-									style={{ height: '200px' }}
+									style={{ height: '175px' }}
 									src={`../../images/${value.logo}`}
 									alt={'text alt'}
 								/>
@@ -141,7 +141,7 @@ function ShippingCarriersComponent(props) {
 						<div className={'card-inner'}>
 							<figure>
 								<img
-									style={{ height: '200px' }}
+									style={{ height: '175px' }}
 									src={`../../images/${value.logo}`}
 									alt={'text alt'}
 								/>
