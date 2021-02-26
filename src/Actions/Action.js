@@ -3,7 +3,7 @@ export const postData = (data, type, url, token) => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${token}`,
-		}, //Authorization: `Bearer ${token}`
+		},
 	};
 	return (dispatch) => {
 		dispatch({
@@ -17,14 +17,14 @@ export const postData = (data, type, url, token) => {
 			.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data, config)
 			.then(({ data }) => {
 				if (!data.error) {
-					if (data.data.value !== undefined) {
+					if (data.data) {
 						dispatch({
-							type: type,
-							payload: JSON.parse(data.data.value),
+							type: 'SAVE_LOCATION',
+							payload: data.data,
 						});
 					}
 				}
-				console.log('data', data);
+
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
@@ -45,7 +45,7 @@ export const getCarrierDetails = (data) => {
 				data,
 			})
 			.then(({ data }) => {
-				if (data.settings.length > 0) {
+				if (data?.settings && data.settings.length > 0) {
 					dispatch({
 						type: 'GET_CONNECTION_SETTINGS',
 						payload: data.settings,

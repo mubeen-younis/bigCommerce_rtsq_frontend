@@ -1,29 +1,19 @@
 import React, { Fragment, useEffect } from 'react';
-import {
-	Row,
-	Col,
-	Button,
-	Checkbox,
-	Radio,
-	Typography,
-	Card,
-	Select,
-} from 'antd';
+import { Row, Col, Checkbox, Radio, Typography, Card, Select } from 'antd';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import TabsLayout from '../tabs_layout/tabs';
-import { getCarrierDetails } from '../Actions/Action';
+// import { useParams } from 'react-router-dom';
+// import TabsLayout from '../tabs_layout/tabs';
+// import { getCarrierDetails } from '../Actions/Action';
 import { getRadPlans } from '../Actions/RAD';
 
 const { Title } = Typography;
-const { Meta } = Card;
+// const { Meta } = Card;
 const { Option } = Select;
 
 function AutoDetectResidentialComponennt(props) {
 	const [value, setValue] = React.useState(1);
 
 	useEffect(() => {
-		console.log('props.token ', props.token);
 		props.getRadPlans(props.token);
 	}, []);
 
@@ -75,7 +65,6 @@ function AutoDetectResidentialComponennt(props) {
 						<label>
 							<strong>Auto-renew</strong>
 						</label>
-						{console.log('props.radPlans ', props.radPlans)}
 						<Select
 							defaultValue='Select RAD Plan'
 							style={{ width: '100%', marginBottom: '20px' }}
