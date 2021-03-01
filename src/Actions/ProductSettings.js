@@ -66,3 +66,18 @@ export const getProduct = (
 			setLoadProduct(false);
 		});
 };
+
+export const importProducts = (
+	token
+) => {
+	axios
+		.get(`${process.env.REACT_APP_ENITURE_API_URL}/import_products`, {
+			headers: {
+				authorization: `Bearer ${token}`,
+			}
+		})
+		.then((res) => {
+			console.log(res);
+		});
+};
+
