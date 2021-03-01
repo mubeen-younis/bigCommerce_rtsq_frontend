@@ -60,6 +60,12 @@
     .product-filters .ant-space-item .ant-form .ant-form-item{
       margin: 4px 0;
     }
+    .sidemenu {
+      background-color: #fff;
+      position: fixed;
+      z-index: 999;
+      height: 100%;
+    }
 }
 @media only screen and (min-width: 320px) and (max-width: 575px){
     
