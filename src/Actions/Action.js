@@ -18,10 +18,17 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 			.then(({ data }) => {
 				if (!data.error) {
 					if (data.data) {
-						dispatch({
-							type: type,
-							payload: data.data,
-						});
+						if (data.data.value) {
+							dispatch({
+								type: type,
+								payload: JSON.parse(data.data.value),
+							});
+						} else {
+							dispatch({
+								type: type,
+								payload: data.data,
+							});
+						}
 					}
 
 					setVisibleWarehouse(false);
