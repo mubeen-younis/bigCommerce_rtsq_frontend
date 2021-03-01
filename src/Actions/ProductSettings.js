@@ -1,3 +1,4 @@
+import { Empty } from 'antd';
 import axios from 'axios';
 
 const config = {
@@ -91,12 +92,12 @@ export const importProducts = ( token ) => {
 						alertMessageType: resp.data.error ? 'error' : 'success',
 					},
 				});
-				if (!resp.data.error){
+				if (!resp.data.error && resp.data.data['data'].length > 0){
 					dispatch({
 						type: 'GET_ALL_PRODUCTS',
 						payload: resp.data.data['data'],
 					});
-				}	
+				}
 			})
 	}
 };
