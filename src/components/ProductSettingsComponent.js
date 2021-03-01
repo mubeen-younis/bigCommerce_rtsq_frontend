@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getAllProducts } from '../Actions/Action';
-import { submitProductSettings, getProduct } from '../Actions/ProductSettings';
+import { submitProductSettings, getProduct, importProducts } from '../Actions/ProductSettings';
 import {
 	Table,
 	Button,
@@ -66,6 +66,9 @@ function ProductSettingsComponent(props) {
 		props.submitProductSettings(selectedProductDetail, props.token);
 	};
 
+	const syncProducts = () => {
+		importProducts(props.token)
+	}
 	/* const onChange = (e) => {
 		console.log(`checked = ${e.target.name}`);
 		setState({
@@ -215,6 +218,12 @@ function ProductSettingsComponent(props) {
 					</Form.Item>
 				</Form>
 			</Space> */}
+			<Space 
+				className={'mb-2'} 
+				style={{ textAlign: 'right'}}
+			>
+				<Button onClick={syncProducts}  type='primary'>Sync Products</Button>
+			</Space>
 			<Table
 				className='custom-table'
 				rowSelection={rowSelection}
