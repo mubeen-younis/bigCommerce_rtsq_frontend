@@ -38,7 +38,7 @@ function QuoteSettingsComponentWwe(props) {
 		if (props.quoteSettings === null) {
 			getQuoteSettings();
 		}
-	});
+	}, [props.quoteSettings]);
 
 	const getQuoteSettings = () => {
 		console.log('props.quoteSettings ', props.quoteSettings);
@@ -76,7 +76,7 @@ function QuoteSettingsComponentWwe(props) {
 		props.postData(data, props.token);
 	};
 
-	return props.quoteSettings === undefined || props.quoteSettings === null ? (
+	return loading || props.quoteSettings === undefined || props.quoteSettings === null ? (
 		<Skeleton active />
 	) : (
 		<Fragment>
