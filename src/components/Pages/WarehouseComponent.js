@@ -46,7 +46,8 @@ function WarehouseComponent(props) {
 
 	const onFinish = (values) => {
 		const data = { ...locationDetail, location_id: locationDetail['id'] };
-		postData(data, 'GET_LOCATIONS', 'save_location', token, setVisibleWarehouse);
+		postData(data, 'SAVE_LOCATION', 'save_location', token, setVisibleWarehouse);
+
 		// setVisibleWarehouse(false);
 	};
 

@@ -19,7 +19,7 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 				if (!data.error) {
 					if (data.data) {
 						dispatch({
-							type: 'SAVE_LOCATION',
+							type: type,
 							payload: data.data,
 						});
 					}
