@@ -46,7 +46,7 @@ class CarriersComponent extends React.Component {
 
 	saveCarriers = () => {
 		this.props.postData(
-			this.state.selectedRowKeys,
+			{ ...this.state.selectedRowKeys, carrierId: this.props.carrierId },
 			'GET_CARRIERS',
 			'submit_carriers',
 			this.props.token
@@ -114,17 +114,16 @@ const mapStateToProps = (state) => {
 		skeleton_loading: state.skeleton_loading,
 		carriersSettings: state.carriersSettings,
 		token: state.token,
+		carrierId: state.carrierId,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		postData: (data, type, url, token) =>
-			dispatch(postData(data, type, url, token)),
+		postData: (data, type, url, token) => dispatch(postData(data, type, url, token)),
 		getServices: () => dispatch(getServices()),
 		getAddTabSettings: (token) => dispatch(getAddTabSettings(token)),
-		dismissSkeleton: () =>
-			dispatch({ type: 'SKELETON_LOADING', payload: true }),
+		dismissSkeleton: () => dispatch({ type: 'SKELETON_LOADING', payload: true }),
 	};
 };
 

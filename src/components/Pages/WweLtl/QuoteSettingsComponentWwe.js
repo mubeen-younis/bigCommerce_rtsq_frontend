@@ -35,8 +35,8 @@ function QuoteSettingsComponentWwe(props) {
 	const [ratingMethod, setRatingMethod] = useState(1);
 
 	useEffect(() => {
-		getQuoteSettings(props.token, props.carrierId);
-	}, [props.quoteSettings]);
+		getQuoteSettings();
+	}, [props.quoteSettkwings]);
 
 	const getQuoteSettings = () => {
 		console.log('props.quoteSettings ', props.quoteSettings);
@@ -49,16 +49,13 @@ function QuoteSettingsComponentWwe(props) {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
 			setLoading(false);
 			let ratingMethodInit =
-				props.quoteSettings.method !== undefined
-					? props.quoteSettings.method
-					: 1;
+				props.quoteSettings.method !== undefined ? props.quoteSettings.method : 1;
 			setRatingMethod(ratingMethodInit);
 
 			setQuoteSettingsState({
 				showDeliveryEstimate: props.quoteSettings.showDeliveryEstimate,
 				residentialPickup: props.quoteSettings.residentialPickup,
-				alwaysResidentialDelivery:
-					props.quoteSettings.alwaysResidentialDelivery,
+				alwaysResidentialDelivery: props.quoteSettings.alwaysResidentialDelivery,
 				autoDetectedResidentialAddresses:
 					props.quoteSettings.autoDetectedResidentialAddresses,
 				alwaysLiftGatePickup: props.quoteSettings.alwaysLiftGatePickup,
@@ -73,15 +70,13 @@ function QuoteSettingsComponentWwe(props) {
 
 	const onFinish = (data) => {
 		//data.method = ratingMethod
-		data = { ...data, ...quoteSettingsState };
+		data = { ...data, ...quoteSettingsState, carrierId: props.carrierId };
 		props.postData(data, props.token);
 	};
 
 	return loading &&
-		(props.quoteSettings === undefined || props.quoteSettings) === null ? (
-		<>
-			<Skeleton active />
-		</>
+		(props.quoteSettings === undefined || props.quoteSettings === null) ? (
+		<Skeleton active />
 	) : (
 		<Fragment>
 			<Form
@@ -100,8 +95,7 @@ function QuoteSettingsComponentWwe(props) {
 						<Form.Item className={'mb-0'} name='method'>
 							<Select
 								defaultValue={
-									props.quoteSettings &&
-									props.quoteSettings.method !== undefined
+									props.quoteSettings && props.quoteSettings.method !== undefined
 										? props.quoteSettings.method
 										: 1
 								}
@@ -163,14 +157,12 @@ function QuoteSettingsComponentWwe(props) {
 							<Form.Item className={'mb-0'} name='label_as'>
 								<Input
 									name='label_as'
-									value={
-										props.quoteSettings ? props.quoteSettings.label_as : ''
-									}
+									value={props.quoteSettings ? props.quoteSettings.label_as : ''}
 								/>
 							</Form.Item>
 							<div className={'text-gray'}>
-								what the user sees during checkout, e.g. "Freight". Leave blank
-								to display the carrier name.
+								what the user sees during checkout, e.g. "Freight". Leave blank to display
+								the carrier name.
 							</div>
 						</Col>
 					</Row>
@@ -222,9 +214,7 @@ function QuoteSettingsComponentWwe(props) {
 						</Form.Item>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Always quote residential delivery
-						</label>
+						<label className={'text-gray'}>Always quote residential delivery</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
@@ -262,9 +252,7 @@ function QuoteSettingsComponentWwe(props) {
 									})
 								}
 								disabled={
-									props.plansInfo && props.plansInfo.plan_type === 2
-										? false
-										: true
+									props.plansInfo && props.plansInfo.plan_type === 2 ? false : true
 								}
 							>
 								<a href='#!' className='stnd-plan text-danger'>
@@ -300,9 +288,7 @@ function QuoteSettingsComponentWwe(props) {
 						</Form.Item>
 					</Col> */}
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Always quote lift gate delivery
-						</label>
+						<label className={'text-gray'}>Always quote lift gate delivery</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
@@ -320,9 +306,7 @@ function QuoteSettingsComponentWwe(props) {
 						</Form.Item>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Offer lift gate delivery as an option
-						</label>
+						<label className={'text-gray'}>Offer lift gate delivery as an option</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
@@ -340,9 +324,7 @@ function QuoteSettingsComponentWwe(props) {
 									})
 								}
 								disabled={
-									props.plansInfo && props.plansInfo.plan_type === 2
-										? false
-										: true
+									props.plansInfo && props.plansInfo.plan_type === 2 ? false : true
 								}
 							>
 								<a href='#!' className='stnd-plan text-danger'>
@@ -353,8 +335,7 @@ function QuoteSettingsComponentWwe(props) {
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 						<label className={'text-gray'}>
-							Always include lift gate delivery when a residential address is
-							detected
+							Always include lift gate delivery when a residential address is detected
 						</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
@@ -373,9 +354,7 @@ function QuoteSettingsComponentWwe(props) {
 									})
 								}
 								disabled={
-									props.plansInfo && props.plansInfo.plan_type === 2
-										? false
-										: true
+									props.plansInfo && props.plansInfo.plan_type === 2 ? false : true
 								}
 							>
 								<a href='#!' className='stnd-plan text-danger'>
@@ -398,20 +377,18 @@ function QuoteSettingsComponentWwe(props) {
 								size={'large'}
 								style={{ width: '100%' }}
 								disabled={
-									props.plansInfo && props.plansInfo.plan_type === 2
-										? false
-										: true
+									props.plansInfo && props.plansInfo.plan_type === 2 ? false : true
 								}
 							>
 								<Option value='84'>General Merchandise</Option>
 								<Option value='85'>Antiques / Art / Collectibles</Option>
 								<Option value='86'>
-									Commercial Electronics (Audio; Computer: Hardware, Servers,
-									Parts & Accessories)
+									Commercial Electronics (Audio; Computer: Hardware, Servers, Parts &
+									Accessories)
 								</Option>
 								<Option value='87'>
-									Consumer Electronics (laptops, cellphones, PDAs, iPads,
-									tablets, notebooks, etc.)
+									Consumer Electronics (laptops, cellphones, PDAs, iPads, tablets,
+									notebooks, etc.)
 								</Option>
 								<Option value='88'>
 									Fragile Goods (Glass, Ceramic, Porcelain, etc.)
@@ -420,8 +397,8 @@ function QuoteSettingsComponentWwe(props) {
 									Furniture (Pianos, Glassware, Tableware, Outdoor Furniture)
 								</Option>
 								<Option value='90'>
-									Machinery, Appliances and Equipment (Medical, Restaurant,
-									Industrial, Scientific)
+									Machinery, Appliances and Equipment (Medical, Restaurant, Industrial,
+									Scientific)
 								</Option>
 								<Option value='91'>Miscellaneous / Other / Mixed</Option>
 								<Option value='92'>
@@ -430,9 +407,7 @@ function QuoteSettingsComponentWwe(props) {
 								<Option value='93'>
 									Radioactive / Hazardous / Restricted or Controlled Items
 								</Option>
-								<Option value='94'>
-									Sewing Machines, Equipment and Accessories
-								</Option>
+								<Option value='94'>Sewing Machines, Equipment and Accessories</Option>
 								<Option value='95'>
 									Stone Products (Marble, Tile, Stonework, Granite, etc.)
 								</Option>
@@ -456,25 +431,23 @@ function QuoteSettingsComponentWwe(props) {
 							<Input />
 						</Form.Item>
 						<div className={'text-gray'}>
-							Enter in pounds the weight of your pallet, skid, crate or other
-							type of handling units, Leave blank to disable.{' '}
+							Enter in pounds the weight of your pallet, skid, crate or other type of
+							handling units, Leave blank to disable.{' '}
 						</div>
 					</Col>
 				</Row>
 
 				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-						<label className={'text-gray'}>
-							Maximun Weight per Handling Unit
-						</label>
+						<label className={'text-gray'}>Maximun Weight per Handling Unit</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 						<Form.Item className={'mb-0'} name='max_weight_per_handling_unit'>
 							<Input />
 						</Form.Item>
 						<div className={'text-gray'}>
-							Enter in pounds the maximum weight that can be placed on the
-							handling unit. Leave blank to disable.
+							Enter in pounds the maximum weight that can be placed on the handling unit.
+							Leave blank to disable.
 						</div>
 					</Col>
 				</Row>
@@ -488,8 +461,8 @@ function QuoteSettingsComponentWwe(props) {
 							<Input />
 						</Form.Item>
 						<div className={'text-gray'}>
-							Amount excluding tax. Enter an amount e.g 3.75, or a percentage,
-							e.g, 5%. Leave blank to disable.
+							Amount excluding tax. Enter an amount e.g 3.75, or a percentage, e.g, 5%.
+							Leave blank to disable.
 						</div>
 					</Col>
 				</Row>
@@ -497,8 +470,7 @@ function QuoteSettingsComponentWwe(props) {
 				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
 						<label className={'text-gray'}>
-							Do not return rate if the shipping address appears to be a post
-							office box
+							Do not return rate if the shipping address appears to be a post office box
 						</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
@@ -517,9 +489,7 @@ function QuoteSettingsComponentWwe(props) {
 									})
 								}
 								disabled={
-									props.plansInfo && props.plansInfo.plan_type === 2
-										? false
-										: true
+									props.plansInfo && props.plansInfo.plan_type === 2 ? false : true
 								}
 							>
 								<a href='#!' className='stnd-plan text-danger'>
@@ -558,15 +528,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		postData: (data, token) =>
-			dispatch(
-				postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)
-			),
-		getSettings: (token, carrier_id) =>
-			dispatch(getQuoteSettings(token, carrier_id)),
+			dispatch(postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)),
+		getSettings: (token, carrier_id) => dispatch(getQuoteSettings(token, carrier_id)),
 	};
 };
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(QuoteSettingsComponentWwe);
+export default connect(mapStateToProps, mapDispatchToProps)(QuoteSettingsComponentWwe);

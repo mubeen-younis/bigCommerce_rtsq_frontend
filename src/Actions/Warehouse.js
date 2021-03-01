@@ -1,11 +1,5 @@
 import axios from 'axios';
 
-const config = {
-	headers: {
-		authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
-	},
-};
-
 export const getGoogleResponse = (zipcode, token) => {
 	return (dispatch) => {
 		dispatch({
@@ -17,14 +11,11 @@ export const getGoogleResponse = (zipcode, token) => {
 		});
 
 		axios
-			.get(
-				`${process.env.REACT_APP_ENITURE_API_URL}/get_loc_from_zip/${zipcode}`,
-				{
-					headers: {
-						authorization: `Bearer ${token}`,
-					},
-				}
-			)
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_loc_from_zip/${zipcode}`, {
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
+			})
 			.then(({ data }) => {
 				if (!data.error) {
 					dispatch({
@@ -45,12 +36,7 @@ export const getGoogleResponse = (zipcode, token) => {
 	};
 };
 
-export const getWarehouse = (
-	id,
-	setLocationDetail,
-	setVisibleWarehouse,
-	token
-) => {
+export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) => {
 	return (dispatch) => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_location`, {
@@ -89,8 +75,7 @@ export const getWarehouse = (
 					ld_zipcodes: additional.local_delivery_data.postalCodes
 						? additional.local_delivery_data.postalCodes.split(',')
 						: null,
-					ld_description:
-						additional.local_delivery_data.checkout_description ?? null,
+					ld_description: additional.local_delivery_data.checkout_description ?? null,
 					ld_fee: additional.local_delivery_data.local_delivery_fee ?? null,
 
 					ld_enable_supress: additional.suppress_rates ?? false,
