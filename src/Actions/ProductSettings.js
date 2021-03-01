@@ -67,17 +67,23 @@ export const getProduct = (
 		});
 };
 
-export const importProducts = (
-	token
-) => {
-	axios
-		.get(`${process.env.REACT_APP_ENITURE_API_URL}/import_products`, {
-			headers: {
-				authorization: `Bearer ${token}`,
-			}
-		})
-		.then((res) => {
-			console.log(res);
-		});
+export const importProducts = ( token ) => {
+	return (dispatch) => {
+		axios
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/import_products`, {
+				headers: {
+					authorization: `Bearer ${token}`,
+				}
+			})
+			.then(resp =>{
+				if (!resp.error){
+					dispatch({
+						type: 'GET_ALL_PRODUCTS',
+						payload: resp.data.data['data'],
+					});
+				}
+			})
+	}
 };
+
 

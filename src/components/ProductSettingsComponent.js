@@ -67,7 +67,7 @@ function ProductSettingsComponent(props) {
 	};
 
 	const syncProducts = () => {
-		importProducts(props.token)
+		props.importProducts(props.token)
 	}
 	/* const onChange = (e) => {
 		console.log(`checked = ${e.target.name}`);
@@ -478,6 +478,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		getAllProducts: (token) => dispatch(getAllProducts(token)),
+		importProducts: (token) => dispatch(importProducts(token)),
 		submitProductSettings: (data, token) =>
 			dispatch(submitProductSettings(data, token)),
 	};
