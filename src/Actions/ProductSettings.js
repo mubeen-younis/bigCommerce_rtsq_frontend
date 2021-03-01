@@ -1,3 +1,4 @@
+import { Empty } from 'antd';
 import axios from 'axios';
 
 const config = {
@@ -69,6 +70,13 @@ export const getProduct = (
 
 export const importProducts = ( token ) => {
 	return (dispatch) => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		});
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/import_products`, {
 				headers: {
@@ -76,7 +84,15 @@ export const importProducts = ( token ) => {
 				}
 			})
 			.then(resp =>{
-				if (!resp.error){
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: resp.data.message,
+						showAlertMessage: true,
+						alertMessageType: resp.data.error ? 'error' : 'success',
+					},
+				});
+				if (!resp.data.error && resp.data.data['data'].length > 0){
 					dispatch({
 						type: 'GET_ALL_PRODUCTS',
 						payload: resp.data.data['data'],
