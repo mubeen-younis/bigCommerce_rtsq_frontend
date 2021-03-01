@@ -35,8 +35,10 @@ function QuoteSettingsComponentWwe(props) {
 	const [ratingMethod, setRatingMethod] = useState(1);
 
 	useEffect(() => {
-		getQuoteSettings();
-	}, [props.quoteSettkwings]);
+		if (props.quoteSettings === null) {
+			getQuoteSettings();
+		}
+	});
 
 	const getQuoteSettings = () => {
 		console.log('props.quoteSettings ', props.quoteSettings);
@@ -74,8 +76,7 @@ function QuoteSettingsComponentWwe(props) {
 		props.postData(data, props.token);
 	};
 
-	return loading &&
-		(props.quoteSettings === undefined || props.quoteSettings === null) ? (
+	return props.quoteSettings === undefined || props.quoteSettings === null ? (
 		<Skeleton active />
 	) : (
 		<Fragment>

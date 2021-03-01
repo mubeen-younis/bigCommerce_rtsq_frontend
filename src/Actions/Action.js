@@ -60,20 +60,23 @@ export const getCarrierDetails = (data) => {
 	};
 };
 
-export const getConnectionSettings = () => {
-	const data = {
+export const getConnectionSettings = (token, carrierId) => {
+	/* const data = {
 		shop: 'dev-azm-1.mybigcommerce.com',
 		carrierId: 1,
-	};
+	}; */
 
 	return (dispatch) => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_conn_settings`, {
-				data,
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
+				params: {
+					carrierId,
+				},
 			})
 			.then(({ data }) => {
-				console.log(data);
-				console.log(JSON.parse(data.data.value));
 				dispatch({
 					type: 'GET_CONNECTION_SETTINGS',
 					payload: JSON.parse(data.data.value),
