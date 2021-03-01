@@ -14,10 +14,7 @@ import {
 	getAllAddons,
 	getPlansInfo,
 } from './Actions/Action';
-import {
-	getInstalledCarriers,
-	getInstalledAddons,
-} from './Actions/EnitureStore';
+import { getInstalledCarriers, getInstalledAddons } from './Actions/EnitureStore';
 import RendorCarrier from './components/RendorCarrier';
 import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent';
 import AutoDetectResidentialComponennt from './components/AutoDetectResidentialComponennt';
@@ -45,6 +42,7 @@ function App(props) {
 	} = props;
 
 	const urlParams = new URLSearchParams(window.location.search);
+
 	useEffect(() => {
 		const store =
 			urlParams.get('store') !== (undefined || null)
@@ -95,6 +93,10 @@ function App(props) {
 		return <p>Invalid store.</p>;
 	}
 
+	if (alertMessageType === 'Token Mismatch') {
+		return <h3 danger>Invalid Token! Contact your administrator.</h3>;
+	}
+
 	if (
 		installedCarriers === undefined ||
 		installedAddons === undefined ||
@@ -109,6 +111,7 @@ function App(props) {
 				}}
 			/>
 		);
+
 		return <Spin indicator={antIcon} />;
 	}
 

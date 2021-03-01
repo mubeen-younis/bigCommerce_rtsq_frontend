@@ -1,12 +1,5 @@
 import axios from 'axios';
-const config = {
-	headers: {
-		authorization: `Bearer eyJpdiI6InQzYUJMcmNUZWtPSElRaG1CWnRMa1E9PSIsInZhbHVlIjoiSDZzMm5vSlJacVZaaW5WZTF5K2k2UT09IiwibWFjIjoi`,
-	}, //Authorization: `Bearer ${token}`
-};
-const data = {
-	store: 'uann2u',
-};
+
 export const installCarrier = (carrier_id, token) => {
 	return (dispatch) => {
 		axios

@@ -13,17 +13,10 @@ import {
 	Table,
 	Tooltip,
 } from 'antd';
-
 import { connect } from 'react-redux';
 import { postData } from '../../Actions/Action';
-
 import addKeysToList from './../../Utilities/addKey';
-
-import {
-	getGoogleResponse,
-	getWarehouse,
-	deleteLocation,
-} from '../../Actions/Warehouse';
+import { getGoogleResponse, getWarehouse, deleteLocation } from '../../Actions/Warehouse';
 
 const { Title } = Typography;
 
@@ -52,9 +45,9 @@ function WarehouseComponent(props) {
 	} = props;
 
 	const onFinish = (values) => {
-		console.log('location Detail', locationDetail);
-		postData(locationDetail, 'GET_LOCATIONS', 'save_location', token);
-		setVisibleWarehouse(false);
+		const data = { ...locationDetail, location_id: locationDetail['id'] };
+		postData(data, 'GET_LOCATIONS', 'save_location', token, setVisibleWarehouse);
+		// setVisibleWarehouse(false);
 	};
 
 	if (
@@ -64,6 +57,7 @@ function WarehouseComponent(props) {
 		getLocationOn
 	) {
 		console.log('googleLocationResponse', googleLocationResponse);
+
 		setLocationDetail({
 			...locationDetail,
 			city: googleLocationResponse.city[0],
@@ -75,6 +69,8 @@ function WarehouseComponent(props) {
 
 	const getGoogleLocation = (zip_code) => {
 		if (zip_code.length > 4) {
+			console.log(props);
+
 			getGoogleResponse(zip_code, token);
 			setGetLocationOn(true);
 		}
@@ -142,10 +138,7 @@ function WarehouseComponent(props) {
 			render: (text, record) => (
 				<Space size='middle'>
 					<Button onClick={() => editLocation(text)}>Edit</Button>
-					<Button
-						onClick={() => openDeleteLocationModal(text)}
-						className={'btn-danger'}
-					>
+					<Button onClick={() => openDeleteLocationModal(text)} className={'btn-danger'}>
 						Delete
 					</Button>
 				</Space>
@@ -170,9 +163,7 @@ function WarehouseComponent(props) {
 					<Modal
 						title={
 							<Title className={'mb-0'} level={4}>
-								{locationDetail.location_type === 1
-									? 'Warehouse info'
-									: 'Dropship info'}
+								{locationDetail.location_type === 1 ? 'Warehouse info' : 'Dropship info'}
 							</Title>
 						}
 						centered
@@ -190,14 +181,7 @@ function WarehouseComponent(props) {
 							onFinish={onFinish}
 						>
 							<Row gutter={30}>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={24}
-									md={24}
-									lg={24}
-									xl={24}
-								>
+								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 									<Form.Item
 										className={'mb-2'}
 										label='Nickname'
@@ -211,14 +195,7 @@ function WarehouseComponent(props) {
 										/>
 									</Form.Item>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={24}
-									md={24}
-									lg={24}
-									xl={24}
-								>
+								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 									<Form.Item
 										className={'mb-2'}
 										label='Zip Code'
@@ -235,14 +212,7 @@ function WarehouseComponent(props) {
 										/>
 									</Form.Item>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={24}
-									md={24}
-									lg={24}
-									xl={24}
-								>
+								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 									<Form.Item
 										className={'mb-2'}
 										label='City'
@@ -256,14 +226,7 @@ function WarehouseComponent(props) {
 										/>
 									</Form.Item>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={24}
-									md={24}
-									lg={24}
-									xl={24}
-								>
+								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 									<Form.Item
 										className={'mb-2'}
 										label='State'
@@ -278,14 +241,7 @@ function WarehouseComponent(props) {
 									</Form.Item>
 								</Col>
 
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={24}
-									md={24}
-									lg={24}
-									xl={24}
-								>
+								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 									<Form.Item
 										className={'mb-2'}
 										label='Country'
@@ -301,14 +257,7 @@ function WarehouseComponent(props) {
 								</Col>
 							</Row>
 							<Row gutter={30}>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={24}
-									md={24}
-									lg={24}
-									xl={24}
-								>
+								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 									<Title level={4}>In-store pick up</Title>
 								</Col>
 							</Row>
@@ -316,14 +265,7 @@ function WarehouseComponent(props) {
 								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
 									<label className={'text-gray'}>Enable in-store pick up</label>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={16}
-									md={16}
-									lg={16}
-									xl={16}
-								>
+								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
 									<Form.Item name='enable_instore' className={'mb-0'}>
 										<Checkbox
 											name='enable_instore'
@@ -334,9 +276,7 @@ function WarehouseComponent(props) {
 													enable_instore: !locationDetail.enable_instore,
 												})
 											}
-											disabled={
-												plansInfo && plansInfo.plan_type === 3 ? false : true
-											}
+											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 										></Checkbox>
 										<a href='#!' className='stnd-plan text-danger'>
 											Advance plan required
@@ -350,14 +290,7 @@ function WarehouseComponent(props) {
 										Offer if address is within (miles):
 									</label>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={16}
-									md={16}
-									lg={16}
-									xl={16}
-								>
+								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
 									<Form.Item
 										className={'mb-0'}
 										rules={[{ required: false, message: 'Email Required' }]}
@@ -366,9 +299,7 @@ function WarehouseComponent(props) {
 											name='instore_miles'
 											value={locationDetail.instore_miles}
 											onChange={changeValue}
-											disabled={
-												plansInfo && plansInfo.plan_type === 3 ? false : true
-											}
+											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 										/>
 									</Form.Item>
 								</Col>
@@ -376,23 +307,12 @@ function WarehouseComponent(props) {
 
 							<Row gutter={30} align='middle' className={'mb-2'}>
 								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
-									<label className={'text-gray'}>
-										Offer if postal code matches:
-									</label>
+									<label className={'text-gray'}>Offer if postal code matches:</label>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={16}
-									md={16}
-									lg={16}
-									xl={16}
-								>
+								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
 									<Form.Item
 										className={'mb-0'}
-										rules={[
-											{ required: false, message: 'Costal Code Required' },
-										]}
+										rules={[{ required: false, message: 'Costal Code Required' }]}
 									>
 										<Select
 											name='instore_zipcodes'
@@ -401,9 +321,7 @@ function WarehouseComponent(props) {
 											style={{ width: '100%' }}
 											onChange={(e) => handleChange('instore_zipcodes', e)}
 											tokenSeparators={[',']}
-											disabled={
-												plansInfo && plansInfo.plan_type === 3 ? false : true
-											}
+											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 										/>
 									</Form.Item>
 								</Col>
@@ -412,14 +330,7 @@ function WarehouseComponent(props) {
 								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
 									<label className={'text-gray'}>Checkout description:</label>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={16}
-									md={16}
-									lg={16}
-									xl={16}
-								>
+								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
 									<Form.Item
 										className={'mb-0'}
 										rules={[
@@ -434,22 +345,13 @@ function WarehouseComponent(props) {
 											value={locationDetail.instock_description}
 											placeholder='In-stock pick up'
 											onChange={changeValue}
-											disabled={
-												plansInfo && plansInfo.plan_type === 3 ? false : true
-											}
+											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 										/>
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={30}>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={24}
-									md={24}
-									lg={24}
-									xl={24}
-								>
+								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 									<Title level={4}>Local Delivery</Title>
 								</Col>
 							</Row>
@@ -457,14 +359,7 @@ function WarehouseComponent(props) {
 								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
 									<label className={'text-gray'}>Enable local delivery</label>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={16}
-									md={16}
-									lg={16}
-									xl={16}
-								>
+								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
 									<Form.Item className={'mb-0'}>
 										<Checkbox
 											name='enable_ld'
@@ -475,9 +370,7 @@ function WarehouseComponent(props) {
 													enable_ld: !locationDetail.enable_ld,
 												})
 											}
-											disabled={
-												plansInfo && plansInfo.plan_type === 3 ? false : true
-											}
+											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 										></Checkbox>
 										<a href='#!' className='stnd-plan text-danger'>
 											Advance plan required
@@ -491,45 +384,25 @@ function WarehouseComponent(props) {
 										Offer if address is within (miles):
 									</label>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={16}
-									md={16}
-									lg={16}
-									xl={16}
-								>
+								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
 									<Form.Item className={'mb-0'}>
 										<Input
 											name='ld_miles'
 											value={locationDetail.ld_miles}
 											onChange={changeValue}
-											disabled={
-												plansInfo && plansInfo.plan_type === 3 ? false : true
-											}
+											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 										/>
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={30} align='middle' className={'mb-2'}>
 								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
-									<label className={'text-gray'}>
-										Offer if postal code matches:
-									</label>
+									<label className={'text-gray'}>Offer if postal code matches:</label>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={16}
-									md={16}
-									lg={16}
-									xl={16}
-								>
+								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
 									<Form.Item
 										className={'mb-0'}
-										rules={[
-											{ required: false, message: 'Costal Code Required' },
-										]}
+										rules={[{ required: false, message: 'Costal Code Required' }]}
 									>
 										<Select
 											name='ld_zipcodes'
@@ -538,9 +411,7 @@ function WarehouseComponent(props) {
 											style={{ width: '100%' }}
 											onChange={(e) => handleChange('ld_zipcodes', e)}
 											tokenSeparators={[',']}
-											disabled={
-												plansInfo && plansInfo.plan_type === 3 ? false : true
-											}
+											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 										/>
 									</Form.Item>
 								</Col>
@@ -549,14 +420,7 @@ function WarehouseComponent(props) {
 								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
 									<label className={'text-gray'}>Checkout description:</label>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={16}
-									md={16}
-									lg={16}
-									xl={16}
-								>
+								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
 									<Form.Item
 										className={'mb-0'}
 										rules={[
@@ -571,9 +435,7 @@ function WarehouseComponent(props) {
 											value={locationDetail.ld_description}
 											placeholder='Local delivery'
 											onChange={changeValue}
-											disabled={
-												plansInfo && plansInfo.plan_type === 3 ? false : true
-											}
+											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 										/>
 									</Form.Item>
 								</Col>
@@ -582,14 +444,7 @@ function WarehouseComponent(props) {
 								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
 									<label className={'text-gray'}>Local delivery fee</label>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={16}
-									md={16}
-									lg={16}
-									xl={16}
-								>
+								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
 									<Form.Item
 										className={'mb-0'}
 										rules={[
@@ -603,9 +458,7 @@ function WarehouseComponent(props) {
 											name='ld_fee'
 											value={locationDetail.ld_fee}
 											onChange={changeValue}
-											disabled={
-												plansInfo && plansInfo.plan_type === 3 ? false : true
-											}
+											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 										/>
 									</Form.Item>
 								</Col>
@@ -626,14 +479,7 @@ function WarehouseComponent(props) {
 										</Tooltip>
 									</label>
 								</Col>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={16}
-									md={16}
-									lg={16}
-									xl={16}
-								>
+								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
 									<Form.Item className={'mb-0'}>
 										<Checkbox
 											name='ld_enable_supress'
@@ -644,22 +490,13 @@ function WarehouseComponent(props) {
 													ld_enable_supress: !locationDetail.ld_enable_supress,
 												})
 											}
-											disabled={
-												plansInfo && plansInfo.plan_type === 3 ? false : true
-											}
+											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 										></Checkbox>
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={30} align='middle' className={'mt-3'}>
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={24}
-									md={24}
-									lg={24}
-									xl={24}
-								>
+								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 									<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 										<Space>
 											<Button
@@ -686,9 +523,9 @@ function WarehouseComponent(props) {
 							</Button>
 						</Title>
 						<p>
-							Warehouses that inventory all products not otherwise indentified
-							as drop shipped items. The warehouse with lowest shipping cost to
-							the destination is used for quoting purpose.
+							Warehouses that inventory all products not otherwise indentified as drop
+							shipped items. The warehouse with lowest shipping cost to the destination is
+							used for quoting purpose.
 						</p>
 						<Table
 							className={'custom-table'}
@@ -708,12 +545,12 @@ function WarehouseComponent(props) {
 							</Button>
 						</Title>
 						<p>
-							Location that inventory specific items that are drop shipped to
-							the destination. Use the product's settings page to identify it as
-							a drop shipped and it associated drop ship location. Orders that
-							includes drop shipped items will display a single figure for the
-							shipping rate estimate that is equal to the sum of the cheapest
-							option of each shipment required to fullfil the order.
+							Location that inventory specific items that are drop shipped to the
+							destination. Use the product's settings page to identify it as a drop
+							shipped and it associated drop ship location. Orders that includes drop
+							shipped items will display a single figure for the shipping rate estimate
+							that is equal to the sum of the cheapest option of each shipment required to
+							fullfil the order.
 						</p>
 						<Table
 							className={'custom-table'}
@@ -751,8 +588,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	postData: (data, type, url, token) =>
-		dispatch(postData(data, type, url, token)),
+	postData: (data, type, url, token, visibility) =>
+		dispatch(postData(data, type, url, token, visibility)),
 	getGoogleResponse: (data, token) => dispatch(getGoogleResponse(data, token)),
 	getWarehouse: (id, locationDetail, visibility, token) =>
 		dispatch(getWarehouse(id, locationDetail, visibility, token)),

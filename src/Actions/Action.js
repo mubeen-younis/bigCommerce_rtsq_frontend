@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const postData = (data, type, url, token) => {
+export const postData = (data, type, url, token, setVisibleWarehouse = null) => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${token}`,
@@ -23,6 +23,8 @@ export const postData = (data, type, url, token) => {
 							payload: data.data,
 						});
 					}
+
+					setVisibleWarehouse(false);
 				}
 
 				dispatch({
@@ -239,10 +241,7 @@ export const getAllCarriers = (data) => {
 
 	return (dispatch) => {
 		axios
-			.get(
-				`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedCarriers`,
-				config
-			)
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedCarriers`, config)
 			.then(({ data }) => {
 				if (!data.error) {
 					/* dispatch({
@@ -283,10 +282,7 @@ export const getAllAddons = (data) => {
 
 	return (dispatch) => {
 		axios
-			.get(
-				`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedAddons`,
-				config
-			)
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedAddons`, config)
 			.then(({ data }) => {
 				dispatch({
 					type: 'GET_ADDONS',

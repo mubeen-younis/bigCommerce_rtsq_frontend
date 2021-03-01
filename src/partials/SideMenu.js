@@ -26,6 +26,12 @@ function SideMenu(props) {
 				<Title className={'carriers-name'} level={6}>
 					Installed Carriers
 				</Title>
+
+				{props.installedCarriers &&
+				!props.installedCarriers.every((carr) => carr.is_enabled) ? (
+					<Menu.Item>No Carrier is Enabled</Menu.Item>
+				) : null}
+
 				{props.installedCarriers && props.installedCarriers.length === 0 ? (
 					<Menu.Item>No Carrier Installed</Menu.Item>
 				) : null}
@@ -45,6 +51,11 @@ function SideMenu(props) {
 				</Title>
 				{props.installedAddons && props.installedAddons.length === 0 ? (
 					<Menu.Item>No Addon Installed</Menu.Item>
+				) : null}
+
+				{props.installedAddons &&
+				!props.installedAddons.every((add) => add.is_enabled) ? (
+					<Menu.Item>No Addon is Enabled</Menu.Item>
 				) : null}
 
 				{props.installedAddons
