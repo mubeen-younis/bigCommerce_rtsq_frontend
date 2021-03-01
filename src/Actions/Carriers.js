@@ -57,16 +57,15 @@ export const getServices = () => {
 	};
 };
 
-export const getAddTabSettings = (token) => {
+export const getAddTabSettings = (token, carrierId) => {
 	return (dispatch) => {
 		axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_add_tab_sett_store`, {
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_add_tab_sett_store/${carrierId}`, {
 				headers: {
 					authorization: `Bearer ${token}`,
 				},
 			})
 			.then(({ data }) => {
-				console.log(JSON.parse(data.data[0].value));
 				dispatch({
 					type: 'GET_ADD_TAB_SETTING',
 					payload: JSON.parse(data.data[0].value),

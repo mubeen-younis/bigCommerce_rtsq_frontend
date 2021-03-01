@@ -70,7 +70,7 @@ function QuoteSettingsComponentWwe(props) {
 
 	const onFinish = (data) => {
 		//data.method = ratingMethod
-		data = { ...data, ...quoteSettingsState, carrierId: props.carrierId };
+		data = { ...data, ...quoteSettingsState, carrierId: +props.carrierId };
 		props.postData(data, props.token);
 	};
 
