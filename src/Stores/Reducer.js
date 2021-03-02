@@ -171,9 +171,7 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				installedAddons: [...state.installedAddons, newInstalledAddon],
-				addons: state.addons.filter(
-					(add) => add.id !== action.payload.addon_id
-				),
+				addons: state.addons.filter((add) => add.id !== action.payload.addon_id),
 			};
 
 		case 'GET_INSTALLED_CARRIERS':
@@ -243,6 +241,16 @@ const Reducer = (state = initialState, action) => {
 				installedAddons: state.installedAddons.map((addon) =>
 					addon.id === action.payload.id
 						? { ...addon, is_enabled: action.payload.is_enabled }
+						: addon
+				),
+			};
+
+		case 'CHANGE_ADDON_SUSPEND_STATUS':
+			return {
+				...state,
+				installedAddons: state.installedAddons.map((addon) =>
+					addon.id === action.payload.id
+						? { ...addon, is_suspend: action.payload.is_suspend }
 						: addon
 				),
 			};

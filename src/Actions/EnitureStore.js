@@ -2,6 +2,14 @@ import axios from 'axios';
 
 export const installCarrier = (carrier_id, token) => {
 	return (dispatch) => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		});
+
 		axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/installCarrier`,
@@ -39,6 +47,14 @@ export const installCarrier = (carrier_id, token) => {
 
 export const installAddon = (addon_id, token) => {
 	return (dispatch) => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		});
+
 		axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/installAddon`,
@@ -110,6 +126,14 @@ export const getInstalledCarriers = (data) => {
 
 export const changeCarrierStatus = (carrier_id, token) => {
 	return (dispatch) => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		});
+
 		axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/changeCarrierStatus`,
@@ -165,6 +189,14 @@ export const getInstalledAddons = (data) => {
 
 export const changeAddonStatus = (addon_id, token) => {
 	return (dispatch) => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		});
+
 		axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/changeAddonStatus`,
