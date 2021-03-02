@@ -255,6 +255,13 @@ const Reducer = (state = initialState, action) => {
 				),
 			};
 
+		case 'GET_ADDON_ADDRESS_SETTING':
+		case 'CHANGE_DEFAULT_ADDRESS':
+			return {
+				...state,
+				addonSettings: action.payload,
+			};
+
 		default:
 			break;
 	}

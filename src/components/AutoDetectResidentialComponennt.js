@@ -4,7 +4,13 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 // import TabsLayout from '../tabs_layout/tabs';
 // import { getCarrierDetails } from '../Actions/Action';
-import { getRadPlans, changeAddonSuspendStatus } from '../Actions/RAD';
+import {
+	getRadPlans,
+	changeAddonSuspendStatus,
+	changeDefaultAddress,
+	changePlan,
+	getAddonAdressSettings,
+} from '../Actions/RAD';
 
 const { Title } = Typography;
 // const { Meta } = Card;
@@ -24,16 +30,15 @@ function AutoDetectResidentialComponennt(props) {
 		) {
 			props.getRadPlans(props.token);
 		}
+
+		/* if (!props.addonsSettings) {
+			props.getAddonAdressSettings(addon_id, props.token);
+		} */
 		// eslint-disable-next-line
-	});
+	}, []);
 
 	const changePlan = (value) => {
 		console.log(value);
-	};
-
-	const changeDefaultAddress = (e) => {
-		console.log('radio checked', e.target.value);
-		setValue(e.target.value);
 	};
 
 	return (
@@ -116,9 +121,11 @@ function AutoDetectResidentialComponennt(props) {
 								onChange={() => props.changeAddonSuspendStatus(addon_id, props.token)}
 								checked={
 									props.installedAddons
-										? props.installedAddons.forEach((ic) =>
-												ic.id === addon_id ? ic.is_suspend : false
-										  )
+										? props.installedAddons.forEach((ia) => {
+												if (ia.id === addon_id) {
+													return ia.is_suspend;
+												}
+										  })
 										: false
 								}
 							>
@@ -133,13 +140,19 @@ function AutoDetectResidentialComponennt(props) {
 							<Radio.Group onChange={changeDefaultAddress} value={value}>
 								<Radio
 									style={{ display: 'block', marginTop: '8px' }}
-									value={'residential'}
+									value={1}
+									onChange={(e) =>
+										props.changeDefaultAddress(addon_id, props.token, e.target.value)
+									}
 								>
 									Residential
 								</Radio>
 								<Radio
 									style={{ display: 'block', marginTop: '8px' }}
-									value={'commercial'}
+									value={2}
+									onChange={(e) =>
+										props.changeDefaultAddress(addon_id, props.token, e.target.value)
+									}
 								>
 									Commercial
 								</Radio>
@@ -158,14 +171,20 @@ const mapStateToProps = (state) => {
 		radPlans: state.radPlans,
 		installedAddons: state.installedAddons,
 		alertMessage: state.alertMessageType,
+		addonsSettings: state.addonsSettings,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		getRadPlans: (token) => dispatch(getRadPlans(token)),
+		changePlan: (token) => dispatch(changePlan(token)),
 		changeAddonSuspendStatus: (addon_id, token) =>
 			dispatch(changeAddonSuspendStatus(addon_id, token)),
+		getAddonAdressSettings: (addon_id, token) =>
+			dispatch(getAddonAdressSettings(addon_id, token)),
+		changeDefaultAddress: (addon_id, token, address_type) =>
+			dispatch(changeDefaultAddress(addon_id, token, address_type)),
 	};
 };
 
