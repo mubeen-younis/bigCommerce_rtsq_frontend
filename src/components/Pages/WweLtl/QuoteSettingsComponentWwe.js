@@ -36,10 +36,11 @@ function QuoteSettingsComponentWwe(props) {
 
 	useEffect(() => {
 		getQuoteSettings();
+		// eslint-disable-next-line
 	}, [props.quoteSettings]);
 
 	const getQuoteSettings = () => {
-		console.log('props.quoteSettings ', props.quoteSettings);
+		// console.log('props.quoteSettings ', props.quoteSettings);
 
 		if (props.quoteSettings === null || props.quoteSettings === undefined) {
 			props.getSettings(props.token, props.carrierId);

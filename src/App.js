@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 
 import {
 	getLocations,
-	/* setStore, */ getAllCarriers,
+	getAllCarriers,
 	getAllAddons,
 	getPlansInfo,
 } from './Actions/Action';
@@ -48,8 +48,6 @@ function App(props) {
 			urlParams.get('store') !== (undefined || null)
 				? urlParams.get('store')
 				: localStorage.getItem('store');
-
-		console.log('store ', store);
 
 		if (token === (undefined || null) && store !== undefined) {
 			setToken(store);
@@ -116,39 +114,37 @@ function App(props) {
 	}
 
 	return (
-		<>
-			<Router>
+		<Router>
+			<Layout>
+				<SideMenu />
+
 				<Layout>
-					<SideMenu />
+					<Header className={'top-header'} style={{ padding: 0 }} />
+					<Content className={'body-content'}>
+						<Switch>
+							<Route exact path='/' component={ShippingCarriersComponent} />
+							<Route
+								exact
+								path='/addon/:addon_id'
+								component={AutoDetectResidentialComponennt}
+							/>
+							<Route exact path='/:carrier_id' component={RendorCarrier} />
+						</Switch>
 
-					<Layout>
-						<Header className={'top-header'} style={{ padding: 0 }} />
-						<Content className={'body-content'}>
-							<Switch>
-								<Route exact path='/' component={ShippingCarriersComponent} />
-								<Route
-									exact
-									path='/addon/:addon_id'
-									component={AutoDetectResidentialComponennt}
-								/>
-								<Route exact path='/:carrier_id' component={RendorCarrier} />
-							</Switch>
-
-							<Modal
-								title={confirmModal !== null ? confirmModal.title : ''}
-								visible={confirmModal !== null ? confirmModal.on : false}
-								onOk={() => confirmModal(true, false)}
-								onCancel={() => confirmModal(false, true)}
-								okText='Confirm'
-								cancelText='Cancel'
-							>
-								<p>{confirmModal !== null ? confirmModal.body : ''}</p>
-							</Modal>
-						</Content>
-					</Layout>
+						<Modal
+							title={confirmModal !== null ? confirmModal.title : ''}
+							visible={confirmModal !== null ? confirmModal.on : false}
+							onOk={() => confirmModal(true, false)}
+							onCancel={() => confirmModal(false, true)}
+							okText='Confirm'
+							cancelText='Cancel'
+						>
+							<p>{confirmModal !== null ? confirmModal.body : ''}</p>
+						</Modal>
+					</Content>
 				</Layout>
-			</Router>
-		</>
+			</Layout>
+		</Router>
 	);
 }
 

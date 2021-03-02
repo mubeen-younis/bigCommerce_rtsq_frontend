@@ -15,6 +15,8 @@ function AutoDetectResidentialComponennt(props) {
 
 	useEffect(() => {
 		props.getRadPlans(props.token);
+
+		// eslint-disable-next-line
 	}, []);
 
 	const changePlan = (value) => {
@@ -31,14 +33,7 @@ function AutoDetectResidentialComponennt(props) {
 	return (
 		<Fragment>
 			<Row gutter={25}>
-				<Col
-					className='gutter-row mb-3'
-					xs={24}
-					sm={24}
-					md={24}
-					lg={24}
-					xl={24}
-				>
+				<Col className='gutter-row mb-3' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<Title level={3} style={{ textAlign: 'center' }}>
 						Residential Address Detection
 					</Title>
@@ -48,14 +43,15 @@ function AutoDetectResidentialComponennt(props) {
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={12}>
 					<Card style={{ width: '100%' }}>
 						<p>
-							The plugin will automatically detect residential addresses when
-							this feature is enabled. When a residential address is detected,
-							the residential delivery fee will be included in the carrier's
-							rate estimates. The next subscription begins when the current one
-							expires or is depleted, which ever comes first. Refer to the{' '}
+							The plugin will automatically detect residential addresses when this feature
+							is enabled. When a residential address is detected, the residential delivery
+							fee will be included in the carrier's rate estimates. The next subscription
+							begins when the current one expires or is depleted, which ever comes first.
+							Refer to the{' '}
 							<a
 								href='https://eniture.com/magento2-residential-address-detection/#documentation'
 								target='_blank'
+								rel='noreferrer'
 							>
 								{' '}
 								User Guide
@@ -94,9 +90,7 @@ function AutoDetectResidentialComponennt(props) {
 							<strong>Current usage</strong>
 						</label>
 						<div style={{ width: '100%', marginBottom: '20px' }}>
-							<p style={{ marginBottom: '0' }}>
-								35/100 35.00% (2021-02-03 05:58:26)
-							</p>
+							<p style={{ marginBottom: '0' }}>35/100 35.00% (2021-02-03 05:58:26)</p>
 						</div>
 						<div style={{ width: '100%', marginBottom: '20px' }}>
 							<Checkbox onChange={suspendAction}>Suspend Use</Checkbox>

@@ -116,13 +116,13 @@ export const getLocations = (token) => {
 				if (data.data.length > 0) {
 					let dropships = [];
 					let warehouse = [];
-					await data.data.map((value) => {
-						if (value.type === 1) {
-							warehouse = [...warehouse, value];
-						} else {
-							dropships = [...dropships, value];
-						}
-					});
+
+					await data.data.forEach((value) =>
+						value.type === 1
+							? (warehouse = [...warehouse, value])
+							: (dropships = [...dropships, value])
+					);
+
 					dispatch({
 						type: 'GET_LOCATIONS',
 						payload: {

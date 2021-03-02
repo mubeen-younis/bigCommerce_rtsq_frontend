@@ -11,7 +11,7 @@ function SideMenu(props) {
 			breakpoint='lg'
 			collapsedWidth='0'
 			onBreakpoint={(broken) => {
-				console.log(broken);
+				// console.log(broken);
 			}}
 			onCollapse={(collapsed, type) => {
 				console.log(collapsed, type);

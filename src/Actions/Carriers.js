@@ -1,23 +1,8 @@
 import axios from 'axios';
-const config = {
-	headers: {
-		authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
-	},
-};
 
 export const getServices = () => {
-	const token = '';
-	const config = {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			'Content-type': 'application/json',
-		}, //Authorization: `Bearer ${token}`
-	};
 	const data = {
 		shop: 'dev-azm-1.mybigcommerce.com',
-	};
-	const store = {
-		store: 'uann2u',
 	};
 
 	return (dispatch) => {
@@ -60,11 +45,14 @@ export const getServices = () => {
 export const getAddTabSettings = (token, carrierId) => {
 	return (dispatch) => {
 		axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_add_tab_sett_store/${carrierId}`, {
-				headers: {
-					authorization: `Bearer ${token}`,
-				},
-			})
+			.get(
+				`${process.env.REACT_APP_ENITURE_API_URL}/get_add_tab_sett_store/${carrierId}`,
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+			)
 			.then(({ data }) => {
 				dispatch({
 					type: 'GET_ADD_TAB_SETTING',

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { postData } from '../Actions/Action';
 import { getServices, getAddTabSettings } from '../Actions/Carriers';

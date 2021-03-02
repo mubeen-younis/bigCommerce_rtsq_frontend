@@ -10,40 +10,38 @@ import UserGuideComponent from '../components/Pages/UserGuideComponent';
 
 const { TabPane } = Tabs;
 function callback(key) {
-	console.log(key);
+	// console.log(key);
 }
 
 function TabsLayout() {
 	return (
-		<>
-			<Tabs className={'tabs-wrp'} onChange={callback} type='card'>
-				<TabPane tab='Connection Settinngs' key='1'>
-					<ConnectionSettingsComponent />
-				</TabPane>
-				<TabPane tab='Carriers' key='2'>
-					<CarriersComponent />
-				</TabPane>
-				<TabPane tab='Warehouse' key='3'>
-					<WarehouseComponent />
-				</TabPane>
-				<TabPane tab='Quote Settings' key='4'>
-					<QuoteSettingsComponentWwe />
-				</TabPane>
-				<TabPane tab='Product Settings' key='5'>
-					<ProductSettingsComponent />
-				</TabPane>
-				{/* <TabPane tab="Import CSV" key="6">
+		<Tabs className={'tabs-wrp'} onChange={callback} type='card'>
+			<TabPane tab='Connection Settinngs' key='1'>
+				<ConnectionSettingsComponent />
+			</TabPane>
+			<TabPane tab='Carriers' key='2'>
+				<CarriersComponent />
+			</TabPane>
+			<TabPane tab='Warehouse' key='3'>
+				<WarehouseComponent />
+			</TabPane>
+			<TabPane tab='Quote Settings' key='4'>
+				<QuoteSettingsComponentWwe />
+			</TabPane>
+			<TabPane tab='Product Settings' key='5'>
+				<ProductSettingsComponent />
+			</TabPane>
+			{/* <TabPane tab="Import CSV" key="6">
                     <AlertMessage />
                     <ImportCsvComponent />
                 </TabPane>
                 <TabPane tab="Box Sizes" key="7">
                     <BoxSizesComponent />
                 </TabPane> */}
-				<TabPane tab='User Guide' key='6'>
-					<UserGuideComponent />
-				</TabPane>
-			</Tabs>
-		</>
+			<TabPane tab='User Guide' key='6'>
+				<UserGuideComponent />
+			</TabPane>
+		</Tabs>
 	);
 }
 

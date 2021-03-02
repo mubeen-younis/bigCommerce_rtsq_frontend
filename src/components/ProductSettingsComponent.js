@@ -1,7 +1,11 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getAllProducts } from '../Actions/Action';
-import { submitProductSettings, getProduct, importProducts } from '../Actions/ProductSettings';
+import {
+	submitProductSettings,
+	getProduct,
+	importProducts,
+} from '../Actions/ProductSettings';
 import {
 	Table,
 	Button,
@@ -67,8 +71,8 @@ function ProductSettingsComponent(props) {
 	};
 
 	const syncProducts = () => {
-		props.importProducts(props.token)
-	}
+		props.importProducts(props.token);
+	};
 	/* const onChange = (e) => {
 		console.log(`checked = ${e.target.name}`);
 		setState({
@@ -171,15 +175,8 @@ function ProductSettingsComponent(props) {
 		console.log('Received values of form: ', values);
 	};
 
-	if (
-		loading &&
-		(props.allProducts === undefined || props.allProducts === null)
-	) {
-		return (
-			<>
-				<Skeleton active />
-			</>
-		);
+	if (loading && (props.allProducts === undefined || props.allProducts === null)) {
+		return <Skeleton active />;
 	}
 
 	return (
@@ -218,11 +215,10 @@ function ProductSettingsComponent(props) {
 					</Form.Item>
 				</Form>
 			</Space> */}
-			<Space 
-				className={'mb-2'} 
-				style={{ textAlign: 'right'}}
-			>
-				<Button onClick={syncProducts}  type='primary'>Sync Products</Button>
+			<Space className={'mb-2'} style={{ textAlign: 'right' }}>
+				<Button onClick={syncProducts} type='primary'>
+					Sync Products
+				</Button>
 			</Space>
 			<Table
 				className='custom-table'
@@ -257,11 +253,7 @@ function ProductSettingsComponent(props) {
 				{loadProduct ? (
 					<Skeleton active />
 				) : (
-					<Form
-						layout='vertical'
-						hideRequiredMark
-						initialValues={selectedProductDetail}
-					>
+					<Form layout='vertical' hideRequiredMark initialValues={selectedProductDetail}>
 						<Row gutter={16}>
 							<Col span={12}>
 								<Form.Item name='freight_enabled'>
@@ -285,9 +277,7 @@ function ProductSettingsComponent(props) {
 								<Form.Item
 									name='freight_class'
 									label='Freight Class'
-									rules={[
-										{ required: false, message: 'Please select an owner' },
-									]}
+									rules={[{ required: false, message: 'Please select an owner' }]}
 								>
 									<Select placeholder='Freight Class'>
 										<Option value=''>No Freight Class</Option>
@@ -479,12 +469,8 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		getAllProducts: (token) => dispatch(getAllProducts(token)),
 		importProducts: (token) => dispatch(importProducts(token)),
-		submitProductSettings: (data, token) =>
-			dispatch(submitProductSettings(data, token)),
+		submitProductSettings: (data, token) => dispatch(submitProductSettings(data, token)),
 	};
 };
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ProductSettingsComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductSettingsComponent);

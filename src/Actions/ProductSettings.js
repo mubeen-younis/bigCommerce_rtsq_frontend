@@ -1,11 +1,4 @@
-import { Empty } from 'antd';
 import axios from 'axios';
-
-const config = {
-	headers: {
-		authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
-	},
-};
 
 export const submitProductSettings = (data, token) => {
 	return (dispatch) => {
@@ -44,12 +37,7 @@ export const submitProductSettings = (data, token) => {
 	};
 };
 
-export const getProduct = (
-	id,
-	setselectedProductDetail,
-	setLoadProduct,
-	token
-) => {
+export const getProduct = (id, setselectedProductDetail, setLoadProduct, token) => {
 	axios
 		.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_product`, {
 			headers: {
@@ -68,7 +56,7 @@ export const getProduct = (
 		});
 };
 
-export const importProducts = ( token ) => {
+export const importProducts = (token) => {
 	return (dispatch) => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
@@ -81,9 +69,9 @@ export const importProducts = ( token ) => {
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/import_products`, {
 				headers: {
 					authorization: `Bearer ${token}`,
-				}
+				},
 			})
-			.then(resp =>{
+			.then((resp) => {
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
@@ -92,14 +80,12 @@ export const importProducts = ( token ) => {
 						alertMessageType: resp.data.error ? 'error' : 'success',
 					},
 				});
-				if (!resp.data.error && resp.data.data['data'].length > 0){
+				if (!resp.data.error && resp.data.data['data'].length > 0) {
 					dispatch({
 						type: 'GET_ALL_PRODUCTS',
 						payload: resp.data.data['data'],
 					});
 				}
-			})
-	}
+			});
+	};
 };
-
-
