@@ -17,8 +17,6 @@ export const getRadPlans = (token) => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/rad/get_plans`, config)
 			.then(({ data }) => {
-				console.log(data);
-
 				if (!data.error || data.data.length === 0) {
 					dispatch({
 						type: 'RAD_PLANS',
@@ -39,12 +37,14 @@ export const getRadPlans = (token) => {
 	};
 };
 
-export const changePlan = (token) => {
+export const changePlan = (token, plan_package) => {
 	return (dispatch) => {
 		axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/rad/change_plan`,
-				{},
+				{
+					package: plan_package,
+				},
 				{
 					headers: {
 						authorization: `Bearer ${token}`,
@@ -66,7 +66,7 @@ export const changePlan = (token) => {
 					payload: {
 						alertMessage: data.message,
 						showAlertMessage: true,
-						alertMessageType: data.error ?? 'error',
+						alertMessageType: data.error ? 'error' : 'success',
 					},
 				});
 			});
@@ -96,8 +96,6 @@ export const changeAddonSuspendStatus = (addon_id, token) => {
 				}
 			)
 			.then(({ data }) => {
-				console.log(data);
-
 				dispatch({
 					type: 'CHANGE_ADDON_SUSPEND_STATUS',
 					payload: data.data,
@@ -136,8 +134,6 @@ export const changeDefaultAddress = (addon_id, token, address_type) => {
 				}
 			)
 			.then(({ data }) => {
-				console.log(data);
-
 				if (!data.error || data.data.length === 0) {
 					dispatch({
 						type: 'CHANGE_DEFAULT_ADDRESS',
@@ -169,8 +165,6 @@ export const getAddonAdressSettings = (addon_id, token) => {
 				},
 			})
 			.then(({ data }) => {
-				console.log(data);
-
 				if (!data.error) {
 					dispatch({
 						type: 'GET_ADDON_ADDRESS_SETTING',

@@ -30,7 +30,10 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 							payload: data.data,
 						});
 					}
-					setVisibleWarehouse(false);
+
+					if (type === 'SAVE_LOCATION') {
+						setVisibleWarehouse(false);
+					}
 				}
 
 				dispatch({

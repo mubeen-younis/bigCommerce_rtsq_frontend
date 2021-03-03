@@ -2,8 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Row, Col, Checkbox, Radio, Typography, Card, Select, Skeleton } from 'antd';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-// import TabsLayout from '../tabs_layout/tabs';
-// import { getCarrierDetails } from '../Actions/Action';
+
 import {
 	getRadPlans,
 	changeAddonSuspendStatus,
@@ -13,7 +12,6 @@ import {
 } from '../Actions/RAD';
 
 const { Title } = Typography;
-// const { Meta } = Card;
 const { Option } = Select;
 
 function AutoDetectResidentialComponennt(props) {
@@ -34,11 +32,26 @@ function AutoDetectResidentialComponennt(props) {
 		if (!props.addonsSettings) {
 			props.getAddonAdressSettings(addon_id, props.token);
 		}
+
+		props.installedAddons.forEach((ia) =>
+			ia.id === +addon_id ? setSuspend(ia.is_suspend) : null
+		);
+
 		// eslint-disable-next-line
 	}, []);
 
-	const changePlan = (value) => {
-		console.log(value);
+	const changePlan = (plan_value) => {
+		console.log(plan_value);
+		// props.changePlan(props.token, value);
+	};
+
+	if (props.addonsSettings) {
+		setAddress(props.addonsSettings.unconfirmed_default);
+	}
+
+	const onChange = (e) => {
+		setAddress(e.target.value);
+		props.changeDefaultAddress(addon_id, props.token, e.target.value);
 	};
 
 	if (!props.radPlans) {
@@ -140,20 +153,14 @@ function AutoDetectResidentialComponennt(props) {
 								<Radio
 									style={{ display: 'block', marginTop: '8px' }}
 									value={1}
-									onChange={(e) => {
-										setAddress(e.target.value);
-										props.changeDefaultAddress(addon_id, props.token, e.target.value);
-									}}
+									onChange={onChange}
 								>
 									Residential
 								</Radio>
 								<Radio
 									style={{ display: 'block', marginTop: '8px' }}
 									value={2}
-									onChange={(e) => {
-										setAddress(e.target.value);
-										props.changeDefaultAddress(addon_id, props.token, e.target.value);
-									}}
+									onChange={onChange}
 								>
 									Commercial
 								</Radio>
@@ -179,7 +186,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		getRadPlans: (token) => dispatch(getRadPlans(token)),
-		changePlan: (token) => dispatch(changePlan(token)),
+		changePlan: (token, plan_package) => dispatch(changePlan(token, plan_package)),
 		changeAddonSuspendStatus: (addon_id, token) =>
 			dispatch(changeAddonSuspendStatus(addon_id, token)),
 		getAddonAdressSettings: (addon_id, token) =>

@@ -58,6 +58,7 @@ function WarehouseComponent(props) {
 		getLocationOn
 	) {
 		console.log('googleLocationResponse', googleLocationResponse);
+		console.log(locationDetail);
 
 		setLocationDetail({
 			...locationDetail,
@@ -70,8 +71,6 @@ function WarehouseComponent(props) {
 
 	const getGoogleLocation = (zip_code) => {
 		if (zip_code.length > 4) {
-			console.log(props);
-
 			getGoogleResponse(zip_code, token);
 			setGetLocationOn(true);
 		}
