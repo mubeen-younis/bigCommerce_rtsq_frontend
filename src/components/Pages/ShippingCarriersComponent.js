@@ -34,9 +34,9 @@ function ShippingCarriersComponent(props) {
 								onClick={() => {
 									props.changeCarrierStatus(value.id, props.token);
 								}}
-								disabled={
+								/* disabled={
 									props.alertMessageType && props.alertMessageType === 'loading' ? 1 : 0
-								}
+								} */
 							>
 								{value.is_enabled === 1 ? 'Disable' : 'Enable'}
 							</Button>
@@ -65,9 +65,9 @@ function ShippingCarriersComponent(props) {
 								className={'mt-3'}
 								type='primary'
 								onClick={() => props.changeAddonStatus(value.id, props.token)}
-								disabled={
+								/* disabled={
 									props.alertMessageType && props.alertMessageType === 'loading' ? 1 : 0
-								}
+								} */
 							>
 								{value.is_enabled === 1 ? 'Disable' : 'Enable'}
 							</Button>

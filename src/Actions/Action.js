@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 export const postData = (data, type, url, token, setVisibleWarehouse = null) => {
 	const config = {
 		headers: {
@@ -13,37 +14,35 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 				alertMessageType: 'loading',
 			},
 		});
+
 		axios
 			.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data, config)
 			.then(({ data }) => {
-				console.log(data);
-
 				if (!data.error) {
-					if (data.data) {
-						if (data.data.value) {
-							dispatch({
-								type: type,
-								payload: JSON.parse(data.data.value),
-							});
-						} else {
-							dispatch({
-								type: type,
-								payload: data.data,
-							});
-						}
+					if (data.data.value) {
+						dispatch({
+							type: type,
+							payload: JSON.parse(data.data.value),
+						});
+					} else {
+						dispatch({
+							type: type,
+							payload: data.data,
+						});
 					}
-
 					setVisibleWarehouse(false);
-
-					dispatch({
-						type: 'ALERT_MESSAGE',
-						payload: {
-							alertMessage: data.message,
-							showAlertMessage: true,
-							alertMessageType: data.error ? 'error' : 'success',
-						},
-					});
 				}
+
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: data.message,
+						showAlertMessage: true,
+						alertMessageType: data.error ? 'error' : 'success',
+					},
+				});
+
+				dismissAlert();
 			})
 			.catch((error) => {});
 	};
