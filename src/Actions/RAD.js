@@ -150,7 +150,7 @@ export const changeDefaultAddress = (addon_id, token, address_type) => {
 					payload: {
 						alertMessage: data.message,
 						showAlertMessage: true,
-						alertMessageType: data.error ?? 'error',
+						alertMessageType: data.error ? 'error' : 'success',
 					},
 				});
 			});
@@ -161,7 +161,9 @@ export const getAddonAdressSettings = (addon_id, token) => {
 	return (dispatch) => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/rad/getAddonAdressSettings`, {
-				authorization: `Bearer ${token}`,
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
 				params: {
 					addon_id,
 				},

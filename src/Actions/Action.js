@@ -16,6 +16,8 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 		axios
 			.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data, config)
 			.then(({ data }) => {
+				console.log(data);
+
 				if (!data.error) {
 					if (data.data) {
 						if (data.data.value) {
@@ -32,16 +34,16 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 					}
 
 					setVisibleWarehouse(false);
-				}
 
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						alertMessage: data.message,
-						showAlertMessage: true,
-						alertMessageType: data.error ? 'error' : 'success',
-					},
-				});
+					dispatch({
+						type: 'ALERT_MESSAGE',
+						payload: {
+							alertMessage: data.message,
+							showAlertMessage: true,
+							alertMessageType: data.error ? 'error' : 'success',
+						},
+					});
+				}
 			})
 			.catch((error) => {});
 	};

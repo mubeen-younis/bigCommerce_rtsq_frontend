@@ -104,7 +104,9 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				carriers: action.payload,
 			};
+
 		case 'GET_ADD_TAB_SETTING':
+		case 'SAVE_CARRIER_TAB_SETTINGS':
 			return {
 				...state,
 				carriersSettings: action.payload,

@@ -23,7 +23,7 @@ class CarriersComponent extends React.Component {
 	state = {
 		selectedRowKeys: [], // Check here to configure the default column
 		loading: true,
-		carrierServices: [],
+		carrierServices: true,
 	};
 
 	componentDidMount() {
@@ -41,13 +41,18 @@ class CarriersComponent extends React.Component {
 	};
 
 	onSelectChange = (selectedRowKeys) => {
-		this.setState({ selectedRowKeys });
+		this.setState({ selectedRowKeys, carrierServices: false });
 	};
 
 	saveCarriers = () => {
+		const data = {
+			services: this.state.selectedRowKeys,
+			carrierId: this.props.carrierId,
+		};
+
 		this.props.postData(
-			{ ...this.state.selectedRowKeys, carrierId: this.props.carrierId },
-			'GET_CARRIERS',
+			data,
+			'SAVE_CARRIER_TAB_SETTINGS',
 			'submit_carriers',
 			this.props.token
 		);
@@ -57,21 +62,21 @@ class CarriersComponent extends React.Component {
 		const { selectedRowKeys } = this.state;
 		let rowSelection = {};
 
-		console.log('selectedRowKeys ', selectedRowKeys);
-
-		if (this.props.carriersSettings !== null) {
+		if (
+			this.props.carriersSettings &&
+			this.state.selectedRowKeys.length === 0 &&
+			this.state.carrierServices
+		) {
 			rowSelection = {
 				selectedRowKeys: [...selectedRowKeys, ...this.props.carriersSettings],
 				onChange: this.onSelectChange,
 			};
-		} else {
+		} else if (Object.keys(rowSelection).length === 0) {
 			rowSelection = {
 				selectedRowKeys,
 				onChange: this.onSelectChange,
 			};
 		}
-
-		console.log('rowSelection ', rowSelection);
 
 		if (this.state.loading && this.props.services === undefined) {
 			return (

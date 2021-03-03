@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Row, Col, Checkbox, Radio, Typography, Card, Select } from 'antd';
+import { Row, Col, Checkbox, Radio, Typography, Card, Select, Skeleton } from 'antd';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 // import TabsLayout from '../tabs_layout/tabs';
@@ -17,9 +17,9 @@ const { Title } = Typography;
 const { Option } = Select;
 
 function AutoDetectResidentialComponennt(props) {
-	const [value, setValue] = useState(1);
-
 	const { addon_id } = useParams();
+	const [suspend, setSuspend] = useState(false);
+	const [address, setAddress] = useState(1);
 
 	useEffect(() => {
 		if (
@@ -31,15 +31,19 @@ function AutoDetectResidentialComponennt(props) {
 			props.getRadPlans(props.token);
 		}
 
-		/* if (!props.addonsSettings) {
+		if (!props.addonsSettings) {
 			props.getAddonAdressSettings(addon_id, props.token);
-		} */
+		}
 		// eslint-disable-next-line
 	}, []);
 
 	const changePlan = (value) => {
 		console.log(value);
 	};
+
+	if (!props.radPlans) {
+		return <Skeleton active />;
+	}
 
 	return (
 		<Fragment>
@@ -118,16 +122,11 @@ function AutoDetectResidentialComponennt(props) {
 
 						<div style={{ width: '100%', marginBottom: '20px' }}>
 							<Checkbox
-								onChange={() => props.changeAddonSuspendStatus(addon_id, props.token)}
-								checked={
-									props.installedAddons
-										? props.installedAddons.forEach((ia) => {
-												if (ia.id === addon_id) {
-													return ia.is_suspend;
-												}
-										  })
-										: false
-								}
+								onChange={(e) => {
+									setSuspend(e.target.checked);
+									props.changeAddonSuspendStatus(addon_id, props.token);
+								}}
+								checked={suspend}
 							>
 								Suspend Use
 							</Checkbox>
@@ -137,22 +136,24 @@ function AutoDetectResidentialComponennt(props) {
 							<strong>Default unconfirmed address types to</strong>
 						</label>
 						<div style={{ width: '100%', marginBottom: '20px' }}>
-							<Radio.Group onChange={changeDefaultAddress} value={value}>
+							<Radio.Group onChange={changeDefaultAddress} value={address}>
 								<Radio
 									style={{ display: 'block', marginTop: '8px' }}
 									value={1}
-									onChange={(e) =>
-										props.changeDefaultAddress(addon_id, props.token, e.target.value)
-									}
+									onChange={(e) => {
+										setAddress(e.target.value);
+										props.changeDefaultAddress(addon_id, props.token, e.target.value);
+									}}
 								>
 									Residential
 								</Radio>
 								<Radio
 									style={{ display: 'block', marginTop: '8px' }}
 									value={2}
-									onChange={(e) =>
-										props.changeDefaultAddress(addon_id, props.token, e.target.value)
-									}
+									onChange={(e) => {
+										setAddress(e.target.value);
+										props.changeDefaultAddress(addon_id, props.token, e.target.value);
+									}}
 								>
 									Commercial
 								</Radio>
