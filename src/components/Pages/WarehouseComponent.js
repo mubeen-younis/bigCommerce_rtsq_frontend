@@ -72,9 +72,14 @@ function WarehouseComponent(props) {
 	}
 
 	if (alertMessageType !== 'loading' && googleLocationResponse && getLocationOn) {
+		const city =
+			googleLocationResponse.city.length > 1
+				? googleLocationResponse.city
+				: googleLocationResponse.city[0];
+
 		setLocationDetail({
 			...locationDetail,
-			city: googleLocationResponse.city[0],
+			city,
 			state: googleLocationResponse.state,
 			country: googleLocationResponse.country,
 		});
@@ -181,7 +186,7 @@ function WarehouseComponent(props) {
 						title={
 							<Title className={'mb-0'} level={4}>
 								{alertMessageType === 'loading'
-									? 'Loading location...please wait'
+									? 'Loading...please wait'
 									: locationDetail.location_type === 1
 									? 'Warehouse info'
 									: 'Dropship info'}
@@ -237,18 +242,42 @@ function WarehouseComponent(props) {
 										</Form.Item>
 									</Col>
 									<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-										<Form.Item
-											className={'mb-2'}
-											label='City'
-											rules={[{ required: true, message: 'City' }]}
-										>
-											<Input
-												name='city'
-												placeholder='City'
-												value={locationDetail.city}
-												onChange={changeValue}
-											/>
-										</Form.Item>
+										{locationDetail &&
+										locationDetail.city &&
+										typeof locationDetail.city === 'object' ? (
+											<Form.Item
+												className={'mb-2'}
+												label='City'
+												rules={[{ required: true, message: 'City' }]}
+											>
+												<Select
+													name='city'
+													placeholder='City'
+													defaultValue={locationDetail.city[0]}
+													size={'large'}
+													style={{ width: '100%' }}
+												>
+													{locationDetail.city.map((city) => (
+														<Select.Option value={city} key={city}>
+															{city}
+														</Select.Option>
+													))}
+												</Select>
+											</Form.Item>
+										) : (
+											<Form.Item
+												className={'mb-2'}
+												label='City'
+												rules={[{ required: true, message: 'City' }]}
+											>
+												<Input
+													name='city'
+													placeholder='City'
+													value={locationDetail.city}
+													onChange={changeValue}
+												/>
+											</Form.Item>
+										)}
 									</Col>
 									<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 										<Form.Item
