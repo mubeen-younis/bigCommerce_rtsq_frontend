@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getGoogleResponse = (zipcode, token) => {
+export const getGoogleResponse = (zipcode, token, setLocationOn) => {
 	return (dispatch) => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
@@ -23,6 +23,9 @@ export const getGoogleResponse = (zipcode, token) => {
 						payload: data.data,
 					});
 				}
+
+				setLocationOn(true);
+
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {

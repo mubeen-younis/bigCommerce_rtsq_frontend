@@ -21,7 +21,7 @@ import { getGoogleResponse, getWarehouse, deleteLocation } from '../../Actions/W
 const { Title } = Typography;
 
 function WarehouseComponent(props) {
-	const [getLocationOn, setGetLocationOn] = useState(true);
+	const [getLocationOn, setGetLocationOn] = useState(false);
 	const [visible1, setVisibleWarehouse] = useState(false);
 	const [warehouseDeleteModal, setDeleteWarehouseModal] = useState(false);
 	const [warehouseID, setWarehouseID] = useState(null);
@@ -33,8 +33,9 @@ function WarehouseComponent(props) {
 	const {
 		postData,
 		getGoogleResponse,
-		alertMessageType,
 		showAlertMessage,
+		alertMessageType,
+		alertMessage,
 		googleLocationResponse,
 		getWarehouse,
 		deleteLocation,
@@ -52,28 +53,40 @@ function WarehouseComponent(props) {
 	};
 
 	if (
-		alertMessageType !== 'loading' &&
-		!showAlertMessage &&
-		googleLocationResponse !== null &&
+		showAlertMessage &&
+		alertMessageType === 'error' &&
+		alertMessage.includes('Zero') &&
 		getLocationOn
 	) {
-		console.log('googleLocationResponse', googleLocationResponse);
-		console.log(locationDetail);
+		console.log('inside error', getLocationOn);
 
+		setLocationDetail({
+			...locationDetail,
+			city: '',
+			state: '',
+			country: '',
+		});
+
+		setGetLocationOn(false);
+	}
+
+	if (alertMessageType !== 'loading' && googleLocationResponse && getLocationOn) {
 		setLocationDetail({
 			...locationDetail,
 			city: googleLocationResponse.city[0],
 			state: googleLocationResponse.state,
 			country: googleLocationResponse.country,
 		});
+
 		setGetLocationOn(false);
 	}
 
 	const getGoogleLocation = (zip_code) => {
 		if (zip_code.length > 4) {
-			getGoogleResponse(zip_code, token);
-			setGetLocationOn(true);
+			getGoogleResponse(zip_code, token, setGetLocationOn);
 		}
+
+		setGetLocationOn(false);
 	};
 
 	const openLocationModal = (location_type) => {
@@ -89,6 +102,7 @@ function WarehouseComponent(props) {
 	};
 
 	const editLocation = (data) => {
+		// setVisibleWarehouse(true);
 		getWarehouse(data.id, setLocationDetail, setVisibleWarehouse, props.token);
 	};
 
@@ -206,8 +220,8 @@ function WarehouseComponent(props) {
 											name='zip_code'
 											value={locationDetail.zip_code}
 											onChange={(e) => {
-												getGoogleLocation(e.target.value);
 												changeValue(e);
+												getGoogleLocation(e.target.value);
 											}}
 										/>
 									</Form.Item>
@@ -535,6 +549,7 @@ function WarehouseComponent(props) {
 					</Col>
 				</Row>
 			</Space>
+
 			<Space direction='vertical' size={'large'} className={'w-100'}>
 				<Row gutter={30}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -560,6 +575,7 @@ function WarehouseComponent(props) {
 					</Col>
 				</Row>
 			</Space>
+
 			<Modal
 				title='Confirm Delete'
 				visible={warehouseDeleteModal}
@@ -581,6 +597,7 @@ const mapStateToProps = (state) => {
 		googleLocationResponse: state.googleLocationResponse,
 		showAlertMessage: state.showAlertMessage,
 		alertMessageType: state.alertMessageType,
+		alertMessage: state.alertMessage,
 		confirmModal: state.confirmModal,
 		token: state.token,
 		plansInfo: state.plansInfo,
@@ -590,7 +607,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
 	postData: (data, type, url, token, visibility) =>
 		dispatch(postData(data, type, url, token, visibility)),
-	getGoogleResponse: (data, token) => dispatch(getGoogleResponse(data, token)),
+	getGoogleResponse: (data, token, visibility) =>
+		dispatch(getGoogleResponse(data, token, visibility)),
 	getWarehouse: (id, locationDetail, visibility, token) =>
 		dispatch(getWarehouse(id, locationDetail, visibility, token)),
 	deleteLocation: (id, visibility, token) =>
