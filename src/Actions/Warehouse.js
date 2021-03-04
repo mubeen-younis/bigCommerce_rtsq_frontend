@@ -41,6 +41,14 @@ export const getGoogleResponse = (zipcode, token, setLocationOn) => {
 
 export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) => {
 	return (dispatch) => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: false,
+				alertMessageType: 'loading',
+			},
+		});
+
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_location`, {
 				params: {

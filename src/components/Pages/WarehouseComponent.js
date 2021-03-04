@@ -12,6 +12,7 @@ import {
 	Checkbox,
 	Table,
 	Tooltip,
+	Skeleton,
 } from 'antd';
 import { connect } from 'react-redux';
 import { postData } from '../../Actions/Action';
@@ -102,7 +103,9 @@ function WarehouseComponent(props) {
 	};
 
 	const editLocation = (data) => {
-		// setVisibleWarehouse(true);
+		setLocationDetail({});
+		setVisibleWarehouse(true);
+
 		getWarehouse(data.id, setLocationDetail, setVisibleWarehouse, props.token);
 	};
 
@@ -177,7 +180,11 @@ function WarehouseComponent(props) {
 					<Modal
 						title={
 							<Title className={'mb-0'} level={4}>
-								{locationDetail.location_type === 1 ? 'Warehouse info' : 'Dropship info'}
+								{alertMessageType === 'loading'
+									? 'Loading location...please wait'
+									: locationDetail.location_type === 1
+									? 'Warehouse info'
+									: 'Dropship info'}
 							</Title>
 						}
 						centered
@@ -186,349 +193,354 @@ function WarehouseComponent(props) {
 						footer={null}
 						width={800}
 					>
-						<Form
-							layout='vertical'
-							name='add_warehouse_info'
-							className='form-wrp'
-							size={'large'}
-							initialValues={locationDetail}
-							onFinish={onFinish}
-						>
-							<Row gutter={30}>
-								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-									<Form.Item
-										className={'mb-2'}
-										label='Nickname'
-										rules={[{ required: false, message: 'Nickname' }]}
-									>
-										<Input
-											name='nickname'
-											placeholder='Nickname'
-											value={locationDetail.nickname}
-											onChange={changeValue}
-										/>
-									</Form.Item>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-									<Form.Item
-										className={'mb-2'}
-										label='Zip Code'
-										rules={[{ required: true, message: 'Zip Code' }]}
-									>
-										<Input
-											placeholder='Zip Code'
-											name='zip_code'
-											value={locationDetail.zip_code}
-											onChange={(e) => {
-												changeValue(e);
-												getGoogleLocation(e.target.value);
-											}}
-										/>
-									</Form.Item>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-									<Form.Item
-										className={'mb-2'}
-										label='City'
-										rules={[{ required: true, message: 'City' }]}
-									>
-										<Input
-											name='city'
-											placeholder='City'
-											value={locationDetail.city}
-											onChange={changeValue}
-										/>
-									</Form.Item>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-									<Form.Item
-										className={'mb-2'}
-										label='State'
-										rules={[{ required: true, message: 'State' }]}
-									>
-										<Input
-											name='state'
-											placeholder='State'
-											value={locationDetail.state}
-											onChange={changeValue}
-										/>
-									</Form.Item>
-								</Col>
-
-								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-									<Form.Item
-										className={'mb-2'}
-										label='Country'
-										rules={[{ required: true, message: 'Country' }]}
-									>
-										<Input
-											name='country'
-											placeholder='Country'
-											value={locationDetail.country}
-											onChange={changeValue}
-										/>
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={30}>
-								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-									<Title level={4}>In-store pick up</Title>
-								</Col>
-							</Row>
-							<Row gutter={30} align='middle'>
-								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
-									<label className={'text-gray'}>Enable in-store pick up</label>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
-									<Form.Item name='enable_instore' className={'mb-0'}>
-										<Checkbox
-											name='enable_instore'
-											checked={locationDetail.enable_instore}
-											onChange={(e) =>
-												setLocationDetail({
-													...locationDetail,
-													enable_instore: !locationDetail.enable_instore,
-												})
-											}
-											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
-										></Checkbox>
-										<a href='#!' className='stnd-plan text-danger'>
-											Advance plan required
-										</a>
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={30} align='middle' className={'mb-2'}>
-								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
-									<label className={'text-gray'}>
-										Offer if address is within (miles):
-									</label>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
-									<Form.Item
-										className={'mb-0'}
-										rules={[{ required: false, message: 'Email Required' }]}
-									>
-										<Input
-											name='instore_miles'
-											value={locationDetail.instore_miles}
-											onChange={changeValue}
-											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
-										/>
-									</Form.Item>
-								</Col>
-							</Row>
-
-							<Row gutter={30} align='middle' className={'mb-2'}>
-								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
-									<label className={'text-gray'}>Offer if postal code matches:</label>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
-									<Form.Item
-										className={'mb-0'}
-										rules={[{ required: false, message: 'Costal Code Required' }]}
-									>
-										<Select
-											name='instore_zipcodes'
-											value={locationDetail.instore_zipcodes}
-											mode='tags'
-											style={{ width: '100%' }}
-											onChange={(e) => handleChange('instore_zipcodes', e)}
-											tokenSeparators={[',']}
-											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
-										/>
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={30} align='middle' className={'mb-2'}>
-								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
-									<label className={'text-gray'}>Checkout description:</label>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
-									<Form.Item
-										className={'mb-0'}
-										rules={[
-											{
-												required: false,
-												message: 'Checkout Description Required',
-											},
-										]}
-									>
-										<Input
-											name='instock_description'
-											value={locationDetail.instock_description}
-											placeholder='In-stock pick up'
-											onChange={changeValue}
-											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
-										/>
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={30}>
-								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-									<Title level={4}>Local Delivery</Title>
-								</Col>
-							</Row>
-							<Row gutter={30} align='middle'>
-								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
-									<label className={'text-gray'}>Enable local delivery</label>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
-									<Form.Item className={'mb-0'}>
-										<Checkbox
-											name='enable_ld'
-											checked={locationDetail.enable_ld}
-											onChange={(e) =>
-												setLocationDetail({
-													...locationDetail,
-													enable_ld: !locationDetail.enable_ld,
-												})
-											}
-											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
-										></Checkbox>
-										<a href='#!' className='stnd-plan text-danger'>
-											Advance plan required
-										</a>
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={30} align='middle' className={'mb-2'}>
-								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
-									<label className={'text-gray'}>
-										Offer if address is within (miles):
-									</label>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
-									<Form.Item className={'mb-0'}>
-										<Input
-											name='ld_miles'
-											value={locationDetail.ld_miles}
-											onChange={changeValue}
-											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
-										/>
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={30} align='middle' className={'mb-2'}>
-								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
-									<label className={'text-gray'}>Offer if postal code matches:</label>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
-									<Form.Item
-										className={'mb-0'}
-										rules={[{ required: false, message: 'Costal Code Required' }]}
-									>
-										<Select
-											name='ld_zipcodes'
-											value={locationDetail.ld_zipcodes}
-											mode='tags'
-											style={{ width: '100%' }}
-											onChange={(e) => handleChange('ld_zipcodes', e)}
-											tokenSeparators={[',']}
-											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
-										/>
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={30} align='middle' className={'mb-2'}>
-								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
-									<label className={'text-gray'}>Checkout description:</label>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
-									<Form.Item
-										className={'mb-0'}
-										rules={[
-											{
-												required: false,
-												message: 'Checkout Description Required',
-											},
-										]}
-									>
-										<Input
-											name='ld_description'
-											value={locationDetail.ld_description}
-											placeholder='Local delivery'
-											onChange={changeValue}
-											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
-										/>
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={30} align='middle' className={'mb-2'}>
-								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
-									<label className={'text-gray'}>Local delivery fee</label>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
-									<Form.Item
-										className={'mb-0'}
-										rules={[
-											{
-												required: false,
-												message: 'Local delivery fee Required',
-											},
-										]}
-									>
-										<Input
-											name='ld_fee'
-											value={locationDetail.ld_fee}
-											onChange={changeValue}
-											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
-										/>
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={30} align='middle'>
-								<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
-									<label className={'text-gray'}>
-										Suppress other rates
-										<Tooltip
-											placement='top'
-											title={
-												'This setting only suppresses rate that would otherwise be returned by this app.'
-											}
+						{alertMessageType === 'loading' ? (
+							<Skeleton active />
+						) : (
+							<Form
+								layout='vertical'
+								name='add_warehouse_info'
+								className='form-wrp'
+								size={'large'}
+								initialValues={locationDetail}
+								onFinish={onFinish}
+							>
+								<Row gutter={30}>
+									<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+										<Form.Item
+											className={'mb-2'}
+											label='Nickname'
+											rules={[{ required: false, message: 'Nickname' }]}
 										>
-											<Button className={'text-gray'} type='link'>
-												[?]
-											</Button>
-										</Tooltip>
-									</label>
-								</Col>
-								<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
-									<Form.Item className={'mb-0'}>
-										<Checkbox
-											name='ld_enable_supress'
-											checked={locationDetail.ld_enable_supress}
-											onChange={(e) =>
-												setLocationDetail({
-													...locationDetail,
-													ld_enable_supress: !locationDetail.ld_enable_supress,
-												})
-											}
-											disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
-										></Checkbox>
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={30} align='middle' className={'mt-3'}>
-								<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-									<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
-										<Space>
-											<Button
-												type='link'
-												size={'large'}
-												onClick={() => setVisibleWarehouse(false)}
+											<Input
+												name='nickname'
+												placeholder='Nickname'
+												value={locationDetail.nickname}
+												onChange={changeValue}
+											/>
+										</Form.Item>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+										<Form.Item
+											className={'mb-2'}
+											label='Zip Code'
+											rules={[{ required: true, message: 'Zip Code' }]}
+										>
+											<Input
+												placeholder='Zip Code'
+												name='zip_code'
+												value={locationDetail.zip_code}
+												onChange={(e) => {
+													changeValue(e);
+													getGoogleLocation(e.target.value);
+												}}
+											/>
+										</Form.Item>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+										<Form.Item
+											className={'mb-2'}
+											label='City'
+											rules={[{ required: true, message: 'City' }]}
+										>
+											<Input
+												name='city'
+												placeholder='City'
+												value={locationDetail.city}
+												onChange={changeValue}
+											/>
+										</Form.Item>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+										<Form.Item
+											className={'mb-2'}
+											label='State'
+											rules={[{ required: true, message: 'State' }]}
+										>
+											<Input
+												name='state'
+												placeholder='State'
+												value={locationDetail.state}
+												onChange={changeValue}
+											/>
+										</Form.Item>
+									</Col>
+
+									<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+										<Form.Item
+											className={'mb-2'}
+											label='Country'
+											rules={[{ required: true, message: 'Country' }]}
+										>
+											<Input
+												name='country'
+												placeholder='Country'
+												value={locationDetail.country}
+												onChange={changeValue}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
+								<Row gutter={30}>
+									<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+										<Title level={4}>In-store pick up</Title>
+									</Col>
+								</Row>
+								<Row gutter={30} align='middle'>
+									<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
+										<label className={'text-gray'}>Enable in-store pick up</label>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
+										<Form.Item name='enable_instore' className={'mb-0'}>
+											<Checkbox
+												name='enable_instore'
+												checked={locationDetail.enable_instore}
+												onChange={(e) =>
+													setLocationDetail({
+														...locationDetail,
+														enable_instore: !locationDetail.enable_instore,
+													})
+												}
+												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
+											></Checkbox>
+											<a href='#!' className='stnd-plan text-danger'>
+												Advance plan required
+											</a>
+										</Form.Item>
+									</Col>
+								</Row>
+								<Row gutter={30} align='middle' className={'mb-2'}>
+									<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
+										<label className={'text-gray'}>
+											Offer if address is within (miles):
+										</label>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
+										<Form.Item
+											className={'mb-0'}
+											rules={[{ required: false, message: 'Email Required' }]}
+										>
+											<Input
+												name='instore_miles'
+												value={locationDetail.instore_miles}
+												onChange={changeValue}
+												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
+
+								<Row gutter={30} align='middle' className={'mb-2'}>
+									<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
+										<label className={'text-gray'}>Offer if postal code matches:</label>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
+										<Form.Item
+											className={'mb-0'}
+											rules={[{ required: false, message: 'Costal Code Required' }]}
+										>
+											<Select
+												name='instore_zipcodes'
+												value={locationDetail.instore_zipcodes}
+												mode='tags'
+												style={{ width: '100%' }}
+												onChange={(e) => handleChange('instore_zipcodes', e)}
+												tokenSeparators={[',']}
+												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
+								<Row gutter={30} align='middle' className={'mb-2'}>
+									<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
+										<label className={'text-gray'}>Checkout description:</label>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
+										<Form.Item
+											className={'mb-0'}
+											rules={[
+												{
+													required: false,
+													message: 'Checkout Description Required',
+												},
+											]}
+										>
+											<Input
+												name='instock_description'
+												value={locationDetail.instock_description}
+												placeholder='In-stock pick up'
+												onChange={changeValue}
+												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
+								<Row gutter={30}>
+									<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+										<Title level={4}>Local Delivery</Title>
+									</Col>
+								</Row>
+								<Row gutter={30} align='middle'>
+									<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
+										<label className={'text-gray'}>Enable local delivery</label>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
+										<Form.Item className={'mb-0'}>
+											<Checkbox
+												name='enable_ld'
+												checked={locationDetail.enable_ld}
+												onChange={(e) =>
+													setLocationDetail({
+														...locationDetail,
+														enable_ld: !locationDetail.enable_ld,
+													})
+												}
+												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
+											></Checkbox>
+											<a href='#!' className='stnd-plan text-danger'>
+												Advance plan required
+											</a>
+										</Form.Item>
+									</Col>
+								</Row>
+								<Row gutter={30} align='middle' className={'mb-2'}>
+									<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
+										<label className={'text-gray'}>
+											Offer if address is within (miles):
+										</label>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
+										<Form.Item className={'mb-0'}>
+											<Input
+												name='ld_miles'
+												value={locationDetail.ld_miles}
+												onChange={changeValue}
+												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
+								<Row gutter={30} align='middle' className={'mb-2'}>
+									<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
+										<label className={'text-gray'}>Offer if postal code matches:</label>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
+										<Form.Item
+											className={'mb-0'}
+											rules={[{ required: false, message: 'Costal Code Required' }]}
+										>
+											<Select
+												name='ld_zipcodes'
+												value={locationDetail.ld_zipcodes}
+												mode='tags'
+												style={{ width: '100%' }}
+												onChange={(e) => handleChange('ld_zipcodes', e)}
+												tokenSeparators={[',']}
+												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
+								<Row gutter={30} align='middle' className={'mb-2'}>
+									<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
+										<label className={'text-gray'}>Checkout description:</label>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
+										<Form.Item
+											className={'mb-0'}
+											rules={[
+												{
+													required: false,
+													message: 'Checkout Description Required',
+												},
+											]}
+										>
+											<Input
+												name='ld_description'
+												value={locationDetail.ld_description}
+												placeholder='Local delivery'
+												onChange={changeValue}
+												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
+								<Row gutter={30} align='middle' className={'mb-2'}>
+									<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
+										<label className={'text-gray'}>Local delivery fee</label>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
+										<Form.Item
+											className={'mb-0'}
+											rules={[
+												{
+													required: false,
+													message: 'Local delivery fee Required',
+												},
+											]}
+										>
+											<Input
+												name='ld_fee'
+												value={locationDetail.ld_fee}
+												onChange={changeValue}
+												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
+								<Row gutter={30} align='middle'>
+									<Col className='gutter-row' xs={24} sm={8} md={8} lg={8} xl={8}>
+										<label className={'text-gray'}>
+											Suppress other rates
+											<Tooltip
+												placement='top'
+												title={
+													'This setting only suppresses rate that would otherwise be returned by this app.'
+												}
 											>
-												Cancel
-											</Button>
-											<Button type='primary' size={'large'} htmlType='submit'>
-												Save
-											</Button>
-										</Space>
-									</Form.Item>
-								</Col>
-							</Row>
-						</Form>
+												<Button className={'text-gray'} type='link'>
+													[?]
+												</Button>
+											</Tooltip>
+										</label>
+									</Col>
+									<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
+										<Form.Item className={'mb-0'}>
+											<Checkbox
+												name='ld_enable_supress'
+												checked={locationDetail.ld_enable_supress}
+												onChange={(e) =>
+													setLocationDetail({
+														...locationDetail,
+														ld_enable_supress: !locationDetail.ld_enable_supress,
+													})
+												}
+												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
+											></Checkbox>
+										</Form.Item>
+									</Col>
+								</Row>
+								<Row gutter={30} align='middle' className={'mt-3'}>
+									<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+										<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
+											<Space>
+												<Button
+													type='link'
+													size={'large'}
+													onClick={() => setVisibleWarehouse(false)}
+												>
+													Cancel
+												</Button>
+												<Button type='primary' size={'large'} htmlType='submit'>
+													Save
+												</Button>
+											</Space>
+										</Form.Item>
+									</Col>
+								</Row>
+							</Form>
+						)}
 					</Modal>
+
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>
 							Warehouses{' '}
