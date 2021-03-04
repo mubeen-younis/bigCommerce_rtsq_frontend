@@ -8,13 +8,13 @@ import {
 	changeAddonSuspendStatus,
 	changeDefaultAddress,
 	changePlan,
-	getAddonAdressSettings,
+	getAddonAddressSettings,
 } from '../Actions/RAD';
 
 const { Title } = Typography;
 const { Option } = Select;
 
-function AutoDetectResidentialComponennt(props) {
+function AutoDetectResidentialComponent(props) {
 	const { addon_id } = useParams();
 	const [suspend, setSuspend] = useState(false);
 	const [address, setAddress] = useState(1);
@@ -30,7 +30,7 @@ function AutoDetectResidentialComponennt(props) {
 		}
 
 		if (!props.addonsSettings) {
-			props.getAddonAdressSettings(addon_id, props.token);
+			props.getAddonAddressSettings(addon_id, props.token);
 		}
 
 		props.installedAddons.forEach((ia) =>
@@ -189,8 +189,8 @@ const mapDispatchToProps = (dispatch) => {
 		changePlan: (token, plan_package) => dispatch(changePlan(token, plan_package)),
 		changeAddonSuspendStatus: (addon_id, token) =>
 			dispatch(changeAddonSuspendStatus(addon_id, token)),
-		getAddonAdressSettings: (addon_id, token) =>
-			dispatch(getAddonAdressSettings(addon_id, token)),
+		getAddonAddressSettings: (addon_id, token) =>
+			dispatch(getAddonAddressSettings(addon_id, token)),
 		changeDefaultAddress: (addon_id, token, address_type) =>
 			dispatch(changeDefaultAddress(addon_id, token, address_type)),
 	};
@@ -199,4 +199,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(AutoDetectResidentialComponennt);
+)(AutoDetectResidentialComponent);

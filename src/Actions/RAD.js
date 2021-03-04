@@ -118,6 +118,14 @@ export const changeAddonSuspendStatus = (addon_id, token) => {
 
 export const changeDefaultAddress = (addon_id, token, address_type) => {
 	return (dispatch) => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		});
+
 		axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/rad/changeDefaultAddress`,
@@ -153,7 +161,7 @@ export const changeDefaultAddress = (addon_id, token, address_type) => {
 	};
 };
 
-export const getAddonAdressSettings = (addon_id, token) => {
+export const getAddonAddressSettings = (addon_id, token) => {
 	return (dispatch) => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/rad/getAddonAdressSettings`, {
