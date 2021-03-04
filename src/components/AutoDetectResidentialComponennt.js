@@ -20,16 +20,11 @@ function AutoDetectResidentialComponent(props) {
 	const [address, setAddress] = useState(1);
 
 	useEffect(() => {
-		if (
-			!props.radPlans ||
-			props.radPlans.plans === null ||
-			props.radPlans.plans === undefined ||
-			!props.radPlans.plans.length
-		) {
+		if (props.radPlans === null || props.radPlans === undefined) {
 			props.getRadPlans(props.token);
 		}
 
-		if (!props.addonsSettings) {
+		if (props.addonSettings === null || props.addonSettings === undefined) {
 			props.getAddonAddressSettings(addon_id, props.token);
 		}
 
@@ -179,7 +174,7 @@ const mapStateToProps = (state) => {
 		radPlans: state.radPlans,
 		installedAddons: state.installedAddons,
 		alertMessage: state.alertMessageType,
-		addonsSettings: state.addonsSettings,
+		addonSettings: state.addonSettings,
 	};
 };
 
