@@ -24,17 +24,13 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				store: action.payload,
 			};
+
 		case types.TOKEN:
 			return {
 				...state,
 				token: action.payload,
 			};
 
-		case types.CARRIER_ID:
-			return {
-				...state,
-				carrierId: action.payload,
-			};
 		case types.GET_CONNECTION_SETTINGS:
 			return {
 				...state,
@@ -46,6 +42,78 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				quoteSettings: action.payload,
 			};
+
+		// Carrier Cases
+		case types.CARRIER_ID:
+			return {
+				...state,
+				carrierId: action.payload,
+			};
+
+		case types.GET_CARRIERS:
+			return {
+				...state,
+				carriers: action.payload,
+			};
+
+		case types.GET_ADD_TAB_SETTING:
+		case types.SAVE_CARRIER_TAB_SETTINGS:
+			return {
+				...state,
+				carriersSettings: action.payload,
+			};
+
+		case types.GET_CARRIER_DETAILS:
+			return {
+				...state,
+				carrierDetails: action.payload,
+			};
+
+		case types.GET_EN_CARRIERS:
+			return {
+				...state,
+				enitureCarriers: action.payload,
+			};
+
+		case types.INSTALL_CARRIER:
+			let newInstalledCarrier = {};
+
+			state.carriers.forEach((carr) => {
+				if (carr.id === action.payload.carrier_id) {
+					newInstalledCarrier = {
+						...action.payload,
+						name: carr.name,
+						logo: carr.logo,
+					};
+				}
+			});
+
+			return {
+				...state,
+				installedCarriers: [...state.installedCarriers, newInstalledCarrier],
+				carriers: state.carriers.filter(
+					(carrier) => carrier.id !== action.payload.carrier_id
+				),
+			};
+
+		case types.GET_INSTALLED_CARRIERS:
+			return {
+				...state,
+				installedCarriers: action.payload,
+			};
+
+		case types.CHANGE_CARRIER_STATUS:
+			return {
+				...state,
+				installedCarriers: state.installedCarriers.map((ic) =>
+					ic.id === action.payload.id
+						? { ...ic, is_enabled: action.payload.is_enabled }
+						: ic
+				),
+			};
+		// Carriers End
+
+		// Location Cases
 		case types.GET_LOCATIONS:
 			return {
 				...state,
@@ -95,70 +163,9 @@ const Reducer = (state = initialState, action) => {
 				warehouse: state.warehouse.filter((wh) => wh.id !== action.payload),
 				dropships: state.dropships.filter((wh) => wh.id !== action.payload),
 			};
+		// Location End
 
-		case types.GET_SERVICES: // We had to change the term cause in BigCommerce we call CARRIERS as Eniture Apps
-			return {
-				...state,
-				services: action.payload,
-			};
-		case types.GET_CARRIERS:
-			return {
-				...state,
-				carriers: action.payload,
-			};
-
-		case types.GET_ADD_TAB_SETTING:
-		case types.SAVE_CARRIER_TAB_SETTINGS:
-			return {
-				...state,
-				carriersSettings: action.payload,
-			};
-		case types.GET_CARRIER_DETAILS:
-			return {
-				...state,
-				carrierDetails: action.payload,
-			};
-		case types.SKELETON_LOADING:
-			return {
-				...state,
-				skeleton_loading: action.payload,
-			};
-
-		case types.ALERT_MESSAGE:
-			return {
-				...state,
-				showAlertMessage: action.payload.showAlertMessage,
-				alertMessage: action.payload.alertMessage,
-				alertMessageType: action.payload.alertMessageType,
-			};
-
-		case types.GET_EN_CARRIERS:
-			return {
-				...state,
-				enitureCarriers: action.payload,
-			};
-
-		case types.INSTALL_CARRIER:
-			let newInstalledCarrier = {};
-
-			state.carriers.forEach((carr) => {
-				if (carr.id === action.payload.carrier_id) {
-					newInstalledCarrier = {
-						...action.payload,
-						name: carr.name,
-						logo: carr.logo,
-					};
-				}
-			});
-
-			return {
-				...state,
-				installedCarriers: [...state.installedCarriers, newInstalledCarrier],
-				carriers: state.carriers.filter(
-					(carrier) => carrier.id !== action.payload.carrier_id
-				),
-			};
-
+		// Addon Cases
 		case types.INSTALL_ADDON:
 			let newInstalledAddon = {};
 
@@ -176,61 +183,6 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				installedAddons: [...state.installedAddons, newInstalledAddon],
 				addons: state.addons.filter((add) => add.id !== action.payload.addon_id),
-			};
-
-		case types.GET_INSTALLED_CARRIERS:
-			return {
-				...state,
-				installedCarriers: action.payload,
-			};
-
-		case types.CHANGE_CARRIER_STATUS:
-			return {
-				...state,
-				installedCarriers: state.installedCarriers.map((ic) =>
-					ic.id === action.payload.id
-						? { ...ic, is_enabled: action.payload.is_enabled }
-						: ic
-				),
-			};
-
-		case types.GET_ADDONS:
-			return {
-				...state,
-				addons: action.payload,
-			};
-
-		case types.GET_GOOGLE_LOCATION_RESPONSE:
-			return {
-				...state,
-				googleLocationResponse: action.payload,
-			};
-		case types.GET_ALL_PRODUCTS:
-			return {
-				...state,
-				allProducts: action.payload,
-			};
-		case types.GET_PLANS_INFO:
-			return {
-				...state,
-				plansInfo: action.payload,
-			};
-		case types.CONFIRM_MODAL:
-			return {
-				...state,
-				confirmModal: {
-					on: action.payload.on,
-					ok: action.payload.ok,
-					cancel: action.payload.cancel,
-					title: action.payload.title,
-					body: action.payload.body,
-				},
-			};
-
-		case types.RAD_PLANS:
-			return {
-				...state,
-				radPlans: action.payload,
 			};
 
 		case types.GET_INSTALLED_ADDONS:
@@ -264,6 +216,69 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				addonSettings: action.payload,
+			};
+
+		case types.GET_ADDONS:
+			return {
+				...state,
+				addons: action.payload,
+			};
+		// Addons End
+
+		case types.GET_SERVICES: // We had to change the term cause in BigCommerce we call CARRIERS as Eniture Apps
+			return {
+				...state,
+				services: action.payload,
+			};
+
+		case types.SKELETON_LOADING:
+			return {
+				...state,
+				skeleton_loading: action.payload,
+			};
+
+		case types.ALERT_MESSAGE:
+			return {
+				...state,
+				showAlertMessage: action.payload.showAlertMessage,
+				alertMessage: action.payload.alertMessage,
+				alertMessageType: action.payload.alertMessageType,
+			};
+
+		case types.GET_GOOGLE_LOCATION_RESPONSE:
+			return {
+				...state,
+				googleLocationResponse: action.payload,
+			};
+
+		case types.GET_ALL_PRODUCTS:
+			return {
+				...state,
+				allProducts: action.payload,
+			};
+
+		case types.GET_PLANS_INFO:
+			return {
+				...state,
+				plansInfo: action.payload,
+			};
+
+		case types.CONFIRM_MODAL:
+			return {
+				...state,
+				confirmModal: {
+					on: action.payload.on,
+					ok: action.payload.ok,
+					cancel: action.payload.cancel,
+					title: action.payload.title,
+					body: action.payload.body,
+				},
+			};
+
+		case types.RAD_PLANS:
+			return {
+				...state,
+				radPlans: action.payload,
 			};
 
 		default:
