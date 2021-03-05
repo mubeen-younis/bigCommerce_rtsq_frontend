@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { postData } from '../Actions/Action';
 import { getServices, getAddTabSettings } from '../Actions/Carriers';
@@ -19,99 +19,103 @@ const columns = [
 	},
 ];
 
-class CarriersComponent extends React.Component {
-	state = {
+const CarriersComponent = (props) => {
+	const [state, setState] = useState({
 		selectedRowKeys: [], // Check here to configure the default column
 		loading: true,
 		carrierServices: true,
-	};
+	});
 
-	componentDidMount() {
-		this.getServices();
-		this.props.getAddTabSettings(this.props.token, this.props.carrierId);
-	}
+	const {
+		getAddTabSettings,
+		services,
+		getServices,
+		token,
+		carrierId,
+		postData,
+		carriersSettings,
+	} = props;
 
-	getServices = () => {
-		if (this.props.services === undefined) {
-			this.props.getServices();
+	useEffect(() => {
+		getCarrierServices();
+
+		if (!carriersSettings) {
+			getAddTabSettings(token, carrierId);
 		}
-		if (this.props.services !== null && this.props.services !== undefined) {
-			this.setState({ loading: false });
+		// eslint-disable-next-line
+	}, []);
+
+	const getCarrierServices = () => {
+		if (!services) {
+			getServices();
+		}
+
+		if (services !== null && services !== undefined) {
+			setState({ ...state, loading: false });
 		}
 	};
 
-	onSelectChange = (selectedRowKeys) => {
-		this.setState({ selectedRowKeys, carrierServices: false });
-	};
-
-	saveCarriers = () => {
+	const saveCarriers = () => {
 		const data = {
-			services: this.state.selectedRowKeys,
-			carrierId: this.props.carrierId,
+			services: state.selectedRowKeys,
+			carrierId: carrierId,
 		};
 
-		this.props.postData(
-			data,
-			'SAVE_CARRIER_TAB_SETTINGS',
-			'submit_carriers',
-			this.props.token
-		);
+		postData(data, 'SAVE_CARRIER_TAB_SETTINGS', 'submit_carriers', token);
 	};
 
-	render() {
-		const { selectedRowKeys } = this.state;
-		let rowSelection = {};
+	const onSelectChange = (selectedRowKeys) => {
+		setState({ ...state, selectedRowKeys, carrierServices: false });
+	};
 
-		if (
-			this.props.carriersSettings &&
-			this.state.selectedRowKeys.length === 0 &&
-			this.state.carrierServices
-		) {
-			rowSelection = {
-				selectedRowKeys: [...selectedRowKeys, ...this.props.carriersSettings],
-				onChange: this.onSelectChange,
-			};
-		} else if (Object.keys(rowSelection).length === 0) {
-			rowSelection = {
-				selectedRowKeys,
-				onChange: this.onSelectChange,
-			};
-		}
+	const { selectedRowKeys } = state;
+	let rowSelection = {};
 
-		if (this.state.loading && this.props.services === undefined) {
-			return (
-				<Fragment>
-					<Skeleton active />
-				</Fragment>
-			);
-		}
+	if (carriersSettings && state.selectedRowKeys.length === 0 && state.carrierServices) {
+		rowSelection = {
+			selectedRowKeys: [...selectedRowKeys, ...carriersSettings],
+			onChange: onSelectChange,
+		};
+	} else if (Object.keys(rowSelection).length === 0) {
+		rowSelection = {
+			selectedRowKeys,
+			onChange: onSelectChange,
+		};
+	}
 
+	if (state.loading && services === undefined) {
 		return (
 			<Fragment>
-				<Table
-					className='custom-table'
-					rowSelection={rowSelection}
-					columns={columns}
-					dataSource={this.props.services}
-					total={50}
-				/>
-				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
-					<Space>
-						<Button
-							type='primary'
-							size={'large'}
-							htmlType='submit'
-							name={`test`}
-							onClick={this.saveCarriers}
-						>
-							Save Settings
-						</Button>
-					</Space>
-				</Form.Item>
+				<Skeleton active />
 			</Fragment>
 		);
 	}
-}
+
+	return (
+		<Fragment>
+			<Table
+				className='custom-table'
+				rowSelection={rowSelection}
+				columns={columns}
+				dataSource={services}
+				total={50}
+			/>
+			<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
+				<Space>
+					<Button
+						type='primary'
+						size={'large'}
+						htmlType='submit'
+						name={`test`}
+						onClick={saveCarriers}
+					>
+						Save Settings
+					</Button>
+				</Space>
+			</Form.Item>
+		</Fragment>
+	);
+};
 
 const mapStateToProps = (state) => {
 	return {
