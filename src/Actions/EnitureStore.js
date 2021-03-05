@@ -45,49 +45,6 @@ export const installCarrier = (carrier_id, token) => {
 	};
 };
 
-export const installAddon = (addon_id, token) => {
-	return (dispatch) => {
-		dispatch({
-			type: 'ALERT_MESSAGE',
-			payload: {
-				showAlertMessage: true,
-				alertMessageType: 'loading',
-			},
-		});
-
-		axios
-			.post(
-				`${process.env.REACT_APP_ENITURE_API_URL}/installAddon`,
-				{
-					addon_id,
-				},
-				{
-					headers: {
-						authorization: `Bearer ${token}`,
-					},
-				}
-			)
-			.then(({ data }) => {
-				if (!data.error) {
-					dispatch({
-						type: 'INSTALL_ADDON',
-						payload: data.data,
-					});
-				}
-				console.log(data);
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						alertMessage: data.message,
-						showAlertMessage: true,
-						alertMessageType: data.error ? 'error' : 'success',
-					},
-				});
-			})
-			.catch((error) => {});
-	};
-};
-
 export const getInstalledCarriers = (data) => {
 	return (dispatch) => {
 		axios
@@ -109,17 +66,20 @@ export const getInstalledCarriers = (data) => {
 					});
 				}
 
-				/* dispatch({
+				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
 						alertMessage: data.message,
 						showAlertMessage: true,
-						alertMessageType: data.error ? 'error' : 'success',
+						alertMessageType: data.error ?? 'error',
 					},
-				}); */
+				});
 			})
 			.catch((err) => {
-				console.log(err);
+				dispatch({
+					type: 'GET_INSTALLED_CARRIERS',
+					payload: [],
+				});
 			});
 	};
 };
@@ -167,6 +127,49 @@ export const changeCarrierStatus = (carrier_id, token) => {
 	};
 };
 
+export const installAddon = (addon_id, token) => {
+	return (dispatch) => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		});
+
+		axios
+			.post(
+				`${process.env.REACT_APP_ENITURE_API_URL}/installAddon`,
+				{
+					addon_id,
+				},
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.then(({ data }) => {
+				if (!data.error) {
+					dispatch({
+						type: 'INSTALL_ADDON',
+						payload: data.data,
+					});
+				}
+				console.log(data);
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: data.message,
+						showAlertMessage: true,
+						alertMessageType: data.error ? 'error' : 'success',
+					},
+				});
+			})
+			.catch((error) => {});
+	};
+};
+
 export const getInstalledAddons = (data) => {
 	return (dispatch) => {
 		axios
@@ -182,7 +185,10 @@ export const getInstalledAddons = (data) => {
 				});
 			})
 			.catch((err) => {
-				console.log(err);
+				dispatch({
+					type: 'GET_INSTALLED_ADDONS',
+					payload: [],
+				});
 			});
 	};
 };

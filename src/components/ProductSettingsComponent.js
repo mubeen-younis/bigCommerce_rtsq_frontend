@@ -93,7 +93,7 @@ function ProductSettingsComponent(props) {
 		});
 	};
 
-	const clearFilters = () => {
+	/* const clearFilters = () => {
 		setState({ ...state, filteredInfo: null });
 	};
 
@@ -113,7 +113,7 @@ function ProductSettingsComponent(props) {
 				columnKey: 'product_sku',
 			},
 		});
-	};
+	}; */
 
 	const onSelectChange = (selectedRowKeys) => {
 		setState({ ...state, selectedRowKeys });
@@ -128,6 +128,7 @@ function ProductSettingsComponent(props) {
 	let { sortedInfo, filteredInfo } = state;
 	sortedInfo = sortedInfo || {};
 	filteredInfo = filteredInfo || {};
+
 	const columns = [
 		{
 			title: 'Image',
@@ -171,9 +172,9 @@ function ProductSettingsComponent(props) {
 	];
 
 	//This is for filter form
-	const onFinish = (values) => {
+	/* const onFinish = (values) => {
 		console.log('Received values of form: ', values);
-	};
+	}; */
 
 	if (loading && (props.allProducts === undefined || props.allProducts === null)) {
 		return <Skeleton active />;
@@ -417,7 +418,7 @@ function ProductSettingsComponent(props) {
 											}
 										>
 											{props.dropships !== null
-												? props.dropships.map((value) => {
+												? props.dropships.forEach((value) => {
 														if (value.type === 2) {
 															return (
 																<Option

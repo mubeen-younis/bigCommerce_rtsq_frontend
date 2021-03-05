@@ -72,11 +72,6 @@ export const getCarrierDetails = (data) => {
 };
 
 export const getConnectionSettings = (token, carrierId) => {
-	/* const data = {
-		shop: 'dev-azm-1.mybigcommerce.com',
-		carrierId: 1,
-	}; */
-
 	return (dispatch) => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_conn_settings`, {
@@ -136,7 +131,9 @@ export const getLocations = (token) => {
 					});
 				}
 			})
-			.catch((error) => {});
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 };
 
@@ -161,7 +158,9 @@ export const getQuoteSettings = (token, carrierId) => {
 				});
 				//}
 			})
-			.catch((error) => {});
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 };
 
@@ -191,17 +190,15 @@ export const getAllProducts = (token) => {
 	};
 };
 
-export const dismissAlert = () => {
-	return (dispatch) => {
-		dispatch({
-			type: 'ALERT_MESSAGE',
-			payload: {
-				alertMessage: null,
-				showAlertMessage: false,
-				alertMessageType: null,
-			},
-		});
-	};
+export const dismissAlert = () => (dispatch) => {
+	dispatch({
+		type: 'ALERT_MESSAGE',
+		payload: {
+			alertMessage: null,
+			showAlertMessage: false,
+			alertMessageType: null,
+		},
+	});
 };
 
 export const setStore = (store) => {
@@ -215,42 +212,11 @@ export const setStore = (store) => {
 	};
 };
 
-/* export const getAllCarriers = (data) => {
-	return (dispatch) => {
-		axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getAllCarriers`, {
-				params: { store: data.store },
-			})
-			.then(({ data }) => {
-				if (!data.error) {
-					dispatch({
-						type: 'GET_EN_CARRIERS',
-						payload: JSON.parse(data.enitureCarriers),
-					});
-					dispatch({
-						type: 'GET_INSTALLED_CARRIERS',
-						payload: JSON.parse(data.installedCarriers),
-					});
-				}
-				console.log('data', data);
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						alertMessage: data.message,
-						showAlertMessage: true,
-						alertMessageType: data.error ? 'error' : 'success',
-					},
-				});
-			})
-			.catch((error) => {});
-	};
-}; */
-
 export const getAllCarriers = (data) => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${data.store}`,
-		}, //Authorization: `Bearer ${token}`
+		},
 	};
 
 	return (dispatch) => {
@@ -258,32 +224,27 @@ export const getAllCarriers = (data) => {
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedCarriers`, config)
 			.then(({ data }) => {
 				if (!data.error) {
-					/* dispatch({
-						type: 'GET_EN_CARRIERS',
-						payload: JSON.parse(data.enitureCarriers),
-					});
-
-					dispatch({
-						type: 'GET_INSTALLED_CARRIERS',
-						payload: JSON.parse(data.installedCarriers),
-					}); */
-
 					dispatch({
 						type: 'GET_CARRIERS',
 						payload: data.data.carriers,
 					});
 				}
 
-				/* dispatch({
+				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
 						alertMessage: data.message,
 						showAlertMessage: true,
-						alertMessageType: data.error ? 'error' : 'success',
+						alertMessageType: data.error ?? 'error',
 					},
-				}); */
+				});
 			})
-			.catch((error) => {});
+			.catch((err) => {
+				dispatch({
+					type: 'GET_CARRIERS',
+					payload: [],
+				});
+			});
 	};
 };
 
@@ -303,7 +264,12 @@ export const getAllAddons = (data) => {
 					payload: data.data,
 				});
 			})
-			.catch((error) => {});
+			.catch((error) => {
+				dispatch({
+					type: 'GET_ADDONS',
+					payload: [],
+				});
+			});
 	};
 };
 
@@ -311,7 +277,7 @@ export const getPlansInfo = (data) => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${data.store}`,
-		}, //Authorization: `Bearer ${token}`
+		},
 	};
 
 	return (dispatch) => {

@@ -20,11 +20,11 @@ function AutoDetectResidentialComponent(props) {
 	const [address, setAddress] = useState(1);
 
 	useEffect(() => {
-		if (props.radPlans === null || props.radPlans === undefined) {
+		if (!props.radPlans) {
 			props.getRadPlans(props.token);
 		}
 
-		if (props.addonSettings === null || props.addonSettings === undefined) {
+		if (!props.addonSettings) {
 			props.getAddonAddressSettings(addon_id, props.token);
 		}
 
