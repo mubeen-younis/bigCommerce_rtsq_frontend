@@ -1,3 +1,5 @@
+import types from './types';
+
 const initialState = {
 	connectionSettings: null,
 	warehouse: null,
@@ -17,41 +19,41 @@ const initialState = {
 
 const Reducer = (state = initialState, action) => {
 	switch (action.type) {
-		case 'STORE':
+		case types.STORE:
 			return {
 				...state,
 				store: action.payload,
 			};
-		case 'TOKEN':
+		case types.TOKEN:
 			return {
 				...state,
 				token: action.payload,
 			};
 
-		case 'CARRIER_ID':
+		case types.CARRIER_ID:
 			return {
 				...state,
 				carrierId: action.payload,
 			};
-		case 'GET_CONNECTION_SETTINGS':
+		case types.GET_CONNECTION_SETTINGS:
 			return {
 				...state,
 				connectionSettings: action.payload,
 			};
 
-		case 'GET_QUOTE_SETTINGS':
+		case types.GET_QUOTE_SETTINGS:
 			return {
 				...state,
 				quoteSettings: action.payload,
 			};
-		case 'GET_LOCATIONS':
+		case types.GET_LOCATIONS:
 			return {
 				...state,
 				warehouse: action.payload.warehouse,
 				dropships: action.payload.dropships,
 			};
 
-		case 'SAVE_LOCATION':
+		case types.SAVE_LOCATION:
 			const location = [...state.warehouse, ...state.dropships].filter(
 				(loc) => loc.id === action.payload.id
 			);
@@ -87,42 +89,42 @@ const Reducer = (state = initialState, action) => {
 			}
 			break;
 
-		case 'DELETE_LOCATION':
+		case types.DELETE_LOCATION:
 			return {
 				...state,
 				warehouse: state.warehouse.filter((wh) => wh.id !== action.payload),
 				dropships: state.dropships.filter((wh) => wh.id !== action.payload),
 			};
 
-		case 'GET_SERVICES': // We had to change the term cause in BigCommerce we call CARRIERS as Eniture Apps
+		case types.GET_SERVICES: // We had to change the term cause in BigCommerce we call CARRIERS as Eniture Apps
 			return {
 				...state,
 				services: action.payload,
 			};
-		case 'GET_CARRIERS':
+		case types.GET_CARRIERS:
 			return {
 				...state,
 				carriers: action.payload,
 			};
 
-		case 'GET_ADD_TAB_SETTING':
-		case 'SAVE_CARRIER_TAB_SETTINGS':
+		case types.GET_ADD_TAB_SETTING:
+		case types.SAVE_CARRIER_TAB_SETTINGS:
 			return {
 				...state,
 				carriersSettings: action.payload,
 			};
-		case 'GET_CARRIER_DETAILS':
+		case types.GET_CARRIER_DETAILS:
 			return {
 				...state,
 				carrierDetails: action.payload,
 			};
-		case 'SKELETON_LOADING':
+		case types.SKELETON_LOADING:
 			return {
 				...state,
 				skeleton_loading: action.payload,
 			};
 
-		case 'ALERT_MESSAGE':
+		case types.ALERT_MESSAGE:
 			return {
 				...state,
 				showAlertMessage: action.payload.showAlertMessage,
@@ -130,13 +132,13 @@ const Reducer = (state = initialState, action) => {
 				alertMessageType: action.payload.alertMessageType,
 			};
 
-		case 'GET_EN_CARRIERS':
+		case types.GET_EN_CARRIERS:
 			return {
 				...state,
 				enitureCarriers: action.payload,
 			};
 
-		case 'INSTALL_CARRIER':
+		case types.INSTALL_CARRIER:
 			let newInstalledCarrier = {};
 
 			state.carriers.forEach((carr) => {
@@ -157,7 +159,7 @@ const Reducer = (state = initialState, action) => {
 				),
 			};
 
-		case 'INSTALL_ADDON':
+		case types.INSTALL_ADDON:
 			let newInstalledAddon = {};
 
 			state.addons.forEach((add) => {
@@ -176,13 +178,13 @@ const Reducer = (state = initialState, action) => {
 				addons: state.addons.filter((add) => add.id !== action.payload.addon_id),
 			};
 
-		case 'GET_INSTALLED_CARRIERS':
+		case types.GET_INSTALLED_CARRIERS:
 			return {
 				...state,
 				installedCarriers: action.payload,
 			};
 
-		case 'CHANGE_CARRIER_STATUS':
+		case types.CHANGE_CARRIER_STATUS:
 			return {
 				...state,
 				installedCarriers: state.installedCarriers.map((ic) =>
@@ -192,28 +194,28 @@ const Reducer = (state = initialState, action) => {
 				),
 			};
 
-		case 'GET_ADDONS':
+		case types.GET_ADDONS:
 			return {
 				...state,
 				addons: action.payload,
 			};
 
-		case 'GET_GOOGLE_LOCATION_RESPONSE':
+		case types.GET_GOOGLE_LOCATION_RESPONSE:
 			return {
 				...state,
 				googleLocationResponse: action.payload,
 			};
-		case 'GET_ALL_PRODUCTS':
+		case types.GET_ALL_PRODUCTS:
 			return {
 				...state,
 				allProducts: action.payload,
 			};
-		case 'GET_PLANS_INFO':
+		case types.GET_PLANS_INFO:
 			return {
 				...state,
 				plansInfo: action.payload,
 			};
-		case 'CONFIRM_MODAL':
+		case types.CONFIRM_MODAL:
 			return {
 				...state,
 				confirmModal: {
@@ -225,19 +227,19 @@ const Reducer = (state = initialState, action) => {
 				},
 			};
 
-		case 'RAD_PLANS':
+		case types.RAD_PLANS:
 			return {
 				...state,
 				radPlans: action.payload,
 			};
 
-		case 'GET_INSTALLED_ADDONS':
+		case types.GET_INSTALLED_ADDONS:
 			return {
 				...state,
 				installedAddons: action.payload,
 			};
 
-		case 'CHANGE_ADDON_STATUS':
+		case types.CHANGE_ADDON_STATUS:
 			return {
 				...state,
 				installedAddons: state.installedAddons.map((addon) =>
@@ -247,7 +249,7 @@ const Reducer = (state = initialState, action) => {
 				),
 			};
 
-		case 'CHANGE_ADDON_SUSPEND_STATUS':
+		case types.CHANGE_ADDON_SUSPEND_STATUS:
 			return {
 				...state,
 				installedAddons: state.installedAddons.map((addon) =>
@@ -257,8 +259,8 @@ const Reducer = (state = initialState, action) => {
 				),
 			};
 
-		case 'GET_ADDON_ADDRESS_SETTING':
-		case 'CHANGE_DEFAULT_ADDRESS':
+		case types.GET_ADDON_ADDRESS_SETTING:
+		case types.CHANGE_DEFAULT_ADDRESS:
 			return {
 				...state,
 				addonSettings: action.payload,
