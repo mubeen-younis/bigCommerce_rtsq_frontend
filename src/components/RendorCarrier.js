@@ -6,8 +6,12 @@ import { getCarrierDetails } from '../Actions/Action';
 
 function RendorCarrier(props) {
 	const { carrier_id } = useParams();
+
 	useEffect(() => {
-		if (carrier_id !== undefined) {
+		if (
+			(carrier_id !== undefined && !props.carrierId) ||
+			props.carrierId !== carrier_id
+		) {
 			props.setCarrierId(carrier_id);
 
 			const data = {
