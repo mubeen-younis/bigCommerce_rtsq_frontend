@@ -30,6 +30,7 @@ function WarehouseComponent(props) {
 		enable_instore: false,
 		enable_ld: false,
 	});
+	const [city, setCity] = useState('');
 
 	const {
 		postData,
@@ -47,10 +48,11 @@ function WarehouseComponent(props) {
 	} = props;
 
 	const onFinish = (values) => {
-		const data = { ...locationDetail, location_id: locationDetail['id'] };
-		postData(data, 'SAVE_LOCATION', 'save_location', token, setVisibleWarehouse);
+		const data = city.length
+			? { ...locationDetail, city, location_id: locationDetail['id'] }
+			: { ...locationDetail, location_id: locationDetail['id'] };
 
-		// setVisibleWarehouse(false);
+		postData(data, 'SAVE_LOCATION', 'save_location', token, setVisibleWarehouse);
 	};
 
 	if (
@@ -72,10 +74,15 @@ function WarehouseComponent(props) {
 	}
 
 	if (alertMessageType !== 'loading' && googleLocationResponse && getLocationOn) {
-		const city =
-			googleLocationResponse.city.length > 1
-				? googleLocationResponse.city
-				: googleLocationResponse.city[0];
+		let city = '';
+
+		if (googleLocationResponse.city.length > 1) {
+			city = googleLocationResponse.city;
+			setCity(googleLocationResponse.city[0]);
+		} else {
+			city = googleLocationResponse.city[0];
+			setCity('');
+		}
 
 		setLocationDetail({
 			...locationDetail,
@@ -256,6 +263,7 @@ function WarehouseComponent(props) {
 													defaultValue={locationDetail.city[0]}
 													size={'large'}
 													style={{ width: '100%' }}
+													onChange={(city) => setCity(city)}
 												>
 													{locationDetail.city.map((city) => (
 														<Select.Option value={city} key={city}>
@@ -274,7 +282,10 @@ function WarehouseComponent(props) {
 													name='city'
 													placeholder='City'
 													value={locationDetail.city}
-													onChange={changeValue}
+													onChange={(e) => {
+														changeValue(e);
+														setCity('');
+													}}
 												/>
 											</Form.Item>
 										)}
