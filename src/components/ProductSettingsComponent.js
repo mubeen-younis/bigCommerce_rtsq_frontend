@@ -417,17 +417,13 @@ function ProductSettingsComponent(props) {
 												})
 											}
 										>
-											{props.dropships !== null
-												? props.dropships.forEach((value) => {
-														if (value.type === 2) {
-															return (
-																<Option
-																	value={`${value.city} ${value.state} ${value.zip_code}`}
-																	key={value.id}
-																>{`${value.city} ${value.state} ${value.zip_code}`}</Option>
-															);
-														}
-												  })
+											{props.dropships
+												? props.dropships.map((value) => (
+														<Option
+															value={`${value.city} ${value.state} ${value.zip_code}`}
+															key={value.id}
+														>{`${value.city} ${value.state} ${value.zip_code}`}</Option>
+												  ))
 												: null}
 										</Select>
 									</Form.Item>
