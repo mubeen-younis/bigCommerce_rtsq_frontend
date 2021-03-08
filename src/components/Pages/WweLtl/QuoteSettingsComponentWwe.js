@@ -69,7 +69,7 @@ function QuoteSettingsComponentWwe(props) {
 		}
 	};
 
-	const onFinish = (data) => {
+	const onFinish = data => {
 		//data.method = ratingMethod
 		data = { ...data, ...quoteSettingsState, carrierId: +props.carrierId };
 		props.postData(data, props.token);
@@ -103,8 +103,7 @@ function QuoteSettingsComponentWwe(props) {
 								name='method'
 								size={'large'}
 								style={{ width: '100%' }}
-								onChange={(value) => {
-									console.log(value);
+								onChange={value => {
 									setRatingMethod(value);
 								}}
 							>
@@ -420,7 +419,7 @@ function QuoteSettingsComponentWwe(props) {
 	);
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		quoteSettings: state.quoteSettings,
 		token: state.token,
@@ -429,7 +428,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		postData: (data, token) =>
 			dispatch(postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)),

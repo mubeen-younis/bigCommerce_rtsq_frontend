@@ -49,7 +49,7 @@ function App(props) {
 				? urlParams.get('store')
 				: localStorage.getItem('store');
 
-		if (token === (undefined || null) && store !== undefined) {
+		if (token === (undefined || null) && store !== undefined && store !== null) {
 			setToken(store);
 		}
 
@@ -88,7 +88,7 @@ function App(props) {
 	};
 
 	if (token === null || token === undefined) {
-		return <p>Invalid store.</p>;
+		return <h1>Invalid store.</h1>;
 	}
 
 	if (alertMessageType === 'Token Mismatch') {
@@ -148,7 +148,7 @@ function App(props) {
 	);
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		store: state.store,
 		alertMessage: state.alertMessage,
@@ -164,15 +164,15 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
-		locations: (token) => dispatch(getLocations(token)),
-		getAllCarriers: (store) => dispatch(getAllCarriers({ store })),
-		getAllAddons: (store) => dispatch(getAllAddons({ store })),
-		getInstalledCarriers: (store) => dispatch(getInstalledCarriers({ store })),
-		getInstalledAddons: (store) => dispatch(getInstalledAddons({ store })),
-		getPlansInfo: (store) => dispatch(getPlansInfo({ store: store })),
-		setToken: (token) => {
+		locations: token => dispatch(getLocations(token)),
+		getAllCarriers: store => dispatch(getAllCarriers({ store })),
+		getAllAddons: store => dispatch(getAllAddons({ store })),
+		getInstalledCarriers: store => dispatch(getInstalledCarriers({ store })),
+		getInstalledAddons: store => dispatch(getInstalledAddons({ store })),
+		getPlansInfo: store => dispatch(getPlansInfo({ store: store })),
+		setToken: token => {
 			localStorage.setItem('store', token);
 			dispatch({ type: 'TOKEN', payload: token });
 		},
