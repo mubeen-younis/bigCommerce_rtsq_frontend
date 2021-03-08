@@ -10,10 +10,11 @@ export const getRadPlans = token => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
-				showAlertMessage: true,
+				showAlertMessage: false,
 				alertMessageType: 'loading',
 			},
 		});
+
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/rad/get_plans`, config)
 			.then(({ data }) => {
@@ -161,6 +162,14 @@ export const changeDefaultAddress = (addon_id, token, address_type) => {
 
 export const getAddonAddressSettings = (addon_id, token) => {
 	return dispatch => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: false,
+				alertMessageType: 'loading',
+			},
+		});
+
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/rad/getAddonAdressSettings`, {
 				headers: {

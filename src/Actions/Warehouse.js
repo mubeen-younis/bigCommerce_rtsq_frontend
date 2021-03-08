@@ -5,7 +5,7 @@ export const getGoogleResponse = (zipcode, token, setLocationOn) => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
-				showAlertMessage: true,
+				showAlertMessage: false,
 				alertMessageType: 'loading',
 			},
 		});
