@@ -6,7 +6,7 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 			authorization: `Bearer ${token}`,
 		},
 	};
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -24,7 +24,7 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 							type: type,
 							payload: JSON.parse(data.data.value),
 						});
-					} else {
+					} else if (data.data) {
 						dispatch({
 							type: type,
 							payload: data.data,
@@ -44,15 +44,13 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 						alertMessageType: data.error ? 'error' : 'success',
 					},
 				});
-
-				dismissAlert();
 			})
-			.catch((error) => {});
+			.catch(error => {});
 	};
 };
 
-export const getCarrierDetails = (data) => {
-	return (dispatch) => {
+export const getCarrierDetails = data => {
+	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_carrier_info`, {
 				data,
@@ -65,14 +63,14 @@ export const getCarrierDetails = (data) => {
 					});
 				}
 			})
-			.catch((error) => {
+			.catch(error => {
 				console.log(error);
 			});
 	};
 };
 
 export const getConnectionSettings = (token, carrierId) => {
-	return (dispatch) => {
+	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_conn_settings`, {
 				headers: {
@@ -92,7 +90,7 @@ export const getConnectionSettings = (token, carrierId) => {
 					payload: false,
 				});
 			})
-			.catch((error) => {
+			.catch(error => {
 				dispatch({
 					type: 'SKELETON_LOADING',
 					payload: false,
@@ -101,14 +99,14 @@ export const getConnectionSettings = (token, carrierId) => {
 	};
 };
 
-export const getLocations = (token) => {
+export const getLocations = token => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${token}`,
 		},
 	};
 
-	return (dispatch) => {
+	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_locations`, config)
 			.then(async ({ data }) => {
@@ -116,7 +114,7 @@ export const getLocations = (token) => {
 					let dropships = [];
 					let warehouse = [];
 
-					await data.data.forEach((value) =>
+					await data.data.forEach(value =>
 						value.type === 1
 							? (warehouse = [...warehouse, value])
 							: (dropships = [...dropships, value])
@@ -131,7 +129,7 @@ export const getLocations = (token) => {
 					});
 				}
 			})
-			.catch((err) => {
+			.catch(err => {
 				console.log(err);
 			});
 	};
@@ -144,7 +142,7 @@ export const getQuoteSettings = (token, carrierId) => {
 		},
 	};
 
-	return (dispatch) => {
+	return dispatch => {
 		axios
 			.get(
 				`${process.env.REACT_APP_ENITURE_API_URL}/get_qoute_settings/${carrierId}`,
@@ -158,19 +156,19 @@ export const getQuoteSettings = (token, carrierId) => {
 				});
 				//}
 			})
-			.catch((err) => {
+			.catch(err => {
 				console.log(err);
 			});
 	};
 };
 
-export const getAllProducts = (token) => {
+export const getAllProducts = token => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${token}`,
 		},
 	};
-	return (dispatch) => {
+	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_products`, config)
 			.then(({ data }) => {
@@ -181,7 +179,7 @@ export const getAllProducts = (token) => {
 				});
 				//}
 			})
-			.catch((error) => {
+			.catch(error => {
 				dispatch({
 					type: 'GET_ALL_PRODUCTS',
 					payload: [],
@@ -190,7 +188,7 @@ export const getAllProducts = (token) => {
 	};
 };
 
-export const dismissAlert = () => (dispatch) => {
+export const dismissAlert = () => dispatch => {
 	dispatch({
 		type: 'ALERT_MESSAGE',
 		payload: {
@@ -201,10 +199,10 @@ export const dismissAlert = () => (dispatch) => {
 	});
 };
 
-export const setStore = (store) => {
+export const setStore = store => {
 	console.log('store action', store);
 	localStorage.setItem('store', store);
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'STORE',
 			payload: store,
@@ -212,14 +210,14 @@ export const setStore = (store) => {
 	};
 };
 
-export const getAllCarriers = (data) => {
+export const getAllCarriers = data => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${data.store}`,
 		},
 	};
 
-	return (dispatch) => {
+	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedCarriers`, config)
 			.then(({ data }) => {
@@ -239,7 +237,7 @@ export const getAllCarriers = (data) => {
 					},
 				});
 			})
-			.catch((err) => {
+			.catch(err => {
 				dispatch({
 					type: 'GET_CARRIERS',
 					payload: [],
@@ -248,14 +246,14 @@ export const getAllCarriers = (data) => {
 	};
 };
 
-export const getAllAddons = (data) => {
+export const getAllAddons = data => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${data.store}`,
 		},
 	};
 
-	return (dispatch) => {
+	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedAddons`, config)
 			.then(({ data }) => {
@@ -264,7 +262,7 @@ export const getAllAddons = (data) => {
 					payload: data.data,
 				});
 			})
-			.catch((error) => {
+			.catch(error => {
 				dispatch({
 					type: 'GET_ADDONS',
 					payload: [],
@@ -273,14 +271,14 @@ export const getAllAddons = (data) => {
 	};
 };
 
-export const getPlansInfo = (data) => {
+export const getPlansInfo = data => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${data.store}`,
 		},
 	};
 
-	return (dispatch) => {
+	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_plans_info`, {
 				...config,
@@ -295,6 +293,6 @@ export const getPlansInfo = (data) => {
 					});
 				}
 			})
-			.catch((error) => {});
+			.catch(error => {});
 	};
 };
