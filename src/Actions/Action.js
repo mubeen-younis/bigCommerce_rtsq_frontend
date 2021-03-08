@@ -285,11 +285,17 @@ export const getPlansInfo = data => {
 				params: { store: 'stores/uann2u' },
 			})
 			.then(({ data }) => {
-				console.log(data.data[0].value);
 				if (!data.error) {
 					dispatch({
 						type: 'GET_PLANS_INFO',
 						payload: JSON.parse(data.data[0].value),
+					});
+				} else {
+					dispatch({
+						type: 'ALERT_MESSAGE',
+						showAlertMessage: true,
+						alertMessage: data.message,
+						alertMessageType: 'error',
 					});
 				}
 			})

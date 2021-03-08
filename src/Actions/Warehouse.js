@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const getGoogleResponse = (zipcode, token, setLocationOn) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -35,12 +35,12 @@ export const getGoogleResponse = (zipcode, token, setLocationOn) => {
 					},
 				});
 			})
-			.catch((error) => {});
+			.catch(error => {});
 	};
 };
 
 export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -58,7 +58,7 @@ export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) 
 					authorization: `Bearer ${token}`,
 				},
 			})
-			.then((res) => {
+			.then(res => {
 				setVisibleWarehouse(true);
 
 				const { data } = res.data;
@@ -105,7 +105,7 @@ export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) 
 };
 
 export const deleteLocation = (id, setDeleteWarehouseModal, token) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -127,21 +127,23 @@ export const deleteLocation = (id, setDeleteWarehouseModal, token) => {
 				}
 			)
 			.then(({ data }) => {
+				if (!data.error) {
+					dispatch({
+						type: 'DELETE_LOCATION',
+						payload: id,
+					});
+
+					setDeleteWarehouseModal(false);
+				}
+
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
 						alertMessage: data.message,
-						showAlertMessage: data.error,
+						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
 				});
-
-				dispatch({
-					type: 'DELETE_LOCATION',
-					payload: id,
-				});
-
-				setDeleteWarehouseModal(false);
 			});
 	};
 };

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const installCarrier = (carrier_id, token) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -23,8 +23,6 @@ export const installCarrier = (carrier_id, token) => {
 				}
 			)
 			.then(({ data }) => {
-				console.log(data);
-
 				if (!data.error) {
 					dispatch({
 						type: 'INSTALL_CARRIER',
@@ -41,12 +39,12 @@ export const installCarrier = (carrier_id, token) => {
 					},
 				});
 			})
-			.catch((error) => {});
+			.catch(error => {});
 	};
 };
 
-export const getInstalledCarriers = (data) => {
-	return (dispatch) => {
+export const getInstalledCarriers = data => {
+	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getInstalledCarriers`, {
 				headers: {
@@ -75,7 +73,7 @@ export const getInstalledCarriers = (data) => {
 					},
 				});
 			})
-			.catch((err) => {
+			.catch(err => {
 				dispatch({
 					type: 'GET_INSTALLED_CARRIERS',
 					payload: [],
@@ -85,7 +83,7 @@ export const getInstalledCarriers = (data) => {
 };
 
 export const changeCarrierStatus = (carrier_id, token) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -121,14 +119,14 @@ export const changeCarrierStatus = (carrier_id, token) => {
 					},
 				});
 			})
-			.catch((err) => {
+			.catch(err => {
 				console.log(err);
 			});
 	};
 };
 
 export const installAddon = (addon_id, token) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -156,7 +154,6 @@ export const installAddon = (addon_id, token) => {
 						payload: data.data,
 					});
 				}
-				console.log(data);
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
@@ -166,12 +163,12 @@ export const installAddon = (addon_id, token) => {
 					},
 				});
 			})
-			.catch((error) => {});
+			.catch(error => {});
 	};
 };
 
-export const getInstalledAddons = (data) => {
-	return (dispatch) => {
+export const getInstalledAddons = data => {
+	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_installed_addons`, {
 				headers: {
@@ -184,7 +181,7 @@ export const getInstalledAddons = (data) => {
 					payload: data.data,
 				});
 			})
-			.catch((err) => {
+			.catch(err => {
 				dispatch({
 					type: 'GET_INSTALLED_ADDONS',
 					payload: [],
@@ -194,7 +191,7 @@ export const getInstalledAddons = (data) => {
 };
 
 export const changeAddonStatus = (addon_id, token) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -230,7 +227,7 @@ export const changeAddonStatus = (addon_id, token) => {
 					},
 				});
 			})
-			.catch((err) => {
+			.catch(err => {
 				console.log(err);
 			});
 	};

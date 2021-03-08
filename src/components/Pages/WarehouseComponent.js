@@ -47,7 +47,7 @@ function WarehouseComponent(props) {
 		plansInfo,
 	} = props;
 
-	const onFinish = (values) => {
+	const onFinish = values => {
 		const data = city.length
 			? { ...locationDetail, city, location_id: locationDetail['id'] }
 			: { ...locationDetail, location_id: locationDetail['id'] };
@@ -61,8 +61,6 @@ function WarehouseComponent(props) {
 		alertMessage.includes('Zero') &&
 		getLocationOn
 	) {
-		console.log('inside error', getLocationOn);
-
 		setLocationDetail({
 			...locationDetail,
 			city: '',
@@ -94,7 +92,7 @@ function WarehouseComponent(props) {
 		setGetLocationOn(false);
 	}
 
-	const getGoogleLocation = (zip_code) => {
+	const getGoogleLocation = zip_code => {
 		if (zip_code.length > 4) {
 			getGoogleResponse(zip_code, token, setGetLocationOn);
 		}
@@ -102,26 +100,26 @@ function WarehouseComponent(props) {
 		setGetLocationOn(false);
 	};
 
-	const openLocationModal = (location_type) => {
+	const openLocationModal = location_type => {
 		setLocationDetail({
 			location_type: location_type,
 		});
 		setVisibleWarehouse(true);
 	};
 
-	const openDeleteLocationModal = (data) => {
+	const openDeleteLocationModal = data => {
 		setDeleteWarehouseModal(true);
 		setWarehouseID(data.id);
 	};
 
-	const editLocation = (data) => {
+	const editLocation = data => {
 		setLocationDetail({});
 		setVisibleWarehouse(true);
 
 		getWarehouse(data.id, setLocationDetail, setVisibleWarehouse, props.token);
 	};
 
-	const changeValue = (e) => {
+	const changeValue = e => {
 		setLocationDetail({
 			...locationDetail,
 			[e.target.name]: e.target.value,
@@ -241,7 +239,7 @@ function WarehouseComponent(props) {
 												placeholder='Zip Code'
 												name='zip_code'
 												value={locationDetail.zip_code}
-												onChange={(e) => {
+												onChange={e => {
 													changeValue(e);
 													getGoogleLocation(e.target.value);
 												}}
@@ -263,9 +261,9 @@ function WarehouseComponent(props) {
 													defaultValue={locationDetail.city[0]}
 													size={'large'}
 													style={{ width: '100%' }}
-													onChange={(city) => setCity(city)}
+													onChange={city => setCity(city)}
 												>
-													{locationDetail.city.map((city) => (
+													{locationDetail.city.map(city => (
 														<Select.Option value={city} key={city}>
 															{city}
 														</Select.Option>
@@ -282,7 +280,7 @@ function WarehouseComponent(props) {
 													name='city'
 													placeholder='City'
 													value={locationDetail.city}
-													onChange={(e) => {
+													onChange={e => {
 														changeValue(e);
 														setCity('');
 													}}
@@ -334,7 +332,7 @@ function WarehouseComponent(props) {
 											<Checkbox
 												name='enable_instore'
 												checked={locationDetail.enable_instore}
-												onChange={(e) =>
+												onChange={e =>
 													setLocationDetail({
 														...locationDetail,
 														enable_instore: !locationDetail.enable_instore,
@@ -383,7 +381,7 @@ function WarehouseComponent(props) {
 												value={locationDetail.instore_zipcodes}
 												mode='tags'
 												style={{ width: '100%' }}
-												onChange={(e) => handleChange('instore_zipcodes', e)}
+												onChange={e => handleChange('instore_zipcodes', e)}
 												tokenSeparators={[',']}
 												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 											/>
@@ -428,7 +426,7 @@ function WarehouseComponent(props) {
 											<Checkbox
 												name='enable_ld'
 												checked={locationDetail.enable_ld}
-												onChange={(e) =>
+												onChange={e =>
 													setLocationDetail({
 														...locationDetail,
 														enable_ld: !locationDetail.enable_ld,
@@ -473,7 +471,7 @@ function WarehouseComponent(props) {
 												value={locationDetail.ld_zipcodes}
 												mode='tags'
 												style={{ width: '100%' }}
-												onChange={(e) => handleChange('ld_zipcodes', e)}
+												onChange={e => handleChange('ld_zipcodes', e)}
 												tokenSeparators={[',']}
 												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 											/>
@@ -548,7 +546,7 @@ function WarehouseComponent(props) {
 											<Checkbox
 												name='ld_enable_supress'
 												checked={locationDetail.ld_enable_supress}
-												onChange={(e) =>
+												onChange={e =>
 													setLocationDetail({
 														...locationDetail,
 														ld_enable_supress: !locationDetail.ld_enable_supress,
@@ -642,7 +640,7 @@ function WarehouseComponent(props) {
 	);
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		warehouse: state.warehouse,
 		dropships: state.dropships,
@@ -656,7 +654,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
 	postData: (data, type, url, token, visibility) =>
 		dispatch(postData(data, type, url, token, visibility)),
 	getGoogleResponse: (data, token, visibility) =>

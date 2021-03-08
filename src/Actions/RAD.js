@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-export const getRadPlans = (token) => {
+export const getRadPlans = token => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${token}`,
 		},
 	};
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -29,16 +29,16 @@ export const getRadPlans = (token) => {
 					payload: {
 						alertMessage: data.message,
 						showAlertMessage: true,
-						alertMessageType: data.error ?? 'error',
+						alertMessageType: data.error ? 'error' : false,
 					},
 				});
 			})
-			.catch((error) => {});
+			.catch(error => {});
 	};
 };
 
 export const changePlan = (token, plan_package) => {
-	return (dispatch) => {
+	return dispatch => {
 		axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/rad/change_plan`,
@@ -52,8 +52,6 @@ export const changePlan = (token, plan_package) => {
 				}
 			)
 			.then(({ data }) => {
-				console.log(data);
-
 				if (!data.error || data.data.length === 0) {
 					dispatch({
 						type: 'RAD_PLANS',
@@ -74,7 +72,7 @@ export const changePlan = (token, plan_package) => {
 };
 
 export const changeAddonSuspendStatus = (addon_id, token) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -110,14 +108,14 @@ export const changeAddonSuspendStatus = (addon_id, token) => {
 					},
 				});
 			})
-			.catch((err) => {
+			.catch(err => {
 				console.log(err);
 			});
 	};
 };
 
 export const changeDefaultAddress = (addon_id, token, address_type) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -162,7 +160,7 @@ export const changeDefaultAddress = (addon_id, token, address_type) => {
 };
 
 export const getAddonAddressSettings = (addon_id, token) => {
-	return (dispatch) => {
+	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/rad/getAddonAdressSettings`, {
 				headers: {
@@ -185,10 +183,10 @@ export const getAddonAddressSettings = (addon_id, token) => {
 					payload: {
 						alertMessage: data.message,
 						showAlertMessage: true,
-						alertMessageType: data.error ?? 'error',
+						alertMessageType: data.error ? 'error' : false,
 					},
 				});
 			})
-			.catch((err) => console.log(err));
+			.catch(err => console.log(err));
 	};
 };
