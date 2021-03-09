@@ -5,7 +5,7 @@ export const getServices = () => {
 		shop: 'dev-azm-1.mybigcommerce.com',
 	};
 
-	return (dispatch) => {
+	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_carrier_services`, {
 				data,
@@ -38,12 +38,12 @@ export const getServices = () => {
 					payload: false,
 				});
 			})
-			.catch((error) => {});
+			.catch(error => {});
 	};
 };
 
 export const getAddTabSettings = (token, carrierId) => {
-	return (dispatch) => {
+	return dispatch => {
 		axios
 			.get(
 				`${process.env.REACT_APP_ENITURE_API_URL}/get_add_tab_sett_store/${carrierId}`,
@@ -63,6 +63,26 @@ export const getAddTabSettings = (token, carrierId) => {
 					payload: false,
 				});
 			})
-			.catch((error) => {});
+			.catch(error => {});
+	};
+};
+
+export const getCarrierDetails = data => {
+	return dispatch => {
+		axios
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_carrier_info`, {
+				data,
+			})
+			.then(({ data }) => {
+				if (data?.settings && data.settings.length > 0) {
+					dispatch({
+						type: 'GET_CONNECTION_SETTINGS',
+						payload: data.settings,
+					});
+				}
+			})
+			.catch(error => {
+				console.log(error);
+			});
 	};
 };

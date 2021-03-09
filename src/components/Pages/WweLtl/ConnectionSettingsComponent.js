@@ -1,7 +1,8 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Form, Input, Button, Space, Skeleton } from 'antd';
 import { connect } from 'react-redux';
-import { postData, getConnectionSettings } from '../../../Actions/Action';
+import { postData } from '../../../Actions/Action';
+import { getConnectionSettings } from '../../../Actions/Connection';
 
 function ConnectionSettingsComponent(props) {
 	const [connectionState, setConnectionState] = useState({
@@ -15,11 +16,11 @@ function ConnectionSettingsComponent(props) {
 		}
 	});
 
-	const handleTypeChange = (type) => {
+	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type });
 	};
 
-	const onFinish = (values) => {
+	const onFinish = values => {
 		values.testType = connectionState.testType;
 		values.installed_carrier_id = props.carrierId;
 		values.carrierId = props.carrierId;
@@ -107,7 +108,7 @@ function ConnectionSettingsComponent(props) {
 	);
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		connectionSettings: state.connectionSettings,
 		skeleton_loading: state.skeleton_loading,
@@ -116,7 +117,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		postData: (data, token) =>
 			dispatch(

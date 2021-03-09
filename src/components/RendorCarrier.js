@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import TabsLayout from '../tabs_layout/tabs';
-import { getCarrierDetails } from '../Actions/Action';
+import { getCarrierDetails } from '../Actions/Carriers';
 
 function RendorCarrier(props) {
 	const { carrier_id } = useParams();
@@ -27,17 +27,17 @@ function RendorCarrier(props) {
 	return <TabsLayout />;
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		token: state.token,
 		carrierId: state.carrierId,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		getCarrierDetails: () => dispatch(getCarrierDetails()),
-		setCarrierId: (carrierId) => dispatch({ type: 'CARRIER_ID', payload: carrierId }),
+		setCarrierId: carrierId => dispatch({ type: 'CARRIER_ID', payload: carrierId }),
 	};
 };
 

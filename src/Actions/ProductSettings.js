@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const submitProductSettings = (data, token) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -33,7 +33,7 @@ export const submitProductSettings = (data, token) => {
 					},
 				});
 			})
-			.catch((error) => {});
+			.catch(error => {});
 	};
 };
 
@@ -47,7 +47,7 @@ export const getProduct = (id, setselectedProductDetail, setLoadProduct, token) 
 				product_id: id,
 			},
 		})
-		.then((res) => {
+		.then(res => {
 			let data = JSON.parse(res.data.data[0].settings);
 			data = { ...data, product_id: id };
 
@@ -56,8 +56,8 @@ export const getProduct = (id, setselectedProductDetail, setLoadProduct, token) 
 		});
 };
 
-export const importProducts = (token) => {
-	return (dispatch) => {
+export const importProducts = token => {
+	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -71,7 +71,7 @@ export const importProducts = (token) => {
 					authorization: `Bearer ${token}`,
 				},
 			})
-			.then((resp) => {
+			.then(resp => {
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
@@ -86,6 +86,32 @@ export const importProducts = (token) => {
 						payload: resp.data.data['data'],
 					});
 				}
+			});
+	};
+};
+
+export const getAllProducts = token => {
+	const config = {
+		headers: {
+			authorization: `Bearer ${token}`,
+		},
+	};
+	return dispatch => {
+		axios
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_products`, config)
+			.then(({ data }) => {
+				//if (data.data.length > 0) {
+				dispatch({
+					type: 'GET_ALL_PRODUCTS',
+					payload: data.data,
+				});
+				//}
+			})
+			.catch(error => {
+				dispatch({
+					type: 'GET_ALL_PRODUCTS',
+					payload: [],
+				});
 			});
 	};
 };

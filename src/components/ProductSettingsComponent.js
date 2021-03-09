@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getAllProducts } from '../Actions/Action';
 import {
 	submitProductSettings,
 	getProduct,
 	importProducts,
+	getAllProducts,
 } from '../Actions/ProductSettings';
 import {
 	Table,
@@ -115,7 +115,7 @@ function ProductSettingsComponent(props) {
 		});
 	}; */
 
-	const onSelectChange = (selectedRowKeys) => {
+	const onSelectChange = selectedRowKeys => {
 		setState({ ...state, selectedRowKeys });
 	};
 
@@ -260,7 +260,7 @@ function ProductSettingsComponent(props) {
 								<Form.Item name='freight_enabled'>
 									<Checkbox
 										name='freight_enabled'
-										onChange={(e) =>
+										onChange={e =>
 											setselectedProductDetail({
 												...selectedProductDetail,
 												freight_enabled: !selectedProductDetail.freight_enabled,
@@ -308,7 +308,7 @@ function ProductSettingsComponent(props) {
 									<Input
 										placeholder='Weight (lbs)'
 										value={selectedProductDetail.weight}
-										onChange={(e) =>
+										onChange={e =>
 											setselectedProductDetail({
 												...selectedProductDetail,
 												weight: e.target.value,
@@ -324,7 +324,7 @@ function ProductSettingsComponent(props) {
 									<Input
 										placeholder='Length (inches)'
 										value={selectedProductDetail.length}
-										onChange={(e) =>
+										onChange={e =>
 											setselectedProductDetail({
 												...selectedProductDetail,
 												length: e.target.value,
@@ -338,7 +338,7 @@ function ProductSettingsComponent(props) {
 									<Input
 										placeholder='Width (inches)'
 										value={selectedProductDetail.width}
-										onChange={(e) =>
+										onChange={e =>
 											setselectedProductDetail({
 												...selectedProductDetail,
 												width: e.target.value,
@@ -352,7 +352,7 @@ function ProductSettingsComponent(props) {
 									<Input
 										placeholder='Height (inches)'
 										value={selectedProductDetail.height}
-										onChange={(e) =>
+										onChange={e =>
 											setselectedProductDetail({
 												...selectedProductDetail,
 												height: e.target.value,
@@ -365,7 +365,7 @@ function ProductSettingsComponent(props) {
 						<Row gutter={16}>
 							<Col span={12}>
 								<Checkbox
-									onChange={(e) =>
+									onChange={e =>
 										setselectedProductDetail({
 											...selectedProductDetail,
 											hazardous_enabled: !selectedProductDetail.hazardous_enabled,
@@ -410,7 +410,7 @@ function ProductSettingsComponent(props) {
 											size={'large'}
 											style={{ width: '100%' }}
 											name='dropship_location'
-											onChange={(location) =>
+											onChange={location =>
 												setselectedProductDetail({
 													...selectedProductDetail,
 													dropship_location: location,
@@ -418,7 +418,7 @@ function ProductSettingsComponent(props) {
 											}
 										>
 											{props.dropships
-												? props.dropships.map((value) => (
+												? props.dropships.map(value => (
 														<Option
 															value={`${value.city} ${value.state} ${value.zip_code}`}
 															key={value.id}
@@ -433,7 +433,7 @@ function ProductSettingsComponent(props) {
 						<Row gutter={16}>
 							<Col span={12}>
 								<Checkbox
-									onChange={(e) =>
+									onChange={e =>
 										setselectedProductDetail({
 											...selectedProductDetail,
 											insurance: !selectedProductDetail.insurance,
@@ -454,7 +454,7 @@ function ProductSettingsComponent(props) {
 	);
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		allProducts: state.allProducts,
 		token: state.token,
@@ -462,10 +462,10 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
-		getAllProducts: (token) => dispatch(getAllProducts(token)),
-		importProducts: (token) => dispatch(importProducts(token)),
+		getAllProducts: token => dispatch(getAllProducts(token)),
+		importProducts: token => dispatch(importProducts(token)),
 		submitProductSettings: (data, token) => dispatch(submitProductSettings(data, token)),
 	};
 };

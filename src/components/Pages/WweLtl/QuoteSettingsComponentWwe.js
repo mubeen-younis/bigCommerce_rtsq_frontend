@@ -13,7 +13,8 @@ import {
 } from 'antd';
 
 import { connect } from 'react-redux';
-import { postData, getQuoteSettings } from '../../../Actions/Action';
+import { postData } from '../../../Actions/Action';
+import { getQuoteSettings } from '../../../Actions/Settings';
 
 const { Option } = Select;
 const { Title } = Typography;

@@ -147,3 +147,52 @@ export const deleteLocation = (id, setDeleteWarehouseModal, token) => {
 			});
 	};
 };
+
+export const getLocations = token => {
+	const config = {
+		headers: {
+			authorization: `Bearer ${token}`,
+		},
+	};
+
+	return dispatch => {
+		axios
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_locations`, config)
+			.then(async ({ data }) => {
+				if (data.data.length > 0) {
+					let dropships = [];
+					let warehouse = [];
+
+					await data.data.forEach(value =>
+						value.type === 1
+							? (warehouse = [...warehouse, value])
+							: (dropships = [...dropships, value])
+					);
+
+					dispatch({
+						type: 'GET_LOCATIONS',
+						payload: {
+							dropships: dropships,
+							warehouse: warehouse,
+						},
+					});
+				}
+			})
+			.catch(({ response }) => {
+				if (response.data.error && response.data.message === 'Token Mismatch') {
+					dispatch({
+						type: 'GET_CARRIERS',
+						payload: undefined,
+					});
+
+					dispatch({
+						type: 'ALERT_MESSAGE',
+						payload: {
+							showAlertMessage: false,
+							alertMessageType: 'Token Mismatch',
+						},
+					});
+				}
+			});
+	};
+};

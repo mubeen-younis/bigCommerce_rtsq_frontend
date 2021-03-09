@@ -8,13 +8,14 @@ import SideMenu from './partials/SideMenu';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { getPlansInfo } from './Actions/Action';
+import { getLocations } from './Actions/Warehouse';
 import {
-	getLocations,
+	getInstalledCarriers,
+	getInstalledAddons,
 	getAllCarriers,
 	getAllAddons,
-	getPlansInfo,
-} from './Actions/Action';
-import { getInstalledCarriers, getInstalledAddons } from './Actions/EnitureStore';
+} from './Actions/EnitureStore';
 import RendorCarrier from './components/RendorCarrier';
 import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent';
 import AutoDetectResidentialComponennt from './components/AutoDetectResidentialComponennt';
@@ -92,7 +93,7 @@ function App(props) {
 	}
 
 	if (alertMessageType === 'Token Mismatch') {
-		return <h3 danger>Invalid Token! Contact your administrator.</h3>;
+		return <h2 text='danger'>Invalid Token! Contact your administrator.</h2>;
 	}
 
 	if (

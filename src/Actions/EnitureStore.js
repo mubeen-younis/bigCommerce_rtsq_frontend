@@ -43,6 +43,54 @@ export const installCarrier = (carrier_id, token) => {
 	};
 };
 
+export const getAllCarriers = data => {
+	const config = {
+		headers: {
+			authorization: `Bearer ${data.store}`,
+		},
+	};
+
+	return dispatch => {
+		axios
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedCarriers`, config)
+			.then(({ data }) => {
+				if (!data.error) {
+					dispatch({
+						type: 'GET_CARRIERS',
+						payload: data.data.carriers,
+					});
+				}
+
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: data.message,
+						showAlertMessage: true,
+						alertMessageType: data.error ?? 'error',
+					},
+				});
+			})
+			.catch(({ response }) => {
+				if (response.data.error && response.data.message === 'Token Mismatch') {
+					dispatch({
+						type: 'GET_CARRIERS',
+						payload: undefined,
+					});
+
+					dispatch({
+						type: 'ALERT_MESSAGE',
+						payload: {
+							showAlertMessage: false,
+							alertMessageType: 'Token Mismatch',
+						},
+					});
+
+					return;
+				}
+			});
+	};
+};
+
 export const getInstalledCarriers = data => {
 	return dispatch => {
 		axios
@@ -76,7 +124,7 @@ export const getInstalledCarriers = data => {
 			.catch(err => {
 				dispatch({
 					type: 'GET_INSTALLED_CARRIERS',
-					payload: [],
+					payload: undefined,
 				});
 			});
 	};
@@ -167,6 +215,31 @@ export const installAddon = (addon_id, token) => {
 	};
 };
 
+export const getAllAddons = data => {
+	const config = {
+		headers: {
+			authorization: `Bearer ${data.store}`,
+		},
+	};
+
+	return dispatch => {
+		axios
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedAddons`, config)
+			.then(({ data }) => {
+				dispatch({
+					type: 'GET_ADDONS',
+					payload: data.data,
+				});
+			})
+			.catch(error => {
+				dispatch({
+					type: 'GET_ADDONS',
+					payload: undefined,
+				});
+			});
+	};
+};
+
 export const getInstalledAddons = data => {
 	return dispatch => {
 		axios
@@ -184,7 +257,7 @@ export const getInstalledAddons = data => {
 			.catch(err => {
 				dispatch({
 					type: 'GET_INSTALLED_ADDONS',
-					payload: [],
+					payload: undefined,
 				});
 			});
 	};
