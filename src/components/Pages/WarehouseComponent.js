@@ -233,6 +233,7 @@ function WarehouseComponent(props) {
 										<Form.Item
 											className={'mb-2'}
 											label='Zip Code'
+											required
 											rules={[{ required: true, message: 'Zip Code' }]}
 										>
 											<Input
@@ -243,6 +244,7 @@ function WarehouseComponent(props) {
 													changeValue(e);
 													getGoogleLocation(e.target.value);
 												}}
+												required
 											/>
 										</Form.Item>
 									</Col>
@@ -275,6 +277,7 @@ function WarehouseComponent(props) {
 												className={'mb-2'}
 												label='City'
 												rules={[{ required: true, message: 'City' }]}
+												required
 											>
 												<Input
 													name='city'
@@ -284,6 +287,7 @@ function WarehouseComponent(props) {
 														changeValue(e);
 														setCity('');
 													}}
+													required
 												/>
 											</Form.Item>
 										)}
@@ -293,12 +297,14 @@ function WarehouseComponent(props) {
 											className={'mb-2'}
 											label='State'
 											rules={[{ required: true, message: 'State' }]}
+											required
 										>
 											<Input
 												name='state'
 												placeholder='State'
 												value={locationDetail.state}
 												onChange={changeValue}
+												required
 											/>
 										</Form.Item>
 									</Col>
@@ -308,12 +314,14 @@ function WarehouseComponent(props) {
 											className={'mb-2'}
 											label='Country'
 											rules={[{ required: true, message: 'Country' }]}
+											required
 										>
 											<Input
 												name='country'
 												placeholder='Country'
 												value={locationDetail.country}
 												onChange={changeValue}
+												required
 											/>
 										</Form.Item>
 									</Col>
