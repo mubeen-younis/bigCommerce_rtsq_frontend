@@ -7,6 +7,8 @@ const initialState = {
 	quoteSettings: null,
 	carriers: null,
 	carriersSettings: null,
+	services: null,
+	filteredServices: null,
 	skeleton_loading: true,
 	showAlertMessage: false,
 	alertMessageType: null,
@@ -78,7 +80,7 @@ const Reducer = (state = initialState, action) => {
 		case types.INSTALL_CARRIER:
 			let newInstalledCarrier = {};
 
-			state.carriers.forEach((carr) => {
+			state.carriers.forEach(carr => {
 				if (carr.id === action.payload.carrier_id) {
 					newInstalledCarrier = {
 						...action.payload,
@@ -92,7 +94,7 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				installedCarriers: [...state.installedCarriers, newInstalledCarrier],
 				carriers: state.carriers.filter(
-					(carrier) => carrier.id !== action.payload.carrier_id
+					carrier => carrier.id !== action.payload.carrier_id
 				),
 			};
 
@@ -105,12 +107,30 @@ const Reducer = (state = initialState, action) => {
 		case types.CHANGE_CARRIER_STATUS:
 			return {
 				...state,
-				installedCarriers: state.installedCarriers.map((ic) =>
+				installedCarriers: state.installedCarriers.map(ic =>
 					ic.id === action.payload.id
 						? { ...ic, is_enabled: action.payload.is_enabled }
 						: ic
 				),
 			};
+
+		case types.FILTER_CARRIERS: {
+			if (action.payload.length > 0) {
+				const searchString = new RegExp(action.payload, 'gi');
+
+				return {
+					...state,
+					filteredServices: state.services.filter(srvc =>
+						srvc.carrier_name.match(searchString)
+					),
+				};
+			} else {
+				return {
+					...state,
+					filteredServices: null,
+				};
+			}
+		}
 		// Carriers End
 
 		// Location Cases
@@ -123,21 +143,21 @@ const Reducer = (state = initialState, action) => {
 
 		case types.SAVE_LOCATION:
 			const location = [...state.warehouse, ...state.dropships].filter(
-				(loc) => loc.id === action.payload.id
+				loc => loc.id === action.payload.id
 			);
 
 			if (location && location.length) {
 				if (action.payload.type === 1) {
 					return {
 						...state,
-						warehouse: state.warehouse.map((wh) =>
+						warehouse: state.warehouse.map(wh =>
 							wh.id === action.payload.id ? action.payload : wh
 						),
 					};
 				} else if (action.payload.type === 2) {
 					return {
 						...state,
-						dropships: state.dropships.map((ds) =>
+						dropships: state.dropships.map(ds =>
 							ds.id === action.payload.id ? action.payload : ds
 						),
 					};
@@ -160,8 +180,8 @@ const Reducer = (state = initialState, action) => {
 		case types.DELETE_LOCATION:
 			return {
 				...state,
-				warehouse: state.warehouse.filter((wh) => wh.id !== action.payload),
-				dropships: state.dropships.filter((wh) => wh.id !== action.payload),
+				warehouse: state.warehouse.filter(wh => wh.id !== action.payload),
+				dropships: state.dropships.filter(wh => wh.id !== action.payload),
 			};
 		// Location End
 
@@ -169,7 +189,7 @@ const Reducer = (state = initialState, action) => {
 		case types.INSTALL_ADDON:
 			let newInstalledAddon = {};
 
-			state.addons.forEach((add) => {
+			state.addons.forEach(add => {
 				if (add.id === action.payload.addon_id) {
 					newInstalledAddon = {
 						...action.payload,
@@ -182,7 +202,7 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				installedAddons: [...state.installedAddons, newInstalledAddon],
-				addons: state.addons.filter((add) => add.id !== action.payload.addon_id),
+				addons: state.addons.filter(add => add.id !== action.payload.addon_id),
 			};
 
 		case types.GET_INSTALLED_ADDONS:
@@ -194,7 +214,7 @@ const Reducer = (state = initialState, action) => {
 		case types.CHANGE_ADDON_STATUS:
 			return {
 				...state,
-				installedAddons: state.installedAddons.map((addon) =>
+				installedAddons: state.installedAddons.map(addon =>
 					addon.id === action.payload.id
 						? { ...addon, is_enabled: action.payload.is_enabled }
 						: addon
@@ -204,7 +224,7 @@ const Reducer = (state = initialState, action) => {
 		case types.CHANGE_ADDON_SUSPEND_STATUS:
 			return {
 				...state,
-				installedAddons: state.installedAddons.map((addon) =>
+				installedAddons: state.installedAddons.map(addon =>
 					addon.id === action.payload.id
 						? { ...addon, is_suspend: action.payload.is_suspend }
 						: addon

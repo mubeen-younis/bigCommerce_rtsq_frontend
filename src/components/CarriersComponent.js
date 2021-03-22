@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { postData } from '../Actions/Action';
 import { getServices, getAddTabSettings } from '../Actions/Carriers';
-import { Form, Table, Button, Space, Skeleton } from 'antd';
+import { Form, Table, Button, Space, Skeleton, Input } from 'antd';
 
 const columns = [
 	{
@@ -19,12 +19,14 @@ const columns = [
 	},
 ];
 
-const CarriersComponent = (props) => {
+const CarriersComponent = props => {
 	const [state, setState] = useState({
 		selectedRowKeys: [], // Check here to configure the default column
 		loading: true,
 		carrierServices: true,
 	});
+
+	const dispatch = useDispatch();
 
 	const {
 		getAddTabSettings,
@@ -34,6 +36,7 @@ const CarriersComponent = (props) => {
 		carrierId,
 		postData,
 		carriersSettings,
+		filteredServices,
 	} = props;
 
 	useEffect(() => {
@@ -64,7 +67,7 @@ const CarriersComponent = (props) => {
 		postData(data, 'SAVE_CARRIER_TAB_SETTINGS', 'submit_carriers', token);
 	};
 
-	const onSelectChange = (selectedRowKeys) => {
+	const onSelectChange = selectedRowKeys => {
 		setState({ ...state, selectedRowKeys, carrierServices: false });
 	};
 
@@ -93,11 +96,25 @@ const CarriersComponent = (props) => {
 
 	return (
 		<Fragment>
+			<Input
+				placeholder='Search carriers'
+				size='large'
+				className='my-5'
+				onChange={e =>
+					dispatch({
+						type: 'FILTER_CARRIERS',
+						payload: e.target.value,
+					})
+				}
+			/>
+			<br />
+			<br />
+
 			<Table
 				className='custom-table'
 				rowSelection={rowSelection}
 				columns={columns}
-				dataSource={services}
+				dataSource={filteredServices ?? services}
 				total={50}
 			/>
 			<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
@@ -117,23 +134,23 @@ const CarriersComponent = (props) => {
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		services: state.services,
 		skeleton_loading: state.skeleton_loading,
 		carriersSettings: state.carriersSettings,
 		token: state.token,
 		carrierId: state.carrierId,
+		filteredServices: state.filteredServices,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		postData: (data, type, url, token) => dispatch(postData(data, type, url, token)),
 		getServices: () => dispatch(getServices()),
 		getAddTabSettings: (token, carrierId) =>
 			dispatch(getAddTabSettings(token, carrierId)),
-		dismissSkeleton: () => dispatch({ type: 'SKELETON_LOADING', payload: true }),
 	};
 };
 
