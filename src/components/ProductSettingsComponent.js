@@ -410,17 +410,17 @@ function ProductSettingsComponent(props) {
 											size={'large'}
 											style={{ width: '100%' }}
 											name='dropship_location'
-											onChange={location =>
+											onChange={location => {
 												setselectedProductDetail({
 													...selectedProductDetail,
 													dropship_location: location,
-												})
-											}
+												});
+											}}
 										>
 											{props.dropships
 												? props.dropships.map(value => (
 														<Option
-															value={`${value.city} ${value.state} ${value.zip_code}`}
+															value={value.id}
 															key={value.id}
 														>{`${value.city} ${value.state} ${value.zip_code}`}</Option>
 												  ))
