@@ -168,7 +168,7 @@ function QuoteSettingsComponentWwe(props) {
 						</Col>
 					</Row>
 				) : null}
-
+				{ratingMethod === 1 || ratingMethod === 2 ? (
 				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
 						<label className={'text-gray'}>Show Delivery Estimate</label>
@@ -191,6 +191,7 @@ function QuoteSettingsComponentWwe(props) {
 						</Form.Item>
 					</Col>
 				</Row>
+				):null}
 
 				<Row gutter={30} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
