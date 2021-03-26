@@ -169,29 +169,29 @@ function QuoteSettingsComponentWwe(props) {
 					</Row>
 				) : null}
 				{ratingMethod === 1 || ratingMethod === 2 ? (
-				<Row gutter={30} className={'mb-3'}>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-						<label className={'text-gray'}>Show Delivery Estimate</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='show_delivery_estimate'
-								// value={true}
-								checked={quoteSettingsState.showDeliveryEstimate}
-								onChange={() => {
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										showDeliveryEstimate: !quoteSettingsState.showDeliveryEstimate,
-									});
-								}}
-							>
-								Show Delivery Estimate With Shipping Services.
-							</Checkbox>
-						</Form.Item>
-					</Col>
-				</Row>
-				):null}
+					<Row gutter={30} className={'mb-3'}>
+						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+							<label className={'text-gray'}>Show Delivery Estimate</label>
+						</Col>
+						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
+							<Form.Item className={'mb-0'}>
+								<Checkbox
+									name='show_delivery_estimate'
+									// value={true}
+									checked={quoteSettingsState.showDeliveryEstimate}
+									onChange={() => {
+										setQuoteSettingsState({
+											...quoteSettingsState,
+											showDeliveryEstimate: !quoteSettingsState.showDeliveryEstimate,
+										});
+									}}
+								>
+									Show Delivery Estimate With Shipping Services.
+								</Checkbox>
+							</Form.Item>
+						</Col>
+					</Row>
+				) : null}
 
 				<Row gutter={30} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -373,7 +373,7 @@ function QuoteSettingsComponentWwe(props) {
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 						<Form.Item className={'mb-0'} name='handling_free_markup'>
-							<Input />
+							<Input maxLength='7' pattern='[0-9]+%?$' />
 						</Form.Item>
 						<div className={'text-gray'}>
 							Amount excluding tax. Enter an amount e.g 3.75, or a percentage, e.g, 5%.
