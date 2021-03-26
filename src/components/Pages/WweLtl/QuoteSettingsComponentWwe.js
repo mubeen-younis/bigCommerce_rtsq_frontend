@@ -32,6 +32,8 @@ function QuoteSettingsComponentWwe(props) {
 		offerLiftGateDelivery: false,
 		autoDetectedResidentialAddressesLfg: false,
 		returnRates: false,
+		own_arrangement: 0,
+		own_arrangement_text: '',
 	});
 	const [ratingMethod, setRatingMethod] = useState(1);
 
@@ -66,13 +68,22 @@ function QuoteSettingsComponentWwe(props) {
 				autoDetectedResidentialAddressesLfg:
 					props.quoteSettings.autoDetectedResidentialAddressesLfg,
 				returnRates: props.quoteSettings.returnRates,
+				own_arrangement: props.quoteSettings.own_arrangement,
+				own_arrangement_text: props.quoteSettings.own_arrangement_text,
 			});
 		}
 	};
 
 	const onFinish = data => {
-		//data.method = ratingMethod
-		data = { ...data, ...quoteSettingsState, carrierId: +props.carrierId };
+		data = {
+			...data,
+			...quoteSettingsState,
+			carrierId: +props.carrierId,
+			own_arrangement_text:
+				quoteSettingsState.own_arrangement === '1'
+					? quoteSettingsState.own_arrangement_text
+					: '',
+		};
 		props.postData(data, props.token);
 	};
 
@@ -373,7 +384,7 @@ function QuoteSettingsComponentWwe(props) {
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 						<Form.Item className={'mb-0'} name='handling_free_markup'>
-							<Input maxLength='7' pattern='[0-9]+%?$' />
+							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
 						</Form.Item>
 						<div className={'text-gray'}>
 							Amount excluding tax. Enter an amount e.g 3.75, or a percentage, e.g, 5%.
@@ -387,12 +398,17 @@ function QuoteSettingsComponentWwe(props) {
 						<label className={'text-gray'}>Allow For Own Arrangement</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='own_arrangment'>
+						<Form.Item className={'mb-0'} name='own_arrangement'>
 							<Select
-								name='own_arrangment'
-								defaultValue='0'
+								defaultValue={quoteSettingsState.own_arrangement}
 								size={'large'}
 								style={{ width: '100%' }}
+								onChange={value => {
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										own_arrangement: value,
+									});
+								}}
 							>
 								<Option value='0'>No</Option>
 								<Option value='1'>Yes</Option>
@@ -404,6 +420,27 @@ function QuoteSettingsComponentWwe(props) {
 						</div>
 					</Col>
 				</Row>
+
+				{quoteSettingsState.own_arrangement === '1' && (
+					<Row gutter={30} className={'mb-3'}>
+						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+							<label className={'text-gray'}>Text for Own Arragement</label>
+						</Col>
+						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
+							<Form.Item className={'mb-0'} name='own_arrangement_text'>
+								<Input
+									onChange={e =>
+										setQuoteSettingsState({
+											...quoteSettingsState,
+											own_arrangement_text: e.target.value,
+										})
+									}
+									value={quoteSettingsState.own_arrangement_text}
+								/>
+							</Form.Item>
+						</Col>
+					</Row>
+				)}
 
 				<Row gutter={30} className={'mt-3'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
