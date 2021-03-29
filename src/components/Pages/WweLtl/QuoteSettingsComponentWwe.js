@@ -79,10 +79,7 @@ function QuoteSettingsComponentWwe(props) {
 			...data,
 			...quoteSettingsState,
 			carrierId: +props.carrierId,
-			own_arrangement_text:
-				quoteSettingsState.own_arrangement === '1'
-					? quoteSettingsState.own_arrangement_text
-					: '',
+			own_arrangement_text: quoteSettingsState.own_arrangement_text,
 		};
 		props.postData(data, props.token);
 	};
