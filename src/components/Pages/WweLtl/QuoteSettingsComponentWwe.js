@@ -380,7 +380,7 @@ function QuoteSettingsComponentWwe(props) {
 
 				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-						<label className={'text-gray'}>Handling Free / Markup</label>
+						<label className={'text-gray'}>Handling Fee / Markup</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 						<Form.Item className={'mb-0'} name='handling_free_markup'>
