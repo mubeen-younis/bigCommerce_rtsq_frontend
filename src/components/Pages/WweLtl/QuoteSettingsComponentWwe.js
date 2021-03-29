@@ -251,7 +251,7 @@ function QuoteSettingsComponentWwe(props) {
 							<Checkbox
 								name='auto_detected_residential_addresses'
 								checked={
-									props.plansInfo && props.plansInfo.plan_type === 2
+									props.plansInfo && props.plansInfo.plan_type > 1
 										? quoteSettingsState.autoDetectedResidentialAddresses
 										: false
 								}
@@ -261,13 +261,13 @@ function QuoteSettingsComponentWwe(props) {
 										autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses,
 									})
 								}
-								disabled={
-									props.plansInfo && props.plansInfo.plan_type === 2 ? false : true
-								}
+								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
 							>
-								<a href='#!' className='stnd-plan text-danger'>
-									Standard plan required
-								</a>
+								{props.plansInfo && props.plansInfo.plan_type < 2 && (
+									<a href='#!' className='stnd-plan text-danger'>
+										Standard plan required
+									</a>
+								)}
 							</Checkbox>
 						</Form.Item>
 					</Col>
@@ -323,7 +323,7 @@ function QuoteSettingsComponentWwe(props) {
 							<Checkbox
 								name='offer_lift_gate_delivery'
 								checked={
-									props.plansInfo && props.plansInfo.plan_type === 2
+									props.plansInfo && props.plansInfo.plan_type > 1
 										? quoteSettingsState.offerLiftGateDelivery
 										: false
 								}
@@ -333,13 +333,13 @@ function QuoteSettingsComponentWwe(props) {
 										offerLiftGateDelivery: !quoteSettingsState.offerLiftGateDelivery,
 									})
 								}
-								disabled={
-									props.plansInfo && props.plansInfo.plan_type === 2 ? false : true
-								}
+								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
 							>
-								<a href='#!' className='stnd-plan text-danger'>
-									Standard plan required
-								</a>
+								{props.plansInfo && props.plansInfo.plan_type < 2 && (
+									<a href='#!' className='stnd-plan text-danger'>
+										Standard plan required
+									</a>
+								)}
 							</Checkbox>
 						</Form.Item>
 					</Col>
@@ -353,7 +353,7 @@ function QuoteSettingsComponentWwe(props) {
 							<Checkbox
 								name='auto_detected_residential_addresses_lfg'
 								checked={
-									props.plansInfo && props.plansInfo.plan_type === 2
+									props.plansInfo && props.plansInfo.plan_type > 1
 										? quoteSettingsState.autoDetectedResidentialAddressesLfg
 										: false
 								}
@@ -363,13 +363,13 @@ function QuoteSettingsComponentWwe(props) {
 										autoDetectedResidentialAddressesLfg: !quoteSettingsState.autoDetectedResidentialAddressesLfg,
 									})
 								}
-								disabled={
-									props.plansInfo && props.plansInfo.plan_type === 2 ? false : true
-								}
+								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
 							>
-								<a href='#!' className='stnd-plan text-danger'>
-									Standard plan required
-								</a>
+								{props.plansInfo && props.plansInfo.plan_type < 2 && (
+									<a href='#!' className='stnd-plan text-danger'>
+										Standard plan required
+									</a>
+								)}
 							</Checkbox>
 						</Form.Item>
 					</Col>

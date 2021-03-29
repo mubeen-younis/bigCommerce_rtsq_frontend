@@ -99,12 +99,10 @@ export const getInstalledCarrierPlanInfo = (token, carrierId) => {
 				},
 			})
 			.then(({ data }) => {
-				console.log(data.data);
-
 				if (!data.error) {
 					dispatch({
 						type: 'GET_INSTALLED_CARRIER_PLAN_INFO',
-						payload: JSON.parse(data.data),
+						payload: data.data,
 					});
 
 					dispatch({

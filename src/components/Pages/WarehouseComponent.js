@@ -346,11 +346,13 @@ function WarehouseComponent(props) {
 														enable_instore: !locationDetail.enable_instore,
 													})
 												}
-												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
+												disabled={plansInfo && plansInfo.plan_type > 2 ? false : true}
 											></Checkbox>
-											<a href='#!' className='stnd-plan text-danger'>
-												Advance plan required
-											</a>
+											{props.plansInfo && props.plansInfo.plan_type < 3 && (
+												<a href='#!' className='stnd-plan text-danger'>
+													Advance plan required
+												</a>
+											)}
 										</Form.Item>
 									</Col>
 								</Row>
@@ -442,9 +444,11 @@ function WarehouseComponent(props) {
 												}
 												disabled={plansInfo && plansInfo.plan_type === 3 ? false : true}
 											></Checkbox>
-											<a href='#!' className='stnd-plan text-danger'>
-												Advance plan required
-											</a>
+											{props.plansInfo && props.plansInfo.plan_type < 3 && (
+												<a href='#!' className='stnd-plan text-danger'>
+													Advance plan required
+												</a>
+											)}
 										</Form.Item>
 									</Col>
 								</Row>

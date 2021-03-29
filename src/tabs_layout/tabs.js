@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { useSelector } from 'react-redux';
 import { Tabs } from 'antd';
 import CarriersComponent from '../components/CarriersComponent';
 import ProductSettingsComponent from '../components/ProductSettingsComponent';
@@ -14,34 +15,51 @@ function callback(key) {
 }
 
 function TabsLayout() {
+	const planInfo = useSelector(state => state.plansInfo);
+	const plans = {
+		0: 'Trial',
+		1: 'Basic',
+		2: 'Standard',
+		3: 'Advanced',
+	};
+
 	return (
-		<Tabs className={'tabs-wrp'} onChange={callback} type='card'>
-			<TabPane tab='Connection Settinngs' key='1'>
-				<ConnectionSettingsComponent />
-			</TabPane>
-			<TabPane tab='Carriers' key='2'>
-				<CarriersComponent />
-			</TabPane>
-			<TabPane tab='Warehouse' key='3'>
-				<WarehouseComponent />
-			</TabPane>
-			<TabPane tab='Quote Settings' key='4'>
-				<QuoteSettingsComponentWwe />
-			</TabPane>
-			<TabPane tab='Product Settings' key='5'>
-				<ProductSettingsComponent />
-			</TabPane>
-			{/* <TabPane tab="Import CSV" key="6">
+		<Fragment>
+			{planInfo && (
+				<div className='note-bx'>
+					You are currently on <strong>{plans[planInfo.plan_type]}</strong> Plan. The plan
+					renews on {planInfo.expiry_date}.
+				</div>
+			)}
+
+			<Tabs className={'tabs-wrp'} onChange={callback} type='card'>
+				<TabPane tab='Connection Settinngs' key='1'>
+					<ConnectionSettingsComponent />
+				</TabPane>
+				<TabPane tab='Carriers' key='2'>
+					<CarriersComponent />
+				</TabPane>
+				<TabPane tab='Warehouse' key='3'>
+					<WarehouseComponent />
+				</TabPane>
+				<TabPane tab='Quote Settings' key='4'>
+					<QuoteSettingsComponentWwe />
+				</TabPane>
+				<TabPane tab='Product Settings' key='5'>
+					<ProductSettingsComponent />
+				</TabPane>
+				{/* <TabPane tab="Import CSV" key="6">
                     <AlertMessage />
                     <ImportCsvComponent />
                 </TabPane>
                 <TabPane tab="Box Sizes" key="7">
                     <BoxSizesComponent />
                 </TabPane> */}
-			<TabPane tab='User Guide' key='6'>
-				<UserGuideComponent />
-			</TabPane>
-		</Tabs>
+				<TabPane tab='User Guide' key='6'>
+					<UserGuideComponent />
+				</TabPane>
+			</Tabs>
+		</Fragment>
 	);
 }
 
