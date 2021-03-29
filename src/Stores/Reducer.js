@@ -7,6 +7,7 @@ const initialState = {
 	quoteSettings: null,
 	carriers: null,
 	carriersSettings: null,
+	plansInfo: null,
 	services: null,
 	filteredServices: null,
 	skeleton_loading: true,
@@ -131,6 +132,12 @@ const Reducer = (state = initialState, action) => {
 				};
 			}
 		}
+
+		case types.GET_INSTALLED_CARRIER_PLAN_INFO:
+			return {
+				...state,
+				plansInfo: action.payload,
+			};
 		// Carriers End
 
 		// Location Cases

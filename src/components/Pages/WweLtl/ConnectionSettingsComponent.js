@@ -3,6 +3,7 @@ import { Form, Input, Button, Space, Skeleton } from 'antd';
 import { connect } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getConnectionSettings } from '../../../Actions/Connection';
+import { getInstalledCarrierPlanInfo } from '../../../Actions/Carriers';
 
 function ConnectionSettingsComponent(props) {
 	const [connectionState, setConnectionState] = useState({
@@ -13,6 +14,7 @@ function ConnectionSettingsComponent(props) {
 	useEffect(() => {
 		if (props.connectionSettings === null) {
 			props.getConnectionSettings(props.token, props.carrierId);
+			props.getInstalledCarrierPlanInfo(props.token, props.carrierId);
 		}
 	});
 
@@ -125,6 +127,8 @@ const mapDispatchToProps = dispatch => {
 			),
 		getConnectionSettings: (token, carrierId) =>
 			dispatch(getConnectionSettings(token, carrierId)),
+		getInstalledCarrierPlanInfo: (token, carrierId) =>
+			dispatch(getInstalledCarrierPlanInfo(token, carrierId)),
 	};
 };
 

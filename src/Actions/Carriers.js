@@ -86,3 +86,33 @@ export const getCarrierDetails = data => {
 			});
 	};
 };
+
+export const getInstalledCarrierPlanInfo = (token, carrierId) => {
+	return dispatch => {
+		axios
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getInstalledCarrierPlanInfo`, {
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
+				params: {
+					carrierId,
+				},
+			})
+			.then(({ data }) => {
+				console.log(data.data);
+
+				if (!data.error) {
+					dispatch({
+						type: 'GET_INSTALLED_CARRIER_PLAN_INFO',
+						payload: JSON.parse(data.data),
+					});
+
+					dispatch({
+						type: 'SKELETON_LOADING',
+						payload: false,
+					});
+				}
+			})
+			.catch(error => {});
+	};
+};
