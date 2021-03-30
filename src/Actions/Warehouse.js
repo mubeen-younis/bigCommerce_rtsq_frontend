@@ -179,7 +179,11 @@ export const getLocations = token => {
 				}
 			})
 			.catch(({ response }) => {
-				if (response.data.error && response.data.message === 'Token Mismatch') {
+				if (
+					response &&
+					response.data.error &&
+					response.data.message === 'Token Mismatch'
+				) {
 					dispatch({
 						type: 'GET_CARRIERS',
 						payload: undefined,
