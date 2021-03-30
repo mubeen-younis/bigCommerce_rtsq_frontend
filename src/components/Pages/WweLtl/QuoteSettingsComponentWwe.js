@@ -310,6 +310,8 @@ function QuoteSettingsComponentWwe(props) {
 									setQuoteSettingsState({
 										...quoteSettingsState,
 										alwaysLiftGateDelivery: !quoteSettingsState.alwaysLiftGateDelivery,
+										offerLiftGateDelivery: false,
+										autoDetectedResidentialAddressesLfg: false,
 									})
 								}
 							></Checkbox>
@@ -331,6 +333,7 @@ function QuoteSettingsComponentWwe(props) {
 									setQuoteSettingsState({
 										...quoteSettingsState,
 										offerLiftGateDelivery: !quoteSettingsState.offerLiftGateDelivery,
+										alwaysLiftGateDelivery: false,
 									})
 								}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
@@ -361,6 +364,7 @@ function QuoteSettingsComponentWwe(props) {
 									setQuoteSettingsState({
 										...quoteSettingsState,
 										autoDetectedResidentialAddressesLfg: !quoteSettingsState.autoDetectedResidentialAddressesLfg,
+										alwaysLiftGateDelivery: false,
 									})
 								}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
