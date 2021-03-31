@@ -67,6 +67,7 @@ function ProductSettingsComponent(props) {
 	};
 
 	const saveSettings = () => {
+		delete selectedProductDetail['settings'];
 		props.submitProductSettings(selectedProductDetail, props.token);
 	};
 
@@ -280,7 +281,15 @@ function ProductSettingsComponent(props) {
 									label='Freight Class'
 									rules={[{ required: false, message: 'Please select an owner' }]}
 								>
-									<Select placeholder='Freight Class'>
+									<Select
+										placeholder='Freight Class'
+										onChange={val =>
+											setselectedProductDetail({
+												...selectedProductDetail,
+												freight_class: val,
+											})
+										}
+									>
 										<Option value=''>No Freight Class</Option>
 										<Option value='50'>50</Option>
 										<Option value='55'>55</Option>
