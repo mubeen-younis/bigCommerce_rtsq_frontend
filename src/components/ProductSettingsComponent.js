@@ -72,24 +72,24 @@ function ProductSettingsComponent(props) {
 			width = selectedProductDetail['width'],
 			height = selectedProductDetail['height'];
 
-		if (!weight) {
-			return;
-		} else if (weight === '0' || +weight < 0) {
-			setFormError('Weight must be greater than 0.');
+		if (!weight || weight === '0' || +weight < 0) {
+			setFormError('Weight is required and must be greater than 0.');
 			setTimeout(() => setFormError(''), 4000);
 			return;
-		} else if (!selectedProductDetail['freight_class'] && !length && !width && !height) {
+		} else if (
+			!selectedProductDetail['freight_class'] &&
+			(!length || !width || !height)
+		) {
 			setFormError('Please specify freight_class or provide dimensions instead.');
 			setTimeout(() => setFormError(''), 4000);
 			return;
 		} else if (
-			(!selectedProductDetail.freight_class || selectedProductDetail.freight_class) &&
-			(length === '0' ||
-				+length < 0 ||
-				width === '0' ||
-				+width < 0 ||
-				height === '0' ||
-				+height < 0)
+			length === '0' ||
+			+length < 0 ||
+			width === '0' ||
+			+width < 0 ||
+			height === '0' ||
+			+height < 0
 		) {
 			setFormError('Length/Width/Height must be greater than 0.');
 			setTimeout(() => setFormError(''), 4000);
@@ -372,7 +372,7 @@ function ProductSettingsComponent(props) {
 												weight: e.target.value,
 											})
 										}
-										min='0'
+										min='1'
 										pattern='^[1-9]'
 										step='0.5'
 									/>
@@ -392,7 +392,7 @@ function ProductSettingsComponent(props) {
 												length: e.target.value,
 											})
 										}
-										min='0'
+										min='1'
 										pattern='^[1-9]'
 										step='0.5'
 									/>
@@ -410,7 +410,7 @@ function ProductSettingsComponent(props) {
 												width: e.target.value,
 											})
 										}
-										min='0'
+										min='1'
 										pattern='^[1-9]'
 										step='0.5'
 									/>
@@ -428,7 +428,7 @@ function ProductSettingsComponent(props) {
 												height: e.target.value,
 											})
 										}
-										min='0'
+										min='1'
 										pattern='^[1-9]'
 										step='0.5'
 									/>
