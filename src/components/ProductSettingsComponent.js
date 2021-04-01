@@ -74,7 +74,7 @@ function ProductSettingsComponent(props) {
 
 		if (!weight) {
 			return;
-		} else if (weight === '0') {
+		} else if (weight === '0' || +weight < 0) {
 			setFormError('Weight must be greater than 0.');
 			setTimeout(() => setFormError(''), 4000);
 			return;
@@ -84,7 +84,12 @@ function ProductSettingsComponent(props) {
 			return;
 		} else if (
 			(!selectedProductDetail.freight_class || selectedProductDetail.freight_class) &&
-			(length === '0' || width === '0' || height === '0')
+			(length === '0' ||
+				+length < 0 ||
+				width === '0' ||
+				+width < 0 ||
+				height === '0' ||
+				+height < 0)
 		) {
 			setFormError('Length/Width/Height must be greater than 0.');
 			setTimeout(() => setFormError(''), 4000);
