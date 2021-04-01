@@ -11,18 +11,11 @@ export const submitProductSettings = (data, token) => {
 		});
 
 		axios
-			.post(
-				`${process.env.REACT_APP_ENITURE_API_URL}/update_product`,
-				{
-					...data,
-					product_id: data.product_id,
+			.post(`${process.env.REACT_APP_ENITURE_API_URL}/update_product`, data, {
+				headers: {
+					authorization: `Bearer ${token}`,
 				},
-				{
-					headers: {
-						authorization: `Bearer ${token}`,
-					},
-				}
-			)
+			})
 			.then(({ data }) => {
 				dispatch({
 					type: 'ALERT_MESSAGE',
@@ -48,11 +41,13 @@ export const getProduct = (id, setselectedProductDetail, setLoadProduct, token) 
 			},
 		})
 		.then(res => {
-			let data = JSON.parse(res.data.data[0].settings);
-			data = { ...data, product_id: id };
+			if (!res.error) {
+				let data = res.data.data[0];
+				data = { ...data, ...JSON.parse(data.settings), product_id: id };
 
-			setselectedProductDetail(data);
-			setLoadProduct(false);
+				setselectedProductDetail(data);
+				setLoadProduct(false);
+			}
 		});
 };
 

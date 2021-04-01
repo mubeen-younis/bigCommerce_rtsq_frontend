@@ -36,8 +36,8 @@ function ProductSettingsComponent(props) {
 		productDetail: {},
 		postData: [],
 	});
-
 	const [selectedProductDetail, setselectedProductDetail] = useState({});
+	const [formError, setFormError] = useState('');
 
 	useEffect(() => {
 		if (props.allProducts == null) {
@@ -67,8 +67,39 @@ function ProductSettingsComponent(props) {
 	};
 
 	const saveSettings = () => {
-		delete selectedProductDetail['settings'];
-		props.submitProductSettings(selectedProductDetail, props.token);
+		const weight = selectedProductDetail['weight'],
+			length = selectedProductDetail['length'],
+			width = selectedProductDetail['width'],
+			height = selectedProductDetail['height'];
+
+		if (!weight) {
+			return;
+		} else if (weight === '0') {
+			setFormError('Weight must be greater than 0.');
+			setTimeout(() => setFormError(''), 4000);
+			return;
+		} else if (!selectedProductDetail['freight_class'] && !length && !width && !height) {
+			setFormError('Please specify freight_class or provide dimensions instead.');
+			setTimeout(() => setFormError(''), 4000);
+			return;
+		} else if (
+			(!selectedProductDetail.freight_class || selectedProductDetail.freight_class) &&
+			(length === '0' || width === '0' || height === '0')
+		) {
+			setFormError('Length/Width/Height must be greater than 0.');
+			setTimeout(() => setFormError(''), 4000);
+			return;
+		} else if (
+			selectedProductDetail.dropship_enabled &&
+			!selectedProductDetail.dropship_location
+		) {
+			setFormError('Please select dropship location.');
+			setTimeout(() => setFormError(''), 4000);
+		} else {
+			delete selectedProductDetail['settings'];
+			props.submitProductSettings(selectedProductDetail, props.token);
+			setFormError('');
+		}
 	};
 
 	const syncProducts = () => {
@@ -257,6 +288,13 @@ function ProductSettingsComponent(props) {
 				) : (
 					<Form layout='vertical' hideRequiredMark initialValues={selectedProductDetail}>
 						<Row gutter={16}>
+							{formError.length ? (
+								<Col span={24}>
+									<Form.Item className='text-danger'>* {formError}</Form.Item>
+								</Col>
+							) : null}
+						</Row>
+						<Row gutter={16}>
 							<Col span={12}>
 								<Form.Item name='freight_enabled'>
 									<Checkbox
@@ -269,7 +307,7 @@ function ProductSettingsComponent(props) {
 										}
 										checked={selectedProductDetail.freight_enabled}
 									>
-										Quote as an LTL shipment
+										Quote as LTL shipment
 									</Checkbox>
 								</Form.Item>
 							</Col>
@@ -313,16 +351,25 @@ function ProductSettingsComponent(props) {
 								</Form.Item>
 							</Col>
 							<Col span={12}>
-								<Form.Item name='weight' label='Weight (lbs)'>
+								<Form.Item
+									name='weight'
+									label='Weight (lbs)'
+									rules={[{ required: true, message: 'Weight is required' }]}
+								>
 									<Input
 										placeholder='Weight (lbs)'
+										type='number'
 										value={selectedProductDetail.weight}
+										required
 										onChange={e =>
 											setselectedProductDetail({
 												...selectedProductDetail,
 												weight: e.target.value,
 											})
 										}
+										min='0'
+										pattern='^[1-9]'
+										step='0.5'
 									/>
 								</Form.Item>
 							</Col>
@@ -331,6 +378,7 @@ function ProductSettingsComponent(props) {
 							<Col span={8}>
 								<Form.Item name='length' label='Length (inches)'>
 									<Input
+										type='number'
 										placeholder='Length (inches)'
 										value={selectedProductDetail.length}
 										onChange={e =>
@@ -339,12 +387,16 @@ function ProductSettingsComponent(props) {
 												length: e.target.value,
 											})
 										}
+										min='0'
+										pattern='^[1-9]'
+										step='0.5'
 									/>
 								</Form.Item>
 							</Col>
 							<Col span={8}>
 								<Form.Item name='width' label='Width (inches)'>
 									<Input
+										type='number'
 										placeholder='Width (inches)'
 										value={selectedProductDetail.width}
 										onChange={e =>
@@ -353,12 +405,16 @@ function ProductSettingsComponent(props) {
 												width: e.target.value,
 											})
 										}
+										min='0'
+										pattern='^[1-9]'
+										step='0.5'
 									/>
 								</Form.Item>
 							</Col>
 							<Col span={8}>
 								<Form.Item name='height' label='Height (inches)'>
 									<Input
+										type='number'
 										placeholder='Height (inches)'
 										value={selectedProductDetail.height}
 										onChange={e =>
@@ -367,6 +423,9 @@ function ProductSettingsComponent(props) {
 												height: e.target.value,
 											})
 										}
+										min='0'
+										pattern='^[1-9]'
+										step='0.5'
 									/>
 								</Form.Item>
 							</Col>
@@ -412,13 +471,12 @@ function ProductSettingsComponent(props) {
 							<Row gutter={16}>
 								<Col span={12}>
 									<Form.Item name='dropship_location' label='Dropship Location'>
-										{/* {console.log('props.locations ', props.dropships)} */}
-
 										<Select
 											placeholder='Dropship Location'
 											size={'large'}
 											style={{ width: '100%' }}
 											name='dropship_location'
+											defaultValue={selectedProductDetail.dropship_location}
 											onChange={location => {
 												setselectedProductDetail({
 													...selectedProductDetail,
