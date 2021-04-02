@@ -12,11 +12,11 @@ function ConnectionSettingsComponent(props) {
 	});
 
 	useEffect(() => {
-		if (props.connectionSettings === null) {
+		if ((!props.connectionSettings || !props.plansInfo) && props.carrierId) {
 			props.getConnectionSettings(props.token, props.carrierId);
 			props.getInstalledCarrierPlanInfo(props.token, props.carrierId);
 		}
-	});
+	}, [props.carrierId]);
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type });
@@ -116,6 +116,7 @@ const mapStateToProps = state => {
 		skeleton_loading: state.skeleton_loading,
 		token: state.token,
 		carrierId: state.carrierId,
+		plansInfo: state.plansInfo,
 	};
 };
 
