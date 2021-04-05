@@ -7,6 +7,7 @@ import ConnectionSettingsComponent from '../components/Pages/WweLtl/ConnectionSe
 import WarehouseComponent from '../components/Pages/WarehouseComponent';
 import QuoteSettingsComponentWwe from '../components/Pages/WweLtl/QuoteSettingsComponentWwe';
 import UserGuideComponent from '../components/Pages/UserGuideComponent';
+import QuoteSettingsComponentWweSmall from '../components/Pages/WweSmall/QuoteSettingsComponentWweSmall';
 // import AlertMessage from "../Utilities/AlertMessage";
 
 const { TabPane } = Tabs;
@@ -43,7 +44,7 @@ function TabsLayout() {
 					<WarehouseComponent />
 				</TabPane>
 				<TabPane tab='Quote Settings' key='4'>
-					<QuoteSettingsComponentWwe />
+					<QuoteSettingsComponentWweSmall />
 				</TabPane>
 				<TabPane tab='Product Settings' key='5'>
 					<ProductSettingsComponent />
