@@ -29,18 +29,39 @@ export const getQuoteSettings = (token, carrierId) => {
 	};
 
 	return dispatch => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: false,
+				alertMessageType: 'loading',
+			},
+		});
+
 		axios
 			.get(
 				`${process.env.REACT_APP_ENITURE_API_URL}/get_qoute_settings/${carrierId}`,
 				config
 			)
 			.then(({ data }) => {
-				//if (data.data.length > 0) {
+				if (data.data && data.data.value) {
+					dispatch({
+						type: 'GET_QUOTE_SETTINGS',
+						payload: JSON.parse(data.data.value),
+					});
+				} else {
+					dispatch({
+						type: 'GET_QUOTE_SETTINGS',
+						payload: {},
+					});
+				}
+
 				dispatch({
-					type: 'GET_QUOTE_SETTINGS',
-					payload: JSON.parse(data.data.value),
+					type: 'ALERT_MESSAGE',
+					payload: {
+						showAlertMessage: false,
+						alertMessageType: 'success',
+					},
 				});
-				//}
 			})
 			.catch(err => {
 				console.log(err);

@@ -21,6 +21,14 @@ export const submitConnectionSettings = data => {
 
 export const getConnectionSettings = (token, carrierId) => {
 	return dispatch => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: false,
+				alertMessageType: 'loading',
+			},
+		});
+
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_conn_settings`, {
 				headers: {
@@ -31,13 +39,29 @@ export const getConnectionSettings = (token, carrierId) => {
 				},
 			})
 			.then(({ data }) => {
-				dispatch({
-					type: 'GET_CONNECTION_SETTINGS',
-					payload: JSON.parse(data.data.value),
-				});
+				if (data.data && data.data.value) {
+					dispatch({
+						type: 'GET_CONNECTION_SETTINGS',
+						payload: JSON.parse(data.data.value),
+					});
+				} else {
+					dispatch({
+						type: 'GET_CONNECTION_SETTINGS',
+						payload: {},
+					});
+				}
+
 				dispatch({
 					type: 'SKELETON_LOADING',
 					payload: false,
+				});
+
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						showAlertMessage: false,
+						alertMessageType: 'success',
+					},
 				});
 			})
 			.catch(error => {

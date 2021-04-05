@@ -12,10 +12,17 @@ function ConnectionSettingsComponent(props) {
 	});
 
 	useEffect(() => {
-		if ((!props.connectionSettings || !props.plansInfo) && props.carrierId) {
+		/* if (!props.connectionSettings && props.carrierId) {
 			props.getConnectionSettings(props.token, props.carrierId);
+		} */
+
+		props.getConnectionSettings(props.token, props.carrierId);
+		props.getInstalledCarrierPlanInfo(props.token, props.carrierId);
+
+		/* if (!props.plansInfo) {
 			props.getInstalledCarrierPlanInfo(props.token, props.carrierId);
-		}
+		} */
+		// eslint-disable-next-line
 	}, [props.carrierId]);
 
 	const handleTypeChange = type => {
@@ -29,7 +36,11 @@ function ConnectionSettingsComponent(props) {
 		props.postData(values, props.token);
 	};
 
-	if (props.connectionSettings === null || props.connectionSettings === undefined) {
+	if (
+		props.connectionSettings === null ||
+		props.connectionSettings === undefined ||
+		props.alertMessageType === 'loading'
+	) {
 		return <Skeleton active />;
 	}
 
@@ -117,6 +128,7 @@ const mapStateToProps = state => {
 		token: state.token,
 		carrierId: state.carrierId,
 		plansInfo: state.plansInfo,
+		alertMessageType: state.alertMessageType,
 	};
 };
 

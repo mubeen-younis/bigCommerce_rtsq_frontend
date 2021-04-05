@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import TabsLayout from '../tabs_layout/tabs';
-import { getCarrierDetails } from '../Actions/Carriers';
+// import { getCarrierDetails } from '../Actions/Carriers';
 
 function RendorCarrier(props) {
 	const { carrier_id } = useParams();
@@ -14,15 +14,14 @@ function RendorCarrier(props) {
 		) {
 			props.setCarrierId(carrier_id);
 
-			const data = {
+			/* const data = {
 				carrierId: carrier_id,
 				shop: 'dev-azm-1.myshopify.com',
 			};
-
-			props.getCarrierDetails(data);
+			props.getCarrierDetails(data); */
 		}
 		// eslint-disable-next-line
-	}, []);
+	}, [carrier_id]);
 
 	return <TabsLayout />;
 }
@@ -36,7 +35,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		getCarrierDetails: () => dispatch(getCarrierDetails()),
+		// getCarrierDetails: data => dispatch(getCarrierDetails(data)),
 		setCarrierId: carrierId => dispatch({ type: 'CARRIER_ID', payload: carrierId }),
 	};
 };
