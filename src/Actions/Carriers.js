@@ -71,7 +71,10 @@ export const getCarrierDetails = data => {
 	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_carrier_info`, {
-				data,
+				// data,
+				params: {
+					...data,
+				},
 			})
 			.then(({ data }) => {
 				if (data?.settings && data.settings.length > 0) {
@@ -105,10 +108,10 @@ export const getInstalledCarrierPlanInfo = (token, carrierId) => {
 						payload: data.data,
 					});
 
-					dispatch({
+					/* dispatch({
 						type: 'SKELETON_LOADING',
 						payload: false,
-					});
+					}); */
 				}
 			})
 			.catch(error => {});
