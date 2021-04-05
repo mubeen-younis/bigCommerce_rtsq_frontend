@@ -42,8 +42,8 @@ function ConnectionSettingsComponent(props) {
 
 	if (
 		props.connectionSettings === null ||
-		props.connectionSettings === undefined ||
-		props.alertMessageType === 'loading'
+		props.connectionSettings === undefined
+		// || props.alertMessageType === 'loading'
 	) {
 		return <Skeleton active />;
 	}
@@ -144,6 +144,7 @@ const mapDispatchToProps = dispatch => {
 			),
 		getConnectionSettings: (token, carrierId) =>
 			dispatch(getConnectionSettings(token, carrierId)),
+			
 		getInstalledCarrierPlanInfo: (token, carrierId) =>
 			dispatch(getInstalledCarrierPlanInfo(token, carrierId)),
 	};
