@@ -16,14 +16,18 @@ function ConnectionSettingsComponent(props) {
 			props.getConnectionSettings(props.token, props.carrierId);
 		} */
 
-		props.getConnectionSettings(props.token, props.carrierId);
+		/* if (!props.connectionSettings || props.connectionSettings===null) {
+
+			props.getConnectionSettings(props.token, props.carrierId);
+		} */
+
 		props.getInstalledCarrierPlanInfo(props.token, props.carrierId);
 
 		/* if (!props.plansInfo) {
 			props.getInstalledCarrierPlanInfo(props.token, props.carrierId);
 		} */
 		// eslint-disable-next-line
-	}, [props.carrierId]);
+	}, []);
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type });

@@ -20,7 +20,7 @@ const { Option } = Select;
 const { Title } = Typography;
 
 function QuoteSettingsComponentWwe(props) {
-	const [loading, setLoading] = useState();
+	const [loading, setLoading] = useState(true);
 	const [quoteSettingsState, setQuoteSettingsState] = useState({
 		showDeliveryEstimate: false,
 		residentialPickup: false,
@@ -37,50 +37,13 @@ function QuoteSettingsComponentWwe(props) {
 	const [ratingMethod, setRatingMethod] = useState(1);
 
 	useEffect(() => {
-		getQuoteSettings();
+		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
+			getQuoteSettings();
+		}
 		// eslint-disable-next-line
-	}, [props.carrierId]);
+	}, [props.quoteSettings]);
 
 	const getQuoteSettings = () => {
-		console.log('props.quoteSettings ', props.quoteSettings);
-
-		/* if (props.quoteSettings === null || props.quoteSettings === undefined) {
-			props.getSettings(props.token, props.carrierId);
-		} */
-
-		setLoading(true);
-		props.getSettings(props.token, props.carrierId);
-
-		/* if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
-			console.log('loading false');
-
-			let ratingMethodInit =
-				props.quoteSettings.method !== undefined ? props.quoteSettings.method : 1;
-			setRatingMethod(ratingMethodInit);
-
-			setQuoteSettingsState({
-				showDeliveryEstimate: props.quoteSettings.showDeliveryEstimate,
-				residentialPickup: props.quoteSettings.residentialPickup,
-				alwaysResidentialDelivery: props.quoteSettings.alwaysResidentialDelivery,
-				autoDetectedResidentialAddresses:
-					props.quoteSettings.autoDetectedResidentialAddresses,
-				alwaysLiftGatePickup: props.quoteSettings.alwaysLiftGatePickup,
-				alwaysLiftGateDelivery: props.quoteSettings.alwaysLiftGateDelivery,
-				offerLiftGateDelivery: props.quoteSettings.offerLiftGateDelivery,
-				autoDetectedResidentialAddressesLfg:
-					props.quoteSettings.autoDetectedResidentialAddressesLfg,
-				returnRates: props.quoteSettings.returnRates,
-				own_arrangement: props.quoteSettings.own_arrangement,
-				own_arrangement_text: props.quoteSettings.own_arrangement_text,
-			});
-
-			setLoading(false);
-		} */
-	};
-
-	if (loading && props.quoteSettings) {
-		console.log('loading false');
-
 		let ratingMethodInit =
 			props.quoteSettings.method !== undefined ? props.quoteSettings.method : 1;
 		setRatingMethod(ratingMethodInit);
@@ -102,7 +65,7 @@ function QuoteSettingsComponentWwe(props) {
 		});
 
 		setLoading(false);
-	}
+	};
 
 	const onFinish = data => {
 		data = {
@@ -118,7 +81,6 @@ function QuoteSettingsComponentWwe(props) {
 		<Skeleton active />
 	) : (
 		<Fragment>
-			{console.log(props.quoteSettings)}
 			<Form
 				layout='vertical'
 				name='quote_settings_info'

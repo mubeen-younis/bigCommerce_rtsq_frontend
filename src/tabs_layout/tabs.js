@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { Tabs } from 'antd';
+
 import CarriersComponent from '../components/CarriersComponent';
 import ProductSettingsComponent from '../components/ProductSettingsComponent';
 import ConnectionSettingsComponent from '../components/Pages/WweLtl/ConnectionSettingsComponent';
@@ -15,14 +16,23 @@ function callback(key) {
 	// console.log(key);
 }
 
-function TabsLayout() {
-	const planInfo = useSelector(state => state.plansInfo);
+function TabsLayout(props) {
+	const { planInfo, installedCarriers, carrierId } = props;
+	const slugs = ['ltl-quotes', 'small-package'];
 	const plans = {
 		0: 'Trial',
 		1: 'Basic',
 		2: 'Standard',
 		3: 'Advanced',
 	};
+
+	let component = 0;
+	for (const ic of installedCarriers) {
+		if (ic.id === +carrierId) {
+			component = slugs.indexOf(ic.slug);
+			break;
+		}
+	}
 
 	return (
 		<Fragment>
@@ -38,13 +48,14 @@ function TabsLayout() {
 					<ConnectionSettingsComponent />
 				</TabPane>
 				<TabPane tab='Carriers' key='2'>
-					<CarriersComponent />
+					{component !== 1 && <CarriersComponent />}
 				</TabPane>
 				<TabPane tab='Warehouse' key='3'>
 					<WarehouseComponent />
 				</TabPane>
 				<TabPane tab='Quote Settings' key='4'>
-					<QuoteSettingsComponentWweSmall />
+					{component === 0 && <QuoteSettingsComponentWwe />}
+					{component === 1 && <QuoteSettingsComponentWweSmall />}
 				</TabPane>
 				<TabPane tab='Product Settings' key='5'>
 					<ProductSettingsComponent />
@@ -64,4 +75,10 @@ function TabsLayout() {
 	);
 }
 
-export default TabsLayout;
+const mapStateToProps = state => ({
+	planInfo: state.plansInfo,
+	installedCarriers: state.installedCarriers,
+	carrierId: state.carrierId,
+});
+
+export default connect(mapStateToProps)(TabsLayout);

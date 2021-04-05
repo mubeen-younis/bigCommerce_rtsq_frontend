@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import TabsLayout from '../tabs_layout/tabs';
 // import { getCarrierDetails } from '../Actions/Carriers';
+import { getConnectionSettings } from '../Actions/Connection';
+import { getQuoteSettings } from '../Actions/Settings';
 
 function RendorCarrier(props) {
 	const { carrier_id } = useParams();
@@ -13,12 +15,8 @@ function RendorCarrier(props) {
 			props.carrierId !== carrier_id
 		) {
 			props.setCarrierId(carrier_id);
-
-			/* const data = {
-				carrierId: carrier_id,
-				shop: 'dev-azm-1.myshopify.com',
-			};
-			props.getCarrierDetails(data); */
+			props.getConnectionSettings(props.token, carrier_id);
+			props.getQuoteSettings(props.token, carrier_id);
 		}
 		// eslint-disable-next-line
 	}, [carrier_id]);
@@ -37,6 +35,9 @@ const mapDispatchToProps = dispatch => {
 	return {
 		// getCarrierDetails: data => dispatch(getCarrierDetails(data)),
 		setCarrierId: carrierId => dispatch({ type: 'CARRIER_ID', payload: carrierId }),
+		getConnectionSettings: (token, carrierId) =>
+			dispatch(getConnectionSettings(token, carrierId)),
+		getQuoteSettings: (token, carrierId) => dispatch(getQuoteSettings(token, carrierId)),
 	};
 };
 

@@ -37,6 +37,11 @@ export const getQuoteSettings = (token, carrierId) => {
 			},
 		});
 
+		dispatch({
+			type: 'GET_QUOTE_SETTINGS',
+			payload: null,
+		});
+
 		axios
 			.get(
 				`${process.env.REACT_APP_ENITURE_API_URL}/get_qoute_settings/${carrierId}`,
