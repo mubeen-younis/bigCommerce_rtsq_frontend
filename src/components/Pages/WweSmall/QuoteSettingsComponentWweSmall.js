@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import {
-	Select,
 	Typography,
 	Row,
 	Col,
@@ -10,71 +9,103 @@ import {
 	Input,
 	Checkbox,
 	Skeleton,
-	Radio 
+	Radio,
 } from 'antd';
-
 import { connect } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getQuoteSettings } from '../../../Actions/Settings';
 
-const { Option } = Select;
 const { Title } = Typography;
 
 function QuoteSettingsComponentWweSmall(props) {
 	const [loading, setLoading] = useState(true);
-
 	const [quoteSettingsState, setQuoteSettingsState] = useState({
+		ups_ground: false,
+		ups_ground_markup: '',
+		ups_3_day_select: false,
+		ups_3_day_select_markup: '',
+		ups_2nd_day_air: false,
+		ups_2nd_day_air_markup: '',
+		ups_2nd_day_air_am: false,
+		ups_2nd_day_air_am_markup: '',
+		ups_next_day_air_saver: false,
+		ups_next_day_air_saver_markup: '',
+		ups_next_day_air: false,
+		ups_next_day_air_markup: '',
+		ups_next_day_air_early: false,
+		ups_next_day_air_early_markup: '',
+
 		showDeliveryEstimate: false,
-		residentialPickup: false,
+
+		number_of_transit_days: null,
+		ground_metric: 1,
+
 		alwaysResidentialDelivery: false,
 		autoDetectedResidentialAddresses: false,
-		alwaysLiftGatePickup: false,
-		alwaysLiftGateDelivery: false,
-		offerLiftGateDelivery: false,
-		autoDetectedResidentialAddressesLfg: false,
 		returnRates: false,
-		own_arrangement: 0,
-		own_arrangement_text: '',
-		ground_metric:1
+
+		ground_service_for_hazardous_material: false,
+		ground_hazardous_material_fee: null,
+		air_hazardous_material_fee: null,
+
+		handling_fee_markup: null,
+
+		quote_details: 1,
 	});
-	const [ratingMethod, setRatingMethod] = useState(1);
 
 	useEffect(() => {
-		getQuoteSettings();
+		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
+			getQuoteSettings();
+		}
+
 		// eslint-disable-next-line
 	}, [props.quoteSettings]);
 
 	const getQuoteSettings = () => {
-		// console.log('props.quoteSettings ', props.quoteSettings);
+		setQuoteSettingsState({
+			ups_ground: props.quoteSettings.ups_ground,
+			ups_ground_markup: props.quoteSettings.ups_ground_markup,
+			ups_3_day_select: props.quoteSettings.ups_3_day_select,
+			ups_3_day_select_markup: props.quoteSettings.ups_3_day_select_markup,
+			ups_2nd_day_air: props.quoteSettings.ups_2nd_day_air,
+			ups_2nd_day_air_markup: props.quoteSettings.ups_2nd_day_air_markup,
+			ups_2nd_day_air_am: props.quoteSettings.ups_2nd_day_air_am,
+			ups_2nd_day_air_am_markup: props.quoteSettings.ups_2nd_day_air_am_markup,
+			ups_next_day_air_saver: props.quoteSettings.ups_next_day_air_saver,
+			ups_next_day_air_saver_markup: props.quoteSettings.ups_next_day_air_saver_markup,
+			ups_next_day_air: props.quoteSettings.ups_next_day_air,
+			ups_next_day_air_markup: props.quoteSettings.ups_next_day_air_markup,
+			ups_next_day_air_early: props.quoteSettings.ups_next_day_air_early,
+			ups_next_day_air_early_markup: props.quoteSettings.ups_next_day_air_early_markup,
 
-		if (props.quoteSettings === null || props.quoteSettings === undefined) {
-			props.getSettings(props.token, props.carrierId);
-			// setLoading(false);
-		}
+			showDeliveryEstimate: props.quoteSettings.showDeliveryEstimate,
 
-		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
-			setLoading(false);
-			let ratingMethodInit =
-				props.quoteSettings.method !== undefined ? props.quoteSettings.method : 1;
-			setRatingMethod(ratingMethodInit);
+			number_of_transit_days: props.quoteSettings.number_of_transit_days,
+			ground_metric: props.quoteSettings.ground_metric,
 
-			setQuoteSettingsState({
-				showDeliveryEstimate: props.quoteSettings.showDeliveryEstimate,
-				residentialPickup: props.quoteSettings.residentialPickup,
-				alwaysResidentialDelivery: props.quoteSettings.alwaysResidentialDelivery,
-				autoDetectedResidentialAddresses:
-					props.quoteSettings.autoDetectedResidentialAddresses,
-				alwaysLiftGatePickup: props.quoteSettings.alwaysLiftGatePickup,
-				alwaysLiftGateDelivery: props.quoteSettings.alwaysLiftGateDelivery,
-				offerLiftGateDelivery: props.quoteSettings.offerLiftGateDelivery,
-				autoDetectedResidentialAddressesLfg:
-					props.quoteSettings.autoDetectedResidentialAddressesLfg,
-				returnRates: props.quoteSettings.returnRates,
-				own_arrangement: props.quoteSettings.own_arrangement,
-				own_arrangement_text: props.quoteSettings.own_arrangement_text,
-				ground_metric:1
-			});
-		}
+			alwaysResidentialDelivery: props.quoteSettings.alwaysResidentialDelivery,
+			autoDetectedResidentialAddresses:
+				props.quoteSettings.autoDetectedResidentialAddresses,
+			returnRates: props.quoteSettings.returnRates,
+
+			ground_service_for_hazardous_material:
+				props.quoteSettings.ground_service_for_hazardous_material,
+			ground_hazardous_material_fee: props.quoteSettings.ground_hazardous_material_fee,
+			air_hazardous_material_fee: props.quoteSettings.air_hazardous_material_fee,
+
+			handling_fee_markup: props.quoteSettings.handling_fee_markup,
+
+			quote_details: props.quoteSettings.quote_details,
+		});
+
+		setLoading(false);
+	};
+
+	const onChange = e => {
+		setQuoteSettingsState({
+			...quoteSettingsState,
+			[e.target.name]: e.target.value,
+		});
 	};
 
 	const onFinish = data => {
@@ -82,16 +113,10 @@ function QuoteSettingsComponentWweSmall(props) {
 			...data,
 			...quoteSettingsState,
 			carrierId: +props.carrierId,
-			own_arrangement_text: quoteSettingsState.own_arrangement_text,
 		};
+
 		props.postData(data, props.token);
 	};
-	const onChangeRadio=e=>{
-		setQuoteSettingsState({
-			...quoteSettingsState,
-			ground_metric:e.target.value
-		});
-	}
 
 	return loading &&
 		(props.quoteSettings === undefined || props.quoteSettings === null) ? (
@@ -106,278 +131,416 @@ function QuoteSettingsComponentWweSmall(props) {
 				onFinish={onFinish}
 				initialValues={props.quoteSettings}
 			>
-
-
-			{/* UPS SERVICES */}
-			<Row gutter={30} align='middle' className={'mb-4'}>
+				{/* UPS SERVICES */}
+				<Row gutter={30} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>WWE Services</Title>
 					</Col>
-					
+
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-						<label className={'text-black'}>The services selected will display in the cart if they are available for the origin and destination addresses, and if the WWE Small Package Quotes API has been enabled for the corresponding shipping zone.</label>
+						<label className={'text-black'}>
+							The services selected will display in the cart if they are available for the
+							origin and destination addresses, and if the WWE Small Package Quotes API
+							has been enabled for the corresponding shipping zone.
+						</label>
 					</Col>
-</Row>
-					<Row gutter={30} align='middle' className={'mb-2'}>
+				</Row>
+
+				<Row gutter={30} align='middle' className={'mb-2'}>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 						<label className={'text-gray'}>UPS Ground</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='always_residential_delivery'
+								name='ups_ground'
 								value={true}
-								checked={quoteSettingsState.residentialPickup}
+								checked={quoteSettingsState.ups_ground}
 								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										residentialPickup: !quoteSettingsState.residentialPickup,
+										ups_ground: !quoteSettingsState.ups_ground,
 									})
 								}
 							></Checkbox>
 						</Form.Item>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-						<Form.Item className={'mb-0'} name='handling_free_markup'>
-							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						<Form.Item className={'mb-0'}>
+							<Input
+								name={'ups_ground_markup'}
+								maxLength='7'
+								pattern='[0-9.?(0-9){2}?]+%?$'
+								value={quoteSettingsState.ups_ground_markup}
+								onChange={onChange}
+							/>
 						</Form.Item>
-					
 					</Col>
 
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
-						<label className={'text-gray'}>Markup (eg Currency 1.0 or percentage 5%)</label>
+						<label className={'text-gray'}>
+							Markup (eg Currency 1.0 or percentage 5%)
+						</label>
 					</Col>
-					
-					</Row>
+				</Row>
 
-
-					<Row gutter={30} align='middle' className={'mb-2'}>
+				<Row gutter={30} align='middle' className={'mb-2'}>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>UPS Ground</label>
+						<label className={'text-gray'}>UPS 3 Day Select</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='always_residential_delivery'
+								name='ups_3_day_select'
 								value={true}
-								checked={quoteSettingsState.residentialPickup}
+								checked={quoteSettingsState.ups_3_day_select}
 								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										residentialPickup: !quoteSettingsState.residentialPickup,
+										ups_3_day_select: !quoteSettingsState.ups_3_day_select,
 									})
 								}
 							></Checkbox>
 						</Form.Item>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-						<Form.Item className={'mb-0'} name='handling_free_markup'>
-							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						<Form.Item className={'mb-0'}>
+							<Input
+								maxLength='7'
+								value={quoteSettingsState.ups_3_day_select_markup}
+								pattern='[0-9.?(0-9){2}?]+%?$'
+								name={'ups_3_day_select_markup'}
+								onChange={onChange}
+							/>
 						</Form.Item>
-					
 					</Col>
 
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
-						<label className={'text-gray'}>Markup (eg Currency 1.0 or percentage 5%)</label>
+						<label className={'text-gray'}>
+							Markup (eg Currency 1.0 or percentage 5%)
+						</label>
 					</Col>
-					
-					</Row>
+				</Row>
 
-
-
-					<Row gutter={30} align='middle' className={'mb-2'}>
+				<Row gutter={30} align='middle' className={'mb-2'}>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>UPS Ground</label>
+						<label className={'text-gray'}>UPS 2nd Day Air</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='always_residential_delivery'
+								name='ups_2nd_day_air'
 								value={true}
-								checked={quoteSettingsState.residentialPickup}
+								checked={quoteSettingsState.ups_2nd_day_air}
 								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										residentialPickup: !quoteSettingsState.residentialPickup,
+										ups_2nd_day_air: !quoteSettingsState.ups_2nd_day_air,
 									})
 								}
 							></Checkbox>
 						</Form.Item>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-						<Form.Item className={'mb-0'} name='handling_free_markup'>
-							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						<Form.Item className={'mb-0'}>
+							<Input
+								maxLength='7'
+								value={quoteSettingsState.ups_2nd_day_air_markup}
+								pattern='[0-9.?(0-9){2}?]+%?$'
+								name={'ups_2nd_day_air_markup'}
+								onChange={onChange}
+							/>
 						</Form.Item>
-					
 					</Col>
 
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
-						<label className={'text-gray'}>Markup (eg Currency 1.0 or percentage 5%)</label>
+						<label className={'text-gray'}>
+							Markup (eg Currency 1.0 or percentage 5%)
+						</label>
 					</Col>
-					
-					</Row>
+				</Row>
 
-
-
-					<Row gutter={30} align='middle' className={'mb-2'}>
+				<Row gutter={30} align='middle' className={'mb-2'}>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>UPS Ground</label>
+						<label className={'text-gray'}>UPS 2nd Day Air A.M.</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='always_residential_delivery'
+								name='ups_2nd_day_air_am'
 								value={true}
-								checked={quoteSettingsState.residentialPickup}
+								checked={quoteSettingsState.ups_2nd_day_air_am}
 								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										residentialPickup: !quoteSettingsState.residentialPickup,
+										ups_2nd_day_air_am: !quoteSettingsState.ups_2nd_day_air_am,
 									})
 								}
 							></Checkbox>
 						</Form.Item>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-						<Form.Item className={'mb-0'} name='handling_free_markup'>
-							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						<Form.Item className={'mb-0'}>
+							<Input
+								maxLength='7'
+								value={quoteSettingsState.ups_2nd_day_air_am_markup}
+								pattern='[0-9.?(0-9){2}?]+%?$'
+								name={'ups_2nd_day_air_am_markup'}
+								onChange={onChange}
+							/>
 						</Form.Item>
-					
 					</Col>
 
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
-						<label className={'text-gray'}>Markup (eg Currency 1.0 or percentage 5%)</label>
+						<label className={'text-gray'}>
+							Markup (eg Currency 1.0 or percentage 5%)
+						</label>
 					</Col>
-					
-					</Row>
+				</Row>
 
-
-
-					<Row gutter={30} align='middle' className={'mb-2'}>
+				<Row gutter={30} align='middle' className={'mb-2'}>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>UPS Ground</label>
+						<label className={'text-gray'}>UPS Next Day Air Saver</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='always_residential_delivery'
+								name='ups_next_day_air_saver'
 								value={true}
-								checked={quoteSettingsState.residentialPickup}
+								checked={quoteSettingsState.ups_next_day_air_saver}
 								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										residentialPickup: !quoteSettingsState.residentialPickup,
+										ups_next_day_air_saver: !quoteSettingsState.ups_next_day_air_saver,
 									})
 								}
 							></Checkbox>
 						</Form.Item>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-						<Form.Item className={'mb-0'} name='handling_free_markup'>
-							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						<Form.Item className={'mb-0'}>
+							<Input
+								maxLength='7'
+								value={quoteSettingsState.ups_next_day_air_saver_markup}
+								pattern='[0-9.?(0-9){2}?]+%?$'
+								name={'ups_next_day_air_saver_markup'}
+								onChange={onChange}
+							/>
 						</Form.Item>
-					
 					</Col>
 
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
-						<label className={'text-gray'}>Markup (eg Currency 1.0 or percentage 5%)</label>
+						<label className={'text-gray'}>
+							Markup (eg Currency 1.0 or percentage 5%)
+						</label>
 					</Col>
-					
-					</Row>
+				</Row>
 
-			{/* END */}
+				<Row gutter={30} align='middle' className={'mb-2'}>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>UPS Next Day Air</label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name='ups_next_day_air'
+								value={true}
+								checked={quoteSettingsState.ups_next_day_air}
+								onChange={() =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										ups_next_day_air: !quoteSettingsState.ups_next_day_air,
+									})
+								}
+							></Checkbox>
+						</Form.Item>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+						<Form.Item className={'mb-0'}>
+							<Input
+								maxLength='7'
+								value={quoteSettingsState.ups_next_day_air_markup}
+								pattern='[0-9.?(0-9){2}?]+%?$'
+								name={'ups_next_day_air_markup'}
+								onChange={onChange}
+							/>
+						</Form.Item>
+					</Col>
 
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
+						<label className={'text-gray'}>
+							Markup (eg Currency 1.0 or percentage 5%)
+						</label>
+					</Col>
+				</Row>
 
-			{/* Ground transit timw settings */}
+				<Row gutter={30} align='middle' className={'mb-2'}>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>UPS Next Day Air Early</label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name='ups_next_day_air_early'
+								value={true}
+								checked={quoteSettingsState.ups_next_day_air_early}
+								onChange={() =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										ups_next_day_air_early: !quoteSettingsState.ups_next_day_air_early,
+									})
+								}
+							></Checkbox>
+						</Form.Item>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+						<Form.Item className={'mb-0'}>
+							<Input
+								maxLength='7'
+								value={quoteSettingsState.ups_next_day_air_early_markup}
+								pattern='[0-9.?(0-9){2}?]+%?$'
+								name={'ups_next_day_air_early_markup'}
+								onChange={onChange}
+							/>
+						</Form.Item>
+					</Col>
 
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
+						<label className={'text-gray'}>
+							Markup (eg Currency 1.0 or percentage 5%)
+						</label>
+					</Col>
+				</Row>
 
-			<Row gutter={30} align='middle' className={'mb-4'}>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+				<Row>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>Show Delivery Estimate</label>
+					</Col>
+
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name='ups_next_day_air_early'
+								value={true}
+								checked={quoteSettingsState.showDeliveryEstimate}
+								onChange={() =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										showDeliveryEstimate: !quoteSettingsState.showDeliveryEstimate,
+									})
+								}
+							></Checkbox>
+						</Form.Item>
+					</Col>
+				</Row>
+				{/* END */}
+
+				{/* Ground transit time settings */}
+
+				<Row gutter={30} align='middle' className={'mb-2'}>
+					<Col className='gutter-row mt-4' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Ground Transit time restrictions</Title>
 					</Col>
-					
+
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Enter the number of transit days to restrict service , leave blank to disable this service</label>
-					</Col>
-					
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='handling_free_markup'>
-							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
-						</Form.Item>
-					
-					</Col>
-					</Row>
-
-
-					<Row gutter={30} align='middle' className={'mb-4'}>
-
-					<Radio.Group onChange={onChangeRadio} name='ground_metric' value={quoteSettingsState.ground_metric}>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Restrict by the carriers in transit days metric
+						<label className={'text-gray'}>
+							Enter the number of transit days to restrict service , leave blank to
+							disable this service
 						</label>
 					</Col>
 
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={24} xl={18}>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
+						<Form.Item className={'mb-0'} name='number_of_transit_days'>
+							<Input
+								type='number'
+								min='1'
+								step='1'
+								onChange={e => {
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										number_of_transit_days: e.target.value,
+									});
+								}}
+								disabled={props.plansInfo && props.plansInfo.plan_type > 2 ? false : true}
+							/>
+							{props.plansInfo && props.plansInfo.plan_type < 3 && (
+								<a href='#!' className='stnd-plan text-danger'>
+									Advanced plan required
+								</a>
+							)}
+						</Form.Item>
+					</Col>
+				</Row>
+
+				<Row gutter={30} align='middle' className={'mb-4'}>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>
+							Restrict by the carriers in transit days metric
+						</label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Radio
-						value={1}
-							></Radio>
+								name='ground_metric'
+								value='1'
+								checked={quoteSettingsState.ground_metric === 1}
+								onChange={() =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										ground_metric: 1,
+									})
+								}
+								disabled={props.plansInfo && props.plansInfo.plan_type > 2 ? false : true}
+							/>
+							{props.plansInfo && props.plansInfo.plan_type < 3 && (
+								<a href='#!' className='stnd-plan text-danger'>
+									Advanced plan required
+								</a>
+							)}
 						</Form.Item>
 					</Col>
 
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 						<label className={'text-gray'}>
-						Restrict by the calendar days in transit
+							Restrict by the calendar days in transit
 						</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Radio
-								value={2}
-							>
-								{props.plansInfo && props.plansInfo.plan_type < 2 && (
-									<a href='#!' className='stnd-plan text-danger'>
-										Standard plan required
-									</a>
-								)}
-							</Radio>
+								name='ground_metric'
+								value='2'
+								checked={quoteSettingsState.ground_metric === 2}
+								onChange={() =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										ground_metric: 2,
+									})
+								}
+								disabled={props.plansInfo && props.plansInfo.plan_type > 2 ? false : true}
+							/>
+							{props.plansInfo && props.plansInfo.plan_type < 3 && (
+								<a href='#!' className='stnd-plan text-danger'>
+									Advanced plan required
+								</a>
+							)}
 						</Form.Item>
 					</Col>
-					</Radio.Group>
 				</Row>
+				{/* End Transit  */}
 
-
-			{/* End Transit  */}
-		
 				<Row gutter={30} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Residential address settings</Title>
 					</Col>
+
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 						<label className={'text-gray'}>Always quote residential delivery</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='always_residential_delivery'
-								value={true}
-								checked={quoteSettingsState.residentialPickup}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										residentialPickup: !quoteSettingsState.residentialPickup,
-									})
-								}
-							></Checkbox>
-						</Form.Item>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Automatically detect residential delivery</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='auto_detected_residential_addresses'
+								name='alwaysResidentialDelivery'
 								value={true}
 								checked={quoteSettingsState.alwaysResidentialDelivery}
 								onChange={() =>
@@ -389,20 +552,18 @@ function QuoteSettingsComponentWweSmall(props) {
 							></Checkbox>
 						</Form.Item>
 					</Col>
+
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 						<label className={'text-gray'}>
-							Do not return rates if the shipping address appears to be a post office
+							Automatically detect residential delivery
 						</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='check_post_office_address'
-								checked={
-									props.plansInfo && props.plansInfo.plan_type > 1
-										? quoteSettingsState.autoDetectedResidentialAddresses
-										: false
-								}
+								name='auto_detected_residential_addresses'
+								value={true}
+								checked={quoteSettingsState.autoDetectedResidentialAddresses}
 								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
@@ -419,69 +580,58 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Checkbox>
 						</Form.Item>
 					</Col>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>
+							Do not return rates if the shipping address appears to be a post office
+						</label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name='returnRates'
+								checked={
+									props.plansInfo && props.plansInfo.plan_type > 1
+										? quoteSettingsState.returnRates
+										: false
+								}
+								onChange={() =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										returnRates: !quoteSettingsState.returnRates,
+									})
+								}
+								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
+							>
+								{props.plansInfo && props.plansInfo.plan_type < 2 && (
+									<a href='#!' className='stnd-plan text-danger'>
+										Standard plan required
+									</a>
+								)}
+							</Checkbox>
+						</Form.Item>
+					</Col>
 				</Row>
 
 				<Row gutter={30} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-						<Title level={4}>Lift gate settings</Title>
+						<Title level={4}>Hazardous material settings</Title>
 					</Col>
-					{/* <Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 						<label className={'text-gray'}>
-							Always include lift gate pick up
+							Only quote ground service for hazardous materials shipments
 						</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
+						<Form.Item className={'mb-3'}>
 							<Checkbox
-								name='always_lift_gate_pickup'
+								name={'ground_service_for_hazardous_material'}
 								value={true}
-								checked={quoteSettingsState.alwaysLiftGatePickup}
+								checked={quoteSettingsState.ground_service_for_hazardous_material}
 								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										alwaysLiftGatePickup: !quoteSettingsState.alwaysLiftGatePickup,
-									})
-								}
-							></Checkbox>
-						</Form.Item>
-					</Col> */}
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Always quote lift gate delivery</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='always_lift_gate_delivery'
-								value={true}
-								checked={quoteSettingsState.alwaysLiftGateDelivery}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										alwaysLiftGateDelivery: !quoteSettingsState.alwaysLiftGateDelivery,
-										offerLiftGateDelivery: false,
-										autoDetectedResidentialAddressesLfg: false,
-									})
-								}
-							></Checkbox>
-						</Form.Item>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Offer lift gate delivery as an option</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='offer_lift_gate_delivery'
-								checked={
-									props.plansInfo && props.plansInfo.plan_type > 1
-										? quoteSettingsState.offerLiftGateDelivery
-										: false
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										offerLiftGateDelivery: !quoteSettingsState.offerLiftGateDelivery,
-										alwaysLiftGateDelivery: false,
+										ground_service_for_hazardous_material: !quoteSettingsState.ground_service_for_hazardous_material,
 									})
 								}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
@@ -494,36 +644,63 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Checkbox>
 						</Form.Item>
 					</Col>
+
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Always include lift gate delivery when a residential address is detected
-						</label>
+						<label className={'text-gray'}>Ground Hazardous Material Fee</label>
 					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='auto_detected_residential_addresses_lfg'
-								checked={
-									props.plansInfo && props.plansInfo.plan_type > 1
-										? quoteSettingsState.autoDetectedResidentialAddressesLfg
-										: false
-								}
-								onChange={() =>
+							<Input
+								type='number'
+								name={'ground_hazardous_material_fee'}
+								maxLength='7'
+								pattern='[0-9.?(0-9){2}?]+?$'
+								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
+								onChange={e => {
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										autoDetectedResidentialAddressesLfg: !quoteSettingsState.autoDetectedResidentialAddressesLfg,
-										alwaysLiftGateDelivery: false,
-									})
-								}
-								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
-							>
-								{props.plansInfo && props.plansInfo.plan_type < 2 && (
-									<a href='#!' className='stnd-plan text-danger'>
-										Standard plan required
-									</a>
-								)}
-							</Checkbox>
+										ground_hazardous_material_fee: e.target.value,
+									});
+								}}
+							/>
 						</Form.Item>
+						<div className={'text-gray'}>
+							Enter an amount, e.g 20. or Leave blank to disable.
+							{props.plansInfo && props.plansInfo.plan_type < 2 && (
+								<a href='#!' className='stnd-plan text-danger'>
+									Standard plan required
+								</a>
+							)}
+						</div>
+					</Col>
+
+					<Col className='gutter-row mt-3' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>Air Hazardous Material Fee</label>
+					</Col>
+					<Col className='gutter-row mt-3' xs={24} sm={24} md={24} lg={24} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Input
+								type='number'
+								name={'air_hazardous_material_fee'}
+								maxLength='7'
+								pattern='[0-9.?(0-9){2}?]+?$'
+								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
+								onChange={e => {
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										air_hazardous_material_fee: e.target.value,
+									});
+								}}
+							/>
+						</Form.Item>
+						<div className={'text-gray'}>
+							Enter an amount, e.g 20. or Leave blank to disable.
+							{props.plansInfo && props.plansInfo.plan_type < 2 && (
+								<a href='#!' className='stnd-plan text-danger'>
+									Standard plan required
+								</a>
+							)}
+						</div>
 					</Col>
 				</Row>
 
@@ -532,64 +709,78 @@ function QuoteSettingsComponentWweSmall(props) {
 						<label className={'text-gray'}>Handling Fee / Markup</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='handling_free_markup'>
-							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						<Form.Item className={'mb-0'}>
+							<Input
+								type='text'
+								maxLength='7'
+								pattern='[0-9.?(0-9){2}?]+%?$'
+								name='handling_fee_markup'
+								value={quoteSettingsState.handling_fee_markup}
+								onChange={e => {
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										handling_fee_markup: e.target.value,
+									});
+								}}
+							/>
 						</Form.Item>
 						<div className={'text-gray'}>
-							Amount excluding tax. Enter an amount e.g 3.75, or a percentage, e.g, 5%.
+							Amount excluding tax. Enter an amount, e.g 3.75, or a percentage, e.g, 5%.
 							Leave blank to disable.
 						</div>
 					</Col>
 				</Row>
 
-				<Row gutter={30} className={'mb-3'}>
+				<Row gutter={30}>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+						<Title level={4}>Quote Details</Title>
+					</Col>
+
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-						<label className={'text-gray'}>Allow For Own Arrangement</label>
+						<label className={'text-gray'}></label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='own_arrangement'>
-							<Select
-								defaultValue={quoteSettingsState.own_arrangement}
-								size={'large'}
-								style={{ width: '100%' }}
-								onChange={value => {
+						<Form.Item className={'mb-0'}>
+							<Radio
+								value='1'
+								name='qoute_details'
+								checked={quoteSettingsState.quote_details === 1}
+								onChange={() => {
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										own_arrangement: value,
+										quote_details: 1,
 									});
 								}}
 							>
-								<Option value='0'>No</Option>
-								<Option value='1'>Yes</Option>
-							</Select>
+								<span className='ml-5'>
+									Write the quote details to the Additional Details widget
+								</span>
+							</Radio>
 						</Form.Item>
-						<div className={'text-gray'}>
-							Adds an option in the shipping cart for users to indicate that they will
-							make and pay for their own LTL shipping arrangments.
-						</div>
+					</Col>
+
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+						<label className={'text-gray'}></label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Radio
+								value='2'
+								name='qoute_details'
+								checked={quoteSettingsState.quote_details === 2}
+								onChange={() => {
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										quote_details: 2,
+									});
+								}}
+							>
+								Write the quote details to the More Actions {'>'} Shipping quote details
+								page
+							</Radio>
+						</Form.Item>
 					</Col>
 				</Row>
-
-				{quoteSettingsState.own_arrangement === '1' && (
-					<Row gutter={30} className={'mb-3'}>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-							<label className={'text-gray'}>Text for Own Arragement</label>
-						</Col>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-							<Form.Item className={'mb-0'} name='own_arrangement_text'>
-								<Input
-									onChange={e =>
-										setQuoteSettingsState({
-											...quoteSettingsState,
-											own_arrangement_text: e.target.value,
-										})
-									}
-									value={quoteSettingsState.own_arrangement_text}
-								/>
-							</Form.Item>
-						</Col>
-					</Row>
-				)}
 
 				<Row gutter={30} className={'mt-3'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -624,4 +815,7 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuoteSettingsComponentWweSmall);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(QuoteSettingsComponentWweSmall);

@@ -47,9 +47,11 @@ function TabsLayout(props) {
 				<TabPane tab='Connection Settinngs' key='1'>
 					<ConnectionSettingsComponent />
 				</TabPane>
-				<TabPane tab='Carriers' key='2'>
-					{component !== 1 && <CarriersComponent />}
-				</TabPane>
+				{component !== 1 && (
+					<TabPane tab='Carriers' key='2'>
+						<CarriersComponent />
+					</TabPane>
+				)}
 				<TabPane tab='Warehouse' key='3'>
 					<WarehouseComponent />
 				</TabPane>
