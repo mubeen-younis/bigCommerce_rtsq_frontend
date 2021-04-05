@@ -10,6 +10,7 @@ import {
 	Input,
 	Checkbox,
 	Skeleton,
+	Radio 
 } from 'antd';
 
 import { connect } from 'react-redux';
@@ -34,6 +35,7 @@ function QuoteSettingsComponentWweSmall(props) {
 		returnRates: false,
 		own_arrangement: 0,
 		own_arrangement_text: '',
+		ground_metric:1
 	});
 	const [ratingMethod, setRatingMethod] = useState(1);
 
@@ -70,6 +72,7 @@ function QuoteSettingsComponentWweSmall(props) {
 				returnRates: props.quoteSettings.returnRates,
 				own_arrangement: props.quoteSettings.own_arrangement,
 				own_arrangement_text: props.quoteSettings.own_arrangement_text,
+				ground_metric:1
 			});
 		}
 	};
@@ -83,6 +86,12 @@ function QuoteSettingsComponentWweSmall(props) {
 		};
 		props.postData(data, props.token);
 	};
+	const onChangeRadio=e=>{
+		setQuoteSettingsState({
+			...quoteSettingsState,
+			ground_metric:e.target.value
+		});
+	}
 
 	return loading &&
 		(props.quoteSettings === undefined || props.quoteSettings === null) ? (
@@ -99,15 +108,19 @@ function QuoteSettingsComponentWweSmall(props) {
 			>
 
 
-			{/* Ground transit timw settings */}
-
-			
+			{/* UPS SERVICES */}
 			<Row gutter={30} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-						<Title level={4}>Ground Transit time restrictions</Title>
+						<Title level={4}>WWE Services</Title>
 					</Col>
+					
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+						<label className={'text-black'}>The services selected will display in the cart if they are available for the origin and destination addresses, and if the WWE Small Package Quotes API has been enabled for the corresponding shipping zone.</label>
+					</Col>
+</Row>
+					<Row gutter={30} align='middle' className={'mb-2'}>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Enter the number of transit days to restrict service , leave blank to disable this service</label>
+						<label className={'text-gray'}>UPS Ground</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
@@ -124,55 +137,215 @@ function QuoteSettingsComponentWweSmall(props) {
 							></Checkbox>
 						</Form.Item>
 					</Col>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+						<Form.Item className={'mb-0'} name='handling_free_markup'>
+							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						</Form.Item>
+					
+					</Col>
+
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
+						<label className={'text-gray'}>Markup (eg Currency 1.0 or percentage 5%)</label>
+					</Col>
+					
+					</Row>
+
+
+					<Row gutter={30} align='middle' className={'mb-2'}>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Automatically detect residential delivery</label>
+						<label className={'text-gray'}>UPS Ground</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='auto_detected_residential_addresses'
+								name='always_residential_delivery'
 								value={true}
-								checked={quoteSettingsState.alwaysResidentialDelivery}
+								checked={quoteSettingsState.residentialPickup}
 								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										alwaysResidentialDelivery: !quoteSettingsState.alwaysResidentialDelivery,
+										residentialPickup: !quoteSettingsState.residentialPickup,
 									})
 								}
 							></Checkbox>
 						</Form.Item>
 					</Col>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+						<Form.Item className={'mb-0'} name='handling_free_markup'>
+							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						</Form.Item>
+					
+					</Col>
+
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
+						<label className={'text-gray'}>Markup (eg Currency 1.0 or percentage 5%)</label>
+					</Col>
+					
+					</Row>
+
+
+
+					<Row gutter={30} align='middle' className={'mb-2'}>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Do not return rates if the shipping address appears to be a post office
-						</label>
+						<label className={'text-gray'}>UPS Ground</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='check_post_office_address'
-								checked={
-									props.plansInfo && props.plansInfo.plan_type > 1
-										? quoteSettingsState.autoDetectedResidentialAddresses
-										: false
-								}
+								name='always_residential_delivery'
+								value={true}
+								checked={quoteSettingsState.residentialPickup}
 								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses,
+										residentialPickup: !quoteSettingsState.residentialPickup,
 									})
 								}
-								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
+							></Checkbox>
+						</Form.Item>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+						<Form.Item className={'mb-0'} name='handling_free_markup'>
+							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						</Form.Item>
+					
+					</Col>
+
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
+						<label className={'text-gray'}>Markup (eg Currency 1.0 or percentage 5%)</label>
+					</Col>
+					
+					</Row>
+
+
+
+					<Row gutter={30} align='middle' className={'mb-2'}>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>UPS Ground</label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name='always_residential_delivery'
+								value={true}
+								checked={quoteSettingsState.residentialPickup}
+								onChange={() =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										residentialPickup: !quoteSettingsState.residentialPickup,
+									})
+								}
+							></Checkbox>
+						</Form.Item>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+						<Form.Item className={'mb-0'} name='handling_free_markup'>
+							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						</Form.Item>
+					
+					</Col>
+
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
+						<label className={'text-gray'}>Markup (eg Currency 1.0 or percentage 5%)</label>
+					</Col>
+					
+					</Row>
+
+
+
+					<Row gutter={30} align='middle' className={'mb-2'}>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>UPS Ground</label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name='always_residential_delivery'
+								value={true}
+								checked={quoteSettingsState.residentialPickup}
+								onChange={() =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										residentialPickup: !quoteSettingsState.residentialPickup,
+									})
+								}
+							></Checkbox>
+						</Form.Item>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+						<Form.Item className={'mb-0'} name='handling_free_markup'>
+							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						</Form.Item>
+					
+					</Col>
+
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
+						<label className={'text-gray'}>Markup (eg Currency 1.0 or percentage 5%)</label>
+					</Col>
+					
+					</Row>
+
+			{/* END */}
+
+
+			{/* Ground transit timw settings */}
+
+
+			<Row gutter={30} align='middle' className={'mb-4'}>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+						<Title level={4}>Ground Transit time restrictions</Title>
+					</Col>
+					
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>Enter the number of transit days to restrict service , leave blank to disable this service</label>
+					</Col>
+					
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
+						<Form.Item className={'mb-0'} name='handling_free_markup'>
+							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						</Form.Item>
+					
+					</Col>
+					</Row>
+
+
+					<Row gutter={30} align='middle' className={'mb-4'}>
+
+					<Radio.Group onChange={onChangeRadio} name='ground_metric' value={quoteSettingsState.ground_metric}>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>Restrict by the carriers in transit days metric
+						</label>
+					</Col>
+
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={24} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Radio
+						value={1}
+							></Radio>
+						</Form.Item>
+					</Col>
+
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>
+						Restrict by the calendar days in transit
+						</label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Radio
+								value={2}
 							>
 								{props.plansInfo && props.plansInfo.plan_type < 2 && (
 									<a href='#!' className='stnd-plan text-danger'>
 										Standard plan required
 									</a>
 								)}
-							</Checkbox>
+							</Radio>
 						</Form.Item>
 					</Col>
+					</Radio.Group>
 				</Row>
+
 
 			{/* End Transit  */}
 		
