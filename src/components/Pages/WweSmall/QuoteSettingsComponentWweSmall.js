@@ -84,7 +84,22 @@ function QuoteSettingsComponentWweSmall(props) {
 	};
 
 	const onFinish = data => {
-		props.postData({ ...quoteSettingsState, carrierId: +props.carrierId }, props.token);
+		const settings = { ...quoteSettingsState },
+			keys = Object.keys(settings).slice(0, 14),
+			carrier_services = {};
+
+		for (let i = 0; i < keys.length; i++) {
+			carrier_services[keys[i]] = settings[keys[i]];
+			delete settings[keys[i]];
+		}
+
+		data = {
+			carrier_services: { ...carrier_services },
+			...settings,
+			carrierId: +props.carrierId,
+		};
+
+		props.postData(data, props.token);
 	};
 
 	return loading &&
