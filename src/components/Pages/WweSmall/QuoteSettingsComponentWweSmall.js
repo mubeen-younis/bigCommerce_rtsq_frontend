@@ -38,7 +38,7 @@ function QuoteSettingsComponentWweSmall(props) {
 		showDeliveryEstimate: false,
 
 		number_of_transit_days: null,
-		ground_metric: 1,
+		ground_metric: null,
 
 		alwaysResidentialDelivery: false,
 		autoDetectedResidentialAddresses: false,
@@ -50,52 +50,20 @@ function QuoteSettingsComponentWweSmall(props) {
 
 		handling_fee_markup: null,
 
-		quote_details: 1,
+		quote_details: null,
 	});
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
 			getQuoteSettings();
 		}
-
 		// eslint-disable-next-line
 	}, [props.quoteSettings]);
 
 	const getQuoteSettings = () => {
 		setQuoteSettingsState({
-			ups_ground: props.quoteSettings.ups_ground,
-			ups_ground_markup: props.quoteSettings.ups_ground_markup,
-			ups_3_day_select: props.quoteSettings.ups_3_day_select,
-			ups_3_day_select_markup: props.quoteSettings.ups_3_day_select_markup,
-			ups_2nd_day_air: props.quoteSettings.ups_2nd_day_air,
-			ups_2nd_day_air_markup: props.quoteSettings.ups_2nd_day_air_markup,
-			ups_2nd_day_air_am: props.quoteSettings.ups_2nd_day_air_am,
-			ups_2nd_day_air_am_markup: props.quoteSettings.ups_2nd_day_air_am_markup,
-			ups_next_day_air_saver: props.quoteSettings.ups_next_day_air_saver,
-			ups_next_day_air_saver_markup: props.quoteSettings.ups_next_day_air_saver_markup,
-			ups_next_day_air: props.quoteSettings.ups_next_day_air,
-			ups_next_day_air_markup: props.quoteSettings.ups_next_day_air_markup,
-			ups_next_day_air_early: props.quoteSettings.ups_next_day_air_early,
-			ups_next_day_air_early_markup: props.quoteSettings.ups_next_day_air_early_markup,
-
-			showDeliveryEstimate: props.quoteSettings.showDeliveryEstimate,
-
-			number_of_transit_days: props.quoteSettings.number_of_transit_days,
-			ground_metric: props.quoteSettings.ground_metric,
-
-			alwaysResidentialDelivery: props.quoteSettings.alwaysResidentialDelivery,
-			autoDetectedResidentialAddresses:
-				props.quoteSettings.autoDetectedResidentialAddresses,
-			returnRates: props.quoteSettings.returnRates,
-
-			ground_service_for_hazardous_material:
-				props.quoteSettings.ground_service_for_hazardous_material,
-			ground_hazardous_material_fee: props.quoteSettings.ground_hazardous_material_fee,
-			air_hazardous_material_fee: props.quoteSettings.air_hazardous_material_fee,
-
-			handling_fee_markup: props.quoteSettings.handling_fee_markup,
-
-			quote_details: props.quoteSettings.quote_details,
+			...quoteSettingsState,
+			...props.quoteSettings,
 		});
 
 		setLoading(false);
@@ -108,14 +76,15 @@ function QuoteSettingsComponentWweSmall(props) {
 		});
 	};
 
-	const onFinish = data => {
-		data = {
-			...data,
+	const onCheck = e => {
+		setQuoteSettingsState({
 			...quoteSettingsState,
-			carrierId: +props.carrierId,
-		};
+			[e.target.name]: !quoteSettingsState[e.target.name],
+		});
+	};
 
-		props.postData(data, props.token);
+	const onFinish = data => {
+		props.postData({ ...quoteSettingsState, carrierId: +props.carrierId }, props.token);
 	};
 
 	return loading &&
@@ -156,12 +125,7 @@ function QuoteSettingsComponentWweSmall(props) {
 								name='ups_ground'
 								value={true}
 								checked={quoteSettingsState.ups_ground}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										ups_ground: !quoteSettingsState.ups_ground,
-									})
-								}
+								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -194,12 +158,7 @@ function QuoteSettingsComponentWweSmall(props) {
 								name='ups_3_day_select'
 								value={true}
 								checked={quoteSettingsState.ups_3_day_select}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										ups_3_day_select: !quoteSettingsState.ups_3_day_select,
-									})
-								}
+								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -232,12 +191,7 @@ function QuoteSettingsComponentWweSmall(props) {
 								name='ups_2nd_day_air'
 								value={true}
 								checked={quoteSettingsState.ups_2nd_day_air}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										ups_2nd_day_air: !quoteSettingsState.ups_2nd_day_air,
-									})
-								}
+								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -270,12 +224,7 @@ function QuoteSettingsComponentWweSmall(props) {
 								name='ups_2nd_day_air_am'
 								value={true}
 								checked={quoteSettingsState.ups_2nd_day_air_am}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										ups_2nd_day_air_am: !quoteSettingsState.ups_2nd_day_air_am,
-									})
-								}
+								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -308,12 +257,7 @@ function QuoteSettingsComponentWweSmall(props) {
 								name='ups_next_day_air_saver'
 								value={true}
 								checked={quoteSettingsState.ups_next_day_air_saver}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										ups_next_day_air_saver: !quoteSettingsState.ups_next_day_air_saver,
-									})
-								}
+								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -346,12 +290,7 @@ function QuoteSettingsComponentWweSmall(props) {
 								name='ups_next_day_air'
 								value={true}
 								checked={quoteSettingsState.ups_next_day_air}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										ups_next_day_air: !quoteSettingsState.ups_next_day_air,
-									})
-								}
+								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -384,12 +323,7 @@ function QuoteSettingsComponentWweSmall(props) {
 								name='ups_next_day_air_early'
 								value={true}
 								checked={quoteSettingsState.ups_next_day_air_early}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										ups_next_day_air_early: !quoteSettingsState.ups_next_day_air_early,
-									})
-								}
+								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -420,15 +354,10 @@ function QuoteSettingsComponentWweSmall(props) {
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='ups_next_day_air_early'
+								name='showDeliveryEstimate'
 								value={true}
 								checked={quoteSettingsState.showDeliveryEstimate}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										showDeliveryEstimate: !quoteSettingsState.showDeliveryEstimate,
-									})
-								}
+								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -455,12 +384,8 @@ function QuoteSettingsComponentWweSmall(props) {
 								type='number'
 								min='1'
 								step='1'
-								onChange={e => {
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										number_of_transit_days: e.target.value,
-									});
-								}}
+								value={quoteSettingsState.number_of_transit_days}
+								onChange={onChange}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 2 ? false : true}
 							/>
 							{props.plansInfo && props.plansInfo.plan_type < 3 && (
@@ -527,6 +452,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						</Form.Item>
 					</Col>
 				</Row>
+
 				{/* End Transit  */}
 
 				<Row gutter={30} align='middle' className={'mb-4'}>
@@ -543,12 +469,7 @@ function QuoteSettingsComponentWweSmall(props) {
 								name='alwaysResidentialDelivery'
 								value={true}
 								checked={quoteSettingsState.alwaysResidentialDelivery}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										alwaysResidentialDelivery: !quoteSettingsState.alwaysResidentialDelivery,
-									})
-								}
+								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -561,15 +482,10 @@ function QuoteSettingsComponentWweSmall(props) {
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='auto_detected_residential_addresses'
+								name='autoDetectedResidentialAddresses'
 								value={true}
 								checked={quoteSettingsState.autoDetectedResidentialAddresses}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses,
-									})
-								}
+								onChange={onCheck}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
 							>
 								{props.plansInfo && props.plansInfo.plan_type < 2 && (
@@ -594,12 +510,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										? quoteSettingsState.returnRates
 										: false
 								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										returnRates: !quoteSettingsState.returnRates,
-									})
-								}
+								onChange={onCheck}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
 							>
 								{props.plansInfo && props.plansInfo.plan_type < 2 && (
@@ -628,12 +539,7 @@ function QuoteSettingsComponentWweSmall(props) {
 								name={'ground_service_for_hazardous_material'}
 								value={true}
 								checked={quoteSettingsState.ground_service_for_hazardous_material}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										ground_service_for_hazardous_material: !quoteSettingsState.ground_service_for_hazardous_material,
-									})
-								}
+								onChange={onCheck}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
 							>
 								{props.plansInfo && props.plansInfo.plan_type < 2 && (
@@ -655,13 +561,9 @@ function QuoteSettingsComponentWweSmall(props) {
 								name={'ground_hazardous_material_fee'}
 								maxLength='7'
 								pattern='[0-9.?(0-9){2}?]+?$'
+								value={quoteSettingsState.ground_hazardous_material_fee}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
-								onChange={e => {
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										ground_hazardous_material_fee: e.target.value,
-									});
-								}}
+								onChange={onChange}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
@@ -684,13 +586,9 @@ function QuoteSettingsComponentWweSmall(props) {
 								name={'air_hazardous_material_fee'}
 								maxLength='7'
 								pattern='[0-9.?(0-9){2}?]+?$'
+								value={quoteSettingsState.air_hazardous_material_fee}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
-								onChange={e => {
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										air_hazardous_material_fee: e.target.value,
-									});
-								}}
+								onChange={onChange}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
@@ -712,16 +610,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						<Form.Item className={'mb-0'}>
 							<Input
 								type='text'
+								name='handling_fee_markup'
 								maxLength='7'
 								pattern='[0-9.?(0-9){2}?]+%?$'
-								name='handling_fee_markup'
 								value={quoteSettingsState.handling_fee_markup}
-								onChange={e => {
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										handling_fee_markup: e.target.value,
-									});
-								}}
+								onChange={onChange}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
@@ -745,12 +638,12 @@ function QuoteSettingsComponentWweSmall(props) {
 								value='1'
 								name='qoute_details'
 								checked={quoteSettingsState.quote_details === 1}
-								onChange={() => {
+								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
 										quote_details: 1,
-									});
-								}}
+									})
+								}
 							>
 								<span className='ml-5'>
 									Write the quote details to the Additional Details widget
@@ -768,12 +661,12 @@ function QuoteSettingsComponentWweSmall(props) {
 								value='2'
 								name='qoute_details'
 								checked={quoteSettingsState.quote_details === 2}
-								onChange={() => {
+								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
 										quote_details: 2,
-									});
-								}}
+									})
+								}
 							>
 								Write the quote details to the More Actions {'>'} Shipping quote details
 								page
