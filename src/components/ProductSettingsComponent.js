@@ -83,15 +83,8 @@ function ProductSettingsComponent(props) {
 			setFormError('Please specify freight_class or provide dimensions instead.');
 			setTimeout(() => setFormError(''), 4000);
 			return;
-		} else if (
-			length === '0' ||
-			+length < 0 ||
-			width === '0' ||
-			+width < 0 ||
-			height === '0' ||
-			+height < 0
-		) {
-			setFormError('Length/Width/Height must be greater than 0.');
+		} else if (+length < 0 || +width < 0 || +height < 0) {
+			setFormError('Length/Width/Height must be greater then or equal to 0.');
 			setTimeout(() => setFormError(''), 4000);
 			return;
 		} else if (
@@ -392,7 +385,7 @@ function ProductSettingsComponent(props) {
 												length: e.target.value,
 											})
 										}
-										min='1'
+										min='0'
 										pattern='^[1-9]'
 										step='0.5'
 									/>
@@ -410,7 +403,7 @@ function ProductSettingsComponent(props) {
 												width: e.target.value,
 											})
 										}
-										min='1'
+										min='0'
 										pattern='^[1-9]'
 										step='0.5'
 									/>
@@ -428,7 +421,7 @@ function ProductSettingsComponent(props) {
 												height: e.target.value,
 											})
 										}
-										min='1'
+										min='0'
 										pattern='^[1-9]'
 										step='0.5'
 									/>
