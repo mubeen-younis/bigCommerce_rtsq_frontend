@@ -38,8 +38,8 @@ function TabsLayout(props) {
 		<Fragment>
 			{planInfo && (
 				<div className='note-bx'>
-					You are currently on <strong>{plans[planInfo.plan_type]}</strong> Plan. The plan
-					renews on {planInfo.expiry_date}.
+					You are currently on <strong>{plans[planInfo.plan_type]}</strong> Plan.
+					{planInfo.plan_type === 0 ? '' : `The plan renews on ${planInfo.expiry_date}.`}
 				</div>
 			)}
 
