@@ -1,33 +1,14 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Form, Input, Button, Space, Skeleton } from 'antd';
 import { connect } from 'react-redux';
+
 import { postData } from '../../../Actions/Action';
-import { getConnectionSettings } from '../../../Actions/Connection';
-import { getInstalledCarrierPlanInfo } from '../../../Actions/Carriers';
 
 function ConnectionSettingsComponent(props) {
 	const [connectionState, setConnectionState] = useState({
 		testType: false,
 		skeleton_loading: true,
 	});
-
-	useEffect(() => {
-		/* if (!props.connectionSettings && props.carrierId) {
-			props.getConnectionSettings(props.token, props.carrierId);
-		} */
-
-		/* if (!props.connectionSettings || props.connectionSettings===null) {
-
-			props.getConnectionSettings(props.token, props.carrierId);
-		} */
-
-		props.getInstalledCarrierPlanInfo(props.token, props.carrierId);
-
-		/* if (!props.plansInfo) {
-			props.getInstalledCarrierPlanInfo(props.token, props.carrierId);
-		} */
-		// eslint-disable-next-line
-	}, []);
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type });
@@ -40,11 +21,7 @@ function ConnectionSettingsComponent(props) {
 		props.postData(values, props.token);
 	};
 
-	if (
-		props.connectionSettings === null ||
-		props.connectionSettings === undefined
-		// || props.alertMessageType === 'loading'
-	) {
+	if (props.connectionSettings === null || props.connectionSettings === undefined) {
 		return <Skeleton active />;
 	}
 
@@ -131,8 +108,6 @@ const mapStateToProps = state => {
 		skeleton_loading: state.skeleton_loading,
 		token: state.token,
 		carrierId: state.carrierId,
-		plansInfo: state.plansInfo,
-		alertMessageType: state.alertMessageType,
 	};
 };
 
@@ -142,11 +117,6 @@ const mapDispatchToProps = dispatch => {
 			dispatch(
 				postData(data, 'GET_CONNECTION_SETTINGS', 'submit_connection_settings', token)
 			),
-		getConnectionSettings: (token, carrierId) =>
-			dispatch(getConnectionSettings(token, carrierId)),
-			
-		getInstalledCarrierPlanInfo: (token, carrierId) =>
-			dispatch(getInstalledCarrierPlanInfo(token, carrierId)),
 	};
 };
 

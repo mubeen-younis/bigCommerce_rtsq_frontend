@@ -107,13 +107,15 @@ export const getInstalledCarrierPlanInfo = (token, carrierId) => {
 						type: 'GET_INSTALLED_CARRIER_PLAN_INFO',
 						payload: data.data,
 					});
-
-					/* dispatch({
-						type: 'SKELETON_LOADING',
-						payload: false,
-					}); */
 				}
 			})
-			.catch(error => {});
+			.catch(error => {
+				if (error) {
+					dispatch({
+						type: 'GET_INSTALLED_CARRIER_PLAN_INFO',
+						payload: null,
+					});
+				}
+			});
 	};
 };

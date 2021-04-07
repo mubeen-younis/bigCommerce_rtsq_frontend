@@ -1,22 +1,29 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
+
 import TabsLayout from '../tabs_layout/tabs';
-// import { getCarrierDetails } from '../Actions/Carriers';
 import { getConnectionSettings } from '../Actions/Connection';
 import { getQuoteSettings } from '../Actions/Settings';
+import { getInstalledCarrierPlanInfo } from '../Actions/Carriers';
 
 function RendorCarrier(props) {
+	const {
+		carrierId,
+		token,
+		setCarrierId,
+		getPlanInfo,
+		getConnectionSetting,
+		getQuoteSetting,
+	} = props;
 	const { carrier_id } = useParams();
 
 	useEffect(() => {
-		if (
-			(carrier_id !== undefined && !props.carrierId) ||
-			props.carrierId !== carrier_id
-		) {
-			props.setCarrierId(carrier_id);
-			props.getConnectionSettings(props.token, carrier_id);
-			props.getQuoteSettings(props.token, carrier_id);
+		if ((carrier_id !== undefined && !carrierId) || carrierId !== carrier_id) {
+			setCarrierId(carrier_id);
+			getPlanInfo(token, carrier_id);
+			getConnectionSetting(token, carrier_id);
+			getQuoteSetting(token, carrier_id);
 		}
 		// eslint-disable-next-line
 	}, [carrier_id]);
@@ -33,11 +40,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		// getCarrierDetails: data => dispatch(getCarrierDetails(data)),
 		setCarrierId: carrierId => dispatch({ type: 'CARRIER_ID', payload: carrierId }),
-		getConnectionSettings: (token, carrierId) =>
+		getConnectionSetting: (token, carrierId) =>
 			dispatch(getConnectionSettings(token, carrierId)),
-		getQuoteSettings: (token, carrierId) => dispatch(getQuoteSettings(token, carrierId)),
+		getQuoteSetting: (token, carrierId) => dispatch(getQuoteSettings(token, carrierId)),
+		getPlanInfo: (token, carrierId) =>
+			dispatch(getInstalledCarrierPlanInfo(token, carrierId)),
 	};
 };
 

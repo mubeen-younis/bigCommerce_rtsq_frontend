@@ -2,7 +2,6 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
 	submitProductSettings,
-	getProduct,
 	importProducts,
 	getAllProducts,
 } from '../Actions/ProductSettings';
@@ -32,22 +31,21 @@ function ProductSettingsComponent(props) {
 		selectedRowKeys: [],
 		showDropship: false,
 		visible: false,
-		products: [],
-		productDetail: {},
-		postData: [],
 	});
 	const [selectedProductDetail, setselectedProductDetail] = useState({});
 	const [formError, setFormError] = useState('');
 
 	useEffect(() => {
-		if (props.allProducts == null) {
+		if (props.allProducts === null) {
 			props.getAllProducts(props.token);
 		}
 
-		if (props.allProducts != null && props.allProducts !== undefined) {
+		if (props.allProducts !== null && props.allProducts !== undefined) {
 			setLoading(false);
 		}
-	}, [props]);
+
+		// eslint-disable-next-line
+	}, []);
 
 	const showProductDetails = (id, product) => {
 		setLoadProduct(true);
@@ -56,7 +54,15 @@ function ProductSettingsComponent(props) {
 			visible: true,
 		});
 
-		getProduct(id, setselectedProductDetail, setLoadProduct, props.token);
+		setselectedProductDetail({
+			...product,
+			...JSON.parse(product.settings),
+			product_id: id,
+		});
+
+		setTimeout(() => {
+			setLoadProduct(false);
+		}, 2);
 	};
 
 	const onClose = () => {
@@ -103,17 +109,6 @@ function ProductSettingsComponent(props) {
 	const syncProducts = () => {
 		props.importProducts(props.token);
 	};
-	/* const onChange = (e) => {
-		console.log(`checked = ${e.target.name}`);
-		setState({
-			...state,
-
-			productDetail: {
-				...state.productDetail,
-				[e.target.name]: state.productDetail[e.target.value],
-			},
-		});
-	}; */
 
 	const handleChange = (pagination, filters, sorter) => {
 		console.log('Various parameters', pagination, filters, sorter);

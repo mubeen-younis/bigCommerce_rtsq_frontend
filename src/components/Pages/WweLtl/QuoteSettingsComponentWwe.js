@@ -269,26 +269,7 @@ function QuoteSettingsComponentWwe(props) {
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Lift gate settings</Title>
 					</Col>
-					{/* <Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Always include lift gate pick up
-						</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='always_lift_gate_pickup'
-								value={true}
-								checked={quoteSettingsState.alwaysLiftGatePickup}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										alwaysLiftGatePickup: !quoteSettingsState.alwaysLiftGatePickup,
-									})
-								}
-							></Checkbox>
-						</Form.Item>
-					</Col> */}
+
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 						<label className={'text-gray'}>Always quote lift gate delivery</label>
 					</Col>

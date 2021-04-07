@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
+import { Form, Table, Button, Space, Skeleton, Input } from 'antd';
+
 import { postData } from '../Actions/Action';
 import { getServices, getAddTabSettings } from '../Actions/Carriers';
-import { Form, Table, Button, Space, Skeleton, Input } from 'antd';
 
 const columns = [
 	{
@@ -137,7 +138,6 @@ const CarriersComponent = props => {
 const mapStateToProps = state => {
 	return {
 		services: state.services,
-		skeleton_loading: state.skeleton_loading,
 		carriersSettings: state.carriersSettings,
 		token: state.token,
 		carrierId: state.carrierId,
