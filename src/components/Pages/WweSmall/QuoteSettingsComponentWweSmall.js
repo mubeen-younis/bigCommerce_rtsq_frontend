@@ -501,7 +501,8 @@ function QuoteSettingsComponentWweSmall(props) {
 							<Radio
 								name='ground_metric'
 								value='1'
-								checked={quoteSettingsState.ground_metric === 1}
+								// checked={quoteSettingsState.ground_metric === 1}
+								checked={true}
 								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
