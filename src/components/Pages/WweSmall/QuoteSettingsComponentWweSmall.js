@@ -19,37 +19,36 @@ const { Title } = Typography;
 
 function QuoteSettingsComponentWweSmall(props) {
 	const [loading, setLoading] = useState(true);
+	const [checkAll, setCheckAll] = useState(false);
 	const [quoteSettingsState, setQuoteSettingsState] = useState({
-		ups_ground: false,
-		ups_ground_markup: '',
-		ups_3_day_select: false,
-		ups_3_day_select_markup: '',
-		ups_2nd_day_air: false,
-		ups_2nd_day_air_markup: '',
-		ups_2nd_day_air_am: false,
-		ups_2nd_day_air_am_markup: '',
-		ups_next_day_air_saver: false,
-		ups_next_day_air_saver_markup: '',
-		ups_next_day_air: false,
-		ups_next_day_air_markup: '',
-		ups_next_day_air_early: false,
-		ups_next_day_air_early_markup: '',
-
+		carrier_services: {
+			ups_ground: false,
+			ups_3_day_select: false,
+			ups_2nd_day_air: false,
+			ups_2nd_day_air_am: false,
+			ups_2nd_day_air_saver: false,
+			ups_next_day_air_saver: false,
+			ups_next_day_air: false,
+			ups_next_day_air_early: false,
+			ups_ground_markup: '',
+			ups_3_day_select_markup: '',
+			ups_2nd_day_air_markup: '',
+			ups_2nd_day_air_am_markup: '',
+			ups_2nd_day_air_saver_markup: '',
+			ups_next_day_air_saver_markup: '',
+			ups_next_day_air_markup: '',
+			ups_next_day_air_early_markup: '',
+		},
 		showDeliveryEstimate: false,
-
 		number_of_transit_days: null,
 		ground_metric: null,
-
 		alwaysResidentialDelivery: false,
 		autoDetectedResidentialAddresses: false,
 		returnRates: false,
-
 		ground_service_for_hazardous_material: false,
 		ground_hazardous_material_fee: null,
 		air_hazardous_material_fee: null,
-
 		handling_fee_markup: null,
-
 		quote_details: null,
 	});
 
@@ -61,45 +60,65 @@ function QuoteSettingsComponentWweSmall(props) {
 	}, [props.quoteSettings]);
 
 	const getQuoteSettings = () => {
-		setQuoteSettingsState({
-			...quoteSettingsState,
-			...props.quoteSettings,
-		});
+		/* const checks = props.quoteSettings.carrier_services;
+		if (
+			checks.ups_ground &&
+			checks.ups_3_day_select &&
+			checks.ups_2nd_day_air &&
+			checks.ups_2nd_day_air_am &&
+			checks.ups_2nd_day_air_saver &&
+			checks.ups_next_day_air &&
+			checks.ups_next_day_air_saver &&
+			checks.ups_next_day_air_early
+		) {
+			setCheckAll(true);
+		} */
 
+		setQuoteSettingsState(props.quoteSettings);
 		setLoading(false);
 	};
 
 	const onChange = e => {
 		setQuoteSettingsState({
 			...quoteSettingsState,
-			[e.target.name]: e.target.value,
+			carrier_services: {
+				...quoteSettingsState.carrier_services,
+				[e.target.name]: e.target.value,
+			},
 		});
 	};
 
 	const onCheck = e => {
 		setQuoteSettingsState({
 			...quoteSettingsState,
-			[e.target.name]: !quoteSettingsState[e.target.name],
+			carrier_services: {
+				...quoteSettingsState.carrier_services,
+				[e.target.name]: !quoteSettingsState.carrier_services[e.target.name],
+			},
+		});
+	};
+
+	const allCheckHandler = () => {
+		setCheckAll(!checkAll);
+
+		setQuoteSettingsState({
+			...quoteSettingsState,
+			carrier_services: {
+				...quoteSettingsState.carrier_services,
+				ups_ground: !checkAll,
+				ups_3_day_select: !checkAll,
+				ups_2nd_day_air: !checkAll,
+				ups_2nd_day_air_am: !checkAll,
+				ups_2nd_day_air_saver: !checkAll,
+				ups_next_day_air_saver: !checkAll,
+				ups_next_day_air: !checkAll,
+				ups_next_day_air_early: !checkAll,
+			},
 		});
 	};
 
 	const onFinish = data => {
-		const settings = { ...quoteSettingsState },
-			keys = Object.keys(settings).slice(0, 14),
-			carrier_services = {};
-
-		for (let i = 0; i < keys.length; i++) {
-			carrier_services[keys[i]] = settings[keys[i]];
-			delete settings[keys[i]];
-		}
-
-		data = {
-			carrier_services: { ...carrier_services },
-			...settings,
-			carrierId: +props.carrierId,
-		};
-
-		props.postData(data, props.token);
+		props.postData({ ...quoteSettingsState, carrierId: +props.carrierId }, props.token);
 	};
 
 	return loading &&
@@ -130,6 +149,22 @@ function QuoteSettingsComponentWweSmall(props) {
 					</Col>
 				</Row>
 
+				<Row>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>Select All Services</label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+						<Form.Item className='mb-2 ml-5'>
+							<Checkbox
+								name='select_all'
+								value={true}
+								checked={checkAll}
+								onChange={allCheckHandler}
+							></Checkbox>
+						</Form.Item>
+					</Col>
+				</Row>
+
 				<Row gutter={30} align='middle' className={'mb-2'}>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 						<label className={'text-gray'}>UPS Ground</label>
@@ -139,7 +174,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							<Checkbox
 								name='ups_ground'
 								value={true}
-								checked={quoteSettingsState.ups_ground}
+								checked={quoteSettingsState.carrier_services.ups_ground}
 								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
@@ -150,7 +185,7 @@ function QuoteSettingsComponentWweSmall(props) {
 								name={'ups_ground_markup'}
 								maxLength='7'
 								pattern='[0-9.?(0-9){2}?]+%?$'
-								value={quoteSettingsState.ups_ground_markup}
+								value={quoteSettingsState.carrier_services.ups_ground_markup}
 								onChange={onChange}
 							/>
 						</Form.Item>
@@ -172,7 +207,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							<Checkbox
 								name='ups_3_day_select'
 								value={true}
-								checked={quoteSettingsState.ups_3_day_select}
+								checked={quoteSettingsState.carrier_services.ups_3_day_select}
 								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
@@ -181,7 +216,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						<Form.Item className={'mb-0'}>
 							<Input
 								maxLength='7'
-								value={quoteSettingsState.ups_3_day_select_markup}
+								value={quoteSettingsState.carrier_services.ups_3_day_select_markup}
 								pattern='[0-9.?(0-9){2}?]+%?$'
 								name={'ups_3_day_select_markup'}
 								onChange={onChange}
@@ -205,7 +240,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							<Checkbox
 								name='ups_2nd_day_air'
 								value={true}
-								checked={quoteSettingsState.ups_2nd_day_air}
+								checked={quoteSettingsState.carrier_services.ups_2nd_day_air}
 								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
@@ -214,7 +249,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						<Form.Item className={'mb-0'}>
 							<Input
 								maxLength='7'
-								value={quoteSettingsState.ups_2nd_day_air_markup}
+								value={quoteSettingsState.carrier_services.ups_2nd_day_air_markup}
 								pattern='[0-9.?(0-9){2}?]+%?$'
 								name={'ups_2nd_day_air_markup'}
 								onChange={onChange}
@@ -238,7 +273,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							<Checkbox
 								name='ups_2nd_day_air_am'
 								value={true}
-								checked={quoteSettingsState.ups_2nd_day_air_am}
+								checked={quoteSettingsState.carrier_services.ups_2nd_day_air_am}
 								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
@@ -247,9 +282,42 @@ function QuoteSettingsComponentWweSmall(props) {
 						<Form.Item className={'mb-0'}>
 							<Input
 								maxLength='7'
-								value={quoteSettingsState.ups_2nd_day_air_am_markup}
+								value={quoteSettingsState.carrier_services.ups_2nd_day_air_am_markup}
 								pattern='[0-9.?(0-9){2}?]+%?$'
 								name={'ups_2nd_day_air_am_markup'}
+								onChange={onChange}
+							/>
+						</Form.Item>
+					</Col>
+
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={24}>
+						<label className={'text-gray'}>
+							Markup (eg Currency 1.0 or percentage 5%)
+						</label>
+					</Col>
+				</Row>
+
+				<Row gutter={30} align='middle' className={'mb-2'}>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>UPS 2nd Day Air Saver</label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name='ups_2nd_day_air_saver'
+								value={true}
+								checked={quoteSettingsState.carrier_services.ups_2nd_day_air_saver}
+								onChange={onCheck}
+							></Checkbox>
+						</Form.Item>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+						<Form.Item className={'mb-0'}>
+							<Input
+								maxLength='7'
+								value={quoteSettingsState.carrier_services.ups_2nd_day_air_saver_markup}
+								pattern='[0-9.?(0-9){2}?]+%?$'
+								name={'ups_2nd_day_air_saver_markup'}
 								onChange={onChange}
 							/>
 						</Form.Item>
@@ -271,7 +339,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							<Checkbox
 								name='ups_next_day_air_saver'
 								value={true}
-								checked={quoteSettingsState.ups_next_day_air_saver}
+								checked={quoteSettingsState.carrier_services.ups_next_day_air_saver}
 								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
@@ -280,7 +348,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						<Form.Item className={'mb-0'}>
 							<Input
 								maxLength='7'
-								value={quoteSettingsState.ups_next_day_air_saver_markup}
+								value={quoteSettingsState.carrier_services.ups_next_day_air_saver_markup}
 								pattern='[0-9.?(0-9){2}?]+%?$'
 								name={'ups_next_day_air_saver_markup'}
 								onChange={onChange}
@@ -304,7 +372,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							<Checkbox
 								name='ups_next_day_air'
 								value={true}
-								checked={quoteSettingsState.ups_next_day_air}
+								checked={quoteSettingsState.carrier_services.ups_next_day_air}
 								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
@@ -313,7 +381,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						<Form.Item className={'mb-0'}>
 							<Input
 								maxLength='7'
-								value={quoteSettingsState.ups_next_day_air_markup}
+								value={quoteSettingsState.carrier_services.ups_next_day_air_markup}
 								pattern='[0-9.?(0-9){2}?]+%?$'
 								name={'ups_next_day_air_markup'}
 								onChange={onChange}
@@ -337,7 +405,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							<Checkbox
 								name='ups_next_day_air_early'
 								value={true}
-								checked={quoteSettingsState.ups_next_day_air_early}
+								checked={quoteSettingsState.carrier_services.ups_next_day_air_early}
 								onChange={onCheck}
 							></Checkbox>
 						</Form.Item>
@@ -346,7 +414,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						<Form.Item className={'mb-0'}>
 							<Input
 								maxLength='7'
-								value={quoteSettingsState.ups_next_day_air_early_markup}
+								value={quoteSettingsState.carrier_services.ups_next_day_air_early_markup}
 								pattern='[0-9.?(0-9){2}?]+%?$'
 								name={'ups_next_day_air_early_markup'}
 								onChange={onChange}
@@ -372,7 +440,12 @@ function QuoteSettingsComponentWweSmall(props) {
 								name='showDeliveryEstimate'
 								value={true}
 								checked={quoteSettingsState.showDeliveryEstimate}
-								onChange={onCheck}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										showDeliveryEstimate: !quoteSettingsState.showDeliveryEstimate,
+									})
+								}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -400,7 +473,12 @@ function QuoteSettingsComponentWweSmall(props) {
 								min='1'
 								step='1'
 								value={quoteSettingsState.number_of_transit_days}
-								onChange={onChange}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										number_of_transit_days: e.target.value,
+									})
+								}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 2 ? false : true}
 							/>
 							{props.plansInfo && props.plansInfo.plan_type < 3 && (
@@ -484,7 +562,12 @@ function QuoteSettingsComponentWweSmall(props) {
 								name='alwaysResidentialDelivery'
 								value={true}
 								checked={quoteSettingsState.alwaysResidentialDelivery}
-								onChange={onCheck}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										alwaysResidentialDelivery: !quoteSettingsState.alwaysResidentialDelivery,
+									})
+								}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -500,7 +583,12 @@ function QuoteSettingsComponentWweSmall(props) {
 								name='autoDetectedResidentialAddresses'
 								value={true}
 								checked={quoteSettingsState.autoDetectedResidentialAddresses}
-								onChange={onCheck}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses,
+									})
+								}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
 							>
 								{props.plansInfo && props.plansInfo.plan_type < 2 && (
@@ -525,7 +613,12 @@ function QuoteSettingsComponentWweSmall(props) {
 										? quoteSettingsState.returnRates
 										: false
 								}
-								onChange={onCheck}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										returnRates: !quoteSettingsState.returnRates,
+									})
+								}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
 							>
 								{props.plansInfo && props.plansInfo.plan_type < 2 && (
@@ -554,7 +647,12 @@ function QuoteSettingsComponentWweSmall(props) {
 								name={'ground_service_for_hazardous_material'}
 								value={true}
 								checked={quoteSettingsState.ground_service_for_hazardous_material}
-								onChange={onCheck}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										ground_service_for_hazardous_material: !quoteSettingsState.ground_service_for_hazardous_material,
+									})
+								}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
 							>
 								{props.plansInfo && props.plansInfo.plan_type < 2 && (
@@ -578,7 +676,12 @@ function QuoteSettingsComponentWweSmall(props) {
 								pattern='[0-9.?(0-9){2}?]+?$'
 								value={quoteSettingsState.ground_hazardous_material_fee}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
-								onChange={onChange}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										ground_hazardous_material_fee: e.target.value,
+									})
+								}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
@@ -603,7 +706,12 @@ function QuoteSettingsComponentWweSmall(props) {
 								pattern='[0-9.?(0-9){2}?]+?$'
 								value={quoteSettingsState.air_hazardous_material_fee}
 								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
-								onChange={onChange}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										air_hazardous_material_fee: e.target.value,
+									})
+								}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
@@ -629,7 +737,12 @@ function QuoteSettingsComponentWweSmall(props) {
 								maxLength='7'
 								pattern='[0-9.?(0-9){2}?]+%?$'
 								value={quoteSettingsState.handling_fee_markup}
-								onChange={onChange}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										handling_fee_markup: e.target.value,
+									})
+								}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
