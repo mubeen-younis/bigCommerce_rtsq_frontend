@@ -4,7 +4,8 @@ import { Tabs } from 'antd';
 
 import CarriersComponent from '../components/CarriersComponent';
 import ProductSettingsComponent from '../components/ProductSettingsComponent';
-import ConnectionSettingsComponent from '../components/Pages/WweLtl/ConnectionSettingsComponent';
+import ConnectionSettingsComponentWweltl from '../components/Pages/WweLtl/ConnectionSettingsComponent';
+import ConnectionSettingsComponentWweSmall from '../components/Pages/WweSmall/ConnectionSettingsComponentWweSmall';
 import WarehouseComponent from '../components/Pages/WarehouseComponent';
 import QuoteSettingsComponentWwe from '../components/Pages/WweLtl/QuoteSettingsComponentWwe';
 import UserGuideComponent from '../components/Pages/UserGuideComponent';
@@ -45,7 +46,8 @@ function TabsLayout(props) {
 
 			<Tabs className={'tabs-wrp'} onChange={callback} type='card'>
 				<TabPane tab='Connection Settinngs' key='1'>
-					<ConnectionSettingsComponent />
+					{component === 0 && <ConnectionSettingsComponentWweltl />}
+					{component === 1 && <ConnectionSettingsComponentWweSmall />}
 				</TabPane>
 				{component !== 1 && (
 					<TabPane tab='Carriers' key='2'>
