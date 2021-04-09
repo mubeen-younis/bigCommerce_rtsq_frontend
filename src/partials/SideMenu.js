@@ -10,7 +10,7 @@ function SideMenu(props) {
 		<Sider
 			breakpoint='lg'
 			collapsedWidth='0'
-			onBreakpoint={(broken) => {
+			onBreakpoint={broken => {
 				// console.log(broken);
 			}}
 			onCollapse={(collapsed, type) => {
@@ -28,7 +28,7 @@ function SideMenu(props) {
 				</Title>
 
 				{props.installedCarriers &&
-				!props.installedCarriers.every((carr) => carr.is_enabled) ? (
+				props.installedCarriers.every(carr => carr.is_enabled === 0) ? (
 					<Menu.Item>No Carrier is Enabled</Menu.Item>
 				) : null}
 
@@ -37,7 +37,7 @@ function SideMenu(props) {
 				) : null}
 
 				{props.installedCarriers
-					? props.installedCarriers.map((carrier) =>
+					? props.installedCarriers.map(carrier =>
 							carrier.is_enabled ? (
 								<Menu.Item key={carrier.name}>
 									<Link to={`/${carrier.id}`}>{carrier.name}</Link>
@@ -54,12 +54,12 @@ function SideMenu(props) {
 				) : null}
 
 				{props.installedAddons &&
-				!props.installedAddons.every((add) => add.is_enabled) ? (
+				props.installedAddons.every(add => add.is_enabled === 0) ? (
 					<Menu.Item>No Addon is Enabled</Menu.Item>
 				) : null}
 
 				{props.installedAddons
-					? props.installedAddons.map((addon) =>
+					? props.installedAddons.map(addon =>
 							addon.is_enabled ? (
 								<Menu.Item key={addon.name}>
 									<Link to={`/addon/${addon.id}`}>{addon.name}</Link>
@@ -72,7 +72,7 @@ function SideMenu(props) {
 	);
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		installedCarriers: state.installedCarriers,
 		installedAddons: state.installedAddons,
