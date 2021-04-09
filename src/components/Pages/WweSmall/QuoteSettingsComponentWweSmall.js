@@ -60,7 +60,7 @@ function QuoteSettingsComponentWweSmall(props) {
 	}, [props.quoteSettings]);
 
 	const getQuoteSettings = () => {
-		/* const checks = props.quoteSettings.carrier_services;
+		const checks = props.quoteSettings.carrier_services;
 		if (
 			checks.ups_ground &&
 			checks.ups_3_day_select &&
@@ -72,7 +72,7 @@ function QuoteSettingsComponentWweSmall(props) {
 			checks.ups_next_day_air_early
 		) {
 			setCheckAll(true);
-		} */
+		}
 
 		setQuoteSettingsState(props.quoteSettings);
 		setLoading(false);
@@ -96,6 +96,26 @@ function QuoteSettingsComponentWweSmall(props) {
 				[e.target.name]: !quoteSettingsState.carrier_services[e.target.name],
 			},
 		});
+
+		if (checkAll && !e.target.checked) {
+			setCheckAll(false);
+			return;
+		}
+
+		const checks = {
+			ups_ground: quoteSettingsState.carrier_services.ups_ground,
+			ups_3_day_select: quoteSettingsState.carrier_services.ups_3_day_select,
+			ups_2nd_day_air: quoteSettingsState.carrier_services.ups_2nd_day_air,
+			ups_2nd_day_air_am: quoteSettingsState.carrier_services.ups_2nd_day_air_am,
+			ups_2nd_day_air_saver: quoteSettingsState.carrier_services.ups_2nd_day_air_saver,
+			ups_next_day_air: quoteSettingsState.carrier_services.ups_next_day_air,
+			ups_next_day_air_saver: quoteSettingsState.carrier_services.ups_next_day_air_saver,
+			ups_next_day_air_early: quoteSettingsState.carrier_services.ups_next_day_air_early,
+		};
+		checks[e.target.name] = e.target.checked;
+
+		const isCheckedAll = Object.values(checks).every(ck => ck);
+		setCheckAll(isCheckedAll);
 	};
 
 	const allCheckHandler = () => {
