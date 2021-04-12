@@ -73,7 +73,7 @@ function ProductSettingsComponent(props) {
 	};
 
 	const saveSettings = () => {
-		const weight = selectedProductDetail['weight'],
+		/* const weight = selectedProductDetail['weight'],
 			length = selectedProductDetail['length'],
 			width = selectedProductDetail['width'],
 			height = selectedProductDetail['height'];
@@ -91,6 +91,22 @@ function ProductSettingsComponent(props) {
 			return;
 		} else if (+length < 0 || +width < 0 || +height < 0) {
 			setFormError('Length/Width/Height must be greater then or equal to 0.');
+			setTimeout(() => setFormError(''), 4000);
+			return;
+		} else if (
+			selectedProductDetail.dropship_enabled &&
+			!selectedProductDetail.dropship_location
+		) {
+			setFormError('Please select dropship location.');
+			setTimeout(() => setFormError(''), 4000);
+		} else {
+			delete selectedProductDetail['settings'];
+			props.submitProductSettings(selectedProductDetail, props.token);
+			setFormError('');
+		} */
+
+		if (!selectedProductDetail['freight_class']) {
+			setFormError('Please specify Freight Class.');
 			setTimeout(() => setFormError(''), 4000);
 			return;
 		} else if (
@@ -306,7 +322,7 @@ function ProductSettingsComponent(props) {
 							</Col>
 						</Row>
 						<Row gutter={16}>
-							<Col span={12}>
+							<Col span={24}>
 								<Form.Item
 									name='freight_class'
 									label='Freight Class'
@@ -343,7 +359,7 @@ function ProductSettingsComponent(props) {
 									</Select>
 								</Form.Item>
 							</Col>
-							<Col span={12}>
+							{/* <Col span={12}>
 								<Form.Item
 									name='weight'
 									label='Weight (lbs)'
@@ -365,9 +381,9 @@ function ProductSettingsComponent(props) {
 										step='0.5'
 									/>
 								</Form.Item>
-							</Col>
+							</Col> */}
 						</Row>
-						<Row gutter={16}>
+						{/* <Row gutter={16}>
 							<Col span={8}>
 								<Form.Item name='length' label='Length (inches)'>
 									<Input
@@ -422,7 +438,7 @@ function ProductSettingsComponent(props) {
 									/>
 								</Form.Item>
 							</Col>
-						</Row>
+						</Row> */}
 						<Row gutter={16}>
 							<Col span={12}>
 								<Checkbox
