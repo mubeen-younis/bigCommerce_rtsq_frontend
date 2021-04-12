@@ -28,21 +28,21 @@ function AutoDetectResidentialComponent(props) {
 			props.getAddonAddressSettings(addon_id, props.token);
 		}
 
+		if (props.addonSettings) {
+			setAddress(props.addonSettings.unconfirmed_default);
+		}
+
 		props.installedAddons.forEach(ia =>
 			ia.id === +addon_id ? setSuspend(ia.is_suspend) : null
 		);
 
 		// eslint-disable-next-line
-	}, []);
+	}, [props.addonSettings]);
 
 	const changePlan = plan_value => {
 		console.log(plan_value);
 		// props.changePlan(props.token, value);
 	};
-
-	if (props.addonsSettings) {
-		setAddress(props.addonsSettings.unconfirmed_default);
-	}
 
 	const onChange = e => {
 		setAddress(e.target.value);
@@ -159,7 +159,13 @@ function AutoDetectResidentialComponent(props) {
 											props.radPlans.current_plan.status.subscribedPackageHitsStatus
 												.consumedHitsPrcent
 										}
-										% (2021-02-03 05:58:26)
+										%{' '}
+										{+props.radPlans.current_plan.status.lastUsageTime.replace(
+											/[-: ]/g,
+											''
+										) === 0
+											? ''
+											: `(${props.radPlans.current_plan.status.lastUsageTime})`}
 									</p>
 								</div>
 							</Fragment>
