@@ -28,14 +28,14 @@ function AutoDetectResidentialComponent(props) {
 			props.getAddonAddressSettings(addon_id, props.token);
 		}
 
-		props.installedAddons.forEach((ia) =>
+		props.installedAddons.forEach(ia =>
 			ia.id === +addon_id ? setSuspend(ia.is_suspend) : null
 		);
 
 		// eslint-disable-next-line
 	}, []);
 
-	const changePlan = (plan_value) => {
+	const changePlan = plan_value => {
 		console.log(plan_value);
 		// props.changePlan(props.token, value);
 	};
@@ -44,7 +44,7 @@ function AutoDetectResidentialComponent(props) {
 		setAddress(props.addonsSettings.unconfirmed_default);
 	}
 
-	const onChange = (e) => {
+	const onChange = e => {
 		setAddress(e.target.value);
 		props.changeDefaultAddress(addon_id, props.token, e.target.value);
 	};
@@ -87,12 +87,16 @@ function AutoDetectResidentialComponent(props) {
 							<strong>Auto-renew</strong>
 						</label>
 						<Select
-							defaultValue='Select RAD Plan'
+							defaultValue={
+								props.radPlans && props.radPlans.current_plan.status.subscribedPackage
+									? props.radPlans.current_plan.status.subscribedPackage.packageSCAC
+									: 'Select RAD Plan'
+							}
 							style={{ width: '100%', marginBottom: '20px' }}
 							onChange={changePlan}
 						>
 							{props.radPlans && props.radPlans.plans && props.radPlans.plans.length > 0
-								? props.radPlans.plans.map((plan) => (
+								? props.radPlans.plans.map(plan => (
 										<Option key={plan.pSCAC} value={plan.pSCAC}>{`${
 											Number(plan.pHits)
 												? new Intl.NumberFormat().format(plan.pHits)
@@ -104,6 +108,7 @@ function AutoDetectResidentialComponent(props) {
 
 						{props.radPlans &&
 						props.radPlans.current_plan &&
+						props.radPlans.current_plan === 'string' &&
 						props.radPlans.current_plan.includes('no Subscription') ? (
 							<p>
 								<strong>{props.radPlans.current_plan}</strong>
@@ -114,23 +119,55 @@ function AutoDetectResidentialComponent(props) {
 									<strong>Current plan</strong>
 								</label>
 								<div style={{ width: '100%', marginBottom: '20px' }}>
-									<p style={{ marginBottom: '0' }}>100/mo ($5.00)</p>
-									<p style={{ marginBottom: '0' }}>Start date: Jan 13, 2021</p>
-									<p style={{ marginBottom: '0' }}>End date: Feb 13, 2021</p>
+									<p style={{ marginBottom: '0' }}>
+										${props.radPlans.current_plan.status.subscribedPackage.packageCost}/
+										{props.radPlans.current_plan.status.subscribedPackage.packageDuration}{' '}
+									</p>
+									<p style={{ marginBottom: '0' }}>
+										Start date:{' '}
+										{new Date(
+											props.radPlans.current_plan.status.subscriptionInfo.subscriptionTime
+										)
+											.toDateString()
+											.substring(4)}{' '}
+									</p>
+									<p style={{ marginBottom: '0' }}>
+										End date:{' '}
+										{new Date(
+											props.radPlans.current_plan.status.subscriptionInfo.expiryTime
+										)
+											.toDateString()
+											.substring(4)}
+									</p>
+								</div>
+
+								<label>
+									<strong>Current usage</strong>
+								</label>
+								<div style={{ width: '100%', marginBottom: '20px' }}>
+									<p style={{ marginBottom: '0' }}>
+										{
+											props.radPlans.current_plan.status.subscribedPackageHitsStatus
+												.consumedHits
+										}
+										/
+										{
+											props.radPlans.current_plan.status.subscribedPackageHitsStatus
+												.packageHits
+										}{' '}
+										{
+											props.radPlans.current_plan.status.subscribedPackageHitsStatus
+												.consumedHitsPrcent
+										}
+										% (2021-02-03 05:58:26)
+									</p>
 								</div>
 							</Fragment>
 						)}
 
-						<label>
-							<strong>Current usage</strong>
-						</label>
-						<div style={{ width: '100%', marginBottom: '20px' }}>
-							<p style={{ marginBottom: '0' }}>35/100 35.00% (2021-02-03 05:58:26)</p>
-						</div>
-
 						<div style={{ width: '100%', marginBottom: '20px' }}>
 							<Checkbox
-								onChange={(e) => {
+								onChange={e => {
 									setSuspend(e.target.checked);
 									props.changeAddonSuspendStatus(addon_id, props.token);
 								}}
@@ -168,7 +205,7 @@ function AutoDetectResidentialComponent(props) {
 	);
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		token: state.token,
 		radPlans: state.radPlans,
@@ -178,9 +215,9 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
-		getRadPlans: (token) => dispatch(getRadPlans(token)),
+		getRadPlans: token => dispatch(getRadPlans(token)),
 		changePlan: (token, plan_package) => dispatch(changePlan(token, plan_package)),
 		changeAddonSuspendStatus: (addon_id, token) =>
 			dispatch(changeAddonSuspendStatus(addon_id, token)),
