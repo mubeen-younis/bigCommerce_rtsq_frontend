@@ -221,13 +221,14 @@ function QuoteSettingsComponentWwe(props) {
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='always_residential_delivery'
+								name='alwaysResidentialDelivery'
 								value={true}
 								checked={quoteSettingsState.alwaysResidentialDelivery}
 								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
 										alwaysResidentialDelivery: !quoteSettingsState.alwaysResidentialDelivery,
+										autoDetectedResidentialAddresses: false,
 									})
 								}
 							></Checkbox>
@@ -241,7 +242,7 @@ function QuoteSettingsComponentWwe(props) {
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name='auto_detected_residential_addresses'
+								name='autoDetectedResidentialAddresses'
 								checked={
 									props.plansInfo && props.plansInfo.plan_type > 1
 										? quoteSettingsState.autoDetectedResidentialAddresses
@@ -251,9 +252,17 @@ function QuoteSettingsComponentWwe(props) {
 									setQuoteSettingsState({
 										...quoteSettingsState,
 										autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses,
+										alwaysResidentialDelivery: false,
 									})
 								}
-								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
+								disabled={
+									props.plansInfo &&
+									props.plansInfo.plan_type > 1 &&
+									props.radPlans &&
+									props.radPlans.current_plan.severity === 'SUCCESS'
+										? false
+										: true
+								}
 							>
 								{props.plansInfo && props.plansInfo.plan_type < 2 && (
 									<a href='#!' className='stnd-plan text-danger'>
@@ -261,6 +270,11 @@ function QuoteSettingsComponentWwe(props) {
 									</a>
 								)}
 							</Checkbox>
+							Requires{' '}
+							<b>
+								<i>Automatically detect residential addresses </i>
+							</b>{' '}
+							feature
 						</Form.Item>
 					</Col>
 				</Row>
@@ -340,7 +354,14 @@ function QuoteSettingsComponentWwe(props) {
 										alwaysLiftGateDelivery: false,
 									})
 								}
-								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
+								disabled={
+									props.plansInfo &&
+									props.plansInfo.plan_type > 1 &&
+									props.radPlans &&
+									props.radPlans.current_plan.severity === 'SUCCESS'
+										? false
+										: true
+								}
 							>
 								{props.plansInfo && props.plansInfo.plan_type < 2 && (
 									<a href='#!' className='stnd-plan text-danger'>
@@ -348,6 +369,11 @@ function QuoteSettingsComponentWwe(props) {
 									</a>
 								)}
 							</Checkbox>
+							Requires{' '}
+							<b>
+								<i>Automatically detect residential addresses </i>
+							</b>{' '}
+							feature
 						</Form.Item>
 					</Col>
 				</Row>
@@ -439,6 +465,7 @@ const mapStateToProps = state => {
 		carrierId: state.carrierId,
 		plansInfo: state.plansInfo,
 		alertMessageType: state.alertMessageType,
+		radPlans: state.radPlans,
 	};
 };
 
