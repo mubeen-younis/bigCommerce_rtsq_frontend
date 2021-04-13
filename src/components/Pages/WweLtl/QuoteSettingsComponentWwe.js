@@ -231,6 +231,7 @@ function QuoteSettingsComponentWwe(props) {
 										autoDetectedResidentialAddresses: false,
 									})
 								}
+								disabled={props.installedAddons[0].is_suspend === 1 ? false : true}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -358,7 +359,8 @@ function QuoteSettingsComponentWwe(props) {
 									props.plansInfo &&
 									props.plansInfo.plan_type > 1 &&
 									props.radPlans &&
-									props.radPlans.current_plan.severity === 'SUCCESS'
+									props.radPlans.current_plan.severity === 'SUCCESS' &&
+									props.installedAddons[0].is_suspend === 0
 										? false
 										: true
 								}
@@ -466,6 +468,7 @@ const mapStateToProps = state => {
 		plansInfo: state.plansInfo,
 		alertMessageType: state.alertMessageType,
 		radPlans: state.radPlans,
+		installedAddons: state.installedAddons,
 	};
 };
 
