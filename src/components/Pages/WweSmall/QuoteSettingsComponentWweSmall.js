@@ -598,49 +598,56 @@ function QuoteSettingsComponentWweSmall(props) {
 							></Checkbox>
 						</Form.Item>
 					</Col>
+					{props.radPlans &&
+					props.radPlans.current_plan.severity === 'SUCCESS' &&
+					props.installedAddons[0] &&
+					props.installedAddons[0].is_suspend === 1 ? (
+						<Fragment>
+							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+								<label className={'text-gray'}>
+									Automatically detect residential delivery
+								</label>
+							</Col>
+							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+								<Form.Item className={'mb-0'}>
+									<Checkbox
+										name='autoDetectedResidentialAddresses'
+										value={true}
+										checked={quoteSettingsState.autoDetectedResidentialAddresses}
+										onChange={e =>
+											setQuoteSettingsState({
+												...quoteSettingsState,
+												autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses,
+												alwaysResidentialDelivery: false,
+											})
+										}
+										disabled={
+											props.plansInfo &&
+											props.plansInfo.plan_type > 1 &&
+											props.radPlans &&
+											props.radPlans.current_plan.severity === 'SUCCESS' &&
+											props.installedAddons[0] &&
+											props.installedAddons[0].is_suspend === 0
+												? false
+												: true
+										}
+									>
+										{props.plansInfo && props.plansInfo.plan_type < 2 && (
+											<a href='#!' className='stnd-plan text-danger'>
+												Standard plan required
+											</a>
+										)}
+									</Checkbox>
+									Requires{' '}
+									<b>
+										<i>Automatically detect residential addresses </i>
+									</b>{' '}
+									feature
+								</Form.Item>
+							</Col>
+						</Fragment>
+					) : null}
 
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Automatically detect residential delivery
-						</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='autoDetectedResidentialAddresses'
-								value={true}
-								checked={quoteSettingsState.autoDetectedResidentialAddresses}
-								onChange={e =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses,
-										alwaysResidentialDelivery: false,
-									})
-								}
-								disabled={
-									props.plansInfo &&
-									props.plansInfo.plan_type > 1 &&
-									props.radPlans &&
-									props.radPlans.current_plan.severity === 'SUCCESS' &&
-									props.installedAddons[0] &&
-									props.installedAddons[0].is_suspend === 0
-										? false
-										: true
-								}
-							>
-								{props.plansInfo && props.plansInfo.plan_type < 2 && (
-									<a href='#!' className='stnd-plan text-danger'>
-										Standard plan required
-									</a>
-								)}
-								Requires{' '}
-								<b>
-									<i>Automatically detect residential addresses </i>
-								</b>{' '}
-								feature
-							</Checkbox>
-						</Form.Item>
-					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 						<label className={'text-gray'}>
 							Do not return rates if the shipping address appears to be a post office

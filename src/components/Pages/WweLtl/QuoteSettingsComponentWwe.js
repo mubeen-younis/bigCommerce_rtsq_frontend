@@ -239,51 +239,58 @@ function QuoteSettingsComponentWwe(props) {
 							></Checkbox>
 						</Form.Item>
 					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Automatically detected residential addresses
-						</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='autoDetectedResidentialAddresses'
-								checked={
-									props.plansInfo && props.plansInfo.plan_type > 1
-										? quoteSettingsState.autoDetectedResidentialAddresses
-										: false
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses,
-										alwaysResidentialDelivery: false,
-									})
-								}
-								disabled={
-									props.plansInfo &&
-									props.plansInfo.plan_type > 1 &&
-									props.radPlans &&
-									props.radPlans.current_plan.severity === 'SUCCESS' &&
-									props.installedAddons[0] &&
-									props.installedAddons[0].is_suspend === 0
-										? false
-										: true
-								}
-							>
-								{props.plansInfo && props.plansInfo.plan_type < 2 && (
-									<a href='#!' className='stnd-plan text-danger'>
-										Standard plan required
-									</a>
-								)}
-							</Checkbox>
-							Requires{' '}
-							<b>
-								<i>Automatically detect residential addresses </i>
-							</b>{' '}
-							feature
-						</Form.Item>
-					</Col>
+					{props.radPlans &&
+					props.radPlans.current_plan.severity === 'SUCCESS' &&
+					props.installedAddons[0] &&
+					props.installedAddons[0].is_suspend === 1 ? (
+						<Fragment>
+							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+								<label className={'text-gray'}>
+									Automatically detected residential addresses
+								</label>
+							</Col>
+							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+								<Form.Item className={'mb-0'}>
+									<Checkbox
+										name='autoDetectedResidentialAddresses'
+										checked={
+											props.plansInfo && props.plansInfo.plan_type > 1
+												? quoteSettingsState.autoDetectedResidentialAddresses
+												: false
+										}
+										onChange={() =>
+											setQuoteSettingsState({
+												...quoteSettingsState,
+												autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses,
+												alwaysResidentialDelivery: false,
+											})
+										}
+										disabled={
+											props.plansInfo &&
+											props.plansInfo.plan_type > 1 &&
+											props.radPlans &&
+											props.radPlans.current_plan.severity === 'SUCCESS' &&
+											props.installedAddons[0] &&
+											props.installedAddons[0].is_suspend === 0
+												? false
+												: true
+										}
+									>
+										{props.plansInfo && props.plansInfo.plan_type < 2 && (
+											<a href='#!' className='stnd-plan text-danger'>
+												Standard plan required
+											</a>
+										)}
+									</Checkbox>
+									Requires{' '}
+									<b>
+										<i>Automatically detect residential addresses </i>
+									</b>{' '}
+									feature
+								</Form.Item>
+							</Col>
+						</Fragment>
+					) : null}
 				</Row>
 
 				<Row gutter={30} align='middle' className={'mb-4'}>
@@ -340,51 +347,59 @@ function QuoteSettingsComponentWwe(props) {
 							</Checkbox>
 						</Form.Item>
 					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Always include lift gate delivery when a residential address is detected
-						</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='auto_detected_residential_addresses_lfg'
-								checked={
-									props.plansInfo && props.plansInfo.plan_type > 1
-										? quoteSettingsState.autoDetectedResidentialAddressesLfg
-										: false
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										autoDetectedResidentialAddressesLfg: !quoteSettingsState.autoDetectedResidentialAddressesLfg,
-										alwaysLiftGateDelivery: false,
-									})
-								}
-								disabled={
-									props.plansInfo &&
-									props.plansInfo.plan_type > 1 &&
-									props.radPlans &&
-									props.radPlans.current_plan.severity === 'SUCCESS' &&
-									props.installedAddons[0] &&
-									props.installedAddons[0].is_suspend === 0
-										? false
-										: true
-								}
-							>
-								{props.plansInfo && props.plansInfo.plan_type < 2 && (
-									<a href='#!' className='stnd-plan text-danger'>
-										Standard plan required
-									</a>
-								)}
-							</Checkbox>
-							Requires{' '}
-							<b>
-								<i>Automatically detect residential addresses </i>
-							</b>{' '}
-							feature
-						</Form.Item>
-					</Col>
+
+					{props.radPlans &&
+					props.radPlans.current_plan.severity === 'SUCCESS' &&
+					props.installedAddons[0] &&
+					props.installedAddons[0].is_suspend === 1 ? (
+						<Fragment>
+							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+								<label className={'text-gray'}>
+									Always include lift gate delivery when a residential address is detected
+								</label>
+							</Col>
+							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+								<Form.Item className={'mb-0'}>
+									<Checkbox
+										name='auto_detected_residential_addresses_lfg'
+										checked={
+											props.plansInfo && props.plansInfo.plan_type > 1
+												? quoteSettingsState.autoDetectedResidentialAddressesLfg
+												: false
+										}
+										onChange={() =>
+											setQuoteSettingsState({
+												...quoteSettingsState,
+												autoDetectedResidentialAddressesLfg: !quoteSettingsState.autoDetectedResidentialAddressesLfg,
+												alwaysLiftGateDelivery: false,
+											})
+										}
+										disabled={
+											props.plansInfo &&
+											props.plansInfo.plan_type > 1 &&
+											props.radPlans &&
+											props.radPlans.current_plan.severity === 'SUCCESS' &&
+											props.installedAddons[0] &&
+											props.installedAddons[0].is_suspend === 0
+												? false
+												: true
+										}
+									>
+										{props.plansInfo && props.plansInfo.plan_type < 2 && (
+											<a href='#!' className='stnd-plan text-danger'>
+												Standard plan required
+											</a>
+										)}
+									</Checkbox>
+									Requires{' '}
+									<b>
+										<i>Automatically detect residential addresses </i>
+									</b>{' '}
+									feature
+								</Form.Item>
+							</Col>
+						</Fragment>
+					) : null}
 				</Row>
 
 				<Row gutter={30} className={'mb-3'}>
