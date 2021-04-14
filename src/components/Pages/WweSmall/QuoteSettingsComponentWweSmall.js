@@ -590,6 +590,11 @@ function QuoteSettingsComponentWweSmall(props) {
 										autoDetectedResidentialAddresses: false,
 									})
 								}
+								disabled={
+									props.installedAddons[0] && props.installedAddons[0].is_suspend === 1
+										? false
+										: true
+								}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -628,6 +633,11 @@ function QuoteSettingsComponentWweSmall(props) {
 										Standard plan required
 									</a>
 								)}
+								Requires{' '}
+								<b>
+									<i>Automatically detect residential addresses </i>
+								</b>{' '}
+								feature
 							</Checkbox>
 						</Form.Item>
 					</Col>

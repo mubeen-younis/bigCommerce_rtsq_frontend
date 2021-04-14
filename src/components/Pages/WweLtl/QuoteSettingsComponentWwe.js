@@ -264,7 +264,9 @@ function QuoteSettingsComponentWwe(props) {
 									props.plansInfo &&
 									props.plansInfo.plan_type > 1 &&
 									props.radPlans &&
-									props.radPlans.current_plan.severity === 'SUCCESS'
+									props.radPlans.current_plan.severity === 'SUCCESS' &&
+									props.installedAddons[0] &&
+									props.installedAddons[0].is_suspend === 0
 										? false
 										: true
 								}
