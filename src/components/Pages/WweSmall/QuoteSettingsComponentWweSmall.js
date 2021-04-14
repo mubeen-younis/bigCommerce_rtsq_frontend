@@ -587,7 +587,13 @@ function QuoteSettingsComponentWweSmall(props) {
 									setQuoteSettingsState({
 										...quoteSettingsState,
 										alwaysResidentialDelivery: !quoteSettingsState.alwaysResidentialDelivery,
+										autoDetectedResidentialAddresses: false,
 									})
+								}
+								disabled={
+									props.installedAddons[0] && props.installedAddons[0].is_suspend === 1
+										? false
+										: true
 								}
 							></Checkbox>
 						</Form.Item>
@@ -608,9 +614,17 @@ function QuoteSettingsComponentWweSmall(props) {
 									setQuoteSettingsState({
 										...quoteSettingsState,
 										autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses,
+										alwaysResidentialDelivery: false,
 									})
 								}
-								disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
+								disabled={
+									props.plansInfo &&
+									props.plansInfo.plan_type > 1 &&
+									props.radPlans &&
+									props.radPlans.current_plan.severity === 'SUCCESS'
+										? false
+										: true
+								}
 							>
 								{props.plansInfo && props.plansInfo.plan_type < 2 && (
 									<a href='#!' className='stnd-plan text-danger'>
@@ -846,6 +860,8 @@ const mapStateToProps = state => {
 		token: state.token,
 		carrierId: state.carrierId,
 		plansInfo: state.plansInfo,
+		installedAddons: state.installedAddons,
+		radPlans: state.radPlans,
 	};
 };
 

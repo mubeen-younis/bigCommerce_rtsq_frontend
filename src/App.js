@@ -8,7 +8,6 @@ import SideMenu from './partials/SideMenu';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { getPlansInfo } from './Actions/Action';
 import { getLocations } from './Actions/Warehouse';
 import {
 	getInstalledCarriers,
@@ -16,6 +15,7 @@ import {
 	getAllCarriers,
 	getAllAddons,
 } from './Actions/EnitureStore';
+import { getRadPlans } from './Actions/RAD';
 import RendorCarrier from './components/RendorCarrier';
 import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent';
 import AutoDetectResidentialComponennt from './components/AutoDetectResidentialComponennt';
@@ -26,7 +26,6 @@ function App(props) {
 	const {
 		token,
 		setToken,
-		getPlansInfo,
 		locations,
 		getAllCarriers,
 		carriers,
@@ -40,6 +39,7 @@ function App(props) {
 		alertMessage,
 		showAlertMessage,
 		confirmModalAction,
+		getRADPlans,
 	} = props;
 
 	const urlParams = new URLSearchParams(window.location.search);
@@ -54,7 +54,7 @@ function App(props) {
 			setToken(store);
 		}
 
-		getPlansInfo(store);
+		getRADPlans(store);
 		locations(store);
 		getAllCarriers(store);
 		getAllAddons(store);
@@ -172,7 +172,7 @@ const mapDispatchToProps = dispatch => {
 		getAllAddons: store => dispatch(getAllAddons({ store })),
 		getInstalledCarriers: store => dispatch(getInstalledCarriers({ store })),
 		getInstalledAddons: store => dispatch(getInstalledAddons({ store })),
-		getPlansInfo: store => dispatch(getPlansInfo({ store: store })),
+		getRADPlans: token => dispatch(getRadPlans(token)),
 		setToken: token => {
 			localStorage.setItem('store', token);
 			dispatch({ type: 'TOKEN', payload: token });
