@@ -65,6 +65,8 @@ function AutoDetectResidentialComponent(props) {
 		value = props.radPlans.status.nextSubcribedPackage.nextSubscriptionSCAC;
 	}
 
+	const plan = props?.radPlans?.current_plan?.status ?? props?.radPlans?.status ?? null;
+
 	return (
 		<Fragment>
 			<Row gutter={25}>
@@ -125,17 +127,9 @@ function AutoDetectResidentialComponent(props) {
 								: null}
 						</Select>
 
-						{props?.radPlans?.current_plan === 'string' ||
-						(props?.radPlans?.severity === 'SUCCESS' &&
-							props?.radPlans?.Message.includes(
-								'disabled the Residential Address Detection plugin'
-							)) ? (
+						{props?.radPlans?.current_plan === 'string' ? (
 							<p>
-								<strong>
-									{props?.radPlans?.current_plan === 'string'
-										? props.radPlans.current_plan
-										: props?.radPlans?.Message}
-								</strong>
+								<strong>{props.radPlans.current_plan}</strong>
 							</p>
 						) : (
 							<Fragment>
@@ -144,31 +138,18 @@ function AutoDetectResidentialComponent(props) {
 								</label>
 								<div style={{ width: '100%', marginBottom: '20px' }}>
 									<p style={{ marginBottom: '0' }}>
-										$
-										{props.radPlans?.current_plan?.status?.subscribedPackage
-											.packageCost ||
-											props.radPlans?.status.subscribedPackage.packageCost}
-										/
-										{props.radPlans?.current_plan?.status?.subscribedPackage
-											.packageDuration ||
-											props.radPlans?.status?.subscribedPackage.packageDuration}{' '}
+										${plan.subscribedPackage.packageCost}/
+										{plan.subscribedPackage.packageDuration}
 									</p>
 									<p style={{ marginBottom: '0' }}>
 										Start date:{' '}
-										{new Date(
-											props.radPlans?.current_plan?.status?.subscriptionInfo
-												.subscriptionTime ||
-												props.radPlans?.status?.subscriptionInfo.subscriptionTime
-										)
+										{new Date(plan.subscriptionInfo.subscriptionTime)
 											.toDateString()
 											.substring(4)}{' '}
 									</p>
 									<p style={{ marginBottom: '0' }}>
 										End date:{' '}
-										{new Date(
-											props.radPlans?.current_plan?.status?.subscriptionInfo.expiryTime ||
-												props.radPlans?.status?.subscriptionInfo.expiryTime
-										)
+										{new Date(plan.subscriptionInfo.expiryTime)
 											.toDateString()
 											.substring(4)}
 									</p>
@@ -179,29 +160,10 @@ function AutoDetectResidentialComponent(props) {
 								</label>
 								<div style={{ width: '100%', marginBottom: '20px' }}>
 									<p style={{ marginBottom: '0' }}>
-										{props.radPlans?.current_plan?.status?.subscribedPackageHitsStatus
-											.consumedHits ||
-											props.radPlans?.status?.subscribedPackageHitsStatus.consumedHits}
-										/
-										{props.radPlans?.current_plan?.status?.subscribedPackageHitsStatus
-											.packageHits ||
-											props.radPlans?.status?.subscribedPackageHitsStatus
-												.packageHits}{' '}
-										{props.radPlans?.current_plan?.status?.subscribedPackageHitsStatus
-											.consumedHitsPrcent ||
-											props.radPlans?.status?.subscribedPackageHitsStatus
-												.consumedHitsPrcent}
-										%{' '}
-										{+props.radPlans?.current_plan?.status?.lastUsageTime.replace(
-											/[-: ]/g,
-											''
-										) === 0 ||
-										+props.radPlans?.status?.lastUsageTime.replace(/[-: ]/g, '') === 0
-											? ''
-											: `(${
-													props.radPlans?.current_plan?.status?.lastUsageTime ||
-													props.radPlans?.status?.lastUsageTime
-											  })`}
+										{plan.subscribedPackageHitsStatus.consumedHits}/
+										{plan.subscribedPackageHitsStatus.packageHits}{' '}
+										{plan.subscribedPackageHitsStatus.consumedHitsPrcent}%{' '}
+										{+plan.lastUsageTime.replace(/[-: ]/g, '') === 0}
 									</p>
 								</div>
 							</Fragment>

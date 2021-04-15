@@ -70,7 +70,7 @@ export const changePlan = (token, plan_package) => {
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
-						alertMessage: data.message,
+						alertMessage: data?.data?.Message ?? data.message,
 						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
