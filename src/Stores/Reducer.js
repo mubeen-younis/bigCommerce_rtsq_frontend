@@ -303,6 +303,21 @@ const Reducer = (state = initialState, action) => {
 			};
 
 		case types.RAD_PLANS:
+			if (
+				action.payload?.severity === 'SUCCESS' &&
+				action.payload?.Message.includes(
+					'disabled the Residential Address Detection plugin'
+				)
+			) {
+				return {
+					...state,
+					radPlans: {
+						...state.radPlans,
+						...action.payload,
+					},
+				};
+			}
+
 			return {
 				...state,
 				radPlans: action.payload,

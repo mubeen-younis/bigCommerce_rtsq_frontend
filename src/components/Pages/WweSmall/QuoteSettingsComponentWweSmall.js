@@ -590,18 +590,12 @@ function QuoteSettingsComponentWweSmall(props) {
 										autoDetectedResidentialAddresses: false,
 									})
 								}
-								disabled={
-									props.installedAddons[0] && props.installedAddons[0].is_suspend === 1
-										? false
-										: true
-								}
+								disabled={props?.installedAddons[0]?.is_suspend === 1 ? false : true}
 							></Checkbox>
 						</Form.Item>
 					</Col>
-					{props.radPlans &&
-					props.radPlans.current_plan.severity === 'SUCCESS' &&
-					props.installedAddons[0] &&
-					props.installedAddons[0].is_suspend === 1 ? (
+					{props?.radPlans?.current_plan?.severity === 'SUCCESS' &&
+					props?.installedAddons[0]?.is_suspend === 1 ? (
 						<Fragment>
 							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 								<label className={'text-gray'}>
@@ -622,12 +616,9 @@ function QuoteSettingsComponentWweSmall(props) {
 											})
 										}
 										disabled={
-											props.plansInfo &&
-											props.plansInfo.plan_type > 1 &&
-											props.radPlans &&
-											props.radPlans.current_plan.severity === 'SUCCESS' &&
-											props.installedAddons[0] &&
-											props.installedAddons[0].is_suspend === 0
+											props?.plansInfo?.plan_type > 1 &&
+											props?.radPlans?.current_plan?.severity === 'SUCCESS' &&
+											props?.installedAddons[0]?.is_suspend === 0
 												? false
 												: true
 										}

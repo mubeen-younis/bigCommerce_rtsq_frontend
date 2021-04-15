@@ -40,11 +40,18 @@ export const getRadPlans = token => {
 
 export const changePlan = (token, plan_package) => {
 	return dispatch => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		});
 		axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/rad/change_plan`,
 				{
-					package: plan_package,
+					selected_plan: plan_package,
 				},
 				{
 					headers: {
