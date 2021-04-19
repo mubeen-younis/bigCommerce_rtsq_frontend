@@ -139,6 +139,7 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				plansInfo: action.payload,
 			};
+
 		// Carriers End
 
 		// Location Cases

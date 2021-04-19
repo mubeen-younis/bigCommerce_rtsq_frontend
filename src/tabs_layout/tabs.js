@@ -38,11 +38,13 @@ function TabsLayout(props) {
 
 	return (
 		<Fragment>
-			{planInfo && (
+			{planInfo && !planInfo.isExpired ? (
 				<div className='note-bx'>
 					You are currently on <strong>{plans[planInfo.plan_type]}</strong> Plan.
 					{planInfo.plan_type === 0 ? '' : `The plan renews on ${planInfo.expiry_date}.`}
 				</div>
+			) : (
+				<div className='note-bx'>The plan has expired.</div>
 			)}
 
 			<Tabs className={'tabs-wrp'} onChange={callback} type='card'>

@@ -103,9 +103,17 @@ export const getInstalledCarrierPlanInfo = (token, carrierId) => {
 			})
 			.then(({ data }) => {
 				if (!data.error) {
+					const isExpired = new Date() > new Date(data.data.expiry_date);
+
 					dispatch({
 						type: 'GET_INSTALLED_CARRIER_PLAN_INFO',
-						payload: data.data,
+						payload: isExpired
+							? {
+									...data.data,
+									plan_type: '1',
+									isExpired,
+							  }
+							: { ...data.data, isExpired },
 					});
 				}
 			})
