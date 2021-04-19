@@ -62,14 +62,14 @@ function QuoteSettingsComponentWweSmall(props) {
 	const getQuoteSettings = () => {
 		const checks = props.quoteSettings.carrier_services;
 		if (
-			checks.ups_ground &&
-			checks.ups_3_day_select &&
-			checks.ups_2nd_day_air &&
-			checks.ups_2nd_day_air_am &&
-			checks.ups_2nd_day_air_saver &&
-			checks.ups_next_day_air &&
-			checks.ups_next_day_air_saver &&
-			checks.ups_next_day_air_early
+			checks?.ups_ground &&
+			checks?.ups_3_day_select &&
+			checks?.ups_2nd_day_air &&
+			checks?.ups_2nd_day_air_am &&
+			checks?.ups_2nd_day_air_saver &&
+			checks?.ups_next_day_air &&
+			checks?.ups_next_day_air_saver &&
+			checks?.ups_next_day_air_early
 		) {
 			setCheckAll(true);
 		}
@@ -639,7 +639,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						</Fragment>
 					) : null}
 
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+					{/* <Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 						<label className={'text-gray'}>
 							Do not return rates if the shipping address appears to be a post office
 						</label>
@@ -668,7 +668,7 @@ function QuoteSettingsComponentWweSmall(props) {
 								)}
 							</Checkbox>
 						</Form.Item>
-					</Col>
+					</Col> */}
 				</Row>
 
 				<Row gutter={30} align='middle' className={'mb-4'}>
@@ -792,7 +792,7 @@ function QuoteSettingsComponentWweSmall(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={30}>
+				{/* <Row gutter={30}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Quote Details</Title>
 					</Col>
@@ -841,7 +841,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Radio>
 						</Form.Item>
 					</Col>
-				</Row>
+				</Row> */}
 
 				<Row gutter={30} className={'mt-3'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>

@@ -8,6 +8,7 @@ const initialState = {
 	carriers: null,
 	carriersSettings: null,
 	plansInfo: null,
+	boxSizes: null,
 	services: null,
 	filteredServices: null,
 	skeleton_loading: true,
@@ -321,6 +322,35 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				radPlans: action.payload,
+			};
+
+		case types.GET_BOX_SIZES:
+			return {
+				...state,
+				boxSizes: action.payload,
+			};
+
+		case types.ADD_BOX_SIZE:
+			return {
+				...state,
+				boxSizes: [
+					...state.boxSizes,
+					{ ...action.payload, is_available: action.payload.is_available ? 1 : 0 },
+				],
+			};
+
+		case types.DELETE_BOX_SIZE:
+			return {
+				...state,
+				boxSizes: state.boxSizes.filter(bs => bs.id !== +action.payload),
+			};
+
+		case types.UPDATE_BOX_SIZE:
+			return {
+				...state,
+				boxSizes: state.boxSizes.map(bs =>
+					bs.id === action.payload.id ? action.payload : bs
+				),
 			};
 
 		default:

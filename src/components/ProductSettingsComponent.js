@@ -105,11 +105,11 @@ function ProductSettingsComponent(props) {
 			setFormError('');
 		} */
 
-		if (!selectedProductDetail['freight_class']) {
+		/* if (!selectedProductDetail['freight_class']) {
 			setFormError('Please specify Freight Class.');
 			setTimeout(() => setFormError(''), 4000);
 			return;
-		} else if (
+		} else */ if (
 			selectedProductDetail.dropship_enabled &&
 			!selectedProductDetail.dropship_location
 		) {

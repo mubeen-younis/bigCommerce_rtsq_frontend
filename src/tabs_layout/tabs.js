@@ -10,6 +10,7 @@ import WarehouseComponent from '../components/Pages/WarehouseComponent';
 import QuoteSettingsComponentWwe from '../components/Pages/WweLtl/QuoteSettingsComponentWwe';
 import UserGuideComponent from '../components/Pages/UserGuideComponent';
 import QuoteSettingsComponentWweSmall from '../components/Pages/WweSmall/QuoteSettingsComponentWweSmall';
+import BoxSizesComponent from '../components/Pages/BoxSizesComponent';
 // import AlertMessage from "../Utilities/AlertMessage";
 
 const { TabPane } = Tabs;
@@ -67,10 +68,12 @@ function TabsLayout(props) {
 				{/* <TabPane tab="Import CSV" key="6">
                     <AlertMessage />
                     <ImportCsvComponent />
-                </TabPane>
-                <TabPane tab="Box Sizes" key="7">
-                    <BoxSizesComponent />
-                </TabPane> */}
+                </TabPane>*/}
+				{/* {component === 1 && (
+					<TabPane tab='Box Sizes' key='7'>
+						<BoxSizesComponent />
+					</TabPane>
+				)} */}
 				<TabPane tab='User Guide' key='6'>
 					<UserGuideComponent />
 				</TabPane>
