@@ -56,7 +56,7 @@ function ShippingCarriersComponent(props) {
 							<figure>
 								<img
 									style={{ height: '175px' }}
-									src={`images/rad.jpg`}
+									src={`images/${value.logo}`}
 									alt={'text alt'}
 								/>
 							</figure>
@@ -116,7 +116,7 @@ function ShippingCarriersComponent(props) {
 							<figure>
 								<img
 									style={{ height: '175px' }}
-									src={`../../images/${value.logo}`}
+									src={`images/${value.logo}`}
 									alt={'text alt'}
 								/>
 							</figure>
@@ -203,7 +203,7 @@ function ShippingCarriersComponent(props) {
 	);
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		installedCarriers: state.installedCarriers,
 		installedAddons: state.installedAddons,
@@ -215,7 +215,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		getInstalledCarriers: () => dispatch(getInstalledCarriers()),
 		changeCarrierStatus: (data, token) => dispatch(changeCarrierStatus(data, token)),
