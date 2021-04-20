@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const submitProductSettings = (data, token) => {
+export const submitProductSettings = (productSettings, token) => {
 	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
@@ -11,12 +11,19 @@ export const submitProductSettings = (data, token) => {
 		});
 
 		axios
-			.post(`${process.env.REACT_APP_ENITURE_API_URL}/update_product`, data, {
+			.post(`${process.env.REACT_APP_ENITURE_API_URL}/update_product`, productSettings, {
 				headers: {
 					authorization: `Bearer ${token}`,
 				},
 			})
 			.then(({ data }) => {
+				if (!data.error) {
+					dispatch({
+						type: 'UPDATE_PRODUCT_SETTINGS',
+						payload: data.data,
+					});
+				}
+
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {

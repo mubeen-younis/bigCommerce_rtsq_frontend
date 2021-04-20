@@ -10,7 +10,7 @@ import WarehouseComponent from '../components/Pages/WarehouseComponent';
 import QuoteSettingsComponentWwe from '../components/Pages/WweLtl/QuoteSettingsComponentWwe';
 import UserGuideComponent from '../components/Pages/UserGuideComponent';
 import QuoteSettingsComponentWweSmall from '../components/Pages/WweSmall/QuoteSettingsComponentWweSmall';
-import BoxSizesComponent from '../components/Pages/BoxSizesComponent';
+// import BoxSizesComponent from '../components/Pages/BoxSizesComponent';
 // import AlertMessage from "../Utilities/AlertMessage";
 
 const { TabPane } = Tabs;
@@ -38,13 +38,18 @@ function TabsLayout(props) {
 
 	return (
 		<Fragment>
-			{planInfo && !planInfo.isExpired ? (
+			{planInfo && !planInfo.isExpired && (
 				<div className='note-bx'>
 					You are currently on <strong>{plans[planInfo.plan_type]}</strong> Plan.
 					{planInfo.plan_type === 0 ? '' : `The plan renews on ${planInfo.expiry_date}.`}
 				</div>
-			) : (
-				<div className='note-bx'>The plan has expired.</div>
+			)}
+
+			{planInfo && planInfo.isExpired && (
+				<div className='note-bx'>
+					Error! Connection failed due to license expired. Please upgrage/renew your
+					license from eniture.com dashboard.
+				</div>
 			)}
 
 			<Tabs className={'tabs-wrp'} onChange={callback} type='card'>

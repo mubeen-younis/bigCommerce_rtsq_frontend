@@ -286,6 +286,14 @@ const Reducer = (state = initialState, action) => {
 				allProducts: action.payload,
 			};
 
+		case types.UPDATE_PRODUCT_SETTINGS:
+			return {
+				...state,
+				allProducts: state.allProducts.map(pdct =>
+					pdct.id === action.payload.id ? action.payload : pdct
+				),
+			};
+
 		case types.GET_PLANS_INFO:
 			return {
 				...state,

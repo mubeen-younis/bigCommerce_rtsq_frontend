@@ -340,6 +340,7 @@ function ProductSettingsComponent(props) {
 										<Option value='60'>60</Option>
 										<Option value='65'>65</Option>
 										<Option value='70'>70</Option>
+										<Option value='77.5'>77.5</Option>
 										<Option value='85'>85</Option>
 										<Option value='92.5'>92.5</Option>
 										<Option value='100'>100</Option>
@@ -349,6 +350,7 @@ function ProductSettingsComponent(props) {
 										<Option value='175'>175</Option>
 										<Option value='200'>200</Option>
 										<Option value='225'>225</Option>
+										<Option value='250'>250</Option>
 										<Option value='300'>300</Option>
 										<Option value='400'>400</Option>
 										<Option value='500'>500</Option>
@@ -475,7 +477,7 @@ function ProductSettingsComponent(props) {
 						</Row>
 						{selectedProductDetail.dropship_enabled ? (
 							<Row gutter={16}>
-								<Col span={12}>
+								<Col span={24}>
 									<Form.Item name='dropship_location' label='Dropship Location'>
 										<Select
 											placeholder='Dropship Location'
