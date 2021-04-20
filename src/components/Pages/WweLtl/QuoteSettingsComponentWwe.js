@@ -110,10 +110,16 @@ function QuoteSettingsComponentWwe(props) {
 							>
 								<Option value={1}>Cheapest</Option>
 								<Option value={2}>Cheapest Options</Option>
-								<Option value={3}>Average</Option>
+								<Option value={3}>Average Rate</Option>
 							</Select>
 						</Form.Item>
-						<div className={'text-gray'}>Display a least expensive option.</div>
+						<div className={'text-gray'}>
+							{ratingMethod === 1 && 'Displays a least expensive option.'}
+							{ratingMethod === 2 &&
+								'Displays a list of specified number of least expensive options.'}
+							{ratingMethod === 3 &&
+								'Displays a single rate based on an average of a specified number of least expensive options.'}
+						</div>
 					</Col>
 				</Row>
 
@@ -143,7 +149,10 @@ function QuoteSettingsComponentWwe(props) {
 								</Select>
 							</Form.Item>
 							<div className={'text-gray'}>
-								Number of options to display in the shopping cart.
+								{ratingMethod === 2 &&
+									'Number of options to display in the shopping cart.'}
+								{ratingMethod === 3 &&
+									'Number of options to include in the calculation of the average.'}
 							</div>
 						</Col>
 					</Row>
@@ -162,12 +171,13 @@ function QuoteSettingsComponentWwe(props) {
 								/>
 							</Form.Item>
 							<div className={'text-gray'}>
-								what the user sees during checkout, e.g. "Freight". Leave blank to display
+								What the user sees during checkout, e.g. "Freight". Leave blank to display
 								the carrier name.
 							</div>
 						</Col>
 					</Row>
 				) : null}
+
 				{ratingMethod === 1 || ratingMethod === 2 ? (
 					<Row gutter={30} className={'mb-3'}>
 						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>

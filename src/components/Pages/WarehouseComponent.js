@@ -573,13 +573,6 @@ function WarehouseComponent(props) {
 									<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 										<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 											<Space>
-												<Button
-													type='link'
-													size={'large'}
-													onClick={() => setVisibleWarehouse(false)}
-												>
-													Cancel
-												</Button>
 												<Button type='primary' size={'large'} htmlType='submit'>
 													Save
 												</Button>

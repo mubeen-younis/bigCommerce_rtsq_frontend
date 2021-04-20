@@ -10,7 +10,7 @@ import {
 	Button,
 	Space,
 	Form,
-	Input,
+	// Input,
 	Drawer,
 	Col,
 	Row,
@@ -166,9 +166,9 @@ function ProductSettingsComponent(props) {
 		onChange: onSelectChange,
 	};
 
-	let { sortedInfo, filteredInfo } = state;
+	let { sortedInfo /* filteredInfo */ } = state;
 	sortedInfo = sortedInfo || {};
-	filteredInfo = filteredInfo || {};
+	// filteredInfo = filteredInfo || {};
 
 	const columns = [
 		{
@@ -283,9 +283,6 @@ function ProductSettingsComponent(props) {
 							textAlign: 'right',
 						}}
 					>
-						<Button onClick={onClose} style={{ marginRight: 8 }}>
-							Cancel
-						</Button>
 						<Button onClick={saveSettings} type='primary'>
 							Save
 						</Button>
