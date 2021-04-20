@@ -48,7 +48,7 @@ function TabsLayout(props) {
 			)}
 
 			<Tabs className={'tabs-wrp'} onChange={callback} type='card'>
-				<TabPane tab='Connection Settinngs' key='1'>
+				<TabPane tab='Connection Settings' key='1'>
 					{component === 0 && <ConnectionSettingsComponentWweltl />}
 					{component === 1 && <ConnectionSettingsComponentWweSmall />}
 				</TabPane>
@@ -57,7 +57,7 @@ function TabsLayout(props) {
 						<CarriersComponent />
 					</TabPane>
 				)}
-				<TabPane tab='Warehouse' key='3'>
+				<TabPane tab='Warehouses' key='3'>
 					<WarehouseComponent />
 				</TabPane>
 				<TabPane tab='Quote Settings' key='4'>

@@ -29,8 +29,15 @@ function ConnectionSettingsComponent(props) {
 		<Fragment>
 			<div className={'note-bx'}>
 				<strong>Note!</strong> You must have a World Wide Express account to use this
-				application. If you do not have one, click here to access the new account request
-				form.
+				application. If you do not have one, click{' '}
+				<a
+					href='https://eniture.com/request-worldwide-express-account-number/'
+					target='_blank'
+					rel='noreferrer'
+				>
+					here
+				</a>{' '}
+				to access the new account request form.
 			</div>
 			<Form
 				layout='vertical'
@@ -57,7 +64,7 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item
 					label='Password'
 					name='password'
-					rules={[{ required: true, message: 'Please input your Password!' }]}
+					rules={[{ required: true, message: 'Password!' }]}
 				>
 					<Input type='password' placeholder='Password' />
 				</Form.Item>

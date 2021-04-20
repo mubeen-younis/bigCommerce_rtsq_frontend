@@ -432,7 +432,7 @@ function QuoteSettingsComponentWwe(props) {
 						</Form.Item>
 						<div className={'text-gray'}>
 							Adds an option in the shipping cart for users to indicate that they will
-							make and pay for their own LTL shipping arrangments.
+							make and pay for their own LTL shipping arrangements.
 						</div>
 					</Col>
 				</Row>
@@ -440,7 +440,7 @@ function QuoteSettingsComponentWwe(props) {
 				{quoteSettingsState.own_arrangement === '1' && (
 					<Row gutter={30} className={'mb-3'}>
 						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-							<label className={'text-gray'}>Text for Own Arragement</label>
+							<label className={'text-gray'}>Text for Own Arrangement</label>
 						</Col>
 						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 							<Form.Item className={'mb-0'} name='own_arrangement_text'>

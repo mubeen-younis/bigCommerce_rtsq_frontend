@@ -3,7 +3,16 @@ import { connect } from 'react-redux';
 import { postData } from '../../Actions/Action';
 import { Row, Col } from 'antd';
 
-function UserGuideComponent() {
+const links = {
+	'ltl-quotes':
+		'https://eniture.com/woocommerce-worldwide-express-ltl-freight/#documentation',
+	'small-package':
+		'https://eniture.com/woocommerce-worldwide-express-small-package-plugin/#documentation',
+};
+
+function UserGuideComponent(props) {
+	const selectedCarrier = props.installedCarriers.find(ic => +ic.id === +props.carrierId);
+
 	return (
 		<Fragment>
 			<Row gutter={30} justify='center' className={'mb-3'}>
@@ -11,12 +20,13 @@ function UserGuideComponent() {
 					<div className={'content-box box-shadow'} style={{ padding: '40px' }}>
 						<p>
 							The User Guide for this application is maintained on the publisher's
-							website. To view it click <a href='#!'>here</a> or paste the following link
-							into your browser.
+							website. To view it click{' '}
+							<a href={links[selectedCarrier.slug]} target='_blank' rel='noreferrer'>
+								here
+							</a>{' '}
+							or paste the following link into your browser.
 						</p>
-						<p>
-							<a href='#!'>https://eniture.com/shopify-fedex-ltl-freight</a>
-						</p>
+						<p>{links[selectedCarrier.slug]}</p>
 					</div>
 				</Col>
 			</Row>
@@ -24,13 +34,15 @@ function UserGuideComponent() {
 	);
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		token: state.token,
+		installedCarriers: state.installedCarriers,
+		carrierId: state.carrierId,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		postData: (data, type, url, token) => dispatch(postData(data, type, url, token)),
 	};
