@@ -64,7 +64,7 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item
 					label='Password'
 					name='password'
-					rules={[{ required: true, message: 'Password!' }]}
+					rules={[{ required: true, message: 'Password' }]}
 				>
 					<Input type='password' placeholder='Password' />
 				</Form.Item>
