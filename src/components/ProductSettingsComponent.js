@@ -117,7 +117,7 @@ function ProductSettingsComponent(props) {
 			setTimeout(() => setFormError(''), 4000);
 		} else {
 			delete selectedProductDetail['settings'];
-			props.submitProductSettings(selectedProductDetail, props.token);
+			props.submitProductSettings(selectedProductDetail, props.token, setState);
 			setFormError('');
 		}
 	};
@@ -541,7 +541,8 @@ const mapDispatchToProps = dispatch => {
 	return {
 		getAllProducts: token => dispatch(getAllProducts(token)),
 		importProducts: token => dispatch(importProducts(token)),
-		submitProductSettings: (data, token) => dispatch(submitProductSettings(data, token)),
+		submitProductSettings: (data, token, visibility) =>
+			dispatch(submitProductSettings(data, token, visibility)),
 	};
 };
 

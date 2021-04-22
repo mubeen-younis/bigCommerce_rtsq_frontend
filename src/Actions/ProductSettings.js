@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const submitProductSettings = (productSettings, token) => {
+export const submitProductSettings = (productSettings, token, setState) => {
 	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
@@ -22,6 +22,11 @@ export const submitProductSettings = (productSettings, token) => {
 						type: 'UPDATE_PRODUCT_SETTINGS',
 						payload: data.data,
 					});
+
+					setState(ps => ({
+						...ps,
+						visible: false,
+					}));
 				}
 
 				dispatch({

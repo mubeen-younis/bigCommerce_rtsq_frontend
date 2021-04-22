@@ -226,7 +226,7 @@ function QuoteSettingsComponentWwe(props) {
 						</Form.Item>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Always quote residential delivery</label>
+						<label className={'text-gray'}>Always quote as residential delivery</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
@@ -255,9 +255,7 @@ function QuoteSettingsComponentWwe(props) {
 					props.installedAddons[0].is_suspend === 1 ? (
 						<Fragment>
 							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-								<label className={'text-gray'}>
-									Automatically detected residential addresses
-								</label>
+								<label className={'text-gray'}>Auto-detect residential addresses</label>
 							</Col>
 							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 								<Form.Item className={'mb-0'}>
@@ -291,7 +289,7 @@ function QuoteSettingsComponentWwe(props) {
 									</Checkbox>
 									Requires{' '}
 									<b>
-										<i>Automatically detect residential addresses </i>
+										<i>Auto-detect residential addresses </i>
 									</b>{' '}
 									feature
 								</Form.Item>
