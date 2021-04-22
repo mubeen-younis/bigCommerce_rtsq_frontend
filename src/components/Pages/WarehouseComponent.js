@@ -29,6 +29,8 @@ function WarehouseComponent(props) {
 	const [locationDetail, setLocationDetail] = useState({
 		enable_instore: false,
 		enable_ld: false,
+		instore_zipcodes: [],
+		ld_zipcodes: [],
 	});
 	const [city, setCity] = useState('');
 
@@ -126,10 +128,10 @@ function WarehouseComponent(props) {
 		});
 	};
 
-	const handleChange = (name, e) => {
+	const handleChange = (name, tags) => {
 		setLocationDetail({
 			...locationDetail,
-			[name]: e,
+			[name]: tags,
 		});
 	};
 
@@ -384,16 +386,22 @@ function WarehouseComponent(props) {
 									<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
 										<Form.Item
 											className={'mb-0'}
-											rules={[{ required: false, message: 'Costal Code Required' }]}
+											rules={[{ required: false, message: 'Postal Code Required' }]}
 										>
 											<Select
 												name='instore_zipcodes'
 												value={locationDetail.instore_zipcodes}
 												mode='tags'
 												style={{ width: '100%' }}
-												onChange={e => handleChange('instore_zipcodes', e)}
+												onChange={tags => handleChange('instore_zipcodes', tags)}
 												tokenSeparators={[',']}
 												disabled={plansInfo && plansInfo.plan_type > 2 ? false : true}
+												onInputKeyDown={key => {
+													if (key.code === 'Space') {
+														key.preventDefault();
+														return;
+													}
+												}}
 											/>
 										</Form.Item>
 									</Col>
@@ -415,7 +423,7 @@ function WarehouseComponent(props) {
 											<Input
 												name='instock_description'
 												value={locationDetail.instock_description}
-												placeholder='In-stock pick up'
+												placeholder='In-store pick up'
 												onChange={changeValue}
 												disabled={plansInfo && plansInfo.plan_type > 2 ? false : true}
 											/>
@@ -476,7 +484,7 @@ function WarehouseComponent(props) {
 									<Col className='gutter-row' xs={24} sm={16} md={16} lg={16} xl={16}>
 										<Form.Item
 											className={'mb-0'}
-											rules={[{ required: false, message: 'Costal Code Required' }]}
+											rules={[{ required: false, message: 'Postal Code Required' }]}
 										>
 											<Select
 												name='ld_zipcodes'
@@ -486,6 +494,12 @@ function WarehouseComponent(props) {
 												onChange={e => handleChange('ld_zipcodes', e)}
 												tokenSeparators={[',']}
 												disabled={plansInfo && plansInfo.plan_type > 2 ? false : true}
+												onInputKeyDown={key => {
+													if (key.code === 'Space') {
+														key.preventDefault();
+														return;
+													}
+												}}
 											/>
 										</Form.Item>
 									</Col>
