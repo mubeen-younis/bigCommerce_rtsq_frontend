@@ -169,7 +169,7 @@ function QuoteSettingsComponentWweSmall(props) {
 					</Col>
 				</Row>
 
-				<Row>
+				<Row gutter={30} align='middle' className={'mb-2'}>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 						<label className={'text-gray'}>Select All Services</label>
 					</Col>
@@ -521,8 +521,8 @@ function QuoteSettingsComponentWweSmall(props) {
 							<Radio
 								name='ground_metric'
 								value='1'
-								// checked={quoteSettingsState.ground_metric === 1}
-								checked={true}
+								checked={quoteSettingsState.ground_metric === 1}
+								// checked={true}
 								onChange={() =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
