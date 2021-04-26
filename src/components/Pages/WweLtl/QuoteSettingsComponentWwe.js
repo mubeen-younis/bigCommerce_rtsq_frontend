@@ -241,7 +241,14 @@ function QuoteSettingsComponentWwe(props) {
 										autoDetectedResidentialAddresses: false,
 									})
 								}
-								disabled={props?.installedAddons[0]?.is_suspend === 0 ? true : false}
+								disabled={
+									!props.installedAddons[0] ||
+									(props?.installedAddons[0] &&
+										props.installedAddons[0].is_enabled === 0) ||
+									props?.installedAddons[0]?.is_suspend === 1
+										? false
+										: true
+								}
 							></Checkbox>
 						</Form.Item>
 					</Col>
@@ -389,7 +396,7 @@ function QuoteSettingsComponentWwe(props) {
 									</Checkbox>
 									Requires{' '}
 									<b>
-										<i>Automatically detect residential addresses </i>
+										<i>Auto-detect residential addresses </i>
 									</b>{' '}
 									feature
 								</Form.Item>

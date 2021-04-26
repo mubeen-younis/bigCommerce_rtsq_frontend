@@ -590,7 +590,14 @@ function QuoteSettingsComponentWweSmall(props) {
 										autoDetectedResidentialAddresses: false,
 									})
 								}
-								disabled={props?.installedAddons[0]?.is_suspend === 1 ? false : true}
+								disabled={
+									!props.installedAddons[0] ||
+									(props?.installedAddons[0] &&
+										props.installedAddons[0].is_enabled === 0) ||
+									props?.installedAddons[0]?.is_suspend === 1
+										? false
+										: true
+								}
 							></Checkbox>
 						</Form.Item>
 					</Col>
