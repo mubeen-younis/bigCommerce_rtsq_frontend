@@ -195,8 +195,8 @@ function WarehouseComponent(props) {
 								{alertMessageType === 'loading'
 									? 'Loading...please wait'
 									: locationDetail.location_type === 1
-									? 'Warehouse info'
-									: 'Dropship info'}
+									? 'Warehouse'
+									: 'Dropship'}
 							</Title>
 						}
 						centered
