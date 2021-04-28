@@ -651,7 +651,7 @@ function WarehouseComponent(props) {
 				onOk={() => deleteLocation(warehouseID, setDeleteWarehouseModal, token)}
 				onCancel={() => setDeleteWarehouseModal(false)}
 				okText='Confirm'
-				cancelText='Cancel'
+				cancelButtonProps={{ style: { display: 'none' } }}
 			>
 				<p>Are you sure you want to delete this?</p>
 			</Modal>
