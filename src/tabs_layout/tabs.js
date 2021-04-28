@@ -8,10 +8,8 @@ import WarehouseComponent from '../components/Pages/WarehouseComponent';
 import UserGuideComponent from '../components/Pages/UserGuideComponent';
 import ConnectionSettingsComponentWweltl from '../components/Pages/WweLtl/ConnectionSettingsComponent';
 import ConnectionSettingsComponentWweSmall from '../components/Pages/WweSmall/ConnectionSettingsComponentWweSmall';
-import ConnectionSettingsComponentUpsLtl from '../components/Pages/UpsLtl/ConnectionSettingsComponent';
 import QuoteSettingsComponentWwe from '../components/Pages/WweLtl/QuoteSettingsComponentWwe';
 import QuoteSettingsComponentWweSmall from '../components/Pages/WweSmall/QuoteSettingsComponentWweSmall';
-import QuoteSettingsComponentUpsLtl from '../components/Pages/UpsLtl/QuoteSettingsComponentWwe';
 // import BoxSizesComponent from '../components/Pages/BoxSizesComponent';
 // import AlertMessage from "../Utilities/AlertMessage";
 
@@ -58,7 +56,6 @@ function TabsLayout(props) {
 				<TabPane tab='Connection Settings' key='1'>
 					{component === 0 && <ConnectionSettingsComponentWweltl />}
 					{component === 1 && <ConnectionSettingsComponentWweSmall />}
-					{component === 2 && <ConnectionSettingsComponentUpsLtl />}
 				</TabPane>
 				{component === 0 && (
 					<TabPane tab='Carriers' key='2'>
@@ -71,7 +68,6 @@ function TabsLayout(props) {
 				<TabPane tab='Quote Settings' key='4'>
 					{component === 0 && <QuoteSettingsComponentWwe />}
 					{component === 1 && <QuoteSettingsComponentWweSmall />}
-					{component === 2 && <QuoteSettingsComponentUpsLtl />}
 				</TabPane>
 				<TabPane tab='Product Settings' key='5'>
 					<ProductSettingsComponent />
