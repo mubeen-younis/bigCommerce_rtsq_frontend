@@ -272,7 +272,9 @@ function ProductSettingsComponent(props) {
 
 			{/* ================ */}
 			<Drawer
-				title='Product Settings'
+				title={`Product Settings ${
+					!loadProduct ? ' (' + selectedProductDetail?.name + ')' : ''
+				}`}
 				width={720}
 				onClose={onClose}
 				visible={state.visible}

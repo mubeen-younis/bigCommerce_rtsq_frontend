@@ -196,7 +196,7 @@ function WarehouseComponent(props) {
 									? 'Loading...please wait'
 									: locationDetail.location_type === 1
 									? 'Warehouse'
-									: 'Dropship'}
+									: 'Drop ship'}
 							</Title>
 						}
 						centered

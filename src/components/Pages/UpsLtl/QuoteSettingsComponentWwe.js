@@ -31,10 +31,8 @@ function QuoteSettingsComponentWwe(props) {
 		offerLiftGateDelivery: false,
 		autoDetectedResidentialAddressesLfg: false,
 		returnRates: false,
-		own_arrangement: 0,
-		own_arrangement_text: '',
+		shipper_relationship: 'shipper',
 	});
-	const [ratingMethod, setRatingMethod] = useState(1);
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -44,24 +42,8 @@ function QuoteSettingsComponentWwe(props) {
 	}, [props.quoteSettings]);
 
 	const getQuoteSettings = () => {
-		let ratingMethodInit =
-			props.quoteSettings.method !== undefined ? props.quoteSettings.method : 1;
-		setRatingMethod(ratingMethodInit);
-
 		setQuoteSettingsState({
-			showDeliveryEstimate: props.quoteSettings.showDeliveryEstimate,
-			residentialPickup: props.quoteSettings.residentialPickup,
-			alwaysResidentialDelivery: props.quoteSettings.alwaysResidentialDelivery,
-			autoDetectedResidentialAddresses:
-				props.quoteSettings.autoDetectedResidentialAddresses,
-			alwaysLiftGatePickup: props.quoteSettings.alwaysLiftGatePickup,
-			alwaysLiftGateDelivery: props.quoteSettings.alwaysLiftGateDelivery,
-			offerLiftGateDelivery: props.quoteSettings.offerLiftGateDelivery,
-			autoDetectedResidentialAddressesLfg:
-				props.quoteSettings.autoDetectedResidentialAddressesLfg,
-			returnRates: props.quoteSettings.returnRates,
-			own_arrangement: props.quoteSettings.own_arrangement,
-			own_arrangement_text: props.quoteSettings.own_arrangement_text,
+			...props.quoteSettings,
 		});
 
 		setLoading(false);
@@ -91,117 +73,44 @@ function QuoteSettingsComponentWwe(props) {
 			>
 				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-						<label className={'text-gray'}>Rating Method</label>
+						<label className={'text-gray'}>Label as</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='method'>
-							<Select
-								defaultValue={
-									props.quoteSettings && props.quoteSettings.method !== undefined
-										? props.quoteSettings.method
-										: 1
-								}
-								name='method'
-								size={'large'}
-								style={{ width: '100%' }}
-								onChange={value => {
-									setRatingMethod(value);
-								}}
-							>
-								<Option value={1}>Cheapest</Option>
-								<Option value={2}>Cheapest Options</Option>
-								<Option value={3}>Average Rate</Option>
-							</Select>
+						<Form.Item className={'mb-0'} name='label_as'>
+							<Input
+								name='label_as'
+								value={props.quoteSettings ? props.quoteSettings.label_as : ''}
+							/>
 						</Form.Item>
 						<div className={'text-gray'}>
-							{ratingMethod === 1 && 'Displays a least expensive option.'}
-							{ratingMethod === 2 &&
-								'Displays a list of specified number of least expensive options.'}
-							{ratingMethod === 3 &&
-								'Displays a single rate based on an average of a specified number of least expensive options.'}
+							What the user sees during checkout, e.g. "Freight". Leave blank to display
+							the carrier name.
 						</div>
 					</Col>
 				</Row>
 
-				{ratingMethod === 2 || ratingMethod === 3 ? (
-					<Row gutter={30} className={'mb-3'}>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-							<label className={'text-gray'}>Number Of Options</label>
-						</Col>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-							<Form.Item className={'mb-0'} name='number_of_options'>
-								<Select
-									name='number_of_options'
-									defaultValue='1'
-									size={'large'}
-									style={{ width: '100%' }}
-								>
-									<Option value='1'>1</Option>
-									<Option value='2'>2</Option>
-									<Option value='3'>3</Option>
-									<Option value='4'>4</Option>
-									<Option value='5'>5</Option>
-									<Option value='6'>6</Option>
-									<Option value='7'>7</Option>
-									<Option value='8'>8</Option>
-									<Option value='9'>9</Option>
-									<Option value='10'>10</Option>
-								</Select>
-							</Form.Item>
-							<div className={'text-gray'}>
-								{ratingMethod === 2 &&
-									'Number of options to display in the shopping cart.'}
-								{ratingMethod === 3 &&
-									'Number of options to include in the calculation of the average.'}
-							</div>
-						</Col>
-					</Row>
-				) : null}
-
-				{ratingMethod === 1 || ratingMethod === 3 ? (
-					<Row gutter={30} className={'mb-3'}>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-							<label className={'text-gray'}>Label as</label>
-						</Col>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-							<Form.Item className={'mb-0'} name='label_as'>
-								<Input
-									name='label_as'
-									value={props.quoteSettings ? props.quoteSettings.label_as : ''}
-								/>
-							</Form.Item>
-							<div className={'text-gray'}>
-								What the user sees during checkout, e.g. "Freight". Leave blank to display
-								the carrier name.
-							</div>
-						</Col>
-					</Row>
-				) : null}
-
-				{ratingMethod === 1 || ratingMethod === 2 ? (
-					<Row gutter={30} className={'mb-3'}>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-							<label className={'text-gray'}>Show Delivery Estimate</label>
-						</Col>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-							<Form.Item className={'mb-0'}>
-								<Checkbox
-									name='show_delivery_estimate'
-									// value={true}
-									checked={quoteSettingsState.showDeliveryEstimate}
-									onChange={() => {
-										setQuoteSettingsState({
-											...quoteSettingsState,
-											showDeliveryEstimate: !quoteSettingsState.showDeliveryEstimate,
-										});
-									}}
-								>
-									Show Delivery Estimate With Shipping Services.
-								</Checkbox>
-							</Form.Item>
-						</Col>
-					</Row>
-				) : null}
+				<Row gutter={30} className={'mb-3'}>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+						<label className={'text-gray'}>Show Delivery Estimate</label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name='show_delivery_estimate'
+								// value={true}
+								checked={quoteSettingsState.showDeliveryEstimate}
+								onChange={() => {
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										showDeliveryEstimate: !quoteSettingsState.showDeliveryEstimate,
+									});
+								}}
+							>
+								Show Delivery Estimate With Shipping Services.
+							</Checkbox>
+						</Form.Item>
+					</Col>
+				</Row>
 
 				<Row gutter={30} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -252,11 +161,10 @@ function QuoteSettingsComponentWwe(props) {
 							></Checkbox>
 						</Form.Item>
 					</Col>
-					{(props?.radPlans &&
-						props?.radPlans?.current_plan?.severity === 'SUCCESS' &&
-						props?.installedAddons[0]?.is_enabled === 1 &&
-						props?.installedAddons[0]?.is_suspend === 0) ||
-					props?.installedAddons[0].is_enabled === 0 ? (
+					{props.radPlans &&
+					props.radPlans.current_plan.severity === 'SUCCESS' &&
+					props.installedAddons[0] &&
+					props.installedAddons[0].is_suspend === 1 ? (
 						<Fragment>
 							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 								<label className={'text-gray'}>Auto-detect residential addresses</label>
@@ -280,8 +188,7 @@ function QuoteSettingsComponentWwe(props) {
 										disabled={
 											props?.plansInfo?.plan_type > 1 &&
 											props?.radPlans?.current_plan?.severity === 'SUCCESS' &&
-											props?.installedAddons[0]?.is_suspend === 0 &&
-											props?.installedAddons[0]?.is_enabled === 1
+											props?.installedAddons[0]?.is_suspend === 0
 												? false
 												: true
 										}
@@ -381,8 +288,7 @@ function QuoteSettingsComponentWwe(props) {
 								disabled={
 									props?.plansInfo?.plan_type > 1 &&
 									props?.radPlans?.current_plan?.severity === 'SUCCESS' &&
-									props?.installedAddons[0]?.is_suspend === 0 &&
-									props?.installedAddons[0]?.is_enabled === 1
+									props?.installedAddons[0]?.is_suspend === 0
 										? false
 										: true
 								}
@@ -404,6 +310,21 @@ function QuoteSettingsComponentWwe(props) {
 
 				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
+						<label className={'text-gray'}>Weight of Handling Unit</label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
+						<Form.Item className={'mb-0'} name='weight_of_handling_unit'>
+							<Input maxLength='7' pattern='[0-9.?(0-9){2}?]+%?$' />
+						</Form.Item>
+						<div className={'text-gray'}>
+							Enter in pounds the weight of your pallet, skid, crate, or other types of
+							handling unit. Leave blank to disable.
+						</div>
+					</Col>
+				</Row>
+
+				<Row gutter={30} className={'mb-3'}>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
 						<label className={'text-gray'}>Handling Fee / Markup</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
@@ -418,53 +339,70 @@ function QuoteSettingsComponentWwe(props) {
 				</Row>
 
 				<Row gutter={30} className={'mb-3'}>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+						<label className={'text-gray'}>
+							Do not return rates if the shipping address appears to be a post office box
+						</label>
+					</Col>
+					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name='return_rates'
+								checked={
+									props.plansInfo && props.plansInfo.plan_type > 1
+										? quoteSettingsState.returnRates
+										: false
+								}
+								onChange={() =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										returnRates: !quoteSettingsState.returnRates,
+									})
+								}
+								disabled={
+									props?.plansInfo?.plan_type > 1 &&
+									props?.radPlans?.current_plan?.severity === 'SUCCESS' &&
+									props?.installedAddons[0]?.is_suspend === 0
+										? false
+										: true
+								}
+							>
+								{props.plansInfo && props.plansInfo.plan_type < 2 && (
+									<a href='#!' className='stnd-plan text-danger'>
+										Standard plan required
+									</a>
+								)}
+							</Checkbox>
+						</Form.Item>
+					</Col>
+				</Row>
+
+				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-						<label className={'text-gray'}>Allow For Own Arrangement</label>
+						<label className={'text-gray'}>Relationship To Shipper</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='own_arrangement'>
+						<Form.Item className={'mb-0'} name='shipper_relationship'>
 							<Select
-								defaultValue={quoteSettingsState.own_arrangement}
+								defaultValue={quoteSettingsState.shipper_relationship}
 								size={'large'}
 								style={{ width: '100%' }}
 								onChange={value => {
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										own_arrangement: value,
+										shipper_relationship: value,
 									});
 								}}
 							>
-								<Option value='0'>No</Option>
-								<Option value='1'>Yes</Option>
+								<Option value='shipper'>Shipper</Option>
+								<Option value='third_party'>Third Party</Option>
 							</Select>
 						</Form.Item>
 						<div className={'text-gray'}>
-							Adds an option in the shipping cart for users to indicate that they will
-							make and pay for their own LTL shipping arrangements.
+							How you identify yourself when getting quotes on UPS.com
 						</div>
 					</Col>
 				</Row>
-
-				{quoteSettingsState.own_arrangement === '1' && (
-					<Row gutter={30} className={'mb-3'}>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6}>
-							<label className={'text-gray'}>Text for Own Arrangement</label>
-						</Col>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-							<Form.Item className={'mb-0'} name='own_arrangement_text'>
-								<Input
-									onChange={e =>
-										setQuoteSettingsState({
-											...quoteSettingsState,
-											own_arrangement_text: e.target.value,
-										})
-									}
-									value={quoteSettingsState.own_arrangement_text}
-								/>
-							</Form.Item>
-						</Col>
-					</Row>
-				)}
 
 				<Row gutter={30} className={'mt-3'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
