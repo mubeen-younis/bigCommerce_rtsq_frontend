@@ -25,7 +25,10 @@ function WarehouseComponent(props) {
 	const [getLocationOn, setGetLocationOn] = useState(false);
 	const [visible1, setVisibleWarehouse] = useState(false);
 	const [warehouseDeleteModal, setDeleteWarehouseModal] = useState(false);
-	const [warehouseID, setWarehouseID] = useState(null);
+	const [warehouseInfo, setWarehouseInfo] = useState({
+		id: null,
+		type: null,
+	});
 	const [locationDetail, setLocationDetail] = useState({
 		enable_instore: false,
 		enable_ld: false,
@@ -111,7 +114,10 @@ function WarehouseComponent(props) {
 
 	const openDeleteLocationModal = data => {
 		setDeleteWarehouseModal(true);
-		setWarehouseID(data.id);
+		setWarehouseInfo({
+			id: data.id,
+			type: data.type,
+		});
 	};
 
 	const editLocation = data => {
@@ -648,7 +654,14 @@ function WarehouseComponent(props) {
 			<Modal
 				title='Confirm Delete'
 				visible={warehouseDeleteModal}
-				onOk={() => deleteLocation(warehouseID, setDeleteWarehouseModal, token)}
+				onOk={() =>
+					deleteLocation(
+						warehouseInfo.id,
+						warehouseInfo.type,
+						setDeleteWarehouseModal,
+						token
+					)
+				}
 				onCancel={() => setDeleteWarehouseModal(false)}
 				okText='Confirm'
 				cancelButtonProps={{ style: { display: 'none' } }}
@@ -680,8 +693,8 @@ const mapDispatchToProps = dispatch => ({
 		dispatch(getGoogleResponse(data, token, visibility)),
 	getWarehouse: (id, locationDetail, visibility, token) =>
 		dispatch(getWarehouse(id, locationDetail, visibility, token)),
-	deleteLocation: (id, visibility, token) =>
-		dispatch(deleteLocation(id, visibility, token)),
+	deleteLocation: (id, type, visibility, token) =>
+		dispatch(deleteLocation(id, type, visibility, token)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WarehouseComponent);

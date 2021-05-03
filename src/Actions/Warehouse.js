@@ -106,7 +106,7 @@ export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) 
 	};
 };
 
-export const deleteLocation = (id, setDeleteWarehouseModal, token) => {
+export const deleteLocation = (id, type, setDeleteWarehouseModal, token) => {
 	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
@@ -121,6 +121,7 @@ export const deleteLocation = (id, setDeleteWarehouseModal, token) => {
 				`${process.env.REACT_APP_ENITURE_API_URL}/delete_location`,
 				{
 					location_id: id,
+					location_type: type === 1 ? 'Warehouse' : 'Drop ship',
 				},
 				{
 					headers: {
