@@ -624,7 +624,8 @@ function QuoteSettingsComponentWweSmall(props) {
 										disabled={
 											props?.plansInfo?.plan_type > 1 &&
 											props?.radPlans?.current_plan?.severity === 'SUCCESS' &&
-											props?.installedAddons[0]?.is_suspend === 0
+											props?.installedAddons[0]?.is_suspend === 0 &&
+											props?.installedAddons[0]?.is_enabled === 1
 												? false
 												: true
 										}
