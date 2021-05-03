@@ -193,7 +193,7 @@ function WarehouseComponent(props) {
 						title={
 							<Title className={'mb-0'} level={4}>
 								{alertMessageType === 'loading'
-									? 'Loading...please wait'
+									? 'Loading. Please wait...'
 									: locationDetail.location_type === 1
 									? 'Warehouse'
 									: 'Drop ship'}
@@ -653,7 +653,7 @@ function WarehouseComponent(props) {
 				okText='Confirm'
 				cancelButtonProps={{ style: { display: 'none' } }}
 			>
-				<p>Are you sure you want to delete this?</p>
+				<p>Are you sure you want to delete this origin?</p>
 			</Modal>
 		</Fragment>
 	);
