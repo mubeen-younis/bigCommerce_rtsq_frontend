@@ -8,7 +8,7 @@ options:
   max-time: 60
 pipelines:
   branches:
-    development:
+    frontend-dev:
     - step:
         caches:
           - composer
@@ -18,8 +18,8 @@ pipelines:
               SSH_USER: 'eniture'
               SERVER: '3.210.152.102'
               MODE: 'command'
-              COMMAND: '/home/eniture/public_html/bigcommerce/remote-script.sh'
-              
+              COMMAND: '/home/eniture/public_html/bigcommerce/frontend/remote-script.sh'
+            
     staging:
     - step:
         caches:
