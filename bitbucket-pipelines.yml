@@ -44,14 +44,16 @@ pipelines:
               MODE: 'command'
               COMMAND: '/home/eniture/public_html/bigcommerce/bigcommerce/remote-script.sh'
               
-    ws-elb:
+    master:
     - step:
         caches:
           - composer
         script:
           - pipe: atlassian/ssh-run:0.2.2
             variables:
-              SSH_USER: 'ec2-user'
-              SERVER: '54.159.170.144'
+              SSH_USER: 'eniture'
+              SERVER: '3.94.2.214'
               MODE: 'command'
-              COMMAND: '/var/www/html/ws/carriers/cerasis/remote-script.sh'
+              COMMAND: '/home/eniture/public_html/bigcommerce/bigcommerce/remote-script.sh'
+
+              
