@@ -8,7 +8,7 @@ options:
   max-time: 60
 pipelines:
   branches:
-    frontend-dev:
+    dev:
     - step:
         caches:
           - composer
@@ -19,7 +19,7 @@ pipelines:
               SERVER: '3.210.152.102'
               MODE: 'command'
               COMMAND: '/home/eniture/public_html/bigcommerce/frontend/remote-script.sh'
-            
+              
     staging:
     - step:
         caches:
@@ -30,19 +30,7 @@ pipelines:
               SSH_USER: 'eniture'
               SERVER: '3.213.234.241'
               MODE: 'command'
-              COMMAND: '/home/eniture/public_html/bigcommerce/bigcommerce/remote-script.sh'
-              
-    frontend:
-    - step:
-        caches:
-          - composer
-        script:
-          - pipe: atlassian/ssh-run:0.2.2
-            variables:
-              SSH_USER: 'eniture'
-              SERVER: '3.94.2.214'
-              MODE: 'command'
-              COMMAND: '/home/eniture/public_html/bigcommerce/bigcommerce/remote-script.sh'
+              COMMAND: '/home/eniture/public_html/bigcommerce/bc-fe/remote-script.sh'
               
     master:
     - step:
@@ -55,5 +43,15 @@ pipelines:
               SERVER: '3.94.2.214'
               MODE: 'command'
               COMMAND: '/home/eniture/public_html/bigcommerce/bigcommerce/remote-script.sh'
-
               
+    ws-elb:
+    - step:
+        caches:
+          - composer
+        script:
+          - pipe: atlassian/ssh-run:0.2.2
+            variables:
+              SSH_USER: 'ec2-user'
+              SERVER: '54.159.170.144'
+              MODE: 'command'
+              COMMAND: '/var/www/html/ws/carriers/cerasis/remote-script.sh'
