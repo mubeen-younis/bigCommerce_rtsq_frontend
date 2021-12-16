@@ -182,7 +182,7 @@ function QuoteSettingsComponentWwe(props) {
 							></Checkbox>
 						</Form.Item>
 					</Col>
-					{radStatus ? (
+					
 						<Fragment>
 							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 								<label className={'text-gray'}>Auto-detect residential addresses</label>
@@ -212,7 +212,7 @@ function QuoteSettingsComponentWwe(props) {
 								</Form.Item>
 							</Col>
 						</Fragment>
-					) : null}
+					
 				</Row>
 
 				<Row gutter={30} align='middle' className={'mb-4'}>

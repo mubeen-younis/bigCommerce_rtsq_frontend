@@ -1166,7 +1166,7 @@ function QuoteSettingsComponentWweSmall(props) {
 					</Col>
 				</Row>
 
-				{/*  International Service Descriptions */}
+				{/*  International Service Descriptions 
 				<Row gutter={24} align='middle' className={'mb-1'}>
 					<Col
 						className='gutter-row'
@@ -1201,7 +1201,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							service descriptions.
 						</div>
 					</Col>
-				</Row>
+				</Row>*/}
 
 				<Row className={'mb-2'}></Row>
 
