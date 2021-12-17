@@ -20,7 +20,7 @@ pipelines:
               MODE: 'command'
               COMMAND: '/home/eniture/public_html/bigcommerce/frontend/remote-script.sh'
               
-    staging:
+    staging1:
     - step:
         caches:
           - composer
