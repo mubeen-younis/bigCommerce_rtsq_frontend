@@ -1716,7 +1716,6 @@ function QuoteSettingsComponentWweSmall(props) {
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Other settings</Title>
 					</Col>
-
 					{/*}<Col
 						className='gutter-row'
 						style={{ paddingTop: '11px' }}
