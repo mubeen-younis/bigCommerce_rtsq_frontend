@@ -724,7 +724,7 @@ function WarehouseComponent(props) {
 							</Button>
 						</Title>
 						<p>
-							Warehouses that inventory all products not otherwise indentified as drop
+							Warehouses that inventory all products not otherwise identified as drop
 							shipped items. The warehouse with lowest shipping cost to the destination is
 							used for quoting purpose.
 						</p>
