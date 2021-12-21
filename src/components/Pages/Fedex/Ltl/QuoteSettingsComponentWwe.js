@@ -19,7 +19,8 @@ import { getQuoteSettings } from '../../../../Actions/Settings'
 import {
 	handlingFeeMarkup,
 	validateHandlingFeeMarkup,
-	handleKeyDownDecimalNumber
+	handleKeyDownDecimalNumber,
+	LableAsLimit
 } from '../../../../Utilities/numberValidation'
 
 const { Title } = Typography
@@ -208,6 +209,7 @@ function QuoteSettingsComponentWwe(props) {
 										? props.quoteSettings.label_as
 										: ''
 								}
+								onKeyDown={LableAsLimit}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>

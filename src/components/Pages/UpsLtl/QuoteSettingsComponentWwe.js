@@ -16,7 +16,7 @@ import {
 import { connect, useDispatch } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getQuoteSettings } from '../../../Actions/Settings';
-import {handlingFeeMarkup, validateHandlingFeeMarkup, blockInvalidChar} from '../../../Utilities/numberValidation'
+import {handlingFeeMarkup, validateHandlingFeeMarkup, blockInvalidChar, LableAsLimit} from '../../../Utilities/numberValidation'
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -147,6 +147,7 @@ function QuoteSettingsComponentWwe(props) {
 							<Input
 								name='label_as'
 								value={props.quoteSettings ? props.quoteSettings.label_as : ''}
+								onKeyDown={LableAsLimit}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
