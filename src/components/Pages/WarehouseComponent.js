@@ -724,9 +724,9 @@ function WarehouseComponent(props) {
 							</Button>
 						</Title>
 						<p>
-							Warehouses that inventory all products not otherwise indentified as drop
-							shipped items. The warehouse with lowest shipping cost to the destination is
-							used for quoting purpose.
+							Warehouses that inventory all products not otherwise identified as drop
+							shipped items. The warehouse with the lowest shipping cost to the destination is
+							used for quoting purposes.
 						</p>
 						<Table
 							className={'custom-table'}

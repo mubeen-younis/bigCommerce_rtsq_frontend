@@ -19,7 +19,8 @@ import { getQuoteSettings } from '../../../../Actions/Settings'
 import {
 	handlingFeeMarkup,
 	validateHandlingFeeMarkup,
-	handleKeyDownDecimalNumber
+	handleKeyDownDecimalNumber,
+	LableAsLimit
 } from '../../../../Utilities/numberValidation'
 
 const { Title } = Typography
@@ -208,6 +209,7 @@ function QuoteSettingsComponentWwe(props) {
 										? props.quoteSettings.label_as
 										: ''
 								}
+								onKeyDown={LableAsLimit}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
@@ -437,7 +439,7 @@ function QuoteSettingsComponentWwe(props) {
 								disabled={radStatus}></Checkbox>
 						</Form.Item>
 					</Col>
-					{radStatus ? (
+					
 						<Fragment>
 							<Col
 								className='gutter-row'
@@ -483,7 +485,7 @@ function QuoteSettingsComponentWwe(props) {
 								</Form.Item>
 							</Col>
 						</Fragment>
-					) : null}
+					
 				</Row>
 
 				<Row gutter={30} align='middle' className={'mb-4'}>

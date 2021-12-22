@@ -199,18 +199,11 @@ function ShippingCarriersComponent(props) {
 								/>
 							}
 							title={
-								<h3 style={{ fontWeight: 600, marginBottom: 0 }}>Setup & testing mode</h3>
+								<h3 style={{ fontWeight: 600, marginBottom: 0 }}>Getting Started</h3>
 							}
 							description={
 								<p>
-									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer erat
-									enim, laoreet a commodo in, lacinia ut libero. Integer vitae auctor
-									tortor. Pellentesque habitant morbi tristique senectus et netus et
-									malesuada fames ac turpis egestas. In hac habitasse platea dictumst.
-									Aliquam quis dolor molestie augue dictum rhoncus. Sed feugiat ipsum nec
-									libero accumsan ultricies. Etiam posuere tristique fringilla.This is the
-									description <br />
-									<br /> <a href='/'>How to test my setup</a>
+									Below is a list of supported shipping providers. The plan you subscribe to will dictate how many shipping providers you can enable. Click on Plans in the navigation menu to review and select a plan. To enable a provider, click on the Enable button. Afterward, use the <a target="_blank" href='https://eniture.com/bigcommerce-real-time-shipping-quotes/'>User’s Guide</a> for instructions on how to connect to your account and perform the other steps necessary to make the integration functional. If you require customer support you can open a support ticket by emailing support@eniture.com or by calling 404-369-0680 extension 2. You can also check our <a target="_blank" href='https://support.eniture.com/'>Knowledge Base</a> to see if there is an article that provides an answer to your question.
 								</p>
 							}
 						/>

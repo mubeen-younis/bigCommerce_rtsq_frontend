@@ -10,7 +10,9 @@ import {
 	Checkbox,
 	Skeleton,
 	Radio,
+	TimePicker
 } from 'antd'
+import moment from 'moment';
 import { connect, useDispatch } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
 import { getQuoteSettings } from '../../../../Actions/Settings'
@@ -18,6 +20,7 @@ import {
 	handlingFeeMarkup,
 	validateHandlingFeeMarkup,
 	handleKeyDownDecimalNumber,
+	blockInvalidCharWithPoint
 } from '../../../../Utilities/numberValidation'
 const { Title } = Typography
 
@@ -33,6 +36,7 @@ const domestic_services = [
 	'2 Day AM',
 	'Priority Overnight',
 	'First Overnight',
+	'Standard Overnight',
 	'SmartPost',
 ]
 
@@ -339,6 +343,7 @@ function QuoteSettingsComponentWweSmall(props) {
 		() =>
 			['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map((day, i) => (
 				<Checkbox
+					style={{marginLeft: '0px'}}
 					checked={
 						(quoteSettingsState?.week_days &&
 							quoteSettingsState?.week_days.includes(day)) ||
@@ -394,7 +399,7 @@ function QuoteSettingsComponentWweSmall(props) {
 				onFinish={onFinish}
 				initialValues={props.quoteSettings}>
 				{/* UPS SERVICES */}
-				<Row gutter={24} align='middle' className={'mb-4'}>
+				<Row gutter={30} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Fedex Services</Title>
 					</Col>
@@ -415,11 +420,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col
 								className='gutter-row middle'
-								xs={12}
-								sm={12}
-								md={12}
-								lg={12}
-								xl={12}>
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={24}>
 								<Title level={5} style={{ textAlign: 'center' }}>
 									Domestic Services
 								</Title>
@@ -448,7 +453,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={24} align='middle' className={'mb-2'}>
+						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>Home Delivery</label>
 							</Col>
@@ -463,7 +468,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
 							</Col>
-							<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+							<Col span={24} xs={24} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
 										name={'fedex_home_delivery_markup'}
@@ -492,7 +497,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={24} align='middle' className={'mb-2'}>
+						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>
 									Date Certain Home Delivery
@@ -510,7 +515,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
 							</Col>
-							<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+							<Col span={12} xs={24} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
 										value={
@@ -539,7 +544,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={24} align='middle' className={'mb-2'}>
+						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>
 									Evening Home Delivery
@@ -556,7 +561,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
 							</Col>
-							<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+							<Col span={12} xs={24} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
 										value={
@@ -585,7 +590,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={24} align='middle' className={'mb-2'}>
+						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>
 									Appointment Home Delivery
@@ -603,7 +608,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
 							</Col>
-							<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+							<Col span={12} xs={24} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
 										value={
@@ -632,7 +637,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={24} align='middle' className={'mb-2'}>
+						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>Ground</label>
 							</Col>
@@ -647,7 +652,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
 							</Col>
-							<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+							<Col span={12} xs={24} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
 										value={
@@ -676,7 +681,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={24} align='middle' className={'mb-2'}>
+						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>Express Saver</label>
 							</Col>
@@ -692,7 +697,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
 							</Col>
-							<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+							<Col span={12} xs={24} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
 										//maxLength='7'
@@ -723,7 +728,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={24} align='middle' className={'mb-2'}>
+						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>2 Day</label>
 							</Col>
@@ -739,7 +744,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
 							</Col>
-							<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+							<Col span={12} xs={22} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
 										value={
@@ -768,7 +773,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={24} align='middle' className={'mb-2'}>
+						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>2 Day AM</label>
 							</Col>
@@ -783,7 +788,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
 							</Col>
-							<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+							<Col span={12} xs={24} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
 										value={
@@ -812,7 +817,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={24} align='middle' className={'mb-2'}>
+						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>Standard Overnight</label>
 							</Col>
@@ -828,7 +833,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
 							</Col>
-							<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+							<Col span={12} xs={24} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
 										value={
@@ -857,7 +862,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={24} align='middle' className={'mb-2'}>
+						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>Priority Overnight</label>
 							</Col>
@@ -873,7 +878,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
 							</Col>
-							<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+							<Col span={12} xs={24} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
 										value={
@@ -902,7 +907,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={24} align='middle' className={'mb-2'}>
+						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>First Overnight</label>
 							</Col>
@@ -917,7 +922,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
 							</Col>
-							<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+							<Col span={12} xs={24} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
 										value={
@@ -946,7 +951,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={24} align='middle' className={'mb-2'}>
+						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>SmartPost</label>
 							</Col>
@@ -961,7 +966,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
 							</Col>
-							<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+							<Col span={12} xs={24} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
 										value={
@@ -996,10 +1001,10 @@ function QuoteSettingsComponentWweSmall(props) {
 						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col
 								className='gutter-row'
-								xs={12}
-								sm={12}
-								md={12}
-								lg={12}
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
 								xl={24}>
 								<Title level={5} style={{ textAlign: 'center' }}>
 									One Rate
@@ -1027,8 +1032,8 @@ function QuoteSettingsComponentWweSmall(props) {
 
 						{one_rate_services.map(is =>
 							is.label.length ? (
-								<Row gutter={30} align='middle' className={'mb-3'}>
-									<Col span={24} style={{ height: '94px' }}>
+								<Row gutter={30} align='middle' className={'mb-2'}>
+									<Col span={24}>
 										<Form.Item className={'mb-0'}>
 											<Checkbox
 												name={
@@ -1052,10 +1057,33 @@ function QuoteSettingsComponentWweSmall(props) {
 												onChange={onCheck}></Checkbox>
 										</Form.Item>
 									</Col>
+									<Col span={24} style={{visibility:'hidden'}}>
+									<Form.Item className={'mb-0'}>
+									<Input/>
+									</Form.Item>
+									</Col>
+									<Col span={24}>
+										<label className={'text-gray'} style={{visibility:'hidden'}}>SmartPost</label>
+									</Col>
 								</Row>
 							) : (
-								<Row gutter={30} align='middle' className={'mb-3'}>
-									<Col span={12} style={{ height: '94px' }}></Col>
+								<Row gutter={30} align='middle' className={'mb-2'} style={{visibility:'hidden'}}>
+									<Col span={20}>
+										<label className={'text-gray'}>SmartPost</label>
+									</Col>
+									<Col span={4}>
+										<Form.Item className={'mb-0'}>
+											<Checkbox></Checkbox>
+										</Form.Item>
+									</Col>
+									<Col span={24}>
+									<Form.Item className={'mb-0'}>
+									<Input/>
+									</Form.Item>
+									</Col>
+									<Col span={24}>
+										<label className={'text-gray'}>SmartPost</label>
+									</Col>
 								</Row>
 							)
 						)}
@@ -1066,11 +1094,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col
 								className='gutter-row'
-								xs={12}
-								sm={12}
-								md={12}
-								lg={12}
-								xl={12}>
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={24}>
 								<Title level={5} style={{ textAlign: 'center' }}>
 									International Services
 								</Title>
@@ -1100,7 +1128,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						</Row>
 
 						{international_services.map(is => (
-							<Row gutter={24} align='middle' className={'mb-2'}>
+							<Row gutter={30} align='middle' className={'mb-2'}>
 								<Col span={20}>
 									<label className={'text-gray'}>{is}</label>
 								</Col>
@@ -1123,7 +1151,7 @@ function QuoteSettingsComponentWweSmall(props) {
 											onChange={onCheck}></Checkbox>
 									</Form.Item>
 								</Col>
-								<Col span={12} xs={22} sm={22} md={22} lg={22} xl={22}>
+								<Col span={24} xs={24} sm={24} md={24} lg={24} xl={24}>
 									<Form.Item className={'mb-0'}>
 										<Input
 											//maxLength='7'
@@ -1166,8 +1194,8 @@ function QuoteSettingsComponentWweSmall(props) {
 					</Col>
 				</Row>
 
-				{/*  International Service Descriptions */}
-				<Row gutter={24} align='middle' className={'mb-1'}>
+				{/*  International Service Descriptions 
+				<Row gutter={30} align='middle' className={'mb-1'}>
 					<Col
 						className='gutter-row'
 						xs={12}
@@ -1201,12 +1229,12 @@ function QuoteSettingsComponentWweSmall(props) {
 							service descriptions.
 						</div>
 					</Col>
-				</Row>
+				</Row>*/}
 
 				<Row className={'mb-2'}></Row>
 
 				{/* Delivery Estimate Options */}
-				<Row gutter={24} align='middle' className={'mb-4'}>
+				<Row gutter={30} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Delivery Estimate Options</Title>
 					</Col>
@@ -1283,7 +1311,7 @@ function QuoteSettingsComponentWweSmall(props) {
 				{/* END */}
 
 				{/* Cut Off Time & Ship Date Offset */}
-				<Row gutter={24} align='middle' className={'mb-1'}>
+				<Row gutter={30} align='middle' className={'mb-1'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Cut Off Time & Ship Date Offset</Title>
 					</Col>
@@ -1300,15 +1328,20 @@ function QuoteSettingsComponentWweSmall(props) {
 					</Col>
 					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
-							<Input
-								type='time'
-								onChange={e =>
+							<TimePicker 
+								//type='time'
+								style={{ width: '100%' }}
+								use24Hours 
+								onChange={(time, timeString) => {
 									setQuoteSettingsState(prevState => ({
 										...prevState,
-										order_cut_off_time: e.target.value,
+										order_cut_off_time: timeString,
 									}))
+									console.log(time, timeString)
 								}
-								value={quoteSettingsState?.order_cut_off_time}
+								}
+								//value={quoteSettingsState?.order_cut_off_time}
+								value={quoteSettingsState?.order_cut_off_time ==='' || quoteSettingsState?.order_cut_off_time === null ? '': moment(quoteSettingsState?.order_cut_off_time, 'HH:mm:ss')}
 								disabled={
 									quoteSettingsState?.delivery_estimate_options === 1
 								}
@@ -1334,17 +1367,19 @@ function QuoteSettingsComponentWweSmall(props) {
 					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Input
-								type='text'
+								type='number'
 								min='1'
-								maxLength='2'
+								max='8'
+								step='1'
 								placeholder='Fulfillment offset days, e.g. 2'
 								onChange={e => {
-									if (!isNaN(+e.target.value) && +e.target.value > 0)
+									//if (!isNaN(+e.target.value) && +e.target.value > 0)
 										setQuoteSettingsState(prevState => ({
 											...prevState,
 											fulfillment_offset_days: e.target.value,
 										}))
 								}}
+								onKeyDown={e => blockInvalidCharWithPoint(e)}
 								value={quoteSettingsState?.fulfillment_offset_days}
 								disabled={
 									quoteSettingsState?.delivery_estimate_options === 1
@@ -1483,7 +1518,7 @@ function QuoteSettingsComponentWweSmall(props) {
 
 					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={6}>
 						<label className={'text-gray'}>
-							Always quote as residential delivery
+							Always quote residential delivery
 						</label>
 					</Col>
 					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
@@ -1567,16 +1602,16 @@ function QuoteSettingsComponentWweSmall(props) {
 					<Col
 						className='gutter-row'
 						style={{ paddingTop: '11px' }}
-						xs={24}
+						xs={12}
 						sm={12}
 						md={12}
-						lg={6}
+						lg={12}
 						xl={6}>
 						<label className={'text-gray'}>
 							Only quote ground service for hazardous materials shipments
 						</label>
 					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={18}>
+					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
 						<Form.Item className={'mb-3'}>
 							<Checkbox
 								name={'ground_service_for_hazardous_material'}
@@ -1636,7 +1671,7 @@ function QuoteSettingsComponentWweSmall(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={24} className={'mb-3'}>
+				<Row gutter={30} className={'mb-3'}>
 					<Col
 						className='gutter-row'
 						style={{ paddingTop: '11px' }}
@@ -1677,11 +1712,10 @@ function QuoteSettingsComponentWweSmall(props) {
 				</Row>
 
 				{/* Other Settings */}
-				<Row gutter={24} align='middle' className={'mb-4'}>
+				<Row gutter={30} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Other settings</Title>
 					</Col>
-
 					{/*}<Col
 						className='gutter-row'
 						style={{ paddingTop: '11px' }}
@@ -1740,10 +1774,10 @@ function QuoteSettingsComponentWweSmall(props) {
 						<Title level={4}>Negotiated Rates</Title>
 					</Col>
 
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={6}>
+					<Col className='gutter-row' xs={6} sm={6} md={6} lg={6} xl={6}>
 						<label className={'text-gray'}></label>
 					</Col>
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
+					<Col className='gutter-row' xs={18} sm={18} md={18} lg={18} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Radio
 								name='negotiated_rates'
@@ -1762,14 +1796,14 @@ function QuoteSettingsComponentWweSmall(props) {
 
 					<Col
 						className='gutter-row mb-3'
-						xs={12}
-						sm={12}
-						md={12}
-						lg={12}
+						xs={6}
+						sm={6}
+						md={6}
+						lg={6}
 						xl={6}>
 						<label className={'text-gray'}></label>
 					</Col>
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
+					<Col className='gutter-row' xs={18} sm={18} md={18} lg={18} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Radio
 								name='negotiated_rates'

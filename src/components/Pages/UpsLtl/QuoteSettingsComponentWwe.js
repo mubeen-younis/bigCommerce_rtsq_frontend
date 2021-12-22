@@ -16,7 +16,7 @@ import {
 import { connect, useDispatch } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getQuoteSettings } from '../../../Actions/Settings';
-import {handlingFeeMarkup, validateHandlingFeeMarkup, blockInvalidChar} from '../../../Utilities/numberValidation'
+import {handlingFeeMarkup, validateHandlingFeeMarkup, blockInvalidChar, LableAsLimit} from '../../../Utilities/numberValidation'
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -147,6 +147,7 @@ function QuoteSettingsComponentWwe(props) {
 							<Input
 								name='label_as'
 								value={props.quoteSettings ? props.quoteSettings.label_as : ''}
+								onKeyDown={LableAsLimit}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
@@ -182,7 +183,7 @@ function QuoteSettingsComponentWwe(props) {
 							></Checkbox>
 						</Form.Item>
 					</Col>
-					{radStatus ? (
+					
 						<Fragment>
 							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 								<label className={'text-gray'}>Auto-detect residential addresses</label>
@@ -212,7 +213,7 @@ function QuoteSettingsComponentWwe(props) {
 								</Form.Item>
 							</Col>
 						</Fragment>
-					) : null}
+					
 				</Row>
 
 				<Row gutter={30} align='middle' className={'mb-4'}>
