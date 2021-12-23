@@ -61,7 +61,7 @@ const CarriersComponent = props => {
 	}
 
 	const saveCarriers = () => {
-		if (state.selectedRowKeys.length === 0) {
+		if (state.selectedRowKeys.length === 0  && rowSelection?.selectedRowKeys?.length === 0) {
 			dispatch({
 				type: 'ALERT_MESSAGE',
 				payload: {
@@ -78,7 +78,7 @@ const CarriersComponent = props => {
 			})
 		} else {
 			const data = {
-				services: state.selectedRowKeys,
+				services: state.selectedRowKeys?.length === 0 ? rowSelection?.selectedRowKeys : state.selectedRowKeys,
 				carrierId: carrierId,
 			}
 
