@@ -22,12 +22,12 @@ function UserGuideComponent(props) {
 						<p>
 							The User Guide for this application is maintained on the publisher's
 							website. To view it click{' '}
-							<a href={links[selectedCarrier.slug]} target='_blank' rel='noreferrer'>
+							<a href="https://eniture.com/bigcommerce-real-time-shipping-quotes" target='_blank' rel='noreferrer'>
 								here
 							</a>{' '}
 							or paste the following link into your browser.
 						</p>
-						<p>{links[selectedCarrier.slug]}</p>
+						<p>https://eniture.com/bigcommerce-real-time-shipping-quotes</p>
 					</div>
 				</Col>
 			</Row>
