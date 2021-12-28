@@ -442,7 +442,7 @@ function QuoteSettingsComponentWwe(props) {
 											!quoteSettingsState.showDeliveryEstimate,
 									})
 								}}>
-								Show delivery estimate.
+								Show Delivery Estimates With Shipping Services.
 							</Checkbox>
 						</Form.Item>
 					</Col>

@@ -176,8 +176,7 @@ function QuoteSettingsComponentWwe(props) {
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
-							What the user sees during checkout, e.g. "Freight".
-							Leave blank to display the carrier name.
+							What the user sees during checkout, e.g. "Freight". If left blank will default to "Freight".
 						</div>
 					</Col>
 				</Row>
@@ -216,7 +215,7 @@ function QuoteSettingsComponentWwe(props) {
 											!quoteSettingsState.showDeliveryEstimate,
 									})
 								}}>
-								Show delivery estimate.
+								Show Delivery Estimates With Shipping Services.
 							</Checkbox>
 						</Form.Item>
 					</Col>
@@ -565,7 +564,7 @@ function QuoteSettingsComponentWwe(props) {
 									)
 								}
 								type='number'
-								min='-20000'
+								min='0'
 								step='0.001'
 								max='20000'
 								pattern='[0-9.?(0-9){2}?]+%?$'

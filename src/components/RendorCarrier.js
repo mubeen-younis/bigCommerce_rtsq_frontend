@@ -19,7 +19,7 @@ function RendorCarrier(props) {
 		getInsuraceStatus
 	} = props
 	const { carrier_id } = useParams()
-	const { dispatch } = useDispatch();
+	const dispatch = useDispatch();
 	useEffect(() => {
 		if ((carrier_id !== undefined && !carrierId) || carrierId !== carrier_id) {
 			setCarrierId(carrier_id)
@@ -27,6 +27,7 @@ function RendorCarrier(props) {
 			getConnectionSetting(token, carrier_id);
 			getQuoteSetting(token, carrier_id);
 			getInsuraceStatus(token, carrier_id);
+			dispatch({type:'GET_SERVICES', payload:null})
 		}
 		// eslint-disable-next-line
 	}, [

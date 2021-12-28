@@ -24,7 +24,7 @@ function ConnectionSettingsComponent(props) {
 	})
 	// const { carrier_type } = useSelector(state => state)
 	const dispatch = useDispatch()
-
+	const [form] = Form.useForm();
 	useEffect(() => {
 		if (
 			props.connectionSettings &&
@@ -78,6 +78,18 @@ function ConnectionSettingsComponent(props) {
 		props.postData(values, props.token)
 	}
 
+	const updateFormFields = useCallback( (apiType) =>{
+			const data = apiType === 'GTZ' ? props.connectionSettings.global_tranz:props.connectionSettings.cerasis;
+			form.setFieldsValue({
+				customer_id: data?.customer_id,
+				user_name: data?.user_name,
+				password: data?.password,
+				access_key: data?.access_key,
+			 })
+		},
+		[]
+	)
+
 	if (props.connectionSettings === null || props.connectionSettings === undefined) {
 		return <Skeleton active />
 	} else {
@@ -85,6 +97,7 @@ function ConnectionSettingsComponent(props) {
 			props.connectionSettings.access_level = 'pro'
 		}
 	}
+	
 
 	return (
 		!connectionState.skeleton_loading && (
@@ -99,7 +112,10 @@ function ConnectionSettingsComponent(props) {
 					name='connection_settings'
 					className='connection-settings'
 					size={'large'}
-					onFinish={onFinish}>
+					onFinish={onFinish}
+					initialValues={ apiType === 'GTZ' ? state.global_tranz:state.cerasis}
+					form={form}
+					>
 					<Form.Item label='Which API Will You Connect To?' name='api_type'>
 						<Select
 							defaultValue={apiType}
@@ -119,6 +135,7 @@ function ConnectionSettingsComponent(props) {
 									type: 'SAVE_CARRIER_TAB_SETTINGS',
 									payload: null,
 								})
+								updateFormFields(type)
 							}}>
 							<Option value='GTZ'>GlobalTranz</Option>
 							<Option value='CRS'>Cerasis</Option>
@@ -129,62 +146,62 @@ function ConnectionSettingsComponent(props) {
 						<>
 							<Form.Item
 								label='Customer ID'
-								// name='gtz_customer_id'
+								name='customer_id'
 								rules={[{ required: true, message: 'Customer ID' }]}
 								requiredMark
-								required>
+								>
 								<Input
 									name='customer_id'
 									placeholder='Customer ID'
-									value={state.global_tranz.customer_id}
+									//value={state.global_tranz.customer_id}
 									onChange={e => handleStateChange(e, 'global_tranz')}
-									required
+									//required
 								/>
 							</Form.Item>
 
 							<Form.Item
 								label='Username'
 								// name='gtz_user_name'
+								name='user_name'
 								rules={[{ required: true, message: 'Username' }]}
 								requiredMark
-								required>
+								>
 								<Input
 									name='user_name'
 									placeholder='Username'
-									value={state.global_tranz.user_name}
+									//value={state.global_tranz.user_name}
 									onChange={e => handleStateChange(e, 'global_tranz')}
-									required
 								/>
 							</Form.Item>
 
 							<Form.Item
 								label='Password'
+								name='password'
 								// name='gtz_password'
 								rules={[{ required: true, message: 'Password' }]}
 								requiredMark
-								required>
+								>
 								<Input
 									name='password'
 									type='text'
 									placeholder='Password'
-									value={state.global_tranz.password}
+									//value={state.global_tranz.password}
 									onChange={e => handleStateChange(e, 'global_tranz')}
-									required
 								/>
 							</Form.Item>
 
 							<Form.Item
 								label='Access Key'
+								name='access_key'
 								// name='gtz_access_key'
 								rules={[{ required: true, message: 'Access Key' }]}
 								requiredMark
-								required>
+								>
 								<Input
 									name='access_key'
 									placeholder='Access Key'
-									value={state.global_tranz.access_key}
+									//value={state.global_tranz.access_key}
 									onChange={e => handleStateChange(e, 'global_tranz')}
-									required
 								/>
 							</Form.Item>
 						</>
@@ -192,62 +209,66 @@ function ConnectionSettingsComponent(props) {
 						<>
 							<Form.Item
 								label='Shipper ID'
+								name='customer_id'
 								// name='cerasis_customer_id'
 								rules={[{ required: true, message: 'Shipper ID' }]}
 								requiredMark
-								required>
+								>
 								<Input
 									name='customer_id'
 									placeholder='Shipper ID'
-									value={state.cerasis.customer_id}
+									//value={state.cerasis.customer_id}
 									onChange={e => handleStateChange(e, 'cerasis')}
-									required
+									
 								/>
 							</Form.Item>
 
 							<Form.Item
 								label='Username'
 								// name='cerasis_user_name'
+								name='user_name'
 								rules={[{ required: true, message: 'Username' }]}
 								requiredMark
-								required>
+								>
 								<Input
 									name='user_name'
 									placeholder='Username'
-									value={state.cerasis.user_name}
+									//value={state.cerasis.user_name}
 									onChange={e => handleStateChange(e, 'cerasis')}
-									required
+									
 								/>
 							</Form.Item>
 
 							<Form.Item
 								label='Password'
+								name='password'
 								// name='cerasis_password'
 								rules={[{ required: true, message: 'Password' }]}
 								requiredMark
-								required>
+								>
 								<Input
 									name='password'
 									type='text'
 									placeholder='Password'
-									value={state.cerasis.password}
+									//value={state.cerasis.password}
 									onChange={e => handleStateChange(e, 'cerasis')}
-									required
+									
 								/>
 							</Form.Item>
 
 							<Form.Item
 								label='Access Key'
+								name='access_key'
 								// name='cerasis_access_key'
 								rules={[{ required: true, message: 'Access Key' }]}
 								requiredMark
-								required>
+								>
 								<Input
 									name='access_key'
 									placeholder='Access Key'
-									value={state.cerasis.access_key}
+									//value={state.cerasis.access_key}
 									onChange={e => handleStateChange(e, 'cerasis')}
-									required
+									
 								/>
 							</Form.Item>
 						</>

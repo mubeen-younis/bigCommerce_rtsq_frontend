@@ -88,7 +88,7 @@ function ConnectionSettingsComponent(props) {
 							message: 'Pickup/Delivery Postal Code',
 						},
 					]}>
-					<Input placeholder='Pickup/Delivery Postal Code *' />
+					<Input placeholder='Pickup/Delivery Postal Code' />
 				</Form.Item>
 
 				<Form.Item
