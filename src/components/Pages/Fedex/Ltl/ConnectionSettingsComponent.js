@@ -70,9 +70,9 @@ function ConnectionSettingsComponent(props) {
 				use this application. If you do not have one, contact Fedex at
 				800-463-3339 or{' '}
 				<a href='http://www.fedex.com/us/oadr/' target='_blank' rel='noreferrer'>
-					register
-				</a>{' '}
-				online.
+					register online
+				</a>
+				.
 			</div>
 			<Form
 				layout='vertical'
