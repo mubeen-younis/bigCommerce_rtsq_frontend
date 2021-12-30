@@ -328,7 +328,7 @@ function Settings({count, product, index, copyShippingMethod, copyShippingParams
                                         <Option
                                             value={value.id}
                                             key={value.id}
-                                        >{`${value.city} ${value.state} ${value.zip_code}`}</Option>
+                                        >{`${value.city+','} ${value.state} ${value.zip_code}`}</Option>
                                     ))
                                 : null}
                         </Select>
