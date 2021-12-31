@@ -728,7 +728,7 @@ function QuoteSettingsComponentWwe(props) {
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
-							Amount excluding tax. Enter an amount e.g 3.75, or a
+							Amount excluding tax. Enter an amount, e.g 3.75, or a
 							percentage, e.g, 5%. Leave blank to disable.
 						</div>
 					</Col>

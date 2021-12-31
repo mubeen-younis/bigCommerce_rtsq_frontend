@@ -731,9 +731,9 @@ function QuoteSettingsComponentWwe(props) {
 						className='gutter-row'
 						style={{ paddingTop: '11px' }}
 						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
+						sm={12}
+						md={12}
+						lg={12}
 						xl={6}>
 						<label className={'text-gray'}>
 							Offer Hold At Terminal as an option
@@ -742,11 +742,11 @@ function QuoteSettingsComponentWwe(props) {
 					<Col
 						className='gutter-row'
 						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
+						sm={12}
+						md={12}
+						lg={12}
 						xl={18}>
-						<Form.Item className={'mb-3'}>
+						<Form.Item className={'mb-1'}>
 							<Checkbox
 								name='hold_at_terminal'
 								checked={quoteSettingsState.hold_at_terminal}
@@ -930,7 +930,7 @@ function QuoteSettingsComponentWwe(props) {
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
-							Amount excluding tax. Enter an amount e.g 3.75, or a
+							Amount excluding tax. Enter an amount, e.g 3.75, or a
 							percentage, e.g, 5%. Leave blank to disable.
 						</div>
 					</Col>
@@ -963,6 +963,11 @@ function QuoteSettingsComponentWwe(props) {
 								maxLength='7'
 								//pattern='[0-9.?(0-9){2}?]+%?$'
 								onKeyDown={handlingFeeMarkup}
+								type='number'
+								min='0'
+								step='0.01'
+								max='9999999'
+								pattern='[0-9.?(0-9){2}?]+%?$'
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
@@ -977,9 +982,9 @@ function QuoteSettingsComponentWwe(props) {
 						className='gutter-row'
 						style={{ paddingTop: '11px' }}
 						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
+						sm={12}
+						md={12}
+						lg={12}
 						xl={6}>
 						<label className={'text-gray'}>
 							Do not return rates if the shipping address appears
@@ -989,9 +994,9 @@ function QuoteSettingsComponentWwe(props) {
 					<Col
 						className='gutter-row'
 						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
+						sm={12}
+						md={12}
+						lg={12}
 						xl={18}>
 						<Form.Item className={'mb-0'} >
 							<Checkbox
