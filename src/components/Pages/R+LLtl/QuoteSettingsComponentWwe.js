@@ -10,6 +10,7 @@ import {
 	Checkbox,
 	Skeleton,
 	Radio,
+	Modal
 } from 'antd'
 
 import { connect, useDispatch } from 'react-redux'
@@ -27,6 +28,7 @@ const { Title } = Typography
 function QuoteSettingsComponentWwe(props) {
 	const dispatch = useDispatch()
 	const [form] = Form.useForm()
+	const [holdTeminalStatus, SetHoldTeminalStatus] = useState(false)
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState({
 		label_as: '',
@@ -789,7 +791,10 @@ function QuoteSettingsComponentWwe(props) {
 									)
 								}
 								maxLength={7}
-								disabled={!quoteSettingsState.hold_at_terminal}
+								readOnly={!quoteSettingsState.hold_at_terminal}
+								onClick={()=>{
+									if(!quoteSettingsState.hold_at_terminal ) SetHoldTeminalStatus(true) 
+								}}
 							/>
 						</Form.Item>
 						<label className={'text-gray'}>
@@ -1038,6 +1043,18 @@ function QuoteSettingsComponentWwe(props) {
 					</Col>
 				</Row>
 			</Form>
+			<Modal
+				title='R+L LTL Freight Quotes'
+				visible={holdTeminalStatus}
+				onOk={() =>
+					SetHoldTeminalStatus(false)
+				}
+				onCancel={() => SetHoldTeminalStatus(false)}
+				okText='OK'
+				cancelButtonProps={{ style: { display: 'none' } }}
+			>
+				<p>To use this feature you have to enable the "Offer Hold At Terminal" as an option.</p>
+			</Modal>
 		</Fragment>
 	)
 }
