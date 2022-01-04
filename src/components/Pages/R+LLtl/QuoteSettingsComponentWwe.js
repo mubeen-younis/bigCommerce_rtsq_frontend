@@ -718,7 +718,7 @@ function QuoteSettingsComponentWwe(props) {
 						</Form.Item>
 					</Col>
 							</Row>{*/}
-
+				{/*}
 				<Row gutter={30} className={'mb-3'}>
 					<Col
 						className='gutter-row'
@@ -804,7 +804,7 @@ function QuoteSettingsComponentWwe(props) {
 							carrier.
 						</label>
 					</Col>
-				</Row>
+							</Row>{*/}
 
 				<Row gutter={30} className={'mb-3'}>
 					<Col
@@ -1053,7 +1053,7 @@ function QuoteSettingsComponentWwe(props) {
 				okText='OK'
 				cancelButtonProps={{ style: { display: 'none' } }}
 			>
-				<p>To use this feature you have to enable the "Offer Hold At Terminal" as an option.</p>
+				<p>To use this feature you have to enable the "Offer Hold At Terminal as an option".</p>
 			</Modal>
 		</Fragment>
 	)
