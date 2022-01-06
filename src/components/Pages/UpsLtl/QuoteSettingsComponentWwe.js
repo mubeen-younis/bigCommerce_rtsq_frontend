@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import {
 	Select,
@@ -17,6 +17,7 @@ import { connect, useDispatch } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getQuoteSettings } from '../../../Actions/Settings';
 import {handlingFeeMarkup, validateHandlingFeeMarkup, blockInvalidChar, LableAsLimit} from '../../../Utilities/numberValidation'
+import CutOffTime from '../../CutOffTime';
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -125,6 +126,14 @@ function QuoteSettingsComponentWwe(props) {
 			
 		}
 	};
+
+	const handleStateChange = useCallback((name, value) => {
+		setQuoteSettingsState(prevState => ({
+			...prevState,
+			[name]: value,
+		}))
+	}, [])
+
 	return loading || !props.quoteSettings ? (
 		<Skeleton active />
 	) : (
@@ -155,7 +164,13 @@ function QuoteSettingsComponentWwe(props) {
 						</div>
 					</Col>
 				</Row>
-
+				
+				<CutOffTime
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+					handleChange={handleStateChange}
+				/>
+					
 				<Row gutter={30} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Residential address settings</Title>
