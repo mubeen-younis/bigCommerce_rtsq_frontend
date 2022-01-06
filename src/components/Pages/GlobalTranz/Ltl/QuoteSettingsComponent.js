@@ -181,7 +181,7 @@ function QuoteSettingsComponentWwe(props) {
 								//pattern='[0-9.?(0-9){2}?]+%?$'
 								type='number'
 								min='0'
-								step='0.001'
+								step='0.01'
 								max='20000'
 								onKeyDown={handlingFeeMarkup}
 								value={

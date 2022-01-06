@@ -1,6 +1,8 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Select, Typography, Row, Col, Form, Input, Checkbox } from 'antd'
-
+import {
+	LableAsLimit
+} from '../../../../../Utilities/numberValidation'
 const { Option } = Select
 const { Title } = Typography
 
@@ -109,6 +111,7 @@ const GlobalTranz = ({
 									!quoteSettingsState?.quickest_service ||
 									quoteSettingsState?.method === 2
 								}
+								onKeyDown={LableAsLimit}
 							/>
 						</div>
 					</Form.Item>
@@ -171,6 +174,7 @@ const GlobalTranz = ({
 									quoteSettingsState?.method === 2 ||
 									!cheapestCheck
 								}
+								onKeyDown={LableAsLimit}
 							/>
 						</div>
 					</Form.Item>
