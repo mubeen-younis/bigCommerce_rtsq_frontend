@@ -33,7 +33,7 @@ function ProductSettingsComponent(props) {
 	const [syncModel, setSyncModel] = useState(false)
 	const [lastPageNo, setLastPageNo] = useState(1);
 	const [countSorting, setCountSorting] = useState(0);
-	const [emailAddress, setEmailAddress] = useState(props.store.admin_email)
+	const [emailAddress, setEmailAddress] = useState(props?.store?.admin_email || '')
 	const [state, setState] = useState({
 		filteredInfo: null,
 		sortedInfo: null,
