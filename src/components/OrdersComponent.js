@@ -118,7 +118,6 @@ function OrderSettingsComponent(props) {
 		console.log(pagination);
 		let PaginationPerpage = (ordersPagination?.perpage)*10/10;
 		if(pagination?.pageSize !== PaginationPerpage){
-			console.log('perpage chanfe')
 			setLoading(true);
 			//dispatch(getAllOrders(props.token, pagination.current, pagination.pageSize, sortOrderCust, setLoading, pagination.search,  pagination.status))
 			const meta = {
@@ -278,7 +277,7 @@ function OrderSettingsComponent(props) {
 				<div>
 					{(showShipOwnTitle === 1 ) && <h3 style={{textAlign:'center', marginTop:'15px', width:'100%'}}>These items were quoted as shipping as their own package.</h3> }
 					<Col span={6} style={{textAlign : 'center', float:'left', marginTop:'10px', paddingLeft:'0px', paddingRight: '0px' }}>
-						<span style={{width:'100%', float:'left', visibility:'hidden'}}>{bin?.d}{bin?.w}{bin?.h}</span>	
+						<span style={{width:'100%', float:'left'}}>{bin?.d}{bin?.w}{bin?.h}</span>	
 						<img src={bin?.image_complete} />
 					</Col>
 					{showShipOwnTitle = ''}

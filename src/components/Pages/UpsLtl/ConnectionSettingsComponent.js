@@ -35,9 +35,9 @@ function ConnectionSettingsComponent(props) {
 				<strong>Note!</strong> You must have an LTL freight enabled UPS account to use
 				this application. If you do not have one, call 800-333-7400, or{' '}
 				<a href='https://www.ups.com/lasso/login' target='_blank' rel='noreferrer'>
-					register
+					register online
 				</a>{' '}
-				online.
+				.
 			</div>
 			<Form
 				layout='vertical'

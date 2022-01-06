@@ -61,9 +61,9 @@ function ConnectionSettingsComponent(props) {
 								href='https://www.ups.com/lasso/login'
 								target='_blank'
 								rel='noreferrer'>
-								register
+								register online
 							</a>{' '}
-							online.
+							.
 						</span>
 					) : (
 						<span>

@@ -322,18 +322,18 @@ const CarriersComponent = props => {
 				</Row>
 			)}
 
-			<Table
-				className='custom-table'
-				rowSelection={rowSelection}
-				columns={columns}
-				dataSource={filteredServices ?? services}
-				total={50}
-				// showSizeChanger={true}
-				pagination={false}
-				sortOrder='ascend'
-			/>
-
-			<Form.Item
+			
+			{services ? 
+			<><Table
+			className='custom-table'
+			rowSelection={rowSelection}
+			columns={columns}
+			dataSource={filteredServices ?? services}
+			total={50}
+			// showSizeChanger={true}
+			pagination={false}
+			sortOrder='ascend'
+		/><Form.Item
 				style={{
 					textAlign: 'right',
 					marginTop: '20px',
@@ -349,7 +349,9 @@ const CarriersComponent = props => {
 						Save Settings
 					</Button>
 				</Space>
-			</Form.Item>
+			</Form.Item></>:
+			<Skeleton active />
+			}
 		</Fragment>
 	)
 }

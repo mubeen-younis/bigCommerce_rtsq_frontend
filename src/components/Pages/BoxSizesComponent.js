@@ -1,5 +1,6 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
 	Select,
 	Typography,
@@ -177,9 +178,6 @@ function BoxSizesComponent(props) {
 	)
 
 	const onFinish = values => {
-		values = { ...values }
-		delete values.box_name
-
 		var error = valueLimit(values?.length, 108, 'length')
 		error += valueLimit(values?.width, 108, 'width')
 		error += valueLimit(values?.height, 108, 'height')
@@ -193,7 +191,6 @@ function BoxSizesComponent(props) {
 		error += valueLimitAfterDecimal(values?.box_weight, 3, 'box weight')
 		error += valueLimitAfterDecimal(values?.box_fee, 3, 'box fee')
 
-		console.log(error)
 		if (error !== '') {
 			error = error.split('exploder')[0]
 			dispatch({
@@ -212,7 +209,7 @@ function BoxSizesComponent(props) {
 				},
 			})
 		} else {
-			const boxType = boxSize?.box_name === 'Merchant defined Box (default)' ? 1 : 2
+			const boxType = values?.box_name === 'Merchant defined Box (default)' ? 1 : 2
 			if (!operation) {
 				props.addBoxSize(
 					props.token,
@@ -220,7 +217,7 @@ function BoxSizesComponent(props) {
 						...values,
 						is_available: boxSize.is_available,
 						box_type: boxType,
-						box_name: boxSize?.box_name,
+						box_name: values?.box_name,
 					},
 					'save_boxsize',
 					'ADD_BOX_SIZE',
@@ -234,7 +231,7 @@ function BoxSizesComponent(props) {
 						is_available: boxSize.is_available,
 						id: boxSize.id,
 						box_type: boxType,
-						box_name: boxSize?.box_name,
+						box_name: values?.box_name,
 					},
 					'update_boxsize',
 					'UPDATE_BOX_SIZE',
@@ -458,12 +455,12 @@ function BoxSizesComponent(props) {
 	]
 
 	const addonCheck = props.installedAddons.find(
-		add => add.short_code === 'SBS' && add.is_enabled === 0
+		add => add.name === 'Standard Box Sizes'
 	)
-
-	return addonCheck || props?.sbsPlans?.currentPackage === null ? (
+	console.log(addonCheck, props?.sbsPlans)
+	return !addonCheck ? (
 		<h1>
-			Click <a href='/'>here</a> to add the {addonCheck?.name} add-on.
+			Click <Link to='/'>here</Link> to add the {addonCheck?.name} add-on.
 		</h1>
 	) : (
 		<Fragment>
@@ -595,7 +592,7 @@ function BoxSizesComponent(props) {
 															]}>
 															<Select
 																//defaultValue='Merchant defined Box (default)'
-																name='box_name'
+																//name='box_name'
 																onChange={opt =>
 																	populateBoxValues(opt)
 																}>
@@ -809,7 +806,7 @@ function BoxSizesComponent(props) {
 													xl={24}>
 													<Form.Item name='is_available'>
 														<Checkbox
-															name='is_available'
+															//name='is_available'
 															onChange={e =>
 																setBoxSize({
 																	...boxSize,

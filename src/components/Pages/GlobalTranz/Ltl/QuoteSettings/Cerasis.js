@@ -174,7 +174,11 @@ const Cerasis = ({
 									</Select>
 								</Form.Item>
 								<div className={'text-gray'}>
-									Displays a least expensive option.
+								
+								{quoteSettingsState?.rating_method === '2' &&
+									'Number of options to display in the shopping cart.'}
+								{quoteSettingsState?.rating_method === '3' &&
+									'Number of options to include in the calculation of the average.'}
 								</div>
 							</Col>
 						</Row>
@@ -208,9 +212,10 @@ const Cerasis = ({
 									/>
 								</Form.Item>
 								<div className={'text-gray'}>
-									What the user sees during checkout, e.g.
-									"Freight". Leave blank to display the
-									carrier name.
+								{quoteSettingsState?.rating_method === '1' &&
+									'What the user sees during checkout, e.g. "Freight". Leave blank to display the carrier name.'}
+								{quoteSettingsState?.rating_method === '3' &&
+									'What the user sees during checkout, e.g. "Freight". If left blank will default to "Freight".'}
 								</div>
 							</Col>
 						</Row>

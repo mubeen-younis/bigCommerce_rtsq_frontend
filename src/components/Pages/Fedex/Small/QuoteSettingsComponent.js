@@ -25,19 +25,18 @@ import {
 const { Title } = Typography
 
 const domestic_services = [
-	'Home Delivery',
-	'Date Certain Home Delivery',
-	'Evening Home Delivery',
-	'Appointment Home Delivery',
+	'Ground Home Delivery',
+	//'Date Certain Home Delivery',
+	//'Evening Home Delivery',
+	//'Appointment Home Delivery',
 	'Ground',
 	'Express Saver',
 	'2 Day',
 	'2 Day AM',
-	'2 Day AM',
 	'Priority Overnight',
 	'First Overnight',
 	'Standard Overnight',
-	'SmartPost',
+	'Smart Post',
 ]
 
 const international_services = [
@@ -49,17 +48,17 @@ const international_services = [
 	'International Priority',
 	'International Priority Distribution',
 	'International Priority Freight',
-	'Priority Overnight',
-	'Standard Overnight',
+	'International Priority Overnight',
+	'International Standard Overnight',
 	'International Ground',
 ]
 
 const one_rate_services = [
 	{ label: '' },
 	{ label: '' },
+	/*{ label: '' },
 	{ label: '' },
-	{ label: '' },
-	{ label: '' },
+	{ label: '' },*/
 	{ label: 'Express Saver' },
 	{ label: '2 Day' },
 	{ label: '2 Day AM' },
@@ -329,16 +328,6 @@ function QuoteSettingsComponentWweSmall(props) {
 		add => add.short_code === 'RAD' && add.is_enabled === 1
 	)
 
-	let radStatus = false
-	if (radCheck !== undefined) {
-		radStatus =
-			props?.radPlans?.currentPackage === null
-				? false
-				: props?.radPlans?.currentPackage?.status !== 1
-				? false
-				: true
-	}
-
 	const weekDaysMarkup = useCallback(
 		() =>
 			['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map((day, i) => (
@@ -386,6 +375,18 @@ function QuoteSettingsComponentWweSmall(props) {
 		[setQuoteSettingsState]
 	)
 
+	let radStatus = false
+	if (radCheck !== undefined) {
+		radStatus =
+			props?.radPlans?.currentPackage === null
+				? false
+				: props?.radPlans?.currentPackage?.status !== 1
+				? false
+				: true
+	}
+
+
+
 	return loading &&
 		(props.quoteSettings === undefined || props.quoteSettings === null) ? (
 		<Skeleton active />
@@ -400,6 +401,14 @@ function QuoteSettingsComponentWweSmall(props) {
 				initialValues={props.quoteSettings}>
 				{/* UPS SERVICES */}
 				<Row gutter={30} align='middle' className={'mb-4'}>
+					
+					{ props?.sbsPlans?.currentPackage?.status !== 1 &&
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+						<div className={'note-bx'}>
+							Standard Box size feature is required for the One Rate services.
+						</div>
+					</Col>
+					}
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Fedex Services</Title>
 					</Col>
@@ -460,10 +469,10 @@ function QuoteSettingsComponentWweSmall(props) {
 							<Col span={4}>
 								<Form.Item className={'mb-0'}>
 									<Checkbox
-										name='fedex_home_delivery'
+										name='fedex_ground_home_delivery'
 										checked={
 											quoteSettingsState?.carrier_services
-												?.fedex_home_delivery
+												?.fedex_ground_home_delivery
 										}
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
@@ -471,10 +480,10 @@ function QuoteSettingsComponentWweSmall(props) {
 							<Col span={24} xs={24} sm={24} md={24} lg={24} xl={24}>
 								<Form.Item className={'mb-0'}>
 									<Input
-										name={'fedex_home_delivery_markup'}
+										name={'fedex_ground_home_delivery_markup'}
 										value={
 											quoteSettingsState?.carrier_services
-												?.fedex_home_delivery_markup
+												?.fedex_ground_home_delivery_markup
 										}
 										onChange={onChange}
 										onKeyDown={handlingFeeMarkup}
@@ -497,7 +506,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							</Col>
 						</Row>
 
-						<Row gutter={30} align='middle' className={'mb-2'}>
+						{/*}<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>
 									Date Certain Home Delivery
@@ -635,7 +644,7 @@ function QuoteSettingsComponentWweSmall(props) {
 									Markup (e.g Currency 1.0 or percentage 5%)
 								</label>
 							</Col>
-						</Row>
+						</Row> {*/}
 
 						<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
@@ -958,10 +967,10 @@ function QuoteSettingsComponentWweSmall(props) {
 							<Col span={4}>
 								<Form.Item className={'mb-0'}>
 									<Checkbox
-										name='fedex_smartpost'
+										name='fedex_smart_post'
 										checked={
 											quoteSettingsState?.carrier_services
-												?.fedex_smartpost
+												?.fedex_smart_post
 										}
 										onChange={onCheck}></Checkbox>
 								</Form.Item>
@@ -971,9 +980,9 @@ function QuoteSettingsComponentWweSmall(props) {
 									<Input
 										value={
 											quoteSettingsState?.carrier_services
-												?.fedex_smartpost_markup
+												?.fedex_smart_post_markup
 										}
-										name={'fedex_smartpost_markup'}
+										name={'fedex_smart_post_markup'}
 										onChange={onChange}
 										onKeyDown={handlingFeeMarkup}
 										maxLength='7'
@@ -1311,7 +1320,7 @@ function QuoteSettingsComponentWweSmall(props) {
 				{/* END */}
 
 				{/* Cut Off Time & Ship Date Offset */}
-				<Row gutter={30} align='middle' className={'mb-1'}>
+				<Row gutter={24} className={'mb-1'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Cut Off Time & Ship Date Offset</Title>
 					</Col>
@@ -1323,7 +1332,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						md={12}
 						lg={12}
 						xl={6}
-						style={{ marginBottom: '45px' }}>
+						style={{ paddingTop: '11px' }}>
 						<label className={'text-gray'}>Order Cut Off Time</label>
 					</Col>
 					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
@@ -1361,7 +1370,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						md={12}
 						lg={12}
 						xl={6}
-						style={{ marginBottom: '35px' }}>
+						style={{ paddingTop: '11px' }}>
 						<label className={'text-gray'}>Fulfillment Offset Days</label>
 					</Col>
 					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
@@ -1712,7 +1721,7 @@ function QuoteSettingsComponentWweSmall(props) {
 				</Row>
 
 				{/* Other Settings */}
-				<Row gutter={30} align='middle' className={'mb-4'}>
+				<Row gutter={24} className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Title level={4}>Other settings</Title>
 					</Col>
@@ -1742,7 +1751,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						md={24}
 						lg={6}
 						xl={6}
-						style={{ marginTop: '-20px' }}>
+						style={{ paddingTop: '11px' }}>
 						<label className={'text-gray'}>Handling Fee / Markup</label>
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={18}>
@@ -1845,6 +1854,7 @@ const mapStateToProps = state => {
 		plansInfo: state.plansInfo,
 		installedAddons: state.installedAddons,
 		radPlans: state.radPlans,
+		sbsPlans: state.sbsPlans
 	}
 }
 

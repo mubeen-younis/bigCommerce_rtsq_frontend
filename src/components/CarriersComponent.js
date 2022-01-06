@@ -51,6 +51,7 @@ const CarriersComponent = props => {
 	}, [carrierId, token, state.selectedRowKeys])
 
 	const getCarrierServices = () => {
+		//getServices(token, carrierId, '')
 		if (!services) {
 			getServices(token, carrierId, '')
 		}
@@ -171,7 +172,8 @@ const CarriersComponent = props => {
 			/>
 			<br />
 			<br />
-			<Table
+			{services ? 
+			<><Table
 				className='custom-table'
 				rowSelection={rowSelection}
 				columns={columns}
@@ -189,7 +191,8 @@ const CarriersComponent = props => {
 						Save Settings
 					</Button>
 				</Space>
-			</Form.Item>
+			</Form.Item></>:
+			<Skeleton active />}
 		</Fragment>
 	)
 }
