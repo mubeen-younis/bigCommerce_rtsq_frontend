@@ -9,7 +9,9 @@ import {
 	Checkbox,
 	Radio,
 } from 'antd'
-
+import {
+	LableAsLimit
+} from '../../../../../Utilities/numberValidation'
 const { Option } = Select
 const { Title } = Typography
 
@@ -209,6 +211,7 @@ const Cerasis = ({
 										value={
 											quoteSettingsState?.label_as || ''
 										}
+										onKeyDown={LableAsLimit}
 									/>
 								</Form.Item>
 								<div className={'text-gray'}>
@@ -291,6 +294,7 @@ const Cerasis = ({
 												})
 											)
 										}
+										onKeyDown={LableAsLimit}
 									/>
 								</div>
 							</Form.Item>
@@ -362,6 +366,7 @@ const Cerasis = ({
 												})
 											)
 										}
+										onKeyDown={LableAsLimit}
 									/>
 								</div>
 							</Form.Item>
@@ -431,6 +436,7 @@ const Cerasis = ({
 												})
 											)
 										}
+										onKeyDown={LableAsLimit}
 									/>
 								</div>
 							</Form.Item>
