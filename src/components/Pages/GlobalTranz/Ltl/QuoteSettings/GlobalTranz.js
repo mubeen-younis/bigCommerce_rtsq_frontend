@@ -215,7 +215,7 @@ const GlobalTranz = ({
 								onChange={e =>
 									setQuoteSettingsState(prevState => ({
 										...prevState,
-										method: e.target.checked ? 2 : 0,
+										method: e.target.checked ? 2 : cheapestCheck ? 1 : 0,
 									}))
 								}
 							/>

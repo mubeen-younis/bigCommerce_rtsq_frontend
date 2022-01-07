@@ -64,7 +64,8 @@ function QuoteSettingsComponentWwe(props) {
 		setLoading(false)
 	}
 
-	const onFinish = data => {
+	const onFinish = data =>
+	{
 		data = {
 			...data,
 			...quoteSettingsState,
