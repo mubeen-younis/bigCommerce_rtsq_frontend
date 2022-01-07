@@ -19,6 +19,8 @@ const initialSettings = {
 	shipping_service: 'standard_ltl',
 	rating_method: '1',
 	number_of_options: '1',
+	cheapest_label: '',
+	average_rate_label: '',
 	label_as: '',
 	final_mile_service_level: 'threshold',
 	threshold_label: '',
@@ -198,22 +200,41 @@ const Cerasis = ({
 								xl={6}>
 								<label className={'text-gray'}>Label As</label>
 							</Col>
-
 							<Col
-								className='gutter-row'
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={18}>
-								<Form.Item className={'mb-0'} name='label_as'>
-									<Input
-										value={
-											quoteSettingsState?.label_as || ''
-										}
-										onKeyDown={LableAsLimit}
-									/>
-								</Form.Item>
+							className='gutter-row'
+							xs={24}
+							sm={24}
+							md={24}
+							lg={24}
+							xl={18}>
+								{+quoteSettingsState?.rating_method === 1 && 
+									<Form.Item className={'mb-0'} name='cheapest_label'>
+										<Input
+											value={
+												quoteSettingsState?.cheapest_label || ''
+											}
+											onKeyDown={LableAsLimit}
+											onChange={e => setQuoteSettingsState(prevState => ({
+												...prevState,
+												cheapest_label: e.target.value,	
+											}))}
+											/>
+									</Form.Item>
+								}
+								{+quoteSettingsState?.rating_method === 3 && 
+									<Form.Item className={'mb-0'} name='average_rate_label'>
+										<Input
+											value={
+												quoteSettingsState?.average_rate_label || ''
+											}
+											onKeyDown={LableAsLimit}
+											onChange={e => setQuoteSettingsState(prevState => ({
+												...prevState,
+												average_rate_label: e.target.value,	
+											}))}
+											/>
+									</Form.Item>
+								}
 								<div className={'text-gray'}>
 								{quoteSettingsState?.rating_method === '1' &&
 									'What the user sees during checkout, e.g. "Freight". Leave blank to display the carrier name.'}

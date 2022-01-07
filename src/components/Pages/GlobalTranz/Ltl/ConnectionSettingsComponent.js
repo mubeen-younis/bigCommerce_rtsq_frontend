@@ -1,6 +1,6 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { Form, Input, Button, Space, Skeleton, Select } from 'antd'
-import { connect, useDispatch, useSelector } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
 
 const { Option } = Select
@@ -87,7 +87,7 @@ function ConnectionSettingsComponent(props) {
 				access_key: data?.access_key,
 			 })
 		},
-		[]
+		[form, props?.connectionSettings?.cerasis, props?.connectionSettings?.global_tranz]
 	)
 
 	if (props.connectionSettings === null || props.connectionSettings === undefined) {

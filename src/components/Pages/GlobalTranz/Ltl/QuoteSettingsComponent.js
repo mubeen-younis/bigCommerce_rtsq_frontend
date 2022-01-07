@@ -14,7 +14,6 @@ import { getQuoteSettings } from '../../../../Actions/Settings'
 import {
 	handlingFeeMarkup,
 	validateHandlingFeeMarkup,
-	LableAsLimit
 } from '../../../../Utilities/numberValidation'
 import GlobalTranz from './QuoteSettings/GlobalTranz'
 import Cerasis from './QuoteSettings/Cerasis'
