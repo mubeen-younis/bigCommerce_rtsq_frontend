@@ -45,11 +45,11 @@ function PlansComponent() {
 	const [number, setNumber] = useState('')
 	const [date, setDate] = useState('')
 	const [cvc, setCvc] = useState('')
-	const [country, setCountry] = useState(store.country)
+	const [country, setCountry] = useState(store?.country || '')
 	const [zipCode, setZipCode] = useState('')
-	const [name, setName] = useState(store.first_name + ' ' + store.last_name)
-	const [email, setEmail] = useState(store.admin_email)
-	const [address, setAddress] = useState(store.address)
+	const [name, setName] = useState(store ? store.first_name + ' ' + store.last_name : '')
+	const [email, setEmail] = useState(store?.admin_email || '')
+	const [address, setAddress] = useState(store?.address || '')
 	const [city, setCity] = useState('')
 	const [state, setState] = useState('')
 	const [planid, setPlanid] = useState('')
@@ -76,11 +76,11 @@ function PlansComponent() {
 		setCountry(store.country)
 		setZipCode('')
 	}, [
-		store.address,
-		store.admin_email,
-		store.country,
-		store.first_name,
-		store.last_name,
+		store?.address,
+		store?.admin_email,
+		store?.country,
+		store?.first_name,
+		store?.last_name,
 	])
 
 	const toggleModal = id => {

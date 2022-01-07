@@ -53,7 +53,8 @@ function App(props) {
 
 	const urlParams = new URLSearchParams(window.location.search)
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		const store =
 			urlParams.get('store') !== (undefined || null)
 				? urlParams.get('store')
@@ -73,7 +74,7 @@ function App(props) {
 		getInstalledAddons(store)
 		getStorePlans()
 
-		// eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [])
 
 	message.config({
