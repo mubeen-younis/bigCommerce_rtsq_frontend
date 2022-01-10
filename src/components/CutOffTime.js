@@ -9,6 +9,7 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 			['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map(
 				(day, i) => (
 					<Checkbox
+						key={i}
 						style={{ marginLeft: '0px' }}
 						checked={
 							(quoteSettingsState?.week_days &&
@@ -57,7 +58,7 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 		<div>
 			<Row gutter={30}>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<Title level={4}>Cut Off Time & Ship Date Offset</Title>
+					<Title level={4}>Cut off time & ship date offset</Title>
 				</Col>
 
 				<Col
@@ -68,7 +69,7 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 					md={12}
 					lg={12}
 					xl={6}>
-					<label className={'text-gray'}>Order Cut Off Time</label>
+					<label className={'text-gray'}>Order cut off time</label>
 				</Col>
 				<Col
 					className='gutter-row mb-3'
@@ -83,6 +84,10 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 							value={quoteSettingsState.order_cut_off_time}
 							onChange={e =>
 								handleChange('order_cut_off_time', e.target.value)
+							}
+							disabled={
+								!quoteSettingsState?.delivery_estimate_options ||
+								quoteSettingsState?.delivery_estimate_options === 1
 							}
 						/>
 						<div className={'text-gray'}>
@@ -101,7 +106,7 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 					md={12}
 					lg={12}
 					xl={6}>
-					<label className={'text-gray'}>Fulfillment Offset Days</label>
+					<label className={'text-gray'}>Fulfillment offset days</label>
 				</Col>
 				<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 					<Form.Item className={'mb-0'}>
@@ -114,6 +119,10 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 									'fulfillment_offset_days',
 									e.target.value
 								)
+							}
+							disabled={
+								!quoteSettingsState?.delivery_estimate_options ||
+								quoteSettingsState?.delivery_estimate_options === 1
 							}
 						/>
 					</Form.Item>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Row, Col, Form, Typography, Checkbox } from 'antd'
 
 const { Title } = Typography
@@ -57,7 +58,7 @@ const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus }) => {
 							disabled={!radStatus}></Checkbox>
 						{!radStatus && (
 							<label className={'ml-4'} style={{ marginLeft: '10px' }}>
-								Click <a href='/'>here</a> to add the Residential
+								Click <Link to='/'>here</Link> to add the Residential
 								Address Detection add-on.
 							</label>
 						)}
