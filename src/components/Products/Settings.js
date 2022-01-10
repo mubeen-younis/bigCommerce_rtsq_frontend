@@ -31,7 +31,9 @@ function Settings({count, product, index, copyShippingMethod, copyShippingParams
     return (
         <Fragment key={index}>
         <div className="sepSettings">
-        
+        <Row gutter={16}>
+            <Col span={24}><h2>{product?.sku ? 'SKU: '+product?.sku : ''}</h2></Col>
+        </Row>
         <Row gutter={16}>
             <Col span={24}>
                 <Form.Item style={{marginBottom:'0px' }}>
