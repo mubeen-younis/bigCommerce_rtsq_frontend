@@ -123,7 +123,14 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 					</div>
 				</Col>
 
-				<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={6}>
+				<Col
+					className='gutter-row'
+					style={{ paddingTop: '8px' }}
+					xs={12}
+					sm={12}
+					md={12}
+					lg={12}
+					xl={6}>
 					<label className={'text-gray'}>
 						What days do you ship orders?
 					</label>
