@@ -14,7 +14,6 @@ import { getQuoteSettings } from '../../../../Actions/Settings'
 import {
 	handlingFeeMarkup,
 	validateHandlingFeeMarkup,
-	LableAsLimit
 } from '../../../../Utilities/numberValidation'
 import GlobalTranz from './QuoteSettings/GlobalTranz'
 import Cerasis from './QuoteSettings/Cerasis'
@@ -65,7 +64,8 @@ function QuoteSettingsComponentWwe(props) {
 		setLoading(false)
 	}
 
-	const onFinish = data => {
+	const onFinish = data =>
+	{
 		data = {
 			...data,
 			...quoteSettingsState,
@@ -181,7 +181,7 @@ function QuoteSettingsComponentWwe(props) {
 								//pattern='[0-9.?(0-9){2}?]+%?$'
 								type='number'
 								min='0'
-								step='0.001'
+								step='0.01'
 								max='20000'
 								onKeyDown={handlingFeeMarkup}
 								value={

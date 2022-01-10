@@ -16,6 +16,7 @@ import { connect, useDispatch } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getQuoteSettings } from '../../../Actions/Settings';
 import {handlingFeeMarkup, validateHandlingFeeMarkup, LableAsLimit} from '../../../Utilities/numberValidation'
+import { Link } from 'react-router-dom';
 const { Option } = Select;
 const { Title } = Typography;
 
@@ -37,7 +38,6 @@ function QuoteSettingsComponentWwe(props) {
 		insurance_category: '84-General Merchandise'
 	});
 	const [ratingMethod, setRatingMethod] = useState(1);
-	
 	//const [isRadEnable, setIsRadEnable] = useState(1);
 
 	useEffect(() => {
@@ -315,7 +315,13 @@ function QuoteSettingsComponentWwe(props) {
 										)*/}
 									</Checkbox>
 									{ !radStatus &&
-									<label className={'ml-4'} style={{'marginLeft':'10px'}}>Click <a href="/">here</a> to add the Residential Address Detection add-on.</label>
+										<label className={'ml-4'} style={{ 'marginLeft': '10px' }}>Click <Link to='/' onClick={() =>
+										{
+											dispatch({
+												type: 'SET_ACTIVE_MENU',
+												payload: '99',
+											})									
+										}}>here</Link> to add the Residential Address Detection add-on.</label>
 										 }
 								</Form.Item>
 							</Col>
@@ -406,8 +412,15 @@ function QuoteSettingsComponentWwe(props) {
 								)*/}
 							</Checkbox>
 							{ !radStatus &&
-									<label className={'ml-4'} style={{'marginLeft':'10px'}}>Click <a href="/">here</a> to add the Residential Address Detection add-on.</label>
-										 }
+									<label className={'ml-4'} style={{ 'marginLeft': '10px' }}>Click <Link to='/'
+									onClick={() =>
+										{
+											dispatch({
+												type: 'SET_ACTIVE_MENU',
+												payload: '99',
+											})									
+										}}>here</Link> to add the Residential Address Detection add-on.</label>
+							}
 							
 						</Form.Item>
 					</Col>

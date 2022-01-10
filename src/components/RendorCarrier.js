@@ -28,6 +28,7 @@ function RendorCarrier(props) {
 			getQuoteSetting(token, carrier_id);
 			getInsuraceStatus(token, carrier_id);
 			dispatch({type:'GET_SERVICES', payload:null})
+			dispatch({type:'GET_ADD_TAB_SETTING', payload:null})
 		}
 		// eslint-disable-next-line
 	}, [

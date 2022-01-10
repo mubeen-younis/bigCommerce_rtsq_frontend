@@ -7,14 +7,18 @@ export default function addKeysToList(arr, format = false) {
 			if( format === 1){
 				//[data.total_inc_tax] = '$' + Number(el?.total_inc_tax).toFixed(2)
 				index = ['total_inc_tax'];
-				data = ['$' + Number(el?.total_inc_tax).toFixed(2)]
+				data = ['$' + Number(el?.total_inc_tax).toLocaleString('en-US', {
+					maximumFractionDigits: 2
+				})]
 				//dateformat = true;
 				/*dateindex = ['date_created'];
 				datedata = [formatDate(el?.date_created)];*/
 			}else{
 				//[data.price] = '$' + Number(el?.price).toFixed(2)
 				index = ['price'];
-				data = ['$' + Number(el?.price).toFixed(2)]
+				data = ['$' + Number(el?.price).toLocaleString('en-US', {
+					maximumFractionDigits: 2
+				})]
 			}
 			return {
 				...el,
