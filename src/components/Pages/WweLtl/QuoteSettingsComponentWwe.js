@@ -25,7 +25,7 @@ function QuoteSettingsComponentWwe(props) {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(true);
 	const [quoteSettingsState, setQuoteSettingsState] = useState({
-		number_of_options: '1',
+		number_of_options: 1,
 		showDeliveryEstimate: false,
 		delivery_estimate_options: 1,
 		order_cut_off_time: '',
@@ -170,23 +170,16 @@ function QuoteSettingsComponentWwe(props) {
 							<label className={'text-gray'}>Number Of Options</label>
 						</Col>
 						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-							<Form.Item className={'mb-0'} name='number_of_options'>
+							<Form.Item className={'mb-0'}>
 								<Select
-									// name='number_of_options'
 									defaultValue='1'
 									size={'large'}
 									style={{ width: '100%' }}
-								>
-									<Option value='1'>1</Option>
-									<Option value='2'>2</Option>
-									<Option value='3'>3</Option>
-									<Option value='4'>4</Option>
-									<Option value='5'>5</Option>
-									<Option value='6'>6</Option>
-									<Option value='7'>7</Option>
-									<Option value='8'>8</Option>
-									<Option value='9'>9</Option>
-									<Option value='10'>10</Option>
+									onChange={(value) => handleStateChange('number_of_options', value)}
+									>
+									{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => (
+										<Option key={item} value={item}>{item}</Option>
+									))}
 								</Select>
 							</Form.Item>
 							<div className={'text-gray'}>
