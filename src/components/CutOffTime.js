@@ -10,7 +10,7 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 				(day, i) => (
 					<Checkbox
 						key={i}
-						style={{ marginLeft: '0px' }}
+						style={{ margin: 'auto 10px' }}
 						checked={
 							(quoteSettingsState?.week_days &&
 								quoteSettingsState?.week_days.includes(day)) ||
@@ -56,7 +56,7 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 
 	return (
 		<div>
-			<Row gutter={30}>
+			<Row gutter={30} className='mb-3'>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<Title level={4}>Cut off time & ship date offset</Title>
 				</Col>

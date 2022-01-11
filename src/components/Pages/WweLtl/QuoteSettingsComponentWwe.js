@@ -1,14 +1,12 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import {
 	Select,
-	Typography,
 	Row,
 	Col,
 	Space,
 	Button,
 	Form,
 	Input,
-	Checkbox,
 	Skeleton,
 } from 'antd';
 
@@ -16,15 +14,24 @@ import { connect, useDispatch } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getQuoteSettings } from '../../../Actions/Settings';
 import {handlingFeeMarkup, validateHandlingFeeMarkup, LableAsLimit} from '../../../Utilities/numberValidation'
-import { Link } from 'react-router-dom';
+import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
+import CutOffTime from '../../CutOffTime';
+import RAD from '../../RAD'
+import LiftGateDelivery from '../../LiftGateDelivery'
+
 const { Option } = Select;
-const { Title } = Typography;
 
 function QuoteSettingsComponentWwe(props) {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(true);
 	const [quoteSettingsState, setQuoteSettingsState] = useState({
+		number_of_options: '1',
 		showDeliveryEstimate: false,
+		delivery_estimate_options: 1,
+		order_cut_off_time: '',
+		fulfillment_offset_days: '',
+		all_week_days_select: false,
+		week_days: [],
 		residentialPickup: false,
 		alwaysResidentialDelivery: false,
 		autoDetectedResidentialAddresses: false,
@@ -51,46 +58,39 @@ function QuoteSettingsComponentWwe(props) {
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
 	);
+	
 	let radStatus = false;
 	if(radCheck !== undefined){
 		radStatus = props?.radPlans?.currentPackage === null ? false:
 		props?.radPlans?.currentPackage?.status !== 1 ? false : true;
 	}
-	const getQuoteSettings = () => {
+	
+	const getQuoteSettings = () =>
+	{
 		let ratingMethodInit =
 			props.quoteSettings.method !== undefined ? props.quoteSettings.method : 1;
 		setRatingMethod(ratingMethodInit);
 
-		setQuoteSettingsState({
-			showDeliveryEstimate: props.quoteSettings.showDeliveryEstimate,
-			residentialPickup: props.quoteSettings.residentialPickup,
-			alwaysResidentialDelivery: props.quoteSettings.alwaysResidentialDelivery,
-			autoDetectedResidentialAddresses:
-				props.quoteSettings.autoDetectedResidentialAddresses,
-			alwaysLiftGatePickup: props.quoteSettings.alwaysLiftGatePickup,
-			alwaysLiftGateDelivery: props.quoteSettings.alwaysLiftGateDelivery,
-			offerLiftGateDelivery: props.quoteSettings.offerLiftGateDelivery,
-			autoDetectedResidentialAddressesLfg:
-				props.quoteSettings.autoDetectedResidentialAddressesLfg,
-			returnRates: props.quoteSettings.returnRates,
-			own_arrangement: props.quoteSettings.own_arrangement,
-			own_arrangement_text: props.quoteSettings.own_arrangement_text,
-			insurance_category: props.quoteSettings.insurance_category
-		});
-
+		setQuoteSettingsState(prevState => ({
+			...prevState,
+			...props.quoteSettings,
+		}))
 		setLoading(false);
 	};
 
-	const onFinish = data => {
+	const onFinish = data =>
+	{
 		data = {
-			...data,
 			...quoteSettingsState,
+			...data,
 			carrierId: +props.carrierId,
 			own_arrangement_text: quoteSettingsState.own_arrangement_text,
 			insurance_category: quoteSettingsState.insurance_category === undefined ? '84-General Merchandise' : quoteSettingsState.insurance_category 
 		};
-		var errormsg = validateHandlingFeeMarkup(data?.handling_free_markup, 'Handling fee');
-		if( errormsg === '' ){
+
+		let errormsg = validateHandlingFeeMarkup(data?.handling_free_markup, 'Handling fee');
+		
+		if (errormsg === '') {
 			props.postData(data, props.token);
 		}else{ 
 			
@@ -111,9 +111,13 @@ function QuoteSettingsComponentWwe(props) {
 		}
 	};
 
+	const handleStateChange = useCallback((name, value) => {
+		setQuoteSettingsState(prevState => ({
+			...prevState,
+			[name]: value,
+		}))
+	}, [])
 	
-	
-
 	return loading || props.quoteSettings === undefined || props.quoteSettings === null ? (
 		<Skeleton active />
 	) : (
@@ -168,7 +172,7 @@ function QuoteSettingsComponentWwe(props) {
 						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 							<Form.Item className={'mb-0'} name='number_of_options'>
 								<Select
-									name='number_of_options'
+									// name='number_of_options'
 									defaultValue='1'
 									size={'large'}
 									style={{ width: '100%' }}
@@ -216,7 +220,7 @@ function QuoteSettingsComponentWwe(props) {
 					</Row>
 				) : null}
 
-				{ratingMethod === 1 || ratingMethod === 2 ? (
+				{/* {ratingMethod === 1 || ratingMethod === 2 ? (
 					<Row gutter={30} className={'mb-3'}>
 						<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
 							<label className={'text-gray'}>Show Delivery Estimate</label>
@@ -239,192 +243,31 @@ function QuoteSettingsComponentWwe(props) {
 							</Form.Item>
 						</Col>
 					</Row>
-				) : null}
+				) : null} */}
 
-				<Row gutter={30} align='middle' className={'mb-4'}>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-						<Title level={4}>Residential address settings</Title>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Always include residential pick up</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='residential_pickup'
-								value={true}
-								checked={quoteSettingsState.residentialPickup}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										residentialPickup: !quoteSettingsState.residentialPickup,
-									})
-								}
-							></Checkbox>
-						</Form.Item>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Always quote residential delivery</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='alwaysResidentialDelivery'
-								value={true}
-								checked={quoteSettingsState.alwaysResidentialDelivery}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										alwaysResidentialDelivery: !quoteSettingsState.alwaysResidentialDelivery,
-										autoDetectedResidentialAddresses: false,
-									})
-								}
-								disabled={
-									radStatus
-								}
-							></Checkbox>
-						</Form.Item>
-					</Col>
+				<DeliveryEstimateOptions
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
+				
+				<CutOffTime
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+					handleChange={handleStateChange}
+				/>
 					
-						<Fragment>
-							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-								<label className={'text-gray'}>Auto-detect residential addresses</label>
-							</Col>
-							<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-								<Form.Item className={'mb-0'}>
-									<Checkbox
-										name='autoDetectedResidentialAddresses'
-										checked={
-											quoteSettingsState.autoDetectedResidentialAddresses	
-										}
-										onChange={() =>
-											setQuoteSettingsState({
-												...quoteSettingsState,
-												autoDetectedResidentialAddresses: !quoteSettingsState.autoDetectedResidentialAddresses,
-												alwaysResidentialDelivery: false,
-											})
-										}
-										disabled={
-											!radStatus
-										}
-									>
-										{/*props.plansInfo && props.plansInfo.plan_type < 2 && (
-											<a href='#!' className='stnd-plan text-danger'>
-												Standard plan required
-											</a>
-										)*/}
-									</Checkbox>
-									{ !radStatus &&
-										<label className={'ml-4'} style={{ 'marginLeft': '10px' }}>Click <Link to='/' onClick={() =>
-										{
-											dispatch({
-												type: 'SET_ACTIVE_MENU',
-												payload: '99',
-											})									
-										}}>here</Link> to add the Residential Address Detection add-on.</label>
-										 }
-								</Form.Item>
-							</Col>
-						</Fragment>
+				<RAD
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+					radStatus={radStatus}
+				/>
+
+				<LiftGateDelivery
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+					radStatus={radStatus}
+				/>
 					
-				</Row>
-
-				<Row gutter={30} align='middle' className={'mb-4'}>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-						<Title level={4}>Lift gate settings</Title>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Always quote lift gate delivery</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='always_lift_gate_delivery'
-								value={true}
-								checked={quoteSettingsState.alwaysLiftGateDelivery}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										alwaysLiftGateDelivery: !quoteSettingsState.alwaysLiftGateDelivery,
-										offerLiftGateDelivery: false,
-										autoDetectedResidentialAddressesLfg: false,
-									})
-								}
-							></Checkbox>
-						</Form.Item>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Offer lift gate delivery as an option</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='offer_lift_gate_delivery'
-								checked={
-									 quoteSettingsState.offerLiftGateDelivery
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										offerLiftGateDelivery: !quoteSettingsState.offerLiftGateDelivery,
-										alwaysLiftGateDelivery: false,
-									})
-								}
-								//disabled={props.plansInfo && props.plansInfo.plan_type > 1 ? false : true}
-							>
-								{/*props.plansInfo && props.plansInfo.plan_type < 2 && (
-									<a href='#!' className='stnd-plan text-danger'>
-										Standard plan required
-									</a>
-								)*/}
-							</Checkbox>
-						</Form.Item>
-					</Col>
-
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Always include lift gate delivery when a residential address is detected
-						</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='auto_detected_residential_addresses_lfg'
-								checked={
-									 quoteSettingsState.autoDetectedResidentialAddressesLfg
-										
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										autoDetectedResidentialAddressesLfg: !quoteSettingsState.autoDetectedResidentialAddressesLfg,
-										alwaysLiftGateDelivery: false,
-									})
-								}
-								disabled={
-									!radStatus
-								}
-							>
-								{/*props.plansInfo && props.plansInfo.plan_type < 2 && (
-									<a href='#!' className='stnd-plan text-danger'>
-										Standard plan required
-									</a>
-								)*/}
-							</Checkbox>
-							{ !radStatus &&
-									<label className={'ml-4'} style={{ 'marginLeft': '10px' }}>Click <Link to='/'
-									onClick={() =>
-										{
-											dispatch({
-												type: 'SET_ACTIVE_MENU',
-												payload: '99',
-											})									
-										}}>here</Link> to add the Residential Address Detection add-on.</label>
-							}
-							
-						</Form.Item>
-					</Col>
-				</Row>
 				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
 						<label className={'text-gray'}>Insurance Category</label>
@@ -493,7 +336,7 @@ function QuoteSettingsComponentWwe(props) {
 									)
 								}
 								type="number"
-								min='-20000'
+								min='0'
 								step='0.001'
 								max='20000'
 								pattern='[0-9.?(0-9){2}?]+%?$'

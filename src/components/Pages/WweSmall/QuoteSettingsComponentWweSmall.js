@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import {
 	Typography,
 	Row,
@@ -14,8 +14,9 @@ import {
 import { connect, useDispatch } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getQuoteSettings } from '../../../Actions/Settings';
-import { fixControlledValue } from 'antd/lib/input/Input';
 import {handlingFeeMarkup, validateHandlingFeeMarkup, handleKeyDownDecimalNumber} from '../../../Utilities/numberValidation'
+import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
+import CutOffTime from '../../CutOffTime';
 const { Title } = Typography;
 
 function QuoteSettingsComponentWweSmall(props) {
@@ -41,6 +42,11 @@ function QuoteSettingsComponentWweSmall(props) {
 			ups_next_day_air_early_markup: '',
 		},
 		showDeliveryEstimate: false,
+		delivery_estimate_options: 1,
+		order_cut_off_time: '',
+		fulfillment_offset_days: '',
+		all_week_days_select: false,
+		week_days: [1, 2, 3, 4, 5],
 		number_of_transit_days: null,
 		ground_metric: null,
 		alwaysResidentialDelivery: false,
@@ -185,6 +191,13 @@ function QuoteSettingsComponentWweSmall(props) {
 		}
 		
 	};
+
+	const handleStateChange = useCallback((name, value) => {
+		setQuoteSettingsState(prevState => ({
+			...prevState,
+			[name]: value,
+		}))
+	}, [])
 
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
@@ -530,7 +543,7 @@ function QuoteSettingsComponentWweSmall(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={24} align='middle' className={'mb-2'}>
+				{/* <Row gutter={24} align='middle' className={'mb-2'}>
 					<Col className='gutter-row' xs={12} sm={12} md={12} lg={8} xl={6}>
 						<label className={'text-gray'}>Show Delivery Estimate</label>
 					</Col>
@@ -550,8 +563,19 @@ function QuoteSettingsComponentWweSmall(props) {
 							></Checkbox>
 						</Form.Item>
 					</Col>
-				</Row>
+				</Row> */}
 				{/* END */}
+					
+				<DeliveryEstimateOptions
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
+				
+				<CutOffTime
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+					handleChange={handleStateChange}
+				/>
 
 				{/* Ground transit time settings */}
 
