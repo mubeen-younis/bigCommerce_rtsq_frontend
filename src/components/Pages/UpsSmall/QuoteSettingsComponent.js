@@ -10,13 +10,10 @@ import {
 	Checkbox,
 	Skeleton,
 	Radio,
-	TimePicker
 } from 'antd'
-import moment from 'moment';
 import { connect, useDispatch } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
-import { fixControlledValue } from 'antd/lib/input/Input'
 import {
 	handlingFeeMarkup,
 	validateHandlingFeeMarkup,
