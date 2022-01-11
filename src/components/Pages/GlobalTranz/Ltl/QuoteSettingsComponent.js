@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import {
 	Row,
 	Col,
@@ -24,6 +24,11 @@ function QuoteSettingsComponentWwe(props) {
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState({
 		showDeliveryEstimate: false,
+		delivery_estimate_options: 1,
+		order_cut_off_time: '',
+		fulfillment_offset_days: '',
+		all_week_days_select: true,
+		week_days: [1, 2, 3, 4, 5],
 		residentialPickup: false,
 		alwaysResidentialDelivery: false,
 		autoDetectedResidentialAddresses: false,
@@ -43,9 +48,11 @@ function QuoteSettingsComponentWwe(props) {
 			getQuoteSettings()
 		}
 	}, [props.quoteSettings])
+
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
 	)
+
 	let radStatus = false
 	if (radCheck !== undefined) {
 		radStatus =
@@ -55,7 +62,9 @@ function QuoteSettingsComponentWwe(props) {
 				? false
 				: true
 	}
-	const getQuoteSettings = () => {
+	
+	const getQuoteSettings = () =>
+	{
 		setQuoteSettingsState({
 			...quoteSettingsState,
 			...props.quoteSettings,
@@ -152,7 +161,7 @@ function QuoteSettingsComponentWwe(props) {
 					/>
 				)}
 
-				<Row gutter={30} className={'mb-3'}>
+				<Row gutter={30} className={'mb-3 mt-3'}>
 					<Col
 						className='gutter-row'
 						style={{ paddingTop: '11px' }}
