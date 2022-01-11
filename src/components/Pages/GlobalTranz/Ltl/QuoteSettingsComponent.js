@@ -81,7 +81,7 @@ function QuoteSettingsComponentWwe(props) {
 			errormsg = 'Please select at least one service option.'
 		}
 
-		if (errormsg === '') {
+		/*if (errormsg === '') {
 			errormsg = validateHandlingFeeMarkup(
 				data?.weight_of_handling_unit,
 				'Weight of Handling Unit',
@@ -95,7 +95,7 @@ function QuoteSettingsComponentWwe(props) {
 				'Maximum Weight per Handling Unit',
 				true
 			)
-		}
+		}*/
 
 		if (errormsg === '') {
 			errormsg = validateHandlingFeeMarkup(
@@ -181,7 +181,7 @@ function QuoteSettingsComponentWwe(props) {
 								//pattern='[0-9.?(0-9){2}?]+%?$'
 								type='number'
 								min='0'
-								step='0.01'
+								step='0.001'
 								max='20000'
 								onKeyDown={handlingFeeMarkup}
 								value={

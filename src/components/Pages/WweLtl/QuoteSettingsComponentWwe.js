@@ -493,7 +493,7 @@ function QuoteSettingsComponentWwe(props) {
 									)
 								}
 								type="number"
-								min='-20000'
+								min='0'
 								step='0.001'
 								max='20000'
 								pattern='[0-9.?(0-9){2}?]+%?$'
