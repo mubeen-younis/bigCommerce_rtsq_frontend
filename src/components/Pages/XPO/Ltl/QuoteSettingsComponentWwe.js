@@ -24,8 +24,6 @@ import CutOffTime from '../../../CutOffTime'
 import RAD from '../../../RAD'
 import LiftGateDelivery from '../../../LiftGateDelivery'
 
-const { Title } = Typography
-
 function QuoteSettingsComponentWwe(props) {
 	const dispatch = useDispatch()
 	const [form] = Form.useForm()
@@ -188,7 +186,7 @@ function QuoteSettingsComponentWwe(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={30} className={'mb-3'}>
+				{/* <Row gutter={30} className={'mb-3'}>
 					<Col
 						className='gutter-row'
 						style={{ paddingTop: '11px' }}
@@ -226,7 +224,7 @@ function QuoteSettingsComponentWwe(props) {
 							</Checkbox>
 						</Form.Item>
 					</Col>
-				</Row>
+				</Row> */}
 
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
