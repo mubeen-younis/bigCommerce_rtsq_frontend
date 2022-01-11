@@ -23,6 +23,8 @@ import {
 	handleKeyDownDecimalNumber,
 	blockInvalidCharWithPoint
 } from '../../../Utilities/numberValidation'
+import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
+import CutOffTime from '../../CutOffTime';
 const { Title } = Typography
 
 const international_services = [
@@ -433,6 +435,13 @@ function QuoteSettingsComponentWweSmall(props) {
 		}
 	}
 
+	const handleStateChange = useCallback((name, value) => {
+		setQuoteSettingsState(prevState => ({
+			...prevState,
+			[name]: value,
+		}))
+	}, [])
+
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
 	)
@@ -446,64 +455,6 @@ function QuoteSettingsComponentWweSmall(props) {
 				? false
 				: true
 	}
-
-	const validateNonNegWholeNumber = value => {
-		value = Number(value)
-		value = value < 0 ? value * -1 : value
-		return value.toFixed(2)
-	}
-
-	const validateWholeNumber = value => {
-		value = Number(value)
-		return value.toFixed(2)
-	}
-
-	const weekDaysMarkup = useCallback(
-		() =>
-			['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map((day, i) => (
-				<Checkbox
-					style={{marginLeft: '0px'}}
-					checked={
-						(quoteSettingsState?.week_days &&
-							quoteSettingsState?.week_days.includes(day)) ||
-						false
-					}
-					onChange={e => {
-						const wd = quoteSettingsState?.week_days || []
-						const dayIndex = wd.indexOf(day)
-
-						if (dayIndex < 0 && e.target.checked) {
-							wd.push(day)
-						}
-
-						if (dayIndex >= 0 && !e.target.checked) {
-							wd.splice(dayIndex, 1)
-						}
-
-						setQuoteSettingsState(prevState => ({
-							...prevState,
-							week_days: wd.sort(),
-							select_all_week_days: wd.length === 5 ?? false,
-						}))
-					}}>
-					{day}
-				</Checkbox>
-			)),
-		[quoteSettingsState?.week_days]
-	)
-
-	const selectAllWeekDays = useCallback(
-		e => {
-			setQuoteSettingsState(prevState => ({
-				...prevState,
-				week_days: e.target.checked
-					? ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-					: [],
-				select_all_week_days: e.target.checked,
-			}))
-		},
-		[setQuoteSettingsState]
-	)
 
 	return loading &&
 		(props.quoteSettings === undefined || props.quoteSettings === null) ? (
@@ -1111,165 +1062,17 @@ function QuoteSettingsComponentWweSmall(props) {
 
 				<Row className={'mb-2'}></Row>
 
-				<Row gutter={24} align='middle' className={'mb-4'}>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-						<Title level={4}>Delivery Estimate Options</Title>
-					</Col>
-
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Don't display delivery estimates
-						</label>
-					</Col>
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Radio
-								name='delivery_estimate_options'
-								value='1'
-								checked={
-									quoteSettingsState?.delivery_estimate_options === 1
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										delivery_estimate_options: 1,
-									})
-								}
-							/>
-						</Form.Item>
-					</Col>
-
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Display estimated number of days
-						</label>
-					</Col>
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Radio
-								name='delivery_estimate_options'
-								value='2'
-								checked={
-									quoteSettingsState.delivery_estimate_options === 2
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										delivery_estimate_options: 2,
-									})
-								}
-							/>
-						</Form.Item>
-					</Col>
-
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Display estimated delivery date
-						</label>
-					</Col>
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Radio
-								name='delivery_estimate_options'
-								value='3'
-								checked={
-									quoteSettingsState.delivery_estimate_options === 3
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										delivery_estimate_options: 3,
-									})
-								}
-							/>
-						</Form.Item>
-					</Col>
-				</Row>
+				<DeliveryEstimateOptions
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>	
 				{/* END */}
 
-				<Row gutter={24} className={'mb-1'}>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-						<Title level={4}>Cut Off Time & Ship Date Offset</Title>
-					</Col>
-
-					<Col className='gutter-row' style={{ paddingTop: '11px' }} xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Order Cut Off Time</label>
-					</Col>
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<TimePicker 
-								//type='time'
-								style={{ width: '100%' }}
-								use24Hours 
-								onChange={(time, timeString) => {
-									setQuoteSettingsState(prevState => ({
-										...prevState,
-										order_cut_off_time: timeString,
-									}))
-									console.log(time, timeString)
-								}
-								}
-								//value={quoteSettingsState?.order_cut_off_time}
-								value={quoteSettingsState?.order_cut_off_time ==='' || quoteSettingsState?.order_cut_off_time === null ? '': moment(quoteSettingsState?.order_cut_off_time, 'HH:mm:ss')}
-								disabled={
-									quoteSettingsState?.delivery_estimate_options === 1
-								}
-							/>
-						</Form.Item>
-						<div className={'text-gray mb-3'}>
-							Enter the cut off time (e.g. 2:00) for orders. Orders placed
-							after this time will be quoted as shipping the next business
-							day.
-						</div>
-					</Col>
-
-					<Col className='gutter-row' style={{ paddingTop: '11px' }} xs={12} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Fulfillment Offset Days</label>
-					</Col>
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Input
-								type='number'
-								min='1'
-								max='8'
-								step='1'
-								placeholder='Fulfillment offset days, e.g. 2'
-								onChange={e => {
-									//if (!isNaN(+e.target.value) && +e.target.value > 0)
-										setQuoteSettingsState(prevState => ({
-											...prevState,
-											fulfillment_offset_days: e.target.value,
-										}))
-								}}
-								onKeyDown={e => blockInvalidCharWithPoint(e)}
-								value={quoteSettingsState?.fulfillment_offset_days}
-								disabled={
-									quoteSettingsState?.delivery_estimate_options === 1
-								}
-							/>
-						</Form.Item>
-						<div className={'text-gray mb-3'}>
-							The number of days the ship date needs to be moved to allow
-							for the processing of the order.
-						</div>
-					</Col>
-
-					<Col className='gutter-row' style={{ paddingTop: '11px' }} xs={12} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							What days do you ship orders?
-						</label>
-					</Col>
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								checked={quoteSettingsState?.select_all_week_days}
-								onChange={checked => selectAllWeekDays(checked)}>
-								Select All
-							</Checkbox>
-							{weekDaysMarkup()}
-						</Form.Item>
-					</Col>
-				</Row>
+				<CutOffTime
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+					handleChange={handleStateChange}
+				/>	
 
 				{/* Ground transit time settings */}
 				<Row gutter={30} align='middle' className={'mb-2'}>
