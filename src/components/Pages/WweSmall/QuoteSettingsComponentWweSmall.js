@@ -14,7 +14,6 @@ import {
 import { connect, useDispatch } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getQuoteSettings } from '../../../Actions/Settings';
-import { fixControlledValue } from 'antd/lib/input/Input';
 import {handlingFeeMarkup, validateHandlingFeeMarkup, handleKeyDownDecimalNumber} from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
 import CutOffTime from '../../CutOffTime';

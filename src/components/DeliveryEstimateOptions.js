@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Form, Typography, Checkbox, Radio } from 'antd'
+import { Row, Col, Form, Typography, Radio } from 'antd'
 
 const { Title } = Typography
 

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import {
 	Select,
 	Row,
@@ -7,7 +7,6 @@ import {
 	Button,
 	Form,
 	Input,
-	Checkbox,
 	Skeleton,
 } from 'antd';
 
@@ -19,7 +18,6 @@ import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
 import CutOffTime from '../../CutOffTime';
 import RAD from '../../RAD'
 import LiftGateDelivery from '../../LiftGateDelivery'
-import { useCallback } from 'react';
 
 const { Option } = Select;
 
@@ -27,12 +25,13 @@ function QuoteSettingsComponentWwe(props) {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(true);
 	const [quoteSettingsState, setQuoteSettingsState] = useState({
+		number_of_options: '1',
 		showDeliveryEstimate: false,
 		delivery_estimate_options: 1,
 		order_cut_off_time: '',
 		fulfillment_offset_days: '',
-		all_week_days_select: true,
-		week_days: [1, 2, 3, 4, 5],
+		all_week_days_select: false,
+		week_days: [],
 		residentialPickup: false,
 		alwaysResidentialDelivery: false,
 		autoDetectedResidentialAddresses: false,
@@ -59,46 +58,39 @@ function QuoteSettingsComponentWwe(props) {
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
 	);
+	
 	let radStatus = false;
 	if(radCheck !== undefined){
 		radStatus = props?.radPlans?.currentPackage === null ? false:
 		props?.radPlans?.currentPackage?.status !== 1 ? false : true;
 	}
-	const getQuoteSettings = () => {
+	
+	const getQuoteSettings = () =>
+	{
 		let ratingMethodInit =
 			props.quoteSettings.method !== undefined ? props.quoteSettings.method : 1;
 		setRatingMethod(ratingMethodInit);
 
-		setQuoteSettingsState({
-			showDeliveryEstimate: props.quoteSettings.showDeliveryEstimate,
-			residentialPickup: props.quoteSettings.residentialPickup,
-			alwaysResidentialDelivery: props.quoteSettings.alwaysResidentialDelivery,
-			autoDetectedResidentialAddresses:
-				props.quoteSettings.autoDetectedResidentialAddresses,
-			alwaysLiftGatePickup: props.quoteSettings.alwaysLiftGatePickup,
-			alwaysLiftGateDelivery: props.quoteSettings.alwaysLiftGateDelivery,
-			offerLiftGateDelivery: props.quoteSettings.offerLiftGateDelivery,
-			autoDetectedResidentialAddressesLfg:
-				props.quoteSettings.autoDetectedResidentialAddressesLfg,
-			returnRates: props.quoteSettings.returnRates,
-			own_arrangement: props.quoteSettings.own_arrangement,
-			own_arrangement_text: props.quoteSettings.own_arrangement_text,
-			insurance_category: props.quoteSettings.insurance_category
-		});
-
+		setQuoteSettingsState(prevState => ({
+			...prevState,
+			...props.quoteSettings,
+		}))
 		setLoading(false);
 	};
 
-	const onFinish = data => {
+	const onFinish = data =>
+	{
 		data = {
-			...data,
 			...quoteSettingsState,
+			...data,
 			carrierId: +props.carrierId,
 			own_arrangement_text: quoteSettingsState.own_arrangement_text,
 			insurance_category: quoteSettingsState.insurance_category === undefined ? '84-General Merchandise' : quoteSettingsState.insurance_category 
 		};
-		var errormsg = validateHandlingFeeMarkup(data?.handling_free_markup, 'Handling fee');
-		if( errormsg === '' ){
+
+		let errormsg = validateHandlingFeeMarkup(data?.handling_free_markup, 'Handling fee');
+		
+		if (errormsg === '') {
 			props.postData(data, props.token);
 		}else{ 
 			
@@ -180,7 +172,7 @@ function QuoteSettingsComponentWwe(props) {
 						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 							<Form.Item className={'mb-0'} name='number_of_options'>
 								<Select
-									name='number_of_options'
+									// name='number_of_options'
 									defaultValue='1'
 									size={'large'}
 									style={{ width: '100%' }}
