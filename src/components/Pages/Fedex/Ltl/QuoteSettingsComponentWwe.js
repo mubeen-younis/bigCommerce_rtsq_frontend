@@ -24,6 +24,7 @@ import {
 } from '../../../../Utilities/numberValidation'
 import RAD from '../../../RAD'
 import LiftGateDelivery from '../../../LiftGateDelivery'
+import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
 
 const { Title } = Typography
 
@@ -38,6 +39,8 @@ function QuoteSettingsComponentWwe(props) {
 		delivery_estimate_options: 1,
 		order_cut_off_time: '',
 		fulfillment_offset_days: '',
+		all_week_days_select: true,
+		week_days: [1, 2, 3, 4, 5],
 		hold_at_terminal: false,
 		hold_at_terminal_price: '',
 		account_discount_price: 60,
@@ -335,7 +338,12 @@ function QuoteSettingsComponentWwe(props) {
 						</Form.Item>
 					</Col>
 				</Row>
-
+				
+				<DeliveryEstimateOptions
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
+					
 				<CutOffTime
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
