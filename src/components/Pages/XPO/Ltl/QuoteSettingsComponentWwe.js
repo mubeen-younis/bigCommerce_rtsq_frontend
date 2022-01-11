@@ -9,7 +9,6 @@ import {
 	Input,
 	Checkbox,
 	Skeleton,
-	Radio,
 } from 'antd'
 
 import { connect, useDispatch } from 'react-redux'
@@ -18,9 +17,12 @@ import { getQuoteSettings } from '../../../../Actions/Settings'
 import {
 	handlingFeeMarkup,
 	validateHandlingFeeMarkup,
-	handleKeyDownDecimalNumber,
 	LableAsLimit
 } from '../../../../Utilities/numberValidation'
+import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
+import CutOffTime from '../../../CutOffTime'
+import RAD from '../../../RAD'
+import LiftGateDelivery from '../../../LiftGateDelivery'
 
 const { Title } = Typography
 
@@ -31,6 +33,11 @@ function QuoteSettingsComponentWwe(props) {
 	const [quoteSettingsState, setQuoteSettingsState] = useState({
 		label_as: '',
 		showDeliveryEstimate: false,
+		delivery_estimate_options: 1,
+		order_cut_off_time: '',
+		fulfillment_offset_days: '',
+		all_week_days_select: true,
+		week_days: [1, 2, 3, 4, 5],
 		residentialPickup: false,
 		alwaysResidentialDelivery: false,
 		autoDetectedResidentialAddresses: false,
@@ -221,229 +228,30 @@ function QuoteSettingsComponentWwe(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={30} align='middle' className={'mb-4'}>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}>
-						<Title level={4}>Residential address settings</Title>
-					</Col>
+				<DeliveryEstimateOptions
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
 
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>
-							Always quote residential delivery
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='alwaysResidentialDelivery'
-								value={true}
-								checked={
-									quoteSettingsState.alwaysResidentialDelivery
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										alwaysResidentialDelivery:
-											!quoteSettingsState.alwaysResidentialDelivery,
-										autoDetectedResidentialAddresses: false,
-									})
-								}
-								disabled={radStatus}></Checkbox>
-						</Form.Item>
-					</Col>
-					
-						<Fragment>
-							<Col
-								className='gutter-row'
-								xs={24}
-								sm={12}
-								md={12}
-								lg={12}
-								xl={6}>
-								<label className={'text-gray'}>
-									Auto-detect residential addresses
-								</label>
-							</Col>
-							<Col
-								className='gutter-row'
-								xs={24}
-								sm={12}
-								md={12}
-								lg={12}
-								xl={18}>
-								<Form.Item className={'mb-0'}>
-									<Checkbox
-										name='autoDetectedResidentialAddresses'
-										checked={
-											quoteSettingsState.autoDetectedResidentialAddresses
-										}
-										onChange={() =>
-											setQuoteSettingsState({
-												...quoteSettingsState,
-												autoDetectedResidentialAddresses:
-													!quoteSettingsState.autoDetectedResidentialAddresses,
-												alwaysResidentialDelivery: false,
-											})
-										}
-										disabled={!radStatus}></Checkbox>
-									{!radStatus && (
-										<label
-											className={'ml-4'}
-											style={{ marginLeft: '10px' }}>
-											Click <a href='/'>here</a> to add
-											the Residential Address Detection
-											add-on.
-										</label>
-									)}
-								</Form.Item>
-							</Col>
-						</Fragment>
-					
-				</Row>
-				<Row gutter={30} align='middle' className={'mb-4'}>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}>
-						<Title level={4}>Lift gate settings</Title>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>
-							Always quote lift gate delivery
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='always_lift_gate_delivery'
-								value={true}
-								checked={
-									quoteSettingsState.alwaysLiftGateDelivery
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										alwaysLiftGateDelivery:
-											!quoteSettingsState.alwaysLiftGateDelivery,
-										offerLiftGateDelivery: false,
-										autoDetectedResidentialAddressesLfg: false,
-									})
-								}></Checkbox>
-						</Form.Item>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>
-							Offer lift gate delivery as an option
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='offer_lift_gate_delivery'
-								checked={
-									quoteSettingsState.offerLiftGateDelivery
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										offerLiftGateDelivery:
-											!quoteSettingsState.offerLiftGateDelivery,
-										alwaysLiftGateDelivery: false,
-									})
-								}></Checkbox>
-						</Form.Item>
-					</Col>
+				<CutOffTime
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+					handleChange={handleStateChange}	
+				/>
 
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>
-							Always include lift gate delivery when a residential
-							address is detected
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='auto_detected_residential_addresses_lfg'
-								checked={
-									quoteSettingsState.autoDetectedResidentialAddressesLfg
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										autoDetectedResidentialAddressesLfg:
-											!quoteSettingsState.autoDetectedResidentialAddressesLfg,
-										alwaysLiftGateDelivery: false,
-									})
-								}
-								disabled={!radStatus}></Checkbox>
-							{!radStatus && (
-								<label
-									className={'ml-4'}
-									style={{ marginLeft: '10px' }}>
-									Click <a href='/'>here</a> to add the
-									Residential Address Detection add-on.
-								</label>
-							)}
-						</Form.Item>
-					</Col>
-				</Row>
-{/*}
+				<RAD
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+					radStatus={radStatus}
+				/>
+
+				<LiftGateDelivery
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+					radStatus={radStatus}
+				/>
+				
+				{/*}
 				<Row gutter={30} className={'mb-3'}>
 					<Col
 						className='gutter-row'
