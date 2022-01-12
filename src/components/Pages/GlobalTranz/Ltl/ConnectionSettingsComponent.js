@@ -79,7 +79,7 @@ function ConnectionSettingsComponent(props) {
 	}
 
 	const updateFormFields = useCallback( (apiType) =>{
-			const data = apiType === 'GTZ' ? props.connectionSettings.global_tranz:props.connectionSettings.cerasis;
+			const data = apiType === 'GTZ' ? props?.connectionSettings?.global_tranz ?? {}:props?.connectionSettings?.cerasis ?? {};
 			form.setFieldsValue({
 				customer_id: data?.customer_id,
 				user_name: data?.user_name,
