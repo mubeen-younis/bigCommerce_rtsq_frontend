@@ -64,24 +64,21 @@ function PlansComponent() {
 		}
 	}, [dispatch, plans])
 
-	const clearForm = useCallback(() => {
-		setNumber('')
-		setDate('')
-		setCvc('')
-		setName(store.first_name + ' ' + store.last_name)
-		setAddress(store.address)
-		setEmail(store.admin_email)
-		setCity('')
-		setState('')
-		setCountry(store.country)
-		setZipCode('')
-	}, [
-		store?.address,
-		store?.admin_email,
-		store?.country,
-		store?.first_name,
-		store?.last_name,
-	])
+	const clearForm = useCallback(() =>
+	{
+		if (store) {			
+			setNumber('')
+			setDate('')
+			setCvc('')
+			setName(store.first_name + ' ' + store.last_name)
+			setAddress(store.address)
+			setEmail(store.admin_email)
+			setCity('')
+			setState('')
+			setCountry(store.country)
+			setZipCode('')
+		}
+	}, [store])
 
 	const toggleModal = id => {
 		clearForm()
@@ -337,15 +334,16 @@ function PlansComponent() {
 						{paymenyMethod === 2 ? (
 							<Form
 								{...layout}
-								name='control-hooks'
-								initialValues={{ city: '', state: '' }}
-								defaultValue=''
+								name='payment-form'
+								initialValues={{ city: '', state: '', requiredMark: true }}
+								// defaultValue=''
 								onFinish={onFinish}
+								requiredMark
 								//onFinishFailed={onFinishFailed}
 								className='mt-2'>
 								<h3>Card Information</h3>
 								<Form.Item
-									label='Number'
+									label={`Number`}
 									rules={[
 										{
 											required: true,
@@ -369,12 +367,12 @@ function PlansComponent() {
 								</Form.Item>
 
 								<Form.Item
-									label='MM/YY'
+									label='MM/YYYY'
 									required
 									rules={[
 										{
 											required: true,
-											message: 'Please input your MM/YY!',
+											message: 'Please input your MM/YYYY!',
 										},
 									]}>
 									<Input
@@ -586,6 +584,7 @@ function PlansComponent() {
 								<Form.Item
 									label='Number'
 									required
+									requiredMark
 									rules={[
 										{
 											required: true,
@@ -611,6 +610,7 @@ function PlansComponent() {
 								<Form.Item
 									label='MM/YY'
 									required
+									requiredMark
 									rules={[
 										{
 											required: true,

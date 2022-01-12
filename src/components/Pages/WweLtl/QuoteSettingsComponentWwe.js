@@ -323,7 +323,7 @@ function QuoteSettingsComponentWwe(props) {
 								onKeyDown={handlingFeeMarkup}
 								value={quoteSettingsState.weight_of_handling_unit}
 								onChange={e =>
-									setQuoteSettingsState(
+									handleStateChange(
 										'weight_of_handling_unit',
 										e.target.value
 									)
@@ -363,9 +363,7 @@ function QuoteSettingsComponentWwe(props) {
 								onKeyDown={handlingFeeMarkup}
 								value={quoteSettingsState.max_weight_per_handling_unit}
 								onChange={e =>
-									
-
-									setQuoteSettingsState(
+									handleStateChange(
 										'max_weight_per_handling_unit',
 										e.target.value
 									)

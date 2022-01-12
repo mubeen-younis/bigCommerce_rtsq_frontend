@@ -254,7 +254,7 @@ function QuoteSettingsComponentWwe(props) {
 								onKeyDown={handlingFeeMarkup}
 								value={quoteSettingsState.weight_of_handling_unit}
 								onChange={e =>
-									setQuoteSettingsState(
+									handleStateChange(
 										'weight_of_handling_unit',
 										e.target.value
 									)
@@ -294,9 +294,7 @@ function QuoteSettingsComponentWwe(props) {
 								onKeyDown={handlingFeeMarkup}
 								value={quoteSettingsState.max_weight_per_handling_unit}
 								onChange={e =>
-									
-
-									setQuoteSettingsState(
+									handleStateChange(
 										'max_weight_per_handling_unit',
 										e.target.value
 									)
@@ -387,7 +385,7 @@ function QuoteSettingsComponentWwe(props) {
 						</div>
 					</Col>
 				</Row>
-				{ quoteSettingsState.shipper_relationship == 'third_party' ? (  
+				{ quoteSettingsState.shipper_relationship === 'third_party' ? (  
 				<>
 				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
