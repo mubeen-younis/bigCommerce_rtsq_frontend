@@ -13,37 +13,39 @@ import {
 import { connect, useDispatch } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getQuoteSettings } from '../../../Actions/Settings';
-import {handlingFeeMarkup, validateHandlingFeeMarkup, LableAsLimit} from '../../../Utilities/numberValidation'
+import { validateHandlingFeeMarkup, LableAsLimit} from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
 import CutOffTime from '../../CutOffTime';
 import RAD from '../../RAD'
 import LiftGateDelivery from '../../LiftGateDelivery'
+import HandlingUnit from '../../HandlingUnit';
 
 const { Option } = Select;
+const initialState = {
+	number_of_options: 1,
+	showDeliveryEstimate: false,
+	delivery_estimate_options: 1,
+	order_cut_off_time: '',
+	fulfillment_offset_days: '',
+	all_week_days_select: false,
+	week_days: [],
+	residentialPickup: false,
+	alwaysResidentialDelivery: false,
+	autoDetectedResidentialAddresses: false,
+	alwaysLiftGatePickup: false,
+	alwaysLiftGateDelivery: false,
+	offerLiftGateDelivery: false,
+	autoDetectedResidentialAddressesLfg: false,
+	returnRates: false,
+	own_arrangement: 0,
+	own_arrangement_text: '',
+	insurance_category: '84-General Merchandise'
+}
 
 function QuoteSettingsComponentWwe(props) {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(true);
-	const [quoteSettingsState, setQuoteSettingsState] = useState({
-		number_of_options: 1,
-		showDeliveryEstimate: false,
-		delivery_estimate_options: 1,
-		order_cut_off_time: '',
-		fulfillment_offset_days: '',
-		all_week_days_select: false,
-		week_days: [],
-		residentialPickup: false,
-		alwaysResidentialDelivery: false,
-		autoDetectedResidentialAddresses: false,
-		alwaysLiftGatePickup: false,
-		alwaysLiftGateDelivery: false,
-		offerLiftGateDelivery: false,
-		autoDetectedResidentialAddressesLfg: false,
-		returnRates: false,
-		own_arrangement: 0,
-		own_arrangement_text: '',
-		insurance_category: '84-General Merchandise'
-	});
+	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState);
 	const [ratingMethod, setRatingMethod] = useState(1);
 	//const [isRadEnable, setIsRadEnable] = useState(1);
 
@@ -248,11 +250,12 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-					
+			
 				<RAD
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
+					carrier='wwe-ltl'	
 				/>
 
 				<LiftGateDelivery
@@ -304,102 +307,11 @@ function QuoteSettingsComponentWwe(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}>Weight of Handling Unit</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='weight_of_handling_unit'>
-							<Input
-								maxLength='7'
-								//pattern='[0-9.?(0-9){2}?]+%?$'
-								onKeyDown={handlingFeeMarkup}
-								value={quoteSettingsState.weight_of_handling_unit}
-								onChange={e =>
-									handleStateChange(
-										'weight_of_handling_unit',
-										e.target.value
-									)
-								}
-								type="number"
-								min='0'
-								step='0.001'
-								max='20000'
-								pattern='[0-9.?(0-9){2}?]+%?$'
-							/>
-						</Form.Item>
-						<div className={'text-gray'}>
-							Enter in pounds the weight of your pallet, skid, crate, or
-							other types of handling unit. Leave blank to disable.
-						</div>
-					</Col>
-				</Row>
-
-				<Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}>
-							Maximum Weight per Handling Unit
-						</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='max_weight_per_handling_unit'>
-							<Input
-								maxLength='7'
-								//pattern='[0-9.?(0-9){2}?]+%?$'
-								onKeyDown={handlingFeeMarkup}
-								value={quoteSettingsState.max_weight_per_handling_unit}
-								onChange={e =>
-									handleStateChange(
-										'max_weight_per_handling_unit',
-										e.target.value
-									)
-								}
-								type="number"
-								min='0'
-								step='0.001'
-								max='20000'
-								pattern='[0-9.?(0-9){2}?]+%?$'
-							/>
-						</Form.Item>
-						<div className={'text-gray'}>
-							Enter in pounds the maximum weight that can be placed on the
-							handling unit. Leave blank to disable.
-						</div>
-					</Col>
-				</Row>
-
-				<Row gutter={30} className={'mb-3'}>
-					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
-						<label className={'text-gray'}>Handling Fee / Markup</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='handling_free_markup'>
-							<Input 
-							maxLength='7' 
-							onKeyDown={handlingFeeMarkup}
-							/>
-						</Form.Item>
-						<div className={'text-gray'}>
-							Amount excluding tax. Enter an amount, e.g 3.75, or a percentage, e.g, 5%.
-							Leave blank to disable.
-						</div>
-					</Col>
-				</Row>
-
+				<HandlingUnit
+					quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
+				/>
+					
 				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
 						<label className={'text-gray'}>Allow For Own Arrangement</label>
