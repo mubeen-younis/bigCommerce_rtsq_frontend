@@ -1,13 +1,11 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import {
-	Typography,
 	Row,
 	Col,
 	Space,
 	Button,
 	Form,
 	Input,
-	Checkbox,
 	Skeleton,
 } from 'antd'
 
@@ -23,6 +21,7 @@ import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../CutOffTime'
 import RAD from '../../../RAD'
 import LiftGateDelivery from '../../../LiftGateDelivery'
+import HoldAtTerminal from '../../../HoldAtTerminal'
 
 function QuoteSettingsComponentWwe(props) {
 	const dispatch = useDispatch()
@@ -56,9 +55,11 @@ function QuoteSettingsComponentWwe(props) {
 			getQuoteSettings()
 		}
 	}, [props.quoteSettings])
+
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
 	)
+
 	let radStatus = false
 	if (radCheck !== undefined) {
 		radStatus =
@@ -68,7 +69,9 @@ function QuoteSettingsComponentWwe(props) {
 				? false
 				: true
 	}
-	const getQuoteSettings = () => {
+
+	const getQuoteSettings = () =>
+	{
 		setQuoteSettingsState({
 			...quoteSettingsState,
 			...props.quoteSettings,
@@ -249,6 +252,11 @@ function QuoteSettingsComponentWwe(props) {
 					radStatus={radStatus}
 				/>
 				
+				{/* <HoldAtTerminal
+					quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
+				/> */}
+					
 				{/*}
 				<Row gutter={30} className={'mb-3'}>
 					<Col
