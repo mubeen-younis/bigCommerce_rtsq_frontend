@@ -3,8 +3,6 @@ import {
 	Typography,
 	Row,
 	Col,
-	Space,
-	Button,
 	Form,
 	Input,
 	Checkbox,
@@ -17,9 +15,10 @@ import { validateHandlingFeeMarkup, LableAsLimit } from '../../../../Utilities/n
 import RAD from '../../../RAD'
 import LiftGateDelivery from '../../../LiftGateDelivery'
 import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
-import HoldAtTerminal from '../../../HoldAtTerminal'
+// import HoldAtTerminal from '../../../HoldAtTerminal'
 import Discounts from '../../../Discounts'
 import HandlingUnit from '../../../HandlingUnit'
+import SaveButton from '../../../SaveButton'
 
 const { Title } = Typography
 const initialState = {
@@ -379,26 +378,7 @@ function QuoteSettingsComponentWwe(props) {
 					handleChange={handleStateChange}
 				/>
 				
-				<Row gutter={30} className={'mt-3'}>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}>
-						<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
-							<Space>
-								<Button
-									type='primary'
-									size={'large'}
-									htmlType='submit'>
-									Save Settings
-								</Button>
-							</Space>
-						</Form.Item>
-					</Col>
-				</Row>
+				<SaveButton />
 			</Form>
 		</Fragment>
 	)
