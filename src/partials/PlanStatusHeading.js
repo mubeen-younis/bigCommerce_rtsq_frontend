@@ -19,9 +19,9 @@ function PlanStatusHeading(){
                 :
                 ( currentPlan?.plan_id === 1 ) ?
                     <div className='note-bx'>
-                        You are currently on trial plan,
+                        You are currently on the Trial plan.
                         {currentPlan?.status === 1 && (
-                        ' it will expire on '+currentPlan?.ends_at
+                        ' It will expire on '+currentPlan?.ends_at+'.'
                     )}
                     </div>
                 : (currentPlan?.plan_id === 2 ) ?
