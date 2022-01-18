@@ -14,7 +14,7 @@ function PlanStatusHeading(){
                 : 
             ( currentPlan?.plan_id === 0 ) ?
                 <div className='note-bx'>
-                You have no any active plan 
+                You don't have an active plan. On the Plans page, choose the Trial plan or one of the paid plans to get started. 
                 </div>
                 :
                 ( currentPlan?.plan_id === 1 ) ?
