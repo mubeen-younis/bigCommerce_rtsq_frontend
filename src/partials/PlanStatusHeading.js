@@ -26,29 +26,29 @@ function PlanStatusHeading(){
                     </div>
                 : (currentPlan?.plan_id === 2 ) ?
                     <div className='note-bx'>
-                    You are currently on basic plan
+                    You are currently on the Basic plan.
                     {currentPlan?.status === 2 ? (
-                        ' subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at
+                        ' Subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at+'.'
                     ):(
-                        ' it will auto renew on '+currentPlan?.ends_at
+                        ' It will auto renew on '+currentPlan?.ends_at+'.'
                     )}
                     </div>
                 : (currentPlan?.plan_id === 3 ) ?
                     <div className='note-bx'>
-                    You are currently on standard plan
+                    You are currently on the Standard plan.
                     {currentPlan?.status === 2 ? (
-                        ' subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at
+                        ' Subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at+'.'
                     ):(
-                        ' it will auto renew on '+currentPlan.ends_at
+                        ' It will auto renew on '+currentPlan.ends_at+'.'
                     )}
                     </div>
                 : (currentPlan?.plan_id === 4 ) ?
                     <div className='note-bx'>
-                    You are currently on advanced plan
+                    You are currently on the Advanced plan.
                     {currentPlan?.status === 2 ? (
-                        ' subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at
+                        ' Subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at+'.'
                     ):(
-                        ' it will auto renew on '+currentPlan?.ends_at
+                        ' It will auto renew on '+currentPlan?.ends_at+'.'
                     )}
                     </div>
                 : null
