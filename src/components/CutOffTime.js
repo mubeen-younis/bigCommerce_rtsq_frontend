@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
-import { Row, Col, Form, Input, Checkbox, Typography } from 'antd'
+import { Row, Col, Form, Input, Checkbox, Typography, TimePicker } from 'antd'
+import moment from 'moment'
 
 const { Title } = Typography
 
@@ -16,7 +17,7 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 								quoteSettingsState?.week_days.includes(day)) ||
 							false
 						}
-						onChange={e => {
+						onChange={(e) => {
 							const wd = quoteSettingsState?.week_days || []
 							const dayIndex = wd.indexOf(day)
 
@@ -28,7 +29,7 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 								wd.splice(dayIndex, 1)
 							}
 
-							setQuoteSettingsState(prevState => ({
+							setQuoteSettingsState((prevState) => ({
 								...prevState,
 								week_days: wd.sort(),
 								select_all_week_days: wd.length === 5 ?? false,
@@ -42,8 +43,8 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 	)
 
 	const selectAllWeekDays = useCallback(
-		e => {
-			setQuoteSettingsState(prevState => ({
+		(e) => {
+			setQuoteSettingsState((prevState) => ({
 				...prevState,
 				week_days: e.target.checked
 					? ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
@@ -79,11 +80,20 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 					lg={12}
 					xl={18}>
 					<Form.Item className={'mb-0'}>
-						<Input
-							type='time'
-							value={quoteSettingsState.order_cut_off_time}
-							onChange={e =>
-								handleChange('order_cut_off_time', e.target.value)
+						<TimePicker
+							style={{ width: '100%' }}
+							use24Hours
+							value={
+								quoteSettingsState?.order_cut_off_time === '' ||
+								quoteSettingsState?.order_cut_off_time === null
+									? ''
+									: moment(
+											quoteSettingsState?.order_cut_off_time,
+											'HH:mm:ss'
+									  )
+							}
+							onChange={(time, timeString) =>
+								handleChange('order_cut_off_time', timeString)
 							}
 							disabled={
 								!quoteSettingsState?.delivery_estimate_options ||
@@ -114,7 +124,7 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 							type='number'
 							maxLength={3}
 							value={quoteSettingsState.fulfillment_offset_days}
-							onChange={e =>
+							onChange={(e) =>
 								handleChange(
 									'fulfillment_offset_days',
 									e.target.value
@@ -148,7 +158,7 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 					<Form.Item className={'mb-0'}>
 						<Checkbox
 							checked={quoteSettingsState?.select_all_week_days}
-							onChange={checked => selectAllWeekDays(checked)}>
+							onChange={(checked) => selectAllWeekDays(checked)}>
 							Select All
 						</Checkbox>
 						{weekDaysMarkup()}
