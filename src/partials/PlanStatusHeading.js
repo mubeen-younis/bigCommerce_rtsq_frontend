@@ -30,7 +30,7 @@ function PlanStatusHeading(){
                     {currentPlan?.status === 2 ? (
                         ' Subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at+'.'
                     ):(
-                        ' It will auto renew on '+currentPlan?.ends_at+'.'
+                        ' It will auto-renew on '+currentPlan?.ends_at+'.'
                     )}
                     </div>
                 : (currentPlan?.plan_id === 3 ) ?
@@ -39,7 +39,7 @@ function PlanStatusHeading(){
                     {currentPlan?.status === 2 ? (
                         ' Subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at+'.'
                     ):(
-                        ' It will auto renew on '+currentPlan.ends_at+'.'
+                        ' It will auto-renew on '+currentPlan.ends_at+'.'
                     )}
                     </div>
                 : (currentPlan?.plan_id === 4 ) ?
@@ -48,7 +48,7 @@ function PlanStatusHeading(){
                     {currentPlan?.status === 2 ? (
                         ' Subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at+'.'
                     ):(
-                        ' It will auto renew on '+currentPlan?.ends_at+'.'
+                        ' It will auto-renew on '+currentPlan?.ends_at+'.'
                     )}
                     </div>
                 : null
