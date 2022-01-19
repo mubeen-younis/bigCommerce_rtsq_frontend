@@ -14,41 +14,41 @@ function PlanStatusHeading(){
                 : 
             ( currentPlan?.plan_id === 0 ) ?
                 <div className='note-bx'>
-                You have no any active plan 
+                You don't have an active plan. On the Plans page, choose the Trial plan or one of the paid plans to get started. 
                 </div>
                 :
                 ( currentPlan?.plan_id === 1 ) ?
                     <div className='note-bx'>
-                        You are currently on trial plan,
+                        You are currently on the Trial plan.
                         {currentPlan?.status === 1 && (
-                        ' it will expire on '+currentPlan?.ends_at
+                        ' It will expire on '+currentPlan?.ends_at+'.'
                     )}
                     </div>
                 : (currentPlan?.plan_id === 2 ) ?
                     <div className='note-bx'>
-                    You are currently on basic plan
+                    You are currently on the Basic plan.
                     {currentPlan?.status === 2 ? (
-                        ' subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at
+                        ' Subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at+'.'
                     ):(
-                        ' it will auto renew on '+currentPlan?.ends_at
+                        ' It will auto-renew on '+currentPlan?.ends_at+'.'
                     )}
                     </div>
                 : (currentPlan?.plan_id === 3 ) ?
                     <div className='note-bx'>
-                    You are currently on standard plan
+                    You are currently on the Standard plan.
                     {currentPlan?.status === 2 ? (
-                        ' subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at
+                        ' Subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at+'.'
                     ):(
-                        ' it will auto renew on '+currentPlan.ends_at
+                        ' It will auto-renew on '+currentPlan.ends_at+'.'
                     )}
                     </div>
                 : (currentPlan?.plan_id === 4 ) ?
                     <div className='note-bx'>
-                    You are currently on advanced plan
+                    You are currently on the Advanced plan.
                     {currentPlan?.status === 2 ? (
-                        ' subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at
+                        ' Subscription will be cancelled automatically at the end of the period on '+currentPlan?.ends_at+'.'
                     ):(
-                        ' it will auto renew on '+currentPlan?.ends_at
+                        ' It will auto-renew on '+currentPlan?.ends_at+'.'
                     )}
                     </div>
                 : null
