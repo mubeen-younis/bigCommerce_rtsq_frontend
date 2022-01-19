@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect } from 'react'
 import { Layout, Menu, Typography } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { connect, useDispatch } from 'react-redux'
 const { Sider } = Layout
 const { Title } = Typography
 
-function SideMenu (props)
-{
+function SideMenu(props) {
 	const dispatch = useDispatch()
-	
+
 	const setActiveMenu = useCallback(
 		menuId => {
 			dispatch({
@@ -23,8 +22,9 @@ function SideMenu (props)
 		const name = window.location.pathname
 		if (name.match(/\/$/)) setActiveMenu('99')
 		else if (name.includes('plans')) setActiveMenu('100')
-		else if (name.includes('addon')) setActiveMenu('addon-' + name[name.length - 1])
-		else setActiveMenu(name[name.length - 1].toString())
+		else if (name.includes('addon'))
+			setActiveMenu('addon-' + name[name.length - 1])
+		else setActiveMenu(name.substring(name.lastIndexOf('/') + 1))
 	}, [props.activeMenu, setActiveMenu])
 
 	return (
@@ -121,7 +121,9 @@ function SideMenu (props)
 					addon.is_enabled ? (
 						<Menu.Item
 							key={'addon-' + addon.id.toString()}
-							onClick={() => setActiveMenu('addon-' + addon.id.toString())}>
+							onClick={() =>
+								setActiveMenu('addon-' + addon.id.toString())
+							}>
 							<Link to={`/addon/${addon.id}`}>{addon.name}</Link>
 						</Menu.Item>
 					) : null

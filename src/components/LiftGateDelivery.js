@@ -1,5 +1,7 @@
 import React from 'react'
+import { useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { Row, Col, Form, Typography, Checkbox } from 'antd'
 
 const { Title } = Typography
@@ -9,6 +11,16 @@ const LiftGateDelivery = ({
 	setQuoteSettingsState,
 	radStatus,
 }) => {
+	const dispatch = useDispatch()
+	const setActiveMenu = useCallback(
+		() =>
+			dispatch({
+				type: 'SET_ACTIVE_MENU',
+				payload: '99',
+			}),
+		[dispatch]
+	)
+
 	return (
 		<Row gutter={30} align='middle' className={'mb-4'}>
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -81,8 +93,11 @@ const LiftGateDelivery = ({
 						disabled={!radStatus}></Checkbox>
 					{!radStatus && (
 						<label className={'ml-4'} style={{ marginLeft: '10px' }}>
-							Click <Link to='/'>here</Link> to add the Residential
-							Address Detection add-on.
+							Click{' '}
+							<Link to='/' onClick={setActiveMenu}>
+								here
+							</Link>{' '}
+							to add the Residential Address Detection add-on.
 						</label>
 					)}
 				</Form.Item>

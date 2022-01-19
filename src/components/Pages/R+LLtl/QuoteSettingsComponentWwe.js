@@ -24,6 +24,7 @@ import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import CutOffTime from '../../CutOffTime'
 import RAD from '../../RAD'
 import LiftGateDelivery from '../../LiftGateDelivery'
+import HoldAtTerminal from '../../HoldAtTerminal'
 
 const { Title } = Typography
 
@@ -479,7 +480,13 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
-				
+
+				{/* <HoldAtTerminal
+
+					quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
+				/> */}
+					
 				{/*}<Row gutter={30} className={'mb-3'}>
 					<Col
 						className='gutter-row'
@@ -524,94 +531,7 @@ function QuoteSettingsComponentWwe(props) {
 							/>
 						</Form.Item>
 					</Col>
-							</Row>{*/}
-				{/*}
-				<Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}>
-						<Title level={4}>Hold At Terminal</Title>
-					</Col>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>
-							Offer Hold At Terminal as an option
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-1'}>
-							<Checkbox
-								name='hold_at_terminal'
-								checked={quoteSettingsState.hold_at_terminal}
-								onChange={e =>
-									handleStateChange(
-										'hold_at_terminal',
-										e.target.checked
-									)
-								}
-							/>
-						</Form.Item>
-					</Col>
-
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}></label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Input
-								value={
-									quoteSettingsState.hold_at_terminal_price
-								}
-								onChange={e =>
-									handleStateChange(
-										'hold_at_terminal_price',
-										e.target.value
-									)
-								}
-								maxLength={7}
-								readOnly={!quoteSettingsState.hold_at_terminal}
-								onClick={()=>{
-									if(!quoteSettingsState.hold_at_terminal ) SetHoldTeminalStatus(true) 
-								}}
-							/>
-						</Form.Item>
-						<label className={'text-gray'}>
-							Adjust the price of the Hold At Terminal option.
-							Enter an amount, e.g. 3.75, or a percentage, e.g.
-							5%. Leave blank to use the price returned by the
-							carrier.
-						</label>
-					</Col>
-							</Row>{*/}
+				</Row>{*/}
 
 				<Row gutter={30} className={'mb-3'}>
 					<Col

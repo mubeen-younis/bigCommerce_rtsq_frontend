@@ -67,6 +67,11 @@ export const getServices = (token, installed_carrier_id, carrier_type = '') => {
 						type: 'GET_SERVICES',
 						payload: carrierServices,
 					})
+				} else {
+					dispatch({
+						type: 'GET_SERVICES',
+						payload: [],
+					})
 				}
 				dispatch({
 					type: 'SKELETON_LOADING',

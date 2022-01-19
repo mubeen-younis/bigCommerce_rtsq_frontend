@@ -1,49 +1,44 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
-import {
-	Select,
-	Row,
-	Col,
-	Space,
-	Button,
-	Form,
-	Input,
-	Skeleton,
-} from 'antd';
+import { Select, Row, Col, Form, Input, Skeleton } from 'antd';
 
 import { connect, useDispatch } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getQuoteSettings } from '../../../Actions/Settings';
-import {handlingFeeMarkup, validateHandlingFeeMarkup, LableAsLimit} from '../../../Utilities/numberValidation'
+import { validateHandlingFeeMarkup } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
 import CutOffTime from '../../CutOffTime';
 import RAD from '../../RAD'
 import LiftGateDelivery from '../../LiftGateDelivery'
+import HandlingUnit from '../../HandlingUnit';
+import RatingMethod from './RatingMethod';
+import SaveButton from '../../SaveButton';
 
 const { Option } = Select;
+const initialState = {
+	number_of_options: 1,
+	showDeliveryEstimate: false,
+	delivery_estimate_options: 1,
+	order_cut_off_time: '',
+	fulfillment_offset_days: '',
+	all_week_days_select: false,
+	week_days: [],
+	residentialPickup: false,
+	alwaysResidentialDelivery: false,
+	autoDetectedResidentialAddresses: false,
+	alwaysLiftGatePickup: false,
+	alwaysLiftGateDelivery: false,
+	offerLiftGateDelivery: false,
+	autoDetectedResidentialAddressesLfg: false,
+	returnRates: false,
+	own_arrangement: 0,
+	own_arrangement_text: '',
+	insurance_category: '84-General Merchandise'
+}
 
 function QuoteSettingsComponentWwe(props) {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(true);
-	const [quoteSettingsState, setQuoteSettingsState] = useState({
-		number_of_options: '1',
-		showDeliveryEstimate: false,
-		delivery_estimate_options: 1,
-		order_cut_off_time: '',
-		fulfillment_offset_days: '',
-		all_week_days_select: false,
-		week_days: [],
-		residentialPickup: false,
-		alwaysResidentialDelivery: false,
-		autoDetectedResidentialAddresses: false,
-		alwaysLiftGatePickup: false,
-		alwaysLiftGateDelivery: false,
-		offerLiftGateDelivery: false,
-		autoDetectedResidentialAddressesLfg: false,
-		returnRates: false,
-		own_arrangement: 0,
-		own_arrangement_text: '',
-		insurance_category: '84-General Merchandise'
-	});
+	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState);
 	const [ratingMethod, setRatingMethod] = useState(1);
 	//const [isRadEnable, setIsRadEnable] = useState(1);
 
@@ -129,122 +124,14 @@ function QuoteSettingsComponentWwe(props) {
 				size={'large'}
 				onFinish={onFinish}
 				initialValues={props.quoteSettings}
-			>
-				<Row gutter={30} className={'mb-3'}>
-					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
-						<label className={'text-gray'}>Rating Method</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='method'>
-							<Select
-								defaultValue={
-									props.quoteSettings && props.quoteSettings.method !== undefined
-										? props.quoteSettings.method
-										: 1
-								}
-								name='method'
-								size={'large'}
-								style={{ width: '100%' }}
-								onChange={value => {
-									setRatingMethod(value);
-								}}
-							>
-								<Option value={1}>Cheapest</Option>
-								<Option value={2}>Cheapest Options</Option>
-								<Option value={3}>Average Rate</Option>
-							</Select>
-						</Form.Item>
-						<div className={'text-gray'}>
-							{ratingMethod === 1 && 'Displays a least expensive option.'}
-							{ratingMethod === 2 &&
-								'Displays a list of specified number of least expensive options.'}
-							{ratingMethod === 3 &&
-								'Displays a single rate based on an average of a specified number of least expensive options.'}
-						</div>
-					</Col>
-				</Row>
-
-				{ratingMethod === 2 || ratingMethod === 3 ? (
-					<Row gutter={30} className={'mb-3'}>
-						<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
-							<label className={'text-gray'}>Number Of Options</label>
-						</Col>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-							<Form.Item className={'mb-0'} name='number_of_options'>
-								<Select
-									// name='number_of_options'
-									defaultValue='1'
-									size={'large'}
-									style={{ width: '100%' }}
-								>
-									<Option value='1'>1</Option>
-									<Option value='2'>2</Option>
-									<Option value='3'>3</Option>
-									<Option value='4'>4</Option>
-									<Option value='5'>5</Option>
-									<Option value='6'>6</Option>
-									<Option value='7'>7</Option>
-									<Option value='8'>8</Option>
-									<Option value='9'>9</Option>
-									<Option value='10'>10</Option>
-								</Select>
-							</Form.Item>
-							<div className={'text-gray'}>
-								{ratingMethod === 2 &&
-									'Number of options to display in the shopping cart.'}
-								{ratingMethod === 3 &&
-									'Number of options to include in the calculation of the average.'}
-							</div>
-						</Col>
-					</Row>
-				) : null}
-
-				{ratingMethod === 1 || ratingMethod === 3 ? (
-					<Row gutter={30} className={'mb-3'}>
-						<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
-							<label className={'text-gray'}>Label As</label>
-						</Col>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-							<Form.Item className={'mb-0'} name='label_as'>
-								<Input
-									name='label_as'
-									value={props.quoteSettings ? props.quoteSettings.label_as : ''}
-									onKeyDown={LableAsLimit}
-								/>
-							</Form.Item>
-							<div className={'text-gray'}>
-								What the user sees during checkout, e.g. "Freight". {ratingMethod === 1 ? 
-									 'Leave blank to display the carrier name.' : ' If left blank will default to "Freight".' }
-							</div>
-						</Col>
-					</Row>
-				) : null}
-
-				{/* {ratingMethod === 1 || ratingMethod === 2 ? (
-					<Row gutter={30} className={'mb-3'}>
-						<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
-							<label className={'text-gray'}>Show Delivery Estimate</label>
-						</Col>
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-							<Form.Item className={'mb-0'}>
-								<Checkbox
-									name='show_delivery_estimate'
-									// value={true}
-									checked={quoteSettingsState.showDeliveryEstimate}
-									onChange={() => {
-										setQuoteSettingsState({
-											...quoteSettingsState,
-											showDeliveryEstimate: !quoteSettingsState.showDeliveryEstimate,
-										});
-									}}
-								>
-									Show Delivery Estimate With Shipping Services.
-								</Checkbox>
-							</Form.Item>
-						</Col>
-					</Row>
-				) : null} */}
-
+			>				
+				<RatingMethod
+					props={props}
+					handleChange={handleStateChange}
+					ratingMethod={ratingMethod}
+					setRatingMethod={setRatingMethod}
+				/>
+					
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -255,11 +142,12 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-					
+			
 				<RAD
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
+					carrier='wwe-ltl'	
 				/>
 
 				<LiftGateDelivery
@@ -311,104 +199,11 @@ function QuoteSettingsComponentWwe(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}>Weight of Handling Unit</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='weight_of_handling_unit'>
-							<Input
-								maxLength='7'
-								//pattern='[0-9.?(0-9){2}?]+%?$'
-								onKeyDown={handlingFeeMarkup}
-								value={quoteSettingsState.weight_of_handling_unit}
-								onChange={e =>
-									setQuoteSettingsState(
-										'weight_of_handling_unit',
-										e.target.value
-									)
-								}
-								type="number"
-								min='0'
-								step='0.001'
-								max='20000'
-								pattern='[0-9.?(0-9){2}?]+%?$'
-							/>
-						</Form.Item>
-						<div className={'text-gray'}>
-							Enter in pounds the weight of your pallet, skid, crate, or
-							other types of handling unit. Leave blank to disable.
-						</div>
-					</Col>
-				</Row>
-
-				<Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}>
-							Maximum Weight per Handling Unit
-						</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='max_weight_per_handling_unit'>
-							<Input
-								maxLength='7'
-								//pattern='[0-9.?(0-9){2}?]+%?$'
-								onKeyDown={handlingFeeMarkup}
-								value={quoteSettingsState.max_weight_per_handling_unit}
-								onChange={e =>
-									
-
-									setQuoteSettingsState(
-										'max_weight_per_handling_unit',
-										e.target.value
-									)
-								}
-								type="number"
-								min='0'
-								step='0.001'
-								max='20000'
-								pattern='[0-9.?(0-9){2}?]+%?$'
-							/>
-						</Form.Item>
-						<div className={'text-gray'}>
-							Enter in pounds the maximum weight that can be placed on the
-							handling unit. Leave blank to disable.
-						</div>
-					</Col>
-				</Row>
-
-				<Row gutter={30} className={'mb-3'}>
-					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
-						<label className={'text-gray'}>Handling Fee / Markup</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='handling_free_markup'>
-							<Input 
-							maxLength='7' 
-							onKeyDown={handlingFeeMarkup}
-							/>
-						</Form.Item>
-						<div className={'text-gray'}>
-							Amount excluding tax. Enter an amount, e.g 3.75, or a percentage, e.g, 5%.
-							Leave blank to disable.
-						</div>
-					</Col>
-				</Row>
-
+				<HandlingUnit
+					quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
+				/>
+					
 				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
 						<label className={'text-gray'}>Allow For Own Arrangement</label>
@@ -459,17 +254,7 @@ function QuoteSettingsComponentWwe(props) {
 					</Row>
 				)}
 
-				<Row gutter={30} className={'mt-3'}>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-						<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
-							<Space>
-								<Button type='primary' size={'large'} htmlType='submit'>
-									Save Settings
-								</Button>
-							</Space>
-						</Form.Item>
-					</Col>
-				</Row>
+				<SaveButton />
 			</Form>
 		</Fragment>
 	);
