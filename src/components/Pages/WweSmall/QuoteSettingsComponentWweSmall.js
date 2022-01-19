@@ -35,8 +35,8 @@ const initialState = {
 	delivery_estimate_options: 1,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
-	all_week_days_select: false,
-	week_days: [1, 2, 3, 4, 5],
+	all_week_days_select: true,
+	week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
 	number_of_transit_days: null,
 	ground_metric: null,
 	alwaysResidentialDelivery: false,
@@ -184,7 +184,7 @@ function QuoteSettingsComponentWweSmall(props) {
                 },
             });
 		}
-		
+
 	};
 
 	const handleStateChange = useCallback((name, value) => {
@@ -197,7 +197,7 @@ function QuoteSettingsComponentWweSmall(props) {
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
 	);
-	
+
 	let radStatus = false;
 	if(radCheck !== undefined){
 		radStatus = props?.radPlans?.currentPackage === null ? false:
@@ -224,13 +224,13 @@ function QuoteSettingsComponentWweSmall(props) {
 					allCheckHandler={allCheckHandler}
 					onChange={onChange}
 					onCheck={onCheck}
-				/>	
-	
+				/>
+
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 				/>
-				
+
 				<CutOffTime
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -242,18 +242,18 @@ function QuoteSettingsComponentWweSmall(props) {
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 				/>
-				
+
 				<RAD
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
-					
+
 				<HazardousMaterial
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 				/>
-					
+
 				<Row gutter={24} className={'mb-3'}>
 					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={6} xl={6}>
 						<label className={'text-gray'}>Handling Fee / Markup</label>
@@ -274,7 +274,7 @@ function QuoteSettingsComponentWweSmall(props) {
 										handling_fee_markup: e.target.value,
 									})
 								}
-								maxLength='7' 
+								maxLength='7'
 								onKeyDown={handlingFeeMarkup}
 							/>
 						</Form.Item>

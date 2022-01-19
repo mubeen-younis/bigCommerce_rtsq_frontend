@@ -29,7 +29,7 @@ const initialState = {
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
 	all_week_days_select: true,
-	week_days: [1, 2, 3, 4, 5],
+	week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
 	hold_at_terminal: false,
 	hold_at_terminal_price: '',
 	account_discount_price: 60,
@@ -60,7 +60,7 @@ function QuoteSettingsComponentWwe(props) {
 			getQuoteSettings()
 		}
 	}, [props.quoteSettings])
-	
+
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
 	)
@@ -74,7 +74,7 @@ function QuoteSettingsComponentWwe(props) {
 				? false
 				: true
 	}
-	
+
 	const getQuoteSettings = () =>
 	{
 		setQuoteSettingsState({
@@ -339,12 +339,12 @@ function QuoteSettingsComponentWwe(props) {
 						</Form.Item>
 					</Col>
 				</Row>
-				
+
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 				/>
-					
+
 				<CutOffTime
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -362,7 +362,7 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
-					
+
 				{/* <HoldAtTerminal
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
@@ -377,7 +377,7 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-				
+
 				<SaveButton />
 			</Form>
 		</Fragment>

@@ -20,8 +20,8 @@ const initialState = {
 	delivery_estimate_options: 1,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
-	all_week_days_select: false,
-	week_days: [],
+	all_week_days_select: true,
+	week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
 	residentialPickup: false,
 	alwaysResidentialDelivery: false,
 	autoDetectedResidentialAddresses: false,
@@ -127,6 +127,7 @@ function QuoteSettingsComponentWwe(props) {
 			>				
 				<RatingMethod
 					props={props}
+					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 					ratingMethod={ratingMethod}
 					setRatingMethod={setRatingMethod}

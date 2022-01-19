@@ -16,16 +16,12 @@ import {
 	Drawer,
 	Col,
 	Row,
-	Select,
-	Checkbox,
 	Skeleton,
 	Input,
 } from 'antd'
 import addKeysToList from '../Utilities/addKey'
 import Settings from './Products/Settings'
 import { isFireFox } from '../Utilities/browserName';
-
-const { Option } = Select
 
 function ProductSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
@@ -56,7 +52,7 @@ function ProductSettingsComponent(props) {
 	const [sortProd, setSortProd] = useState(false);
 	const [formError, setFormError] = useState('')
 	const dispatch = useDispatch()
-	const { productsPagination, productDetail } = useSelector(state => state)
+	const { productsPagination } = useSelector(state => state)
 	const [pagination, setPagination] = useState({
 		current: 1,
 		pageSize: 50,
@@ -90,7 +86,7 @@ function ProductSettingsComponent(props) {
 		}
 		if (props.productDetail) {
 			const variants = props.productDetail.map(variant =>{
-				let settings = variant.settings != '' ? JSON.parse(variant.settings) : {};
+				let settings = variant.settings !== '' ? JSON.parse(variant.settings) : {};
 				return {
 					...variant,
 					...settings
@@ -308,7 +304,7 @@ function ProductSettingsComponent(props) {
 				getAllProducts(props.token, 1, pagination.pageSize, sortProd, setLoading, search)
 			)
 			setLoading(true)
-		} else if (search && search.length == 0) {
+		} else if (search && search.length === 0) {
 			dispatch(getAllProducts(props.token, pagination.current, pagination.pageSize, sortProd, setLoading, null))
 			setLoading(true)
 		}
@@ -318,7 +314,7 @@ function ProductSettingsComponent(props) {
 			...pagination,
 			search: search,
 		})
-		if (search.length == 0) {
+		if (search.length === 0) {
 			setLoading(true)
 			dispatch(getAllProducts(props.token, pagination.current, pagination.pageSize, sortProd, setLoading))
 		}
@@ -583,7 +579,6 @@ function ProductSettingsComponent(props) {
 						<Input
 							required
 							value={emailAddress}
-							required
 							name='emailAddress'
 							onChange={e => setEmailAddress(e.target.value)}
 						/>

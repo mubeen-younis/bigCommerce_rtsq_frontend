@@ -2,14 +2,12 @@ import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import {
 	Select,
-	Typography,
 	Row,
 	Col,
 	Space,
 	Button,
 	Form,
 	Input,
-	Checkbox,
 	Skeleton,
 } from 'antd';
 
@@ -23,7 +21,6 @@ import RAD from '../../RAD';
 import LiftGateDelivery from '../../LiftGateDelivery';
 
 const { Option } = Select;
-const { Title } = Typography;
 
 function QuoteSettingsComponentWwe(props) {
 	const dispatch = useDispatch();
@@ -34,7 +31,7 @@ function QuoteSettingsComponentWwe(props) {
 		order_cut_off_time: '',
 		fulfillment_offset_days: '',
 		all_week_days_select: true,
-		week_days: [1, 2, 3, 4, 5],
+		week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
 		showDeliveryEstimate: false,
 		residentialPickup: false,
 		alwaysResidentialDelivery: false,
@@ -55,15 +52,19 @@ function QuoteSettingsComponentWwe(props) {
 			getQuoteSettings();
 		}
 	}, [props.quoteSettings]);
+	
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
 	);
+
 	let radStatus = false;
 	if(radCheck !== undefined){
 		radStatus = props?.radPlans?.currentPackage === null ? false:
 		props?.radPlans?.currentPackage?.status !== 1 ? false : true;
 	}
-	const getQuoteSettings = () => {
+	
+	const getQuoteSettings = () =>
+	{
 		setQuoteSettingsState({
 			...quoteSettingsState,
 			...props.quoteSettings,
@@ -91,7 +92,7 @@ function QuoteSettingsComponentWwe(props) {
 		}
 		if( errormsg === '' ){
 			props.postData(data, props.token);
-		}else{ 
+		}else{
 			dispatch({
 				type: 'ALERT_MESSAGE',
 				payload: {
@@ -131,7 +132,7 @@ function QuoteSettingsComponentWwe(props) {
 				}
 				setLoading(false)
 			})
-			
+
 		}
 	};
 
@@ -177,13 +178,13 @@ function QuoteSettingsComponentWwe(props) {
 						quoteSettingsState={quoteSettingsState}
 						setQuoteSettingsState={setQuoteSettingsState}
 				/>
-					
+
 				<CutOffTime
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-				
+
 				<RAD
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -195,7 +196,7 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
-					
+
 				{/* <Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
 						<label className={'text-gray'}>Show Delivery Estimate</label>
@@ -318,9 +319,9 @@ function QuoteSettingsComponentWwe(props) {
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 						<Form.Item className={'mb-0'} name='handling_free_markup'>
-							<Input 
-							maxLength='7' 
-							//pattern='[0-9.?(0-9){2}?]+%?$' 
+							<Input
+							maxLength='7'
+							//pattern='[0-9.?(0-9){2}?]+%?$'
 							onKeyDown={handlingFeeMarkup}
 							/>
 						</Form.Item>
@@ -385,7 +386,7 @@ function QuoteSettingsComponentWwe(props) {
 						</div>
 					</Col>
 				</Row>
-				{ quoteSettingsState.shipper_relationship === 'third_party' ? (  
+				{ quoteSettingsState.shipper_relationship === 'third_party' ? (
 				<>
 				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
@@ -423,7 +424,7 @@ function QuoteSettingsComponentWwe(props) {
 					</Col>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 						<Form.Item className={'mb-0'} name='third_party_zip'>
-							<Input 
+							<Input
 							pattern="[0-9]*"
 							type="number"
 							onKeyDown={blockInvalidChar}
@@ -432,7 +433,7 @@ function QuoteSettingsComponentWwe(props) {
 							}}
 							/>
 						</Form.Item>
-						
+
 						<div className={'text-gray'}>
 							Enter the third party postal code. (For US, enter only the 5 digit ZIP code.)
 						</div>
@@ -443,7 +444,7 @@ function QuoteSettingsComponentWwe(props) {
 							<Input type="text" />
 						</Form.Item>
 					</Col>
-				</Row> 
+				</Row>
 				</>
 				 ) : null }
 

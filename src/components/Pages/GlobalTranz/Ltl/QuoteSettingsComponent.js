@@ -28,7 +28,7 @@ function QuoteSettingsComponentWwe(props) {
 		order_cut_off_time: '',
 		fulfillment_offset_days: '',
 		all_week_days_select: true,
-		week_days: [1, 2, 3, 4, 5],
+		week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
 		residentialPickup: false,
 		alwaysResidentialDelivery: false,
 		autoDetectedResidentialAddresses: false,
@@ -62,7 +62,7 @@ function QuoteSettingsComponentWwe(props) {
 				? false
 				: true
 	}
-	
+
 	const getQuoteSettings = () =>
 	{
 		setQuoteSettingsState({
