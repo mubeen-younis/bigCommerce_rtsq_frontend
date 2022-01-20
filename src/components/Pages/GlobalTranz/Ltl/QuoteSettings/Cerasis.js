@@ -1,16 +1,6 @@
 import { Fragment, useEffect } from 'react'
-import {
-	Select,
-	Typography,
-	Row,
-	Col,
-	Form,
-	Input,
-	Radio,
-} from 'antd'
-import {
-	LableAsLimit
-} from '../../../../../Utilities/numberValidation'
+import { Select, Typography, Row, Col, Form, Input, Radio } from 'antd'
+import { LableAsLimit } from '../../../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../../CutOffTime'
 import RAD from '../../../../RAD'
@@ -39,18 +29,21 @@ const Cerasis = ({
 	quoteSettings,
 }) => {
 	useEffect(() => {
-		setQuoteSettingsState(prevState => ({
+		setQuoteSettingsState((prevState) => ({
 			...initialSettings,
 			...prevState,
 		}))
 	}, [setQuoteSettingsState])
 
-	const handleStateChange = useCallback((name, value) => {
-		setQuoteSettingsState(prevState => ({
-			...prevState,
-			[name]: value,
-		}))
-	}, [setQuoteSettingsState])
+	const handleStateChange = useCallback(
+		(name, value) => {
+			setQuoteSettingsState((prevState) => ({
+				...prevState,
+				[name]: value,
+			}))
+		},
+		[setQuoteSettingsState]
+	)
 
 	return (
 		<>
@@ -66,19 +59,13 @@ const Cerasis = ({
 					<label className={'text-gray'}>Shipping Service</label>
 				</Col>
 
-				<Col
-					className='gutter-row'
-					xs={24}
-					sm={24}
-					md={24}
-					lg={24}
-					xl={18}>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 					<Form.Item className={'mb-0'} name='shipping_service'>
 						<Select
 							defaultValue='standard_ltl'
 							value={quoteSettingsState?.shipping_service}
-							onChange={opt =>
-								setQuoteSettingsState(prevState => ({
+							onChange={(opt) =>
+								setQuoteSettingsState((prevState) => ({
 									...prevState,
 									shipping_service: opt,
 								}))
@@ -86,9 +73,7 @@ const Cerasis = ({
 							<Option value='standard_ltl'>
 								Standard LTL Freight Services
 							</Option>
-							<Option value='final_mile'>
-								Final Mile Services
-							</Option>
+							<Option value='final_mile'>Final Mile Services</Option>
 						</Select>
 					</Form.Item>
 				</Col>
@@ -119,8 +104,8 @@ const Cerasis = ({
 								<Select
 									defaultValue='1'
 									value={quoteSettingsState?.rating_method}
-									onChange={opt =>
-										setQuoteSettingsState(prevState => ({
+									onChange={(opt) =>
+										setQuoteSettingsState((prevState) => ({
 											...prevState,
 											rating_method: opt,
 										}))
@@ -168,16 +153,12 @@ const Cerasis = ({
 									name='number_of_options'>
 									<Select
 										defaultValue='1'
-										value={
-											quoteSettingsState?.number_of_options
-										}
-										onChange={opt =>
-											setQuoteSettingsState(
-												prevState => ({
-													...prevState,
-													number_of_options: opt,
-												})
-											)
+										value={quoteSettingsState?.number_of_options}
+										onChange={(opt) =>
+											setQuoteSettingsState((prevState) => ({
+												...prevState,
+												number_of_options: opt,
+											}))
 										}>
 										{Array.from({ length: 10 }, (_, i) => (
 											<Option
@@ -189,11 +170,10 @@ const Cerasis = ({
 									</Select>
 								</Form.Item>
 								<div className={'text-gray'}>
-								
-								{quoteSettingsState?.rating_method === '2' &&
-									'Number of options to display in the shopping cart.'}
-								{quoteSettingsState?.rating_method === '3' &&
-									'Number of options to include in the calculation of the average.'}
+									{quoteSettingsState?.rating_method === '2' &&
+										'Number of options to display in the shopping cart.'}
+									{quoteSettingsState?.rating_method === '3' &&
+										'Number of options to include in the calculation of the average.'}
 								</div>
 							</Col>
 						</Row>
@@ -212,45 +192,61 @@ const Cerasis = ({
 								<label className={'text-gray'}>Label As</label>
 							</Col>
 							<Col
-							className='gutter-row'
-							xs={24}
-							sm={24}
-							md={24}
-							lg={24}
-							xl={18}>
-								{+quoteSettingsState?.rating_method === 1 && 
-									<Form.Item className={'mb-0'} name='cheapest_label'>
+								className='gutter-row'
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={18}>
+								{+quoteSettingsState?.rating_method === 1 && (
+									<Form.Item
+										className={'mb-0'}
+										name='cheapest_label'>
 										<Input
 											value={
-												quoteSettingsState?.cheapest_label || ''
+												quoteSettingsState?.cheapest_label ||
+												''
 											}
 											onKeyDown={LableAsLimit}
-											onChange={e => setQuoteSettingsState(prevState => ({
-												...prevState,
-												cheapest_label: e.target.value,	
-											}))}
-											/>
+											onChange={(e) =>
+												setQuoteSettingsState(
+													(prevState) => ({
+														...prevState,
+														cheapest_label:
+															e.target.value,
+													})
+												)
+											}
+										/>
 									</Form.Item>
-								}
-								{+quoteSettingsState?.rating_method === 3 && 
-									<Form.Item className={'mb-0'} name='average_rate_label'>
+								)}
+								{+quoteSettingsState?.rating_method === 3 && (
+									<Form.Item
+										className={'mb-0'}
+										name='average_rate_label'>
 										<Input
 											value={
-												quoteSettingsState?.average_rate_label || ''
+												quoteSettingsState?.average_rate_label ||
+												''
 											}
 											onKeyDown={LableAsLimit}
-											onChange={e => setQuoteSettingsState(prevState => ({
-												...prevState,
-												average_rate_label: e.target.value,	
-											}))}
-											/>
+											onChange={(e) =>
+												setQuoteSettingsState(
+													(prevState) => ({
+														...prevState,
+														average_rate_label:
+															e.target.value,
+													})
+												)
+											}
+										/>
 									</Form.Item>
-								}
+								)}
 								<div className={'text-gray'}>
-								{quoteSettingsState?.rating_method === '1' &&
-									'What the user sees during checkout, e.g. "Freight". Leave blank to display the carrier name.'}
-								{quoteSettingsState?.rating_method === '3' &&
-									'What the user sees during checkout, e.g. "Freight". If left blank will default to "Freight".'}
+									{quoteSettingsState?.rating_method === '1' &&
+										'What the user sees during checkout, e.g. "Freight". Leave blank to display the carrier name.'}
+									{quoteSettingsState?.rating_method === '3' &&
+										'What the user sees during checkout, e.g. "Freight". If left blank will default to "Freight".'}
 								</div>
 							</Col>
 						</Row>
@@ -301,30 +297,24 @@ const Cerasis = ({
 											quoteSettingsState?.final_mile_service_level ===
 											'threshold'
 										}
-										onChange={e =>
-											setQuoteSettingsState(
-												prevState => ({
-													...prevState,
-													final_mile_service_level:
-														'threshold',
-												})
-											)
+										onChange={(e) =>
+											setQuoteSettingsState((prevState) => ({
+												...prevState,
+												final_mile_service_level:
+													'threshold',
+											}))
 										}
 									/>
 									<Input
 										name='threshold_label'
 										value={
-											quoteSettingsState?.threshold_label ||
-											''
+											quoteSettingsState?.threshold_label || ''
 										}
-										onChange={e =>
-											setQuoteSettingsState(
-												prevState => ({
-													...prevState,
-													threshold_label:
-														e.target.value,
-												})
-											)
+										onChange={(e) =>
+											setQuoteSettingsState((prevState) => ({
+												...prevState,
+												threshold_label: e.target.value,
+											}))
 										}
 										onKeyDown={LableAsLimit}
 									/>
@@ -347,9 +337,7 @@ const Cerasis = ({
 							md={24}
 							lg={24}
 							xl={6}>
-							<label className={'text-gray'}>
-								Room of Choice
-							</label>
+							<label className={'text-gray'}>Room of Choice</label>
 						</Col>
 						<Col
 							className='gutter-row'
@@ -373,14 +361,12 @@ const Cerasis = ({
 											quoteSettingsState?.final_mile_service_level ===
 											'room_of_choice'
 										}
-										onChange={e =>
-											setQuoteSettingsState(
-												prevState => ({
-													...prevState,
-													final_mile_service_level:
-														'room_of_choice',
-												})
-											)
+										onChange={(e) =>
+											setQuoteSettingsState((prevState) => ({
+												...prevState,
+												final_mile_service_level:
+													'room_of_choice',
+											}))
 										}
 									/>
 									<Input
@@ -389,14 +375,11 @@ const Cerasis = ({
 											quoteSettingsState?.room_of_choice_label ||
 											''
 										}
-										onChange={e =>
-											setQuoteSettingsState(
-												prevState => ({
-													...prevState,
-													room_of_choice_label:
-														e.target.value,
-												})
-											)
+										onChange={(e) =>
+											setQuoteSettingsState((prevState) => ({
+												...prevState,
+												room_of_choice_label: e.target.value,
+											}))
 										}
 										onKeyDown={LableAsLimit}
 									/>
@@ -443,30 +426,23 @@ const Cerasis = ({
 											quoteSettingsState?.final_mile_service_level ===
 											'premium'
 										}
-										onChange={e =>
-											setQuoteSettingsState(
-												prevState => ({
-													...prevState,
-													final_mile_service_level:
-														'premium',
-												})
-											)
+										onChange={(e) =>
+											setQuoteSettingsState((prevState) => ({
+												...prevState,
+												final_mile_service_level: 'premium',
+											}))
 										}
 									/>
 									<Input
 										name='premium_label'
 										value={
-											quoteSettingsState?.premium_label ||
-											''
+											quoteSettingsState?.premium_label || ''
 										}
-										onChange={e =>
-											setQuoteSettingsState(
-												prevState => ({
-													...prevState,
-													premium_label:
-														e.target.value,
-												})
-											)
+										onChange={(e) =>
+											setQuoteSettingsState((prevState) => ({
+												...prevState,
+												premium_label: e.target.value,
+											}))
 										}
 										onKeyDown={LableAsLimit}
 									/>
@@ -478,18 +454,7 @@ const Cerasis = ({
 								Label As
 							</div>
 						</Col>
-						</Row>
-						
-					<DeliveryEstimateOptions
-						quoteSettingsState={quoteSettingsState}
-						setQuoteSettingsState={setQuoteSettingsState}
-					/>
-
-					<CutOffTime
-						quoteSettingsState={quoteSettingsState}
-						setQuoteSettingsState={setQuoteSettingsState}
-						handleChange={handleStateChange}	
-					/>
+					</Row>
 				</Fragment>
 			)}
 
@@ -537,28 +502,28 @@ const Cerasis = ({
 						</Row>
 					)} */}
 
-				<DeliveryEstimateOptions
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-				/>
+					<DeliveryEstimateOptions
+						quoteSettingsState={quoteSettingsState}
+						setQuoteSettingsState={setQuoteSettingsState}
+					/>
 
-				<CutOffTime
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					handleChange={handleStateChange}	
-				/>
+					<CutOffTime
+						quoteSettingsState={quoteSettingsState}
+						setQuoteSettingsState={setQuoteSettingsState}
+						handleChange={handleStateChange}
+					/>
 
-				<RAD
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					radStatus={radStatus}
-				/>
+					<RAD
+						quoteSettingsState={quoteSettingsState}
+						setQuoteSettingsState={setQuoteSettingsState}
+						radStatus={radStatus}
+					/>
 
-				<LiftGateDelivery
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					radStatus={radStatus}
-				/>
+					<LiftGateDelivery
+						quoteSettingsState={quoteSettingsState}
+						setQuoteSettingsState={setQuoteSettingsState}
+						radStatus={radStatus}
+					/>
 				</Fragment>
 			)}
 		</>
