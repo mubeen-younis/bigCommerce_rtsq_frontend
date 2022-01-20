@@ -47,14 +47,25 @@ const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) 
 								name='residentialPickup'
 								value={true}
 								checked={quoteSettingsState.residentialPickup}
-								onChange={e =>
+								onChange={(e) =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
 										residentialPickup: e.target.checked,
 									})
 								}
-								disabled={radStatus}
+								disabled={!radStatus}
 							/>
+							{!radStatus && (
+								<label
+									className={'ml-4'}
+									style={{ marginLeft: '10px' }}>
+									Click{' '}
+									<Link to='/' onClick={setActiveMenu}>
+										here
+									</Link>{' '}
+									to add the Residential Address Detection add-on.
+								</label>
+							)}
 						</Form.Item>
 					</Col>
 				</>
