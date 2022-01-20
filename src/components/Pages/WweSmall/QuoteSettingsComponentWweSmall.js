@@ -77,7 +77,7 @@ function QuoteSettingsComponentWweSmall(props) {
 			setCheckAll(true);
 		}
 
-		setQuoteSettingsState(props.quoteSettings);
+		setQuoteSettingsState({ ...quoteSettingsState, ...props.quoteSettings });
 		setLoading(false);
 	};
 
