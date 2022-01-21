@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Layout, message, Modal, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-
-
-
 import './App.css'
 import './responsive.css'
 import SideMenu from './partials/SideMenu'

@@ -1,17 +1,5 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
-import {
-	Typography,
-	Row,
-	Col,
-	Space,
-	Button,
-	Form,
-	Input,
-	Checkbox,
-	Skeleton,
-	Modal
-} from 'antd'
-
+import { Row, Col, Form, Input, Checkbox, Skeleton, Modal } from 'antd'
 import { connect, useDispatch } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
@@ -24,53 +12,58 @@ import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import CutOffTime from '../../CutOffTime'
 import RAD from '../../RAD'
 import LiftGateDelivery from '../../LiftGateDelivery'
-import HoldAtTerminal from '../../HoldAtTerminal'
+// import HoldAtTerminal from '../../HoldAtTerminal'
+import HandlingUnit from '../../HandlingUnit'
+import SaveButton from '../../SaveButton'
+import QuoteServices from './QuoteServices'
 
-const { Title } = Typography
+const initialState = {
+	label_as: '',
+	select_all_services: false,
+	standard_service: false,
+	guaranteed_pm: false,
+	guaranteed_am: false,
+	guaranteed_hourly_window: false,
+	showDeliveryEstimate: false,
+	delivery_estimate_options: 1,
+	order_cut_off_time: '',
+	fulfillment_offset_days: '',
+	all_week_days_select: true,
+	week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+	residentialPickup: false,
+	alwaysResidentialDelivery: false,
+	autoDetectedResidentialAddresses: false,
+	alwaysLiftGatePickup: false,
+	alwaysLiftGateDelivery: false,
+	offerLiftGateDelivery: false,
+	autoDetectedResidentialAddressesLfg: false,
+	offer_inside_delivery: false,
+	hold_at_terminal: false,
+	hold_at_terminal_price: '',
+	weight_of_handling_unit: '',
+	max_weight_per_handling_unit: '',
+	free_shipping_on_orders: '',
+	returnRates: false,
+	quote_details: 1,
+}
 
 function QuoteSettingsComponentWwe(props) {
 	const dispatch = useDispatch()
 	const [form] = Form.useForm()
 	const [holdTeminalStatus, SetHoldTeminalStatus] = useState(false)
 	const [loading, setLoading] = useState(true)
-	const [quoteSettingsState, setQuoteSettingsState] = useState({
-		label_as: '',
-		select_all_services: false,
-		standard_service: false,
-		guaranteed_pm: false,
-		guaranteed_am: false,
-		guaranteed_hourly_window: false,
-		showDeliveryEstimate: false,
-		delivery_estimate_options: 1,
-		order_cut_off_time: '',
-		fulfillment_offset_days: '',
-		all_week_days_select: true,
-		week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-		residentialPickup: false,
-		alwaysResidentialDelivery: false,
-		autoDetectedResidentialAddresses: false,
-		alwaysLiftGatePickup: false,
-		alwaysLiftGateDelivery: false,
-		offerLiftGateDelivery: false,
-		autoDetectedResidentialAddressesLfg: false,
-		offer_inside_delivery: false,
-		hold_at_terminal: false,
-		hold_at_terminal_price: '',
-		weight_of_handling_unit: '',
-		max_weight_per_handling_unit: '',
-		free_shipping_on_orders: '',
-		returnRates: false,
-		quote_details: 1,
-	})
+	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
 			getQuoteSettings()
 		}
 	}, [props.quoteSettings])
+
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
 	)
+	
 	let radStatus = false
 	if (radCheck !== undefined) {
 		radStatus =
@@ -80,6 +73,7 @@ function QuoteSettingsComponentWwe(props) {
 				? false
 				: true
 	}
+	
 	const getQuoteSettings = () => {
 		setQuoteSettingsState({
 			...quoteSettingsState,
@@ -242,431 +236,39 @@ function QuoteSettingsComponentWwe(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={30} align='middle' className={'mb-4'}>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}>
-						<Title level={4}>Quote Service Options</Title>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>Select All</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='select_all_services'
-								checked={quoteSettingsState.select_all_services}
-								onChange={e => {
-									selectAllQuoteOptions(e.target.checked)
-								}}></Checkbox>
-						</Form.Item>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>Standard Service</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='standard_service'
-								checked={quoteSettingsState.standard_service}
-								onChange={e => {
-									handleStateChange(
-										'standard_service',
-										e.target.checked
-									)
-									toggleOptions(e.target.checked, [
-										'guaranteed_pm',
-										'guaranteed_am',
-										'guaranteed_hourly_window',
-									])
-								}}></Checkbox>
-						</Form.Item>
-					</Col>
-
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>Guaranteed PM</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='guaranteed_pm'
-								checked={quoteSettingsState.guaranteed_pm}
-								onChange={e => {
-									handleStateChange(
-										'guaranteed_pm',
-										e.target.checked
-									)
-									toggleOptions(e.target.checked, [
-										'standard_service',
-										'guaranteed_am',
-										'guaranteed_hourly_window',
-									])
-								}}></Checkbox>
-						</Form.Item>
-					</Col>
-
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>Guaranteed AM</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='guaranteed_am'
-								checked={quoteSettingsState.guaranteed_am}
-								onChange={e => {
-									handleStateChange(
-										'guaranteed_am',
-										e.target.checked
-									)
-									toggleOptions(e.target.checked, [
-										'standard_service',
-										'guaranteed_pm',
-										'guaranteed_hourly_window',
-									])
-								}}></Checkbox>
-						</Form.Item>
-					</Col>
-
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>
-							Guaranteed Hourly Window
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='guaranteed_hourly_window'
-								checked={
-									quoteSettingsState.guaranteed_hourly_window
-								}
-								onChange={e => {
-									handleStateChange(
-										'guaranteed_hourly_window',
-										e.target.checked
-									)
-									toggleOptions(e.target.checked, [
-										'standard_service',
-										'guaranteed_pm',
-										'guaranteed_am',
-									])
-								}}></Checkbox>
-						</Form.Item>
-					</Col>
-				</Row>
-
-				{/* <Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}>
-							Show Delivery Estimate
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='show_delivery_estimate'
-								// value={true}
-								checked={
-									quoteSettingsState.showDeliveryEstimate
-								}
-								onChange={() => {
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										showDeliveryEstimate:
-											!quoteSettingsState.showDeliveryEstimate,
-									})
-								}}>
-								Show Delivery Estimates With Shipping Services.
-							</Checkbox>
-						</Form.Item>
-					</Col>
-				</Row> */}
-
+				<QuoteServices
+					quoteSettingsState={quoteSettingsState}
+					selectAllQuoteOptions={selectAllQuoteOptions}
+					handleChange={handleStateChange}
+					toggleOptions={toggleOptions}
+				/>
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 				/>
-
 				<CutOffTime
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-
 				<RAD
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
-
 				<LiftGateDelivery
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
-
 				{/* <HoldAtTerminal
-
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/> */}
-
-				{/*}<Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}>
-						<Title level={4}>Inside delivery settings</Title>
-					</Col>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}>
-							Offer inside delivery as an option
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={18}>
-						<Form.Item className={'mb-3'}>
-							<Checkbox
-								name='offer_inside_delivery'
-								checked={
-									quoteSettingsState.offer_inside_delivery
-								}
-								onChange={e =>
-									handleStateChange(
-										'offer_inside_delivery',
-										e.target.checked
-									)
-								}
-							/>
-						</Form.Item>
-					</Col>
-				</Row>{*/}
-
-				<Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}>
-							Weight of Handling Unit
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={18}>
-						<Form.Item
-							className={'mb-0'}
-							name='weight_of_handling_unit'>
-							<Input
-								maxLength='7'
-								//pattern='[0-9.?(0-9){2}?]+%?$'
-								onKeyDown={handlingFeeMarkup}
-								value={
-									quoteSettingsState.weight_of_handling_unit
-								}
-								onChange={e =>
-									handleStateChange(
-										'weight_of_handling_unit',
-										e.target.value
-									)
-								}
-								type='number'
-								min='0'
-								step='0.001'
-								max='20000'
-								pattern='[0-9.?(0-9){2}?]+%?$'
-							/>
-						</Form.Item>
-						<div className={'text-gray'}>
-							Enter in pounds the weight of your pallet, skid,
-							crate, or other types of handling unit. Leave blank
-							to disable.
-						</div>
-					</Col>
-				</Row>
-				<Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}>
-							Maximum Weight per Handling Unit
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={18}>
-						<Form.Item
-							className={'mb-0'}
-							name='max_weight_per_handling_unit'>
-							<Input
-								maxLength='7'
-								//pattern='[0-9.?(0-9){2}?]+%?$'
-								onKeyDown={handlingFeeMarkup}
-								value={
-									quoteSettingsState.max_weight_per_handling_unit
-								}
-								onChange={e =>
-									handleStateChange(
-										'max_weight_per_handling_unit',
-										e.target.value
-									)
-								}
-								type='number'
-								min='0'
-								step='0.001'
-								max='20000'
-								pattern='[0-9.?(0-9){2}?]+%?$'
-							/>
-						</Form.Item>
-						<div className={'text-gray'}>
-							Enter in pounds the maximum weight that can be
-							placed on the handling unit. Leave blank to disable.
-						</div>
-					</Col>
-				</Row>
-				<Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}>
-							Handling Fee / Markup
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={18}>
-						<Form.Item
-							className={'mb-0'}
-							name='handling_free_markup'>
-							<Input
-								maxLength='7'
-								//pattern='[0-9.?(0-9){2}?]+%?$'
-								onKeyDown={handlingFeeMarkup}
-							/>
-						</Form.Item>
-						<div className={'text-gray'}>
-							Amount excluding tax. Enter an amount, e.g 3.75, or a
-							percentage, e.g, 5%. Leave blank to disable.
-						</div>
-					</Col>
-				</Row>
+				<HandlingUnit 
+					quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
+				/>
 
 				<Row gutter={30} className={'mb-3'}>
 					<Col
@@ -747,28 +349,8 @@ function QuoteSettingsComponentWwe(props) {
 						</Form.Item>
 					</Col>
 				</Row>
-
-				<Row gutter={30} className={'mt-3'}>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}>
-						<Form.Item
-							style={{ textAlign: 'right', marginBottom: '0' }}>
-							<Space>
-								<Button
-									type='primary'
-									size={'large'}
-									htmlType='submit'>
-									Save Settings
-								</Button>
-							</Space>
-						</Form.Item>
-					</Col>
-				</Row>
+							
+				<SaveButton />
 			</Form>
 			<Modal
 				title='R+L LTL Freight Quotes'
