@@ -24,7 +24,7 @@ const initialState = {
 	filteredOrders: null,
 	token: null,
 	confirmModal: null,
-	activeMenu: '1',
+	activeMenu: '99',
 	searched_order: null,
 	searched_product: null,
 	importIndexes: null,

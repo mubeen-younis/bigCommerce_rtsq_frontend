@@ -322,34 +322,39 @@ const CarriersComponent = props => {
 				</Row>
 			)}
 
-			<Table
-				className='custom-table'
-				rowSelection={rowSelection}
-				columns={columns}
-				dataSource={filteredServices ?? services}
-				total={50}
-				// showSizeChanger={true}
-				pagination={false}
-				sortOrder='ascend'
-			/>
-
-			<Form.Item
-				style={{
+			
+			{services ? 
+				<>
+					<Table
+					className='custom-table'
+					rowSelection={rowSelection}
+					columns={columns}
+					dataSource={filteredServices ?? services}
+					total={50}
+					// showSizeChanger={true}
+					pagination={false}
+					sortOrder='ascend'
+					/>
+					<Form.Item
+					style={{
 					textAlign: 'right',
 					marginTop: '20px',
 					marginBottom: '0',
-				}}>
-				<Space>
-					<Button
-						type='primary'
-						size={'large'}
-						htmlType='submit'
-						name={`test`}
-						onClick={saveCarriers}>
-						Save Settings
-					</Button>
-				</Space>
-			</Form.Item>
+					}}>
+						<Space>
+							<Button
+								type='primary'
+								size={'large'}
+								htmlType='submit'
+								name={`test`}
+								onClick={saveCarriers}>
+								Save Settings
+							</Button>
+						</Space>
+					</Form.Item>
+				</> :
+			<Skeleton active />
+			}
 		</Fragment>
 	)
 }

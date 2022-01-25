@@ -114,7 +114,6 @@ function Settings({count, product, index, copyShippingMethod, copyShippingParams
                         <Option value='150'>150</Option>
                         <Option value='175'>175</Option>
                         <Option value='200'>200</Option>
-                        <Option value='225'>225</Option>
                         <Option value='250'>250</Option>
                         <Option value='300'>300</Option>
                         <Option value='400'>400</Option>
@@ -331,7 +330,7 @@ function Settings({count, product, index, copyShippingMethod, copyShippingParams
                                         <Option
                                             value={value.id}
                                             key={value.id}
-                                        >{`${value.city} ${value.state} ${value.zip_code}`}</Option>
+                                        >{`${value.city+','} ${value.state} ${value.zip_code}`}</Option>
                                     ))
                                 : null}
                         </Select>

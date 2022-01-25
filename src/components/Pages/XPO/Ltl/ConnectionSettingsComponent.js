@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Form, Input, Button, Space, Skeleton, Radio } from 'antd'
 import { connect } from 'react-redux'
 
@@ -9,10 +9,19 @@ function ConnectionSettingsComponent(props) {
 		testType: false,
 		skeleton_loading: true,
 	})
+	const [accessType, setAccessType] = useState(0)
+
+	
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
 	}
+
+	useEffect(()=>{
+		if(props.connectionSettings && accessType === 0){
+			setAccessType(props?.connectionSettings?.access_level === 'pro' ? 2:1)
+		}
+	},[props.connectionSettings])
 
 	const onFinish = values => {
 		values.testType = connectionState.testType
@@ -88,12 +97,19 @@ function ConnectionSettingsComponent(props) {
 							message: 'Pickup/Delivery Postal Code',
 						},
 					]}>
-					<Input placeholder='Pickup/Delivery Postal Code *' />
+					<Input placeholder='Pickup/Delivery Postal Code' />
 				</Form.Item>
 
 				<Form.Item
 					label='Bill To Account Number '
-					name='bill_to_account_number'>
+					name='bill_to_account_number'
+					rules={[
+						{
+							required: accessType === 2 ,
+							message: 'Bill To Account Number',
+						},
+					]}
+					>
 					<Input placeholder='Bill To Account Number ' />
 				</Form.Item>
 
@@ -106,8 +122,8 @@ function ConnectionSettingsComponent(props) {
 					// label='Access Level'
 					rules={[{ required: false, message: 'Access Level' }]}>
 					<Radio.Group>
-						<Radio value='test'>Test Account Number</Radio>
-						<Radio value='pro'>Test Bill To Account Number</Radio>
+						<Radio onChange={()=>setAccessType(1) } value='test'>Test Account Number</Radio>
+						<Radio onChange={()=>setAccessType(2) } value='pro'>Test Bill To Account Number</Radio>
 					</Radio.Group>
 				</Form.Item>
 

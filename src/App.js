@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Layout, message, Modal, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-
-
-
 import './App.css'
 import './responsive.css'
 import SideMenu from './partials/SideMenu'
@@ -53,7 +50,8 @@ function App(props) {
 
 	const urlParams = new URLSearchParams(window.location.search)
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		const store =
 			urlParams.get('store') !== (undefined || null)
 				? urlParams.get('store')
@@ -73,7 +71,7 @@ function App(props) {
 		getInstalledAddons(store)
 		getStorePlans()
 
-		// eslint-disable-next-line
+		//eslint-disable-next-line
 	}, [])
 
 	message.config({
