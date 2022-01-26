@@ -27,7 +27,7 @@ const DomesticServices = ({
 	onCheck,
 }) => {
 	return (
-		<Col span={10}>
+		<Col span={8}>
 			<Row gutter={30} align='middle' className={'mb-2'}>
 				<Col
 					className='gutter-row middle'
