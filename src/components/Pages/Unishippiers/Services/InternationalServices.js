@@ -18,6 +18,11 @@ const InternationalServices = ({
 	onChange,
 	onCheck,
 }) => {
+	const makeServiceIndex = service_name =>
+		service_name.includes('Canada')
+			? 'ups_standard'
+			: `ups_${service_name.toLowerCase().trim().replaceAll(' ', '_')}`
+
 	return (
 		<Col span={12}>
 			<Row gutter={30} align='middle' className={'mb-2'}>
@@ -44,19 +49,19 @@ const InternationalServices = ({
 					</Form.Item>
 				</Col>
 			</Row>
-			{international_services.map(is => (
+			{international_services.map(srvc => (
 				<Row gutter={24} align='middle' className={'mb-2'}>
 					<Col span={12}>
-						<label className={'text-gray'}>{is}</label>
+						<label className={'text-gray'}>{srvc}</label>
 					</Col>
 					<Col span={12}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name={is.toLowerCase().trim().replaceAll(' ', '_')}
+								name={makeServiceIndex(srvc)}
 								value={true}
 								checked={
 									quoteSettingsState?.carrier_services?.[
-										is.toLowerCase().trim().replaceAll(' ', '_')
+										makeServiceIndex(srvc)
 									]
 								}
 								onChange={onCheck}></Checkbox>
@@ -68,17 +73,11 @@ const InternationalServices = ({
 								//maxLength='7'
 								value={
 									quoteSettingsState?.carrier_services?.[
-										is
-											.toLowerCase()
-											.trim()
-											.replaceAll(' ', '_') + '_markup'
+										makeServiceIndex(srvc) + '_markup'
 									]
 								}
 								//pattern='[0-9.?(0-9){2}?]+%?$'
-								name={
-									is.toLowerCase().trim().replaceAll(' ', '_') +
-									'_markup'
-								}
+								name={makeServiceIndex(srvc) + '_markup'}
 								onChange={onChange}
 								onKeyDown={handlingFeeMarkup}
 								maxLength='7'
