@@ -13,6 +13,7 @@ import QuoteSettingsComponentFedexSmall from '../components/Pages/Fedex/Small/Qu
 import QuoteSettingsComponentGtzLtl from '../components/Pages/GlobalTranz/Ltl/QuoteSettingsComponent'
 import QuoteSettingsComponentXpoLtl from '../components/Pages/XPO/Ltl/QuoteSettingsComponentWwe'
 import QuoteSettingsComponentRLLtl from '../components/Pages/R+LLtl/QuoteSettingsComponentWwe'
+import QuoteSettingsComponentUnishippers from '../components/Pages/Unishippiers/QuoteSettingsComponent'
 // import BoxSizesComponent from '../components/Pages/BoxSizesComponent';
 import CarriersComponent from '../components/CarriersComponent'
 import ProductSettingsComponent from '../components/ProductSettingsComponent'
@@ -27,6 +28,7 @@ import ConnectionSettingsComponentFedexSmall from '../components/Pages/Fedex/Sma
 import ConnectionSettingsComponentGtzLtl from '../components/Pages/GlobalTranz/Ltl/ConnectionSettingsComponent'
 import ConnectionSettingsComponentXpoLtl from '../components/Pages/XPO/Ltl/ConnectionSettingsComponent'
 import ConnectioSettingsComponentRLLTl from '../components/Pages/R+LLtl/ConnectionSettingsComponent'
+import ConnectionSettingsComponentUnishippers from '../components/Pages/Unishippiers/ConnectionSettingsComponent'
 import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
 import OrdersComponent from '../components/OrdersComponent'
 // import AlertMessage from "../Utilities/AlertMessage";
@@ -60,6 +62,7 @@ function TabsLayout() {
 				'gtz-ltl',
 				'xpo-ltl',
 				'rl-ltl',
+				'unishippers',
 			]
 
 			for (const ic of installedCarriers) {
@@ -110,6 +113,7 @@ function TabsLayout() {
 					{component === 6 && <ConnectionSettingsComponentGtzLtl />}
 					{component === 7 && <ConnectionSettingsComponentXpoLtl />}
 					{component === 8 && <ConnectioSettingsComponentRLLTl />}
+					{component === 9 && <ConnectionSettingsComponentUnishippers />}
 				</TabPane>
 				{[0].includes(component) && (
 					<TabPane tab='Carriers' key='2'>
@@ -130,7 +134,8 @@ function TabsLayout() {
 					{component === 2 && <QuoteSettingsComponentUpsLtl />}
 					{component === 3 && <QuoteSettingsComponentUpsSmall />}
 					{component === 4 && <QuoteSettingsComponentFedexltl />}
-					{component === 5 && <QuoteSettingsComponentFedexSmall />}
+					{/* {component === 5 && <QuoteSettingsComponentFedexSmall />} */}
+					{component === 5 && <QuoteSettingsComponentUnishippers />}
 					{component === 6 && <QuoteSettingsComponentGtzLtl />}
 					{component === 7 && <QuoteSettingsComponentXpoLtl />}
 					{component === 8 && <QuoteSettingsComponentRLLtl />}
