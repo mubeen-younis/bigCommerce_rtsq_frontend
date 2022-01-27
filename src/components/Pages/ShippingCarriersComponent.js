@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { Row, Col, Button, Typography, Card, Image, Avatar } from 'antd';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import React, { Fragment } from 'react'
+import { Link } from 'react-router-dom'
+import { Row, Col, Button, Typography, Card, Image, Avatar } from 'antd'
+import { connect, useDispatch, useSelector } from 'react-redux'
 
 import {
 	installCarrier,
@@ -10,29 +10,41 @@ import {
 	changeAddonStatus,
 	getInstalledAddons,
 	installAddon,
-} from '../../Actions/EnitureStore';
-import Meta from 'antd/lib/card/Meta';
-import PlanStatusHeading from '../../partials/PlanStatusHeading';
-const { Title } = Typography;
+} from '../../Actions/EnitureStore'
+import Meta from 'antd/lib/card/Meta'
+import PlanStatusHeading from '../../partials/PlanStatusHeading'
+const { Title } = Typography
 // const { Meta } = Card;
 
 function ShippingCarriersComponent(props) {
-	const dispatch = useDispatch();
-	const {currentPlan} = useSelector(state => state);
+	const dispatch = useDispatch()
+	const { currentPlan } = useSelector(state => state)
 	const getInstalledCarriers = (carrier_type = 1) => {
 		return props.installedCarriers.map((value, key) => {
 			return (
 				carrier_type === value.carrier_type && (
-					<Col className='gutter-row mb-3' xs={24} sm={12} md={8} lg={8} xl={6} key={key}>
+					<Col
+						className='gutter-row mb-3'
+						xs={24}
+						sm={12}
+						md={8}
+						lg={8}
+						xl={6}
+						key={key}>
 						<Card className={'card-custom'} style={{ width: '100%' }}>
 							<div className={'card-inner'}>
 								<figure>
-									<Image preview={false} src={`images/${value.logo}`} />
+									<Image
+										preview={false}
+										src={`images/${value.logo}`}
+									/>
 								</figure>
 								{/* <Meta title={value.name} description='' /> */}
 								{value.is_enabled === 1 ? (
 									<Fragment>
-										<Link to={`/${value.id}`} style={{ display: 'inline-block' }}>
+										<Link
+											to={`/${value.id}`}
+											style={{ display: 'inline-block' }}>
 											<Button
 												className={''}
 												type='primary'
@@ -42,8 +54,7 @@ function ShippingCarriersComponent(props) {
 														type: 'SET_ACTIVE_MENU',
 														payload: value.id.toString(),
 													})
-												}
-											>
+												}>
 												Settings
 											</Button>
 										</Link>
@@ -52,13 +63,18 @@ function ShippingCarriersComponent(props) {
 											className={''}
 											type='primary'
 											onClick={() => {
-												props.changeCarrierStatus(value.id, props.token);
+												props.changeCarrierStatus(
+													value.id,
+													props.token
+												)
 											}}
 											/* disabled={
 									props.alertMessageType && props.alertMessageType === 'loading' ? 1 : 0
 								} */
 										>
-											{value.is_enabled === 1 ? 'Disable' : 'Enable'}
+											{value.is_enabled === 1
+												? 'Disable'
+												: 'Enable'}
 										</Button>
 									</Fragment>
 								) : (
@@ -66,31 +82,46 @@ function ShippingCarriersComponent(props) {
 										className={''}
 										type='primary'
 										onClick={() => {
-											props.changeCarrierStatus(value.id, props.token);
+											props.changeCarrierStatus(
+												value.id,
+												props.token
+											)
 										}}
 										/* disabled={
 									props.alertMessageType && props.alertMessageType === 'loading' ? 1 : 0
 								} */
 									>
-										{value.is_enabled === 1 ? 'Disable' : 'Enable'}
+										{value.is_enabled === 1
+											? 'Disable'
+											: 'Enable'}
 									</Button>
 								)}
 							</div>
 						</Card>
 					</Col>
 				)
-			);
-		});
-	};
+			)
+		})
+	}
 
 	const getInstalledAddons = () => {
 		return props.installedAddons.map((value, key) => {
 			return (
-				<Col className='gutter-row mb-3' xs={24} sm={24} md={8} lg={8} xl={6} key={key}>
+				<Col
+					className='gutter-row mb-3'
+					xs={24}
+					sm={24}
+					md={8}
+					lg={8}
+					xl={6}
+					key={key}>
 					<Card className={'card-custom'} style={{ width: '100%' }}>
 						<div className={'card-inner'}>
 							<figure>
-								<Image preview={false} src={`images/${value.logo}`} />
+								<Image
+									preview={false}
+									src={`images/${value.logo}`}
+								/>
 								{/* <img
 									style={{ height: '175px' }}
 									src={`images/${value.logo}`}
@@ -101,7 +132,9 @@ function ShippingCarriersComponent(props) {
 							<Button
 								// className={'mt-3'}
 								type='primary'
-								onClick={() => props.changeAddonStatus(value.id, props.token)}
+								onClick={() =>
+									props.changeAddonStatus(value.id, props.token)
+								}
 								/* disabled={
 									props.alertMessageType && props.alertMessageType === 'loading' ? 1 : 0
 								} */
@@ -111,75 +144,102 @@ function ShippingCarriersComponent(props) {
 						</div>
 					</Card>
 				</Col>
-			);
-		});
-	};
+			)
+		})
+	}
 
 	const getEnitureCarriers = (carrier_type = 1) => {
 		return props.carriers.map((value, key) => {
 			return (
 				carrier_type === value.carrier_type && (
-					<Col className='gutter-row mb-3' xs={24} sm={12} md={8} lg={8} xl={6} key={key}>
+					<Col
+						className='gutter-row mb-3'
+						xs={24}
+						sm={12}
+						md={8}
+						lg={8}
+						xl={6}
+						key={key}>
 						<Card className={'card-custom'} style={{ width: '100%' }}>
 							<div className={'card-inner'}>
 								<figure>
-									<Image preview={false} src={`images/${value.logo}`} />
+									<Image
+										preview={false}
+										src={`images/${value.logo}`}
+									/>
 								</figure>
 								{/* <Meta title={value.name} description='' /> */}
 								<Button
 									// className={'mt-3'}
 									type='primary'
-									onClick={() => props.installCarrier(value.id, props.token)}
-									disabled={value.status ? false : true}
-								>
+									onClick={() =>
+										props.installCarrier(value.id, props.token)
+									}
+									disabled={value.status ? false : true}>
 									{value.status ? 'Install' : 'Coming Soon'}
 								</Button>
 							</div>
 						</Card>
 					</Col>
 				)
-			);
-		});
-	};
+			)
+		})
+	}
 
 	const getRecommendedAddons = () => {
 		return props.addons.map((value, key) => {
 			return (
-				<Col className='gutter-row mb-3' xs={24} sm={24} md={8} lg={8} xl={6} key={key}>
+				<Col
+					className='gutter-row mb-3'
+					xs={24}
+					sm={24}
+					md={8}
+					lg={8}
+					xl={6}
+					key={key}>
 					<Card className={'card-custom'} style={{ width: '100%' }}>
 						<div className={'card-inner'}>
 							<figure>
-								<Image preview={false} src={`images/${value.logo}`} />
+								<Image
+									preview={false}
+									src={`images/${value.logo}`}
+								/>
 							</figure>
 							{/* <Meta title={value.name} description='' /> */}
 							<Button
 								// className={'mt-3'}
 								type='primary'
-								onClick={() => props.installAddon(value.id, props.token)}
-								disabled={value.status ? false : true}
-							>
+								onClick={() =>
+									props.installAddon(value.id, props.token)
+								}
+								disabled={value.status ? false : true}>
 								{value.status ? 'Install' : 'Coming Soon'}
 							</Button>
 						</div>
 					</Card>
 				</Col>
-			);
-		});
-	};
+			)
+		})
+	}
 
 	return (
 		<Fragment>
 			<PlanStatusHeading />
 			<Row gutter={25}>
-				<Col className='gutter-row mb-3' xs={24} sm={24} md={24} lg={24} xl={24}>
+				<Col
+					className='gutter-row mb-3'
+					xs={24}
+					sm={24}
+					md={24}
+					lg={24}
+					xl={24}>
 					<Card
 						size='default'
 						style={{
 							borderRadius: '5px',
 							border: '1px solid skyblue',
 							fontSize: '1em',
-						}}
-					>
+						}}>
 						<Meta
 							avatar={
 								<Avatar
@@ -188,22 +248,47 @@ function ShippingCarriersComponent(props) {
 											viewBox='0 0 20 20'
 											className='Polaris-Icon__Svg'
 											focusable='false'
-											aria-hidden='true'
-										>
+											aria-hidden='true'>
 											<path
 												fillRule='evenodd'
-												d='M10 0C4.486 0 0 4.486 0 10s4.486 10 10 10 10-4.486 10-10S15.514 0 10 0zM9 6a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0V6zm1 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z'
-											></path>
+												d='M10 0C4.486 0 0 4.486 0 10s4.486 10 10 10 10-4.486 10-10S15.514 0 10 0zM9 6a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0V6zm1 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z'></path>
 										</svg>
 									}
 								/>
 							}
 							title={
-								<h3 style={{ fontWeight: 600, marginBottom: 0 }}>Getting Started</h3>
+								<h3 style={{ fontWeight: 600, marginBottom: 0 }}>
+									Getting Started
+								</h3>
 							}
 							description={
 								<p>
-									Below is a list of supported shipping providers. The plan you subscribe to will dictate how many shipping providers you can enable. Click on Plans in the navigation menu to review and select a plan. To enable a provider, click on the Enable button. Afterward, use the <a target="_blank" href='https://eniture.com/bigcommerce-real-time-shipping-quotes/'>User’s Guide</a> for instructions on how to connect to your account and perform the other steps necessary to make the integration functional. If you require customer support you can open a support ticket by emailing support@eniture.com or by calling 404-369-0680 extension 2. You can also check our <a target="_blank" href='https://support.eniture.com/'>Knowledge Base</a> to see if there is an article that provides an answer to your question.
+									Below is a list of supported shipping providers.
+									The plan you subscribe to will dictate how many
+									shipping providers you can enable. Click on Plans
+									in the navigation menu to review and select a
+									plan. To enable a provider, click on the Enable
+									button. Afterward, use the{' '}
+									<a
+										target='_blank'
+										href='https://eniture.com/bigcommerce-real-time-shipping-quotes/'
+										rel='noreferrer'>
+										User’s Guide
+									</a>{' '}
+									for instructions on how to connect to your
+									account and perform the other steps necessary to
+									make the integration functional. If you require
+									customer support you can open a support ticket by
+									emailing support@eniture.com or by calling
+									404-369-0680 extension 2. You can also check our{' '}
+									<a
+										target='_blank'
+										href='https://support.eniture.com/'
+										rel='noreferrer'>
+										Knowledge Base
+									</a>{' '}
+									to see if there is an article that provides an
+									answer to your question.
 								</p>
 							}
 						/>
@@ -215,21 +300,43 @@ function ShippingCarriersComponent(props) {
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<Title level={4}>LTL Freight Providers</Title>
 				</Col>
-				{props.installedCarriers !== undefined && props.installedCarriers.length > 0 ? (
+				{props.installedCarriers !== undefined &&
+				props.installedCarriers.length > 0 ? (
 					getInstalledCarriers(1)
-				) :  null
-					
-				}
+				) : (
+					<Col
+						className='gutter-row w-100 mb-3'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
+						<span className={'no-data'}>
+							No ltl freight provider installed
+						</span>
+					</Col>
+				)}
 			</Row>
 
 			<Row gutter={25}>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<Title level={4}>Parcel & Postal Providers</Title>
 				</Col>
-				{props.installedCarriers !== undefined && props.installedCarriers.length > 0 ? (
+				{props.installedCarriers !== undefined &&
+				props.installedCarriers.length > 0 ? (
 					getInstalledCarriers(2)
-				) : ( null
-					
+				) : (
+					<Col
+						className='gutter-row w-100 mb-3'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
+						<span className={'no-data'}>
+							No parcel & postal provider installed
+						</span>
+					</Col>
 				)}
 			</Row>
 
@@ -237,10 +344,17 @@ function ShippingCarriersComponent(props) {
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<Title level={4}>Add-ons</Title>
 				</Col>
-				{props.installedAddons !== undefined && props.installedAddons.length > 0 ? (
+				{props.installedAddons !== undefined &&
+				props.installedAddons.length > 0 ? (
 					getInstalledAddons()
 				) : (
-					<Col className='gutter-row w-100 mb-3' xs={24} sm={24} md={24} lg={24} xl={24}>
+					<Col
+						className='gutter-row w-100 mb-3'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
 						<span className={'no-data'}>No add-on installed</span>
 					</Col>
 				)}
@@ -254,7 +368,13 @@ function ShippingCarriersComponent(props) {
 				{props.carriers && props.carriers.length > 0 ? (
 					getEnitureCarriers(1)
 				) : (
-					<Col className='gutter-row w-100 mb-3' xs={24} sm={24} md={24} lg={24} xl={24}>
+					<Col
+						className='gutter-row w-100 mb-3'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
 						<span className={'no-data'}>No carrier Found</span>
 					</Col>
 				)}
@@ -262,13 +382,21 @@ function ShippingCarriersComponent(props) {
 
 			<Row gutter={25}>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<Title level={4}>Other Available Parcel & Postal Providers</Title>
+					<Title level={4}>
+						Other Available Parcel & Postal Providers
+					</Title>
 				</Col>
 
 				{props.carriers && props.carriers.length > 0 ? (
 					getEnitureCarriers(2)
 				) : (
-					<Col className='gutter-row w-100 mb-3' xs={24} sm={24} md={24} lg={24} xl={24}>
+					<Col
+						className='gutter-row w-100 mb-3'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
 						<span className={'no-data'}>No carrier Found</span>
 					</Col>
 				)}
@@ -282,13 +410,19 @@ function ShippingCarriersComponent(props) {
 				{props.addons !== undefined && props.addons.length > 0 ? (
 					getRecommendedAddons()
 				) : (
-					<Col className='gutter-row w-100 mb-3' xs={24} sm={24} md={24} lg={24} xl={24}>
+					<Col
+						className='gutter-row w-100 mb-3'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
 						<span className={'no-data'}>No Add-on Found</span>
 					</Col>
 				)}
 			</Row>
 		</Fragment>
-	);
+	)
 }
 
 const mapStateToProps = state => {
@@ -300,18 +434,22 @@ const mapStateToProps = state => {
 		addons: state.addons,
 		token: state.token,
 		alertMessageType: state.alertMessageType,
-	};
-};
+	}
+}
 
 const mapDispatchToProps = dispatch => {
 	return {
 		getInstalledCarriers: () => dispatch(getInstalledCarriers()),
-		changeCarrierStatus: (data, token) => dispatch(changeCarrierStatus(data, token)),
+		changeCarrierStatus: (data, token) =>
+			dispatch(changeCarrierStatus(data, token)),
 		getInstalledAddons: () => dispatch(getInstalledAddons()),
 		changeAddonStatus: (data, token) => dispatch(changeAddonStatus(data, token)),
 		installCarrier: (id, token) => dispatch(installCarrier(id, token)),
 		installAddon: (id, token) => dispatch(installAddon(id, token)),
-	};
-};
+	}
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShippingCarriersComponent);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ShippingCarriersComponent)
