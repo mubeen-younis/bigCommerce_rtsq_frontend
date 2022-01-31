@@ -55,7 +55,7 @@ function ConnectionSettingsComponent(props) {
 				onFinish={onFinish}>
 				<Form.Item
 					label='Unishippers Customer Number'
-					name='unishippers_account_number'
+					name='unishippers_customer_number'
 					rules={[
 						{ required: true, message: 'Unishippers Customer Number' },
 					]}>
