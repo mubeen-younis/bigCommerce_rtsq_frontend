@@ -1,24 +1,24 @@
-import React, { useState,useCallback, Fragment, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { Fragment } from 'react';
+import { useSelector } from 'react-redux';
 import {
-	Table,
-	Button,
-	Space,
 	Form,
-	// Input,
-	Modal,
-	Drawer,
+	Button,
 	Col,
 	Row,
 	Select,
 	Checkbox,
-	Skeleton,
 	Input
 } from 'antd';
 
-const { Option } = Select;
+const { Option } = Select
+const smallCarriers = [
+	'small-package',
+	'ups-small',
+	'fedex-small',
+]
+
 function Settings({count, product, index, copyShippingMethod, copyShippingParams, onChangeVariant, addonCheck}) {
-    const {dropships, insuranceStatus} = useSelector(state => state);
+    const { dropships, insuranceStatus, sbsPlans, carrierId, installedCarriers } = useSelector(state => state);
     const validateNumber = (value) => {
        /* value = value.replace(/\D/g, "");
         
@@ -27,7 +27,16 @@ function Settings({count, product, index, copyShippingMethod, copyShippingParams
         product.weight = value;
         console.log('aweight: '+product.weight);*/
     }
-    
+
+    const isSmallCarrier =
+		installedCarriers &&
+		installedCarriers?.find(
+			c => c.id === +carrierId && smallCarriers.includes(c.slug)
+		)
+			? true
+			: false
+    const isSbsSuspended = (sbsPlans && sbsPlans?.currentPackage?.status === 3) ?? false
+
     return (
         <Fragment key={index}>
         <div className="sepSettings">
@@ -237,7 +246,7 @@ function Settings({count, product, index, copyShippingMethod, copyShippingParams
             </Col>
 
             {/** Box Size setting start */}
-            { addonCheck && (
+            { addonCheck && isSmallCarrier && (
                 <>
                     <Col span={24} style={{marginTop: '7px'}}>
                         <Checkbox
@@ -250,8 +259,9 @@ function Settings({count, product, index, copyShippingMethod, copyShippingParams
                             name='allow_vertical'
                             id={'allow_vertical'+index}
                             checked={product?.allow_vertical}
+                            disabled={isSbsSuspended}
                         >
-                            Allow item to be rotated vertically when placing it in a box
+                           Allow item to be rotated vertically when placing it in a box
                         </Checkbox>
                     </Col>
                     <Col span={24} style={{marginTop: '7px'}}>
@@ -265,6 +275,7 @@ function Settings({count, product, index, copyShippingMethod, copyShippingParams
                             name='ship_own_package'
                             id={'ship_own_package'+index}
                             checked={product?.ship_own_package}
+                            disabled={isSbsSuspended}
                         >
                             This item ships as its own package
                         </Checkbox>
@@ -280,6 +291,7 @@ function Settings({count, product, index, copyShippingMethod, copyShippingParams
                             name='ship_multiple_package'
                             id={'ship_multiple_package'+index}
                             checked={product?.ship_multiple_package}
+                            disabled={isSbsSuspended}
                         >
                             This item ships as multiple packages
                         </Checkbox>

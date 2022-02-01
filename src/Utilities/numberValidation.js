@@ -107,7 +107,7 @@ export const validateHandlingFeeMarkup = (value, inputname, fromQuotes = false) 
 		inputname +
 		' format should be 100.22 or 10% and only 2 digits are allowed after decimal point.' +
 		exploder
-	if (value.includes('-') || value.includes('+')) {
+	if (value.includes('-') && value.includes('+')) {
 		return msg1
 	} else if (
 		value.split('-')?.length > 2 ||
