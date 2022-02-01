@@ -18,7 +18,6 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 		axios
 			.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data, config)
 			.then(({ data }) => {
-				console.log(data)
 				if (!data.error) {
 					if (data?.data?.value) {
 						dispatch({
@@ -36,7 +35,7 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 						setVisibleWarehouse(false)
 					}
 				}
-				
+
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
@@ -71,11 +70,9 @@ export const setStore = store => {
 	return dispatch => {
 		axios
 			.get('store', {
-				...config
+				...config,
 			})
 			.then(({ data }) => {
-				console.log(data)
-
 				if (!data.error) {
 					dispatch({
 						type: 'STORE',
@@ -121,7 +118,6 @@ export const getPlansInfo = data => {
 	}
 }
 
-
 export const getCurrentPlanInfo = store => {
 	const config = {
 		headers: {
@@ -131,12 +127,14 @@ export const getCurrentPlanInfo = store => {
 
 	return dispatch => {
 		axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get-subscription-details`, {
-				...config,
-				//params: { store: 'stores/uann2u' },
-			})
+			.get(
+				`${process.env.REACT_APP_ENITURE_API_URL}/get-subscription-details`,
+				{
+					...config,
+					//params: { store: 'stores/uann2u' },
+				}
+			)
 			.then(({ data }) => {
-				console.log(data)
 				if (!data.error) {
 					dispatch({
 						type: 'GET_CURRENT_PLAN',

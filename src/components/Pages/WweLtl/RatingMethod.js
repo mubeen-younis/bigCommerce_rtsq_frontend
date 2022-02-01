@@ -4,7 +4,13 @@ import { LableAsLimit } from '../../../Utilities/numberValidation'
 
 const { Option } = Select
 
-const RatingMethod = ({ props, handleChange, ratingMethod, setRatingMethod }) => {
+const RatingMethod = ({
+	props,
+	quoteSettingsState,
+	handleChange,
+	ratingMethod,
+	setRatingMethod,
+}) => {
 	return (
 		<>
 			<Row gutter={30} className={'mb-3'}>
@@ -30,7 +36,7 @@ const RatingMethod = ({ props, handleChange, ratingMethod, setRatingMethod }) =>
 							name='method'
 							size={'large'}
 							style={{ width: '100%' }}
-							onChange={value => {
+							onChange={(value) => {
 								setRatingMethod(value)
 							}}>
 							<Option value={1}>Cheapest</Option>
@@ -67,15 +73,15 @@ const RatingMethod = ({ props, handleChange, ratingMethod, setRatingMethod }) =>
 						md={24}
 						lg={24}
 						xl={18}>
-						<Form.Item className={'mb-0'} name='number_of_options'>
+						<Form.Item className={'mb-0'}>
 							<Select
-								defaultValue={1}
 								size={'large'}
 								style={{ width: '100%' }}
-								onChange={value =>
+								value={quoteSettingsState?.number_of_options || 1}
+								onChange={(value) =>
 									handleChange('number_of_options', value)
 								}>
-								{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => (
+								{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
 									<Option key={item} value={item}>
 										{item}
 									</Option>

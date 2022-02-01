@@ -1,10 +1,11 @@
 import React from 'react'
 import { useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, Form, Typography, Checkbox } from 'antd'
 
-const { Title } = Typography
+const { Title } = Typography,
+	RAD_ADDON = 'RAD'
 
 const LiftGateDelivery = ({
 	quoteSettingsState,
@@ -12,6 +13,8 @@ const LiftGateDelivery = ({
 	radStatus,
 }) => {
 	const dispatch = useDispatch()
+	const { installedAddons } = useSelector(state => state)
+
 	const setActiveMenu = useCallback(
 		() =>
 			dispatch({
@@ -20,6 +23,9 @@ const LiftGateDelivery = ({
 			}),
 		[dispatch]
 	)
+
+	const isRadInstalled =
+		installedAddons?.find(add => add.short_code === RAD_ADDON) ?? false
 
 	return (
 		<Row gutter={30} align='middle' className={'mb-4'}>
@@ -90,8 +96,12 @@ const LiftGateDelivery = ({
 								alwaysLiftGateDelivery: false,
 							})
 						}
-						disabled={!radStatus}></Checkbox>
-					{!radStatus && (
+						disabled={
+							!radStatus ||
+							!quoteSettingsState.autoDetectedResidentialAddresses
+						}
+					/>
+					{!isRadInstalled && (
 						<label className={'ml-4'} style={{ marginLeft: '10px' }}>
 							Click{' '}
 							<Link to='/' onClick={setActiveMenu}>

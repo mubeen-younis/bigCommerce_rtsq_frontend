@@ -16,16 +16,12 @@ import {
 	Drawer,
 	Col,
 	Row,
-	Select,
-	Checkbox,
 	Skeleton,
 	Input,
 } from 'antd'
 import addKeysToList from '../Utilities/addKey'
 import Settings from './Products/Settings'
 import { isFireFox } from '../Utilities/browserName';
-
-const { Option } = Select
 
 function ProductSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
@@ -56,7 +52,7 @@ function ProductSettingsComponent(props) {
 	const [sortProd, setSortProd] = useState(false);
 	const [formError, setFormError] = useState('')
 	const dispatch = useDispatch()
-	const { productsPagination, productDetail } = useSelector(state => state)
+	const { productsPagination } = useSelector(state => state)
 	const [pagination, setPagination] = useState({
 		current: 1,
 		pageSize: 50,
@@ -90,7 +86,7 @@ function ProductSettingsComponent(props) {
 		}
 		if (props.productDetail) {
 			const variants = props.productDetail.map(variant =>{
-				let settings = variant.settings != '' ? JSON.parse(variant.settings) : {};
+				let settings = variant.settings !== '' ? JSON.parse(variant.settings) : {};
 				return {
 					...variant,
 					...settings
@@ -308,7 +304,7 @@ function ProductSettingsComponent(props) {
 				getAllProducts(props.token, 1, pagination.pageSize, sortProd, setLoading, search)
 			)
 			setLoading(true)
-		} else if (search && search.length == 0) {
+		} else if (search && search.length === 0) {
 			dispatch(getAllProducts(props.token, pagination.current, pagination.pageSize, sortProd, setLoading, null))
 			setLoading(true)
 		}
@@ -318,7 +314,7 @@ function ProductSettingsComponent(props) {
 			...pagination,
 			search: search,
 		})
-		if (search.length == 0) {
+		if (search.length === 0) {
 			setLoading(true)
 			dispatch(getAllProducts(props.token, pagination.current, pagination.pageSize, sortProd, setLoading))
 		}
@@ -566,14 +562,15 @@ function ProductSettingsComponent(props) {
 				onOk={syncProducts}
 				onCancel={() => setSyncModel(false)}
 				okText='Confirm'
-				cancelButtonProps={{ style: { display: 'none' } }}
-			>
+				cancelButtonProps={{ style: { display: 'none' } }}>
 				<p>
-					Are you sure you want to synchronize all products? This will download all
-					products from your BigCommerce store, might take long time.
+					Are you sure you want to synchronize all products? This will
+					download all products from your BigCommerce store, might take
+					long time.
 				</p>
 				<p>
-					Enter the email address to which you want the product synchronize status sent.
+					Enter the email address to which you want the product synchronize
+					status sent.
 				</p>
 				<Row gutter={24}>
 					<Col span={8} required>
@@ -583,7 +580,6 @@ function ProductSettingsComponent(props) {
 						<Input
 							required
 							value={emailAddress}
-							required
 							name='emailAddress'
 							onChange={e => setEmailAddress(e.target.value)}
 						/>
@@ -615,8 +611,7 @@ function ProductSettingsComponent(props) {
 						onClick={openConfirmModel}
 						type='primary'
 						size='medium'
-						style={{ width: '100%' }}
-					>
+						style={{ width: '100%' }}>
 						Sync Products
 					</Button>
 				</Col>
@@ -643,14 +638,12 @@ function ProductSettingsComponent(props) {
 					<div
 						style={{
 							textAlign: 'right',
-						}}
-					>
+						}}>
 						<Button onClick={validate} type='primary'>
 							Save
 						</Button>
 					</div>
-				}
-			>
+				}>
 				{loadProduct ? (
 					<Skeleton active />
 				) : (
@@ -658,7 +651,9 @@ function ProductSettingsComponent(props) {
 						<Row gutter={16}>
 							{formError.length ? (
 								<Col span={24}>
-									<Form.Item className='text-danger'>* {formError}</Form.Item>
+									<Form.Item className='text-danger'>
+										* {formError}
+									</Form.Item>
 								</Col>
 							) : null}
 						</Row>

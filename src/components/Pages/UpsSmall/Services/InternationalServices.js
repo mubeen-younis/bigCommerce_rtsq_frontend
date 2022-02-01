@@ -1,68 +1,56 @@
 import React from 'react'
 import { Row, Col, Typography, Form, Checkbox, Input } from 'antd'
-import { handlingFeeMarkup } from '../../../../../Utilities/numberValidation'
+import { handlingFeeMarkup } from '../../../../Utilities/numberValidation'
 
 const { Title } = Typography
-export const international_services = [
-	'International Distribution Freight',
-	'International Economy',
-	'International Economy Distribution',
-	'International Economy Freight',
-	'International First',
-	'International Priority',
-	'International Priority Distribution',
-	'International Priority Freight',
-	'International Priority Overnight',
-	'International Standard Overnight',
-	'International Ground',
+
+const international_services = [
+	'UPS Standard',
+	'UPS Worldwide Expedited',
+	'UPS Worldwide Saver',
+	'UPS Worldwide Express',
+	'UPS Worldwide Express Plus',
 ]
 
 const InternationalServices = ({
 	quoteSettingsState,
-	allCheckHandler,
 	internationalcheckAll,
-	setInternationalCheckAll,
-	onCheck,
+	internationalAllCheckHandler,
 	onChange,
+	onCheck,
 }) => {
 	return (
-		<Col span={8}>
+		<Col span={12}>
 			<Row gutter={30} align='middle' className={'mb-2'}>
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+				<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={12}>
 					<Title level={5} style={{ textAlign: 'center' }}>
 						International Services
 					</Title>
 				</Col>
 			</Row>
 
-			<Row gutter={30} align='middle' className={'mb-2'}>
-				<Col span={20}>
+			<Row gutter={24} align='middle' className={'mb-2'}>
+				<Col span={12}>
 					<label className={'text-gray'}>Select All Services</label>
 				</Col>
-				<Col span={4}>
+				<Col span={12}>
 					<Form.Item className='mb-0'>
 						<Checkbox
 							name='select_all'
 							value={true}
 							checked={internationalcheckAll}
-							onChange={e =>
-								allCheckHandler(
-									setInternationalCheckAll,
-									e.target.checked,
-									international_services,
-									''
-								)
+							onChange={(e) =>
+								internationalAllCheckHandler(e.target.checked)
 							}></Checkbox>
 					</Form.Item>
 				</Col>
 			</Row>
-
-			{international_services.map(is => (
-				<Row gutter={30} align='middle' className={'mb-2'}>
-					<Col span={20}>
+			{international_services.map((is) => (
+				<Row gutter={24} align='middle' className={'mb-2'}>
+					<Col span={12}>
 						<label className={'text-gray'}>{is}</label>
 					</Col>
-					<Col span={4}>
+					<Col span={12}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
 								name={is.toLowerCase().trim().replaceAll(' ', '_')}
@@ -72,11 +60,10 @@ const InternationalServices = ({
 										is.toLowerCase().trim().replaceAll(' ', '_')
 									]
 								}
-								onChange={onCheck}
-							/>
+								onChange={onCheck}></Checkbox>
 						</Form.Item>
 					</Col>
-					<Col span={24} xs={24} sm={24} md={24} lg={24} xl={24}>
+					<Col span={14}>
 						<Form.Item className={'mb-0'}>
 							<Input
 								//maxLength='7'

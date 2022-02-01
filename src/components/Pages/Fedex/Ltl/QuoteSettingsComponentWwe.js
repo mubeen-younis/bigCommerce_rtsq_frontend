@@ -1,13 +1,5 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
-import {
-	Typography,
-	Row,
-	Col,
-	Form,
-	Input,
-	Checkbox,
-	Skeleton,
-} from 'antd'
+import { Row, Col, Form, Input, Skeleton } from 'antd'
 import CutOffTime from '../../../CutOffTime'
 import { connect, useDispatch } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
@@ -19,8 +11,8 @@ import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
 import Discounts from '../../../Discounts'
 import HandlingUnit from '../../../HandlingUnit'
 import SaveButton from '../../../SaveButton'
+import QuoteServices from './QuoteServices'
 
-const { Title } = Typography
 const initialState = {
 	fedex_select_all: false,
 	fedex_freight_economy: false,
@@ -29,7 +21,7 @@ const initialState = {
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
 	all_week_days_select: true,
-	week_days: [1, 2, 3, 4, 5],
+	week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
 	hold_at_terminal: false,
 	hold_at_terminal_price: '',
 	account_discount_price: 60,
@@ -60,7 +52,7 @@ function QuoteSettingsComponentWwe(props) {
 			getQuoteSettings()
 		}
 	}, [props.quoteSettings])
-	
+
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
 	)
@@ -74,7 +66,7 @@ function QuoteSettingsComponentWwe(props) {
 				? false
 				: true
 	}
-	
+
 	const getQuoteSettings = () =>
 	{
 		setQuoteSettingsState({
@@ -238,113 +230,17 @@ function QuoteSettingsComponentWwe(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={30} align='middle' className={'mb-4'}>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}>
-						<Title level={4}>Quote Service Options</Title>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>Select All</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='fedex_select_all'
-								checked={quoteSettingsState.fedex_select_all}
-								onChange={e => {
-									selectAllQuoteOptions(e.target.checked)
-								}}></Checkbox>
-						</Form.Item>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>Fedex Freight Economy</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='offer_lift_gate_delivery'
-								checked={quoteSettingsState.fedex_freight_economy}
-								onChange={e => {
-									handleStateChange(
-										'fedex_freight_economy',
-										e.target.checked
-									)
-									toggleOptions(
-										e.target.checked,
-										'fedex_freight_priority'
-									)
-								}}></Checkbox>
-						</Form.Item>
-					</Col>
-
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}>
-						<label className={'text-gray'}>Fedex Freight Priority</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='fedex_freight_priority'
-								checked={quoteSettingsState.fedex_freight_priority}
-								onChange={e => {
-									handleStateChange(
-										'fedex_freight_priority',
-										e.target.checked
-									)
-									toggleOptions(
-										e.target.checked,
-										'fedex_freight_economy'
-									)
-								}}></Checkbox>
-						</Form.Item>
-					</Col>
-				</Row>
-				
+				<QuoteServices
+					quoteSettingsState={quoteSettingsState}
+					selectAllQuoteOptions={selectAllQuoteOptions}
+					handleChange={handleStateChange}
+					toggleOptions={toggleOptions}
+				/>
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 				/>
-					
+
 				<CutOffTime
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -362,7 +258,7 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
-					
+
 				{/* <HoldAtTerminal
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
@@ -377,7 +273,7 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-				
+
 				<SaveButton />
 			</Form>
 		</Fragment>

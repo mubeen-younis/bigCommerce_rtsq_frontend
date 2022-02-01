@@ -1,14 +1,16 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
-import { Typography, Row, Col, Form, Input, Skeleton, Radio } from 'antd'
+import { Typography, Row, Col, Form, Input, Skeleton } from 'antd'
 import { connect, useDispatch } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
-import { handlingFeeMarkup, validateHandlingFeeMarkup } from '../../../Utilities/numberValidation'
-import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
-import CutOffTime from '../../CutOffTime';
+import {
+	handlingFeeMarkup,
+	validateHandlingFeeMarkup,
+} from '../../../Utilities/numberValidation'
+import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
+import CutOffTime from '../../CutOffTime'
 import DomesticServices from './Services/DomesticServices'
 import InternationalServices from './Services/InternationalServices'
-import ContractServices from './Services/ContractServices'
 import GroundTransit from '../../GroundTransit'
 import RAD from '../../RAD'
 import HazardousMaterial from '../../HazardousMaterial'
@@ -17,48 +19,43 @@ import SaveButton from '../../SaveButton'
 const { Title } = Typography
 const initialState = {
 	carrier_services: {
-		ups_ground: false,
+		ups_next_day_air: false,
+		ups_next_day_air_saver: false,
+		ups_next_day_air_early_am: false,
 		ups_2nd_day_air: false,
 		ups_2nd_day_air_am: false,
-		ups_next_day_air_saver: false,
-		ups_next_day_air: false,
-		ups_next_day_air_early: false,
 		ups_3_day_select: false,
-		ups_ground_markup: '',
+		ups_ground: false,
+		ups_ground_residential_delivery: false,
+		ups_next_day_air_saturday: false,
+		ups_next_day_air_early_am_saturday: false,
+		ups_2nd_day_air_saturday: false,
+		ups_next_day_air_markup: '',
+		ups_next_day_air_saver_markup: '',
+		ups_next_day_air_early_am_markup: '',
 		ups_2nd_day_air_markup: '',
 		ups_2nd_day_air_am_markup: '',
-		ups_next_day_air_saver_markup: '',
-		ups_next_day_air_markup: '',
-		ups_next_day_air_early_markup: '',
 		ups_3_day_select_markup: '',
+		ups_ground_markup: '',
+		ups_ground_residential_delivery_markup: '',
+		ups_next_day_air_saturday_markup: '',
+		ups_next_day_air_early_am_saturday_markup: '',
+		ups_2nd_day_air_saturday_markup: '',
 		ups_standard: false,
 		ups_worldwide_expedited: false,
 		ups_worldwide_saver: false,
 		ups_worldwide_express: false,
-		ups_worldwide_express_plus: false,
 		ups_standard_markup: '',
 		ups_worldwide_expedited_markup: '',
 		ups_worldwide_saver_markup: '',
 		ups_worldwide_express_markup: '',
-		ups_worldwide_express_plus_markup: '',
-		ups_surepost_less_than_1lb: false,
-		ups_surepost_1lb_or_greater: false,
-		ups_surepost_bound_printed_matter: false,
-		ups_surepost_media_mail: false,
-		ups_ground_with_freight_pricing: false,
-		ups_surepost_less_than_1lb_markup: '',
-		ups_surepost_1lb_or_greater_markup: '',
-		ups_surepost_bound_printed_matter_markup: '',
-		ups_surepost_media_mail_markup: '',
-		ups_ground_with_freight_pricing_markup: '',
 	},
 	delivery_estimate_options: 1,
 	showDeliveryEstimate: false,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
 	select_all_week_days: false,
-	all_week_days_select: true,
-	week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+	week_days: [],
 	number_of_transit_days: null,
 	ground_metric: 1,
 	alwaysResidentialDelivery: false,
@@ -69,7 +66,6 @@ const initialState = {
 	air_hazardous_material_fee: null,
 	handling_fee_markup: null,
 	quote_details: null,
-	rate_source: 1,
 }
 
 function QuoteSettingsComponentWweSmall(props) {
@@ -95,7 +91,11 @@ function QuoteSettingsComponentWweSmall(props) {
 			checks?.ups_2nd_day_air_am &&
 			checks?.ups_next_day_air &&
 			checks?.ups_next_day_air_saver &&
-			checks?.ups_next_day_air_early
+			checks?.ups_next_day_air_early &&
+			checks?.ups_ground_residential_delivery &&
+			checks?.ups_next_day_air_saturday &&
+			checks?.ups_next_day_air_early_am_saturday &&
+			checks?.ups_2nd_day_air_saturday
 		) {
 			setCheckAll(true)
 		}
@@ -104,8 +104,7 @@ function QuoteSettingsComponentWweSmall(props) {
 			checks?.ups_standard &&
 			checks?.ups_worldwide_expedited &&
 			checks?.ups_worldwide_saver &&
-			checks?.ups_worldwide_express &&
-			checks?.ups_worldwide_express_plus
+			checks?.ups_worldwide_express
 		) {
 			setInternationalCheckAll(true)
 		}
@@ -129,7 +128,7 @@ function QuoteSettingsComponentWweSmall(props) {
 			...quoteSettingsState,
 			carrier_services: {
 				...quoteSettingsState.carrier_services,
-				[e.target.name]: !quoteSettingsState?.carrier_services?.[e.target.name],
+				[e.target.name]: e.target.checked,
 			},
 		})
 
@@ -137,39 +136,49 @@ function QuoteSettingsComponentWweSmall(props) {
 			setCheckAll(false)
 			return
 		}*/
-
 		const checks = {
 			ups_ground: quoteSettingsState?.carrier_services?.ups_ground,
 			ups_3_day_select: quoteSettingsState?.carrier_services?.ups_3_day_select,
 			ups_2nd_day_air: quoteSettingsState?.carrier_services?.ups_2nd_day_air,
-			ups_2nd_day_air_am: quoteSettingsState?.carrier_services?.ups_2nd_day_air_am,
+			ups_2nd_day_air_am:
+				quoteSettingsState?.carrier_services?.ups_2nd_day_air_am,
 			ups_next_day_air: quoteSettingsState?.carrier_services?.ups_next_day_air,
 			ups_next_day_air_saver:
 				quoteSettingsState?.carrier_services?.ups_next_day_air_saver,
 			ups_next_day_air_early:
 				quoteSettingsState?.carrier_services?.ups_next_day_air_early,
+			ups_ground_residential_delivery:
+				quoteSettingsState?.carrier_services
+					?.ups_ground_residential_delivery,
+			ups_next_day_air_saturday:
+				quoteSettingsState?.carrier_services?.ups_next_day_air_saturday,
+			ups_next_day_air_early_am_saturday:
+				quoteSettingsState?.carrier_services
+					?.ups_next_day_air_early_am_saturday,
+			ups_2nd_day_air_saturday:
+				quoteSettingsState?.carrier_services?.ups_2nd_day_air_saturday,
 		}
-		if(Object.keys(checks).includes(e.target.name)){
+		if (Object.keys(checks).includes(e.target.name)) {
 			checks[e.target.name] = e.target.checked
-			const isCheckedAll = Object.values(checks).every(ck => ck)
+			const isCheckedAll = Object.values(checks).every(Boolean)
 			setCheckAll(isCheckedAll)
 		}
 
 		const internationalChecks = {
-			ups_standard: quoteSettingsState?.carrier_services?.ups_standard,
+			ups_worldwide_express:
+				quoteSettingsState?.carrier_services?.ups_worldwide_express,
 			ups_worldwide_expedited:
 				quoteSettingsState?.carrier_services?.ups_worldwide_expedited,
 			ups_worldwide_saver:
 				quoteSettingsState?.carrier_services?.ups_worldwide_saver,
-			ups_worldwide_express:
-				quoteSettingsState?.carrier_services?.ups_worldwide_express,
-			ups_worldwide_express_plus:
-				quoteSettingsState?.carrier_services?.ups_worldwide_express_plus,
+			ups_standard: quoteSettingsState?.carrier_services?.ups_standard,
 		}
 
-		if(Object.keys(internationalChecks).includes(e.target.name)){
+		if (Object.keys(internationalChecks).includes(e.target.name)) {
 			internationalChecks[e.target.name] = e.target.checked
-			const internationalIsCheckAll = Object.values(internationalChecks).every(ck => ck)
+			const internationalIsCheckAll = Object.values(internationalChecks).every(
+				ck => ck
+			)
 			setInternationalCheckAll(internationalIsCheckAll)
 		}
 	}
@@ -188,6 +197,10 @@ function QuoteSettingsComponentWweSmall(props) {
 				ups_next_day_air_saver: !checkAll,
 				ups_next_day_air: !checkAll,
 				ups_next_day_air_early: !checkAll,
+				ups_ground_residential_delivery: !checkAll,
+				ups_next_day_air_saturday: !checkAll,
+				ups_next_day_air_early_am_saturday: !checkAll,
+				ups_2nd_day_air_saturday: !checkAll,
 			},
 		})
 	}
@@ -218,159 +231,165 @@ function QuoteSettingsComponentWweSmall(props) {
 			CS?.ups_next_day_air ||
 			CS?.ups_next_day_air_early ||
 			CS?.ups_next_day_air_saver ||
+			CS?.ups_ground_residential_delivery ||
+			CS?.ups_next_day_air_saturday ||
+			CS?.ups_next_day_air_early_am_saturday ||
+			CS?.ups_2nd_day_air_saturday ||
 			CS?.ups_standard ||
 			CS?.ups_worldwide_expedited ||
 			CS?.ups_worldwide_saver ||
-			CS?.ups_worldwide_express ||
-			CS?.ups_worldwide_express_plus ||
-			CS?.ups_surepost_less_than_1lb ||
-			CS?.ups_surepost_1lb_or_greater ||
-			CS?.ups_surepost_bound_printed_matter ||
-			CS?.ups_surepost_media_mail ||
-			CS?.ups_ground_with_freight_pricing
+			CS?.ups_worldwide_express
 
 		console.log(quoteSettingsState) //return false;
-		var errormsg = '';
-		if(errormsg === ''){
-		 errormsg = validateHandlingFeeMarkup(
-			quoteSettingsState?.carrier_services?.ups_ground_markup,
-			'UPS Ground markup ',
-			true
-		)
+		var errormsg = ''
+		if (errormsg === '') {
+			errormsg = validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services?.ups_ground_markup,
+				'UPS Ground markup ',
+				true
+			)
 		}
-		if(errormsg === ''){
-		errormsg += validateHandlingFeeMarkup(
-			quoteSettingsState?.carrier_services?.ups_3_day_select_markup,
-			'UPS 3 Day Select markup',
-			true
-		)
-		}
-		if(errormsg === ''){
-		errormsg += validateHandlingFeeMarkup(
-			quoteSettingsState?.carrier_services?.ups_2nd_day_air_markup,
-			'UPS 2nd Day Air markup',
-			true
-		)
-		}
-		if(errormsg === ''){
-		errormsg += validateHandlingFeeMarkup(
-			quoteSettingsState?.carrier_services?.ups_2nd_day_air_am_markup,
-			'UPS 2nd Day Air A.M. markup',
-			true
-		)
-		}
-		if(errormsg === ''){
-		errormsg += validateHandlingFeeMarkup(
-			quoteSettingsState?.carrier_services?.ups_next_day_air_saver_markup,
-			'UPS Next Day Air Saver markup',
-			true
-		)
-		}
-		if(errormsg === ''){
-		errormsg += validateHandlingFeeMarkup(
-			quoteSettingsState?.carrier_services?.ups_next_day_air_markup,
-			'UPS Next Day Air markup',
-			true
-		)
-		}
-		if(errormsg === ''){
-		errormsg += validateHandlingFeeMarkup(
-			quoteSettingsState?.carrier_services?.ups_next_day_air_early_markup,
-			'UPS Next Day Air Early markup',
-			true
-		)
-		}
-		if(errormsg === ''){
-		errormsg += validateHandlingFeeMarkup(
-			quoteSettingsState?.handling_fee_markup,
-			'Handling Fee markup',
-			true
-		)
-		}
-		if(errormsg === ''){
-		errormsg += validateHandlingFeeMarkup(
-			quoteSettingsState?.air_hazardous_material_fee,
-			'Air Hazardous Material Fee',
-			true
-		)
-		}
-		if(errormsg === ''){
-		errormsg += validateHandlingFeeMarkup(
-			quoteSettingsState?.ground_hazardous_material_fee,
-			'Ground Hazardous Material Fee',
-			true
-		)
-		}
-		if(errormsg === ''){
+		if (errormsg === '') {
 			errormsg += validateHandlingFeeMarkup(
-				quoteSettingsState?.carrier_services?.ups_surepost_less_than_1lb_markup,
+				quoteSettingsState?.carrier_services?.ups_3_day_select_markup,
+				'UPS 3 Day Select markup',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services?.ups_2nd_day_air_markup,
+				'UPS 2nd Day Air markup',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services?.ups_2nd_day_air_am_markup,
+				'UPS 2nd Day Air A.M. markup',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services?.ups_next_day_air_saver_markup,
+				'UPS Next Day Air Saver markup',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services?.ups_next_day_air_markup,
+				'UPS Next Day Air markup',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services?.ups_next_day_air_early_markup,
+				'UPS Next Day Air Early markup',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.handling_fee_markup,
+				'Handling Fee markup',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.air_hazardous_material_fee,
+				'Air Hazardous Material Fee',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.ground_hazardous_material_fee,
+				'Ground Hazardous Material Fee',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services
+					?.ups_surepost_less_than_1lb_markup,
 				'UPS SurePost Less than 1LB',
 				true
 			)
 		}
-		console.log(errormsg, 'test', quoteSettingsState?.ups_surepost_less_than_1lb_markup);
-		if(errormsg === ''){
-		errormsg += validateHandlingFeeMarkup(
-			quoteSettingsState?.carrier_services?.ups_surepost_1lb_or_greater_markup,
-			'UPS SurePost 1LB or greater',
-			true
+		console.log(
+			errormsg,
+			'test',
+			quoteSettingsState?.ups_surepost_less_than_1lb_markup
 		)
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services
+					?.ups_surepost_1lb_or_greater_markup,
+				'UPS SurePost 1LB or greater',
+				true
+			)
 		}
-		if(errormsg === ''){
-		errormsg += validateHandlingFeeMarkup(
-			quoteSettingsState?.carrier_services?.ups_surepost_bound_printed_matter_markup,
-			'UPS SurePost Bound Printed Matter',
-			true
-		)
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services
+					?.ups_surepost_bound_printed_matter_markup,
+				'UPS SurePost Bound Printed Matter',
+				true
+			)
 		}
-		if(errormsg === ''){
+		if (errormsg === '') {
 			errormsg += validateHandlingFeeMarkup(
 				quoteSettingsState?.carrier_services?.ups_surepost_media_mail_markup,
 				'UPS SurePost Media Mail',
 				true
 			)
 		}
-		if(errormsg === ''){
-		errormsg += validateHandlingFeeMarkup(
-			quoteSettingsState?.carrier_services?.ups_ground_with_freight_pricing_markup,
-			'UPS Ground with Freight Pricing',
-			true
-		)
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services
+					?.ups_ground_with_freight_pricing_markup,
+				'UPS Ground with Freight Pricing',
+				true
+			)
 		}
 
-
 		/////////////////International////////////
-		if(errormsg === ''){
+		if (errormsg === '') {
 			errormsg += validateHandlingFeeMarkup(
 				quoteSettingsState?.carrier_services?.ups_standard_markup,
 				'UPS Standard',
 				true
 			)
 		}
-		if(errormsg === ''){
+		if (errormsg === '') {
 			errormsg += validateHandlingFeeMarkup(
 				quoteSettingsState?.carrier_services?.ups_worldwide_expedited_markup,
 				'UPS Worldwide Expedited',
 				true
 			)
 		}
-		if(errormsg === ''){
+		if (errormsg === '') {
 			errormsg += validateHandlingFeeMarkup(
 				quoteSettingsState?.carrier_services?.ups_worldwide_saver_markup,
 				'UPS Worldwide Saver',
 				true
 			)
 		}
-		if(errormsg === ''){
+		if (errormsg === '') {
 			errormsg += validateHandlingFeeMarkup(
 				quoteSettingsState?.carrier_services?.ups_worldwide_express_markup,
 				'UPS Worldwide Express',
 				true
 			)
 		}
-		if(errormsg === ''){
+		if (errormsg === '') {
 			errormsg += validateHandlingFeeMarkup(
-				quoteSettingsState?.carrier_services?.ups_worldwide_express_plus_markup,
+				quoteSettingsState?.carrier_services
+					?.ups_worldwide_express_plus_markup,
 				'UPS Worldwide Express Plus',
 				true
 			)
@@ -385,7 +404,9 @@ function QuoteSettingsComponentWweSmall(props) {
 			)
 		} else {
 			errormsg =
-				errormsg === '' ? 'Please select at least one service option.' : errormsg
+				errormsg === ''
+					? 'Please select at least one service option.'
+					: errormsg
 			errormsg = errormsg.split('exploder')[0]
 
 			dispatch({
@@ -445,16 +466,28 @@ function QuoteSettingsComponentWweSmall(props) {
 				initialValues={props.quoteSettings}>
 				{/* UPS SERVICES */}
 				<Row gutter={24} align='middle' className={'mb-4'}>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-						<Title level={4}>UPS Services</Title>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
+						<Title level={4}>Unishippers Services</Title>
 					</Col>
 
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
 						<label className={'text-black'}>
-							The services selected will display in the cart if they are
-							available for the origin and destination addresses, and if the
-							UPS Small Package Quotes API has been enabled for the
-							corresponding shipping zone.
+							The services selected will display in the cart if they
+							are available for the origin and destination addresses,
+							and if the Unishippers Small Package Quotes API has been
+							enabled for the corresponding shipping zone.
 						</label>
 					</Col>
 				</Row>
@@ -476,21 +509,16 @@ function QuoteSettingsComponentWweSmall(props) {
 					/>
 				</Row>
 
-				<ContractServices
-					quoteSettingsState={quoteSettingsState}
-					onChange={onChange}
-					onCheck={onCheck}
-				/>
 				<Row className={'mb-2'}></Row>
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
-				/>	
+				/>
 				<CutOffTime
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					handleChange={handleStateChange}
-				/>	
+				/>
 				<GroundTransit
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -516,7 +544,13 @@ function QuoteSettingsComponentWweSmall(props) {
 						xl={6}>
 						<label className={'text-gray'}>Handling Fee / Markup</label>
 					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={18}>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={18}
+						xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Input
 								type='text'
@@ -539,50 +573,6 @@ function QuoteSettingsComponentWweSmall(props) {
 							Amount excluding tax. Enter an amount, e.g 3.75, or a
 							percentage, e.g, 5%. Leave blank to disable.
 						</div>
-					</Col>
-				</Row>
-
-				<Row gutter={24} align='middle' className={'mb-4'}>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-						<Title level={4}>Rate source</Title>
-					</Col>
-
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Use my negotiated rates.</label>
-					</Col>
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Radio
-								name='rate_source'
-								value='1'
-								checked={quoteSettingsState?.rate_source === 1}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										rate_source: 1,
-									})
-								}
-							/>
-						</Form.Item>
-					</Col>
-
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>Use retail (list) rates.</label>
-					</Col>
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Radio
-								name='rate_source'
-								value='2'
-								checked={quoteSettingsState.rate_source === 2}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										rate_source: 2,
-									})
-								}
-							/>
-						</Form.Item>
 					</Col>
 				</Row>
 
@@ -609,7 +599,8 @@ const mapDispatchToProps = dispatch => {
 			dispatch(
 				postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)
 			),
-		getSettings: (token, carrier_id) => dispatch(getQuoteSettings(token, carrier_id)),
+		getSettings: (token, carrier_id) =>
+			dispatch(getQuoteSettings(token, carrier_id)),
 	}
 }
 

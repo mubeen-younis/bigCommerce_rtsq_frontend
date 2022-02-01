@@ -26,7 +26,7 @@ const OneRateServices = ({
 	onCheck,
 }) => {
 	return (
-		<Col span={4} align='middle' className={'mb-2'}>
+		<Col span={8} align='middle' className={'mb-2'}>
 			<Row gutter={30} align='middle' className={'mb-2'}>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<Title level={5} style={{ textAlign: 'center' }}>
@@ -55,7 +55,7 @@ const OneRateServices = ({
 
 			{one_rate_services.map(is =>
 				is.label.length ? (
-					<Row gutter={30} align='middle' className={'mb-2'}>
+					<Row gutter={30} className={'mb-2'}>
 						<Col span={24}>
 							<Form.Item className={'mb-0'}>
 								<Checkbox
@@ -88,18 +88,18 @@ const OneRateServices = ({
 							<label
 								className={'text-gray'}
 								style={{ visibility: 'hidden' }}>
-								SmartPost
+								Markup (e.g Currency 1.0 or percentage 5%)
 							</label>
 						</Col>
 					</Row>
 				) : (
 					<Row
 						gutter={30}
-						align='middle'
+						// align='middle'
 						className={'mb-2'}
 						style={{ visibility: 'hidden' }}>
 						<Col span={20}>
-							<label className={'text-gray'}>SmartPost</label>
+							<label className={'text-gray'}>{''}</label>
 						</Col>
 						<Col span={4}>
 							<Form.Item className={'mb-0'}>
@@ -112,7 +112,9 @@ const OneRateServices = ({
 							</Form.Item>
 						</Col>
 						<Col span={24}>
-							<label className={'text-gray'}>SmartPost</label>
+							<label className={'text-gray'}>
+								Markup (e.g Currency 1.0 or percentage 5%)
+							</label>
 						</Col>
 					</Row>
 				)

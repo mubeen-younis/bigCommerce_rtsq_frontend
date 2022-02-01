@@ -26,8 +26,8 @@ const initialState = {
 	showDeliveryEstimate: false,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
-	select_all_week_days: false,
-	week_days: [],
+	select_all_week_days: true,
+	week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
 	number_of_transit_days: null,
 	ground_metric: 1,
 	alwaysResidentialDelivery: false,
@@ -242,10 +242,11 @@ function QuoteSettingsComponentWweSmall(props) {
 			}
 
 			if (checkCS && errormsg === '') {
-				props.postData(
-					{ ...quoteSettingsState, carrierId: +props.carrierId },
-					props.token
-				)
+				const qs = { ...quoteSettingsState, carrierId: +props.carrierId }
+				delete qs.carrier_services?.['standard_overnight']
+				delete qs.carrier_services?.['priority_overnight']
+
+				props.postData(qs, props.token)
 			} else {
 				errormsg =
 					errormsg === ''
@@ -334,7 +335,7 @@ function QuoteSettingsComponentWweSmall(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={30} justify='space-between'>
+				<Row gutter={30} justify='space-between' wrap={true} align='top'>
 					{/* US Domestic Services */}
 					<DomesticServices
 						quoteSettingsState={quoteSettingsState}
@@ -365,70 +366,25 @@ function QuoteSettingsComponentWweSmall(props) {
 					/>
 				</Row>
 
-				{/*  International Service Descriptions 
-				<Row gutter={30} align='middle' className={'mb-1'}>
-					<Col
-						className='gutter-row'
-						xs={12}
-						sm={12}
-						md={12}
-						lg={12}
-						xl={6}
-						style={{ marginBottom: '35px' }}>
-						<label className={'text-gray'}>
-							{' '}
-							International Service Descriptions
-						</label>
-					</Col>
-
-					<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Input
-								onChange={e =>
-									setQuoteSettingsState(prevState => ({
-										...prevState,
-										international_service_description: e.target.value,
-									}))
-								}
-								value={
-									quoteSettingsState?.international_service_description
-								}
-							/>
-						</Form.Item>
-						<div className={'text-gray mb-3'}>
-							Define a message that will be appended to the international
-							service descriptions.
-						</div>
-					</Col>
-				</Row>*/}
-
 				<Row className={'mb-2'}></Row>
-
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 				/>	
-					
 				<CutOffTime
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-
-				{/* Ground transit time settings */}
 				<GroundTransit
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 				/>	
-
-				{/* Residential address settings */}
 				<RAD
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
-
-				{/* Hazardous material settings */}
 				<HazardousMaterial
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -468,7 +424,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						style={{ paddingTop: '11px' }}>
 						<label className={'text-gray'}>Handling Fee / Markup</label>
 					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={18}>
+					<Col className='gutter-row mb-2' xs={24} sm={24} md={24} lg={18} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Input
 								type='text'
@@ -489,18 +445,18 @@ function QuoteSettingsComponentWweSmall(props) {
 							percentage, e.g, 5%. Leave blank to disable.
 						</div>
 					</Col>
-				</Row>
-
-				{/* Negotiated Rates */}
-				<Row gutter={30}>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-						<Title level={4}>Negotiated Rates</Title>
+						
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={6}
+						xl={6}
+						style={{ paddingTop: '11px' }}>
+						<label className={'text-gray'}>Negotiated Rates</label>
 					</Col>
-
-					<Col className='gutter-row' xs={6} sm={6} md={6} lg={6} xl={6}>
-						<label className={'text-gray'}></label>
-					</Col>
-					<Col className='gutter-row' xs={18} sm={18} md={18} lg={18} xl={18}>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Radio
 								name='negotiated_rates'
@@ -515,20 +471,20 @@ function QuoteSettingsComponentWweSmall(props) {
 								Show Negotiated Rates.
 							</Radio>
 						</Form.Item>
-					</Col>
-
-					<Col
-						className='gutter-row mb-3'
-						xs={6}
-						sm={6}
-						md={6}
+						</Col>
+						<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
 						lg={6}
-						xl={6}>
+						xl={6}
+						style={{ paddingTop: '11px' }}>
 						<label className={'text-gray'}></label>
 					</Col>
-					<Col className='gutter-row' xs={18} sm={18} md={18} lg={18} xl={18}>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={18}>
 						<Form.Item className={'mb-0'}>
-							<Radio
+						<Radio
 								name='negotiated_rates'
 								value='2'
 								checked={quoteSettingsState.negotiated_rates === 2}

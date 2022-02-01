@@ -11,11 +11,14 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 				(day, i) => (
 					<Checkbox
 						key={i}
-						style={{ margin: 'auto 10px' }}
+						style={{ margin: '0' }}
 						checked={
 							(quoteSettingsState?.week_days &&
 								quoteSettingsState?.week_days.includes(day)) ||
 							false
+						}
+						disabled={
+							quoteSettingsState?.delivery_estimate_options === 1
 						}
 						onChange={(e) => {
 							const wd = quoteSettingsState?.week_days || []
@@ -32,14 +35,18 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 							setQuoteSettingsState((prevState) => ({
 								...prevState,
 								week_days: wd.sort(),
-								select_all_week_days: wd.length === 5 ?? false,
+								all_week_days_select: wd.length === 5 ?? false,
 							}))
 						}}>
 						{day}
 					</Checkbox>
 				)
 			),
-		[quoteSettingsState?.week_days, setQuoteSettingsState]
+		[
+			quoteSettingsState?.delivery_estimate_options,
+			quoteSettingsState?.week_days,
+			setQuoteSettingsState,
+		]
 	)
 
 	const selectAllWeekDays = useCallback(
@@ -49,7 +56,7 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 				week_days: e.target.checked
 					? ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 					: [],
-				select_all_week_days: e.target.checked,
+				all_week_days_select: e.target.checked,
 			}))
 		},
 		[setQuoteSettingsState]
@@ -122,14 +129,18 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 					<Form.Item className={'mb-0'}>
 						<Input
 							type='number'
-							maxLength={3}
+							min={1}
+							max={8}
+							maxLength={1}
+							pattern='/^[0-8]*$/'
+							placeholder='Fulfillment offset days e.g. 2'
 							value={quoteSettingsState.fulfillment_offset_days}
-							onChange={(e) =>
+							onChange={(e) => {
 								handleChange(
 									'fulfillment_offset_days',
 									e.target.value
 								)
-							}
+							}}
 							disabled={
 								!quoteSettingsState?.delivery_estimate_options ||
 								quoteSettingsState?.delivery_estimate_options === 1
@@ -156,12 +167,25 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 				</Col>
 				<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
 					<Form.Item className={'mb-0'}>
-						<Checkbox
-							checked={quoteSettingsState?.select_all_week_days}
-							onChange={(checked) => selectAllWeekDays(checked)}>
-							Select All
-						</Checkbox>
-						{weekDaysMarkup()}
+						<div
+							style={{
+								display: 'grid',
+								gridTemplateColumns:
+									'repeat(auto-fill, minmax(100px, 1fr))',
+								gap: '10px',
+								justifyContent: 'space-between',
+							}}>
+							<Checkbox
+								checked={quoteSettingsState?.all_week_days_select}
+								onChange={(checked) => selectAllWeekDays(checked)}
+								disabled={
+									quoteSettingsState?.delivery_estimate_options ===
+									1
+								}>
+								Select All
+							</Checkbox>
+							{weekDaysMarkup()}
+						</div>
 					</Form.Item>
 				</Col>
 			</Row>
