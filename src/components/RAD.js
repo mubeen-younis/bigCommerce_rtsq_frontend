@@ -1,12 +1,14 @@
 import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Form, Typography, Checkbox } from 'antd'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const { Title } = Typography
+const RAD_ADDON = 'RAD'
 
 const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) => {
 	const dispatch = useDispatch()
+	const { installedAddons } = useSelector(state => state)
 	const setActiveMenu = useCallback(
 		() =>
 			dispatch({
@@ -15,6 +17,10 @@ const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) 
 			}),
 		[dispatch]
 	)
+
+	const isRadInstalled = installedAddons?.find(add => add.short_code === RAD_ADDON)
+		? true
+		: false
 
 	return (
 		<Row gutter={30} align='middle' className={'mb-4'}>
@@ -46,7 +52,7 @@ const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) 
 							<Checkbox
 								name='residentialPickup'
 								checked={quoteSettingsState.residentialPickup}
-								onChange={(e) =>
+								onChange={e =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
 										residentialPickup: e.target.checked,
@@ -102,8 +108,9 @@ const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) 
 									alwaysResidentialDelivery: false,
 								})
 							}
-							disabled={!radStatus}></Checkbox>
-						{!radStatus && (
+							disabled={!radStatus}
+						/>
+						{!isRadInstalled && (
 							<label className={'ml-4'} style={{ marginLeft: '10px' }}>
 								Click{' '}
 								<Link to='/' onClick={setActiveMenu}>

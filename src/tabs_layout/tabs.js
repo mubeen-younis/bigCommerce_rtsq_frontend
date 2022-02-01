@@ -41,7 +41,6 @@ function TabsLayout() {
 				'gtz-ltl',
 				'xpo-ltl',
 				'rl-ltl',
-				'unishippers',
 			]
 
 			for (const ic of installedCarriers) {

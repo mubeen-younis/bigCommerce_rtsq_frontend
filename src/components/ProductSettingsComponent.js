@@ -562,14 +562,15 @@ function ProductSettingsComponent(props) {
 				onOk={syncProducts}
 				onCancel={() => setSyncModel(false)}
 				okText='Confirm'
-				cancelButtonProps={{ style: { display: 'none' } }}
-			>
+				cancelButtonProps={{ style: { display: 'none' } }}>
 				<p>
-					Are you sure you want to synchronize all products? This will download all
-					products from your BigCommerce store, might take long time.
+					Are you sure you want to synchronize all products? This will
+					download all products from your BigCommerce store, might take
+					long time.
 				</p>
 				<p>
-					Enter the email address to which you want the product synchronize status sent.
+					Enter the email address to which you want the product synchronize
+					status sent.
 				</p>
 				<Row gutter={24}>
 					<Col span={8} required>
@@ -610,8 +611,7 @@ function ProductSettingsComponent(props) {
 						onClick={openConfirmModel}
 						type='primary'
 						size='medium'
-						style={{ width: '100%' }}
-					>
+						style={{ width: '100%' }}>
 						Sync Products
 					</Button>
 				</Col>
@@ -638,14 +638,12 @@ function ProductSettingsComponent(props) {
 					<div
 						style={{
 							textAlign: 'right',
-						}}
-					>
+						}}>
 						<Button onClick={validate} type='primary'>
 							Save
 						</Button>
 					</div>
-				}
-			>
+				}>
 				{loadProduct ? (
 					<Skeleton active />
 				) : (
@@ -653,7 +651,9 @@ function ProductSettingsComponent(props) {
 						<Row gutter={16}>
 							{formError.length ? (
 								<Col span={24}>
-									<Form.Item className='text-danger'>* {formError}</Form.Item>
+									<Form.Item className='text-danger'>
+										* {formError}
+									</Form.Item>
 								</Col>
 							) : null}
 						</Row>
