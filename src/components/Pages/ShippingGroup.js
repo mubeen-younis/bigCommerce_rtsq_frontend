@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useCallback } from 'react'
 import {
 	Select,
 	Typography,
@@ -13,13 +13,12 @@ import {
 	Skeleton,
 } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { postData } from '../../Actions/Action'
+import { saveShippingGroup } from '../../Actions/ShippingGroupsActions'
 import addKeysToList from './../../Utilities/addKey'
 import { getWarehouse, deleteLocation } from '../../Actions/Warehouse'
 
 const { Title } = Typography
 const { Option } = Select
-const shipping_groups = []
 const initialState = {
 	nickname: '',
 	checkout_description: '',
@@ -29,78 +28,80 @@ const initialState = {
 
 function WarehouseComponent() {
 	const [modalVisibility, setModalVisibility] = useState(false)
-	const [locationDetail, setLocationDetail] = useState(initialState)
+	const [shippingGroup, setShippingGroup] = useState(initialState)
 	const [warehouseDeleteModal, setDeleteWarehouseModal] = useState(false)
 	const [warehouseInfo, setWarehouseInfo] = useState({
 		id: null,
 		type: null,
 	})
-	const form = Form.useForm()
+	const [form] = Form.useForm()
 	const dispatch = useDispatch()
-	const { alertMessageType, token } = useSelector(state => state)
+	const { alertMessageType, token, shippingGroups } = useSelector(state => state)
 
-	const onFinish = values => {
-		const data = locationDetail
-		let error = false,
-			errormsg = ''
+	const onFinish = useCallback(
+		values => {
+			let error = false,
+				errormsg = ''
 
-		if (error) {
-			dispatch({
-				type: 'ALERT_MESSAGE',
-				payload: {
-					showAlertMessage: false,
-					alertMessageType: 'loading',
-				},
-			})
-			dispatch({
-				type: 'ALERT_MESSAGE',
-				payload: {
-					alertMessage: errormsg,
-					showAlertMessage: true,
-					alertMessageType: 'error',
-				},
-			})
-		} else {
-			dispatch(
-				postData(
-					data,
-					'SAVE_LOCATION',
-					'save_location',
-					token,
-					setModalVisibility
-				)
-			)
-		}
-	}
+			if (error) {
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						showAlertMessage: false,
+						alertMessageType: 'loading',
+					},
+				})
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: errormsg,
+						showAlertMessage: true,
+						alertMessageType: 'error',
+					},
+				})
+			} else {
+				dispatch(saveShippingGroup({ ...shippingGroup, ...values }))
+			}
+		},
+		[dispatch, shippingGroup]
+	)
 
-	const openLocationModal = location_type => {
-		setLocationDetail({
+	const openLocationModal = useCallback(location_type => {
+		setShippingGroup({
 			location_type: location_type,
 		})
 		setModalVisibility(true)
-	}
+	}, [])
 
-	const openDeleteLocationModal = data => {
+	const openDeleteLocationModal = useCallback(data => {
 		setDeleteWarehouseModal(true)
 		setWarehouseInfo({
 			id: data.id,
 			type: data.type,
 		})
-	}
+	}, [])
 
-	const editLocation = data => {
-		setLocationDetail({})
-		setModalVisibility(true)
+	const editLocation = useCallback(
+		data => {
+			setShippingGroup({})
+			setModalVisibility(true)
 
-		dispatch(getWarehouse(data.id, setLocationDetail, setModalVisibility, token))
-	}
+			dispatch(
+				getWarehouse(data.id, setShippingGroup, setModalVisibility, token)
+			)
+		},
+		[dispatch, token]
+	)
 
-	const changeValue = e => {
-		setLocationDetail({
-			...locationDetail,
-			[e.target.name]: e.target.value,
-		})
-	}
+	const changeValue = useCallback(
+		e => {
+			setShippingGroup({
+				...shippingGroup,
+				[e.target.name]: e.target.value,
+			})
+		},
+		[shippingGroup]
+	)
 
 	const columns = [
 		{
@@ -165,7 +166,7 @@ function WarehouseComponent() {
 								className='form-wrp'
 								size={'large'}
 								form={form}
-								initialValues={locationDetail}
+								initialValues={shippingGroup}
 								onFinish={onFinish}>
 								<Row gutter={30}>
 									<Col
@@ -178,6 +179,7 @@ function WarehouseComponent() {
 										<Form.Item
 											className={'mb-2'}
 											label='Nickname'
+											name='nickname'
 											rules={[
 												{
 													required: true,
@@ -187,7 +189,7 @@ function WarehouseComponent() {
 											<Input
 												name='nickname'
 												placeholder='Nickname'
-												value={locationDetail.nickname}
+												value={shippingGroup.nickname}
 												onChange={changeValue}
 											/>
 										</Form.Item>
@@ -204,6 +206,7 @@ function WarehouseComponent() {
 										<Form.Item
 											className={'mb-2'}
 											label='Checkout Description'
+											name='checkout_description'
 											rules={[
 												{
 													required: true,
@@ -214,7 +217,7 @@ function WarehouseComponent() {
 												name='checkout_description'
 												placeholder='Checkout Description'
 												value={
-													locationDetail.checkout_description ||
+													shippingGroup.checkout_description ||
 													''
 												}
 												onChange={changeValue}
@@ -233,6 +236,7 @@ function WarehouseComponent() {
 										<Form.Item
 											className={'mb-2'}
 											label='Rate'
+											name='rate'
 											rules={[
 												{
 													required: true,
@@ -244,7 +248,7 @@ function WarehouseComponent() {
 												min={0}
 												name='rate'
 												placeholder='Rate'
-												value={locationDetail.rate}
+												value={shippingGroup.rate}
 												onChange={changeValue}
 											/>
 										</Form.Item>
@@ -261,6 +265,7 @@ function WarehouseComponent() {
 										<Form.Item
 											className={'mb-2'}
 											label='Rate X Quantity'
+											name='rate_x_quantity'
 											rules={[
 												{
 													required: true,
@@ -268,13 +273,16 @@ function WarehouseComponent() {
 												},
 											]}>
 											<Select
-												defaultValue={true}
+												defaultValue={
+													shippingGroup.rate_x_quantity ||
+													false
+												}
 												value={
-													locationDetail.rate_x_quantity ||
+													shippingGroup.rate_x_quantity ||
 													false
 												}
 												onChange={val =>
-													setLocationDetail(prevState => ({
+													setShippingGroup(prevState => ({
 														...prevState,
 														rate_x_quantity: val,
 													}))
@@ -322,7 +330,7 @@ function WarehouseComponent() {
 						lg={24}
 						xl={24}>
 						<Title level={4}>
-							Shipping Group{' '}
+							Shipping Groups{' '}
 							<Button
 								type='primary'
 								onClick={() => openLocationModal(1)}>
@@ -337,8 +345,9 @@ function WarehouseComponent() {
 						</p>
 						<Table
 							className={'custom-table'}
-							// dataSource={warehouse ? addKeysToList(warehouse) : []}
-							dataSource={addKeysToList(shipping_groups)}
+							dataSource={
+								shippingGroups ? addKeysToList(shippingGroups) : []
+							}
 							columns={columns}
 						/>
 					</Col>
