@@ -3,7 +3,7 @@ export const dispatchAlert = (
 	alertMessageType = '',
 	alertMessage = ''
 ) => ({
-	type: alertMessageType,
+	type: 'ALERT_MESSAGE',
 	payload: {
 		alertMessage,
 		showAlertMessage,

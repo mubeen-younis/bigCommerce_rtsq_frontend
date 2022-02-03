@@ -134,7 +134,10 @@ const Reducer = (state = initialState, action) => {
 
 			return {
 				...state,
-				installedCarriers: [...state.installedCarriers, newInstalledCarrier],
+				installedCarriers: [
+					...state.installedCarriers,
+					newInstalledCarrier,
+				],
 				carriers: state.carriers.filter(
 					carrier => carrier.id !== action.payload.carrier_id
 				),
@@ -233,8 +236,12 @@ const Reducer = (state = initialState, action) => {
 		case types.DELETE_LOCATION:
 			return {
 				...state,
-				warehouse: state.warehouse.filter(wh => wh.id !== action.payload),
-				dropships: state.dropships.filter(wh => wh.id !== action.payload),
+				warehouse: state.warehouse.filter(
+					wh => wh.id !== action.payload
+				),
+				dropships: state.dropships.filter(
+					wh => wh.id !== action.payload
+				),
 			}
 		// Location End
 
@@ -451,7 +458,9 @@ const Reducer = (state = initialState, action) => {
 		case types.DELETE_BOX_SIZE:
 			return {
 				...state,
-				boxSizes: state.boxSizes.filter(bs => bs.id !== +action.payload),
+				boxSizes: state.boxSizes.filter(
+					bs => bs.id !== +action.payload
+				),
 			}
 
 		case types.UPDATE_BOX_SIZE:
@@ -571,10 +580,30 @@ const Reducer = (state = initialState, action) => {
 				isFedexSmallCarrier: action.payload,
 			}
 		}
+		/* Shipping Groups */
+		case types.GET_SHIPPING_GROUPS:
+			return {
+				...state,
+				shippingGroups: action.payload,
+			}
 		case types.ADD_SHIPPING_GROUP:
 			return {
 				...state,
 				shippingGroups: [action.payload, ...state.shippingGroups],
+			}
+		case types.DELETE_SHIPPING_GROUP:
+			return {
+				...state,
+				shippingGroups: state.shippingGroups.filter(
+					sg => sg.uuid !== action.payload
+				),
+			}
+		case types.UPDATE_SHIPPING_GROUP:
+			return {
+				...state,
+				shippingGroups: state.shippingGroups.map(sg =>
+					sg.uuid === action.payload.uuid ? action.payload : sg
+				),
 			}
 
 		default:

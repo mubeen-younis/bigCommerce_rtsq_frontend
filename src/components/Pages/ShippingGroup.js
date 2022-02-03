@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback } from 'react'
+import React, { Fragment, useState, useCallback, useEffect } from 'react'
 import {
 	Select,
 	Typography,
@@ -13,9 +13,12 @@ import {
 	Skeleton,
 } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { saveShippingGroup } from '../../Actions/ShippingGroupsActions'
+import {
+	getShippingGroups,
+	saveShippingGroup,
+	deleteShippingGroup,
+} from '../../Actions/ShippingGroupsActions'
 import addKeysToList from './../../Utilities/addKey'
-import { getWarehouse, deleteLocation } from '../../Actions/Warehouse'
 
 const { Title } = Typography
 const { Option } = Select
@@ -23,25 +26,71 @@ const initialState = {
 	nickname: '',
 	checkout_description: '',
 	rate: '',
-	rate_x_quantity: true,
+	rate_x_quantity: 1,
 }
 
-function WarehouseComponent() {
-	const [modalVisibility, setModalVisibility] = useState(false)
-	const [shippingGroup, setShippingGroup] = useState(initialState)
-	const [warehouseDeleteModal, setDeleteWarehouseModal] = useState(false)
-	const [warehouseInfo, setWarehouseInfo] = useState({
-		id: null,
-		type: null,
+function ShippingGroupsComponent() {
+	const [modal, setModal] = useState({
+		open: false,
+		type: '',
 	})
+	const [shippingGroupId, setShippingGroupId] = useState(null)
 	const [form] = Form.useForm()
 	const dispatch = useDispatch()
-	const { alertMessageType, token, shippingGroups } = useSelector(state => state)
+	const { alertMessageType, shippingGroups } = useSelector(state => state)
+
+	useEffect(() => {
+		if (!shippingGroups) {
+			dispatch(getShippingGroups())
+		}
+	}, [dispatch, shippingGroups])
+
+	useEffect(() => {
+		if (alertMessageType === 'success') {
+			setModal({
+				open: false,
+				type: '',
+			})
+		}
+	}, [alertMessageType])
+
+	const hanldeModalToggling = useCallback(
+		(open = false, type = '') =>
+			setModal({
+				open,
+				type,
+			}),
+		[]
+	)
+
+	const editLocation = useCallback(
+		record => {
+			hanldeModalToggling(true, 'edit')
+			setShippingGroupId(record.uuid)
+			form.setFieldsValue(record)
+		},
+		[form, hanldeModalToggling]
+	)
+
+	const openDeleteLocationModal = useCallback(
+		record => {
+			hanldeModalToggling(true, 'delete')
+			setShippingGroupId(record.uuid)
+		},
+		[hanldeModalToggling]
+	)
 
 	const onFinish = useCallback(
 		values => {
 			let error = false,
-				errormsg = ''
+				errormsg = '',
+				data = {}
+
+			if (modal.open && modal.type === 'edit') {
+				data =
+					shippingGroups?.find(sg => sg.uuid === shippingGroupId) ??
+					{}
+			}
 
 			if (error) {
 				dispatch({
@@ -60,47 +109,10 @@ function WarehouseComponent() {
 					},
 				})
 			} else {
-				dispatch(saveShippingGroup({ ...shippingGroup, ...values }))
+				dispatch(saveShippingGroup({ ...data, ...values }))
 			}
 		},
-		[dispatch, shippingGroup]
-	)
-
-	const openLocationModal = useCallback(location_type => {
-		setShippingGroup({
-			location_type: location_type,
-		})
-		setModalVisibility(true)
-	}, [])
-
-	const openDeleteLocationModal = useCallback(data => {
-		setDeleteWarehouseModal(true)
-		setWarehouseInfo({
-			id: data.id,
-			type: data.type,
-		})
-	}, [])
-
-	const editLocation = useCallback(
-		data => {
-			setShippingGroup({})
-			setModalVisibility(true)
-
-			dispatch(
-				getWarehouse(data.id, setShippingGroup, setModalVisibility, token)
-			)
-		},
-		[dispatch, token]
-	)
-
-	const changeValue = useCallback(
-		e => {
-			setShippingGroup({
-				...shippingGroup,
-				[e.target.name]: e.target.value,
-			})
-		},
-		[shippingGroup]
+		[dispatch, modal.open, modal.type, shippingGroupId, shippingGroups]
 	)
 
 	const columns = [
@@ -116,8 +128,9 @@ function WarehouseComponent() {
 		},
 		{
 			key: 'rate_x_quantity',
-			title: 'Rate X',
+			title: 'Rate X Quantity',
 			dataIndex: 'rate_x_quantity',
+			render: rate_x_quantity => (rate_x_quantity === 1 ? 'Yes' : 'No'),
 		},
 		{
 			key: 'checkout_description',
@@ -125,9 +138,9 @@ function WarehouseComponent() {
 			dataIndex: 'checkout_description',
 		},
 		{
-			key: 'zip',
+			key: 'action',
 			title: 'Action',
-			render: (text, record) => (
+			render: text => (
 				<Space size='middle'>
 					<Button onClick={() => editLocation(text)}>Edit</Button>
 					<Button
@@ -140,188 +153,12 @@ function WarehouseComponent() {
 		},
 	]
 
+	if (!shippingGroups) return <Skeleton active />
+
 	return (
 		<Fragment>
 			<Space direction='vertical' size={'large'} className={'w-100'}>
 				<Row gutter={30}>
-					<Modal
-						title={
-							<Title className={'mb-0'} level={4}>
-								{alertMessageType === 'loading'
-									? 'Loading. Please wait...'
-									: 'Shipping Groups'}
-							</Title>
-						}
-						centered
-						visible={modalVisibility}
-						onCancel={() => setModalVisibility(false)}
-						footer={null}
-						width={800}>
-						{alertMessageType === 'loading' ? (
-							<Skeleton active />
-						) : (
-							<Form
-								layout='vertical'
-								name='add_shipping_group_info'
-								className='form-wrp'
-								size={'large'}
-								form={form}
-								initialValues={shippingGroup}
-								onFinish={onFinish}>
-								<Row gutter={30}>
-									<Col
-										className='gutter-row'
-										xs={24}
-										sm={24}
-										md={24}
-										lg={24}
-										xl={24}>
-										<Form.Item
-											className={'mb-2'}
-											label='Nickname'
-											name='nickname'
-											rules={[
-												{
-													required: true,
-													message: 'Nickname',
-												},
-											]}>
-											<Input
-												name='nickname'
-												placeholder='Nickname'
-												value={shippingGroup.nickname}
-												onChange={changeValue}
-											/>
-										</Form.Item>
-									</Col>
-								</Row>
-								<Row gutter={30}>
-									<Col
-										className='gutter-row'
-										xs={24}
-										sm={24}
-										md={24}
-										lg={24}
-										xl={24}>
-										<Form.Item
-											className={'mb-2'}
-											label='Checkout Description'
-											name='checkout_description'
-											rules={[
-												{
-													required: true,
-													message: 'Checkout Description',
-												},
-											]}>
-											<Input
-												name='checkout_description'
-												placeholder='Checkout Description'
-												value={
-													shippingGroup.checkout_description ||
-													''
-												}
-												onChange={changeValue}
-											/>
-										</Form.Item>
-									</Col>
-								</Row>
-								<Row gutter={30}>
-									<Col
-										className='gutter-row'
-										xs={24}
-										sm={24}
-										md={24}
-										lg={24}
-										xl={24}>
-										<Form.Item
-											className={'mb-2'}
-											label='Rate'
-											name='rate'
-											rules={[
-												{
-													required: true,
-													message: 'Rate',
-												},
-											]}>
-											<Input
-												type='number'
-												min={0}
-												name='rate'
-												placeholder='Rate'
-												value={shippingGroup.rate}
-												onChange={changeValue}
-											/>
-										</Form.Item>
-									</Col>
-								</Row>
-								<Row gutter={30}>
-									<Col
-										className='gutter-row'
-										xs={24}
-										sm={24}
-										md={24}
-										lg={24}
-										xl={24}>
-										<Form.Item
-											className={'mb-2'}
-											label='Rate X Quantity'
-											name='rate_x_quantity'
-											rules={[
-												{
-													required: true,
-													message: 'Rate X Quantity',
-												},
-											]}>
-											<Select
-												defaultValue={
-													shippingGroup.rate_x_quantity ||
-													false
-												}
-												value={
-													shippingGroup.rate_x_quantity ||
-													false
-												}
-												onChange={val =>
-													setShippingGroup(prevState => ({
-														...prevState,
-														rate_x_quantity: val,
-													}))
-												}>
-												<Option value={true}>Yes</Option>
-												<Option value={false}>No</Option>
-											</Select>
-										</Form.Item>
-									</Col>
-								</Row>
-
-								<Row gutter={30} align='middle' className={'mt-3'}>
-									<Col
-										className='gutter-row'
-										xs={24}
-										sm={24}
-										md={24}
-										lg={24}
-										xl={24}>
-										<Form.Item
-											style={{
-												textAlign: 'right',
-												marginBottom: '0',
-											}}>
-											<Space>
-												<Button
-													type='primary'
-													size={'large'}
-													htmlType='submit'>
-													Save
-												</Button>
-											</Space>
-										</Form.Item>
-									</Col>
-								</Row>
-							</Form>
-						)}
-					</Modal>
-
 					<Col
 						className='gutter-row'
 						xs={24}
@@ -333,20 +170,25 @@ function WarehouseComponent() {
 							Shipping Groups{' '}
 							<Button
 								type='primary'
-								onClick={() => openLocationModal(1)}>
+								onClick={() => {
+									form.setFieldsValue(initialState)
+									hanldeModalToggling(true, 'add')
+								}}>
 								Add
 							</Button>
 						</Title>
 						<p>
 							Warehouses that inventory all products not otherwise
-							identified as drop shipped items. The warehouse with the
-							lowest shipping cost to the destination is used for
-							quoting purposes.
+							identified as drop shipped items. The warehouse with
+							the lowest shipping cost to the destination is used
+							for quoting purposes.
 						</p>
 						<Table
 							className={'custom-table'}
 							dataSource={
-								shippingGroups ? addKeysToList(shippingGroups) : []
+								shippingGroups
+									? addKeysToList(shippingGroups)
+									: []
 							}
 							columns={columns}
 						/>
@@ -354,24 +196,172 @@ function WarehouseComponent() {
 				</Row>
 			</Space>
 
+			{/* Add/Edit Modal */}
+			<Modal
+				title={
+					<Title className={'mb-0'} level={4}>
+						{alertMessageType === 'loading'
+							? 'Loading. Please wait...'
+							: 'Shipping Groups'}
+					</Title>
+				}
+				centered
+				visible={
+					modal.open &&
+					(modal.type === 'add' || modal.type === 'edit')
+				}
+				onCancel={() => hanldeModalToggling(false, '')}
+				footer={null}
+				width={800}>
+				{alertMessageType === 'loading' ? (
+					<Skeleton active />
+				) : (
+					<Form
+						layout='vertical'
+						name='add_shipping_group_info'
+						className='form-wrp'
+						size={'large'}
+						form={form}
+						initialValues={initialState}
+						onFinish={onFinish}>
+						<Row gutter={30}>
+							<Col
+								className='gutter-row'
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={24}>
+								<Form.Item
+									className={'mb-2'}
+									label='Nickname'
+									name='nickname'
+									rules={[
+										{
+											required: true,
+											message: 'Nickname',
+										},
+									]}>
+									<Input placeholder='Nickname' />
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row gutter={30}>
+							<Col
+								className='gutter-row'
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={24}>
+								<Form.Item
+									className={'mb-2'}
+									label='Checkout Description'
+									name='checkout_description'
+									rules={[
+										{
+											required: true,
+											message: 'Checkout Description',
+										},
+									]}>
+									<Input placeholder='Checkout Description' />
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row gutter={30}>
+							<Col
+								className='gutter-row'
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={24}>
+								<Form.Item
+									className={'mb-2'}
+									label='Rate'
+									name='rate'
+									rules={[
+										{
+											required: true,
+											message: 'Rate',
+											pattern: /^\d*(.\d{0,2})?$/,
+										},
+									]}>
+									<Input
+										type='number'
+										min={0}
+										placeholder='e.g. 2 or 2.50'
+									/>
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row gutter={30}>
+							<Col
+								className='gutter-row'
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={24}>
+								<Form.Item
+									className={'mb-2'}
+									label='Rate X Quantity'
+									name='rate_x_quantity'
+									rules={[
+										{
+											required: true,
+											message: 'Rate X Quantity',
+										},
+									]}>
+									<Select>
+										<Option value={1}>Yes</Option>
+										<Option value={0}>No</Option>
+									</Select>
+								</Form.Item>
+							</Col>
+						</Row>
+
+						<Row gutter={30} align='middle' className={'mt-3'}>
+							<Col
+								className='gutter-row'
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={24}>
+								<Form.Item
+									style={{
+										textAlign: 'right',
+										marginBottom: '0',
+									}}>
+									<Space>
+										<Button
+											type='primary'
+											size={'large'}
+											htmlType='submit'>
+											Save
+										</Button>
+									</Space>
+								</Form.Item>
+							</Col>
+						</Row>
+					</Form>
+				)}
+			</Modal>
+
+			{/* Delete Modal */}
 			<Modal
 				title='Confirm Delete'
-				visible={warehouseDeleteModal}
-				onOk={() =>
-					deleteLocation(
-						warehouseInfo.id,
-						warehouseInfo.type,
-						setDeleteWarehouseModal,
-						token
-					)
-				}
-				onCancel={() => setDeleteWarehouseModal(false)}
+				centered
+				visible={modal.open && modal.type === 'delete'}
+				onOk={() => dispatch(deleteShippingGroup(shippingGroupId))}
+				onCancel={() => hanldeModalToggling(false, '')}
 				okText='Confirm'
 				cancelButtonProps={{ style: { display: 'none' } }}>
-				<p>Are you sure you want to delete this origin?</p>
+				<p>Are you sure you want to delete this shipping group?</p>
 			</Modal>
 		</Fragment>
 	)
 }
 
-export default WarehouseComponent
+export default ShippingGroupsComponent
