@@ -13,10 +13,15 @@ function Settings({
 	copyShippingParams,
 	onChangeVariant,
 	addonCheck,
-	setProductVariants,
 }) {
-	const { dropships, insuranceStatus, sbsPlans, carrierId, installedCarriers } =
-		useSelector(state => state)
+	const {
+		dropships,
+		insuranceStatus,
+		sbsPlans,
+		carrierId,
+		installedCarriers,
+		installedAddons,
+	} = useSelector(state => state)
 	const validateNumber = value => {
 		/* value = value.replace(/\D/g, "");
 
@@ -33,8 +38,11 @@ function Settings({
 		)
 			? true
 			: false
-	const isSbsSuspended =
-		(sbsPlans && sbsPlans?.currentPackage?.status === 3) ?? false
+	const isSbsSuspended = installedAddons?.find(
+		add => add.short_code === 'SBS' && add.is_enabled === 0
+	)
+		? true
+		: false || (sbsPlans && sbsPlans?.currentPackage?.status === 3)
 
 	return (
 		<Fragment key={index}>
@@ -145,7 +153,10 @@ function Settings({
 						<Form.Item
 							label='Weight (lbs)'
 							rules={[
-								{ required: true, message: 'Weight is required' },
+								{
+									required: true,
+									message: 'Weight is required',
+								},
 							]}>
 							<Input
 								id={'weight' + index}
