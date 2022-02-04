@@ -55,7 +55,7 @@ export const getServices = (token, installed_carrier_id, carrier_type = '') => {
 									: value.speed_freight_carrierName,
 							carrier_logo: (
 								<img
-									style={{ height: '40px' }}
+									style={{ height: '50px' }}
 									src={`${directory}${value.carrier_logo}`}
 									alt={value.speed_freight_carrierName}
 								/>
@@ -161,7 +161,8 @@ export const getInstalledCarrierPlanInfo = (token, carrierId) => {
 			)
 			.then(({ data }) => {
 				if (!data.error) {
-					const isExpired = new Date() > new Date(data.data.expiry_date)
+					const isExpired =
+						new Date() > new Date(data.data.expiry_date)
 
 					dispatch({
 						type: 'GET_INSTALLED_CARRIER_PLAN_INFO',
