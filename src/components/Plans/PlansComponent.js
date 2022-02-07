@@ -47,7 +47,9 @@ function PlansComponent() {
 	const [cvc, setCvc] = useState('')
 	const [country, setCountry] = useState(store?.country || '')
 	const [zipCode, setZipCode] = useState('')
-	const [name, setName] = useState(store ? store.first_name + ' ' + store.last_name : '')
+	const [name, setName] = useState(
+		store ? store.first_name + ' ' + store.last_name : ''
+	)
 	const [email, setEmail] = useState(store?.admin_email || '')
 	const [address, setAddress] = useState(store?.address || '')
 	const [city, setCity] = useState('')
@@ -64,9 +66,8 @@ function PlansComponent() {
 		}
 	}, [dispatch, plans])
 
-	const clearForm = useCallback(() =>
-	{
-		if (store) {			
+	const clearForm = useCallback(() => {
+		if (store) {
 			setNumber('')
 			setDate('')
 			setCvc('')
@@ -95,7 +96,11 @@ function PlansComponent() {
 	const activateTrialPlan = () => {
 		if (new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email)) {
 			dispatch(
-				submitPaymentInfo({ plan: planid, email: email }, token, SetTrialVisible)
+				submitPaymentInfo(
+					{ plan: planid, email: email },
+					token,
+					SetTrialVisible
+				)
 			)
 		} else {
 			dispatch({
@@ -127,11 +132,11 @@ function PlansComponent() {
 				cvc,
 				card_name: name,
 				address,
-				city:city,
-				state:state,
+				city: city,
+				state: state,
 				country,
 				zip: zipCode,
-				plan:'',
+				plan: '',
 				defaultpayment: false,
 			}
 			dispatch(changePaymentMethod(data, token, SetUpdatePaymentMethodCheck))
@@ -237,11 +242,11 @@ function PlansComponent() {
 
 	const toggleSubscription = useCallback(() => {
 		const data = {
-			cancel: currentPlan.status === 2 ? 0 : 1,
+			cancel: currentPlan && currentPlan?.status === 2 ? 0 : 1,
 		}
 		dispatch(updateSubscription(token, data))
 		SetCancelSubsriptionVisible(false)
-	}, [currentPlan.status, dispatch, token])
+	}, [currentPlan, dispatch, token])
 
 	const updatePaymentMethod = useCallback(() => {
 		clearForm()
@@ -260,7 +265,9 @@ function PlansComponent() {
 							Cancel Subscription
 						</Button>
 					) : (
-						<Button type='primary' onClick={() => toggleSubscription(true)}>
+						<Button
+							type='primary'
+							onClick={() => toggleSubscription(true)}>
 							Undo Cancel Subscription
 						</Button>
 					)}
@@ -335,7 +342,11 @@ function PlansComponent() {
 							<Form
 								{...layout}
 								name='payment-form'
-								initialValues={{ city: '', state: '', requiredMark: true }}
+								initialValues={{
+									city: '',
+									state: '',
+									requiredMark: true,
+								}}
 								// defaultValue=''
 								onFinish={onFinish}
 								requiredMark
@@ -347,7 +358,8 @@ function PlansComponent() {
 									rules={[
 										{
 											required: true,
-											message: 'Please input your card number!',
+											message:
+												'Please input your card number!',
 										},
 									]}>
 									<Input
@@ -387,7 +399,6 @@ function PlansComponent() {
 											formatExpiryDate(e.currentTarget.value)
 										}}
 									/>
-									
 								</Form.Item>
 
 								<Form.Item
@@ -422,7 +433,8 @@ function PlansComponent() {
 									rules={[
 										{
 											required: true,
-											message: ' Please input card holder name',
+											message:
+												' Please input card holder name',
 										},
 									]}>
 									<Input
@@ -588,7 +600,8 @@ function PlansComponent() {
 									rules={[
 										{
 											required: true,
-											message: 'Please input your card number!',
+											message:
+												'Please input your card number!',
 										},
 									]}>
 									<Input
@@ -663,7 +676,8 @@ function PlansComponent() {
 									rules={[
 										{
 											required: true,
-											message: ' Please input card holder name',
+											message:
+												' Please input card holder name',
 										},
 									]}>
 									<Input
@@ -792,11 +806,21 @@ function PlansComponent() {
 										</Button>
 									)}
 								</div>
-								<ul  >
-									{plan.terms.split('.').map(term => (
-										term &&
-										<li style={{listStyleType: "disc", display: 'list-item', margin: '5px 10px'}} key={term}>{term.replace('plus', 'plus..')}.</li>
-									))}
+								<ul>
+									{plan.terms.split('.').map(
+										term =>
+											term && (
+												<li
+													style={{
+														listStyleType: 'disc',
+														display: 'list-item',
+														margin: '5px 10px',
+													}}
+													key={term}>
+													{term.replace('plus', 'plus..')}.
+												</li>
+											)
+									)}
 								</ul>
 							</div>
 						</Col>
