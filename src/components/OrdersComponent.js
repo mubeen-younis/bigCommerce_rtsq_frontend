@@ -1,224 +1,274 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { getAllOrders, submitOrderSettings, getOrderDetail } from '../Actions/Order';
+import React, { Fragment, useState, useEffect } from 'react'
+import { connect, useDispatch, useSelector } from 'react-redux'
+import { getAllOrders, submitOrderSettings, getOrderDetail } from '../Actions/Order'
 import {
 	Table,
 	Button,
 	Space,
 	Form,
-	Image,
-	// Input,
 	Drawer,
 	Col,
 	Row,
 	Select,
-	Checkbox,
-	Typography,
 	Skeleton,
 	Input,
-} from 'antd';
-import addKeysToList from '../Utilities/addKey';
-import { blockInvalidChar } from '../Utilities/numberValidation';
-import { isFireFox } from '../Utilities/browserName';
-import { compose } from 'redux';
-const { Option } = Select;
-const { Span } = Typography;
+} from 'antd'
+import { blockInvalidChar } from '../Utilities/numberValidation'
+import { isFireFox } from '../Utilities/browserName'
+
+const { Option } = Select
+
 function OrderSettingsComponent(props) {
-	const [loading, setLoading] = useState(true);
-	const [loadOrder, setLoadOrder] = useState(false);
-	const [sortOrderCust, setSortOrderCus] = useState(true);
-	const [lastPageNo, setLastPageNo] = useState(1);
-	const [showItem, setShowItem] = useState(true);
-	const [countSorting, setCountSorting] = useState(0);
+	const [loading, setLoading] = useState(true)
+	const [loadOrder, setLoadOrder] = useState(false)
+	const [sortOrderCust, setSortOrderCus] = useState(true)
+	const [lastPageNo, setLastPageNo] = useState(1)
+	const [countSorting, setCountSorting] = useState(0)
 	const [state, setState] = useState({
 		filteredInfo: null,
 		sortedInfo: null,
 		selectedRowKeys: [],
 		visible: false,
-	});
+	})
 	const [selectedOrderDetail, setselectedOrderDetail] = useState({
 		date: null,
 		price: null,
-	});
-	const {ordersPagination} = useSelector(state => state);
+	})
+	const { ordersPagination } = useSelector(state => state)
 	const [pagination, setPagination] = useState({
 		current: 1,
-		pageSize:50,
-		total:ordersPagination?.total,
+		pageSize: 50,
+		total: ordersPagination?.total,
 		search: null,
 		isSearched: 0,
-		status:null
-	});
-	const [formError, setFormError] = useState('');
-	const dispatch = useDispatch();
+		status: null,
+	})
+	const dispatch = useDispatch()
 
 	useEffect(() => {
-
 		if (!props.orders || props.orders === null || props.orders === undefined) {
 			//props.getAllOrders(props.token);
-			console.log(1);
-			dispatch(getAllOrders(props.token, pagination.current, pagination.pageSize,sortOrderCust, setLoading, pagination?.search, pagination?.status));
+			console.log(1)
+			dispatch(
+				getAllOrders(
+					props.token,
+					pagination.current,
+					pagination.pageSize,
+					sortOrderCust,
+					setLoading,
+					pagination?.search,
+					pagination?.status
+				)
+			)
 		}
 		if (props.orders !== null && props.orders !== undefined) {
-			setLoading(false);
-			console.log(2);
+			setLoading(false)
+			console.log(2)
 			setPagination({
 				...pagination,
 				total: ordersPagination?.total,
-				isSearched:pagination.isSearched+1
+				isSearched: pagination.isSearched + 1,
 			})
 		}
 
-		if(countSorting>0){
-			console.log(3);
+		if (countSorting > 0) {
+			console.log(3)
 			setLoading(true)
 			setCountSorting(0)
-			dispatch(getAllOrders(props.token, pagination.current, pagination.pageSize, sortOrderCust, setLoading, pagination.search, pagination.status))
+			dispatch(
+				getAllOrders(
+					props.token,
+					pagination.current,
+					pagination.pageSize,
+					sortOrderCust,
+					setLoading,
+					pagination.search,
+					pagination.status
+				)
+			)
 		}
 		// eslint-disable-next-line
-	}, [ordersPagination,sortOrderCust]);
+	}, [ordersPagination, sortOrderCust])
 
 	const showOrderDetails = async (id, order) => {
-		setLoadOrder(true);
-		props.getOrderDetail(id, setselectedOrderDetail, setLoadOrder, props.token);
+		setLoadOrder(true)
+		props.getOrderDetail(id, setselectedOrderDetail, setLoadOrder, props.token)
 
-		
 		setState({
 			...state,
 			visible: true,
-		});
+		})
 
 		setselectedOrderDetail({
 			...selectedOrderDetail,
 			...order,
 			order_id: id,
-		});
+		})
 		setTimeout(() => {
-			setLoadOrder(false);
-		}, 5000);
-	};
+			setLoadOrder(false)
+		}, 5000)
+	}
 
 	const onClose = () => {
 		setState({
 			...state,
 			visible: false,
-		});
-	};
-
-	
+		})
+	}
 
 	const handleChange = (pagination, filters, sorter) => {
-		setLoading(true);
-		
+		setLoading(true)
 		setPagination({
 			...pagination,
 			current: pagination.current,
-			pageSize: pagination.pageSize
+			pageSize: pagination.pageSize,
 		})
-		console.log(pagination);
-		let PaginationPerpage = (ordersPagination?.perpage)*10/10;
-		if(pagination?.pageSize !== PaginationPerpage){
-			setLoading(true);
+		console.log(pagination)
+
+		let PaginationPerpage = (ordersPagination?.perpage * 10) / 10
+		if (pagination?.pageSize !== PaginationPerpage) {
+			setLoading(true)
 			//dispatch(getAllOrders(props.token, pagination.current, pagination.pageSize, sortOrderCust, setLoading, pagination.search,  pagination.status))
 			const meta = {
 				...ordersPagination,
-				perpage : pagination?.pageSize
+				perpage: pagination?.pageSize,
 			}
 			dispatch({
 				type: 'GET_ORDERS',
 				payload: null,
-			});
+			})
 			dispatch({
 				type: 'ORDERS_PAGINATION',
 				payload: meta,
-			});
-		}else{
-			if(pagination?.current !== lastPageNo){
-				console.log('page chanfe')
+			})
+		} else {
+			if (pagination?.current !== lastPageNo) {
+				console.log('page change')
 				setLastPageNo(pagination?.current)
-				dispatch(getAllOrders(props.token, pagination.current, pagination.pageSize, sortOrderCust, setLoading, pagination.search,  pagination.status))
-			}else{
-				console.log('order chanfe')
-				setSortOrderCus(!sortOrderCust);
+				dispatch(
+					getAllOrders(
+						props.token,
+						pagination.current,
+						pagination.pageSize,
+						sortOrderCust,
+						setLoading,
+						pagination.search,
+						pagination.status
+					)
+				)
+			} else {
+				console.log('order change')
+				setSortOrderCus(!sortOrderCust)
 			}
 		}
-		
+
 		setState({
 			filteredInfo: filters,
 			sortedInfo: sorter,
-		});
-	};
+		})
+	}
 
-	const onSelectChange = selectedRowKeys => {
-		setState({ ...state, selectedRowKeys });
-	};
+	// const onSelectChange = selectedRowKeys => {
+	// 	setState({ ...state, selectedRowKeys })
+	// }
+	// const { selectedRowKeys } = state
+	// const rowSelection = {
+	// 	selectedRowKeys,
+	// 	onChange: onSelectChange,
+	// }
 
-	const { selectedRowKeys } = state;
-	const rowSelection = {
-		selectedRowKeys,
-		onChange: onSelectChange,
-	};
 	const orderSearch = () => {
 		setLoading(true)
-		dispatch(getAllOrders(props.token, pagination.current, pagination.pageSize, sortOrderCust, setLoading, pagination.search, pagination.status))	
+		dispatch(
+			getAllOrders(
+				props.token,
+				pagination.current,
+				pagination.pageSize,
+				sortOrderCust,
+				setLoading,
+				pagination.search,
+				pagination.status
+			)
+		)
 	}
 
-	const resetOrders = (e) => {
-		var value; 
-		const re = /^[0-9\b]+$/;
+	const resetOrders = e => {
+		let value
+		const re = /^[0-9\b]+$/
 		if (e.target.value === '' || re.test(e.target.value)) {
 			value = e.target.value
-		}else{
-			return false;
+		} else {
+			return false
 		}
 		setPagination({
 			...pagination,
-			search: value
-		})	
-		if(value.length == 0 && pagination.isSearched != null){
-			setLoading(true)	
-			dispatch(getAllOrders(props.token, pagination.current, pagination.pageSize, sortOrderCust, setLoading, '', pagination.status))	
+			search: value,
+		})
+		if (value.length === 0 && pagination.isSearched != null) {
+			setLoading(true)
+			dispatch(
+				getAllOrders(
+					props.token,
+					pagination.current,
+					pagination.pageSize,
+					sortOrderCust,
+					setLoading,
+					'',
+					pagination.status
+				)
+			)
 		}
-
 	}
 
-	const handleKeyDown = (event) => {
+	const handleKeyDown = event => {
 		if (event.key === 'Enter' && pagination.search) {
 			orderSearch()
-		}else{
-			blockInvalidChar(event);
+		} else {
+			blockInvalidChar(event)
 		}
 	}
 
-	const filterByOrderStatus = (status) =>{
+	const filterByOrderStatus = status => {
 		setLoading(true)
 		setPagination({
 			...pagination,
-			status : status,
-			current : 1
-		})	
-		dispatch(getAllOrders(props.token, 1, pagination.pageSize, sortOrderCust, setLoading, pagination.search, status))
+			status: status,
+			current: 1,
+		})
+		dispatch(
+			getAllOrders(
+				props.token,
+				1,
+				pagination.pageSize,
+				sortOrderCust,
+				setLoading,
+				pagination.search,
+				status
+			)
+		)
 	}
 
-	let { sortedInfo /* filteredInfo */ } = state;
-	sortedInfo = sortedInfo || {};
+	// let { sortedInfo, filteredInfo } = state;
+	// sortedInfo = sortedInfo || {};
 	// filteredInfo = filteredInfo || {};
-	const sortOrders = (a,b) => {
-		let allOrders = props.filteredOrders ?? props.orders;
-		let lastOrder = allOrders[allOrders.length-1];
-		let checkId = isFireFox() ? b?.id : a?.id;
-		if(lastOrder?.id === checkId){
-			setCountSorting(countSorting+1)
+
+	const sortOrders = (a, b) => {
+		let allOrders = props.filteredOrders ?? props.orders
+		let lastOrder = allOrders[allOrders.length - 1]
+		let checkId = isFireFox() ? b?.id : a?.id
+		if (lastOrder?.id === checkId) {
+			setCountSorting(countSorting + 1)
 			//setSortOrderCus(!sortOrderCust);
 			//orderSearch()
 		}
 	}
+
 	const columns = [
 		{
 			title: 'Order Id',
 			dataIndex: 'id',
 			key: 'id',
-			sorter:  sortOrders,
+			sorter: sortOrders,
 			sortOrder: false,
 			//sortOrder: false,
 			/*sorter: (a, b) => a.id - b.id,
@@ -234,7 +284,7 @@ function OrderSettingsComponent(props) {
 		{
 			title: 'Date Created',
 			dataIndex: 'date_created',
-			key: 'date_created'
+			key: 'date_created',
 		},
 		{
 			title: 'Items',
@@ -247,9 +297,9 @@ function OrderSettingsComponent(props) {
 		{
 			title: 'Status',
 			dataIndex: 'status',
-			key: 'status'
+			key: 'status',
 		},
-		
+
 		{
 			title: 'Price',
 			dataIndex: 'total_inc_tax',
@@ -264,87 +314,129 @@ function OrderSettingsComponent(props) {
 			key: 'id',
 			render: (id, record) => (
 				<Space size='middle'>
-					<Button onClick={() => showOrderDetails(id, record)}>Shipping Detail</Button>
+					<Button onClick={() => showOrderDetails(id, record)}>
+						Shipping Detail
+					</Button>
 				</Space>
 			),
 		},
-	];
+	]
 
-	const repeactItemAlone = (bin, showShipOwnTitle) =>{
-		let data = [];
-		for( let i = 0; i<bin?.quantity; i++){
+	const repeactItemAlone = (bin, showShipOwnTitle) => {
+		let data = []
+		for (let i = 0; i < bin?.quantity; i++) {
 			data.push(
 				<div>
-					{(showShipOwnTitle === 1 ) && <h3 style={{textAlign:'center', marginTop:'15px', width:'100%'}}>These items were quoted as shipping as their own package.</h3> }
-					<Col span={6} style={{textAlign : 'center', float:'left', marginTop:'10px', paddingLeft:'0px', paddingRight: '0px' }}>
-						<span style={{width:'100%', float:'left'}}>{bin?.d}{bin?.w}{bin?.h}</span>	
-						<img src={bin?.image_complete} />
+					{showShipOwnTitle === 1 && (
+						<h3
+							style={{
+								textAlign: 'center',
+								marginTop: '15px',
+								width: '100%',
+							}}>
+							These items were quoted as shipping as their own package.
+						</h3>
+					)}
+					<Col
+						span={6}
+						style={{
+							textAlign: 'center',
+							float: 'left',
+							marginTop: '10px',
+							paddingLeft: '0px',
+							paddingRight: '0px',
+						}}>
+						<span style={{ width: '100%', float: 'left' }}>
+							{bin?.d}
+							{bin?.w}
+							{bin?.h}
+						</span>
+						<img src={bin?.image_complete} alt={bin?.image_complete} />
 					</Col>
-					{showShipOwnTitle = ''}
+					{(showShipOwnTitle = '')}
 				</div>
 			)
 		}
-		return data;
+		return data
 	}
 
-	const countBoxes = (widget) => {
-		let countBoxes = 0;
-		widget?.sbs?.map((bin, count) => { 
-			if(bin?.type !== 'item') {
-				++countBoxes;
-			}
-		})
-		return countBoxes;
+	const countBoxes = widget => {
+		let countBoxes = 0
+		widget?.sbs?.forEach(bin => bin?.type !== 'item' && ++countBoxes)
+
+		return countBoxes
 	}
 
-	const widgetData = (widget) =>{
-		let showShipOwnTitle = 0; 
-		let numBoxes = countBoxes(widget);
-		return widget?.sbs?.map((bin, count) => { 
-			return( 
-			(bin?.type === 'item') ? 
+	const widgetData = widget => {
+		let showShipOwnTitle = 0
+		let numBoxes = countBoxes(widget)
+		return widget?.sbs?.map((bin, count) => {
+			return bin?.type === 'item' ? (
 				repeactItemAlone(bin, ++showShipOwnTitle)
-			:
-			// not own packaging
-			<Row gutter={24}>
-				<Col span={24}>
-					<Row gutter={24} className={'mt-4'}>
-						<Col span={8} style={{marginTop:'33px'}}>
-							<strong>Box {count+1} of {numBoxes}
-							<br/> Number of items: {bin?.number_of_items} <br/>
-							{bin?.nickname}</strong>
-						</Col>
-						<Col span={16}>
-							<span >{bin?.d}{bin?.w}{bin?.h}</span><br/>	
-							<img src={bin?.image_complete} /><br/>
-							
-						</Col>
-					</Row>
-				</Col>
-				<Col span={24}>
-					<Row gutter={24}>
-						
-						<Col span={24}><strong>Steps:</strong></Col>
-						{widget?.sbs?.type !== 'item'? 
-							(bin?.items.map((box) => (
-							<>
-								<Col span={6} style={{textAlign : 'center'}}>
-									<img src={box?.image_sbs} style={{margin: '5px'}} /><br/>
-									<span>{box?.product_name} <br/> {box?.d+' x '}{box?.w+' x '}{box?.h}</span><br/>
-								</Col>
-								
-							</>
-							) ))
-							:
-							''	
-						}
-						
-					</Row>
-				</Col>
-				
-			</Row>
-		)}
-		)
+			) : (
+				// not own packaging
+				<Row gutter={24}>
+					<Col span={24}>
+						<Row gutter={24} className={'mt-4'}>
+							<Col span={8} style={{ marginTop: '33px' }}>
+								<strong>
+									Box {count + 1} of {numBoxes}
+									{bin.boxname ? <br /> && bin?.boxname : ''}
+									<br /> Number of items: {
+										bin?.number_of_items
+									}{' '}
+									<br />
+									{bin?.nickname}
+								</strong>
+							</Col>
+							<Col span={16}>
+								<span>
+									{bin?.d}
+									{bin?.w}
+									{bin?.h}
+								</span>
+								<br />
+								<img
+									src={bin?.image_complete}
+									alt={bin?.image_complete}
+								/>
+								<br />
+							</Col>
+						</Row>
+					</Col>
+					<Col span={24}>
+						<Row gutter={24}>
+							<Col span={24}>
+								<strong>Steps:</strong>
+							</Col>
+							{widget?.sbs?.type !== 'item'
+								? bin?.items.map(box => (
+										<>
+											<Col
+												span={6}
+												style={{ textAlign: 'center' }}>
+												<img
+													src={box?.image_sbs}
+													style={{ margin: '5px' }}
+													alt={box?.image_sbs}
+												/>
+												<br />
+												<span>
+													{box?.product_name} <br />{' '}
+													{box?.d + ' x '}
+													{box?.w + ' x '}
+													{box?.h}
+												</span>
+												<br />
+											</Col>
+										</>
+								  ))
+								: ''}
+						</Row>
+					</Col>
+				</Row>
+			)
+		})
 	}
 
 	//This is for filter form
@@ -353,7 +445,7 @@ function OrderSettingsComponent(props) {
 	}; */
 
 	if (loading) {
-		return <Skeleton active />;
+		return <Skeleton active />
 	}
 
 	return (
@@ -364,7 +456,7 @@ function OrderSettingsComponent(props) {
 						placeholder='Search by order id'
 						className='col-8'
 						type='number'
-						pattern="[0-9]*"
+						pattern='[0-9]*'
 						defaultValue={props.searched_order}
 						value={pagination.search ?? props.searched_order}
 						onKeyDown={handleKeyDown}
@@ -372,29 +464,26 @@ function OrderSettingsComponent(props) {
 						size='medium'
 					/>
 				</Col>
-				<Col span={4} style={{paddingLeft:"0px"}}>
-					<Button 
-					onClick={orderSearch} 
-					type='primary'
-					size='medium'
-					>
+				<Col span={4} style={{ paddingLeft: '0px' }}>
+					<Button onClick={orderSearch} type='primary' size='medium'>
 						Search
 					</Button>
 				</Col>
 				<Col span={5}>
-					<h3 style={{padding: '3px 0px', textAlign: 'right'}} className={'text-right'}>Filter by order status</h3>
+					<h3
+						style={{ padding: '3px 0px', textAlign: 'right' }}
+						className={'text-right'}>
+						Filter by order status
+					</h3>
 				</Col>
-				<Col span={7} style={{paddingLeft:"0px"}}>	
+				<Col span={7} style={{ paddingLeft: '0px' }}>
 					<Select
 						placeholder='Filter by order status'
-						onChange={val =>
-							filterByOrderStatus(val)
-						}
+						onChange={val => filterByOrderStatus(val)}
 						size='medium'
 						style={{ width: '100%' }}
 						value={pagination?.status ?? ''}
-						defaultValue={''}
-					>
+						defaultValue={''}>
 						<Option value=''>All</Option>
 						<Option value='7'>Awaiting Payment</Option>
 						<Option value='8'>Awaiting Pickup</Option>
@@ -438,34 +527,41 @@ function OrderSettingsComponent(props) {
 					<div
 						style={{
 							textAlign: 'right',
-						}}
-					>
-						
-					</div>
-				}
-			>
+						}}></div>
+				}>
 				{loadOrder ? (
 					<Skeleton active />
 				) : (
-					<Form layout='vertical' hideRequiredMark initialValues={selectedOrderDetail}>
+					<Form
+						layout='vertical'
+						hideRequiredMark
+						initialValues={selectedOrderDetail}>
 						<Row gutter={24} className='mb-3 float-left'>
-						{
-							props?.orderwidget?.widget.map( (widget, key) => (
+							{props?.orderwidget?.widget.map((widget, key) => (
 								<Fragment>
-								<Button type="primary" className={'mt-2 mb-2'} block> Shipment {key+1} </Button>
+									<Button
+										type='primary'
+										className={'mt-2 mb-2'}
+										block>
+										{' '}
+										Shipment {key + 1}{' '}
+									</Button>
 
-									<Col span={12}>	
-										
+									<Col span={12}>
 										<div span={12}>
 											<h3>Origin and Services</h3>
 											<ul>
-											<li>{widget?.locationtype} : {widget?.address}</li>
-											<li>{widget?.shipping_method} : {widget?.shipping_rate}</li>
-											{
-												widget?.accessories.map((access) => (
+												<li>
+													{widget?.locationtype} :{' '}
+													{widget?.address}
+												</li>
+												<li>
+													{widget?.shipping_method} :{' '}
+													{widget?.shipping_rate}
+												</li>
+												{widget?.accessories.map(access => (
 													<li>{access}</li>
-												) )
-											}
+												))}
 											</ul>
 										</div>
 									</Col>
@@ -473,31 +569,22 @@ function OrderSettingsComponent(props) {
 										<div>
 											<h3>Items</h3>
 											<ul>
-											{
-												widget?.items.map((item) => (
+												{widget?.items.map(item => (
 													<li>{item}</li>
-												) )
-											}
+												))}
 											</ul>
 										</div>
 									</Col>
-									<Col span={24}>
-									{ 
-									widgetData(widget)
-									}
-									</Col>
-									</Fragment>
-							))
-						}
+									<Col span={24}>{widgetData(widget)}</Col>
+								</Fragment>
+							))}
 						</Row>
-								
-							
 					</Form>
 				)}
 			</Drawer>
 			{/* ================ */}
 		</Fragment>
-	);
+	)
 }
 
 const mapStateToProps = state => {
@@ -507,17 +594,20 @@ const mapStateToProps = state => {
 		dropships: state.dropships,
 		filteredOrders: state.filteredOrders,
 		orderwidget: state.orderwidget,
-		searched_order:state.searched_order
-	};
-};
+		searched_order: state.searched_order,
+	}
+}
 
 const mapDispatchToProps = dispatch => {
 	return {
 		//getAllOrders: token => dispatch(getAllOrders(token)),
-		getOrderDetail: (id, setselectedOrderDetail, setLoadOrder, token) => dispatch(getOrderDetail(id, setselectedOrderDetail, setLoadOrder, token)),
+		getOrderDetail: (id, setselectedOrderDetail, setLoadOrder, token) =>
+			dispatch(
+				getOrderDetail(id, setselectedOrderDetail, setLoadOrder, token)
+			),
 		submitOrderSettings: (data, token, visibility) =>
 			dispatch(submitOrderSettings(data, token, visibility)),
-	};
-};
+	}
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderSettingsComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(OrderSettingsComponent)

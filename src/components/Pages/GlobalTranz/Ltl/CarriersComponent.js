@@ -1,4 +1,10 @@
-import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react'
+import React, {
+	Fragment,
+	useEffect,
+	useState,
+	useRef,
+	useCallback,
+} from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { Form, Table, Button, Space, Skeleton, Input, Col, Row } from 'antd'
 import axios from 'axios'
@@ -20,17 +26,6 @@ const columns = [
 		title: 'Logo',
 		dataIndex: 'carrier_logo',
 		key: 'carrier_logo',
-		render: (text, record) => {
-			console.log(record)
-			return (
-				<img
-					src={`/Carrier_Logos/Gtz/${record.logo}`}
-					alt={record.name}
-					// width='100px'
-					height='50px'
-				/>
-			)
-		},
 	},
 ]
 
@@ -111,7 +106,12 @@ const CarriersComponent = props => {
 				carrierId: carrierId,
 			}
 
-			postData(data, 'SAVE_CARRIER_TAB_SETTINGS', 'submit_carriers', token)
+			postData(
+				data,
+				'SAVE_CARRIER_TAB_SETTINGS',
+				'submit_carriers',
+				token
+			)
 
 			dispatch({
 				type: 'SET_GTZ_CARRIERS',
@@ -213,7 +213,10 @@ const CarriersComponent = props => {
 		if (filteredServices && carriersSettings !== null) {
 			setState(prevState => ({
 				...prevState,
-				selectedRowKeys: [...carriersSettings, selected ? record.key : null],
+				selectedRowKeys: [
+					...carriersSettings,
+					selected ? record.key : null,
+				],
 			}))
 		} else {
 			setState({
@@ -258,19 +261,20 @@ const CarriersComponent = props => {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> Identifies which carriers are included in the
-				quote response, not what is displayed in the shopping cart. Identify
-				what displays in the shopping cart in the Quote Settings. For
-				example, you may include quote responses from all carriers, but elect
-				to only show the cheapest three in the shopping cart.
+				<strong>Note!</strong> Identifies which carriers are included in
+				the quote response, not what is displayed in the shopping cart.
+				Identify what displays in the shopping cart in the Quote
+				Settings. For example, you may include quote responses from all
+				carriers, but elect to only show the cheapest three in the
+				shopping cart.
 			</div>
 			<p>
 				Not all carriers service all origin and destination points. If a
 				carrier doesn't service the ship to address, it is automatically
 				omitted from the quote response. Consider conferring with your{' '}
-				{carrier_type === 'GTZ' ? 'GlobalTranz' : 'Cerasis'} Account Team
-				representative if you'd like to narrow the number of carrier
-				responses.
+				{carrier_type === 'GTZ' ? 'GlobalTranz' : 'Cerasis'} Account
+				Team representative if you'd like to narrow the number of
+				carrier responses.
 			</p>
 			<Input
 				placeholder='Search carriers'
@@ -362,7 +366,8 @@ const mapDispatchToProps = dispatch => {
 	return {
 		postData: (data, type, url, token) =>
 			dispatch(postData(data, type, url, token)),
-		getServices: (token, id, type) => dispatch(getServices(token, id, type)),
+		getServices: (token, id, type) =>
+			dispatch(getServices(token, id, type)),
 	}
 }
 
