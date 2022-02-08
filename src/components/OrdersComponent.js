@@ -381,7 +381,6 @@ function OrderSettingsComponent(props) {
 							<Col span={8} style={{ marginTop: '33px' }}>
 								<strong>
 									Box {count + 1} of {numBoxes}
-									{bin.boxname ? <br /> && bin?.boxname : ''}
 									<br /> Number of items: {
 										bin?.number_of_items
 									}{' '}
