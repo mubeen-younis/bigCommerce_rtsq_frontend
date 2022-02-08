@@ -19,6 +19,8 @@ const initialState = {
 	allProducts: null,
 	productDetail: null,
 	productsPagination: null,
+	orders: null,
+	orderwidget: null,
 	ordersPagination: null,
 	filteredProducts: null,
 	filteredOrders: null,
@@ -254,7 +256,9 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				installedAddons: [...state.installedAddons, newInstalledAddon],
-				addons: state.addons.filter(add => add.id !== action.payload.addon_id),
+				addons: state.addons.filter(
+					add => add.id !== action.payload.addon_id
+				),
 			}
 
 		case types.GET_INSTALLED_ADDONS:
@@ -347,7 +351,8 @@ const Reducer = (state = initialState, action) => {
 					...state,
 					filteredProducts: state.allProducts.filter(
 						pdct =>
-							pdct.name.match(searchString) || pdct.sku.match(searchString)
+							pdct.name.match(searchString) ||
+							pdct.sku.match(searchString)
 					),
 				}
 			} else {
