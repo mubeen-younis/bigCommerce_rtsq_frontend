@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Form, Typography, Checkbox } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
 const { Title } = Typography
 const RAD_ADDON = 'RAD'
@@ -9,6 +10,16 @@ const RAD_ADDON = 'RAD'
 const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) => {
 	const dispatch = useDispatch()
 	const { installedAddons } = useSelector(state => state)
+
+	useEffect(() => {
+		if (radStatus) {
+			setQuoteSettingsState(prevState => ({
+				...prevState,
+				alwaysResidentialDelivery: false,
+			}))
+		}
+	}, [radStatus, setQuoteSettingsState])
+
 	const setActiveMenu = useCallback(
 		() =>
 			dispatch({
@@ -17,7 +28,6 @@ const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) 
 			}),
 		[dispatch]
 	)
-
 	const isRadInstalled = installedAddons?.find(add => add.short_code === RAD_ADDON)
 		? true
 		: false

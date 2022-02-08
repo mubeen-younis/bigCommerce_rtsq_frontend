@@ -15,6 +15,8 @@ import {
 } from 'antd'
 import { blockInvalidChar } from '../Utilities/numberValidation'
 import { isFireFox } from '../Utilities/browserName'
+import axios from 'axios'
+import Title from 'antd/lib/typography/Title'
 
 const { Option } = Select
 
@@ -48,7 +50,6 @@ function OrderSettingsComponent(props) {
 	useEffect(() => {
 		if (!props.orders || props.orders === null || props.orders === undefined) {
 			//props.getAllOrders(props.token);
-			console.log(1)
 			dispatch(
 				getAllOrders(
 					props.token,
@@ -63,7 +64,6 @@ function OrderSettingsComponent(props) {
 		}
 		if (props.orders !== null && props.orders !== undefined) {
 			setLoading(false)
-			console.log(2)
 			setPagination({
 				...pagination,
 				total: ordersPagination?.total,
@@ -72,7 +72,6 @@ function OrderSettingsComponent(props) {
 		}
 
 		if (countSorting > 0) {
-			console.log(3)
 			setLoading(true)
 			setCountSorting(0)
 			dispatch(
@@ -90,23 +89,51 @@ function OrderSettingsComponent(props) {
 		// eslint-disable-next-line
 	}, [ordersPagination, sortOrderCust])
 
-	const showOrderDetails = async (id, order) => {
-		setLoadOrder(true)
-		props.getOrderDetail(id, setselectedOrderDetail, setLoadOrder, props.token)
-
+	const showOrderDetails = async (order_id, order) => {
+		setselectedOrderDetail({
+			...selectedOrderDetail,
+			...order,
+			order_id,
+		})
 		setState({
 			...state,
 			visible: true,
 		})
 
-		setselectedOrderDetail({
-			...selectedOrderDetail,
-			...order,
-			order_id: id,
-		})
-		setTimeout(() => {
+		try {
+			const url = `${process.env.REACT_APP_ENITURE_API_URL}/get_order_widget`,
+				config = {
+					headers: {
+						authorization: `Bearer ${props.token}`,
+					},
+					params: {
+						order_id,
+					},
+				}
+			setLoadOrder(true)
+
+			const { data } = await axios.get(url, {
+				...config,
+				validateStatus: status =>
+					(status >= 200 && status < 300) || status === 404,
+			})
+			if (!data.error) {
+				dispatch({
+					type: 'GET_ORDER_WIDGET',
+					payload: data?.data,
+				})
+				setLoadOrder(false)
+			}
+		} catch (err) {
+			if (err.response.data && err.response.data.error) {
+				dispatch({
+					type: 'GET_ORDER_WIDGET',
+					payload: err.response.data.data,
+				})
+			}
 			setLoadOrder(false)
-		}, 5000)
+		}
+		// props.getOrderDetail(id, setselectedOrderDetail, setLoadOrder, props.token)
 	}
 
 	const onClose = () => {
@@ -123,7 +150,6 @@ function OrderSettingsComponent(props) {
 			current: pagination.current,
 			pageSize: pagination.pageSize,
 		})
-		console.log(pagination)
 
 		let PaginationPerpage = (ordersPagination?.perpage * 10) / 10
 		if (pagination?.pageSize !== PaginationPerpage) {
@@ -143,7 +169,6 @@ function OrderSettingsComponent(props) {
 			})
 		} else {
 			if (pagination?.current !== lastPageNo) {
-				console.log('page change')
 				setLastPageNo(pagination?.current)
 				dispatch(
 					getAllOrders(
@@ -157,7 +182,6 @@ function OrderSettingsComponent(props) {
 					)
 				)
 			} else {
-				console.log('order change')
 				setSortOrderCus(!sortOrderCust)
 			}
 		}
@@ -439,11 +463,6 @@ function OrderSettingsComponent(props) {
 		})
 	}
 
-	//This is for filter form
-	/* const onFinish = values => {
-		console.log('Received values of form: ', values);
-	}; */
-
 	if (loading) {
 		return <Skeleton active />
 	}
@@ -537,47 +556,62 @@ function OrderSettingsComponent(props) {
 						hideRequiredMark
 						initialValues={selectedOrderDetail}>
 						<Row gutter={24} className='mb-3 float-left'>
-							{props?.orderwidget?.widget.map((widget, key) => (
+							{!props?.orderwidget || !props?.orderwidget?.widget ? (
 								<Fragment>
-									<Button
-										type='primary'
-										className={'mt-2 mb-2'}
-										block>
-										{' '}
-										Shipment {key + 1}{' '}
-									</Button>
-
-									<Col span={12}>
-										<div span={12}>
-											<h3>Origin and Services</h3>
-											<ul>
-												<li>
-													{widget?.locationtype} :{' '}
-													{widget?.address}
-												</li>
-												<li>
-													{widget?.shipping_method} :{' '}
-													{widget?.shipping_rate}
-												</li>
-												{widget?.accessories.map(access => (
-													<li>{access}</li>
-												))}
-											</ul>
-										</div>
-									</Col>
-									<Col span={12}>
-										<div>
-											<h3>Items</h3>
-											<ul>
-												{widget?.items.map(item => (
-													<li>{item}</li>
-												))}
-											</ul>
-										</div>
-									</Col>
-									<Col span={24}>{widgetData(widget)}</Col>
+									<Title
+										level={3}
+										style={{
+											width: '100%',
+											textAlign: 'center',
+										}}>
+										No order details found
+									</Title>
 								</Fragment>
-							))}
+							) : (
+								props?.orderwidget?.widget?.map((widget, key) => (
+									<Fragment>
+										<Button
+											type='primary'
+											className={'mt-2 mb-2'}
+											block>
+											{' '}
+											Shipment {key + 1}{' '}
+										</Button>
+
+										<Col span={12}>
+											<div span={12}>
+												<h3>Origin and Services</h3>
+												<ul>
+													<li>
+														{widget?.locationtype} :{' '}
+														{widget?.address}
+													</li>
+													<li>
+														{widget?.shipping_method} :{' '}
+														{widget?.shipping_rate}
+													</li>
+													{widget?.accessories.map(
+														access => (
+															<li>{access}</li>
+														)
+													)}
+												</ul>
+											</div>
+										</Col>
+										<Col span={12}>
+											<div>
+												<h3>Items</h3>
+												<ul>
+													{widget?.items.map(item => (
+														<li>{item}</li>
+													))}
+												</ul>
+											</div>
+										</Col>
+										<Col span={24}>{widgetData(widget)}</Col>
+									</Fragment>
+								))
+							)}
 						</Row>
 					</Form>
 				)}

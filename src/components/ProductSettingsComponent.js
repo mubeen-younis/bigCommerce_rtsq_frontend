@@ -171,16 +171,7 @@ function ProductSettingsComponent(props) {
 				)
 			)
 		}
-	}, [
-		productsPagination,
-		props.productDetail,
-		sortProd,
-		dispatch,
-		props.token,
-		// countSorting,
-		// pagination,
-		// props.allProducts,
-	])
+	}, [productsPagination, props.productDetail, sortProd, dispatch, props.token])
 
 	const showProductDetails = (id, product) => {
 		setState({
@@ -428,9 +419,10 @@ function ProductSettingsComponent(props) {
 	}, [productVariants, props])
 
 	const validate = useCallback(() => {
-		var error = false
-		var msg = ''
-		productVariants.map(prd => {
+		let error = false
+		let msg = ''
+
+		for (const prd of productVariants) {
 			if (prd.weight === null || prd.weight <= 0) {
 				error = true
 				msg = 'Weight must be greater than 0.'
@@ -456,7 +448,8 @@ function ProductSettingsComponent(props) {
 					msg = 'Dropship location is required'
 				}
 			}
-		})
+		}
+
 		if (!error) {
 			onSubmit() //props.submitProductSettings({ products: productVariants }, props.token, setState)
 		} else {
@@ -599,15 +592,15 @@ function ProductSettingsComponent(props) {
 								</Col>
 							) : null}
 						</Row>
-						{productVariants.length > 0
-							? productVariants.map((product, index) => {
+						{productVariants?.length > 0
+							? productVariants?.map((product, index) => {
 									/*let settings =
 											product.settings != '' ? JSON.parse(product.settings) : {},
 										oneProduct = { ...settings, ...product }*/
 
 									return (
 										<Settings
-											count={productVariants.length}
+											count={productVariants?.length}
 											key={index}
 											index={index}
 											copyShippingMethod={copyShippingMethod}
