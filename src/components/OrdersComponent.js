@@ -112,11 +112,7 @@ function OrderSettingsComponent(props) {
 				}
 			setLoadOrder(true)
 
-			const { data } = await axios.get(url, {
-				...config,
-				validateStatus: status =>
-					(status >= 200 && status < 300) || status === 404,
-			})
+			const { data } = await axios.get(url, config)
 			if (!data.error) {
 				dispatch({
 					type: 'GET_ORDER_WIDGET',
