@@ -55,11 +55,12 @@ export const getServices = (token, installed_carrier_id, carrier_type = '') => {
 									: value.speed_freight_carrierName,
 							carrier_logo: (
 								<img
-									style={{ height: '40px' }}
+									style={{ height: '50px' }}
 									src={`${directory}${value.carrier_logo}`}
 									alt={value.speed_freight_carrierName}
 								/>
 							),
+							logo: value.carrier_logo,
 						})
 					)
 
