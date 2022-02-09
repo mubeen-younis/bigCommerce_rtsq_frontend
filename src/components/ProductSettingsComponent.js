@@ -115,7 +115,7 @@ function ProductSettingsComponent(props) {
 	})
 	const [productVariants, setProductVariants] = useState([])
 	const [sortProd, setSortProd] = useState(false)
-	const [formError, setFormError] = useState('')
+	const [formError /* setFormError */] = useState('')
 	const dispatch = useDispatch()
 	const { productsPagination } = useSelector(state => state)
 	const [pagination, setPagination] = useState({
@@ -171,6 +171,7 @@ function ProductSettingsComponent(props) {
 				)
 			)
 		}
+		// eslint-disable-next-line
 	}, [productsPagination, props.productDetail, sortProd, dispatch, props.token])
 
 	const showProductDetails = (id, product) => {

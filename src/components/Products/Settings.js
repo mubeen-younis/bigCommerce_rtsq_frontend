@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Form, Button, Col, Row, Select, Checkbox, Input } from 'antd'
 
@@ -43,6 +43,13 @@ function Settings({
 	)
 		? true
 		: false || (sbsPlans && sbsPlans?.currentPackage?.status === 3)
+
+	useEffect(() => {
+		if (!product?.dropship_id) {
+			onChangeVariant(index, 'dropship_location', null)
+			onChangeVariant(index, 'dropship_enabled', false)
+		}
+	}, [index, onChangeVariant, product?.dropship_id])
 
 	return (
 		<Fragment key={index}>

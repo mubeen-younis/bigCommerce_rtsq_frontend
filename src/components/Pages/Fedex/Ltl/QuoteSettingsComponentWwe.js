@@ -56,6 +56,7 @@ function QuoteSettingsComponentWwe(props) {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
 			getQuoteSettings()
 		}
+		// eslint-disable-next-line
 	}, [props.quoteSettings])
 
 	const radCheck = props.installedAddons.find(
