@@ -1,5 +1,15 @@
 import React, { Fragment, useState } from 'react'
-import { Form, Input, Button, Space, Skeleton, Select, Row, Col, Typography } from 'antd'
+import {
+	Form,
+	Input,
+	Button,
+	Space,
+	Skeleton,
+	Select,
+	Row,
+	Col,
+	Typography,
+} from 'antd'
 import { connect } from 'react-redux'
 
 import { postData } from '../../../Actions/Action'
@@ -11,17 +21,17 @@ function ConnectionSettingsComponent(props) {
 		testType: false,
 		skeleton_loading: true,
 	})
-	const [component, setComponent] = useState(1)
-	const [srevices, setsrevices] = useState({
-		domestic: {
-			next_day_air_discount: '',
-			next_day_air_saver_discount: '',
-			second_day_air_discount: '',
-			three_day_select_discount: '',
-			three_day_select_minimum: '',
-		},
-		international: {},
-	})
+	const [component /* setComponent */] = useState(1)
+	// const [srevices, setsrevices] = useState({
+	// 	domestic: {
+	// 		next_day_air_discount: '',
+	// 		next_day_air_saver_discount: '',
+	// 		second_day_air_discount: '',
+	// 		three_day_select_discount: '',
+	// 		three_day_select_minimum: '',
+	// 	},
+	// 	international: {},
+	// })
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
@@ -35,7 +45,10 @@ function ConnectionSettingsComponent(props) {
 		props.postData(values, props.token)
 	}
 
-	if (props.connectionSettings === null || props.connectionSettings === undefined) {
+	if (
+		props.connectionSettings === null ||
+		props.connectionSettings === undefined
+	) {
 		return <Skeleton active />
 	} else {
 		if (Object.keys(props.connectionSettings)?.length === 0) {
@@ -55,8 +68,9 @@ function ConnectionSettingsComponent(props) {
 					<strong>Note! </strong>
 					{+component === 1 ? (
 						<span>
-							You must have a UPS Small account to use this application. If
-							you do not have one contact UPS at 800-742-5877 or{' '}
+							You must have a UPS Small account to use this
+							application. If you do not have one contact UPS at
+							800-742-5877 or{' '}
 							<a
 								href='https://www.ups.com/lasso/login'
 								target='_blank'
@@ -67,8 +81,8 @@ function ConnectionSettingsComponent(props) {
 						</span>
 					) : (
 						<span>
-							You must have a UPS account or be using UPS through Shopify
-							Shipping to use this app.
+							You must have a UPS account or be using UPS through
+							Shopify Shipping to use this app.
 						</span>
 					)}
 				</div>
@@ -256,4 +270,7 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConnectionSettingsComponent)
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ConnectionSettingsComponent)

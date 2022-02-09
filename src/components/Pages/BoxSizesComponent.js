@@ -74,7 +74,10 @@ const boxTypes = [
 		label: 'Fedex Pak - Padded (11.75 x 14.75 x 1.25)',
 		id: 'FEDEX_PAK__11-75_14-75_1-25-1',
 	},
-	{ label: 'Fedex Pak - Reusable (10 x 14.5 x 1.25)', id: 'FEDEX_PAK__10_14-5_1-25-1' },
+	{
+		label: 'Fedex Pak - Reusable (10 x 14.5 x 1.25)',
+		id: 'FEDEX_PAK__10_14-5_1-25-1',
+	},
 	{
 		label: 'Fedex Small Box (10.875 x 1.5 x 12.375)',
 		id: 'FEDEX_SMALL_BOX__10-875_1-5_12-375_1',
@@ -128,6 +131,7 @@ function BoxSizesComponent(props) {
 		console.log('use effect')
 		props.getBoxSizes(props.token)
 		dispatch(getProductBoxSizes(props.token))
+		// eslint-disable-next-line
 	}, [dispatch])
 
 	const populateBoxValues = useCallback(
@@ -209,7 +213,8 @@ function BoxSizesComponent(props) {
 				},
 			})
 		} else {
-			const boxType = values?.box_name === 'Merchant defined Box (default)' ? 1 : 2
+			const boxType =
+				values?.box_name === 'Merchant defined Box (default)' ? 1 : 2
 			if (!operation) {
 				props.addBoxSize(
 					props.token,
@@ -537,7 +542,9 @@ function BoxSizesComponent(props) {
 									destroyOnClose={true}
 									footer={null}
 									width={800}
-									cancelButtonProps={{ style: { display: 'none' } }}>
+									cancelButtonProps={{
+										style: { display: 'none' },
+									}}>
 									{loadBoxSize ? (
 										<Skeleton active />
 									) : (
@@ -594,11 +601,13 @@ function BoxSizesComponent(props) {
 																//defaultValue='Merchant defined Box (default)'
 																//name='box_name'
 																onChange={opt =>
-																	populateBoxValues(opt)
+																	populateBoxValues(
+																		opt
+																	)
 																}>
 																<Option value='Merchant defined Box (default)'>
-																	Merchant defined Box
-																	(default)
+																	Merchant defined
+																	Box (default)
 																</Option>
 																{boxTypes.map(bt => (
 																	<Option
@@ -633,8 +642,8 @@ function BoxSizesComponent(props) {
 																//defaultValue='Merchant defined Box (default)'
 																name='box_name'>
 																<Option value='Merchant defined Box (default)'>
-																	Merchant defined Box
-																	(default)
+																	Merchant defined
+																	Box (default)
 																</Option>
 															</Select>
 														</Form.Item>
@@ -661,7 +670,9 @@ function BoxSizesComponent(props) {
 														]}>
 														<Input
 															type='number'
-															onKeyDown={blockInvalidChar}
+															onKeyDown={
+																blockInvalidChar
+															}
 															min='0'
 															step='0.001'
 															placeholder='Length (in)'
@@ -683,12 +694,15 @@ function BoxSizesComponent(props) {
 														rules={[
 															{
 																required: true,
-																message: 'Width Required',
+																message:
+																	'Width Required',
 															},
 														]}>
 														<Input
 															type='number'
-															onKeyDown={handlingFeeMarkup}
+															onKeyDown={
+																handlingFeeMarkup
+															}
 															step='0.001'
 															min={0}
 															placeholder='Width (in)'
@@ -715,7 +729,9 @@ function BoxSizesComponent(props) {
 														]}>
 														<Input
 															type='number'
-															onKeyDown={handlingFeeMarkup}
+															onKeyDown={
+																handlingFeeMarkup
+															}
 															step='0.001'
 															min={0}
 															placeholder='Height (in)'
@@ -742,7 +758,9 @@ function BoxSizesComponent(props) {
 														]}>
 														<Input
 															type='number'
-															onKeyDown={handlingFeeMarkup}
+															onKeyDown={
+																handlingFeeMarkup
+															}
 															step='0.001'
 															min={0}
 															placeholder='Max Weight'
@@ -769,7 +787,9 @@ function BoxSizesComponent(props) {
 														]}>
 														<Input
 															type='number'
-															onKeyDown={handlingFeeMarkup}
+															onKeyDown={
+																handlingFeeMarkup
+															}
 															step='0.001'
 															min={0}
 															placeholder='Box Weight'
@@ -789,7 +809,9 @@ function BoxSizesComponent(props) {
 														name='box_fee'>
 														<Input
 															type='number'
-															onKeyDown={handlingFeeMarkup}
+															onKeyDown={
+																handlingFeeMarkup
+															}
 															step='0.01'
 															maxLength='7'
 															min={0}
@@ -811,7 +833,8 @@ function BoxSizesComponent(props) {
 																setBoxSize({
 																	...boxSize,
 																	is_available:
-																		e.target.checked,
+																		e.target
+																			.checked,
 																})
 															}
 															checked={
@@ -1072,7 +1095,10 @@ function BoxSizesComponent(props) {
 											</Form.Item>
 										</Col>
 									</Row>
-									<Row gutter={30} align='middle' className={'mt-3'}>
+									<Row
+										gutter={30}
+										align='middle'
+										className={'mt-3'}>
 										<Col
 											className='gutter-row'
 											xs={24}
@@ -1102,8 +1128,8 @@ function BoxSizesComponent(props) {
 						<Title level={5}>Items that ship as multiple packages</Title>
 						<p>
 							In order for an item to appear below, it must have the{' '}
-							<b>This item ships as multiple packages</b> setting enabled on
-							its Product Settings
+							<b>This item ships as multiple packages</b> setting
+							enabled on its Product Settings
 						</p>
 						<br />
 
@@ -1146,7 +1172,11 @@ function BoxSizesComponent(props) {
 						props.deleteBoxSize(recordId, props.token, setDeleteBoxModal)
 					} else if (boxType === 'product box') {
 						dispatch(
-							deleteProductBoxSize(recordId, props.token, setDeleteBoxModal)
+							deleteProductBoxSize(
+								recordId,
+								props.token,
+								setDeleteBoxModal
+							)
 						)
 					}
 				}}

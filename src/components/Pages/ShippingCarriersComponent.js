@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Button, Typography, Card, Image, Avatar } from 'antd'
-import { connect, useDispatch, useSelector } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 
 import {
 	installCarrier,
@@ -18,7 +18,7 @@ const { Title } = Typography
 
 function ShippingCarriersComponent(props) {
 	const dispatch = useDispatch()
-	const { currentPlan } = useSelector(state => state)
+	// const { currentPlan } = useSelector(state => state)
 	const getInstalledCarriers = (carrier_type = 1) => {
 		return props.installedCarriers.map((value, key) => {
 			return (

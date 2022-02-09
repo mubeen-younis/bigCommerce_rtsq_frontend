@@ -1,11 +1,13 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
-import {
-	Row, Form, Col, Input, Skeleton } from 'antd'
+import { Row, Form, Col, Input, Skeleton } from 'antd'
 
 import { connect, useDispatch } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
 import { getQuoteSettings } from '../../../../Actions/Settings'
-import { validateHandlingFeeMarkup, LableAsLimit } from '../../../../Utilities/numberValidation'
+import {
+	validateHandlingFeeMarkup,
+	LableAsLimit,
+} from '../../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../CutOffTime'
 import RAD from '../../../RAD'
@@ -47,6 +49,7 @@ function QuoteSettingsComponentWwe(props) {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
 			getQuoteSettings()
 		}
+		// eslint-disable-next-line
 	}, [props.quoteSettings])
 
 	const radCheck = props.installedAddons.find(
@@ -63,8 +66,7 @@ function QuoteSettingsComponentWwe(props) {
 				: true
 	}
 
-	const getQuoteSettings = () =>
-	{
+	const getQuoteSettings = () => {
 		setQuoteSettingsState({
 			...quoteSettingsState,
 			...props.quoteSettings,
@@ -83,8 +85,7 @@ function QuoteSettingsComponentWwe(props) {
 		if (!data?.hold_at_terminal) {
 			data = {
 				...data,
-				hold_at_terminal_price:
-					props?.quoteSettings?.hold_at_terminal_price,
+				hold_at_terminal_price: props?.quoteSettings?.hold_at_terminal_price,
 			}
 		}
 		let errormsg = ''
@@ -177,7 +178,8 @@ function QuoteSettingsComponentWwe(props) {
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
-							What the user sees during checkout, e.g. "Freight". If left blank will default to "Freight".
+							What the user sees during checkout, e.g. "Freight". If
+							left blank will default to "Freight".
 						</div>
 					</Col>
 				</Row>
@@ -237,12 +239,7 @@ const mapDispatchToProps = dispatch => {
 	return {
 		postData: (data, token) =>
 			dispatch(
-				postData(
-					data,
-					'GET_QUOTE_SETTINGS',
-					'submit_quote_settings',
-					token
-				)
+				postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)
 			),
 		getSettings: (token, carrier_id) =>
 			dispatch(getQuoteSettings(token, carrier_id)),
