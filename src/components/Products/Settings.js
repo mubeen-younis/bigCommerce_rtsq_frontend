@@ -5,7 +5,7 @@ import { Form, Button, Col, Row, Select, Checkbox, Input } from 'antd'
 const { Option } = Select
 const smallCarriers = ['small-package', 'ups-small', 'fedex-small']
 
-function Settings({
+const Settings = ({
 	count,
 	product,
 	index,
@@ -13,7 +13,7 @@ function Settings({
 	copyShippingParams,
 	onChangeVariant,
 	addonCheck,
-}) {
+}) => {
 	const {
 		dropships,
 		insuranceStatus,
@@ -48,8 +48,17 @@ function Settings({
 		if (!product?.dropship_id) {
 			onChangeVariant(index, 'dropship_location', null)
 			onChangeVariant(index, 'dropship_enabled', false)
+		} else {
+			onChangeVariant(index, 'dropship_location', product.dropship_id)
+			onChangeVariant(index, 'dropship_enabled', true)
 		}
-	}, [index, onChangeVariant, product?.dropship_id])
+
+		if (isSbsSuspended) {
+			onChangeVariant(index, 'allow_vertical', false)
+			onChangeVariant(index, 'ship_own_package', false)
+			onChangeVariant(index, 'ship_multiple_package', false)
+		}
+	}, [index, isSbsSuspended, onChangeVariant, product?.dropship_id])
 
 	return (
 		<Fragment key={index}>

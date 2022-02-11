@@ -8,6 +8,7 @@ const initialState = {
 	carriersSettings: null,
 	plansInfo: null,
 	currentPlan: null,
+	sbsPlans: null,
 	boxSizes: null,
 	services: null,
 	filteredServices: null,
