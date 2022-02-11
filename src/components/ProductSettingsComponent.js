@@ -424,6 +424,7 @@ function ProductSettingsComponent(props) {
 		let msg = ''
 
 		for (const prd of productVariants) {
+			console.log(prd.dropship_enabled,prd.dropship_location)
 			if (prd.weight === null || prd.weight <= 0) {
 				error = true
 				msg = 'Weight must be greater than 0.'
@@ -437,13 +438,10 @@ function ProductSettingsComponent(props) {
 				error = true
 				msg = 'Height must be greater than 0.'
 			} else if (
-				prd.dropship_enabled !== undefined &&
-				prd.dropship_enabled !== null &&
-				prd.dropship_enabled !== false
+				prd.dropship_enabled===1 || prd.dropship_enabled 
 			) {
 				if (
-					prd.dropship_location === undefined ||
-					prd.dropship_location === null
+					!prd.dropship_location
 				) {
 					error = true
 					msg = 'Dropship location is required'
