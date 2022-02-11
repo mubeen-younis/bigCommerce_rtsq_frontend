@@ -45,20 +45,13 @@ const Settings = ({
 		: false || (sbsPlans && sbsPlans?.currentPackage?.status === 3)
 
 	useEffect(() => {
-		if (!product?.dropship_id) {
-			onChangeVariant(index, 'dropship_location', null)
-			onChangeVariant(index, 'dropship_enabled', false)
-		} else {
-			onChangeVariant(index, 'dropship_location', product.dropship_id)
-			onChangeVariant(index, 'dropship_enabled', true)
-		}
 
 		if (isSbsSuspended) {
 			onChangeVariant(index, 'allow_vertical', false)
 			onChangeVariant(index, 'ship_own_package', false)
 			onChangeVariant(index, 'ship_multiple_package', false)
 		}
-	}, [index, isSbsSuspended, onChangeVariant, product?.dropship_id])
+	}, [index, isSbsSuspended, onChangeVariant])
 
 	return (
 		<Fragment key={index}>
