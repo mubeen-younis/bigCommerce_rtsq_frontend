@@ -49,6 +49,7 @@ function QuoteSettingsComponentWweSmall(props) {
 	const [internationalcheckAll, setInternationalCheckAll] = useState(false)
 	const [oneRatecheckAll, setOneRateCheckAll] = useState(false)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
+	const [sbsCheck, setSbsCheck] = useState(true)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -57,6 +58,19 @@ function QuoteSettingsComponentWweSmall(props) {
 		}
 		// eslint-disable-next-line
 	}, [props.quoteSettings])
+
+	useEffect(() => {
+		const status = props?.sbsPlans?.currentPackage?.status === 1
+		if (
+			status &&
+			props?.installedAddons?.find(
+				({ short_code, is_enabled }) =>
+					short_code === 'SBS' && is_enabled === 1
+			)
+		) {
+			setSbsCheck(false)
+		}
+	}, [props?.installedAddons, props?.sbsPlans])
 
 	const getQuoteSettings = () => {
 		let checks = domestic_services
@@ -321,7 +335,7 @@ function QuoteSettingsComponentWweSmall(props) {
 				initialValues={props.quoteSettings}>
 				{/* FEDEX SERVICES */}
 				<Row gutter={30} align='middle' className={'mb-4'}>
-					{props?.sbsPlans?.currentPackage?.status !== 1 && (
+					{sbsCheck && (
 						<Col
 							className='gutter-row'
 							xs={24}

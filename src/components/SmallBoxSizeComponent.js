@@ -2,7 +2,6 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Row, Col, Checkbox, Typography, Card, Select, Skeleton, Modal } from 'antd'
 import { connect, useDispatch } from 'react-redux'
 // import { useParams } from 'react-router-dom'
-
 import { getSbsPlans, changePlan, changeAddonSuspendStatus } from '../Actions/SBS'
 
 const { Title } = Typography
@@ -14,17 +13,17 @@ function AutoDetectResidentialComponent(props) {
 	const [cancelSubsriptionVisible, SetCancelSubsriptionVisible] = useState(false)
 	const [newPlan, SetNewPlan] = useState(0)
 	const dispatch = useDispatch()
+	const { sbsPlans, getSbsPlans, token } = props
+
 	useEffect(() => {
-		if (!props.sbsPlans) {
-			props.getSbsPlans(props.token)
+		if (!sbsPlans) {
+			getSbsPlans(token)
 		}
 
 		/*props.installedAddons.forEach(ia =>
 			ia.id === +addon_id ? setSuspend(ia.is_suspend) : null
 		);*/
-
-		// eslint-disable-next-line
-	}, [])
+	}, [getSbsPlans, sbsPlans, token])
 
 	const changePlan = () => {
 		props.changePlan(props.token, newPlan?.id, SetCancelSubsriptionVisible)

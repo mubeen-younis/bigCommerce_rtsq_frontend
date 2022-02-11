@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Layout, message, Modal, Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { Layout, message, Modal, Spin } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
 import './App.css'
 import './responsive.css'
 import SideMenu from './partials/SideMenu'
@@ -16,12 +16,12 @@ import {
 } from './Actions/EnitureStore'
 import { getPlans } from './Actions/Plans'
 import { getRadPlans } from './Actions/RAD'
+import { getSbsPlans } from './Actions/SBS'
 import RendorCarrier from './components/RendorCarrier'
 import RendorAddon from './components/RenderAddon'
 import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent'
 import PlansComponent from './components/Plans/PlansComponent'
 import { setStore, getCurrentPlanInfo } from './Actions/Action'
-
 
 const { Header, Content } = Layout
 
@@ -43,6 +43,7 @@ function App(props) {
 		showAlertMessage,
 		confirmModalAction,
 		getRADPlans,
+		getSbsPlans,
 		currentPlan,
 		getStorePlans,
 		setStoreData,
@@ -50,8 +51,7 @@ function App(props) {
 
 	const urlParams = new URLSearchParams(window.location.search)
 
-	useEffect(() =>
-	{
+	useEffect(() => {
 		const store =
 			urlParams.get('store') !== (undefined || null)
 				? urlParams.get('store')
@@ -64,6 +64,7 @@ function App(props) {
 		}
 
 		getRADPlans(store)
+		getSbsPlans(store)
 		locations(store)
 		getAllCarriers(store)
 		getAllAddons(store)
@@ -71,7 +72,7 @@ function App(props) {
 		getInstalledAddons(store)
 		getStorePlans()
 
-		//eslint-disable-next-line
+		// eslint-disable-next-line
 	}, [])
 
 	message.config({
@@ -133,10 +134,22 @@ function App(props) {
 					<Header className={'top-header'} style={{ padding: 0 }} />
 					<Content className={'body-content'}>
 						<Switch>
-							<Route exact path='/' component={ShippingCarriersComponent} />
+							<Route
+								exact
+								path='/'
+								component={ShippingCarriersComponent}
+							/>
 							<Route exact path='/plans' component={PlansComponent} />
-							<Route exact path='/addon/:addon_id' component={RendorAddon} />
-							<Route exact path='/:carrier_id' component={RendorCarrier} />
+							<Route
+								exact
+								path='/addon/:addon_id'
+								component={RendorAddon}
+							/>
+							<Route
+								exact
+								path='/:carrier_id'
+								component={RendorCarrier}
+							/>
 						</Switch>
 
 						<Modal
@@ -145,8 +158,7 @@ function App(props) {
 							onOk={() => confirmModal(true, false)}
 							onCancel={() => confirmModal(false, true)}
 							okText='Confirm'
-							cancelText='Cancel'
-						>
+							cancelText='Cancel'>
 							<p>{confirmModal !== null ? confirmModal.body : ''}</p>
 						</Modal>
 					</Content>
@@ -165,7 +177,7 @@ const mapStateToProps = state => {
 		token: state.token,
 		confirmModal: state.confirmModal,
 		plansInfo: state.PlansInfo,
-		currentPlan:state.currentPlan,
+		currentPlan: state.currentPlan,
 		installedCarriers: state.installedCarriers,
 		installedAddons: state.installedAddons,
 		carriers: state.carriers,
@@ -181,6 +193,7 @@ const mapDispatchToProps = dispatch => {
 		getInstalledCarriers: store => dispatch(getInstalledCarriers({ store })),
 		getInstalledAddons: store => dispatch(getInstalledAddons({ store })),
 		getRADPlans: token => dispatch(getRadPlans(token)),
+		getSbsPlans: token => dispatch(getSbsPlans(token)),
 		getStorePlans: () => dispatch(getPlans()),
 		setToken: token => {
 			localStorage.setItem('store', token)
