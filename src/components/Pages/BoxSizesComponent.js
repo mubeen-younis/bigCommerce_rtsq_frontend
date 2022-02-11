@@ -43,6 +43,9 @@ const initialState = {
 	width: '',
 	height: '',
 	max_weight: '',
+	int_length: '',
+	int_width: '',
+	int_height: '',
 	box_weight: '',
 	box_fee: '',
 	is_available: false,
@@ -463,6 +466,7 @@ function BoxSizesComponent(props) {
 		add => add.name === 'Standard Box Sizes'
 	)
 	console.log(addonCheck, props?.sbsPlans)
+
 	return !addonCheck ? (
 		<h1>
 			Click <Link to='/'>here</Link> to add the {addonCheck?.name} add-on.
@@ -659,13 +663,13 @@ function BoxSizesComponent(props) {
 													xl={12}>
 													<Form.Item
 														className={'mb-2'}
-														label='Length (in)'
+														label='Exterior Length (in)'
 														name='length'
 														rules={[
 															{
 																required: true,
 																message:
-																	'Length Required',
+																	'Exterior Length Required',
 															},
 														]}>
 														<Input
@@ -675,7 +679,7 @@ function BoxSizesComponent(props) {
 															}
 															min='0'
 															step='0.001'
-															placeholder='Length (in)'
+															placeholder='Exterior Length (in)'
 															//pattern='[0-9.?(0-9){2}?]+%?$'
 														/>
 													</Form.Item>
@@ -689,13 +693,13 @@ function BoxSizesComponent(props) {
 													xl={12}>
 													<Form.Item
 														className={'mb-2'}
-														label='Width (in)'
+														label='Exterior Width (in)'
 														name='width'
 														rules={[
 															{
 																required: true,
 																message:
-																	'Width Required',
+																	'Exterior Width Required',
 															},
 														]}>
 														<Input
@@ -705,7 +709,7 @@ function BoxSizesComponent(props) {
 															}
 															step='0.001'
 															min={0}
-															placeholder='Width (in)'
+															placeholder='Exterior Width (in)'
 														/>
 													</Form.Item>
 												</Col>
@@ -718,13 +722,13 @@ function BoxSizesComponent(props) {
 													xl={12}>
 													<Form.Item
 														className={'mb-2'}
-														label='Height (in)'
+														label='Exterior Height (in)'
 														name='height'
 														rules={[
 															{
 																required: true,
 																message:
-																	'Height Required',
+																	'Exterior Height Required',
 															},
 														]}>
 														<Input
@@ -734,7 +738,95 @@ function BoxSizesComponent(props) {
 															}
 															step='0.001'
 															min={0}
-															placeholder='Height (in)'
+															placeholder='Exterior Height (in)'
+														/>
+													</Form.Item>
+												</Col>
+												<Col
+													className='gutter-row'
+													xs={24}
+													sm={24}
+													md={24}
+													lg={12}
+													xl={12}>
+													<Form.Item
+														className={'mb-2'}
+														label='Interior Length (inches)'
+														name='interior_length'
+														rules={[
+															{
+																required: true,
+																message:
+																	'Interior Length Required',
+															},
+														]}>
+														<Input
+															type='number'
+															onKeyDown={
+																blockInvalidChar
+															}
+															min='0'
+															step='0.001'
+															placeholder='Interior Length (inches)'
+															//pattern='[0-9.?(0-9){2}?]+%?$'
+														/>
+													</Form.Item>
+												</Col>
+												<Col
+													className='gutter-row'
+													xs={24}
+													sm={24}
+													md={24}
+													lg={12}
+													xl={12}>
+													<Form.Item
+														className={'mb-2'}
+														label='Interior Width (inches)'
+														name='interior_width'
+														rules={[
+															{
+																required: true,
+																message:
+																	'Interior Width Required',
+															},
+														]}>
+														<Input
+															type='number'
+															onKeyDown={
+																handlingFeeMarkup
+															}
+															step='0.001'
+															min={0}
+															placeholder='Interior Width (in)'
+														/>
+													</Form.Item>
+												</Col>
+												<Col
+													className='gutter-row'
+													xs={24}
+													sm={24}
+													md={24}
+													lg={12}
+													xl={12}>
+													<Form.Item
+														className={'mb-2'}
+														label='Interior Height (inches)'
+														name='interior_height'
+														rules={[
+															{
+																required: true,
+																message:
+																	'Interior Height Required',
+															},
+														]}>
+														<Input
+															type='number'
+															onKeyDown={
+																handlingFeeMarkup
+															}
+															step='0.001'
+															min={0}
+															placeholder='Interior Height (in)'
 														/>
 													</Form.Item>
 												</Col>
@@ -966,7 +1058,6 @@ function BoxSizesComponent(props) {
 												<Input placeholder='Nickname' />
 											</Form.Item>
 										</Col>
-
 										<Col
 											className='gutter-row'
 											xs={24}
