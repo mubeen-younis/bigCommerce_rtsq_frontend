@@ -56,7 +56,10 @@ function ConnectionSettingsComponent(props) {
 		props.postData(values, props.token)
 	}
 
-	if (props.connectionSettings === null || props.connectionSettings === undefined) {
+	if (
+		props.connectionSettings === null ||
+		props.connectionSettings === undefined
+	) {
 		return <Skeleton active />
 	} else {
 		if (Object.keys(props.connectionSettings)?.length === 0) {
@@ -66,10 +69,13 @@ function ConnectionSettingsComponent(props) {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have a freight enabled Fedex account to
-				use this application. If you do not have one, contact Fedex at
+				<strong>Note!</strong> You must have a freight enabled Fedex account
+				to use this application. If you do not have one, contact Fedex at
 				800-463-3339 or{' '}
-				<a href='http://www.fedex.com/us/oadr/' target='_blank' rel='noreferrer'>
+				<a
+					href='http://www.fedex.com/us/oadr/'
+					target='_blank'
+					rel='noreferrer'>
 					register online
 				</a>
 				.
@@ -176,7 +182,8 @@ function ConnectionSettingsComponent(props) {
 				</Row>
 
 				<Form.Item name='remember'>
-					<Checkbox onChange={e => copyBillingAdressValues(e.target.checked)}>
+					<Checkbox
+						onChange={e => copyBillingAdressValues(e.target.checked)}>
 						Copy billing address to physical address.
 					</Checkbox>
 				</Form.Item>
@@ -186,7 +193,9 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='Physical Address'
 							name='physical_address'
-							rules={[{ required: true, message: 'Shipping Address' }]}>
+							rules={[
+								{ required: true, message: 'Shipping Address' },
+							]}>
 							<Input type='text' placeholder='Shipping Address' />
 						</Form.Item>
 					</Col>
@@ -239,7 +248,9 @@ function ConnectionSettingsComponent(props) {
 					</Col>
 				</Row>
 
-				<Form.Item label='Third Party Account Number' name='third_party_account'>
+				<Form.Item
+					label='Third Party Account Number'
+					name='third_party_account'>
 					<Input type='text' />
 				</Form.Item>
 
@@ -258,6 +269,7 @@ function ConnectionSettingsComponent(props) {
 							size={'large'}
 							htmlType='submit'
 							name={`save`}
+							loading={false}
 							onClick={() => handleTypeChange(false)}>
 							Save Settings
 						</Button>
@@ -291,4 +303,7 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConnectionSettingsComponent)
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ConnectionSettingsComponent)

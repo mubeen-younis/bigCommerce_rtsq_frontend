@@ -11,17 +11,16 @@ function ConnectionSettingsComponent(props) {
 	})
 	const [accessType, setAccessType] = useState(0)
 
-	
-
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
 	}
 
-	useEffect(()=>{
-		if(props.connectionSettings && accessType === 0){
-			setAccessType(props?.connectionSettings?.access_level === 'pro' ? 2:1)
+	useEffect(() => {
+		if (props.connectionSettings && accessType === 0) {
+			setAccessType(props?.connectionSettings?.access_level === 'pro' ? 2 : 1)
 		}
-	},[props.connectionSettings])
+		// eslint-disable-next-line
+	}, [props.connectionSettings])
 
 	const onFinish = values => {
 		values.testType = connectionState.testType
@@ -45,8 +44,7 @@ function ConnectionSettingsComponent(props) {
 		<Fragment>
 			<div className={'note-bx'}>
 				<strong>Note!</strong> You must have an XPO account to use this
-				application. If you do not have one, contact XPO at
-				800-755-2728, or{' '}
+				application. If you do not have one, contact XPO at 800-755-2728, or{' '}
 				<a
 					href='https://ltl.xpo.com/webapp/membership_app/membershipSignupCompanySearch.do'
 					target='_blank'
@@ -105,11 +103,10 @@ function ConnectionSettingsComponent(props) {
 					name='bill_to_account_number'
 					rules={[
 						{
-							required: accessType === 2 ,
+							required: accessType === 2,
 							message: 'Bill To Account Number',
 						},
-					]}
-					>
+					]}>
 					<Input placeholder='Bill To Account Number ' />
 				</Form.Item>
 
@@ -122,8 +119,12 @@ function ConnectionSettingsComponent(props) {
 					// label='Access Level'
 					rules={[{ required: false, message: 'Access Level' }]}>
 					<Radio.Group>
-						<Radio onChange={()=>setAccessType(1) } value='test'>Test Account Number</Radio>
-						<Radio onChange={()=>setAccessType(2) } value='pro'>Test Bill To Account Number</Radio>
+						<Radio onChange={() => setAccessType(1)} value='test'>
+							Test Account Number
+						</Radio>
+						<Radio onChange={() => setAccessType(2)} value='pro'>
+							Test Bill To Account Number
+						</Radio>
 					</Radio.Group>
 				</Form.Item>
 

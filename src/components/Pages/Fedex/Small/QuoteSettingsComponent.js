@@ -1,19 +1,21 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
-import {
-	Typography, Row, Col, Form, Input, Skeleton, Radio } from 'antd'
+import { Typography, Row, Col, Form, Input, Skeleton, Radio } from 'antd'
 import { connect, useDispatch } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
 import { getQuoteSettings } from '../../../../Actions/Settings'
-import { handlingFeeMarkup, validateHandlingFeeMarkup } from '../../../../Utilities/numberValidation'
-import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions';
+import {
+	handlingFeeMarkup,
+	validateHandlingFeeMarkup,
+} from '../../../../Utilities/numberValidation'
+import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../CutOffTime'
 import RAD from '../../../RAD'
 import InternationalServices from './Services/InternationalServices'
 import OneRateServices from './Services/OneRateServices'
 import DomesticServices from './Services/DomesticServices'
-import { domestic_services }from './Services/DomesticServices'
-import { one_rate_services }from './Services/OneRateServices'
-import { international_services }from './Services/InternationalServices'
+import { domestic_services } from './Services/DomesticServices'
+import { one_rate_services } from './Services/OneRateServices'
+import { international_services } from './Services/InternationalServices'
 import GroundTransit from '../../../GroundTransit'
 import HazardousMaterial from '../../../HazardousMaterial'
 import SaveButton from '../../../SaveButton'
@@ -26,7 +28,7 @@ const initialState = {
 	showDeliveryEstimate: false,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
-	select_all_week_days: true,
+	all_week_days_select: true,
 	week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
 	number_of_transit_days: null,
 	ground_metric: 1,
@@ -47,6 +49,7 @@ function QuoteSettingsComponentWweSmall(props) {
 	const [internationalcheckAll, setInternationalCheckAll] = useState(false)
 	const [oneRatecheckAll, setOneRateCheckAll] = useState(false)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
+	const [sbsCheck, setSbsCheck] = useState(true)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -55,6 +58,19 @@ function QuoteSettingsComponentWweSmall(props) {
 		}
 		// eslint-disable-next-line
 	}, [props.quoteSettings])
+
+	useEffect(() => {
+		const status = props?.sbsPlans?.currentPackage?.status === 1
+		if (
+			status &&
+			props?.installedAddons?.find(
+				({ short_code, is_enabled }) =>
+					short_code === 'SBS' && is_enabled === 1
+			)
+		) {
+			setSbsCheck(false)
+		}
+	}, [props?.installedAddons, props?.sbsPlans])
 
 	const getQuoteSettings = () => {
 		let checks = domestic_services
@@ -79,7 +95,9 @@ function QuoteSettingsComponentWweSmall(props) {
 		if (checks) setOneRateCheckAll(true)
 
 		checks = international_services
-			.map(srvc => props?.quoteSettings?.carrier_services?.[generateIndex(srvc)])
+			.map(
+				srvc => props?.quoteSettings?.carrier_services?.[generateIndex(srvc)]
+			)
 			.every(ck => ck)
 		if (checks) setInternationalCheckAll(true)
 
@@ -139,7 +157,10 @@ function QuoteSettingsComponentWweSmall(props) {
 		setInternationalCheckAll(internationalCheckedAll)
 	}
 
-	const generateIndex = useCallback(srvc => srvc.toLowerCase().replaceAll(' ', '_'), [])
+	const generateIndex = useCallback(
+		srvc => srvc.toLowerCase().replaceAll(' ', '_'),
+		[]
+	)
 
 	const allCheckHandler = useCallback(
 		(allCheckType, checked = false, services, prefix = '') => {
@@ -185,7 +206,8 @@ function QuoteSettingsComponentWweSmall(props) {
 							]
 					),
 				...international_services.map(
-					srvc => quoteSettingsState?.carrier_services?.[generateIndex(srvc)]
+					srvc =>
+						quoteSettingsState?.carrier_services?.[generateIndex(srvc)]
 				),
 			].some(srvc => srvc)
 
@@ -313,24 +335,42 @@ function QuoteSettingsComponentWweSmall(props) {
 				initialValues={props.quoteSettings}>
 				{/* FEDEX SERVICES */}
 				<Row gutter={30} align='middle' className={'mb-4'}>
-					
-					{ props?.sbsPlans?.currentPackage?.status !== 1 &&
-						<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+					{sbsCheck && (
+						<Col
+							className='gutter-row'
+							xs={24}
+							sm={24}
+							md={24}
+							lg={24}
+							xl={24}>
 							<div className={'note-bx'}>
-								Standard Box size feature is required for the One Rate services.
+								Standard Box size feature is required for the One
+								Rate services.
 							</div>
 						</Col>
-					}
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+					)}
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
 						<Title level={4}>Fedex Services</Title>
 					</Col>
 
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
 						<label className={'text-black'}>
-							The services selected will display in the cart if they are
-							available for the origin and destination addresses, and if the
-							Fedex Small Package Quotes API has been enabled for the
-							corresponding shipping zone.
+							The services selected will display in the cart if they
+							are available for the origin and destination addresses,
+							and if the Fedex Small Package Quotes API has been
+							enabled for the corresponding shipping zone.
 						</label>
 					</Col>
 				</Row>
@@ -344,7 +384,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						allCheckHandler={allCheckHandler}
 						onChange={onChange}
 						onCheck={onCheck}
-					/>	
+					/>
 
 					{/* One Rate Services */}
 					<OneRateServices
@@ -353,14 +393,14 @@ function QuoteSettingsComponentWweSmall(props) {
 						oneRatecheckAll={oneRatecheckAll}
 						setOneRateCheckAll={setOneRateCheckAll}
 						onCheck={onCheck}
-					/>	
+					/>
 
 					{/* International Services */}
 					<InternationalServices
 						quoteSettingsState={quoteSettingsState}
 						allCheckHandler={allCheckHandler}
 						internationalcheckAll={internationalcheckAll}
-						setInternationalCheckAll={setInternationalCheckAll}	
+						setInternationalCheckAll={setInternationalCheckAll}
 						onCheck={onCheck}
 						onChange={onChange}
 					/>
@@ -370,7 +410,7 @@ function QuoteSettingsComponentWweSmall(props) {
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
-				/>	
+				/>
 				<CutOffTime
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -379,7 +419,7 @@ function QuoteSettingsComponentWweSmall(props) {
 				<GroundTransit
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
-				/>	
+				/>
 				<RAD
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -392,7 +432,13 @@ function QuoteSettingsComponentWweSmall(props) {
 
 				{/* Other Settings */}
 				<Row gutter={24} className={'mb-4'}>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
 						<Title level={4}>Other settings</Title>
 					</Col>
 					{/*}<Col
@@ -424,7 +470,13 @@ function QuoteSettingsComponentWweSmall(props) {
 						style={{ paddingTop: '11px' }}>
 						<label className={'text-gray'}>Handling Fee / Markup</label>
 					</Col>
-					<Col className='gutter-row mb-2' xs={24} sm={24} md={24} lg={18} xl={18}>
+					<Col
+						className='gutter-row mb-2'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={18}
+						xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Input
 								type='text'
@@ -445,7 +497,7 @@ function QuoteSettingsComponentWweSmall(props) {
 							percentage, e.g, 5%. Leave blank to disable.
 						</div>
 					</Col>
-						
+
 					<Col
 						className='gutter-row'
 						xs={24}
@@ -456,7 +508,13 @@ function QuoteSettingsComponentWweSmall(props) {
 						style={{ paddingTop: '11px' }}>
 						<label className={'text-gray'}>Negotiated Rates</label>
 					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={18}>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={18}
+						xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Radio
 								name='negotiated_rates'
@@ -471,8 +529,8 @@ function QuoteSettingsComponentWweSmall(props) {
 								Show Negotiated Rates.
 							</Radio>
 						</Form.Item>
-						</Col>
-						<Col
+					</Col>
+					<Col
 						className='gutter-row'
 						xs={24}
 						sm={24}
@@ -482,9 +540,15 @@ function QuoteSettingsComponentWweSmall(props) {
 						style={{ paddingTop: '11px' }}>
 						<label className={'text-gray'}></label>
 					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={18}>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={18}
+						xl={18}>
 						<Form.Item className={'mb-0'}>
-						<Radio
+							<Radio
 								name='negotiated_rates'
 								value='2'
 								checked={quoteSettingsState.negotiated_rates === 2}
@@ -514,7 +578,7 @@ const mapStateToProps = state => {
 		plansInfo: state.plansInfo,
 		installedAddons: state.installedAddons,
 		radPlans: state.radPlans,
-		sbsPlans: state.sbsPlans
+		sbsPlans: state.sbsPlans,
 	}
 }
 
@@ -524,7 +588,8 @@ const mapDispatchToProps = dispatch => {
 			dispatch(
 				postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)
 			),
-		getSettings: (token, carrier_id) => dispatch(getQuoteSettings(token, carrier_id)),
+		getSettings: (token, carrier_id) =>
+			dispatch(getQuoteSettings(token, carrier_id)),
 	}
 }
 

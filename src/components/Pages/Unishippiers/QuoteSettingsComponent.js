@@ -54,7 +54,7 @@ const initialState = {
 	showDeliveryEstimate: false,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
-	select_all_week_days: false,
+	all_week_days_select: false,
 	week_days: [],
 	number_of_transit_days: null,
 	ground_metric: 1,
