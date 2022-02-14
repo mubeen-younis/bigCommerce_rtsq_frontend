@@ -43,9 +43,9 @@ const initialState = {
 	width: '',
 	height: '',
 	max_weight: '',
-	int_length: '',
-	int_width: '',
-	int_height: '',
+	ext_length: '',
+	ext_width: '',
+	ext_height: '',
 	box_weight: '',
 	box_fee: '',
 	is_available: false,
@@ -127,11 +127,9 @@ function BoxSizesComponent(props) {
 	const [deleteBoxModal, setDeleteBoxModal] = useState(false)
 	const dispatch = useDispatch()
 	const { productBoxes, isFedexSmallCarrier } = useSelector(state => state)
-
 	const [boxSizeForm] = Form.useForm()
 
 	useEffect(() => {
-		console.log('use effect')
 		props.getBoxSizes(props.token)
 		dispatch(getProductBoxSizes(props.token))
 		// eslint-disable-next-line
@@ -139,7 +137,6 @@ function BoxSizesComponent(props) {
 
 	const populateBoxValues = useCallback(
 		(box_id = '') => {
-			console.log(box_id)
 			if (box_id === 'Merchant defined Box (default)') {
 				setBoxSize(prevState => ({
 					...initialState,
@@ -185,21 +182,51 @@ function BoxSizesComponent(props) {
 	)
 
 	const onFinish = values => {
-		var error = valueLimit(values?.length, 108, 'length')
-		error += valueLimit(values?.width, 108, 'width')
-		error += valueLimit(values?.height, 108, 'height')
-		error += valueLimit(values?.max_weight, 150, 'max weight')
+		const {
+			length,
+			width,
+			height,
+			ext_length,
+			ext_width,
+			ext_height,
+			max_weight,
+			box_weight,
+			box_fee,
+		} = values
+		let error = ''
+		error = valueLimit(length, 108, 'interior length')
+		error += valueLimit(width, 108, 'interior width')
+		error += valueLimit(height, 108, 'interior height')
+		error = valueLimit(ext_length, 108, 'exterior length')
+		error += valueLimit(ext_width, 108, 'exterior width')
+		error += valueLimit(ext_height, 108, 'exterior height')
 
-		error += valueLimitAfterDecimal(values?.length, 3, 'length')
-		error += valueLimitAfterDecimal(values?.width, 3, 'width')
-		error += valueLimitAfterDecimal(values?.height, 3, 'height')
-		error += valueLimitAfterDecimal(values?.max_weight, 3, 'max weight')
+		error += valueLimit(max_weight, 150, 'max weight')
 
-		error += valueLimitAfterDecimal(values?.box_weight, 3, 'box weight')
-		error += valueLimitAfterDecimal(values?.box_fee, 3, 'box fee')
+		error += valueLimitAfterDecimal(length, 3, 'interior length')
+		error += valueLimitAfterDecimal(width, 3, 'interior width')
+		error += valueLimitAfterDecimal(height, 3, 'interior height')
+		error += valueLimitAfterDecimal(ext_length, 3, 'exterior length')
+		error += valueLimitAfterDecimal(ext_width, 3, 'exterior width')
+		error += valueLimitAfterDecimal(ext_height, 3, 'exterior height')
+
+		error += valueLimitAfterDecimal(max_weight, 3, 'max weight')
+		error += valueLimitAfterDecimal(box_weight, 3, 'box weight')
+		error += valueLimitAfterDecimal(box_fee, 3, 'box fee')
+
+		if (+ext_length && +length > +ext_length) {
+			error = 'Interior length can not be greater then exterior length'
+		}
+		if (+ext_width && +width > +ext_width) {
+			error = 'Interior width can not be greater then exterior width'
+		}
+		if (+ext_height && +height > +ext_height) {
+			error = 'Interior height can not be greater then exterior height'
+		}
 
 		if (error !== '') {
-			error = error.split('exploder')[0]
+			if (error.includes('exploder')) error = error.split('exploder')[0]
+
 			dispatch({
 				type: 'ALERT_MESSAGE',
 				payload: {
@@ -311,22 +338,18 @@ function BoxSizesComponent(props) {
 	const editBoxSize = record => {
 		setOperation(true)
 		setLoadBoxSize(true)
-		console.log(record)
-		console.log(boxSize)
 		setBoxSize({ ...record })
 		boxSizeForm.setFieldsValue(record)
 		setVisibleAddBox(true)
 
 		setTimeout(() => {
 			setLoadBoxSize(false)
-			console.log(boxSize)
 		}, 1000)
 	}
 
 	const editProductBoxSize = record => {
 		setOperation(true)
 		setLoadBoxSize(true)
-		console.log(record)
 		setProductBoxSize(record)
 		setProductBoxVisible(true)
 
@@ -348,18 +371,33 @@ function BoxSizesComponent(props) {
 		},
 		{
 			key: 'length',
-			title: 'Length(in)',
+			title: 'Interior Length(in)',
 			dataIndex: 'length',
 		},
 		{
 			key: 'width',
-			title: 'Width(in)',
+			title: 'Interior Width(in)',
 			dataIndex: 'width',
 		},
 		{
 			key: 'height',
-			title: 'Height(in)',
+			title: 'Interior Height(in)',
 			dataIndex: 'height',
+		},
+		{
+			key: 'ext_length',
+			title: 'Exterior Length(in)',
+			dataIndex: 'ext_length',
+		},
+		{
+			key: 'ext_width',
+			title: 'Exterior Width(in)',
+			dataIndex: 'ext_width',
+		},
+		{
+			key: 'ext_height',
+			title: 'Exterior Height(in)',
+			dataIndex: 'ext_height',
 		},
 		{
 			key: 'maxWeight',
@@ -465,7 +503,6 @@ function BoxSizesComponent(props) {
 	const addonCheck = props.installedAddons.find(
 		add => add.name === 'Standard Box Sizes'
 	)
-	console.log(addonCheck, props?.sbsPlans)
 
 	return !addonCheck ? (
 		<h1>
@@ -475,7 +512,7 @@ function BoxSizesComponent(props) {
 		<Fragment>
 			<Row gutter={30} justify='center' className={'mb-3'}>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<div className={'content-box box-shadow'}>
+					<div>
 						{/* <Form.Item className={'mb-2'}>
 							<Checkbox
 								onChange={e => setCheckEnable(!checkEnable)}
@@ -663,96 +700,8 @@ function BoxSizesComponent(props) {
 													xl={12}>
 													<Form.Item
 														className={'mb-2'}
-														label='Exterior Length (in)'
+														label='Interior Length (in)'
 														name='length'
-														rules={[
-															{
-																required: true,
-																message:
-																	'Exterior Length Required',
-															},
-														]}>
-														<Input
-															type='number'
-															onKeyDown={
-																blockInvalidChar
-															}
-															min='0'
-															step='0.001'
-															placeholder='Exterior Length (in)'
-															//pattern='[0-9.?(0-9){2}?]+%?$'
-														/>
-													</Form.Item>
-												</Col>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Exterior Width (in)'
-														name='width'
-														rules={[
-															{
-																required: true,
-																message:
-																	'Exterior Width Required',
-															},
-														]}>
-														<Input
-															type='number'
-															onKeyDown={
-																handlingFeeMarkup
-															}
-															step='0.001'
-															min={0}
-															placeholder='Exterior Width (in)'
-														/>
-													</Form.Item>
-												</Col>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Exterior Height (in)'
-														name='height'
-														rules={[
-															{
-																required: true,
-																message:
-																	'Exterior Height Required',
-															},
-														]}>
-														<Input
-															type='number'
-															onKeyDown={
-																handlingFeeMarkup
-															}
-															step='0.001'
-															min={0}
-															placeholder='Exterior Height (in)'
-														/>
-													</Form.Item>
-												</Col>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Interior Length (inches)'
-														name='interior_length'
 														rules={[
 															{
 																required: true,
@@ -767,7 +716,7 @@ function BoxSizesComponent(props) {
 															}
 															min='0'
 															step='0.001'
-															placeholder='Interior Length (inches)'
+															placeholder='Interior Length (in)'
 															//pattern='[0-9.?(0-9){2}?]+%?$'
 														/>
 													</Form.Item>
@@ -781,8 +730,8 @@ function BoxSizesComponent(props) {
 													xl={12}>
 													<Form.Item
 														className={'mb-2'}
-														label='Interior Width (inches)'
-														name='interior_width'
+														label='Interior Width (in)'
+														name='width'
 														rules={[
 															{
 																required: true,
@@ -810,8 +759,8 @@ function BoxSizesComponent(props) {
 													xl={12}>
 													<Form.Item
 														className={'mb-2'}
-														label='Interior Height (inches)'
-														name='interior_height'
+														label='Interior Height (in)'
+														name='height'
 														rules={[
 															{
 																required: true,
@@ -827,6 +776,81 @@ function BoxSizesComponent(props) {
 															step='0.001'
 															min={0}
 															placeholder='Interior Height (in)'
+														/>
+													</Form.Item>
+												</Col>
+												<Col
+													className='gutter-row'
+													xs={24}
+													sm={24}
+													md={24}
+													lg={12}
+													xl={12}>
+													<Form.Item
+														className={'mb-2'}
+														label='Exterior Length (inches)'
+														name='ext_length'>
+														<Input
+															type='number'
+															onKeyDown={
+																blockInvalidChar
+															}
+															min='0'
+															step='0.001'
+															placeholder='Exterior Length (inches)'
+															//pattern='[0-9.?(0-9){2}?]+%?$'
+														/>
+													</Form.Item>
+												</Col>
+												<Col
+													className='gutter-row'
+													xs={24}
+													sm={24}
+													md={24}
+													lg={12}
+													xl={12}>
+													<Form.Item
+														className={'mb-2'}
+														label='Exterior Width (inches)'
+														name='ext_width'>
+														<Input
+															type='number'
+															onKeyDown={
+																handlingFeeMarkup
+															}
+															step='0.001'
+															min={0}
+															placeholder='Exterior Width (in)'
+														/>
+													</Form.Item>
+												</Col>
+												<Col
+													className='gutter-row'
+													xs={24}
+													sm={24}
+													md={24}
+													lg={12}
+													xl={12}>
+													<Form.Item
+														className={'mb-2'}
+														label='Exterior Height (inches)'
+														name='ext_height'
+														// rules={[
+														// 	{
+														// 		required: true,
+														// 		message:
+														// 			'Exterior Height Required',
+														// 	},
+														// 	]}
+													>
+														<Input
+															type='number'
+															onKeyDown={
+																handlingFeeMarkup
+															}
+															step='0.001'
+															min={0}
+															placeholder='Exterior Height (in)'
 														/>
 													</Form.Item>
 												</Col>
@@ -1255,6 +1279,7 @@ function BoxSizesComponent(props) {
 					</div>
 				</Col>
 			</Row>
+
 			<Modal
 				title='Confirm Delete'
 				visible={deleteBoxModal}
