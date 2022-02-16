@@ -6,7 +6,7 @@ import { getQuoteSettings } from '../../../Actions/Settings'
 import {
 	handlingFeeMarkup,
 	validateHandlingFeeMarkup,
-	LableAsLimit
+	LableAsLimit,
 } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import CutOffTime from '../../CutOffTime'
@@ -58,12 +58,13 @@ function QuoteSettingsComponentWwe(props) {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
 			getQuoteSettings()
 		}
+		// eslint-disable-next-line
 	}, [props.quoteSettings])
 
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
 	)
-	
+
 	let radStatus = false
 	if (radCheck !== undefined) {
 		radStatus =
@@ -73,7 +74,7 @@ function QuoteSettingsComponentWwe(props) {
 				? false
 				: true
 	}
-	
+
 	const getQuoteSettings = () => {
 		setQuoteSettingsState({
 			...quoteSettingsState,
@@ -93,8 +94,7 @@ function QuoteSettingsComponentWwe(props) {
 		if (!data?.hold_at_terminal) {
 			data = {
 				...data,
-				hold_at_terminal_price:
-					props?.quoteSettings?.hold_at_terminal_price,
+				hold_at_terminal_price: props?.quoteSettings?.hold_at_terminal_price,
 			}
 		}
 		let errormsg = ''
@@ -230,8 +230,8 @@ function QuoteSettingsComponentWwe(props) {
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
-							What the user sees during checkout, e.g. "Freight".
-							Leave blank to display the carrier name.
+							What the user sees during checkout, e.g. "Freight". Leave
+							blank to display the carrier name.
 						</div>
 					</Col>
 				</Row>
@@ -265,7 +265,7 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/> */}
-				<HandlingUnit 
+				<HandlingUnit
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
@@ -290,9 +290,7 @@ function QuoteSettingsComponentWwe(props) {
 						md={24}
 						lg={24}
 						xl={18}>
-						<Form.Item
-							className={'mb-0'}
-							name='free_shipping_on_orders'>
+						<Form.Item className={'mb-0'} name='free_shipping_on_orders'>
 							<Input
 								maxLength='7'
 								//pattern='[0-9.?(0-9){2}?]+%?$'
@@ -305,8 +303,8 @@ function QuoteSettingsComponentWwe(props) {
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
-							Amount excluding tax. Enter an amount, e.g 5000
-							Leave blank to disable.{' '}
+							Amount excluding tax. Enter an amount, e.g 5000 Leave
+							blank to disable.{' '}
 						</div>
 					</Col>
 				</Row>
@@ -321,8 +319,8 @@ function QuoteSettingsComponentWwe(props) {
 						lg={12}
 						xl={6}>
 						<label className={'text-gray'}>
-							Do not return rates if the shipping address appears
-							to be a post office box
+							Do not return rates if the shipping address appears to be
+							a post office box
 						</label>
 					</Col>
 					<Col
@@ -332,37 +330,34 @@ function QuoteSettingsComponentWwe(props) {
 						md={12}
 						lg={12}
 						xl={18}>
-						<Form.Item className={'mb-0'} >
+						<Form.Item className={'mb-0'}>
 							<Checkbox
 								name='returnRates'
-								checked={
-									quoteSettingsState.returnRates
-								}
+								checked={quoteSettingsState.returnRates}
 								onChange={() => {
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										returnRates:
-											!quoteSettingsState.returnRates,
+										returnRates: !quoteSettingsState.returnRates,
 									})
 								}}
 							/>
 						</Form.Item>
 					</Col>
 				</Row>
-							
+
 				<SaveButton />
 			</Form>
 			<Modal
 				title='R+L LTL Freight Quotes'
 				visible={holdTeminalStatus}
-				onOk={() =>
-					SetHoldTeminalStatus(false)
-				}
+				onOk={() => SetHoldTeminalStatus(false)}
 				onCancel={() => SetHoldTeminalStatus(false)}
 				okText='OK'
-				cancelButtonProps={{ style: { display: 'none' } }}
-			>
-				<p>To use this feature you have to enable the "Offer Hold At Terminal as an option".</p>
+				cancelButtonProps={{ style: { display: 'none' } }}>
+				<p>
+					To use this feature you have to enable the "Offer Hold At
+					Terminal as an option".
+				</p>
 			</Modal>
 		</Fragment>
 	)
@@ -384,12 +379,7 @@ const mapDispatchToProps = dispatch => {
 	return {
 		postData: (data, token) =>
 			dispatch(
-				postData(
-					data,
-					'GET_QUOTE_SETTINGS',
-					'submit_quote_settings',
-					token
-				)
+				postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)
 			),
 		getSettings: (token, carrier_id) =>
 			dispatch(getQuoteSettings(token, carrier_id)),

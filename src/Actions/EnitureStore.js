@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 
 export const installCarrier = (carrier_id, token) => {
 	return dispatch => {
@@ -8,7 +8,7 @@ export const installCarrier = (carrier_id, token) => {
 				showAlertMessage: true,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 
 		axios
 			.post(
@@ -27,7 +27,7 @@ export const installCarrier = (carrier_id, token) => {
 					dispatch({
 						type: 'INSTALL_CARRIER',
 						payload: data.data,
-					});
+					})
 				}
 
 				dispatch({
@@ -37,28 +37,31 @@ export const installCarrier = (carrier_id, token) => {
 						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
-				});
+				})
 			})
-			.catch(error => {});
-	};
-};
+			.catch(error => {})
+	}
+}
 
 export const getAllCarriers = data => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${data.store}`,
 		},
-	};
+	}
 
 	return dispatch => {
 		axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedCarriers`, config)
+			.get(
+				`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedCarriers`,
+				config
+			)
 			.then(({ data }) => {
 				if (!data.error) {
 					dispatch({
 						type: 'GET_CARRIERS',
 						payload: data.data.carriers,
-					});
+					})
 				}
 
 				dispatch({
@@ -68,7 +71,7 @@ export const getAllCarriers = data => {
 						showAlertMessage: true,
 						alertMessageType: data.error ?? 'error',
 					},
-				});
+				})
 			})
 			.catch(({ response }) => {
 				if (
@@ -79,7 +82,7 @@ export const getAllCarriers = data => {
 					dispatch({
 						type: 'GET_CARRIERS',
 						payload: undefined,
-					});
+					})
 
 					dispatch({
 						type: 'ALERT_MESSAGE',
@@ -87,13 +90,13 @@ export const getAllCarriers = data => {
 							showAlertMessage: false,
 							alertMessageType: 'Token Mismatch',
 						},
-					});
+					})
 
-					return;
+					return
 				}
-			});
-	};
-};
+			})
+	}
+}
 
 export const getInstalledCarriers = data => {
 	return dispatch => {
@@ -108,14 +111,13 @@ export const getInstalledCarriers = data => {
 					dispatch({
 						type: 'GET_INSTALLED_CARRIERS',
 						payload: data.data.installedCarriers,
-					});
+					})
 				} else {
 					dispatch({
 						type: 'GET_INSTALLED_CARRIERS',
 						payload: data.data,
-					});
+					})
 				}
-				console.log(data.message)
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
@@ -123,16 +125,16 @@ export const getInstalledCarriers = data => {
 						showAlertMessage: true,
 						alertMessageType: data.error ?? 'error',
 					},
-				});
+				})
 			})
 			.catch(err => {
 				dispatch({
 					type: 'GET_INSTALLED_CARRIERS',
 					payload: undefined,
-				});
-			});
-	};
-};
+				})
+			})
+	}
+}
 
 export const changeCarrierStatus = (carrier_id, token) => {
 	return dispatch => {
@@ -142,7 +144,7 @@ export const changeCarrierStatus = (carrier_id, token) => {
 				showAlertMessage: true,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 
 		axios
 			.post(
@@ -157,11 +159,11 @@ export const changeCarrierStatus = (carrier_id, token) => {
 				}
 			)
 			.then(({ data }) => {
-				if(!data.error){
+				if (!data.error) {
 					dispatch({
 						type: 'CHANGE_CARRIER_STATUS',
 						payload: data.data,
-					});
+					})
 				}
 				dispatch({
 					type: 'ALERT_MESSAGE',
@@ -170,14 +172,13 @@ export const changeCarrierStatus = (carrier_id, token) => {
 						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
-				});
-				
+				})
 			})
 			.catch(err => {
-				console.log(err);
-			});
-	};
-};
+				console.log(err)
+			})
+	}
+}
 
 export const installAddon = (addon_id, token) => {
 	return dispatch => {
@@ -187,7 +188,7 @@ export const installAddon = (addon_id, token) => {
 				showAlertMessage: true,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 
 		axios
 			.post(
@@ -206,7 +207,7 @@ export const installAddon = (addon_id, token) => {
 					dispatch({
 						type: 'INSTALL_ADDON',
 						payload: data.data,
-					});
+					})
 				}
 				dispatch({
 					type: 'ALERT_MESSAGE',
@@ -215,36 +216,39 @@ export const installAddon = (addon_id, token) => {
 						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
-				});
+				})
 			})
-			.catch(error => {});
-	};
-};
+			.catch(error => {})
+	}
+}
 
 export const getAllAddons = data => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${data.store}`,
 		},
-	};
+	}
 
 	return dispatch => {
 		axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedAddons`, config)
+			.get(
+				`${process.env.REACT_APP_ENITURE_API_URL}/getRecommendedAddons`,
+				config
+			)
 			.then(({ data }) => {
 				dispatch({
 					type: 'GET_ADDONS',
 					payload: data.data,
-				});
+				})
 			})
 			.catch(error => {
 				dispatch({
 					type: 'GET_ADDONS',
 					payload: undefined,
-				});
-			});
-	};
-};
+				})
+			})
+	}
+}
 
 export const getInstalledAddons = data => {
 	return dispatch => {
@@ -258,16 +262,16 @@ export const getInstalledAddons = data => {
 				dispatch({
 					type: 'GET_INSTALLED_ADDONS',
 					payload: data.data,
-				});
+				})
 			})
 			.catch(err => {
 				dispatch({
 					type: 'GET_INSTALLED_ADDONS',
 					payload: undefined,
-				});
-			});
-	};
-};
+				})
+			})
+	}
+}
 
 export const changeAddonStatus = (addon_id, token) => {
 	return dispatch => {
@@ -277,7 +281,7 @@ export const changeAddonStatus = (addon_id, token) => {
 				showAlertMessage: true,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 
 		axios
 			.post(
@@ -295,7 +299,7 @@ export const changeAddonStatus = (addon_id, token) => {
 				dispatch({
 					type: 'CHANGE_ADDON_STATUS',
 					payload: data.data,
-				});
+				})
 
 				dispatch({
 					type: 'ALERT_MESSAGE',
@@ -304,10 +308,10 @@ export const changeAddonStatus = (addon_id, token) => {
 						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
-				});
+				})
 			})
 			.catch(err => {
-				console.log(err);
-			});
-	};
-};
+				console.log(err)
+			})
+	}
+}

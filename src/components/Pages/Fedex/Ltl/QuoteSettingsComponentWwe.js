@@ -3,7 +3,10 @@ import { Row, Col, Form, Input, Skeleton } from 'antd'
 import CutOffTime from '../../../CutOffTime'
 import { connect, useDispatch } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
-import { validateHandlingFeeMarkup, LableAsLimit } from '../../../../Utilities/numberValidation'
+import {
+	validateHandlingFeeMarkup,
+	LableAsLimit,
+} from '../../../../Utilities/numberValidation'
 import RAD from '../../../RAD'
 import LiftGateDelivery from '../../../LiftGateDelivery'
 import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
@@ -14,6 +17,8 @@ import SaveButton from '../../../SaveButton'
 import QuoteServices from './QuoteServices'
 
 const initialState = {
+	fedex_freight_economy_label: '',
+	fedex_freight_priority_label: '',
 	fedex_select_all: false,
 	fedex_freight_economy: false,
 	fedex_freight_priority: false,
@@ -51,6 +56,7 @@ function QuoteSettingsComponentWwe(props) {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
 			getQuoteSettings()
 		}
+		// eslint-disable-next-line
 	}, [props.quoteSettings])
 
 	const radCheck = props.installedAddons.find(
@@ -67,8 +73,7 @@ function QuoteSettingsComponentWwe(props) {
 				: true
 	}
 
-	const getQuoteSettings = () =>
-	{
+	const getQuoteSettings = () => {
 		setQuoteSettingsState({
 			...quoteSettingsState,
 			...props.quoteSettings,
@@ -125,7 +130,12 @@ function QuoteSettingsComponentWwe(props) {
 
 		if (checkCS && errormsg === '') {
 			dispatch(
-				postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', props.token)
+				postData(
+					data,
+					'GET_QUOTE_SETTINGS',
+					'submit_quote_settings',
+					props.token
+				)
 			)
 		} else {
 			errormsg =
@@ -212,20 +222,59 @@ function QuoteSettingsComponentWwe(props) {
 						md={24}
 						lg={24}
 						xl={18}>
-						<Form.Item className={'mb-0'} name='label_as'>
+						<Form.Item
+							className={'mb-0'}
+							name='fedex_freight_economy_label'>
 							<Input
 								name='label_as'
+								placeholder='LTL Freight Economy'
 								value={
-									props.quoteSettings
-										? props.quoteSettings.label_as
-										: ''
+									props?.quoteSettings
+										?.fedex_freight_economy_label ?? ''
 								}
 								onKeyDown={LableAsLimit}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
-							What the user sees during checkout, e.g. "Freight". Leave
-							blank to display the carrier name.
+							What the user sees during checkout, e.g. "LTL Freight
+							Economy". Leave blank to display the carrier name.
+						</div>
+					</Col>
+				</Row>
+				<Row gutter={30} className={'mb-3'}>
+					<Col
+						className='gutter-row'
+						style={{ paddingTop: '11px' }}
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={6}>
+						<label className={'text-gray'}>Label As</label>
+					</Col>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={18}>
+						<Form.Item
+							className={'mb-0'}
+							name='fedex_freight_priority_label'>
+							<Input
+								name='label_as'
+								placeholder='LTL Freight Priority'
+								value={
+									props?.quoteSettings
+										?.fedex_freight_priority_label ?? ''
+								}
+								onKeyDown={LableAsLimit}
+							/>
+						</Form.Item>
+						<div className={'text-gray'}>
+							What the user sees during checkout, e.g. "LTL Freight
+							Priority". Leave blank to display the carrier name.
 						</div>
 					</Col>
 				</Row>

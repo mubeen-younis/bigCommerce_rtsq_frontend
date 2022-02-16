@@ -1,8 +1,6 @@
 import { Fragment, useCallback, useEffect, useState } from 'react'
 import { Select, Typography, Row, Col, Form, Input, Checkbox } from 'antd'
-import {
-	LableAsLimit
-} from '../../../../../Utilities/numberValidation'
+import { LableAsLimit } from '../../../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../../CutOffTime'
 import RAD from '../../../../RAD'
@@ -36,9 +34,7 @@ const GlobalTranz = ({
 			...initialSettings,
 			...prevState,
 			quickest_service:
-				quoteSettingsState.method === 2
-					? false
-					: prevState.quickest_service,
+				quoteSettingsState.method === 2 ? false : prevState.quickest_service,
 			quickest_service_label:
 				quoteSettingsState.method === 2
 					? ''
@@ -46,26 +42,23 @@ const GlobalTranz = ({
 			label_as: quoteSettingsState.method === 2 ? '' : prevState.label_as,
 		}))
 		setCheapestCheck(quoteSettingsState.method === 1)
+		// eslint-disable-next-line
 	}, [setQuoteSettingsState])
 
-	
-	const handleStateChange = useCallback((name, value) => {
-		setQuoteSettingsState(prevState => ({
-			...prevState,
-			[name]: value,
-		}))
-	}, [setQuoteSettingsState])
+	const handleStateChange = useCallback(
+		(name, value) => {
+			setQuoteSettingsState(prevState => ({
+				...prevState,
+				[name]: value,
+			}))
+		},
+		[setQuoteSettingsState]
+	)
 
 	return (
 		<>
 			<Row gutter={30} className={'mb-3'}>
-				<Col
-					className='gutter-row'
-					xs={24}
-					sm={24}
-					md={24}
-					lg={24}
-					xl={24}>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<Title level={4}>Quote Service Options</Title>
 				</Col>
 
@@ -79,13 +72,7 @@ const GlobalTranz = ({
 					xl={6}>
 					<label className={'text-gray'}>Quickest</label>
 				</Col>
-				<Col
-					className='gutter-row'
-					xs={24}
-					sm={24}
-					md={24}
-					lg={24}
-					xl={18}>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 					<Form.Item className={'mb-0'}>
 						<div
 							style={{
@@ -96,8 +83,7 @@ const GlobalTranz = ({
 							<Checkbox
 								style={{ marginRight: '2em' }}
 								checked={
-									quoteSettingsState?.quickest_service ||
-									false
+									quoteSettingsState?.quickest_service || false
 								}
 								onChange={e =>
 									setQuoteSettingsState(prevState => ({
@@ -109,8 +95,7 @@ const GlobalTranz = ({
 							/>
 							<Input
 								value={
-									quoteSettingsState?.quickest_service_label ||
-									''
+									quoteSettingsState?.quickest_service_label || ''
 								}
 								onChange={e =>
 									setQuoteSettingsState(prevState => ({
@@ -144,13 +129,7 @@ const GlobalTranz = ({
 					xl={6}>
 					<label className={'text-gray'}>Cheapest</label>
 				</Col>
-				<Col
-					className='gutter-row'
-					xs={24}
-					sm={24}
-					md={24}
-					lg={24}
-					xl={18}>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 					<Form.Item className={'mb-0'}>
 						<div
 							style={{
@@ -161,8 +140,7 @@ const GlobalTranz = ({
 							<Checkbox
 								style={{ marginRight: '2em' }}
 								checked={
-									quoteSettingsState?.method === 1 ||
-									cheapestCheck
+									quoteSettingsState?.method === 1 || cheapestCheck
 								}
 								onChange={e => {
 									setQuoteSettingsState(prevState => ({
@@ -207,13 +185,7 @@ const GlobalTranz = ({
 					xl={6}>
 					<label className={'text-gray'}>Cheapest Options</label>
 				</Col>
-				<Col
-					className='gutter-row'
-					xs={24}
-					sm={24}
-					md={24}
-					lg={24}
-					xl={18}>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 					<Form.Item className={'mb-0'}>
 						<div
 							style={{
@@ -227,7 +199,11 @@ const GlobalTranz = ({
 								onChange={e =>
 									setQuoteSettingsState(prevState => ({
 										...prevState,
-										method: e.target.checked ? 2 : cheapestCheck ? 1 : 0,
+										method: e.target.checked
+											? 2
+											: cheapestCheck
+											? 1
+											: 0,
 									}))
 								}
 							/>
@@ -324,28 +300,28 @@ const GlobalTranz = ({
 				</Col>
 			</Row>{*/}
 
-				<DeliveryEstimateOptions
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-				/>
+			<DeliveryEstimateOptions
+				quoteSettingsState={quoteSettingsState}
+				setQuoteSettingsState={setQuoteSettingsState}
+			/>
 
-				<CutOffTime
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					handleChange={handleStateChange}	
-				/>
+			<CutOffTime
+				quoteSettingsState={quoteSettingsState}
+				setQuoteSettingsState={setQuoteSettingsState}
+				handleChange={handleStateChange}
+			/>
 
-				<RAD
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					radStatus={radStatus}
-				/>
+			<RAD
+				quoteSettingsState={quoteSettingsState}
+				setQuoteSettingsState={setQuoteSettingsState}
+				radStatus={radStatus}
+			/>
 
-				<LiftGateDelivery
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					radStatus={radStatus}
-				/>
+			<LiftGateDelivery
+				quoteSettingsState={quoteSettingsState}
+				setQuoteSettingsState={setQuoteSettingsState}
+				radStatus={radStatus}
+			/>
 			{/*}
 			<Row gutter={30} align='middle' className={'mb-4'}>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>

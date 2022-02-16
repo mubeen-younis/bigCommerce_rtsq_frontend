@@ -3,9 +3,8 @@ export const blockInvalidChar = e =>
 export const blockInvalidCharWithPoint = e =>
 	['e', 'E', '+', '-', '.'].includes(e.key) && e.preventDefault()
 
-export const handleKeyDownDecimalNumber = (e, allowedLength, allowedDecimals) => {
+export const handleKeyDownDecimalNumber = (e, allowedLength) => {
 	let value = e.target.value
-	console.log(e.key)
 	let condition =
 		!['Backspace', 'ArrowLeft', 'ArrowRight'].includes(e.key) &&
 		([
@@ -81,7 +80,6 @@ export const checkDigitsAfterDecimal = (value, allowed) => {
 	}
 	let countDigit = value.toString().split('.')[1]?.length
 	let response = countDigit === undefined || countDigit <= allowed
-	console.log(countDigit, allowed, response)
 	return !response
 }
 
@@ -107,7 +105,7 @@ export const validateHandlingFeeMarkup = (value, inputname, fromQuotes = false) 
 		inputname +
 		' format should be 100.22 or 10% and only 2 digits are allowed after decimal point.' +
 		exploder
-	if (value.includes('-') || value.includes('+')) {
+	if (value.includes('-') && value.includes('+')) {
 		return msg1
 	} else if (
 		value.split('-')?.length > 2 ||
@@ -181,7 +179,6 @@ export const valueLimitAfterDecimal = (value, limit, inputname) => {
 	if (value === undefined || value.includes('.')) {
 		return ''
 	}
-	console.log(value)
 	let afterDecimal = value.split('.')[1]
 	let exploder = 'exploder'
 	if (afterDecimal?.length > limit) {
@@ -196,8 +193,6 @@ export const valueLimitAfterDecimal = (value, limit, inputname) => {
 }
 
 export const handleKeyPhoneNumber = e => {
-	let value = e.target.value
-	console.log(e.key)
 	let condition =
 		!['Backspace', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.key) &&
 		!['+', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)
@@ -208,7 +203,6 @@ export const handleKeyPhoneNumber = e => {
 }
 
 export const handleKeyAddress = e => {
-	let value = e.target.value
 	let condition =
 		!['Backspace', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.key) &&
 		![
