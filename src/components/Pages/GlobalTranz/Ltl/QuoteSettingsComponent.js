@@ -40,6 +40,7 @@ function QuoteSettingsComponentWwe(props) {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
 			getQuoteSettings()
 		}
+		// eslint-disable-next-line
 	}, [props.quoteSettings])
 
 	const radCheck = props.installedAddons.find(
@@ -63,8 +64,7 @@ function QuoteSettingsComponentWwe(props) {
 				: true
 	}
 
-	const getQuoteSettings = () =>
-	{
+	const getQuoteSettings = () => {
 		setQuoteSettingsState({
 			...quoteSettingsState,
 			...props.quoteSettings,
@@ -73,8 +73,7 @@ function QuoteSettingsComponentWwe(props) {
 		setLoading(false)
 	}
 
-	const onFinish = data =>
-	{
+	const onFinish = data => {
 		data = {
 			...data,
 			...quoteSettingsState,
@@ -187,12 +186,7 @@ const mapDispatchToProps = dispatch => {
 	return {
 		postData: (data, token) =>
 			dispatch(
-				postData(
-					data,
-					'GET_QUOTE_SETTINGS',
-					'submit_quote_settings',
-					token
-				)
+				postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)
 			),
 		getSettings: (token, carrier_id) =>
 			dispatch(getQuoteSettings(token, carrier_id)),

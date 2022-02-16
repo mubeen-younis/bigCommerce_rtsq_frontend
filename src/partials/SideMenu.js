@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import { Layout, Menu, Typography } from 'antd'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { connect, useDispatch } from 'react-redux'
 const { Sider } = Layout
 const { Title } = Typography
@@ -35,7 +35,7 @@ function SideMenu(props) {
 				// console.log(broken);
 			}}
 			onCollapse={(collapsed, type) => {
-				console.log(collapsed, type)
+				// console.log(collapsed, type)
 			}}
 			className={'sidemenu'}
 			width={240}>
@@ -48,15 +48,18 @@ function SideMenu(props) {
 				mode='inline'
 				defaultSelectedKeys={'99'}
 				selectedKeys={props.activeMenu}>
-				<Menu.Item key='99' onClick={() => setActiveMenu('99')}>
+				<Menu.Item key='99' warnkey={99} onClick={() => setActiveMenu('99')}>
 					<Link to={`/`}>Dashboard</Link>
 				</Menu.Item>
 
-				<Menu.Item key='100' onClick={() => setActiveMenu('100')}>
+				<Menu.Item
+					key='100'
+					warnkey={100}
+					onClick={() => setActiveMenu('100')}>
 					<Link to={`/plans`}>Plans</Link>
 				</Menu.Item>
 
-				<Title className={'carriers-name'} level={6}>
+				<Title className={'carriers-name'} level={5}>
 					LTL Freight Providers
 				</Title>
 
@@ -74,14 +77,15 @@ function SideMenu(props) {
 					carrier.is_enabled && carrier.carrier_type === 1 ? (
 						<Menu.Item
 							key={carrier.id.toString()}
-							active={true}
+							warnkey={carrier.id.toString()}
+							active='true'
 							onClick={() => setActiveMenu(carrier.id.toString())}>
 							<Link to={`/${carrier.id}`}>{carrier.name}</Link>
 						</Menu.Item>
 					) : null
 				)}
 
-				<Title className={'carriers-name'} level={6}>
+				<Title className={'carriers-name'} level={5}>
 					Parcel & Postal Providers
 				</Title>
 
@@ -99,14 +103,15 @@ function SideMenu(props) {
 					carrier.is_enabled && carrier.carrier_type === 2 ? (
 						<Menu.Item
 							key={carrier.id.toString()}
+							warnkey={carrier.id.toString()}
 							onClick={() => setActiveMenu(carrier.id.toString())}
-							active={true}>
+							active='true'>
 							<Link to={`/${carrier.id}`}>{carrier.name}</Link>
 						</Menu.Item>
 					) : null
 				)}
 
-				<Title className={'carriers-name'} level={6}>
+				<Title className={'carriers-name'} level={5}>
 					Add-ons
 				</Title>
 				{/*props.installedAddons && props.installedAddons.length === 0 ? (
@@ -121,6 +126,7 @@ function SideMenu(props) {
 					addon.is_enabled ? (
 						<Menu.Item
 							key={'addon-' + addon.id.toString()}
+							warnkey={'addon-' + addon.id.toString()}
 							onClick={() =>
 								setActiveMenu('addon-' + addon.id.toString())
 							}>

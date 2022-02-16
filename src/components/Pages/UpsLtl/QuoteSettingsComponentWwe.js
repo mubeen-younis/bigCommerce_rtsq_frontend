@@ -1,18 +1,22 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
-import { Select, Row, Col, Form, Input, Skeleton } from 'antd';
-import { connect, useDispatch } from 'react-redux';
-import { postData } from '../../../Actions/Action';
-import { getQuoteSettings } from '../../../Actions/Settings';
-import { validateHandlingFeeMarkup, blockInvalidChar, LableAsLimit} from '../../../Utilities/numberValidation'
-import CutOffTime from '../../CutOffTime';
-import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
-import RAD from '../../RAD';
-import LiftGateDelivery from '../../LiftGateDelivery';
-import HandlingUnit from '../../HandlingUnit';
-import SaveButton from '../../SaveButton';
+import React, { Fragment, useState, useEffect, useCallback } from 'react'
+import axios from 'axios'
+import { Select, Row, Col, Form, Input, Skeleton } from 'antd'
+import { connect, useDispatch } from 'react-redux'
+import { postData } from '../../../Actions/Action'
+import { getQuoteSettings } from '../../../Actions/Settings'
+import {
+	validateHandlingFeeMarkup,
+	blockInvalidChar,
+	LableAsLimit,
+} from '../../../Utilities/numberValidation'
+import CutOffTime from '../../CutOffTime'
+import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
+import RAD from '../../RAD'
+import LiftGateDelivery from '../../LiftGateDelivery'
+import HandlingUnit from '../../HandlingUnit'
+import SaveButton from '../../SaveButton'
 
-const { Option } = Select;
+const { Option } = Select
 const initialState = {
 	delivery_estimate_options: 1,
 	order_cut_off_time: '',
@@ -31,61 +35,68 @@ const initialState = {
 	shipper_relationship: 'shipper',
 	third_party_country: 'US',
 	third_party_city: null,
-	third_party_state: null
+	third_party_state: null,
 }
 
 function QuoteSettingsComponentWwe(props) {
-	const dispatch = useDispatch();
-	const [form] = Form.useForm();
-	const [loading, setLoading] = useState(true);
-	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState);
+	const dispatch = useDispatch()
+	const [form] = Form.useForm()
+	const [loading, setLoading] = useState(true)
+	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
-			getQuoteSettings();
+			getQuoteSettings()
 		}
-	}, [props.quoteSettings]);
-	
+		// eslint-disable-next-line
+	}, [props.quoteSettings])
+
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
-	);
+	)
 
-	let radStatus = false;
-	if(radCheck !== undefined){
-		radStatus = props?.radPlans?.currentPackage === null ? false:
-		props?.radPlans?.currentPackage?.status !== 1 ? false : true;
+	let radStatus = false
+	if (radCheck !== undefined) {
+		radStatus =
+			props?.radPlans?.currentPackage === null
+				? false
+				: props?.radPlans?.currentPackage?.status !== 1
+				? false
+				: true
 	}
-	
-	const getQuoteSettings = () =>
-	{
+
+	const getQuoteSettings = () => {
 		setQuoteSettingsState({
 			...quoteSettingsState,
 			...props.quoteSettings,
-		});
+		})
 
-		setLoading(false);
-	};
+		setLoading(false)
+	}
 
 	const onFinish = data => {
 		data = {
 			...quoteSettingsState,
 			...data,
 			carrierId: +props.carrierId,
-		};
-		var errormsg = '';
-		if(data?.shipper_relationship === "third_party"){
-			if(data?.third_party_zip?.length === 0){
-				errormsg = "Third party postal code is required.";
-			}else if(data?.third_party_zip?.length !== 5){
-				errormsg = "Third party postal code should be 5 digit number.";
+		}
+		var errormsg = ''
+		if (data?.shipper_relationship === 'third_party') {
+			if (data?.third_party_zip?.length === 0) {
+				errormsg = 'Third party postal code is required.'
+			} else if (data?.third_party_zip?.length !== 5) {
+				errormsg = 'Third party postal code should be 5 digit number.'
 			}
 		}
-		if(errormsg === ''){
-			errormsg = validateHandlingFeeMarkup(data?.handling_free_markup, 'Handling fee');
+		if (errormsg === '') {
+			errormsg = validateHandlingFeeMarkup(
+				data?.handling_free_markup,
+				'Handling fee'
+			)
 		}
-		if( errormsg === '' ){
-			props.postData(data, props.token);
-		}else{
+		if (errormsg === '') {
+			props.postData(data, props.token)
+		} else {
 			dispatch({
 				type: 'ALERT_MESSAGE',
 				payload: {
@@ -101,33 +112,35 @@ function QuoteSettingsComponentWwe(props) {
 				},
 			})
 		}
-	};
+	}
 	const getGoogleLocation = zip_code => {
 		if (zip_code.length > 4) {
 			setLoading(true)
 			axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_loc_from_zip/${zip_code}`, {
-				headers: {
-					authorization: `Bearer ${props.token}`,
-				},
-			})
-			.then(({ data }) => {
-				if (!data.error) {
-					form.setFieldsValue({
-						third_party_city: data?.data?.city[0],
-						third_party_state: data?.data?.state,
-					});
-				}else{
-					form.setFieldsValue({
-						third_party_city: null,
-						third_party_state: null,
-					});
-				}
-				setLoading(false)
-			})
-
+				.get(
+					`${process.env.REACT_APP_ENITURE_API_URL}/get_loc_from_zip/${zip_code}`,
+					{
+						headers: {
+							authorization: `Bearer ${props.token}`,
+						},
+					}
+				)
+				.then(({ data }) => {
+					if (!data.error) {
+						form.setFieldsValue({
+							third_party_city: data?.data?.city[0],
+							third_party_state: data?.data?.state,
+						})
+					} else {
+						form.setFieldsValue({
+							third_party_city: null,
+							third_party_state: null,
+						})
+					}
+					setLoading(false)
+				})
 		}
-	};
+	}
 
 	const handleStateChange = useCallback((name, value) => {
 		setQuoteSettingsState(prevState => ({
@@ -147,29 +160,47 @@ function QuoteSettingsComponentWwe(props) {
 				size={'large'}
 				form={form}
 				onFinish={onFinish}
-				initialValues={props.quoteSettings}
-			>
+				initialValues={props.quoteSettings}>
 				<Row gutter={30} className={'mb-3'}>
-					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
+					<Col
+						className='gutter-row'
+						style={{ paddingTop: '11px' }}
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={6}>
 						<label className={'text-gray'}>Label As</label>
 					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={18}>
 						<Form.Item className={'mb-0'} name='label_as'>
 							<Input
 								name='label_as'
-								value={props.quoteSettings ? props.quoteSettings.label_as : ''}
+								value={
+									props.quoteSettings
+										? props.quoteSettings.label_as
+										: ''
+								}
 								onKeyDown={LableAsLimit}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
-						What the user sees during checkout, e.g. "LTL Freight". If left blank, "Freight" will display as the shipping method.
+							What the user sees during checkout, e.g. "LTL Freight".
+							If left blank, "Freight" will display as the shipping
+							method.
 						</div>
 					</Col>
 				</Row>
 
 				<DeliveryEstimateOptions
-						quoteSettingsState={quoteSettingsState}
-						setQuoteSettingsState={setQuoteSettingsState}
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
 				/>
 				<CutOffTime
 					quoteSettingsState={quoteSettingsState}
@@ -219,22 +250,38 @@ function QuoteSettingsComponentWwe(props) {
 				{*/}
 
 				<Row gutter={30} className={'mb-3'}>
-					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
-						<label className={'text-gray'}>Relationship To Shipper</label>
+					<Col
+						className='gutter-row'
+						style={{ paddingTop: '11px' }}
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={6}>
+						<label className={'text-gray'}>
+							Relationship To Shipper
+						</label>
 					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={18}>
 						<Form.Item className={'mb-0'} name='shipper_relationship'>
 							<Select
-								defaultValue={quoteSettingsState.shipper_relationship}
+								defaultValue={
+									quoteSettingsState.shipper_relationship
+								}
 								size={'large'}
 								style={{ width: '100%' }}
 								onChange={value => {
 									setQuoteSettingsState({
 										...quoteSettingsState,
 										shipper_relationship: value,
-									});
-								}}
-							>
+									})
+								}}>
 								<Option value='shipper'>Shipper</Option>
 								<Option value='third_party'>Third Party</Option>
 							</Select>
@@ -244,72 +291,112 @@ function QuoteSettingsComponentWwe(props) {
 						</div>
 					</Col>
 				</Row>
-				{ quoteSettingsState.shipper_relationship === 'third_party' ? (
-				<>
-				<Row gutter={30} className={'mb-3'}>
-					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
-						<label className={'text-gray'}>Third Party Country or Territory</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='third_party_country'>
-						<Select
-								defaultValue={quoteSettingsState.third_party_country}
-								size={'large'}
-								style={{ width: '100%' }}
-								onChange={value => {
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										third_party_country: value,
-									});
-								}}
-							>
-								<Option value='US'>United States</Option>
-								<Option value='CA'>Canada</Option>
-								<Option value='GU'>Guam</Option>
-								<Option value='MX'>Mexico</Option>
-								<Option value='PR'>Puerto Rico</Option>
-								<Option value='VI'>US Virgin Islands</Option>
-							</Select>
-						</Form.Item>
-						<div className={'text-gray'}>
-							Select the third party country
-						</div>
-					</Col>
-				</Row>
-				<Row gutter={30} className={'mb-3'}>
-					<Col className='gutter-row' style={{paddingTop:'11px'}} xs={24} sm={24} md={24} lg={24} xl={6}>
-						<label className={'text-gray'}>Third Party Postal Code</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-						<Form.Item className={'mb-0'} name='third_party_zip'>
-							<Input
-							pattern="[0-9]*"
-							type="number"
-							onKeyDown={blockInvalidChar}
-							onChange={e => {
-								getGoogleLocation(e.target.value);
-							}}
-							/>
-						</Form.Item>
+				{quoteSettingsState.shipper_relationship === 'third_party' ? (
+					<>
+						<Row gutter={30} className={'mb-3'}>
+							<Col
+								className='gutter-row'
+								style={{ paddingTop: '11px' }}
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={6}>
+								<label className={'text-gray'}>
+									Third Party Country or Territory
+								</label>
+							</Col>
+							<Col
+								className='gutter-row'
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={18}>
+								<Form.Item
+									className={'mb-0'}
+									name='third_party_country'>
+									<Select
+										defaultValue={
+											quoteSettingsState.third_party_country
+										}
+										size={'large'}
+										style={{ width: '100%' }}
+										onChange={value => {
+											setQuoteSettingsState({
+												...quoteSettingsState,
+												third_party_country: value,
+											})
+										}}>
+										<Option value='US'>United States</Option>
+										<Option value='CA'>Canada</Option>
+										<Option value='GU'>Guam</Option>
+										<Option value='MX'>Mexico</Option>
+										<Option value='PR'>Puerto Rico</Option>
+										<Option value='VI'>US Virgin Islands</Option>
+									</Select>
+								</Form.Item>
+								<div className={'text-gray'}>
+									Select the third party country
+								</div>
+							</Col>
+						</Row>
+						<Row gutter={30} className={'mb-3'}>
+							<Col
+								className='gutter-row'
+								style={{ paddingTop: '11px' }}
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={6}>
+								<label className={'text-gray'}>
+									Third Party Postal Code
+								</label>
+							</Col>
+							<Col
+								className='gutter-row'
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={18}>
+								<Form.Item className={'mb-0'} name='third_party_zip'>
+									<Input
+										pattern='[0-9]*'
+										type='number'
+										onKeyDown={blockInvalidChar}
+										onChange={e => {
+											getGoogleLocation(e.target.value)
+										}}
+									/>
+								</Form.Item>
 
-						<div className={'text-gray'}>
-							Enter the third party postal code. (For US, enter only the 5 digit ZIP code.)
-						</div>
-						<Form.Item style={{ display: 'none' }} className={'mb-0'} name='third_party_city'>
-							<Input type="text"/>
-						</Form.Item>
-						<Form.Item style={{ display: 'none' }} className={'mb-0'} name='third_party_state'>
-							<Input type="text" />
-						</Form.Item>
-					</Col>
-				</Row>
-				</>
-				 ) : null }
+								<div className={'text-gray'}>
+									Enter the third party postal code. (For US, enter
+									only the 5 digit ZIP code.)
+								</div>
+								<Form.Item
+									style={{ display: 'none' }}
+									className={'mb-0'}
+									name='third_party_city'>
+									<Input type='text' />
+								</Form.Item>
+								<Form.Item
+									style={{ display: 'none' }}
+									className={'mb-0'}
+									name='third_party_state'>
+									<Input type='text' />
+								</Form.Item>
+							</Col>
+						</Row>
+					</>
+				) : null}
 
 				<SaveButton />
 			</Form>
 		</Fragment>
-	);
+	)
 }
 
 const mapStateToProps = state => {
@@ -321,15 +408,21 @@ const mapStateToProps = state => {
 		alertMessageType: state.alertMessageType,
 		radPlans: state.radPlans,
 		installedAddons: state.installedAddons,
-	};
-};
+	}
+}
 
 const mapDispatchToProps = dispatch => {
 	return {
 		postData: (data, token) =>
-			dispatch(postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)),
-		getSettings: (token, carrier_id) => dispatch(getQuoteSettings(token, carrier_id)),
-	};
-};
+			dispatch(
+				postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)
+			),
+		getSettings: (token, carrier_id) =>
+			dispatch(getQuoteSettings(token, carrier_id)),
+	}
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuoteSettingsComponentWwe);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(QuoteSettingsComponentWwe)

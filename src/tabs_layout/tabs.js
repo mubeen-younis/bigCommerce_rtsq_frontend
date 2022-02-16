@@ -1,37 +1,18 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Tabs } from 'antd'
-
-import ConnectionSettingsComponentUpsLtl from '../components/Pages/UpsLtl/ConnectionSettingsComponent'
-
-import QuoteSettingsComponentWwe from '../components/Pages/WweLtl/QuoteSettingsComponentWwe'
-import QuoteSettingsComponentWweSmall from '../components/Pages/WweSmall/QuoteSettingsComponentWweSmall'
-import QuoteSettingsComponentUpsLtl from '../components/Pages/UpsLtl/QuoteSettingsComponentWwe'
-import QuoteSettingsComponentUpsSmall from '../components/Pages/UpsSmall/QuoteSettingsComponent'
-import QuoteSettingsComponentFedexltl from '../components/Pages/Fedex/Ltl/QuoteSettingsComponentWwe'
-import QuoteSettingsComponentFedexSmall from '../components/Pages/Fedex/Small/QuoteSettingsComponent'
-import QuoteSettingsComponentGtzLtl from '../components/Pages/GlobalTranz/Ltl/QuoteSettingsComponent'
-import QuoteSettingsComponentXpoLtl from '../components/Pages/XPO/Ltl/QuoteSettingsComponentWwe'
-import QuoteSettingsComponentRLLtl from '../components/Pages/R+LLtl/QuoteSettingsComponentWwe'
-// import BoxSizesComponent from '../components/Pages/BoxSizesComponent';
 import CarriersComponent from '../components/CarriersComponent'
 import ProductSettingsComponent from '../components/ProductSettingsComponent'
 import WarehouseComponent from '../components/Pages/WarehouseComponent'
 import UserGuideComponent from '../components/Pages/UserGuideComponent'
 import ImportCsvComponent from '../components/Pages/ImportCsvComponent'
-import ConnectionSettingsComponentWweltl from '../components/Pages/WweLtl/ConnectionSettingsComponent'
-import ConnectionSettingsComponentWweSmall from '../components/Pages/WweSmall/ConnectionSettingsComponentWweSmall'
-import ConnectionSettingsComponentUpsSmall from '../components/Pages/UpsSmall/ConnectionSettingsComponent'
-import ConnectionSettingsComponentFedexLtl from '../components/Pages/Fedex/Ltl/ConnectionSettingsComponent'
-import ConnectionSettingsComponentFedexSmall from '../components/Pages/Fedex/Small/ConnectionSettingsComponent'
-import ConnectionSettingsComponentGtzLtl from '../components/Pages/GlobalTranz/Ltl/ConnectionSettingsComponent'
-import ConnectionSettingsComponentXpoLtl from '../components/Pages/XPO/Ltl/ConnectionSettingsComponent'
-import ConnectioSettingsComponentRLLTl from '../components/Pages/R+LLtl/ConnectionSettingsComponent'
 import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
 import OrdersComponent from '../components/OrdersComponent'
-// import AlertMessage from "../Utilities/AlertMessage";
 import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
+import useLoadComponent from '../hooks/useLoadComponent'
+// import AlertMessage from "../Utilities/AlertMessage";
+// import BoxSizesComponent from '../components/Pages/BoxSizesComponent';
 
 const { TabPane } = Tabs
 function callback(key) {
@@ -99,17 +80,7 @@ function TabsLayout() {
 
 			<Tabs className={'tabs-wrp'} onChange={callback} type='card'>
 				<TabPane tab='Connection Settings' key='1'>
-					{component === 0 && <ConnectionSettingsComponentWweltl />}
-					{component === 1 && <ConnectionSettingsComponentWweSmall />}
-					{component === 2 && <ConnectionSettingsComponentUpsLtl />}
-					{component === 3 && <ConnectionSettingsComponentUpsSmall />}
-					{component === 4 && <ConnectionSettingsComponentFedexLtl />}
-					{component === 5 && (
-						<ConnectionSettingsComponentFedexSmall />
-					)}
-					{component === 6 && <ConnectionSettingsComponentGtzLtl />}
-					{component === 7 && <ConnectionSettingsComponentXpoLtl />}
-					{component === 8 && <ConnectioSettingsComponentRLLTl />}
+					{useLoadComponent(component)[0]}
 				</TabPane>
 				{[0].includes(component) && (
 					<TabPane tab='Carriers' key='2'>
@@ -125,15 +96,7 @@ function TabsLayout() {
 					<WarehouseComponent />
 				</TabPane>
 				<TabPane tab='Quote Settings' key='4'>
-					{component === 0 && <QuoteSettingsComponentWwe />}
-					{component === 1 && <QuoteSettingsComponentWweSmall />}
-					{component === 2 && <QuoteSettingsComponentUpsLtl />}
-					{component === 3 && <QuoteSettingsComponentUpsSmall />}
-					{component === 4 && <QuoteSettingsComponentFedexltl />}
-					{component === 5 && <QuoteSettingsComponentFedexSmall />}
-					{component === 6 && <QuoteSettingsComponentGtzLtl />}
-					{component === 7 && <QuoteSettingsComponentXpoLtl />}
-					{component === 8 && <QuoteSettingsComponentRLLtl />}
+					{useLoadComponent(component)[1]}
 				</TabPane>
 				<TabPane tab='Product Settings' key='5'>
 					<ProductSettingsComponent />
@@ -143,9 +106,9 @@ function TabsLayout() {
 				</TabPane>
 
 				{/* <TabPane tab="Import CSV" key="6">
-                    <AlertMessage />
-                    <ImportCsvComponent />
-                </TabPane>*/}
+							<AlertMessage />
+							<ImportCsvComponent />
+						</TabPane>*/}
 				{(component === 1 || component === 3 || component === 5) && (
 					<TabPane tab='Box Sizes' key='7'>
 						<BoxSizesComponent />

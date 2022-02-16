@@ -6,17 +6,7 @@ import React, {
 	useCallback,
 } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
-import {
-	Form,
-	Table,
-	Button,
-	Space,
-	Skeleton,
-	Input,
-	Col,
-	Row,
-	Checkbox,
-} from 'antd'
+import { Form, Table, Button, Space, Skeleton, Input, Col, Row } from 'antd'
 import axios from 'axios'
 import { postData } from '../../../../Actions/Action'
 import { getServices, getAddTabSettings } from '../../../../Actions/Carriers'
@@ -25,14 +15,17 @@ const columns = [
 	{
 		title: 'Sr#',
 		dataIndex: 'sr_no',
+		key: 'sr_no',
 	},
 	{
 		title: 'Name',
 		dataIndex: 'carrier_name',
+		key: 'carrier_name',
 	},
 	{
 		title: 'Logo',
 		dataIndex: 'carrier_logo',
+		key: 'carrier_logo',
 	},
 ]
 
@@ -322,25 +315,24 @@ const CarriersComponent = props => {
 				</Row>
 			)}
 
-			
-			{services ? 
+			{services ? (
 				<>
 					<Table
-					className='custom-table'
-					rowSelection={rowSelection}
-					columns={columns}
-					dataSource={filteredServices ?? services}
-					total={50}
-					// showSizeChanger={true}
-					pagination={false}
-					sortOrder='ascend'
+						className='custom-table'
+						rowSelection={rowSelection}
+						columns={columns}
+						dataSource={filteredServices ?? services}
+						total={50}
+						// showSizeChanger={true}
+						pagination={false}
+						sortOrder='ascend'
 					/>
 					<Form.Item
-					style={{
-					textAlign: 'right',
-					marginTop: '20px',
-					marginBottom: '0',
-					}}>
+						style={{
+							textAlign: 'right',
+							marginTop: '20px',
+							marginBottom: '0',
+						}}>
 						<Space>
 							<Button
 								type='primary'
@@ -352,9 +344,10 @@ const CarriersComponent = props => {
 							</Button>
 						</Space>
 					</Form.Item>
-				</> :
-			<Skeleton active />
-			}
+				</>
+			) : (
+				<Skeleton active />
+			)}
 		</Fragment>
 	)
 }

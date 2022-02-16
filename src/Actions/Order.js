@@ -1,13 +1,21 @@
-import axios from 'axios';
+import axios from 'axios'
 
-export const getAllOrders = (token, current, perpage, sortOrder, setLoading, search = 0, status = null) => {
+export const getAllOrders = (
+	token,
+	current,
+	perpage,
+	sortOrder,
+	setLoading,
+	search = 0,
+	status = null
+) => {
 	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
 				showAlertMessage: false,
 			},
-		});
+		})
 		const config = {
 			headers: {
 				authorization: `Bearer ${token}`,
@@ -15,29 +23,29 @@ export const getAllOrders = (token, current, perpage, sortOrder, setLoading, sea
 			params: {
 				page: current,
 				perpage,
-				sortOrder:sortOrder,
+				sortOrder: sortOrder,
 				search,
-				status: status
+				status: status,
 			},
-		};
+		}
 
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_orders`, config)
 			.then(({ data }) => {
-				if(!data.error){
+				if (!data.error) {
 					dispatch({
 						type: 'GET_ORDERS',
 						payload: data?.data,
-					});
+					})
 					dispatch({
 						type: 'ORDERS_PAGINATION',
 						payload: data?.meta,
-					});
+					})
 					dispatch({
 						type: 'SEARCHED_ORDER',
 						payload: search === 0 ? null : search,
-					});
-				}else{
+					})
+				} else {
 					/*dispatch({
 						type: 'ALERT_MESSAGE',
 						payload: {
@@ -49,11 +57,11 @@ export const getAllOrders = (token, current, perpage, sortOrder, setLoading, sea
 					dispatch({
 						type: 'GET_ORDERS',
 						payload: [],
-					});
+					})
 					dispatch({
 						type: 'ORDERS_PAGINATION',
 						payload: [],
-					});
+					})
 				}
 				setLoading(false)
 			})
@@ -61,35 +69,43 @@ export const getAllOrders = (token, current, perpage, sortOrder, setLoading, sea
 				dispatch({
 					type: 'GET_ORDERS',
 					payload: [],
-				});
-			});
-	};
-};
+				})
+			})
+	}
+}
 
 export const getOrderDetail = (id, setselectedOrderDetail, setLoadOrder, token) => {
-	
 	return dispatch => {
 		axios
-		.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_order_widget`, {
-			headers: {
-				authorization: `Bearer ${token}`,
-			},
-			params: {
-				order_id: id,
-			},
-		})
-		.then(({ data }) => {
-			if (!data.error) {
-				dispatch({
-					type: 'GET_ORDER_WIDGET',
-					payload: data?.data
-				});
-				//setselectedOrderDetail(orderDetail);
-				setLoadOrder(false);
-			}
-		});
+			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_order_widget`, {
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
+				params: {
+					order_id: id,
+				},
+			})
+			.then(({ data }) => {
+				if (!data.error) {
+					dispatch({
+						type: 'GET_ORDER_WIDGET',
+						payload: data?.data,
+					})
+					//setselectedOrderDetail(orderDetail);
+					setLoadOrder(false)
+				}
+			})
+			.catch(err => {
+				if (err.response.data && err.response.data.error) {
+					dispatch({
+						type: 'GET_ORDER_WIDGET',
+						payload: err.response.data.data,
+					})
+				}
+				setLoadOrder(false)
+			})
 	}
-};
+}
 
 export const submitOrderSettings = (orderSettings, token, setState) => {
 	return dispatch => {
@@ -99,25 +115,29 @@ export const submitOrderSettings = (orderSettings, token, setState) => {
 				showAlertMessage: true,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 
 		axios
-			.post(`${process.env.REACT_APP_ENITURE_API_URL}/update_order`, orderSettings, {
-				headers: {
-					authorization: `Bearer ${token}`,
-				},
-			})
+			.post(
+				`${process.env.REACT_APP_ENITURE_API_URL}/update_order`,
+				orderSettings,
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+			)
 			.then(({ data }) => {
 				if (!data.error) {
 					dispatch({
 						type: 'UPDATE_ORDER_SETTINGS',
 						payload: data.data,
-					});
+					})
 
 					setState(ps => ({
 						...ps,
 						visible: false,
-					}));
+					}))
 				}
 
 				dispatch({
@@ -127,8 +147,8 @@ export const submitOrderSettings = (orderSettings, token, setState) => {
 						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
-				});
+				})
 			})
-			.catch(error => {});
-	};
-};
+			.catch(error => {})
+	}
+}

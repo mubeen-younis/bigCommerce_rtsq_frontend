@@ -102,6 +102,10 @@ const HandlingUnit = ({ quoteSettingsState, handleChange }) => {
 							maxLength='7'
 							//pattern='[0-9.?(0-9){2}?]+%?$'
 							onKeyDown={handlingFeeMarkup}
+							value={quoteSettingsState.handling_free_markup}
+							onChange={e =>
+								handleChange('handling_free_markup', e.target.value)
+							}
 						/>
 					</Form.Item>
 					<div className={'text-gray'}>

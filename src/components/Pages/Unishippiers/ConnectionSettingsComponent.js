@@ -1,32 +1,26 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { Form, Input, Button, Space, Skeleton, Radio } from 'antd'
+import React, { Fragment, useState, useEffect } from 'react'
+import { Form, Input, Button, Space, Skeleton } from 'antd'
 import { connect } from 'react-redux'
 
-import { postData } from '../../../../Actions/Action'
+import { postData } from '../../../Actions/Action'
 
 function ConnectionSettingsComponent(props) {
 	const [connectionState, setConnectionState] = useState({
 		testType: false,
 		skeleton_loading: true,
 	})
-	const [accessType, setAccessType] = useState(0)
+
+	useEffect(() => {}, [props.connectionSettings])
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
+		console.log(connectionState)
 	}
-
-	useEffect(() => {
-		if (props.connectionSettings && accessType === 0) {
-			setAccessType(props?.connectionSettings?.access_level === 'pro' ? 2 : 1)
-		}
-		// eslint-disable-next-line
-	}, [props.connectionSettings])
 
 	const onFinish = values => {
 		values.testType = connectionState.testType
 		values.installed_carrier_id = props.carrierId
 		values.carrierId = props.carrierId
-
 		props.postData(values, props.token)
 	}
 
@@ -35,23 +29,22 @@ function ConnectionSettingsComponent(props) {
 		props.connectionSettings === undefined
 	) {
 		return <Skeleton active />
-	} else {
-		if (Object.keys(props.connectionSettings)?.length === 0) {
-			props.connectionSettings.access_level = 'pro'
-		}
 	}
+
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have an XPO account to use this
-				application. If you do not have one, contact XPO at 800-755-2728, or{' '}
+				<strong>Note!</strong> You must have a Unishippers (unishippers.com)
+				account to use this application. If you don’t have one, contact
+				Unishippers at 1-800-999-8721 and ask to be contacted by a sales
+				person from the office serving your area or{' '}
 				<a
-					href='https://ltl.xpo.com/webapp/membership_app/membershipSignupCompanySearch.do'
+					href='https://eniture.com/request-worldwide-express-account-number/'
 					target='_blank'
 					rel='noreferrer'>
-					Create an LTLXPO.com Account
-				</a>
-				.
+					click here
+				</a>{' '}
+				to access the online new account request form.
 			</div>
 			<Form
 				layout='vertical'
@@ -61,73 +54,38 @@ function ConnectionSettingsComponent(props) {
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
 				<Form.Item
-					label='Pickup/Delivery Account Number'
-					name='delivery_account_number'
+					label='Unishippers Customer Number'
+					name='unishippers_account_number'
 					rules={[
-						{
-							required: true,
-							message: 'Pickup/Delivery Account Number',
-						},
+						{ required: true, message: 'Unishippers Customer Number' },
 					]}>
-					<Input placeholder='Pickup/Delivery Account Number' />
+					<Input placeholder='Unishippers Customer Number' />
 				</Form.Item>
-
+				<Form.Item
+					label='UPS Account Number'
+					name='ups_account_number'
+					rules={[{ required: true, message: 'UPS Account Number' }]}>
+					<Input placeholder='UPS Account Number' />
+				</Form.Item>
 				<Form.Item
 					label='Username'
 					name='username'
 					rules={[{ required: true, message: 'Username' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
-
 				<Form.Item
 					label='Password'
 					name='password'
 					rules={[{ required: true, message: 'Password' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
-
 				<Form.Item
-					label='Pickup/Delivery Postal Code'
-					name='delivery_postal_code'
-					rules={[
-						{
-							required: true,
-							message: 'Pickup/Delivery Postal Code',
-						},
-					]}>
-					<Input placeholder='Pickup/Delivery Postal Code' />
+					label='Request Key'
+					name='request_key'
+					// rules={[{ required: true, message: 'Request Key' }]}
+				>
+					<Input placeholder='Request Key' />
 				</Form.Item>
-
-				<Form.Item
-					label='Bill To Account Number '
-					name='bill_to_account_number'
-					rules={[
-						{
-							required: accessType === 2,
-							message: 'Bill To Account Number',
-						},
-					]}>
-					<Input placeholder='Bill To Account Number ' />
-				</Form.Item>
-
-				<Form.Item label='API Key' name='api_key'>
-					<Input placeholder='API Key' />
-				</Form.Item>
-
-				<Form.Item
-					name='access_level'
-					// label='Access Level'
-					rules={[{ required: false, message: 'Access Level' }]}>
-					<Radio.Group>
-						<Radio onChange={() => setAccessType(1)} value='test'>
-							Test Account Number
-						</Radio>
-						<Radio onChange={() => setAccessType(2)} value='pro'>
-							Test Bill To Account Number
-						</Radio>
-					</Radio.Group>
-				</Form.Item>
-
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
 						<Button

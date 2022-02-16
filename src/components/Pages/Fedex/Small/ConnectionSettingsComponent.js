@@ -56,7 +56,10 @@ function ConnectionSettingsComponent(props) {
 		props.postData(values, props.token)
 	}
 
-	if (props.connectionSettings === null || props.connectionSettings === undefined) {
+	if (
+		props.connectionSettings === null ||
+		props.connectionSettings === undefined
+	) {
 		return <Skeleton active />
 	} else {
 		if (Object.keys(props.connectionSettings)?.length === 0) {
@@ -68,10 +71,13 @@ function ConnectionSettingsComponent(props) {
 			<div className={'note-bx'}>
 				<strong>Note!</strong> You must have a Fedex account to use this
 				application. If you do not have one, contact Fedex at 800-463-3339 or{' '}
-				<a href='http://www.fedex.com/us/oadr/' target='_blank' rel='noreferrer'>
+				<a
+					href='http://www.fedex.com/us/oadr/'
+					target='_blank'
+					rel='noreferrer'>
 					register online
-				</a>.
-				
+				</a>
+				.
 			</div>
 			<Form
 				layout='vertical'
@@ -166,4 +172,7 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConnectionSettingsComponent)
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ConnectionSettingsComponent)
