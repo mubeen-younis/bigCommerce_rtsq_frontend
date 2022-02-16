@@ -420,11 +420,18 @@ function ProductSettingsComponent(props) {
 	}, [productVariants, props])
 
 	const validate = useCallback(() => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: false,
+			},
+		})
+
 		let error = false
 		let msg = ''
 
 		for (const prd of productVariants) {
-			console.log(prd.dropship_enabled,prd.dropship_location)
+			console.log(prd)
 			if (prd.weight === null || prd.weight <= 0) {
 				error = true
 				msg = 'Weight must be greater than 0.'
@@ -437,14 +444,18 @@ function ProductSettingsComponent(props) {
 			} else if (prd.height === null || prd.height <= 0) {
 				error = true
 				msg = 'Height must be greater than 0.'
-			} else if (
-				prd.dropship_enabled===1 || prd.dropship_enabled 
-			) {
-				if (
-					!prd.dropship_location
-				) {
+			} else if (prd.dropship_enabled === 1 || prd.dropship_enabled) {
+				if (!prd.dropship_location) {
 					error = true
 					msg = 'Dropship location is required'
+				}
+			} else if (
+				prd.shippingGroup_enabled === 1 ||
+				prd.shippingGroup_enabled
+			) {
+				if (!prd.shippingGroup_location) {
+					error = true
+					msg = 'Shipping group is required'
 				}
 			}
 		}
@@ -452,12 +463,6 @@ function ProductSettingsComponent(props) {
 		if (!error) {
 			onSubmit() //props.submitProductSettings({ products: productVariants }, props.token, setState)
 		} else {
-			dispatch({
-				type: 'ALERT_MESSAGE',
-				payload: {
-					showAlertMessage: false,
-				},
-			})
 			dispatch({
 				type: 'ALERT_MESSAGE',
 				payload: {

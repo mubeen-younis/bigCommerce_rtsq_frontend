@@ -22,6 +22,7 @@ import RendorAddon from './components/RenderAddon'
 import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent'
 import PlansComponent from './components/Plans/PlansComponent'
 import { setStore, getCurrentPlanInfo } from './Actions/Action'
+import { getShippingGroups } from './Actions/ShippingGroupsActions'
 
 const { Header, Content } = Layout
 
@@ -47,6 +48,7 @@ function App(props) {
 		currentPlan,
 		getStorePlans,
 		setStoreData,
+		getShippingGroups,
 	} = props
 
 	const urlParams = new URLSearchParams(window.location.search)
@@ -71,6 +73,7 @@ function App(props) {
 		getInstalledCarriers(store)
 		getInstalledAddons(store)
 		getStorePlans()
+		getShippingGroups()
 
 		// eslint-disable-next-line
 	}, [])
@@ -195,6 +198,7 @@ const mapDispatchToProps = dispatch => {
 		getRADPlans: token => dispatch(getRadPlans(token)),
 		getSbsPlans: token => dispatch(getSbsPlans(token)),
 		getStorePlans: () => dispatch(getPlans()),
+		getShippingGroups: () => dispatch(getShippingGroups()),
 		setToken: token => {
 			localStorage.setItem('store', token)
 			dispatch({ type: 'TOKEN', payload: token })

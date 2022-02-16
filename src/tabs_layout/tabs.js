@@ -96,7 +96,7 @@ function TabsLayout() {
 				<TabPane tab='Warehouses' key='3'>
 					<WarehouseComponent />
 				</TabPane>
-				<TabPane tab='Shipping Group' key='10'>
+				<TabPane tab='Shipping Groups' key='10'>
 					<ShippingGroup />
 				</TabPane>
 				<TabPane tab='Quote Settings' key='4'>

@@ -16,6 +16,7 @@ const Settings = ({
 }) => {
 	const {
 		dropships,
+		shippingGroups,
 		insuranceStatus,
 		sbsPlans,
 		carrierId,
@@ -45,7 +46,6 @@ const Settings = ({
 		: false || (sbsPlans && sbsPlans?.currentPackage?.status === 3)
 
 	useEffect(() => {
-
 		if (isSbsSuspended) {
 			onChangeVariant(index, 'allow_vertical', false)
 			onChangeVariant(index, 'ship_own_package', false)
@@ -162,10 +162,7 @@ const Settings = ({
 						<Form.Item
 							label='Weight (lbs)'
 							rules={[
-								{
-									required: true,
-									message: 'Weight is required',
-								},
+								{ required: true, message: 'Weight is required' },
 							]}>
 							<Input
 								id={'weight' + index}
@@ -374,16 +371,47 @@ const Settings = ({
 									'dropship_enabled',
 									!product?.dropship_enabled
 								)
+								onChangeVariant(
+									index,
+									'shippingGroup_enabled',
+									false
+								)
+								onChangeVariant(
+									index,
+									'shippingGroup_location',
+									null
+								)
 							}}
 							name='dropship_enabled'
 							id={'dropship_enabled' + index}
-							checked={product?.dropship_enabled || false}>
+							checked={product?.dropship_enabled}
+							disabled={product?.shippingGroup_enabled}>
 							Dropship this product
+						</Checkbox>
+					</Col>
+
+					{/* Shipping Group Check */}
+					<Col span={24} style={{ marginTop: '7px' }}>
+						<Checkbox
+							onChange={e => {
+								onChangeVariant(
+									index,
+									'shippingGroup_enabled',
+									e.target.checked
+								)
+								onChangeVariant(index, 'dropship_enabled', false)
+								onChangeVariant(index, 'dropship_location', null)
+							}}
+							name='shippingGroup_enabled'
+							id={'shippingGroup_enabled' + index}
+							checked={product?.shippingGroup_enabled}
+							disabled={product?.dropship_enabled}>
+							Assign shipping group to this product
 						</Checkbox>
 					</Col>
 				</Row>
 
-				{product?.dropship_enabled ? (
+				{product?.dropship_enabled && (
 					<Row gutter={16}>
 						<Col span={24} style={{ marginTop: '7px' }}>
 							<Form.Item label='Dropship Location'>
@@ -420,7 +448,45 @@ const Settings = ({
 							</Form.Item>
 						</Col>
 					</Row>
-				) : null}
+				)}
+
+				{product?.shippingGroup_enabled && (
+					<Row gutter={16}>
+						<Col span={24} style={{ marginTop: '7px' }}>
+							<Form.Item label='Shipping Group'>
+								<Select
+									placeholder='Shipping Group'
+									size={'large'}
+									style={{ width: '100%' }}
+									name='shippingGroup_location'
+									id={'shippingGroup_location' + index}
+									defaultValue={
+										product?.shippingGroup_location ?? null
+									}
+									value={product?.shippingGroup_location ?? null}
+									onChange={location =>
+										onChangeVariant(
+											index,
+											'shippingGroup_location',
+											location
+										)
+									}>
+									{shippingGroups && (
+										<Option value={null}>
+											Select Shipping Group
+										</Option>
+									)}
+									{shippingGroups &&
+										shippingGroups.map(value => (
+											<Option value={value.id} key={value.id}>
+												{value.nickname}
+											</Option>
+										))}
+								</Select>
+							</Form.Item>
+						</Col>
+					</Row>
+				)}
 
 				{count > 1 && index === 0 && (
 					<Row gutter={24} style={{ marginTop: '20px' }}>
@@ -439,4 +505,5 @@ const Settings = ({
 		</Fragment>
 	)
 }
+
 export default Settings
