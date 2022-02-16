@@ -450,10 +450,10 @@ function ProductSettingsComponent(props) {
 					msg = 'Dropship location is required'
 				}
 			} else if (
-				prd.shippingGroup_enabled === 1 ||
-				prd.shippingGroup_enabled
+				prd.shipping_group_enabled === 1 ||
+				prd.shipping_group_enabled
 			) {
-				if (!prd.shippingGroup_location) {
+				if (!prd.shipping_group) {
 					error = true
 					msg = 'Shipping group is required'
 				}

@@ -373,19 +373,15 @@ const Settings = ({
 								)
 								onChangeVariant(
 									index,
-									'shippingGroup_enabled',
+									'shipping_group_enabled',
 									false
 								)
-								onChangeVariant(
-									index,
-									'shippingGroup_location',
-									null
-								)
+								onChangeVariant(index, 'shipping_group', null)
 							}}
 							name='dropship_enabled'
 							id={'dropship_enabled' + index}
 							checked={product?.dropship_enabled}
-							disabled={product?.shippingGroup_enabled}>
+							disabled={product?.shipping_group_enabled}>
 							Dropship this product
 						</Checkbox>
 					</Col>
@@ -396,22 +392,22 @@ const Settings = ({
 							onChange={e => {
 								onChangeVariant(
 									index,
-									'shippingGroup_enabled',
+									'shipping_group_enabled',
 									e.target.checked
 								)
 								onChangeVariant(index, 'dropship_enabled', false)
 								onChangeVariant(index, 'dropship_location', null)
 							}}
-							name='shippingGroup_enabled'
-							id={'shippingGroup_enabled' + index}
-							checked={product?.shippingGroup_enabled}
+							name='shipping_group_enabled'
+							id={'shipping_group_enabled' + index}
+							checked={product?.shipping_group_enabled}
 							disabled={product?.dropship_enabled}>
 							Assign shipping group to this product
 						</Checkbox>
 					</Col>
 				</Row>
 
-				{product?.dropship_enabled && (
+				{product?.dropship_enabled ? (
 					<Row gutter={16}>
 						<Col span={24} style={{ marginTop: '7px' }}>
 							<Form.Item label='Dropship Location'>
@@ -448,9 +444,9 @@ const Settings = ({
 							</Form.Item>
 						</Col>
 					</Row>
-				)}
+				) : null}
 
-				{product?.shippingGroup_enabled && (
+				{product?.shipping_group_enabled ? (
 					<Row gutter={16}>
 						<Col span={24} style={{ marginTop: '7px' }}>
 							<Form.Item label='Shipping Group'>
@@ -458,16 +454,14 @@ const Settings = ({
 									placeholder='Shipping Group'
 									size={'large'}
 									style={{ width: '100%' }}
-									name='shippingGroup_location'
-									id={'shippingGroup_location' + index}
-									defaultValue={
-										product?.shippingGroup_location ?? null
-									}
-									value={product?.shippingGroup_location ?? null}
+									name='shipping_group'
+									id={'shipping_group' + index}
+									defaultValue={product?.shipping_group ?? null}
+									value={product?.shipping_group ?? null}
 									onChange={location =>
 										onChangeVariant(
 											index,
-											'shippingGroup_location',
+											'shipping_group',
 											location
 										)
 									}>
@@ -486,7 +480,7 @@ const Settings = ({
 							</Form.Item>
 						</Col>
 					</Row>
-				)}
+				) : null}
 
 				{count > 1 && index === 0 && (
 					<Row gutter={24} style={{ marginTop: '20px' }}>
