@@ -22,6 +22,7 @@ import {
 import addKeysToList from '../Utilities/addKey'
 import Settings from './Products/Settings'
 import { isFireFox } from '../Utilities/browserName'
+import { getLocations } from './../Actions/Warehouse'
 
 const makeColumns = (sortProducts, showProductDetails) => {
 	const columns = [
@@ -174,7 +175,13 @@ function ProductSettingsComponent(props) {
 		// eslint-disable-next-line
 	}, [productsPagination, props.productDetail, sortProd, dispatch, props.token])
 
-	const showProductDetails = (id, product) => {
+	useEffect(() => {
+		dispatch(getLocations(props.token))
+	}, [dispatch, props.token])
+
+	const showProductDetails = async (id, product) => {
+		dispatch(getLocations(props.token))
+
 		setState({
 			...state,
 			visible: true,
@@ -424,7 +431,7 @@ function ProductSettingsComponent(props) {
 		let msg = ''
 
 		for (const prd of productVariants) {
-			console.log(prd.dropship_enabled,prd.dropship_location)
+			console.log(prd.dropship_enabled, prd.dropship_location)
 			if (prd.weight === null || prd.weight <= 0) {
 				error = true
 				msg = 'Weight must be greater than 0.'
@@ -437,12 +444,8 @@ function ProductSettingsComponent(props) {
 			} else if (prd.height === null || prd.height <= 0) {
 				error = true
 				msg = 'Height must be greater than 0.'
-			} else if (
-				prd.dropship_enabled===1 || prd.dropship_enabled 
-			) {
-				if (
-					!prd.dropship_location
-				) {
+			} else if (prd.dropship_enabled === 1 || prd.dropship_enabled) {
+				if (!prd.dropship_location) {
 					error = true
 					msg = 'Dropship location is required'
 				}
