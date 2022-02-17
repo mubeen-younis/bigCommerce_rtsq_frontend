@@ -23,7 +23,7 @@ function SideMenu(props) {
 		if (name.match(/\/$/)) setActiveMenu('99')
 		else if (name.includes('plans')) setActiveMenu('100')
 		else if (name.includes('addon'))
-			setActiveMenu('addon-' + name[name.length - 1])
+			setActiveMenu('addon-' + name.substring(name.lastIndexOf('/') + 1))
 		else setActiveMenu(name.substring(name.lastIndexOf('/') + 1))
 	}, [props.activeMenu, setActiveMenu])
 
