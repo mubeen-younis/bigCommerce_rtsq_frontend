@@ -695,7 +695,10 @@ function WarehouseComponent(props) {
 													locationDetail.instock_description
 												}
 												placeholder='In-store pick up'
-												onChange={changeValue}
+												onChange={e =>
+													e.target.value.length < 21 &&
+													changeValue(e)
+												}
 												//disabled={plansInfo && plansInfo.plan_type > 2 ? false : true}
 											/>
 										</Form.Item>
@@ -725,9 +728,10 @@ function WarehouseComponent(props) {
 												placeholder='404-369-0680'
 												name='phone'
 												value={locationDetail.phone}
-												onChange={e => {
+												onChange={e =>
+													e.target.value.length < 17 &&
 													changeValue(e)
-												}}
+												}
 												onKeyDown={e =>
 													handleKeyPhoneNumber(e)
 												}
@@ -914,7 +918,10 @@ function WarehouseComponent(props) {
 												name='ld_description'
 												value={locationDetail.ld_description}
 												placeholder='Local delivery'
-												onChange={changeValue}
+												onChange={e =>
+													e.target.value.length < 21 &&
+													changeValue(e)
+												}
 												//disabled={plansInfo && plansInfo.plan_type > 2 ? false : true}
 											/>
 										</Form.Item>

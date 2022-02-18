@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button, Col, Row, Select, Checkbox, Input } from 'antd'
+import { getLocations } from '../../Actions/Warehouse'
 
 const { Option } = Select
 const smallCarriers = ['small-package', 'ups-small', 'fedex-small']
@@ -21,7 +22,10 @@ const Settings = ({
 		carrierId,
 		installedCarriers,
 		installedAddons,
+		token,
 	} = useSelector(state => state)
+	const dispatch = useDispatch()
+
 	const validateNumber = value => {
 		/* value = value.replace(/\D/g, "");
 
@@ -45,13 +49,14 @@ const Settings = ({
 		: false || (sbsPlans && sbsPlans?.currentPackage?.status === 3)
 
 	useEffect(() => {
-
 		if (isSbsSuspended) {
 			onChangeVariant(index, 'allow_vertical', false)
 			onChangeVariant(index, 'ship_own_package', false)
 			onChangeVariant(index, 'ship_multiple_package', false)
 		}
-	}, [index, isSbsSuspended, onChangeVariant])
+
+		dispatch(getLocations(token))
+	}, [dispatch, index, isSbsSuspended, onChangeVariant, token])
 
 	return (
 		<Fragment key={index}>
