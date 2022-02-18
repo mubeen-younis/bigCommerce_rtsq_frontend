@@ -431,7 +431,6 @@ function ProductSettingsComponent(props) {
 		let msg = ''
 
 		for (const prd of productVariants) {
-			console.log(prd.dropship_enabled, prd.dropship_location)
 			if (prd.weight === null || prd.weight <= 0) {
 				error = true
 				msg = 'Weight must be greater than 0.'
