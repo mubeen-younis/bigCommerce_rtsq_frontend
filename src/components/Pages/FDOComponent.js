@@ -1,15 +1,75 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Row, Col, Typography, Space, Button, Form, Input } from 'antd'
+import axios from 'axios'
 
 const { Title } = Typography
 
 const FDOComponent = () => {
 	const [fdoConnected, setfdoConnected] = useState(false)
 	const [fdoId, setFdoId] = useState('')
+	const dispatch = useDispatch()
+	const { token } = useSelector(state => state)
 
-	const submitHandler = useCallback(() => {
-		console.log(fdoId)
-	}, [fdoId])
+	useEffect(() => {
+		const fetchStore = async () => {
+			const config = {
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
+			}
+			try {
+				const { data } = await axios.get(
+					`${process.env.REACT_APP_ENITURE_API_URL}/get_fdo_info`,
+					config
+				)
+				if (!data.error) {
+					setFdoId(data?.data?.freightdesk_company_id)
+				}
+			} catch (err) {
+				console.log(err)
+			}
+		}
+
+		fetchStore()
+	}, [token])
+
+	const submitHandler = useCallback(
+		async (id = null) => {
+			try {
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						showAlertMessage: true,
+						alertMessageType: 'loading',
+					},
+				})
+
+				const url = `${process.env.REACT_APP_ENITURE_API_URL}/update_fdo_connection`
+				const config = {
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+				const { data } = await axios.post(
+					url,
+					{ freightdesk_company_id: id },
+					config
+				)
+				console.log(data)
+			} catch (err) {
+				console.log(err)
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						showAlertMessage: false,
+						alertMessageType: '',
+					},
+				})
+			}
+		},
+		[dispatch, token]
+	)
 
 	return (
 		<Space direction='vertical' size='large' className='w-100'>
@@ -75,6 +135,7 @@ const FDOComponent = () => {
 						<Input
 							size='large'
 							value={fdoId}
+							required
 							onChange={e => setFdoId(e.target.value)}
 						/>
 					</Form.Item>
@@ -96,7 +157,11 @@ const FDOComponent = () => {
 					md={24}
 					lg={24}
 					xl={21}>
-					<Button onClick={submitHandler}>Connect</Button>
+					<Button
+						onClick={() => submitHandler(fdoId)}
+						disabled={!fdoId.length}>
+						Connect
+					</Button>
 				</Col>
 			</Row>
 		</Space>
