@@ -110,7 +110,10 @@ function TabsLayout() {
 							<AlertMessage />
 							<ImportCsvComponent />
 						</TabPane>*/}
-				{(component === 1 || component === 3 || component === 5) && (
+				{(component === 1 ||
+					component === 3 ||
+					component === 5 ||
+					component === 9) && (
 					<TabPane tab='Box Sizes' key='7'>
 						<BoxSizesComponent />
 					</TabPane>
