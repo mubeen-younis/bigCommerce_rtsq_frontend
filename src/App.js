@@ -6,7 +6,6 @@ import './App.css'
 import './responsive.css'
 import SideMenu from './partials/SideMenu'
 import { connect } from 'react-redux'
-
 import { getLocations } from './Actions/Warehouse'
 import {
 	getInstalledCarriers,

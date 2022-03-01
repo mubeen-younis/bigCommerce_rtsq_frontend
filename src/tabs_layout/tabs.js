@@ -12,6 +12,7 @@ import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
 import useLoadComponent from '../hooks/useLoadComponent'
 import ShippingGroup from '../components/Pages/ShippingGroup'
+import FDOComponent from '../components/Pages/FDOComponent'
 // import AlertMessage from "../Utilities/AlertMessage";
 // import BoxSizesComponent from '../components/Pages/BoxSizesComponent';
 
@@ -123,6 +124,9 @@ function TabsLayout() {
 				</TabPane>
 				<TabPane tab='User Guide' key='9'>
 					<UserGuideComponent />
+				</TabPane>
+				<TabPane tab='FreightDesk Online' key='10'>
+					<FDOComponent />
 				</TabPane>
 			</Tabs>
 		</Fragment>
