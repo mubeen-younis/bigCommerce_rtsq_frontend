@@ -87,9 +87,7 @@ function ShippingGroupsComponent() {
 				data = {}
 
 			if (modal.open && modal.type === 'edit') {
-				data =
-					shippingGroups?.find(sg => sg.uuid === shippingGroupId) ??
-					{}
+				data = shippingGroups?.find(sg => sg.uuid === shippingGroupId) ?? {}
 			}
 
 			if (error) {
@@ -128,13 +126,13 @@ function ShippingGroupsComponent() {
 		},
 		{
 			key: 'rate_x_quantity',
-			title: 'Rate X Quantity',
+			title: 'Rate X Qty',
 			dataIndex: 'rate_x_quantity',
 			render: rate_x_quantity => (rate_x_quantity === 1 ? 'Yes' : 'No'),
 		},
 		{
 			key: 'checkout_description',
-			title: 'Checkout Description',
+			title: 'Label As',
 			dataIndex: 'checkout_description',
 		},
 		{
@@ -179,16 +177,14 @@ function ShippingGroupsComponent() {
 						</Title>
 						<p>
 							Warehouses that inventory all products not otherwise
-							identified as drop shipped items. The warehouse with
-							the lowest shipping cost to the destination is used
-							for quoting purposes.
+							identified as drop shipped items. The warehouse with the
+							lowest shipping cost to the destination is used for
+							quoting purposes.
 						</p>
 						<Table
 							className={'custom-table'}
 							dataSource={
-								shippingGroups
-									? addKeysToList(shippingGroups)
-									: []
+								shippingGroups ? addKeysToList(shippingGroups) : []
 							}
 							columns={columns}
 						/>
@@ -207,8 +203,7 @@ function ShippingGroupsComponent() {
 				}
 				centered
 				visible={
-					modal.open &&
-					(modal.type === 'add' || modal.type === 'edit')
+					modal.open && (modal.type === 'add' || modal.type === 'edit')
 				}
 				onCancel={() => hanldeModalToggling(false, '')}
 				footer={null}
@@ -256,15 +251,15 @@ function ShippingGroupsComponent() {
 								xl={24}>
 								<Form.Item
 									className={'mb-2'}
-									label='Checkout Description'
+									label='Label As'
 									name='checkout_description'
 									rules={[
 										{
 											required: true,
-											message: 'Checkout Description',
+											message: 'Label As',
 										},
 									]}>
-									<Input placeholder='Checkout Description' />
+									<Input placeholder='Label As' />
 								</Form.Item>
 							</Col>
 						</Row>
@@ -284,12 +279,13 @@ function ShippingGroupsComponent() {
 										{
 											required: true,
 											message: 'Rate',
-											pattern: /^\d*(.\d{0,2})?$/,
+											pattern: /^\d+(.\d{0,2})?$/,
 										},
 									]}>
 									<Input
 										type='number'
 										min={0}
+										step={0.01}
 										placeholder='e.g. 2 or 2.50'
 									/>
 								</Form.Item>
@@ -305,12 +301,12 @@ function ShippingGroupsComponent() {
 								xl={24}>
 								<Form.Item
 									className={'mb-2'}
-									label='Rate X Quantity'
+									label='Rate X Qty'
 									name='rate_x_quantity'
 									rules={[
 										{
 											required: true,
-											message: 'Rate X Quantity',
+											message: 'Rate X Qty',
 										},
 									]}>
 									<Select>
