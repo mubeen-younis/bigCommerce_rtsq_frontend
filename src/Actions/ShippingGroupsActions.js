@@ -1,6 +1,6 @@
+import types from './../Stores/types'
 import axios from './../Utilities/authToken'
 import { dispatchAlert } from './../Utilities/dispatchAlert'
-import types from './../Stores/types'
 
 export const getShippingGroups = () => async dispatch => {
 	try {
@@ -13,13 +13,16 @@ export const getShippingGroups = () => async dispatch => {
 		if (!error) {
 			dispatch({
 				type: types.GET_SHIPPING_GROUPS,
-				payload: data,
+				payload: data ?? [],
 			})
 		}
 		dispatch(dispatchAlert(error, error ? 'error' : 'success', message))
 	} catch (err) {
-		console.log(err)
 		dispatch(dispatchAlert(false, null))
+		dispatch({
+			type: types.GET_SHIPPING_GROUPS,
+			payload: [],
+		})
 	}
 }
 
@@ -46,7 +49,6 @@ export const saveShippingGroup = shipping_group => async dispatch => {
 		}
 		dispatch(dispatchAlert(true, error ? 'error' : 'success', message))
 	} catch (err) {
-		console.log(err)
 		dispatch(dispatchAlert(false, null))
 	}
 }
@@ -67,7 +69,6 @@ export const deleteShippingGroup = uuid => async dispatch => {
 		}
 		dispatch(dispatchAlert(true, error ? 'error' : 'success', message))
 	} catch (err) {
-		console.log(err)
 		dispatch(dispatchAlert(false, null))
 	}
 }
