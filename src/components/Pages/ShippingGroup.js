@@ -108,9 +108,10 @@ function ShippingGroupsComponent() {
 				})
 			} else {
 				dispatch(saveShippingGroup({ ...data, ...values }))
+				form.resetFields()
 			}
 		},
-		[dispatch, modal.open, modal.type, shippingGroupId, shippingGroups]
+		[dispatch, form, modal.open, modal.type, shippingGroupId, shippingGroups]
 	)
 
 	const columns = [
@@ -205,7 +206,11 @@ function ShippingGroupsComponent() {
 				visible={
 					modal.open && (modal.type === 'add' || modal.type === 'edit')
 				}
-				onCancel={() => hanldeModalToggling(false, '')}
+				onCancel={() => {
+					hanldeModalToggling(false, '')
+					form.resetFields()
+				}}
+				destroyOnClose={true}
 				footer={null}
 				width={800}>
 				{alertMessageType === 'loading' ? (
