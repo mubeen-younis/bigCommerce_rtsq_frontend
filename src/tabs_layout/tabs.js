@@ -122,11 +122,11 @@ function TabsLayout() {
 				<TabPane tab='Import CSV' key='9'>
 					<ImportCsvComponent />
 				</TabPane>
-				<TabPane tab='User Guide' key='10'>
-					<UserGuideComponent />
-				</TabPane>
-				<TabPane tab='FreightDesk Online' key='11'>
+				<TabPane tab='FreightDesk Online' key='10'>
 					<FDOComponent />
+				</TabPane>
+				<TabPane tab='User Guide' key='11'>
+					<UserGuideComponent />
 				</TabPane>
 			</Tabs>
 		</Fragment>
