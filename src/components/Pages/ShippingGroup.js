@@ -177,10 +177,11 @@ function ShippingGroupsComponent() {
 							</Button>
 						</Title>
 						<p>
-							Warehouses that inventory all products not otherwise
-							identified as drop shipped items. The warehouse with the
-							lowest shipping cost to the destination is used for
-							quoting purposes.
+							Create a "Shipping Group" to define a custom shipping
+							rate. Once a "Shipping Group" is defined, you can assign
+							it to a product by editing the product's shipping
+							parameters. A "Shipping Group" can be assigned to more
+							than one product.
 						</p>
 						<Table
 							className={'custom-table'}

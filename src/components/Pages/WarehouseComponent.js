@@ -1066,10 +1066,10 @@ function WarehouseComponent(props) {
 							</Button>
 						</Title>
 						<p>
-							Warehouses that inventory all products not otherwise
-							identified as drop shipped items. The warehouse with the
-							lowest shipping cost to the destination is used for
-							quoting purposes.
+							Warehouses contain all products not otherwise assigned to
+							a drop ship location. If more than one warehouse is
+							defined, the warehouse closest to the ship-to address
+							will be used as the shipment origin.
 						</p>
 						<Table
 							className={'custom-table'}
@@ -1098,14 +1098,14 @@ function WarehouseComponent(props) {
 							</Button>
 						</Title>
 						<p>
-							Locations that inventory specific items that are drop
-							shipped to the destination. Use the product's settings
-							page to identify it as a drop shipped item and its
-							associated drop ship location. Orders that include drop
-							shipped items will display a single figure for the
-							shipping rate estimate that is equal to the sum of the
-							cheapest option of each shipment required to fulfill the
-							order.
+							Products can be assigned to a drop ship location. The
+							assignment is made on the product's shipping parameters
+							page. A product assigned to a drop ship location will
+							always use that location as the ship-from address. If
+							there are other items in the Cart that are being quoted
+							as shipping from other locations, the cheapest rate for
+							each location will be added together and displayed as a
+							single shipping rate.
 						</p>
 						<Table
 							className={'custom-table'}
