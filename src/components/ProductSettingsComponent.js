@@ -427,6 +427,13 @@ function ProductSettingsComponent(props) {
 	}, [productVariants, props])
 
 	const validate = useCallback(() => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: false,
+			},
+		})
+
 		let error = false
 		let msg = ''
 
@@ -448,18 +455,20 @@ function ProductSettingsComponent(props) {
 					error = true
 					msg = 'Dropship location is required'
 				}
+			} else if (
+				prd.shipping_group_enabled === 1 ||
+				prd.shipping_group_enabled
+			) {
+				if (!prd.shipping_group) {
+					error = true
+					msg = 'Shipping group is required'
+				}
 			}
 		}
 
 		if (!error) {
 			onSubmit() //props.submitProductSettings({ products: productVariants }, props.token, setState)
 		} else {
-			dispatch({
-				type: 'ALERT_MESSAGE',
-				payload: {
-					showAlertMessage: false,
-				},
-			})
 			dispatch({
 				type: 'ALERT_MESSAGE',
 				payload: {

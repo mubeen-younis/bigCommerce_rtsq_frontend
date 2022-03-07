@@ -11,6 +11,7 @@ import OrdersComponent from '../components/OrdersComponent'
 import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
 import useLoadComponent from '../hooks/useLoadComponent'
+import ShippingGroup from '../components/Pages/ShippingGroup'
 import FDOComponent from '../components/Pages/FDOComponent'
 // import AlertMessage from "../Utilities/AlertMessage";
 // import BoxSizesComponent from '../components/Pages/BoxSizesComponent';
@@ -96,13 +97,16 @@ function TabsLayout() {
 				<TabPane tab='Warehouses' key='3'>
 					<WarehouseComponent />
 				</TabPane>
-				<TabPane tab='Quote Settings' key='4'>
+				<TabPane tab='Shipping Groups' key='4'>
+					<ShippingGroup />
+				</TabPane>
+				<TabPane tab='Quote Settings' key='5'>
 					{useLoadComponent(component)[1]}
 				</TabPane>
-				<TabPane tab='Product Settings' key='5'>
+				<TabPane tab='Product Settings' key='6'>
 					<ProductSettingsComponent />
 				</TabPane>
-				<TabPane tab='Orders' key='6'>
+				<TabPane tab='Orders' key='7'>
 					<OrdersComponent />
 				</TabPane>
 
@@ -111,18 +115,18 @@ function TabsLayout() {
 							<ImportCsvComponent />
 						</TabPane>*/}
 				{(component === 1 || component === 3 || component === 5) && (
-					<TabPane tab='Box Sizes' key='7'>
+					<TabPane tab='Box Sizes' key='8'>
 						<BoxSizesComponent />
 					</TabPane>
 				)}
-				<TabPane tab='Import CSV' key='8'>
+				<TabPane tab='Import CSV' key='9'>
 					<ImportCsvComponent />
-				</TabPane>
-				<TabPane tab='User Guide' key='9'>
-					<UserGuideComponent />
 				</TabPane>
 				<TabPane tab='FreightDesk Online' key='10'>
 					<FDOComponent />
+				</TabPane>
+				<TabPane tab='User Guide' key='11'>
+					<UserGuideComponent />
 				</TabPane>
 			</Tabs>
 		</Fragment>
