@@ -408,7 +408,7 @@ const Settings = ({
 							id={'shipping_group_enabled' + index}
 							checked={product?.shipping_group_enabled}
 							disabled={product?.dropship_enabled}>
-							Assign shipping group to this product
+							Assign this product to a shipping group
 						</Checkbox>
 					</Col>
 				</Row>
