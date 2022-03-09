@@ -2,13 +2,19 @@ import types from './../Stores/types'
 import axios from './../Utilities/authToken'
 import { dispatchAlert } from './../Utilities/dispatchAlert'
 
-export const getShippingGroups = () => async dispatch => {
+export const getShippingGroups = token => async dispatch => {
 	try {
 		dispatch(dispatchAlert(false, 'loading'))
 
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
+
 		const {
 			data: { error, data, message },
-		} = await axios.get('get_shipping_groups')
+		} = await axios.get('get_shipping_groups', config)
 
 		if (!error) {
 			dispatch({
@@ -17,7 +23,23 @@ export const getShippingGroups = () => async dispatch => {
 			})
 		}
 		dispatch(dispatchAlert(error, error ? 'error' : 'success', message))
-	} catch (err) {
+	} catch ({ response }) {
+		if (
+			response &&
+			response?.data?.error &&
+			response?.data?.message === 'Token Mismatch'
+		) {
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					showAlertMessage: false,
+					alertMessageType: 'Token Mismatch',
+				},
+			})
+
+			return
+		}
+
 		dispatch(dispatchAlert(false, null))
 		dispatch({
 			type: types.GET_SHIPPING_GROUPS,
