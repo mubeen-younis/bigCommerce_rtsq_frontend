@@ -378,37 +378,31 @@ function BoxSizesComponent(props) {
 			key: 'length',
 			title: 'Interior Length(in)',
 			dataIndex: 'length',
-			render: text => Number(text).toFixed(2),
 		},
 		{
 			key: 'width',
 			title: 'Interior Width(in)',
 			dataIndex: 'width',
-			render: text => Number(text).toFixed(2),
 		},
 		{
 			key: 'height',
 			title: 'Interior Height(in)',
 			dataIndex: 'height',
-			render: text => Number(text).toFixed(2),
 		},
 		{
 			key: 'ext_length',
 			title: 'Exterior Length(in)',
 			dataIndex: 'ext_length',
-			render: text => Number(text).toFixed(2),
 		},
 		{
 			key: 'ext_width',
 			title: 'Exterior Width(in)',
 			dataIndex: 'ext_width',
-			render: text => Number(text).toFixed(2),
 		},
 		{
 			key: 'ext_height',
 			title: 'Exterior Height(in)',
 			dataIndex: 'ext_height',
-			render: text => Number(text).toFixed(2),
 		},
 		{
 			key: 'maxWeight',
