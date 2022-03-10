@@ -780,7 +780,10 @@ function PlansComponent() {
 
 			<Row gutter={24}>
 				{plans.map((plan, i) =>
-					plan.id === 1 && currentPlan?.plan_id > 1 ? null : (
+					(plan.id === 1 && currentPlan?.plan_id > 1) ||
+					((plan.id === 1 || (plan.name + '').toLowerCase() === 'trial') &&
+						currentPlan?.plan_id === 1 &&
+						currentPlan?.status === 2) ? null : (
 						<Col
 							className='gutter-row mb-3'
 							xs={24}
