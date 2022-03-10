@@ -1,12 +1,17 @@
 import React, { Fragment } from 'react'
 import { useSelector } from 'react-redux'
-import {} from 'antd'
 
 function PlanStatusHeading() {
 	const { currentPlan } = useSelector(state => state)
+
 	return (
 		<Fragment>
-			{currentPlan?.status === 3 ? (
+			{currentPlan?.is_expired ? (
+				<div className='note-bx'>
+					Your plan is expired. Please subscribe to a paid plan otherwise
+					your quoting will not work.
+				</div>
+			) : currentPlan?.status === 3 ? (
 				<div className='note-bx'>Your plan has been expired</div>
 			) : currentPlan?.plan_id === 0 ? (
 				<div className='note-bx'>
