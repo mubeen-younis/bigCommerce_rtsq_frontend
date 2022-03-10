@@ -792,7 +792,8 @@ function PlansComponent() {
 							<div className={'pricing-box'}>
 								<div className='pricing-header'>
 									<h2>{plan.name}</h2>
-									{currentPlan?.plan_id === plan.id ? (
+									{currentPlan?.plan_id === plan.id &&
+									!currentPlan?.is_expired ? (
 										<Button size={'large'} className='mt-2'>
 											${plan.price} / month
 										</Button>
