@@ -6,7 +6,7 @@ function PlanStatusHeading() {
 
 	const trailPlanCheck =
 		currentPlan?.status === 2
-			? 'Your trial plan is expired. Please subscribe to a paid plan.'
+			? 'Your trial plan has been expired. Please activate your paid plan.'
 			: `You are currently on the Trial plan. ${
 					currentPlan?.status === 1 &&
 					`It will expire on ${currentPlan?.ends_at}`
