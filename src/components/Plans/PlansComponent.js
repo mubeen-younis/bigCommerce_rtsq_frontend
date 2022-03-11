@@ -780,7 +780,10 @@ function PlansComponent() {
 
 			<Row gutter={24}>
 				{plans.map((plan, i) =>
-					plan.id === 1 && currentPlan?.plan_id > 1 ? null : (
+					(plan.id === 1 && currentPlan?.plan_id > 1) ||
+					((plan.id === 1 || (plan.name + '').toLowerCase() === 'trial') &&
+						currentPlan?.plan_id === 1 &&
+						currentPlan?.status === 2) ? null : (
 						<Col
 							className='gutter-row mb-3'
 							xs={24}
@@ -792,7 +795,8 @@ function PlansComponent() {
 							<div className={'pricing-box'}>
 								<div className='pricing-header'>
 									<h2>{plan.name}</h2>
-									{currentPlan?.plan_id === plan.id ? (
+									{currentPlan?.plan_id === plan.id &&
+									!currentPlan?.is_expired ? (
 										<Button size={'large'} className='mt-2'>
 											${plan.price} / month
 										</Button>

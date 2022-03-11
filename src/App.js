@@ -5,7 +5,7 @@ import { LoadingOutlined } from '@ant-design/icons'
 import './App.css'
 import './responsive.css'
 import SideMenu from './partials/SideMenu'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { getLocations } from './Actions/Warehouse'
 import {
 	getInstalledCarriers,
@@ -50,32 +50,53 @@ function App(props) {
 		getShippingGroups,
 	} = props
 
-	const urlParams = new URLSearchParams(window.location.search)
+	const dispatch = useDispatch()
 
 	useEffect(() => {
-		const store =
-			urlParams.get('store') !== (undefined || null)
-				? urlParams.get('store')
-				: localStorage.getItem('store')
+		const urlParams = new URLSearchParams(window.location.search)
 
-		if (token === (undefined || null) && store !== undefined && store !== null) {
-			setToken(store)
-			setStoreData(store)
-			currentPlan(store)
+		const fetchAppData = (token = '') => {
+			setStoreData(token)
+			currentPlan(token)
+			getRADPlans(token)
+			getSbsPlans(token)
+			locations(token)
+			getAllCarriers(token)
+			getAllAddons(token)
+			getInstalledCarriers(token)
+			getInstalledAddons(token)
+			getStorePlans()
+			getShippingGroups(token)
 		}
 
-		getRADPlans(store)
-		getSbsPlans(store)
-		locations(store)
-		getAllCarriers(store)
-		getAllAddons(store)
-		getInstalledCarriers(store)
-		getInstalledAddons(store)
-		getStorePlans()
-		getShippingGroups()
+		const devEnv = process?.env?.NODE_ENV === 'development'
+		if (devEnv) {
+			const localToken =
+				urlParams.get('store') ?? localStorage.getItem('store') ?? null
 
-		// eslint-disable-next-line
-	}, [])
+			setToken(localToken)
+			fetchAppData(localToken)
+		} else {
+			const prodToken = urlParams.get('store') ?? null
+
+			dispatch({ type: 'TOKEN', payload: prodToken })
+			fetchAppData(prodToken)
+		}
+	}, [
+		currentPlan,
+		dispatch,
+		getAllAddons,
+		getAllCarriers,
+		getInstalledAddons,
+		getInstalledCarriers,
+		getRADPlans,
+		getSbsPlans,
+		getShippingGroups,
+		getStorePlans,
+		locations,
+		setStoreData,
+		setToken,
+	])
 
 	message.config({
 		maxCount: 1,
@@ -197,7 +218,7 @@ const mapDispatchToProps = dispatch => {
 		getRADPlans: token => dispatch(getRadPlans(token)),
 		getSbsPlans: token => dispatch(getSbsPlans(token)),
 		getStorePlans: () => dispatch(getPlans()),
-		getShippingGroups: () => dispatch(getShippingGroups()),
+		getShippingGroups: token => dispatch(getShippingGroups(token)),
 		setToken: token => {
 			localStorage.setItem('store', token)
 			dispatch({ type: 'TOKEN', payload: token })
