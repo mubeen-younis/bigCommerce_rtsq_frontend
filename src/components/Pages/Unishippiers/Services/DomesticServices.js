@@ -35,9 +35,9 @@ const DomesticServices = ({
 					<Form.Item className='mb-0'>
 						<Checkbox
 							name='select_all'
-							value={true}
 							checked={checkAll}
-							onChange={allCheckHandler}></Checkbox>
+							onChange={allCheckHandler}
+						/>
 					</Form.Item>
 				</Col>
 			</Row>
@@ -50,18 +50,17 @@ const DomesticServices = ({
 					<Form.Item className={'mb-0'}>
 						<Checkbox
 							name='ups_next_day_air'
-							value={true}
 							checked={
 								quoteSettingsState?.carrier_services
 									?.ups_next_day_air
 							}
-							onChange={onCheck}></Checkbox>
+							onChange={onCheck}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
-							//maxLength='7'
 							value={
 								quoteSettingsState?.carrier_services
 									?.ups_next_day_air_markup
@@ -91,12 +90,12 @@ const DomesticServices = ({
 					<Form.Item className={'mb-0'}>
 						<Checkbox
 							name='ups_next_day_air_saver'
-							value={true}
 							checked={
 								quoteSettingsState?.carrier_services
 									?.ups_next_day_air_saver
 							}
-							onChange={onCheck}></Checkbox>
+							onChange={onCheck}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={14}>
@@ -129,25 +128,24 @@ const DomesticServices = ({
 				<Col span={12}>
 					<Form.Item className={'mb-0'}>
 						<Checkbox
-							name='ups_next_day_air_early'
-							value={true}
+							name='ups_next_day_air_early_am'
 							checked={
 								quoteSettingsState?.carrier_services
-									?.ups_next_day_air_early
+									?.ups_next_day_air_early_am
 							}
-							onChange={onCheck}></Checkbox>
+							onChange={onCheck}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
-							//maxLength='7'
 							value={
 								quoteSettingsState?.carrier_services
-									?.ups_next_day_air_early_markup
+									?.ups_next_day_air_early_am_markup
 							}
 							//pattern='[0-9.?(0-9){2}?]+%?$'
-							name={'ups_next_day_air_early_markup'}
+							name={'ups_next_day_air_early_am_markup'}
 							onChange={onChange}
 							onKeyDown={handlingFeeMarkup}
 							maxLength='7'
@@ -171,11 +169,11 @@ const DomesticServices = ({
 					<Form.Item className={'mb-0'}>
 						<Checkbox
 							name='ups_2nd_day_air'
-							value={true}
 							checked={
 								quoteSettingsState?.carrier_services?.ups_2nd_day_air
 							}
-							onChange={onCheck}></Checkbox>
+							onChange={onCheck}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={14}>
@@ -209,12 +207,12 @@ const DomesticServices = ({
 					<Form.Item className={'mb-0'}>
 						<Checkbox
 							name='ups_2nd_day_air_am'
-							value={true}
 							checked={
 								quoteSettingsState?.carrier_services
 									?.ups_2nd_day_air_am
 							}
-							onChange={onCheck}></Checkbox>
+							onChange={onCheck}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={14}>
@@ -248,12 +246,12 @@ const DomesticServices = ({
 					<Form.Item className={'mb-0'}>
 						<Checkbox
 							name='ups_3_day_select'
-							value={true}
 							checked={
 								quoteSettingsState?.carrier_services
 									?.ups_3_day_select
 							}
-							onChange={onCheck}></Checkbox>
+							onChange={onCheck}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={14}>
@@ -287,13 +285,13 @@ const DomesticServices = ({
 					<Form.Item className={'mb-0'}>
 						<Checkbox
 							name='ups_ground'
-							value={true}
 							checked={
 								quoteSettingsState?.carrier_services?.ups_ground
 									? true
 									: null
 							}
-							onChange={onCheck}></Checkbox>
+							onChange={onCheck}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={14}>
@@ -335,7 +333,8 @@ const DomesticServices = ({
 									? true
 									: null
 							}
-							onChange={onCheck}></Checkbox>
+							onChange={onCheck}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={14}>
@@ -375,13 +374,13 @@ const DomesticServices = ({
 								quoteSettingsState?.carrier_services
 									?.ups_next_day_air_saturday
 							}
-							onChange={onCheck}></Checkbox>
+							onChange={onCheck}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
-							//maxLength='7'
 							value={
 								quoteSettingsState?.carrier_services
 									?.ups_next_day_air_saturday_markup
@@ -417,13 +416,13 @@ const DomesticServices = ({
 								quoteSettingsState?.carrier_services
 									?.ups_next_day_air_early_am_saturday
 							}
-							onChange={onCheck}></Checkbox>
+							onChange={onCheck}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
-							//maxLength='7'
 							value={
 								quoteSettingsState?.carrier_services
 									?.ups_next_day_air_early_am_saturday_markup
@@ -457,7 +456,8 @@ const DomesticServices = ({
 								quoteSettingsState?.carrier_services
 									?.ups_2nd_day_air_saturday
 							}
-							onChange={onCheck}></Checkbox>
+							onChange={onCheck}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={14}>
