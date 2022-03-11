@@ -8,8 +8,7 @@ function PlanStatusHeading() {
 		<Fragment>
 			{currentPlan?.is_expired ? (
 				<div className='note-bx'>
-					Your plan is expired. Please subscribe to a paid plan otherwise
-					your quoting will not work.
+				Your current plan has been expired. Please renew your Plan.
 				</div>
 			) : currentPlan?.status === 3 ? (
 				<div className='note-bx'>Your plan has been expired</div>
