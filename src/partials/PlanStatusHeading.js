@@ -4,6 +4,14 @@ import { useSelector } from 'react-redux'
 function PlanStatusHeading() {
 	const { currentPlan } = useSelector(state => state)
 
+	const trailPlanCheck =
+		currentPlan?.status === 2
+			? 'Your trial plan is expired. Please subscribe to a paid plan otherwise your quoting will not work.'
+			: `You are currently on the Trial plan. ${
+					currentPlan?.status === 1 &&
+					`It will expire on ${currentPlan?.ends_at}`
+			  }.`
+
 	return (
 		<Fragment>
 			{currentPlan?.is_expired ? (
@@ -18,11 +26,7 @@ function PlanStatusHeading() {
 					Trial plan or one of the paid plans to get started.
 				</div>
 			) : currentPlan?.plan_id === 1 ? (
-				<div className='note-bx'>
-					You are currently on the Trial plan.
-					{currentPlan?.status === 1 &&
-						' It will expire on ' + currentPlan?.ends_at + '.'}
-				</div>
+				<div className='note-bx'>{trailPlanCheck}</div>
 			) : currentPlan?.plan_id === 2 ? (
 				<div className='note-bx'>
 					You are currently on the Basic plan.
