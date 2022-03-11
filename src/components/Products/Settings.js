@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button, Col, Row, Select, Checkbox, Input } from 'antd'
+import { getLocations } from '../../Actions/Warehouse'
 
 const { Option } = Select
 const smallCarriers = ['small-package', 'ups-small', 'fedex-small']
@@ -16,12 +17,16 @@ const Settings = ({
 }) => {
 	const {
 		dropships,
+		shippingGroups,
 		insuranceStatus,
 		sbsPlans,
 		carrierId,
 		installedCarriers,
 		installedAddons,
+		token,
 	} = useSelector(state => state)
+	const dispatch = useDispatch()
+
 	const validateNumber = value => {
 		/* value = value.replace(/\D/g, "");
 
@@ -45,13 +50,14 @@ const Settings = ({
 		: false || (sbsPlans && sbsPlans?.currentPackage?.status === 3)
 
 	useEffect(() => {
-
 		if (isSbsSuspended) {
 			onChangeVariant(index, 'allow_vertical', false)
 			onChangeVariant(index, 'ship_own_package', false)
 			onChangeVariant(index, 'ship_multiple_package', false)
 		}
-	}, [index, isSbsSuspended, onChangeVariant])
+
+		dispatch(getLocations(token))
+	}, [dispatch, index, isSbsSuspended, onChangeVariant, token])
 
 	return (
 		<Fragment key={index}>
@@ -162,10 +168,7 @@ const Settings = ({
 						<Form.Item
 							label='Weight (lbs)'
 							rules={[
-								{
-									required: true,
-									message: 'Weight is required',
-								},
+								{ required: true, message: 'Weight is required' },
 							]}>
 							<Input
 								id={'weight' + index}
@@ -374,11 +377,38 @@ const Settings = ({
 									'dropship_enabled',
 									!product?.dropship_enabled
 								)
+								onChangeVariant(
+									index,
+									'shipping_group_enabled',
+									false
+								)
+								onChangeVariant(index, 'shipping_group', null)
 							}}
 							name='dropship_enabled'
 							id={'dropship_enabled' + index}
-							checked={product?.dropship_enabled || false}>
+							checked={product?.dropship_enabled}
+							disabled={product?.shipping_group_enabled}>
 							Dropship this product
+						</Checkbox>
+					</Col>
+
+					{/* Shipping Group Check */}
+					<Col span={24} style={{ marginTop: '7px' }}>
+						<Checkbox
+							onChange={e => {
+								onChangeVariant(
+									index,
+									'shipping_group_enabled',
+									e.target.checked
+								)
+								onChangeVariant(index, 'dropship_enabled', false)
+								onChangeVariant(index, 'dropship_location', null)
+							}}
+							name='shipping_group_enabled'
+							id={'shipping_group_enabled' + index}
+							checked={product?.shipping_group_enabled}
+							disabled={product?.dropship_enabled}>
+							Assign this product to a shipping group
 						</Checkbox>
 					</Col>
 				</Row>
@@ -422,6 +452,42 @@ const Settings = ({
 					</Row>
 				) : null}
 
+				{product?.shipping_group_enabled ? (
+					<Row gutter={16}>
+						<Col span={24} style={{ marginTop: '7px' }}>
+							<Form.Item label='Shipping Group'>
+								<Select
+									placeholder='Shipping Group'
+									size={'large'}
+									style={{ width: '100%' }}
+									name='shipping_group'
+									id={'shipping_group' + index}
+									defaultValue={product?.shipping_group ?? null}
+									value={product?.shipping_group ?? null}
+									onChange={location =>
+										onChangeVariant(
+											index,
+											'shipping_group',
+											location
+										)
+									}>
+									{shippingGroups && (
+										<Option value={null}>
+											Select Shipping Group
+										</Option>
+									)}
+									{shippingGroups &&
+										shippingGroups.map(value => (
+											<Option value={value.id} key={value.id}>
+												{value.nickname}
+											</Option>
+										))}
+								</Select>
+							</Form.Item>
+						</Col>
+					</Row>
+				) : null}
+
 				{count > 1 && index === 0 && (
 					<Row gutter={24} style={{ marginTop: '20px' }}>
 						<Col span={24}>
@@ -439,4 +505,5 @@ const Settings = ({
 		</Fragment>
 	)
 }
+
 export default Settings

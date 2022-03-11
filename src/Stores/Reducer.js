@@ -47,6 +47,7 @@ const initialState = {
 	},
 	boxSizeStatus: false,
 	isFedexSmallCarrier: false,
+	shippingGroups: null,
 }
 
 const Reducer = (state = initialState, action) => {
@@ -567,13 +568,37 @@ const Reducer = (state = initialState, action) => {
 				),
 			}
 		}
-
 		case types.SET_FEDEX_SMALL_CARRIER: {
 			return {
 				...state,
 				isFedexSmallCarrier: action.payload,
 			}
 		}
+		/* Shipping Groups */
+		case types.GET_SHIPPING_GROUPS:
+			return {
+				...state,
+				shippingGroups: action.payload,
+			}
+		case types.ADD_SHIPPING_GROUP:
+			return {
+				...state,
+				shippingGroups: [...state.shippingGroups, action.payload],
+			}
+		case types.DELETE_SHIPPING_GROUP:
+			return {
+				...state,
+				shippingGroups: state.shippingGroups.filter(
+					sg => sg.uuid !== action.payload
+				),
+			}
+		case types.UPDATE_SHIPPING_GROUP:
+			return {
+				...state,
+				shippingGroups: state.shippingGroups.map(sg =>
+					sg.uuid === action.payload.uuid ? action.payload : sg
+				),
+			}
 
 		default:
 			return state
