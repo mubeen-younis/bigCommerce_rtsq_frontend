@@ -119,7 +119,7 @@ function TabsLayout() {
 					component === 3 ||
 					component === 5 ||
 					component === 9) && (
-					<TabPane tab='Box Sizes' key='7'>
+					<TabPane tab='Box Sizes' key='8'>
 						<BoxSizesComponent />
 					</TabPane>
 				)}
