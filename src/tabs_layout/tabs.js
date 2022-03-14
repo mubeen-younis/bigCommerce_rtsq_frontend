@@ -44,6 +44,7 @@ function TabsLayout() {
 				'xpo-ltl',
 				'rl-ltl',
 				'unishippers-small',
+				'freightquote-ltl',
 			]
 
 			for (const ic of installedCarriers) {

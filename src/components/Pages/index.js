@@ -9,6 +9,7 @@ export { default as CSGtzLtl } from './GlobalTranz/Ltl/ConnectionSettingsCompone
 export { default as CSXpoLtl } from './XPO/Ltl/ConnectionSettingsComponent'
 export { default as CSRLLTl } from './R+LLtl/ConnectionSettingsComponent'
 export { default as CSUnishippersSmall } from './Unishippiers/ConnectionSettingsComponent'
+export { default as CSFreightQuoteLtl } from './FreightQuoteLtl/ConnectionSettingsComponent'
 
 // Quote Settings Component
 export { default as QSWweltl } from './WweLtl/QuoteSettingsComponentWwe'
