@@ -129,10 +129,7 @@ export const getCurrentPlanInfo = store => {
 		axios
 			.get(
 				`${process.env.REACT_APP_ENITURE_API_URL}/get-subscription-details`,
-				{
-					...config,
-					//params: { store: 'stores/uann2u' },
-				}
+				config
 			)
 			.then(({ data }) => {
 				if (!data.error) {

@@ -42,6 +42,7 @@ function TabsLayout() {
 				'gtz-ltl',
 				'xpo-ltl',
 				'rl-ltl',
+				'unishippers-small',
 			]
 
 			for (const ic of installedCarriers) {
@@ -110,7 +111,10 @@ function TabsLayout() {
 							<AlertMessage />
 							<ImportCsvComponent />
 						</TabPane>*/}
-				{(component === 1 || component === 3 || component === 5) && (
+				{(component === 1 ||
+					component === 3 ||
+					component === 5 ||
+					component === 9) && (
 					<TabPane tab='Box Sizes' key='8'>
 						<BoxSizesComponent />
 					</TabPane>

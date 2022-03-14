@@ -261,7 +261,7 @@ body {
 .content-box {
 	float: left;
 	width: 100%;
-	margin: 10% 0;
+	/* margin: 10% 0; */
 }
 .content-box.box-shadow {
 	padding: 1rem;
