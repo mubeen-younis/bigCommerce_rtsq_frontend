@@ -20,6 +20,7 @@ import {
 	QSRLLTl,
 	CSUnishippersSmall,
 	QSUnishippiersSmall,
+	CSYRCLtl,
 } from '../components/Pages'
 
 const useLoadComponent = index => {
@@ -34,6 +35,7 @@ const useLoadComponent = index => {
 		<CSXpoLtl />,
 		<CSRLLTl />,
 		<CSUnishippersSmall />,
+		<CSYRCLtl />,
 	]
 	const quoteSettingsList = [
 		<QSWweltl />,
