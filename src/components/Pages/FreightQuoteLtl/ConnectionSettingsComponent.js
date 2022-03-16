@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 
 const initialState = {
-	nickname: '',
 	username: '',
 	password: '',
 }
@@ -62,12 +61,6 @@ function ConnectionSettingsComponent() {
 				scrollToFirstError
 				role='form'
 				onFinish={onFinish}>
-				<Form.Item
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: true, message: 'Nickname' }]}>
-					<Input placeholder='Nickname' />
-				</Form.Item>
 				<Form.Item
 					label='Username'
 					name='username'
