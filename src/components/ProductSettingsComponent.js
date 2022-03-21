@@ -467,7 +467,7 @@ function ProductSettingsComponent(props) {
 		}
 
 		if (!error) {
-			onSubmit() //props.submitProductSettings({ products: productVariants }, props.token, setState)
+			onSubmit()
 		} else {
 			dispatch({
 				type: 'ALERT_MESSAGE',
