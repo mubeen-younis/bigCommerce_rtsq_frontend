@@ -123,7 +123,9 @@ const DomesticServices = ({
 
 			<Row gutter={24} align='middle' className={'mb-2'}>
 				<Col span={12}>
-					<label className={'text-gray'}>UPS Next Day Air Early A.M</label>
+					<label className={'text-gray'}>
+						UPS Next Day Air Early A.M.
+					</label>
 				</Col>
 				<Col span={12}>
 					<Form.Item className={'mb-0'}>
@@ -405,7 +407,7 @@ const DomesticServices = ({
 			<Row gutter={24} align='middle' className={'mb-2'}>
 				<Col span={12}>
 					<label className={'text-gray'}>
-						Saturday - UPS Next Day Air Early A.M
+						Saturday - UPS Next Day Air Early A.M.
 					</label>
 				</Col>
 				<Col span={12}>
