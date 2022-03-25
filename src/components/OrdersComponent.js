@@ -19,6 +19,8 @@ import axios from 'axios'
 import Title from 'antd/lib/typography/Title'
 
 const { Option } = Select
+let aloneItem = 0,
+	weightBasedItem = 0
 
 function OrderSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
@@ -45,6 +47,7 @@ function OrderSettingsComponent(props) {
 		isSearched: 0,
 		status: null,
 	})
+	const [, setWeightBasedItem] = useState(0)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -334,7 +337,12 @@ function OrderSettingsComponent(props) {
 			key: 'id',
 			render: (id, record) => (
 				<Space size='middle'>
-					<Button onClick={() => showOrderDetails(id, record)}>
+					<Button
+						onClick={() => {
+							aloneItem = 0
+							weightBasedItem = 0
+							showOrderDetails(id, record)
+						}}>
 						Shipping Detail
 					</Button>
 				</Space>
@@ -348,13 +356,14 @@ function OrderSettingsComponent(props) {
 		for (let i = 0; i < bin?.quantity; i++) {
 			data.push(
 				<div>
-					{showShipOwnTitle === 1 && (
+					{showShipOwnTitle === 1 && aloneItem === 0 && (
 						<h3
 							style={{
 								textAlign: 'center',
 								marginTop: '15px',
 								width: '100%',
-							}}>
+							}}
+							className='alone-title'>
 							These items were quoted as shipping as their own package.
 						</h3>
 					)}
@@ -379,6 +388,7 @@ function OrderSettingsComponent(props) {
 			)
 		}
 
+		aloneItem = 1
 		return (
 			<div style={{ clear: 'both' }}>
 				<div style={{ width: '100%' }}> </div>
@@ -393,13 +403,14 @@ function OrderSettingsComponent(props) {
 		for (let i = 0; i < bin?.quantity; i++) {
 			data.push(
 				<div>
-					{showShipOwnTitle === 1 && (
+					{showShipOwnTitle === 1 && weightBasedItem === 0 && (
 						<h3
 							style={{
 								textAlign: 'center',
 								marginTop: '15px',
 								width: '100%',
-							}}>
+							}}
+							className='weight-title'>
 							These items were quoted as weight based.
 						</h3>
 					)}
@@ -422,6 +433,7 @@ function OrderSettingsComponent(props) {
 			)
 		}
 
+		weightBasedItem = 1
 		return (
 			<div style={{ clear: 'both' }}>
 				<div style={{ width: '100%' }}> </div>
@@ -444,8 +456,9 @@ function OrderSettingsComponent(props) {
 		let showShipOwnTitle = 0
 		let numBoxes = countBoxes(widget)
 		const types = ['item', 'weight_based']
+		const sbs = widget?.sbs ?? []
 
-		return widget?.sbs?.map((bin, count) => {
+		return sbs?.map((bin, count) => {
 			const type = bin?.type ?? ''
 			showShipOwnTitle = 0
 
