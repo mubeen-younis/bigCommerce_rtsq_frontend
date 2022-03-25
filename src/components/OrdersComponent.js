@@ -343,7 +343,8 @@ function OrderSettingsComponent(props) {
 	]
 
 	const repeatItemAlone = (bin, showShipOwnTitle) => {
-		let data = []
+		let data = [<br />]
+
 		for (let i = 0; i < bin?.quantity; i++) {
 			data.push(
 				<div>
@@ -377,11 +378,18 @@ function OrderSettingsComponent(props) {
 				</div>
 			)
 		}
-		return data
+
+		return (
+			<div style={{ clear: 'both' }}>
+				<div style={{ width: '100%' }}> </div>
+				{data}
+			</div>
+		)
 	}
 
 	const showWeightBasedItem = (bin, showShipOwnTitle) => {
-		let data = []
+		let data = [<br />]
+
 		for (let i = 0; i < bin?.quantity; i++) {
 			data.push(
 				<div>
@@ -413,12 +421,21 @@ function OrderSettingsComponent(props) {
 				</div>
 			)
 		}
-		return data
+
+		return (
+			<div style={{ clear: 'both' }}>
+				<div style={{ width: '100%' }}> </div>
+				{data}
+			</div>
+		)
 	}
 
 	const countBoxes = widget => {
 		let countBoxes = 0
-		widget?.sbs?.forEach(bin => bin?.type !== 'item' && ++countBoxes)
+		widget?.sbs?.forEach(
+			bin =>
+				bin?.type !== 'item' && bin?.type !== 'weight_based' && ++countBoxes
+		)
 
 		return countBoxes
 	}
@@ -430,11 +447,13 @@ function OrderSettingsComponent(props) {
 
 		return widget?.sbs?.map((bin, count) => {
 			const type = bin?.type ?? ''
+			showShipOwnTitle = 0
 
-			if (type === types[0]) return repeatItemAlone(bin, ++showShipOwnTitle)
-			else if (type === types[1])
+			if (type === types[0]) {
+				return repeatItemAlone(bin, ++showShipOwnTitle)
+			} else if (type === types[1]) {
 				return showWeightBasedItem(bin, ++showShipOwnTitle)
-			else {
+			} else {
 				return (
 					<Row gutter={24}>
 						<Col span={24}>
