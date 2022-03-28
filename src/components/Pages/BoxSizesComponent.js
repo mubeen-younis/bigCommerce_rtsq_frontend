@@ -874,6 +874,7 @@ function BoxSizesComponent(props) {
 																message:
 																	'Max Weight Required',
 															},
+															pattern,
 														]}>
 														<Input
 															type='number'
@@ -903,6 +904,7 @@ function BoxSizesComponent(props) {
 																message:
 																	'Box Weight Required',
 															},
+															pattern,
 														]}>
 														<Input
 															type='number'
@@ -925,7 +927,8 @@ function BoxSizesComponent(props) {
 													<Form.Item
 														className={'mb-2'}
 														label='Box Fee (e.g 1.75)'
-														name='box_fee'>
+														name='box_fee'
+														rules={[pattern]}>
 														<Input
 															type='number'
 															onKeyDown={
@@ -1183,6 +1186,7 @@ function BoxSizesComponent(props) {
 														required: true,
 														message: 'Weight Required',
 													},
+													pattern,
 												]}>
 												<Input
 													type='number'
@@ -1204,7 +1208,8 @@ function BoxSizesComponent(props) {
 											<Form.Item
 												className={'mb-2'}
 												label='Box Fee (e.g 1.75)'
-												name='box_fee'>
+												name='box_fee'
+												rules={[pattern]}>
 												<Input
 													type='number'
 													onKeyDown={handlingFeeMarkup}

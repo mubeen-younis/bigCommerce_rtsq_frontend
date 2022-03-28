@@ -40,7 +40,7 @@ function ConnectionSettingsComponent(props) {
 				Unishippers at 1-800-999-8721 and ask to be contacted by a sales
 				person from the office serving your area or{' '}
 				<a
-					href='https://eniture.com/request-worldwide-express-account-number/'
+					href='https://www.unishippers.com/request-new-account/'
 					target='_blank'
 					rel='noreferrer'>
 					click here
