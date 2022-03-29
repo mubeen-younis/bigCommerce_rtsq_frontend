@@ -5,13 +5,15 @@ import { postData } from '../../../Actions/Action'
 
 function ConnectionSettingsComponent(props) {
 	const [testType, setTestType] = useState(false)
-	const [rates, setRates] = useState('freight_class')
+	const [rates, setRates] = useState(0)
 	const dispatch = useDispatch()
 	const { connectionSettings, token, carrierId } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
 
-	useEffect(() => {}, [props.connectionSettings])
+	useEffect(() => {
+		if (connectionSettings) setRates(connectionSettings?.yrc_rates ?? 0)
+	}, [connectionSettings])
 
 	const onFinish = values => {
 		values = {
@@ -75,8 +77,8 @@ function ConnectionSettingsComponent(props) {
 					<Col lg={16} md={12} sm={12} xs={12} className='mb-1'>
 						<Radio
 							value='freight_class'
-							onChange={e => setRates(e.target.value)}
-							checked={rates === 'freight_class'}>
+							onChange={() => setRates(0)}
+							checked={rates === 0}>
 							Freight class
 						</Radio>
 					</Col>
@@ -86,8 +88,8 @@ function ConnectionSettingsComponent(props) {
 					<Col lg={16} md={12} sm={12} xs={12} className='mb-3'>
 						<Radio
 							value='dimensions'
-							onChange={e => setRates(e.target.value)}
-							checked={rates === 'dimensions'}>
+							onChange={() => setRates(1)}
+							checked={rates === 1}>
 							Dimensions
 						</Radio>
 					</Col>
