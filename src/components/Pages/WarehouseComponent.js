@@ -45,7 +45,7 @@ function WarehouseComponent(props) {
 		enable_ld: false,
 		instore_zipcodes: [],
 		ld_zipcodes: [],
-		default_location: 1,
+		default_location: 'default',
 	})
 	const [city, setCity] = useState('')
 	const dispatch = useDispatch()
