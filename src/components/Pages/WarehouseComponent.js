@@ -45,6 +45,7 @@ function WarehouseComponent(props) {
 		enable_ld: false,
 		instore_zipcodes: [],
 		ld_zipcodes: [],
+		default_location: 1,
 	})
 	const [city, setCity] = useState('')
 	const dispatch = useDispatch()
@@ -736,6 +737,56 @@ function WarehouseComponent(props) {
 													handleKeyPhoneNumber(e)
 												}
 												maxLength='20'
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
+								<Row gutter={30} align='middle' className={'mb-2'}>
+									<Col
+										className='gutter-row'
+										xs={24}
+										sm={8}
+										md={8}
+										lg={8}
+										xl={8}>
+										<label className={'text-gray'}>
+											Origin for shipping rates:
+										</label>
+									</Col>
+									<Col
+										className='gutter-row'
+										xs={24}
+										sm={16}
+										md={16}
+										lg={16}
+										xl={16}>
+										<Form.Item className={'mb-0'}>
+											<Select
+												name='default_location'
+												defaultValue={'1'}
+												value={
+													locationDetail.default_location
+												}
+												onChange={opt =>
+													setLocationDetail({
+														...locationDetail,
+														default_location: opt,
+													})
+												}
+												options={[
+													{
+														label: 'This location (default)',
+														value: 'default',
+													},
+													{
+														label: 'Suppress carrier-provided shipping rates',
+														value: 'suppress',
+													},
+													{
+														label: 'List of Warehouses and Drop Ship locations',
+														value: 3,
+													},
+												]}
 											/>
 										</Form.Item>
 									</Col>
