@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useCallback, useState } from 'react'
 import {
 	Select,
 	Typography,
@@ -31,6 +31,13 @@ import {
 } from '../../Actions/Warehouse'
 
 const { Title } = Typography
+const initialState = {
+	enable_instore: false,
+	enable_ld: false,
+	instore_zipcodes: [],
+	ld_zipcodes: [],
+	default_location: 'default',
+}
 
 function WarehouseComponent(props) {
 	const [getLocationOn, setGetLocationOn] = useState(false)
@@ -40,14 +47,10 @@ function WarehouseComponent(props) {
 		id: null,
 		type: null,
 	})
-	const [locationDetail, setLocationDetail] = useState({
-		enable_instore: false,
-		enable_ld: false,
-		instore_zipcodes: [],
-		ld_zipcodes: [],
-		default_location: 'default',
-	})
+	const [locationDetail, setLocationDetail] = useState(initialState)
 	const [city, setCity] = useState('')
+	const [action, setAction] = useState('')
+	const [locationId, setLocationId] = useState(null)
 	const dispatch = useDispatch()
 	const {
 		postData,
@@ -254,7 +257,14 @@ function WarehouseComponent(props) {
 			title: 'Action',
 			render: (text, record) => (
 				<Space size='middle'>
-					<Button onClick={() => editLocation(text)}>Edit</Button>
+					<Button
+						onClick={() => {
+							setAction('edit')
+							setLocationId(record.id)
+							editLocation(text)
+						}}>
+						Edit
+					</Button>
 					<Button
 						onClick={() => openDeleteLocationModal(text)}
 						className={'btn-danger'}>
@@ -264,6 +274,33 @@ function WarehouseComponent(props) {
 			),
 		},
 	]
+
+	const listWarehouses = useCallback(() => {
+		const warehouses = warehouse ?? []
+		const list = [
+			{
+				label: 'This location (default)',
+				value: 'default',
+			},
+			{
+				label: 'Suppress carrier-provided shipping rates',
+				value: 'suppress',
+			},
+		]
+
+		if (warehouses.length) {
+			list.push(
+				...warehouses
+					.filter(wh => wh.id !== locationId)
+					.map(wh => ({
+						label: wh.nickname,
+						value: wh.id,
+					}))
+			)
+		}
+
+		return list
+	}, [locationId, warehouse])
 
 	return (
 		<Fragment>
@@ -763,7 +800,7 @@ function WarehouseComponent(props) {
 										<Form.Item className={'mb-0'}>
 											<Select
 												name='default_location'
-												defaultValue={'1'}
+												defaultValue='default'
 												value={
 													locationDetail.default_location
 												}
@@ -773,20 +810,7 @@ function WarehouseComponent(props) {
 														default_location: opt,
 													})
 												}
-												options={[
-													{
-														label: 'This location (default)',
-														value: 'default',
-													},
-													{
-														label: 'Suppress carrier-provided shipping rates',
-														value: 'suppress',
-													},
-													{
-														label: 'List of Warehouses and Drop Ship locations',
-														value: 3,
-													},
-												]}
+												options={listWarehouses()}
 											/>
 										</Form.Item>
 									</Col>
@@ -1112,7 +1136,12 @@ function WarehouseComponent(props) {
 							Warehouses{' '}
 							<Button
 								type='primary'
-								onClick={() => openLocationModal(1)}>
+								onClick={() => {
+									setAction('add')
+									setLocationId(null)
+									setLocationDetail(initialState)
+									openLocationModal(1)
+								}}>
 								Add
 							</Button>
 						</Title>
@@ -1144,7 +1173,12 @@ function WarehouseComponent(props) {
 							Drop ships{' '}
 							<Button
 								type='primary'
-								onClick={() => openLocationModal(2)}>
+								onClick={() => {
+									setAction('add')
+									setLocationId(null)
+									setLocationDetail(initialState)
+									openLocationModal(2)
+								}}>
 								Add
 							</Button>
 						</Title>
