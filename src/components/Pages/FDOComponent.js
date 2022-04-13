@@ -81,6 +81,34 @@ const FDOComponent = () => {
 				</Col>
 			</Row>
 
+			<Row gutter={30}>
+				<Col className='gutter-row' span={24}>
+					<p>
+						FreightDesk Online shipment processing applies for the
+						following shipping providers for 1-year:
+					</p>
+					<ul>
+						<li>GlobalTranz (LTL)</li>
+						<li>Unishippers (parcel and LTL)</li>
+						<li>Worldwide Express (parcel and LTL)</li>
+					</ul>
+				</Col>
+				<Col className='gutter-row' span={24}>
+					<p>
+						<i>
+							This offer only applies to charges that otherwise would
+							be billed by Eniture Technology for the use of
+							FreightDesk Online. Charges invoiced by the shipping
+							providers listed above (or by any other shipping
+							provider) are not included in this offer. A paid
+							subscription to FreightDesk Online is still be required
+							to process shipments for shipping providers not listed
+							above.
+						</i>
+					</p>
+				</Col>
+			</Row>
+
 			{fdoConnected && +fdoData?.used >= 1 && (
 				<Row gutter={30} align='middle'>
 					<Col className='gutter-row' span={24}>

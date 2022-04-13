@@ -11,7 +11,6 @@ import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
 import useLoadComponent from '../hooks/useLoadComponent'
 import ShippingGroup from '../components/Pages/ShippingGroup'
-import FDOComponent from '../components/Pages/FDOComponent'
 
 const { TabPane } = Tabs
 
@@ -120,9 +119,6 @@ function TabsLayout() {
 				)}
 				<TabPane tab='Import CSV' key='9'>
 					<ImportCsvComponent />
-				</TabPane>
-				<TabPane tab='FreightDesk Online' key='10'>
-					<FDOComponent />
 				</TabPane>
 				<TabPane tab='User Guide' key='11'>
 					<UserGuideComponent />
