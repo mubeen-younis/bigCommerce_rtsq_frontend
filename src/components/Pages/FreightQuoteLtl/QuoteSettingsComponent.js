@@ -147,7 +147,7 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
-					carrier='wwe-ltl'
+					// carrier='wwe-ltl'
 				/>
 
 				<LiftGateDelivery
