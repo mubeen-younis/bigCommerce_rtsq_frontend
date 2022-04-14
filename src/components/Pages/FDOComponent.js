@@ -69,7 +69,7 @@ const FDOComponent = () => {
 				type: 'ALERT_MESSAGE',
 				payload: {
 					alertMessage: data.message,
-					showAlertMessage: !data.error,
+					showAlertMessage: data.error,
 					alertMessageType: data.error ? 'error' : 'success',
 				},
 			})
@@ -121,21 +121,16 @@ const FDOComponent = () => {
 								}}
 							/>
 							{+fdoData?.is_already_user === 1 && (
-								<Row align='middle' gutter={30}>
+								<div
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+									}}>
 									<Button onClick={applyPromoCode} type='primary'>
 										Apply Promo Code
 									</Button>
-								</Row>
+								</div>
 							)}
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'center',
-								}}>
-								<Button onClick={applyPromoCode} type='primary'>
-									Apply Promo Code
-								</Button>
-							</div>
 						</>
 					)}
 				</Col>
