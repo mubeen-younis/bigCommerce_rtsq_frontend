@@ -125,9 +125,6 @@ const FDOComponent = () => {
 									Apply Promo Code
 								</Button>
 							)}
-							<Button onClick={applyPromoCode} type='primary'>
-								Apply Promo Code
-							</Button>
 						</>
 					)}
 				</Col>
