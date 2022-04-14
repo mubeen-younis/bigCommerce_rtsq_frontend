@@ -22,6 +22,7 @@ import ShippingCarriersComponent from './components/Pages/ShippingCarriersCompon
 import PlansComponent from './components/Plans/PlansComponent'
 import { setStore, getCurrentPlanInfo } from './Actions/Action'
 import { getShippingGroups } from './Actions/ShippingGroupsActions'
+import FDOComponent from './components/Pages/FDOComponent'
 
 const { Header, Content } = Layout
 
@@ -163,6 +164,7 @@ function App(props) {
 								component={ShippingCarriersComponent}
 							/>
 							<Route exact path='/plans' component={PlansComponent} />
+							<Route path='/fdo' component={FDOComponent} />
 							<Route
 								exact
 								path='/addon/:addon_id'

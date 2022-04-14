@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Row, Col, Typography, Space, Skeleton } from 'antd'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Row, Col, Typography, Space, Skeleton, Button } from 'antd'
 import axios from 'axios'
 
 const { Title } = Typography
@@ -10,6 +10,7 @@ const FDOComponent = () => {
 	const [fdoData, setFdoData] = useState({})
 	const [loading, setLoading] = useState(false)
 	const { token } = useSelector(state => state)
+	const dispatch = useDispatch()
 
 	useEffect(() => {
 		const fetchStore = async () => {
@@ -45,6 +46,44 @@ const FDOComponent = () => {
 		fetchStore()
 	}, [token])
 
+	const applyPromoCode = useCallback(async () => {
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
+		try {
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					showAlertMessage: true,
+					alertMessageType: 'loading',
+				},
+			})
+
+			const url = `${process.env.REACT_APP_ENITURE_API_URL}/apply_promo_code?type=fdo`
+			const { data } = await axios.post(url, {}, config)
+			if (!data.error) setFdoData(data?.data)
+
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					alertMessage: data.message,
+					showAlertMessage: data.error,
+					alertMessageType: data.error ? 'error' : 'success',
+				},
+			})
+		} catch (err) {
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					showAlertMessage: false,
+					alertMessageType: '',
+				},
+			})
+		}
+	}, [dispatch, token])
+
 	if (loading) return <Skeleton active />
 
 	return (
@@ -72,12 +111,56 @@ const FDOComponent = () => {
 							(Learn more)
 						</a>
 					</p>
+
 					{+fdoData?.used < 1 && (
-						<div
-							className={'note-bx'}
-							dangerouslySetInnerHTML={{ __html: fdoData?.message }}
-						/>
+						<>
+							<div
+								className={'note-bx'}
+								dangerouslySetInnerHTML={{
+									__html: fdoData?.message,
+								}}
+							/>
+							{+fdoData?.is_already_user === 1 && (
+								<div
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+									}}>
+									<Button onClick={applyPromoCode} type='primary'>
+										Apply Promo Code
+									</Button>
+								</div>
+							)}
+						</>
 					)}
+				</Col>
+			</Row>
+
+			<Row gutter={30}>
+				<Col className='gutter-row' span={24}>
+					<p>
+						FreightDesk Online shipment processing applies for the
+						following shipping providers for 1-year:
+					</p>
+					<ul>
+						<li>GlobalTranz (LTL)</li>
+						<li>Unishippers (parcel and LTL)</li>
+						<li>Worldwide Express (parcel and LTL)</li>
+					</ul>
+				</Col>
+				<Col className='gutter-row' span={24}>
+					<p>
+						<i>
+							This offer only applies to charges that otherwise would
+							be billed by Eniture Technology for the use of
+							FreightDesk Online. Charges invoiced by the shipping
+							providers listed above (or by any other shipping
+							provider) are not included in this offer. A paid
+							subscription to FreightDesk Online is still be required
+							to process shipments for shipping providers not listed
+							above.
+						</i>
+					</p>
 				</Col>
 			</Row>
 
