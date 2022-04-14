@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Row, Col, Typography, Space, Skeleton } from 'antd'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Row, Col, Typography, Space, Skeleton, Button } from 'antd'
 import axios from 'axios'
 
 const { Title } = Typography
@@ -10,6 +10,7 @@ const FDOComponent = () => {
 	const [fdoData, setFdoData] = useState({})
 	const [loading, setLoading] = useState(false)
 	const { token } = useSelector(state => state)
+	const dispatch = useDispatch()
 
 	useEffect(() => {
 		const fetchStore = async () => {
@@ -45,6 +46,44 @@ const FDOComponent = () => {
 		fetchStore()
 	}, [token])
 
+	const applyPromoCode = useCallback(async () => {
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
+		try {
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					showAlertMessage: true,
+					alertMessageType: 'loading',
+				},
+			})
+
+			const url = `${process.env.REACT_APP_ENITURE_API_URL}/apply_promo_code?type=fdo`
+			const { data } = await axios.post(url, {}, config)
+			if (!data.error) setFdoData(data?.data)
+
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					alertMessage: data.message,
+					showAlertMessage: data.error ? false : true,
+					alertMessageType: data.error ? 'error' : 'success',
+				},
+			})
+		} catch (err) {
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					showAlertMessage: false,
+					alertMessageType: '',
+				},
+			})
+		}
+	}, [dispatch, token])
+
 	if (loading) return <Skeleton active />
 
 	return (
@@ -72,11 +111,21 @@ const FDOComponent = () => {
 							(Learn more)
 						</a>
 					</p>
+
 					{+fdoData?.used < 1 && (
-						<div
-							className={'note-bx'}
-							dangerouslySetInnerHTML={{ __html: fdoData?.message }}
-						/>
+						<>
+							<div
+								className={'note-bx'}
+								dangerouslySetInnerHTML={{
+									__html: fdoData?.message,
+								}}
+							/>
+							{+fdoData?.is_already_user === 1 && (
+								<Button onClick={applyPromoCode}>
+									Apply Promo Code
+								</Button>
+							)}
+						</>
 					)}
 				</Col>
 			</Row>
