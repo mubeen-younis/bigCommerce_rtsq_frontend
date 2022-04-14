@@ -121,10 +121,21 @@ const FDOComponent = () => {
 								}}
 							/>
 							{+fdoData?.is_already_user === 1 && (
+								<Row align='middle' gutter={30}>
+									<Button onClick={applyPromoCode} type='primary'>
+										Apply Promo Code
+									</Button>
+								</Row>
+							)}
+							<div
+								style={{
+									display: 'flex',
+									justifyContent: 'center',
+								}}>
 								<Button onClick={applyPromoCode} type='primary'>
 									Apply Promo Code
 								</Button>
-							)}
+							</div>
 						</>
 					)}
 				</Col>
