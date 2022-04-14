@@ -69,7 +69,7 @@ const FDOComponent = () => {
 				type: 'ALERT_MESSAGE',
 				payload: {
 					alertMessage: data.message,
-					showAlertMessage: data.error ? false : true,
+					showAlertMessage: !data.error,
 					alertMessageType: data.error ? 'error' : 'success',
 				},
 			})
