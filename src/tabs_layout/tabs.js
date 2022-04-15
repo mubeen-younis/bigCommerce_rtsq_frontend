@@ -23,9 +23,10 @@ function TabsLayout() {
 
 	useEffect(() => {
 		if (localStorage.getItem('tab')) setTab(localStorage.getItem('tab'))
+		console.log(tab)
 
 		return () => localStorage.removeItem('tab')
-	}, [])
+	}, [tab])
 
 	useEffect(() => {
 		const loadComponent = () => {
@@ -85,7 +86,7 @@ function TabsLayout() {
 			<Tabs
 				className={'tabs-wrp'}
 				onChange={handleActiveTab}
-				activeKey={tab}
+				// activeKey={tab}
 				type='card'>
 				<TabPane tab='Connection Settings' key='1'>
 					{useLoadComponent(component)[0]}
@@ -101,7 +102,7 @@ function TabsLayout() {
 					</TabPane>
 				)}
 				<TabPane tab='Warehouses' key='3'>
-					- <WarehouseComponent />-{' '}
+					<WarehouseComponent />
 				</TabPane>
 				<TabPane tab='Shipping Groups' key='4'>
 					<ShippingGroup />
