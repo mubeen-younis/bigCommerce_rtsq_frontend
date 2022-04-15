@@ -85,7 +85,7 @@ function TabsLayout() {
 				<TabPane tab='Connection Settings' key='1'>
 					{useLoadComponent(component)[0]}
 				</TabPane>
-				{[0].includes(component) && (
+				{[0, 10].includes(component) && (
 					<TabPane tab='Carriers' key='2'>
 						<CarriersComponent />
 					</TabPane>
