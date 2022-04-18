@@ -22,6 +22,7 @@ function SideMenu(props) {
 		const name = window.location.pathname
 		if (name.match(/\/$/)) setActiveMenu('99')
 		else if (name.includes('plans')) setActiveMenu('100')
+		else if (name.includes('fdo')) setActiveMenu('101')
 		else if (name.includes('addon'))
 			setActiveMenu('addon-' + name.substring(name.lastIndexOf('/') + 1))
 		else setActiveMenu(name.substring(name.lastIndexOf('/') + 1))
@@ -57,6 +58,13 @@ function SideMenu(props) {
 					warnkey={100}
 					onClick={() => setActiveMenu('100')}>
 					<Link to={`/plans`}>Plans</Link>
+				</Menu.Item>
+
+				<Menu.Item
+					key='101'
+					warnkey={101}
+					onClick={() => setActiveMenu('101')}>
+					<Link to={`/fdo`}>FreightDesk Online</Link>
 				</Menu.Item>
 
 				<Title className={'carriers-name'} level={5}>
