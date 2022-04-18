@@ -23,6 +23,7 @@ import PlansComponent from './components/Plans/PlansComponent'
 import { setStore, getCurrentPlanInfo } from './Actions/Action'
 import { getShippingGroups } from './Actions/ShippingGroupsActions'
 import FDOComponent from './components/Pages/FDOComponent'
+import AVComponent from './components/Pages/AVComponent'
 
 const { Header, Content } = Layout
 
@@ -165,6 +166,7 @@ function App(props) {
 							/>
 							<Route exact path='/plans' component={PlansComponent} />
 							<Route path='/fdo' component={FDOComponent} />
+							<Route path='/av' component={AVComponent} />
 							<Route
 								exact
 								path='/addon/:addon_id'
