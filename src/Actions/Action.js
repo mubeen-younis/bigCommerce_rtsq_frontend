@@ -15,6 +15,8 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 			},
 		})
 
+		const isTestConnection = type === 'GET_CONNECTION_SETTINGS' && data.testType
+
 		axios
 			.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data, config)
 			.then(({ data }) => {
@@ -24,7 +26,7 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 							type: type,
 							payload: JSON.parse(data?.data?.value),
 						})
-					} else if (data?.data) {
+					} else if (data?.data && !isTestConnection) {
 						dispatch({
 							type: type,
 							payload: data?.data,

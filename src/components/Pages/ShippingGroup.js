@@ -37,13 +37,13 @@ function ShippingGroupsComponent() {
 	const [shippingGroupId, setShippingGroupId] = useState(null)
 	const [form] = Form.useForm()
 	const dispatch = useDispatch()
-	const { alertMessageType, shippingGroups } = useSelector(state => state)
+	const { alertMessageType, shippingGroups, token } = useSelector(state => state)
 
 	useEffect(() => {
 		if (!shippingGroups) {
-			dispatch(getShippingGroups())
+			dispatch(getShippingGroups(token))
 		}
-	}, [dispatch, shippingGroups])
+	}, [dispatch, shippingGroups, token])
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
@@ -107,11 +107,19 @@ function ShippingGroupsComponent() {
 					},
 				})
 			} else {
-				dispatch(saveShippingGroup({ ...data, ...values }))
+				dispatch(saveShippingGroup({ ...data, ...values }, token))
 				form.resetFields()
 			}
 		},
-		[dispatch, form, modal.open, modal.type, shippingGroupId, shippingGroups]
+		[
+			dispatch,
+			form,
+			modal.open,
+			modal.type,
+			shippingGroupId,
+			shippingGroups,
+			token,
+		]
 	)
 
 	const columns = [
@@ -356,7 +364,7 @@ function ShippingGroupsComponent() {
 				title='Confirm Delete'
 				centered
 				visible={modal.open && modal.type === 'delete'}
-				onOk={() => dispatch(deleteShippingGroup(shippingGroupId))}
+				onOk={() => dispatch(deleteShippingGroup(shippingGroupId, token))}
 				onCancel={() => hanldeModalToggling(false, '')}
 				okText='Confirm'
 				cancelButtonProps={{ style: { display: 'none' } }}>
