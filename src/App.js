@@ -23,6 +23,7 @@ import PlansComponent from './components/Plans/PlansComponent'
 import { setStore, getCurrentPlanInfo } from './Actions/Action'
 import { getShippingGroups } from './Actions/ShippingGroupsActions'
 import WarehouseComponent from './components/Pages/WarehouseComponent'
+import FDOComponent from './components/Pages/FDOComponent'
 
 const { Header, Content } = Layout
 
@@ -163,7 +164,8 @@ function App(props) {
 								path='/'
 								component={ShippingCarriersComponent}
 							/>
-							<Route path='/plans' component={PlansComponent} />
+							<Route exact path='/plans' component={PlansComponent} />
+							<Route path='/fdo' component={FDOComponent} />
 							<Route
 								path='/warehouses'
 								component={WarehouseComponent}
