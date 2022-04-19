@@ -4,7 +4,12 @@ import { Form, Button, Col, Row, Select, Checkbox, Input } from 'antd'
 import { getLocations } from '../../Actions/Warehouse'
 
 const { Option } = Select
-const smallCarriers = ['small-package', 'ups-small', 'fedex-small']
+const smallCarriers = [
+	'small-package',
+	'ups-small',
+	'fedex-small',
+	'unishippers-small',
+]
 
 const Settings = ({
 	count,

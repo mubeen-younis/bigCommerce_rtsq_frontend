@@ -1,35 +1,36 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { Form, Input, Button, Space, Skeleton } from 'antd'
-import { connect } from 'react-redux'
-
+import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 
 function ConnectionSettingsComponent(props) {
-	const [connectionState, setConnectionState] = useState({
-		testType: false,
-		skeleton_loading: true,
-	})
+	const [testType, setTestType] = useState(false)
+	const dispatch = useDispatch()
+	const { connectionSettings, token, carrierId } = useSelector(state => state)
+
+	const handleTypeChange = type => setTestType(type)
 
 	useEffect(() => {}, [props.connectionSettings])
 
-	const handleTypeChange = type => {
-		setConnectionState({ ...connectionState, testType: type })
-		console.log(connectionState)
-	}
-
 	const onFinish = values => {
-		values.testType = connectionState.testType
-		values.installed_carrier_id = props.carrierId
-		values.carrierId = props.carrierId
-		props.postData(values, props.token)
+		values = {
+			...values,
+			testType,
+			carrierId,
+			installed_carrier_id: carrierId,
+		}
+
+		dispatch(
+			postData(
+				values,
+				'GET_CONNECTION_SETTINGS',
+				'submit_connection_settings',
+				token
+			)
+		)
 	}
 
-	if (
-		props.connectionSettings === null ||
-		props.connectionSettings === undefined
-	) {
-		return <Skeleton active />
-	}
+	if (!connectionSettings) return <Skeleton active />
 
 	return (
 		<Fragment>
@@ -39,7 +40,7 @@ function ConnectionSettingsComponent(props) {
 				Unishippers at 1-800-999-8721 and ask to be contacted by a sales
 				person from the office serving your area or{' '}
 				<a
-					href='https://eniture.com/request-worldwide-express-account-number/'
+					href='https://www.unishippers.com/request-new-account/'
 					target='_blank'
 					rel='noreferrer'>
 					click here
@@ -50,12 +51,12 @@ function ConnectionSettingsComponent(props) {
 				layout='vertical'
 				name='connection_settings'
 				className='connection-settings'
-				size={'large'}
-				initialValues={props.connectionSettings}
+				size='large'
+				initialValues={connectionSettings}
 				onFinish={onFinish}>
 				<Form.Item
 					label='Unishippers Customer Number'
-					name='unishippers_account_number'
+					name='unishippers_customer_number'
 					rules={[
 						{ required: true, message: 'Unishippers Customer Number' },
 					]}>
@@ -79,28 +80,24 @@ function ConnectionSettingsComponent(props) {
 					rules={[{ required: true, message: 'Password' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
-				<Form.Item
-					label='Request Key'
-					name='request_key'
-					// rules={[{ required: true, message: 'Request Key' }]}
-				>
+				<Form.Item label='Request Key' name='request_key'>
 					<Input placeholder='Request Key' />
 				</Form.Item>
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
 						<Button
 							type='primary'
-							size={'large'}
+							size='large'
 							htmlType='submit'
-							name={`test`}
+							name='test'
 							onClick={() => handleTypeChange(true)}>
 							Test Connection
 						</Button>
 						<Button
 							type='primary'
-							size={'large'}
+							size='large'
 							htmlType='submit'
-							name={`save`}
+							name='save'
 							onClick={() => handleTypeChange(false)}>
 							Save Settings
 						</Button>
@@ -111,30 +108,4 @@ function ConnectionSettingsComponent(props) {
 	)
 }
 
-const mapStateToProps = state => {
-	return {
-		connectionSettings: state.connectionSettings,
-		skeleton_loading: state.skeleton_loading,
-		token: state.token,
-		carrierId: state.carrierId,
-	}
-}
-
-const mapDispatchToProps = dispatch => {
-	return {
-		postData: (data, token) =>
-			dispatch(
-				postData(
-					data,
-					'GET_CONNECTION_SETTINGS',
-					'submit_connection_settings',
-					token
-				)
-			),
-	}
-}
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ConnectionSettingsComponent)
+export default ConnectionSettingsComponent

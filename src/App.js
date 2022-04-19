@@ -22,6 +22,7 @@ import ShippingCarriersComponent from './components/Pages/ShippingCarriersCompon
 import PlansComponent from './components/Plans/PlansComponent'
 import { setStore, getCurrentPlanInfo } from './Actions/Action'
 import { getShippingGroups } from './Actions/ShippingGroupsActions'
+import WarehouseComponent from './components/Pages/WarehouseComponent'
 import FDOComponent from './components/Pages/FDOComponent'
 
 const { Header, Content } = Layout
@@ -166,15 +167,11 @@ function App(props) {
 							<Route exact path='/plans' component={PlansComponent} />
 							<Route path='/fdo' component={FDOComponent} />
 							<Route
-								exact
-								path='/addon/:addon_id'
-								component={RendorAddon}
+								path='/warehouses'
+								component={WarehouseComponent}
 							/>
-							<Route
-								exact
-								path='/:carrier_id'
-								component={RendorCarrier}
-							/>
+							<Route path='/addon/:addon_id' component={RendorAddon} />
+							<Route path='/:carrier_id' component={RendorCarrier} />
 						</Switch>
 
 						<Modal
