@@ -72,7 +72,7 @@ const Settings = ({
 						<h2>{product?.sku ? 'SKU: ' + product?.sku : ''}</h2>
 					</Col>
 				</Row>
-				<Row gutter={16}>
+				<Row gutter={16} className='mb-0'>
 					<Col span={24}>
 						<Form.Item style={{ marginBottom: '0px' }}>
 							<Checkbox
@@ -82,9 +82,11 @@ const Settings = ({
 									onChangeVariant(
 										index,
 										'freight_enabled',
-										!product?.freight_enabled
+										e.target.checked
 									)
 									onChangeVariant(index, 'parcel_enabled', false)
+									onChangeVariant(index, 'quote_as_instore', false)
+									onChangeVariant(index, 'quote_as_local', false)
 								}}
 								checked={product?.freight_enabled}>
 								Quote as an LTL shipment
@@ -103,6 +105,8 @@ const Settings = ({
 										e.target.checked
 									)
 									onChangeVariant(index, 'freight_enabled', false)
+									onChangeVariant(index, 'quote_as_instore', false)
+									onChangeVariant(index, 'quote_as_local', false)
 								}}
 								checked={product?.parcel_enabled}>
 								Quote as a parcel shipment
@@ -110,6 +114,54 @@ const Settings = ({
 						</Form.Item>
 					</Col>
 				</Row>
+
+				<Row
+					gutter={16}
+					style={{
+						marginTop: '-1.5rem',
+					}}>
+					<Col span={24}>
+						<Form.Item style={{ marginBottom: '0px' }}>
+							<Checkbox
+								name='quote_as_instore'
+								id={'quote_as_instore' + index}
+								onChange={e => {
+									onChangeVariant(
+										index,
+										'quote_as_instore',
+										e.target.checked
+									)
+									onChangeVariant(index, 'freight_enabled', false)
+									onChangeVariant(index, 'parcel_enabled', false)
+									onChangeVariant(index, 'quote_as_local', false)
+								}}
+								checked={product?.quote_as_instore}>
+								Only quote instore-pickup
+							</Checkbox>
+						</Form.Item>
+					</Col>
+					<Col span={24} className='mb-0'>
+						<Form.Item>
+							<Checkbox
+								name='quote_as_local'
+								id={'quote_as_local' + index}
+								onChange={e => {
+									onChangeVariant(
+										index,
+										'quote_as_local',
+										e.target.checked
+									)
+									onChangeVariant(index, 'freight_enabled', false)
+									onChangeVariant(index, 'parcel_enabled', false)
+									onChangeVariant(index, 'quote_as_instore', false)
+								}}
+								checked={product?.quote_as_local}>
+								Only quote local delivery
+							</Checkbox>
+						</Form.Item>
+					</Col>
+				</Row>
+
 				{count > 1 && index === 0 && (
 					<Row gutter={24}>
 						<Col span={24}>
