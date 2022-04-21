@@ -1,7 +1,10 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { Form, Input, Button, Space, Skeleton, Select } from 'antd'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
+import PromoCodeNote from '../../../PromoCodeNote'
+import PromoCodeField from '../../../PromoCodeField'
+import { getFDOCouponCarrierInfo } from '../../../../Actions/FDOActions'
 
 const { Option } = Select
 
@@ -22,9 +25,10 @@ function ConnectionSettingsComponent(props) {
 		global_tranz: initialValues,
 		cerasis: initialValues,
 	})
-	// const { carrier_type } = useSelector(state => state)
 	const dispatch = useDispatch()
 	const [form] = Form.useForm()
+	const { fdoCouponInfo, token } = useSelector(state => state)
+
 	useEffect(() => {
 		if (
 			props.connectionSettings &&
@@ -52,6 +56,16 @@ function ConnectionSettingsComponent(props) {
 		}
 	}, [dispatch, props.connectionSettings])
 
+	useEffect(() => {
+		dispatch(
+			getFDOCouponCarrierInfo(
+				token,
+				'gtz-ltl',
+				fdoCouponInfo ? fdoCouponInfo?.code ?? '' : ''
+			)
+		)
+	}, [dispatch, token])
+
 	const handleStateChange = useCallback((e, index) => {
 		setState(prevState => ({
 			...prevState,
@@ -76,6 +90,7 @@ function ConnectionSettingsComponent(props) {
 		}
 
 		props.postData(values, props.token)
+		// submitCouponCarrierInfo(values)
 	}
 
 	const updateFormFields = useCallback(
@@ -117,6 +132,8 @@ function ConnectionSettingsComponent(props) {
 					this application. If you do not have one contact GlobalTranz at
 					866-275-1407.
 				</div>
+				<PromoCodeNote />
+
 				<Form
 					layout='vertical'
 					name='connection_settings'
@@ -282,6 +299,7 @@ function ConnectionSettingsComponent(props) {
 							</Form.Item>
 						</>
 					)}
+					<PromoCodeField />
 
 					<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 						<Space>
