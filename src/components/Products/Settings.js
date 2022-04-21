@@ -136,7 +136,7 @@ const Settings = ({
 									onChangeVariant(index, 'quote_as_local', false)
 								}}
 								checked={product?.quote_as_instore}>
-								Only quote instore-pickup
+								Only quote in-store pickup
 							</Checkbox>
 						</Form.Item>
 					</Col>
