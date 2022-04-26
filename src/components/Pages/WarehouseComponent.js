@@ -49,7 +49,7 @@ function WarehouseComponent(props) {
 	})
 	const [locationDetail, setLocationDetail] = useState(initialState)
 	const [city, setCity] = useState('')
-	const [action, setAction] = useState('')
+	const [, setAction] = useState('')
 	const [locationId, setLocationId] = useState(null)
 	const dispatch = useDispatch()
 	const {
@@ -214,7 +214,6 @@ function WarehouseComponent(props) {
 	}
 
 	const handleChange = (name, tags) => {
-		console.log(name, tags)
 		setLocationDetail({
 			...locationDetail,
 			[name]: tags,
@@ -286,6 +285,10 @@ function WarehouseComponent(props) {
 				label: 'Suppress carrier-provided shipping rates',
 				value: 'suppress',
 			},
+			{
+				label: 'Other',
+				value: 'other',
+			},
 		]
 
 		if (warehouses.length) {
@@ -305,16 +308,6 @@ function WarehouseComponent(props) {
 	return (
 		<Fragment>
 			<Space direction='vertical' size={'large'} className={'w-100'}>
-				{/* <Row gutter={30}>
-                    <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-                        <Title level={4}>Shipment Origins</Title>
-                        <p>How will your shipment origins be indentified?</p>
-                        <Select defaultValue="warehouse" size={"large"} style={{ width: '100%' }} onChange={handleChange}>
-                            <Option value="warehouse">Warehouse</Option>
-                            <Option value="dropship_location">Dropship Location</Option>
-                        </Select>
-                    </Col>
-                </Row> */}
 				<Row gutter={30}>
 					<Modal
 						title={
@@ -328,7 +321,11 @@ function WarehouseComponent(props) {
 						}
 						centered
 						visible={visible1}
-						onCancel={() => setVisibleWarehouse(false)}
+						destroyOnClose
+						onCancel={() => {
+							setVisibleWarehouse(false)
+							setLocationDetail(initialState)
+						}}
 						footer={null}
 						width={800}>
 						{alertMessageType === 'loading' ? (
@@ -815,6 +812,184 @@ function WarehouseComponent(props) {
 										</Form.Item>
 									</Col>
 								</Row>
+
+								{/* Other option fields */}
+								{locationDetail?.default_location === 'other' && (
+									<>
+										<Row gutter={30} className='mb-2'>
+											<Col
+												className='gutter-row'
+												xs={24}
+												sm={8}
+												md={8}
+												lg={8}
+												xl={8}>
+												<label className={'text-gray'}>
+													Postal Code
+												</label>
+											</Col>
+											<Col
+												className='gutter-row'
+												xs={24}
+												sm={16}
+												md={16}
+												lg={16}
+												xl={16}>
+												<Form.Item
+													className={'mb-0'}
+													rules={[
+														{
+															required:
+																locationDetail?.default_location ===
+																'other',
+															message:
+																'Postal Code Required',
+														},
+													]}>
+													<Input
+														name='instore_postalCode'
+														placeholder='Postal Code'
+														value={
+															locationDetail.instore_postalCode
+														}
+														onChange={e =>
+															changeValue(e)
+														}
+													/>
+												</Form.Item>
+											</Col>
+										</Row>
+										<Row gutter={30} className='mb-2'>
+											<Col
+												className='gutter-row'
+												xs={24}
+												sm={8}
+												md={8}
+												lg={8}
+												xl={8}>
+												<label className={'text-gray'}>
+													City
+												</label>
+											</Col>
+											<Col
+												className='gutter-row'
+												xs={24}
+												sm={16}
+												md={16}
+												lg={16}
+												xl={16}>
+												<Form.Item
+													className={'mb-0'}
+													rules={[
+														{
+															required:
+																locationDetail?.default_location ===
+																'other',
+															message: 'City Required',
+														},
+													]}>
+													<Input
+														name='instore_city'
+														placeholder='City'
+														value={
+															locationDetail.instore_city
+														}
+														onChange={e =>
+															changeValue(e)
+														}
+													/>
+												</Form.Item>
+											</Col>
+										</Row>
+										<Row gutter={30} className='mb-2'>
+											<Col
+												className='gutter-row'
+												xs={24}
+												sm={8}
+												md={8}
+												lg={8}
+												xl={8}>
+												<label className={'text-gray'}>
+													State/Province
+												</label>
+											</Col>
+											<Col
+												className='gutter-row'
+												xs={24}
+												sm={16}
+												md={16}
+												lg={16}
+												xl={16}>
+												<Form.Item
+													className={'mb-0'}
+													rules={[
+														{
+															required:
+																locationDetail?.default_location ===
+																'other',
+															message:
+																'State/Province Required',
+														},
+													]}>
+													<Input
+														name='instore_state'
+														placeholder='State/Province'
+														value={
+															locationDetail.instore_state
+														}
+														onChange={e =>
+															changeValue(e)
+														}
+													/>
+												</Form.Item>
+											</Col>
+										</Row>
+										<Row gutter={30} className='mb-2'>
+											<Col
+												className='gutter-row'
+												xs={24}
+												sm={8}
+												md={8}
+												lg={8}
+												xl={8}>
+												<label className={'text-gray'}>
+													Country
+												</label>
+											</Col>
+											<Col
+												className='gutter-row'
+												xs={24}
+												sm={16}
+												md={16}
+												lg={16}
+												xl={16}>
+												<Form.Item
+													className={'mb-0'}
+													rules={[
+														{
+															required:
+																locationDetail?.default_location ===
+																'other',
+															message:
+																'Country Required',
+														},
+													]}>
+													<Input
+														name='instore_country'
+														placeholder='Country'
+														value={
+															locationDetail.instore_country
+														}
+														onChange={e =>
+															changeValue(e)
+														}
+													/>
+												</Form.Item>
+											</Col>
+										</Row>
+									</>
+								)}
+
 								<Row gutter={30}>
 									<Col
 										className='gutter-row'
