@@ -11,7 +11,9 @@ function ConnectionSettingsComponent(props) {
 		testType: false,
 		skeleton_loading: true,
 	})
-	const { fdoCouponInfo, token } = useSelector(state => state)
+	const { fdoCouponInfo, fdoCouponCarrierInfo, token } = useSelector(
+		state => state
+	)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -32,6 +34,9 @@ function ConnectionSettingsComponent(props) {
 		values.testType = connectionState.testType
 		values.installed_carrier_id = props.carrierId
 		values.carrierId = props.carrierId
+
+		if (fdoCouponCarrierInfo)
+			values.is_enabled = fdoCouponCarrierInfo.is_enabled ?? false
 
 		props.postData(values, props.token)
 	}

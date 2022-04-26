@@ -27,7 +27,9 @@ function ConnectionSettingsComponent(props) {
 	})
 	const dispatch = useDispatch()
 	const [form] = Form.useForm()
-	const { fdoCouponInfo, token } = useSelector(state => state)
+	const { fdoCouponInfo, fdoCouponCarrierInfo, token } = useSelector(
+		state => state
+	)
 
 	useEffect(() => {
 		if (
@@ -89,8 +91,10 @@ function ConnectionSettingsComponent(props) {
 			...state,
 		}
 
+		if (fdoCouponCarrierInfo)
+			values.is_enabled = fdoCouponCarrierInfo.is_enabled ?? false
+
 		props.postData(values, props.token)
-		// submitCouponCarrierInfo(values)
 	}
 
 	const updateFormFields = useCallback(
