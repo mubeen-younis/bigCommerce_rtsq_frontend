@@ -1,27 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import {
-	Row,
-	Col,
-	Typography,
-	Space,
-	Button,
-	Form,
-	Input,
-	Skeleton,
-	Modal,
-} from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { Row, Col, Typography, Space, Skeleton, Button } from 'antd'
 import axios from 'axios'
 
 const { Title } = Typography
 
 const FDOComponent = () => {
 	const [fdoConnected, setfdoConnected] = useState(false)
-	const [fdoId, setFdoId] = useState('')
+	const [fdoData, setFdoData] = useState({})
 	const [loading, setLoading] = useState(false)
-	const [visible, setVisible] = useState(false)
-	const dispatch = useDispatch()
 	const { token } = useSelector(state => state)
+	const dispatch = useDispatch()
 
 	useEffect(() => {
 		const fetchStore = async () => {
@@ -36,17 +25,20 @@ const FDOComponent = () => {
 					`${process.env.REACT_APP_ENITURE_API_URL}/get_fdo_info`,
 					config
 				)
+
 				if (!data.error) {
+					setFdoData(data?.data)
+
 					if (data?.data?.freightdesk_company_id?.length) {
-						setFdoId(data.data.freightdesk_company_id)
 						setfdoConnected(true)
 					} else {
-						setFdoId('')
 						setfdoConnected(false)
 					}
 				}
 				setLoading(false)
 			} catch (err) {
+				setFdoData({})
+				setfdoConnected(false)
 				setLoading(false)
 			}
 		}
@@ -54,60 +46,43 @@ const FDOComponent = () => {
 		fetchStore()
 	}, [token])
 
-	const submitHandler = useCallback(
-		async (id = '') => {
-			try {
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						showAlertMessage: true,
-						alertMessageType: 'loading',
-					},
-				})
+	const applyPromoCode = useCallback(async () => {
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
+		try {
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					showAlertMessage: true,
+					alertMessageType: 'loading',
+				},
+			})
 
-				const url = `${process.env.REACT_APP_ENITURE_API_URL}/update_fdo_connection`
-				const config = {
-					headers: {
-						authorization: `Bearer ${token}`,
-					},
-				}
-				const { data } = await axios.post(
-					url,
-					{ freightdesk_company_id: id },
-					config
-				)
+			const url = `${process.env.REACT_APP_ENITURE_API_URL}/apply_promo_code?type=fdo`
+			const { data } = await axios.post(url, {}, config)
+			if (!data.error) setFdoData(data?.data)
 
-				if (!data.error) {
-					if (id && id.length) {
-						setFdoId(id)
-						setfdoConnected(true)
-					} else {
-						setFdoId('')
-						setfdoConnected(false)
-					}
-					setVisible(false)
-				}
-
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						showAlertMessage: true,
-						alertMessage: data.message,
-						alertMessageType: data.error ? 'error' : 'success',
-					},
-				})
-			} catch (err) {
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						showAlertMessage: false,
-						alertMessageType: '',
-					},
-				})
-			}
-		},
-		[dispatch, token]
-	)
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					alertMessage: data.message,
+					showAlertMessage: data.error,
+					alertMessageType: data.error ? 'error' : 'success',
+				},
+			})
+		} catch (err) {
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					showAlertMessage: false,
+					alertMessageType: '',
+				},
+			})
+		}
+	}, [dispatch, token])
 
 	if (loading) return <Skeleton active />
 
@@ -136,112 +111,75 @@ const FDOComponent = () => {
 							(Learn more)
 						</a>
 					</p>
-					<div className={'note-bx'}>
-						<strong>Note!</strong> To establish a connection, you must
-						have a FreightDesk Online account. If you don’t have one,
-						click{' '}
-						<a
-							href='https://freightdesk.online/register?trial=true'
-							target='_blank'
-							rel='noreferrer'>
-							here
-						</a>{' '}
-						to register
-					</div>
+
+					{+fdoData?.used < 1 && (
+						<>
+							<div
+								className={'note-bx'}
+								dangerouslySetInnerHTML={{
+									__html: fdoData?.message,
+								}}
+							/>
+							{+fdoData?.is_already_user === 1 && (
+								<div
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+									}}>
+									<Button onClick={applyPromoCode} type='primary'>
+										Apply Promo Code
+									</Button>
+								</div>
+							)}
+						</>
+					)}
 				</Col>
 			</Row>
 
-			{fdoConnected ? (
+			<Row gutter={30}>
+				<Col className='gutter-row' span={24}>
+					<p>
+						FreightDesk Online shipment processing applies for the
+						following shipping providers for 1-year:
+					</p>
+					<ul>
+						<li>GlobalTranz (LTL)</li>
+						<li>Unishippers (parcel and LTL)</li>
+						<li>Worldwide Express (parcel and LTL)</li>
+					</ul>
+				</Col>
+				<Col className='gutter-row' span={24}>
+					<p>
+						<i>
+							This offer only applies to charges that otherwise would
+							be billed by Eniture Technology for the use of
+							FreightDesk Online. Charges invoiced by the shipping
+							providers listed above (or by any other shipping
+							provider) are not included in this offer. A paid
+							subscription to FreightDesk Online is still be required
+							to process shipments for shipping providers not listed
+							above.
+						</i>
+					</p>
+				</Col>
+			</Row>
+
+			{fdoConnected && +fdoData?.used >= 1 && (
 				<Row gutter={30} align='middle'>
 					<Col className='gutter-row' span={24}>
-						<p style={{ textAlign: 'center' }}>
-							Connected to FreightDesk Online using FreightDesk Online
-							Account ID {fdoId}{' '}
-							<a
-								href='https://support.eniture.com/what-is-my-freightdesk-online-id'
-								target='_blank'
-								rel='noreferrer'>
-								[ ? ]
-							</a>
-						</p>
-						<Button
-							danger={fdoConnected}
-							style={{ margin: '20px auto', display: 'block' }}
-							onClick={() => setVisible(true)}>
-							Disconnect
-						</Button>
-					</Col>
-				</Row>
-			) : (
-				<Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={3}>
-						<label className={'text-gray'}>
-							FreightDesk Online ID{' '}
-							<a
-								href='https://support.eniture.com/what-is-my-freightdesk-online-id'
-								target='_blank'
-								rel='noreferrer'>
-								[ ? ]
-							</a>{' '}
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={21}>
-						<Form.Item className={'mb-3'} name='fdo_id'>
-							<Input
-								size='large'
-								required
-								value={fdoId}
-								onChange={e => setFdoId(e.target.value)}
-							/>
-						</Form.Item>
-					</Col>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={3}>
-						<label className={'text-gray'}> </label>
-					</Col>
-					<Col
-						className='gutter-row mb-3'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={21}>
-						<Button
-							onClick={() => submitHandler(fdoId)}
-							disabled={!fdoId.length}>
-							Connect
-						</Button>
+						{fdoData?.coupon_code?.length && +fdoData?.used >= 1 && (
+							<>
+								<p
+									style={{ textAlign: 'center' }}
+									dangerouslySetInnerHTML={{
+										__html: fdoData?.message,
+									}}
+								/>
+							</>
+						)}
 					</Col>
 				</Row>
 			)}
-
-			<Modal
-				title='Disconnect account'
-				visible={visible}
-				onOk={() => submitHandler('')}
-				onCancel={() => setVisible(false)}
-				okText='Disconnect'>
-				<p>Are you sure that you want to disconnect account?</p>
-			</Modal>
 		</Space>
 	)
 }

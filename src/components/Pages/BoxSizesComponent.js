@@ -219,14 +219,23 @@ function BoxSizesComponent(props) {
 		error += valueLimitAfterDecimal(box_weight, 3, 'box weight')
 		error += valueLimitAfterDecimal(box_fee, 3, 'box fee')
 
-		if (+ext_length && +length > +ext_length) {
+		if (+ext_length && +length > +ext_length)
 			error = 'Interior length cannot be greater than exterior length'
-		}
-		if (+ext_width && +width > +ext_width) {
+		if (+ext_width && +width > +ext_width)
 			error = 'Interior width cannot be greater than exterior width'
-		}
-		if (+ext_height && +height > +ext_height) {
+		if (+ext_height && +height > +ext_height)
 			error = 'Interior height cannot be greater than exterior height'
+
+		const limit = 165
+		const int_girth = 2 * (+width + +height) + +length
+		console.log(int_girth)
+		if (int_girth > limit)
+			error = 'Interior length plus girth cannot exceed ' + limit + '.'
+
+		if (+ext_height && +ext_length && +ext_width) {
+			const ext_girth = 2 * (+ext_width + +ext_height) + +ext_length
+			if (ext_girth > limit)
+				error = 'Exterior length plus girth cannot exceed ' + limit + '.'
 		}
 
 		if (error !== '') {
