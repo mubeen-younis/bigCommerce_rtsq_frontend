@@ -16,7 +16,6 @@ import axios from 'axios'
 const { Title } = Typography
 
 const FDOComponent = () => {
-	const [avConnected, setavConnected] = useState(false)
 	const [avData, setAVData] = useState({})
 	const [loading, setLoading] = useState(false)
 	const [avId, setAVId] = useState('')
@@ -38,16 +37,11 @@ const FDOComponent = () => {
 					`${process.env.REACT_APP_ENITURE_API_URL}/get_av_info`,
 					config
 				)
-				if (!data.error) {
-					setAVData(data?.data)
+				if (!data.error) setAVData(data?.data)
 
-					if (data?.data?.av_company_id?.length) setavConnected(true)
-					else setavConnected(false)
-				}
 				setLoading(false)
 			} catch (err) {
 				setAVData({})
-				setavConnected(false)
 				setLoading(false)
 			}
 		}
@@ -72,10 +66,7 @@ const FDOComponent = () => {
 
 			const url = `${process.env.REACT_APP_ENITURE_API_URL}/apply_promo_code?type=av`
 			const { data } = await axios.post(url, {}, config)
-			if (!data.error) {
-				setAVData(data?.data ?? {})
-				setavConnected(true)
-			}
+			if (!data.error) setAVData(data?.data ?? {})
 
 			dispatch({
 				type: 'ALERT_MESSAGE',
@@ -117,12 +108,9 @@ const FDOComponent = () => {
 
 				if (!data.error) {
 					setAVData(data?.data ?? {})
-					setavConnected(true)
-
-					if (id && id?.length > 0) setAVId(id)
-					else setAVId('')
-
-					setVisible(false)
+					setVisible(false)(id && id?.length > 0)
+						? setAVId(id)
+						: setAVId('')
 				}
 
 				dispatch({
@@ -206,11 +194,11 @@ const FDOComponent = () => {
 			</Row>
 
 			{/* Company Id check */}
-			{avConnected && avData?.av_company_id?.length > 0 ? (
+			{avData?.av_company_id?.length > 0 ? (
 				<Row gutter={30} align='middle'>
 					<Col className='gutter-row' span={24}>
 						<Button
-							danger={avConnected}
+							danger={avData?.av_company_id?.length > 0}
 							style={{ margin: '20px auto', display: 'block' }}
 							onClick={() => setVisible(true)}>
 							Disconnect
@@ -271,7 +259,7 @@ const FDOComponent = () => {
 						lg={20}
 						xl={21}>
 						<Button
-							onClick={() => submitHandler(avId, false)}
+							onClick={() => submitHandler(avId)}
 							disabled={!avId.length}>
 							Connect
 						</Button>
@@ -282,7 +270,7 @@ const FDOComponent = () => {
 			<Modal
 				title='Disconnect account'
 				visible={visible}
-				onOk={() => submitHandler('', true)}
+				onOk={() => submitHandler('')}
 				onCancel={() => setVisible(false)}
 				okText='Disconnect'>
 				<p>Are you sure that you want to disconnect account?</p>
