@@ -61,7 +61,7 @@ function ConnectionSettingsComponent(props) {
 				</a>{' '}
 				to access the new account request form.
 			</div>
-			<PromoCodeNote />
+			<PromoCodeNote carrierName='Worldwide Express LTL' />
 
 			<Form
 				layout='vertical'
