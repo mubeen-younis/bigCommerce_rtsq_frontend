@@ -117,14 +117,11 @@ const FDOComponent = () => {
 
 				if (!data.error) {
 					setAVData(data?.data ?? {})
+					setavConnected(true)
 
-					if (id && id?.length > 0) {
-						setAVId(id)
-						setavConnected(true)
-					} else {
-						setAVId('')
-						setavConnected(false)
-					}
+					if (id && id?.length > 0) setAVId(id)
+					else setAVId('')
+
 					setVisible(false)
 				}
 
@@ -180,8 +177,9 @@ const FDOComponent = () => {
 					</p>
 
 					{/* Message display */}
-					{avConnected && avData?.message && (
+					{avData?.message && (
 						<p
+							className='note-bx'
 							dangerouslySetInnerHTML={{
 								__html: avData?.message,
 							}}
@@ -226,9 +224,9 @@ const FDOComponent = () => {
 						style={{ paddingTop: '11px' }}
 						xs={24}
 						sm={24}
-						md={6}
+						md={7}
 						lg={4}
-						xl={4}>
+						xl={3}>
 						<label className={'text-gray'}>
 							Validate Addresses ID{' '}
 							<a
@@ -243,9 +241,9 @@ const FDOComponent = () => {
 						className='gutter-row'
 						xs={24}
 						sm={24}
-						md={18}
+						md={17}
 						lg={20}
-						xl={20}>
+						xl={21}>
 						<Form.Item className={'mb-3'} name='fdo_id'>
 							<Input
 								size='large'
@@ -260,20 +258,20 @@ const FDOComponent = () => {
 						style={{ paddingTop: '11px' }}
 						xs={24}
 						sm={24}
-						md={6}
+						md={7}
 						lg={4}
-						xl={4}>
+						xl={3}>
 						<label className={'text-gray'}> </label>
 					</Col>
 					<Col
 						className='gutter-row mb-3'
 						xs={24}
 						sm={24}
-						md={18}
+						md={17}
 						lg={20}
-						xl={20}>
+						xl={21}>
 						<Button
-							onClick={() => submitHandler(avId)}
+							onClick={() => submitHandler(avId, false)}
 							disabled={!avId.length}>
 							Connect
 						</Button>
@@ -284,7 +282,7 @@ const FDOComponent = () => {
 			<Modal
 				title='Disconnect account'
 				visible={visible}
-				onOk={() => submitHandler('')}
+				onOk={() => submitHandler('', true)}
 				onCancel={() => setVisible(false)}
 				okText='Disconnect'>
 				<p>Are you sure that you want to disconnect account?</p>
