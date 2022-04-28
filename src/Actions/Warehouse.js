@@ -91,6 +91,17 @@ export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) 
 							: [],
 					instock_description:
 						additional.instore_pickup_data.checkout_description ?? null,
+					default_location:
+						additional?.instore_pickup_data?.default_location ??
+						'default',
+					instore_postalCode:
+						additional?.instore_pickup_data?.instore_postalCode ?? '',
+					instore_city:
+						additional?.instore_pickup_data?.instore_city ?? null,
+					instore_state:
+						additional?.instore_pickup_data?.instore_state ?? null,
+					instore_country:
+						additional?.instore_pickup_data?.instore_country ?? null,
 
 					enable_ld: additional.local_delivery ?? false,
 					ld_miles: additional.local_delivery_data.miles ?? null,
@@ -104,7 +115,6 @@ export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) 
 						additional.local_delivery_data.local_delivery_fee ?? null,
 
 					ld_enable_supress: additional.ld_enable_supress ?? false,
-					default_location: additional.default_location ?? 'default',
 				})
 
 				dispatch({
