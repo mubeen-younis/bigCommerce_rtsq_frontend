@@ -23,9 +23,17 @@ const PromoCodeField = () => {
 		}))
 	}, [fdoCouponInfo, fdoCouponCarrierInfo, connectionSettings])
 
+	const inpStyles = {
+		backgroundColor: state.readOnly ? 'rgb(236, 231, 231)' : 'initial',
+	}
+
 	return (
 		<Form.Item label='Promo Code' name='promo_code'>
-			<Input placeholder='Promo Code' readOnly={state.readOnly} />
+			<Input
+				placeholder='Promo Code'
+				readOnly={state.readOnly}
+				style={inpStyles}
+			/>
 		</Form.Item>
 	)
 }

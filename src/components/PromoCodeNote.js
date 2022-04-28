@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-const PromoCodeNote = () => {
+const PromoCodeNote = ({ carrierName }) => {
 	const FDO_REGISTRATION_URL = 'https://freightdesk.online/register'
 	const FDO_LEARN_MORE_URL = 'https://freightdesk.online/'
 	const { fdoCouponInfo, fdoCouponCarrierInfo } = useSelector(state => state)
@@ -24,8 +24,8 @@ const PromoCodeNote = () => {
 						<strong>Free Offer!</strong>
 					</h3>
 					<p>
-						Process your Worldwide Express LTL shipments free for one
-						year by using promo code{' '}
+						Process your {carrierName} shipments free for one year by
+						using promo code{' '}
 						<strong>
 							{' '}
 							{fdoCouponInfo && fdoCouponInfo?.code
