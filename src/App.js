@@ -24,6 +24,7 @@ import { setStore, getCurrentPlanInfo } from './Actions/Action'
 import { getShippingGroups } from './Actions/ShippingGroupsActions'
 import FDOComponent from './components/Pages/FDOComponent'
 import AVComponent from './components/Pages/AVComponent'
+import { getFDOCouponInfo } from './Actions/FDOActions'
 
 const { Header, Content } = Layout
 
@@ -69,6 +70,7 @@ function App(props) {
 			getInstalledAddons(token)
 			getStorePlans()
 			getShippingGroups(token)
+			dispatch(getFDOCouponInfo(token))
 		}
 
 		const devEnv = process?.env?.NODE_ENV === 'development'
