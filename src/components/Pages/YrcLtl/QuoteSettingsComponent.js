@@ -155,14 +155,13 @@ function QuoteSettingsComponent(props) {
 						<Form.Item className={'mb-0'} name='label_as'>
 							<Input
 								name='label_as'
-								placeholder='LTL Freight'
 								value={props?.quoteSettings?.label_as ?? ''}
 								onKeyDown={LableAsLimit}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
-							What the user sees during checkout, e.g. "LTL Freight".
-							Leave blank to display the carrier name.
+							What the user sees during checkout, e.g. "Freight". If
+							left blank will default to "Freight".
 						</div>
 					</Col>
 				</Row>
