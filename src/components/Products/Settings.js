@@ -120,26 +120,6 @@ const Settings = ({
 					style={{
 						marginTop: '-1.5rem',
 					}}>
-					<Col span={24}>
-						<Form.Item style={{ marginBottom: '0px' }}>
-							<Checkbox
-								name='quote_as_instore'
-								id={'quote_as_instore' + index}
-								onChange={e => {
-									onChangeVariant(
-										index,
-										'quote_as_instore',
-										e.target.checked
-									)
-									onChangeVariant(index, 'freight_enabled', false)
-									onChangeVariant(index, 'parcel_enabled', false)
-									onChangeVariant(index, 'quote_as_local', false)
-								}}
-								checked={product?.quote_as_instore}>
-								Only quote in-store pickup
-							</Checkbox>
-						</Form.Item>
-					</Col>
 					<Col span={24} className='mb-0'>
 						<Form.Item>
 							<Checkbox
@@ -156,8 +136,10 @@ const Settings = ({
 									onChangeVariant(index, 'quote_as_instore', false)
 								}}
 								checked={product?.quote_as_local}>
-								Only quote local delivery
+								Only show options for in-store pickup and/or local delivery.
 							</Checkbox>
+							<br></br>
+							<p style={{'font-size': '11px','margin-left':'25px'}} >In-store pickup and/or local delivery must be enabled for the warehouse/drop-ship location. Carrier-provided shipping rates will not be presented.</p>
 						</Form.Item>
 					</Col>
 				</Row>
