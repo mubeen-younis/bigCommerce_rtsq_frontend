@@ -85,6 +85,8 @@ const FDOComponent = () => {
 				)
 
 				if (!data.error) {
+					setFdoData(data?.data ?? {})
+
 					if (id && id.length) {
 						setFdoId(id)
 						setfdoConnected(true)
@@ -144,25 +146,27 @@ const FDOComponent = () => {
 						</a>
 					</p>
 
-					<div className={'note-bx'}>
-						<strong>Note!</strong> To establish a connection, you must
-						have a FreightDesk Online account. If you don’t have one,
-						click{' '}
-						<a
-							href='https://freightdesk.online/register?trial=true'
-							target='_blank'
-							rel='noreferrer'>
-							here
-						</a>{' '}
-						to register
-					</div>
+					{!fdoConnected && (
+						<div className={'note-bx'}>
+							<strong>Note!</strong> To establish a connection, you
+							must have a FreightDesk Online account. If you don’t have
+							one, click{' '}
+							<a
+								href='https://freightdesk.online/register?trial=true'
+								target='_blank'
+								rel='noreferrer'>
+								here
+							</a>{' '}
+							to register
+						</div>
+					)}
 				</Col>
 			</Row>
 
 			{fdoConnected ? (
 				<Row gutter={30} align='middle'>
 					<Col className='gutter-row' span={24}>
-						<p style={{ textAlign: 'center' }}>
+						<p style={pStyles}>
 							Connected to FreightDesk Online using FreightDesk Online
 							Account ID {fdoId}{' '}
 							<a
@@ -187,9 +191,9 @@ const FDOComponent = () => {
 						style={{ paddingTop: '11px' }}
 						xs={24}
 						sm={24}
-						md={24}
-						lg={24}
-						xl={3}>
+						md={4}
+						lg={4}
+						xl={4}>
 						<label className={'text-gray'}>
 							FreightDesk Online ID{' '}
 							<a
@@ -204,9 +208,9 @@ const FDOComponent = () => {
 						className='gutter-row'
 						xs={24}
 						sm={24}
-						md={24}
-						lg={24}
-						xl={21}>
+						md={20}
+						lg={20}
+						xl={20}>
 						<Form.Item className={'mb-3'} name='fdo_id'>
 							<Input
 								size='large'
@@ -221,18 +225,18 @@ const FDOComponent = () => {
 						style={{ paddingTop: '11px' }}
 						xs={24}
 						sm={24}
-						md={24}
-						lg={24}
-						xl={3}>
+						md={4}
+						lg={4}
+						xl={4}>
 						<label className={'text-gray'}> </label>
 					</Col>
 					<Col
 						className='gutter-row mb-3'
 						xs={24}
 						sm={24}
-						md={24}
-						lg={24}
-						xl={21}>
+						md={20}
+						lg={20}
+						xl={20}>
 						<Button
 							onClick={() => submitHandler(fdoId)}
 							disabled={!fdoId.length}>
@@ -252,6 +256,14 @@ const FDOComponent = () => {
 			</Modal>
 		</Space>
 	)
+}
+
+const pStyles = {
+	width: 'fit-content',
+	margin: 'auto',
+	textAlign: 'center',
+	border: '2px solid skyblue',
+	padding: '.5rem',
 }
 
 export default FDOComponent

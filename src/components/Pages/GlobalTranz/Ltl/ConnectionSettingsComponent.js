@@ -136,7 +136,7 @@ function ConnectionSettingsComponent(props) {
 					this application. If you do not have one contact GlobalTranz at
 					866-275-1407.
 				</div>
-				<PromoCodeNote />
+				<PromoCodeNote carrierName='GlobalTranz' />
 
 				<Form
 					layout='vertical'

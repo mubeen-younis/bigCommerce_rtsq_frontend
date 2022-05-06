@@ -28,7 +28,6 @@ function ConnectionSettingsComponent(props) {
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
-		console.log(connectionState)
 	}
 
 	const onFinish = values => {
@@ -64,7 +63,7 @@ function ConnectionSettingsComponent(props) {
 				</a>{' '}
 				to access the online new account request form.
 			</div>
-			<PromoCodeNote />
+			<PromoCodeNote carrierName='Unishippers Small' />
 
 			<Form
 				layout='vertical'

@@ -15,8 +15,10 @@ const PromoCodeNote = () => {
 			fdoCouponCarrierInfo?.is_enabled &&
 			fdoCouponInfo ? (
 				<span>
-					You are connected to FreightDesk Online using a promo code{' '}
-					<strong>[{fdoCouponInfo?.code}]</strong>
+					<strong>Congratulations! </strong>
+					You have activated your Promo Code. Now you can enjoy free
+					shipments with FreightDesk Online using the {carrierName} carrier
+					account.
 				</span>
 			) : (
 				<>
@@ -27,8 +29,8 @@ const PromoCodeNote = () => {
 						<strong>Free Offer!</strong>
 					</h3>
 					<p>
-						Process your Worldwide Express LTL shipments free for one
-						year by using promo code{' '}
+						Process your {carrierName} shipments free for one year by
+						using promo code{' '}
 						<strong>
 							{' '}
 							{fdoCouponInfo && fdoCouponInfo?.code
