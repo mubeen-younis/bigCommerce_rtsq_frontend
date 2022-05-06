@@ -40,6 +40,7 @@ function TabsLayout() {
 				'xpo-ltl',
 				'rl-ltl',
 				'unishippers-small',
+				'dayross-ltl',
 			]
 
 			for (const ic of installedCarriers) {
