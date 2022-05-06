@@ -243,7 +243,7 @@ const FDOComponent = () => {
 			)}
 
 			<Modal
-				title='Disconnect account'
+				title='Disconnect Account'
 				visible={visible}
 				onOk={() => submitHandler('')}
 				onCancel={() => setVisible(false)}

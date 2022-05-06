@@ -2,7 +2,10 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 const PromoCodeNote = () => {
-	const FDO_REGISTRATION_URL = 'https://freightdesk.online/register'
+	const FDO_REGISTRATION_URL =
+		process?.env?.NODE_ENV === 'production'
+			? 'https://freightdesk.online/register'
+			: 'https://freightdesk.eniture-qa.com/register'
 	const FDO_LEARN_MORE_URL = 'https://freightdesk.online/'
 	const { fdoCouponInfo, fdoCouponCarrierInfo } = useSelector(state => state)
 
