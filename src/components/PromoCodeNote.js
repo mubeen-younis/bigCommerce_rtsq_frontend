@@ -42,7 +42,10 @@ const PromoCodeNote = ({ carrierName }) => {
 						this promotion. If you don't have a FreightDesk Online
 						account,{' '}
 						<a
-							href={FDO_REGISTRATION_URL}
+							href={
+								fdoCouponCarrierInfo?.registerUrl ??
+								FDO_REGISTRATION_URL
+							}
 							target='_blank'
 							rel='noreferrer'>
 							click here
