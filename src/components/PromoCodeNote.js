@@ -15,10 +15,12 @@ const PromoCodeNote = ({ carrierName }) => {
 			fdoCouponCarrierInfo?.is_enabled &&
 			fdoCouponInfo ? (
 				<span>
-					<strong>Congratulations! </strong>
-					You have activated your Promo Code. Now you can enjoy free
-					shipments with FreightDesk Online using the {carrierName} carrier
-					account.
+					<strong>Congratulations! </strong>You have activated your Promo
+					Code <strong>[{fdoCouponInfo?.code ?? ''}]</strong> with
+					FreightDesk Online account{' '}
+					<strong>[{fdoCouponInfo?.freightdesk_company_id ?? ''}]</strong>.
+					Now you can enjoy free shipments with FreightDesk Online for one
+					year.
 				</span>
 			) : (
 				<>

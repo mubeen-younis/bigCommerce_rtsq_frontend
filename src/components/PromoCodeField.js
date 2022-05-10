@@ -19,18 +19,26 @@ const PromoCodeField = () => {
 				: connectionSettings
 				? connectionSettings?.promo_code ?? ''
 				: '',
-			readOnly: fdoCouponCarrierInfo && fdoCouponCarrierInfo?.is_enabled,
+			readOnly:
+				!fdoCouponInfo ||
+				!fdoCouponInfo?.freightdesk_company_id ||
+				(fdoCouponCarrierInfo && fdoCouponCarrierInfo?.is_enabled),
 		}))
 	}, [fdoCouponInfo, fdoCouponCarrierInfo, connectionSettings])
 
 	const inpStyles = {
-		backgroundColor: state.readOnly ? 'rgb(236, 231, 231)' : 'initial',
+		backgroundColor: state.readOnly ? 'rgb(240, 232, 232)' : 'initial',
+		cursor: state.readOnly ? 'ready-only' : 'initial',
 	}
 
 	return (
 		<Form.Item label='Promo Code' name='promo_code'>
 			<Input
-				placeholder='Promo Code'
+				placeholder={
+					state.readOnly
+						? 'Your store must be connected with FreightDesk Online to apply promo code.'
+						: 'Promo Code'
+				}
 				readOnly={state.readOnly}
 				style={inpStyles}
 			/>
