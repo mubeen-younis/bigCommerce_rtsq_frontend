@@ -40,6 +40,7 @@ function TabsLayout() {
 				'xpo-ltl',
 				'rl-ltl',
 				'unishippers-small',
+				'estes-ltl',
 			]
 
 			for (const ic of installedCarriers) {
