@@ -60,7 +60,7 @@ function ConnectionSettingsComponent(props) {
 						defaultValue='general_freight'
 						options={[
 							{ label: 'General Freight', value: 'general_freight' },
-							{ label: 'Sameday', value: 'sameday' },
+							// { label: 'Sameday', value: 'sameday' },
 						]}
 					/>
 				</Form.Item>
