@@ -35,7 +35,7 @@ const PromoCodeField = () => {
 		<Form.Item label='Promo Code' name='promo_code'>
 			<Input
 				placeholder={
-					state.readOnly
+					!fdoCouponInfo || !fdoCouponInfo?.freightdesk_company_id
 						? 'Your store must be connected with FreightDesk Online to apply promo code.'
 						: 'Promo Code'
 				}

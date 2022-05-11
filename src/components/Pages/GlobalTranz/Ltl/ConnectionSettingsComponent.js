@@ -24,12 +24,14 @@ function ConnectionSettingsComponent(props) {
 	const [state, setState] = useState({
 		global_tranz: initialValues,
 		cerasis: initialValues,
+		promo_code: '',
 	})
 	const dispatch = useDispatch()
 	const [form] = Form.useForm()
 	const { fdoCouponInfo, fdoCouponCarrierInfo, token } = useSelector(
 		state => state
 	)
+	const [mounted, setMounted] = useState(false)
 
 	useEffect(() => {
 		if (
@@ -45,6 +47,7 @@ function ConnectionSettingsComponent(props) {
 					...props.connectionSettings?.global_tranz,
 				},
 				cerasis: { ...initialValues, ...props.connectionSettings?.cerasis },
+				promo_code: props?.connectionSettings?.promo_code || '',
 			})
 			setConnectionState(prevState => ({
 				...prevState,
@@ -56,6 +59,8 @@ function ConnectionSettingsComponent(props) {
 				payload: props.connectionSettings?.api_type || 'GTZ',
 			})
 		}
+
+		setMounted(true)
 	}, [dispatch, props.connectionSettings])
 
 	useEffect(() => {
@@ -89,6 +94,7 @@ function ConnectionSettingsComponent(props) {
 			carrierId: props.carrierId,
 			api_type: apiType,
 			...state,
+			...values,
 		}
 
 		if (fdoCouponCarrierInfo)
@@ -117,9 +123,18 @@ function ConnectionSettingsComponent(props) {
 		]
 	)
 
+	const populateInitialValues = useCallback(
+		() =>
+			apiType === 'GTZ'
+				? { ...state.global_tranz, promo_code: state.promo_code }
+				: { ...state.cerasis, promo_code: state.promo_code },
+		[apiType, state.cerasis, state.global_tranz, state.promo_code]
+	)
+
 	if (
 		props.connectionSettings === null ||
-		props.connectionSettings === undefined
+		props.connectionSettings === undefined ||
+		!mounted
 	) {
 		return <Skeleton active />
 	} else {
@@ -144,9 +159,7 @@ function ConnectionSettingsComponent(props) {
 					className='connection-settings'
 					size={'large'}
 					onFinish={onFinish}
-					initialValues={
-						apiType === 'GTZ' ? state.global_tranz : state.cerasis
-					}
+					initialValues={populateInitialValues()}
 					form={form}>
 					<Form.Item
 						label='Which API Will You Connect To?'
