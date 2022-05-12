@@ -22,6 +22,7 @@ import ShippingCarriersComponent from './components/Pages/ShippingCarriersCompon
 import PlansComponent from './components/Plans/PlansComponent'
 import { setStore, getCurrentPlanInfo } from './Actions/Action'
 import { getShippingGroups } from './Actions/ShippingGroupsActions'
+import WarehouseComponent from './components/Pages/WarehouseComponent'
 import FDOComponent from './components/Pages/FDOComponent'
 import AVComponent from './components/Pages/AVComponent'
 import { getFDOCouponInfo } from './Actions/FDOActions'
@@ -170,15 +171,11 @@ function App(props) {
 							<Route path='/fdo' component={FDOComponent} />
 							<Route path='/av' component={AVComponent} />
 							<Route
-								exact
-								path='/addon/:addon_id'
-								component={RendorAddon}
+								path='/warehouses'
+								component={WarehouseComponent}
 							/>
-							<Route
-								exact
-								path='/:carrier_id'
-								component={RendorCarrier}
-							/>
+							<Route path='/addon/:addon_id' component={RendorAddon} />
+							<Route path='/:carrier_id' component={RendorCarrier} />
 						</Switch>
 
 						<Modal

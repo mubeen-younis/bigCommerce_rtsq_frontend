@@ -8,6 +8,7 @@ export { default as CSFedexSmall } from './Fedex/Small/ConnectionSettingsCompone
 export { default as CSGtzLtl } from './GlobalTranz/Ltl/ConnectionSettingsComponent'
 export { default as CSXpoLtl } from './XPO/Ltl/ConnectionSettingsComponent'
 export { default as CSRLLTl } from './R+LLtl/ConnectionSettingsComponent'
+export { default as CSUnishippersSmall } from './Unishippiers/ConnectionSettingsComponent'
 
 // Quote Settings Component
 export { default as QSWweltl } from './WweLtl/QuoteSettingsComponentWwe'
@@ -19,3 +20,4 @@ export { default as QSFedexSmall } from './Fedex/Small/QuoteSettingsComponent'
 export { default as QSGtzLtl } from './GlobalTranz/Ltl/QuoteSettingsComponent'
 export { default as QSXpoLtl } from './XPO/Ltl/QuoteSettingsComponentWwe'
 export { default as QSRLLTl } from './R+LLtl/QuoteSettingsComponentWwe'
+export { default as QSUnishippiersSmall } from './Unishippiers/QuoteSettingsComponent'

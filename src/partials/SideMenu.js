@@ -22,12 +22,12 @@ function SideMenu(props) {
 		const name = window.location.pathname
 		if (name.match(/\/$/)) setActiveMenu('99')
 		else if (name.includes('plans')) setActiveMenu('100')
-		else if (name.includes('fdo')) setActiveMenu('101')
-		else if (name.includes('av')) setActiveMenu('102')
+		else if (name.includes('warehouses')) setActiveMenu('101')
+		else if (name.includes('fdo')) setActiveMenu('102')
 		else if (name.includes('addon'))
 			setActiveMenu('addon-' + name.substring(name.lastIndexOf('/') + 1))
 		else setActiveMenu(name.substring(name.lastIndexOf('/') + 1))
-	}, [props.activeMenu, setActiveMenu])
+	}, [setActiveMenu])
 
 	return (
 		<Sider
@@ -50,21 +50,27 @@ function SideMenu(props) {
 				mode='inline'
 				defaultSelectedKeys={'99'}
 				selectedKeys={props.activeMenu}>
-				<Menu.Item key='99' warnkey={99} onClick={() => setActiveMenu('99')}>
-					<Link to={`/`}>Dashboard</Link>
+				<Menu.Item key='99' warnkey='99' onClick={() => setActiveMenu('99')}>
+					<Link to='/'>Dashboard</Link>
 				</Menu.Item>
 
 				<Menu.Item
 					key='100'
-					warnkey={100}
+					warnkey='100'
 					onClick={() => setActiveMenu('100')}>
-					<Link to={`/plans`}>Plans</Link>
+					<Link to='/plans'>Plans</Link>
+				</Menu.Item>
+				<Menu.Item
+					key='101'
+					warnkey='101'
+					onClick={() => setActiveMenu('101')}>
+					<Link to='/warehouses'>Warehouses</Link>
 				</Menu.Item>
 
 				<Menu.Item
-					key='101'
-					warnkey={101}
-					onClick={() => setActiveMenu('101')}>
+					key='102'
+					warnkey={102}
+					onClick={() => setActiveMenu('102')}>
 					<Link to={`/fdo`}>FreightDesk Online</Link>
 				</Menu.Item>
 

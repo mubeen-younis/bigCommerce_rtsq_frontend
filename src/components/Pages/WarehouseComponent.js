@@ -267,16 +267,6 @@ function WarehouseComponent(props) {
 	return (
 		<Fragment>
 			<Space direction='vertical' size={'large'} className={'w-100'}>
-				{/* <Row gutter={30}>
-                    <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-                        <Title level={4}>Shipment Origins</Title>
-                        <p>How will your shipment origins be indentified?</p>
-                        <Select defaultValue="warehouse" size={"large"} style={{ width: '100%' }} onChange={handleChange}>
-                            <Option value="warehouse">Warehouse</Option>
-                            <Option value="dropship_location">Dropship Location</Option>
-                        </Select>
-                    </Col>
-                </Row> */}
 				<Row gutter={30}>
 					<Modal
 						title={
