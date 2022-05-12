@@ -68,13 +68,6 @@ function SideMenu(props) {
 					<Link to={`/fdo`}>FreightDesk Online</Link>
 				</Menu.Item>
 
-				<Menu.Item
-					key='102'
-					warnkey={102}
-					onClick={() => setActiveMenu('102')}>
-					<Link to={`/av`}>Address Validation</Link>
-				</Menu.Item>
-
 				<Title className={'carriers-name'} level={5}>
 					LTL Freight Providers
 				</Title>
