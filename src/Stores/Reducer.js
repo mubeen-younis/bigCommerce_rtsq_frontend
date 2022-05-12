@@ -48,6 +48,8 @@ const initialState = {
 	boxSizeStatus: false,
 	isFedexSmallCarrier: false,
 	shippingGroups: null,
+	fdoCouponInfo: null,
+	fdoCouponCarrierInfo: null,
 }
 
 const Reducer = (state = initialState, action) => {
@@ -599,6 +601,18 @@ const Reducer = (state = initialState, action) => {
 					sg.uuid === action.payload.uuid ? action.payload : sg
 				),
 			}
+
+		case types.GET_FDO_COUPON_INFO:
+			return {
+				...state,
+				fdoCouponInfo: action.payload,
+			}
+		case types.GET_FDO_COUPON_CARRIER_INFO: {
+			return {
+				...state,
+				fdoCouponCarrierInfo: action.payload,
+			}
+		}
 
 		default:
 			return state

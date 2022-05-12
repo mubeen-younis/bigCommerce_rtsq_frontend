@@ -2,15 +2,32 @@ import React, { Fragment, useState, useEffect } from 'react'
 import { Form, Input, Button, Space, Skeleton } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
+import PromoCodeNote from '../../PromoCodeNote'
+import PromoCodeField from '../../PromoCodeField'
+import { getFDOCouponCarrierInfo } from '../../../Actions/FDOActions'
 
 function ConnectionSettingsComponent(props) {
 	const [testType, setTestType] = useState(false)
 	const dispatch = useDispatch()
-	const { connectionSettings, token, carrierId } = useSelector(state => state)
+	const {
+		connectionSettings,
+		token,
+		carrierId,
+		fdoCouponInfo,
+		fdoCouponCarrierInfo,
+	} = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
 
-	useEffect(() => {}, [props.connectionSettings])
+	useEffect(() => {
+		dispatch(
+			getFDOCouponCarrierInfo(
+				token,
+				'unishippers-small',
+				fdoCouponInfo ? fdoCouponInfo?.code ?? '' : ''
+			)
+		)
+	}, [dispatch, token])
 
 	const onFinish = values => {
 		values = {
@@ -19,6 +36,9 @@ function ConnectionSettingsComponent(props) {
 			carrierId,
 			installed_carrier_id: carrierId,
 		}
+
+		if (fdoCouponCarrierInfo)
+			values.is_enabled = fdoCouponCarrierInfo.is_enabled ?? false
 
 		dispatch(
 			postData(
@@ -47,6 +67,8 @@ function ConnectionSettingsComponent(props) {
 				</a>{' '}
 				to access the online new account request form.
 			</div>
+			<PromoCodeNote carrierName='Unishippers Small' />
+
 			<Form
 				layout='vertical'
 				name='connection_settings'
@@ -83,6 +105,8 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item label='Request Key' name='request_key'>
 					<Input placeholder='Request Key' />
 				</Form.Item>
+				<PromoCodeField />
+
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
 						<Button

@@ -31,6 +31,16 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 							type: type,
 							payload: JSON.parse(data?.data?.value),
 						})
+
+						if (
+							url === 'submit_connection_settings' &&
+							data?.data['fdoCouponCarrierInfo'] !== undefined
+						) {
+							dispatch({
+								type: 'GET_FDO_COUPON_CARRIER_INFO',
+								payload: data?.data?.fdoCouponCarrierInfo,
+							})
+						}
 					} else if (data?.data && !isTestConnection) {
 						dispatch({
 							type: type,
