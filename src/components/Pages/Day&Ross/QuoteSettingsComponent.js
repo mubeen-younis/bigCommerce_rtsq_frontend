@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
-import { Row, Form, Col, Input, Skeleton, Select } from 'antd'
+import { Row, Form, Col, Input, Skeleton } from 'antd'
 import { connect, useDispatch } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
@@ -216,7 +216,7 @@ function QuoteSettingsComponentWwe(props) {
 					handleChange={handleStateChange}
 				/>
 
-				<Row gutter={30} className={'mb-3'}>
+				{/* <Row gutter={30} className={'mb-3'}>
 					<Col
 						className='gutter-row'
 						style={{ paddingTop: '11px' }}
@@ -246,7 +246,7 @@ function QuoteSettingsComponentWwe(props) {
 							/>
 						</Form.Item>
 					</Col>
-				</Row>
+				</Row> */}
 
 				<SaveButton />
 			</Form>
