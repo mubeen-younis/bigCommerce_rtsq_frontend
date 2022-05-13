@@ -68,16 +68,41 @@ function ConnectionSettingsComponent(props) {
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
-				<Row gutter={30}>
-					<Col span={24}>
+				<Row gutter={30} className='mb-1'>
+					<Col xl={8} lg={8} md={12} sm={12} xs={16}>
 						<label htmlFor=''>
 							YRC rates my freight based on weight and...
 						</label>
 					</Col>
+					<Col xl={16} lg={16} md={12} sm={12} xs={8}>
+						<Radio
+							value='freight_class'
+							onChange={() => setRates(0)}
+							checked={rates === 0}>
+							Freight class
+						</Radio>
+					</Col>
 				</Row>
-				<Row gutter={30}></Row>
 
 				<Row gutter={30}>
+					<Col xl={8} lg={8} md={12} sm={12} xs={16}>
+						<label htmlFor=''> </label>
+					</Col>
+					<Col xl={16} lg={16} md={12} sm={12} xs={8} className='mb-3'>
+						<Radio
+							value='dimensions'
+							onChange={() => setRates(1)}
+							checked={rates === 1}>
+							Dimensions
+						</Radio>
+					</Col>
+				</Row>
+
+				{/* <Row
+					gutter={30}
+					style={{
+						marginTop: '-1rem',
+					}}>
 					<Col lg={8} md={12} sm={12} xs={12} className='mb-3'>
 						<label htmlFor=''> </label>
 					</Col>
@@ -100,7 +125,7 @@ function ConnectionSettingsComponent(props) {
 							Dimensions
 						</Radio>
 					</Col>
-				</Row>
+				</Row> */}
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
