@@ -98,35 +98,6 @@ function ConnectionSettingsComponent(props) {
 					</Col>
 				</Row>
 
-				{/* <Row
-					gutter={30}
-					style={{
-						marginTop: '-1rem',
-					}}>
-					<Col lg={8} md={12} sm={12} xs={12} className='mb-3'>
-						<label htmlFor=''> </label>
-					</Col>
-					<Col lg={16} md={12} sm={12} xs={12} className='mb-1'>
-						<Radio
-							value='freight_class'
-							onChange={() => setRates(0)}
-							checked={rates === 0}>
-							Freight class
-						</Radio>
-					</Col>
-					<Col lg={8} md={12} sm={12} xs={12}>
-						<label htmlFor=''></label>
-					</Col>
-					<Col lg={16} md={12} sm={12} xs={12} className='mb-3'>
-						<Radio
-							value='dimensions'
-							onChange={() => setRates(1)}
-							checked={rates === 1}>
-							Dimensions
-						</Radio>
-					</Col>
-				</Row> */}
-
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
 						<Button
