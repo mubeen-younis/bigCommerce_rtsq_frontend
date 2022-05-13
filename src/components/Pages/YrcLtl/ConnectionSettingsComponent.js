@@ -68,11 +68,18 @@ function ConnectionSettingsComponent(props) {
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
-				<Row>
-					<Col lg={8} md={12} sm={12} xs={12}>
+				<Row gutter={30}>
+					<Col span={24}>
 						<label htmlFor=''>
 							YRC rates my freight based on weight and...
 						</label>
+					</Col>
+				</Row>
+				<Row gutter={30}></Row>
+
+				<Row gutter={30}>
+					<Col lg={8} md={12} sm={12} xs={12} className='mb-3'>
+						<label htmlFor=''> </label>
 					</Col>
 					<Col lg={16} md={12} sm={12} xs={12} className='mb-1'>
 						<Radio
