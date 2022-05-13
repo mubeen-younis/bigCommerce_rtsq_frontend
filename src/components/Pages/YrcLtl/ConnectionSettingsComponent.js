@@ -69,12 +69,12 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 
 				<Row gutter={30} className='mb-1'>
-					<Col xl={8} lg={8} md={12} sm={12} xs={16}>
+					<Col xl={8} lg={12} md={12} sm={16} xs={16}>
 						<label htmlFor=''>
 							YRC rates my freight based on weight and...
 						</label>
 					</Col>
-					<Col xl={16} lg={16} md={12} sm={12} xs={8}>
+					<Col xl={16} lg={12} md={12} sm={8} xs={8}>
 						<Radio
 							value='freight_class'
 							onChange={() => setRates(0)}
@@ -85,10 +85,10 @@ function ConnectionSettingsComponent(props) {
 				</Row>
 
 				<Row gutter={30}>
-					<Col xl={8} lg={8} md={12} sm={12} xs={16}>
+					<Col xl={8} lg={12} md={12} sm={16} xs={16}>
 						<label htmlFor=''> </label>
 					</Col>
-					<Col xl={16} lg={16} md={12} sm={12} xs={8} className='mb-3'>
+					<Col xl={16} lg={12} md={12} sm={8} xs={8} className='mb-3'>
 						<Radio
 							value='dimensions'
 							onChange={() => setRates(1)}
