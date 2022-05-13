@@ -11,6 +11,9 @@ import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
 import useLoadComponent from '../hooks/useLoadComponent'
 import ShippingGroup from '../components/Pages/ShippingGroup'
+import AVComponent from '../components/Pages/AVComponent'
+// import AlertMessage from "../Utilities/AlertMessage";
+// import BoxSizesComponent from '../components/Pages/BoxSizesComponent';
 
 const { TabPane } = Tabs
 
@@ -122,7 +125,7 @@ function TabsLayout() {
 				<TabPane tab='Import CSV' key='9'>
 					<ImportCsvComponent />
 				</TabPane>
-				<TabPane tab='User Guide' key='11'>
+				<TabPane tab='User Guide' key='12'>
 					<UserGuideComponent />
 				</TabPane>
 			</Tabs>
