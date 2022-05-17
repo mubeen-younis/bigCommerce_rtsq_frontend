@@ -11,7 +11,6 @@ import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
 import useLoadComponent from '../hooks/useLoadComponent'
 import ShippingGroup from '../components/Pages/ShippingGroup'
-import AVComponent from '../components/Pages/AVComponent'
 // import AlertMessage from "../Utilities/AlertMessage";
 // import BoxSizesComponent from '../components/Pages/BoxSizesComponent';
 
@@ -43,6 +42,7 @@ function TabsLayout() {
 				'xpo-ltl',
 				'rl-ltl',
 				'unishippers-small',
+				'saia-ltl',
 			]
 
 			for (const ic of installedCarriers) {
