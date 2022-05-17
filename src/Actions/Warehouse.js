@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 
 export const getGoogleResponse = (zipcode, token, setLocationOn) => {
 	return dispatch => {
@@ -8,28 +8,31 @@ export const getGoogleResponse = (zipcode, token, setLocationOn) => {
 				showAlertMessage: false,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 
 		axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_loc_from_zip/${zipcode}`, {
-				headers: {
-					authorization: `Bearer ${token}`,
-				},
-			})
+			.get(
+				`${process.env.REACT_APP_ENITURE_API_URL}/get_loc_from_zip/${zipcode}`,
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+			)
 			.then(({ data }) => {
 				if (!data.error) {
 					dispatch({
 						type: 'GET_GOOGLE_LOCATION_RESPONSE',
 						payload: data.data,
-					});
-				}else{
+					})
+				} else {
 					dispatch({
 						type: 'GET_GOOGLE_LOCATION_RESPONSE',
 						payload: null,
-					});
+					})
 				}
 
-				setLocationOn(true);
+				setLocationOn(true)
 
 				dispatch({
 					type: 'ALERT_MESSAGE',
@@ -38,11 +41,11 @@ export const getGoogleResponse = (zipcode, token, setLocationOn) => {
 						showAlertMessage: data.error,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
-				});
+				})
 			})
-			.catch(error => {});
-	};
-};
+			.catch(error => {})
+	}
+}
 
 export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) => {
 	return dispatch => {
@@ -52,7 +55,7 @@ export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) 
 				showAlertMessage: false,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_location`, {
@@ -64,10 +67,10 @@ export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) 
 				},
 			})
 			.then(res => {
-				setVisibleWarehouse(true);
+				setVisibleWarehouse(true)
 
-				const { data } = res.data;
-				let additional = JSON.parse(data.additionals);
+				const { data } = res.data
+				let additional = JSON.parse(data.additionals)
 
 				setLocationDetail({
 					id: data.id ?? '',
@@ -88,6 +91,17 @@ export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) 
 							: [],
 					instock_description:
 						additional.instore_pickup_data.checkout_description ?? null,
+					default_location:
+						additional?.instore_pickup_data?.default_location ??
+						'default',
+					instore_postalCode:
+						additional?.instore_pickup_data?.instore_postalCode ?? '',
+					instore_city:
+						additional?.instore_pickup_data?.instore_city ?? null,
+					instore_state:
+						additional?.instore_pickup_data?.instore_state ?? null,
+					instore_country:
+						additional?.instore_pickup_data?.instore_country ?? null,
 
 					enable_ld: additional.local_delivery ?? false,
 					ld_miles: additional.local_delivery_data.miles ?? null,
@@ -95,11 +109,13 @@ export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) 
 						additional.local_delivery_data.postalCodes.length > 0
 							? additional.local_delivery_data.postalCodes.split(',')
 							: [],
-					ld_description: additional.local_delivery_data.checkout_description ?? null,
-					ld_fee: additional.local_delivery_data.local_delivery_fee ?? null,
+					ld_description:
+						additional.local_delivery_data.checkout_description ?? null,
+					ld_fee:
+						additional.local_delivery_data.local_delivery_fee ?? null,
 
 					ld_enable_supress: additional.ld_enable_supress ?? false,
-				});
+				})
 
 				dispatch({
 					type: 'ALERT_MESSAGE',
@@ -108,10 +124,10 @@ export const getWarehouse = (id, setLocationDetail, setVisibleWarehouse, token) 
 						showAlertMessage: data.error,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
-				});
-			});
-	};
-};
+				})
+			})
+	}
+}
 
 export const deleteLocation = (id, type, setDeleteWarehouseModal, token) => {
 	return dispatch => {
@@ -121,7 +137,7 @@ export const deleteLocation = (id, type, setDeleteWarehouseModal, token) => {
 				showAlertMessage: true,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 
 		axios
 			.post(
@@ -141,9 +157,9 @@ export const deleteLocation = (id, type, setDeleteWarehouseModal, token) => {
 					dispatch({
 						type: 'DELETE_LOCATION',
 						payload: id,
-					});
+					})
 
-					setDeleteWarehouseModal(false);
+					setDeleteWarehouseModal(false)
 				}
 
 				dispatch({
@@ -153,31 +169,31 @@ export const deleteLocation = (id, type, setDeleteWarehouseModal, token) => {
 						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
-				});
-			});
-	};
-};
+				})
+			})
+	}
+}
 
 export const getLocations = token => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${token}`,
 		},
-	};
+	}
 
 	return dispatch => {
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_locations`, config)
 			.then(async ({ data }) => {
 				if (data.data.length > 0) {
-					let dropships = [];
-					let warehouse = [];
+					let dropships = []
+					let warehouse = []
 
 					await data.data.forEach(value =>
 						value.type === 1
 							? (warehouse = [...warehouse, value])
 							: (dropships = [...dropships, value])
-					);
+					)
 
 					dispatch({
 						type: 'GET_LOCATIONS',
@@ -185,7 +201,7 @@ export const getLocations = token => {
 							dropships: dropships,
 							warehouse: warehouse,
 						},
-					});
+					})
 				}
 			})
 			.catch(({ response }) => {
@@ -197,7 +213,7 @@ export const getLocations = token => {
 					dispatch({
 						type: 'GET_CARRIERS',
 						payload: undefined,
-					});
+					})
 
 					dispatch({
 						type: 'ALERT_MESSAGE',
@@ -205,8 +221,8 @@ export const getLocations = token => {
 							showAlertMessage: false,
 							alertMessageType: 'Token Mismatch',
 						},
-					});
+					})
 				}
-			});
-	};
-};
+			})
+	}
+}
