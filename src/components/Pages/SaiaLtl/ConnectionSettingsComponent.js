@@ -59,7 +59,7 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 				<Form.Item
 					label='Account Number Postal Code'
-					name='account_number_postal_code'
+					name='original_postal_code'
 					rules={[
 						{ required: true, message: 'Account Number Postal Code' },
 					]}>
@@ -72,7 +72,7 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 				<Form.Item
 					label='Username'
-					name='username'
+					name='userID'
 					rules={[{ required: true, message: 'Username' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
