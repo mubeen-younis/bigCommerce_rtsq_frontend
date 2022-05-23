@@ -821,7 +821,7 @@ function PlansComponent() {
 														margin: '5px 10px',
 													}}
 													key={term}>
-													{term.replace('plus', 'plus..')}.
+													{term}
 												</li>
 											)
 									)}
