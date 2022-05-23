@@ -10,6 +10,7 @@ export { default as CSXpoLtl } from './XPO/Ltl/ConnectionSettingsComponent'
 export { default as CSRLLTl } from './R+LLtl/ConnectionSettingsComponent'
 export { default as CSUnishippersSmall } from './Unishippiers/ConnectionSettingsComponent'
 export { default as CSYRCLtl } from './YrcLtl/ConnectionSettingsComponent'
+export { default as CSUspsSmall } from './UspsSmall/ConnectionSettingsComponent'
 
 // Quote Settings Component
 export { default as QSWweltl } from './WweLtl/QuoteSettingsComponentWwe'
