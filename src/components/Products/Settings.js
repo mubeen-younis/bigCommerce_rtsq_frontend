@@ -137,7 +137,7 @@ const Settings = ({
 								}}
 								checked={product?.quote_as_local}>
 								Only show options for in-store pickup and/or local
-								delivery.
+								delivery
 							</Checkbox>
 							<br></br>
 							<p
@@ -147,7 +147,8 @@ const Settings = ({
 								}}>
 								In-store pickup and/or local delivery must be enabled
 								for the warehouse/drop-ship location.
-								Carrier-provided shipping rates will not be presented
+								Carrier-provided shipping rates will not be
+								presented.
 							</p>
 						</Form.Item>
 					</Col>
