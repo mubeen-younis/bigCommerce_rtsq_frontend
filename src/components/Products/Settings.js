@@ -118,7 +118,7 @@ const Settings = ({
 				<Row
 					gutter={16}
 					style={{
-						marginTop: '-1.5rem',
+						marginTop: '-1.1rem',
 					}}>
 					<Col span={24} className='mb-0'>
 						<Form.Item>
@@ -136,10 +136,20 @@ const Settings = ({
 									onChangeVariant(index, 'quote_as_instore', false)
 								}}
 								checked={product?.quote_as_local}>
-								Only show options for in-store pickup and/or local delivery.
+								Only show options for in-store pickup and/or local
+								delivery
 							</Checkbox>
 							<br></br>
-							<p style={{'font-size': '11px','margin-left':'25px'}} >In-store pickup and/or local delivery must be enabled for the warehouse/drop-ship location. Carrier-provided shipping rates will not be presented.</p>
+							<p
+								style={{
+									'font-size': '11px',
+									'margin-left': '25px',
+								}}>
+								In-store pickup and/or local delivery must be enabled
+								for the warehouse/drop-ship location.
+								Carrier-provided shipping rates will not be
+								presented.
+							</p>
 						</Form.Item>
 					</Col>
 				</Row>
