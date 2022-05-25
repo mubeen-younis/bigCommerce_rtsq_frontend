@@ -115,7 +115,7 @@ function TabsLayout() {
 					<OrdersComponent />
 				</TabPane>
 
-				{[1, 3, 5, 9].includes(component) && (
+				{[1, 3, 5, 9, 11].includes(component) && (
 					<TabPane tab='Box Sizes' key='8'>
 						<BoxSizesComponent />
 					</TabPane>
