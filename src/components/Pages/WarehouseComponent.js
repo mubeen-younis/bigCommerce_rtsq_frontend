@@ -29,6 +29,7 @@ import {
 	getWarehouse,
 	deleteLocation,
 } from '../../Actions/Warehouse'
+import axios from 'axios'
 
 const { Title } = Typography
 const initialState = {
@@ -59,6 +60,7 @@ function WarehouseComponent(props) {
 	})
 	const [locationDetail, setLocationDetail] = useState(initialState)
 	const [city, setCity] = useState('')
+	const [originRatesCity, setOriginRatesCity] = useState([])
 	const [, setAction] = useState('')
 	const [locationId, setLocationId] = useState(null)
 	const dispatch = useDispatch()
@@ -76,13 +78,13 @@ function WarehouseComponent(props) {
 		token,
 		// plansInfo,
 	} = props
+	const [form] = Form.useForm()
 
 	const onFinish = values => {
-		console.log(locationDetail)
-		const data = city.length
+		let data = city.length
 			? { ...locationDetail, city, location_id: locationDetail['id'] }
 			: { ...locationDetail, location_id: locationDetail['id'] }
-		var error = false
+		let error = false
 		let errormsg = ''
 		if (data?.enable_ld === true) {
 			if (
@@ -161,6 +163,9 @@ function WarehouseComponent(props) {
 			city: '',
 			state: '',
 			country: '',
+			instore_city: '',
+			instore_state: '',
+			instore_country: '',
 		})
 
 		setGetLocationOn(false)
@@ -183,7 +188,6 @@ function WarehouseComponent(props) {
 			state: googleLocationResponse.state,
 			country: googleLocationResponse.country,
 		})
-		console.log(googleLocationResponse, locationDetail)
 		setGetLocationOn(false)
 	}
 
@@ -317,6 +321,62 @@ function WarehouseComponent(props) {
 		return list
 	}, [dropships, locationId, warehouse])
 
+	const populateOriginRatesLocation = useCallback(
+		async (zip_code = '') => {
+			try {
+				const zipCode = zip_code ?? locationDetail?.instore_postalCode
+				const url = `${process.env.REACT_APP_ENITURE_API_URL}/get_loc_from_zip/${zipCode}`
+				const config = {
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						showAlertMessage: false,
+						alertMessageType: 'loading',
+					},
+				})
+
+				const { data } = await axios.get(url, config)
+				if (!data.error) {
+					const updatedLocationDetail = {
+						instore_city: data?.data?.city[0] ?? '',
+						instore_state: data?.data?.state ?? '',
+						instore_country: data?.data?.country ?? '',
+					}
+
+					setOriginRatesCity(data?.data?.city)
+					setLocationDetail({
+						...locationDetail,
+						...updatedLocationDetail,
+					})
+				}
+
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: data.message,
+						showAlertMessage: data.error,
+						alertMessageType: data.error ? 'error' : 'success',
+					},
+				})
+			} catch (err) {
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: '',
+						showAlertMessage: false,
+						alertMessageType: null,
+					},
+				})
+			}
+		},
+		[dispatch, locationDetail, token]
+	)
+
 	return (
 		<Fragment>
 			<Space direction='vertical' size={'large'} className={'w-100'}>
@@ -348,6 +408,7 @@ function WarehouseComponent(props) {
 								name='add_warehouse_info'
 								className='form-wrp'
 								size={'large'}
+								form={form}
 								initialValues={locationDetail}
 								onFinish={onFinish}>
 								<Row gutter={30}>
@@ -856,7 +917,7 @@ function WarehouseComponent(props) {
 													xl={16}>
 													<Form.Item
 														className={'mb-0'}
-														name='instore_postalCode'
+														// name='instore_postalCode'
 														rules={[
 															{
 																required:
@@ -869,9 +930,19 @@ function WarehouseComponent(props) {
 														<Input
 															placeholder='Postal Code'
 															name='instore_postalCode'
-															onChange={e =>
-																changeValue(e)
+															value={
+																locationDetail?.instore_postalCode
 															}
+															onChange={e => {
+																changeValue(e)
+																e.target.value
+																	.length > 4 &&
+																	populateOriginRatesLocation(
+																		e.target
+																			.value
+																	)
+															}}
+															required
 														/>
 													</Form.Item>
 												</Col>
@@ -888,34 +959,88 @@ function WarehouseComponent(props) {
 														City {requiredMark}
 													</label>
 												</Col>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={16}
-													md={16}
-													lg={16}
-													xl={16}>
-													<Form.Item
-														className={'mb-0'}
-														name='instore_city'
-														rules={[
-															{
-																required:
-																	locationDetail?.default_location ===
-																	'other',
-																message:
-																	'City Required',
-															},
-														]}>
-														<Input
-															name='instore_city'
-															placeholder='City'
-															onChange={e =>
-																changeValue(e)
-															}
-														/>
-													</Form.Item>
-												</Col>
+												{originRatesCity?.length > 1 ? (
+													<Col
+														className='gutter-row'
+														xs={24}
+														sm={16}
+														md={16}
+														lg={16}
+														xl={16}>
+														<Form.Item
+															// name='instore_city'
+															className={'mb-0'}>
+															<Select
+																name='instore_city'
+																placeholder='City'
+																style={{
+																	width: '100%',
+																}}
+																defaultValue={
+																	originRatesCity[0]
+																}
+																value={
+																	locationDetail?.instore_city
+																}
+																onChange={city =>
+																	setLocationDetail(
+																		prevState => ({
+																			...prevState,
+																			instore_city:
+																				city,
+																		})
+																	)
+																}>
+																{originRatesCity?.map(
+																	city => (
+																		<Select.Option
+																			value={
+																				city
+																			}
+																			key={
+																				city
+																			}>
+																			{city}
+																		</Select.Option>
+																	)
+																)}
+															</Select>
+														</Form.Item>
+													</Col>
+												) : (
+													<Col
+														className='gutter-row'
+														xs={24}
+														sm={16}
+														md={16}
+														lg={16}
+														xl={16}>
+														<Form.Item
+															className={'mb-0'}
+															// name='instore_city'
+															rules={[
+																{
+																	required:
+																		locationDetail?.default_location ===
+																		'other',
+																	message:
+																		'City Required',
+																},
+															]}>
+															<Input
+																name='instore_city'
+																placeholder='City'
+																value={
+																	locationDetail?.instore_city
+																}
+																onChange={e =>
+																	changeValue(e)
+																}
+																required
+															/>
+														</Form.Item>
+													</Col>
+												)}
 											</Row>
 											<Row gutter={30} className='mb-2'>
 												<Col
@@ -938,7 +1063,7 @@ function WarehouseComponent(props) {
 													xl={16}>
 													<Form.Item
 														className={'mb-0'}
-														name='instore_state'
+														// name='instore_state'
 														rules={[
 															{
 																required:
@@ -951,9 +1076,13 @@ function WarehouseComponent(props) {
 														<Input
 															name='instore_state'
 															placeholder='State/Province'
+															value={
+																locationDetail?.instore_state
+															}
 															onChange={e =>
 																changeValue(e)
 															}
+															required
 														/>
 													</Form.Item>
 												</Col>
@@ -967,7 +1096,7 @@ function WarehouseComponent(props) {
 													lg={8}
 													xl={8}>
 													<label className={'text-gray'}>
-														Country
+														Country {requiredMark}
 													</label>
 												</Col>
 												<Col
@@ -979,7 +1108,7 @@ function WarehouseComponent(props) {
 													xl={16}>
 													<Form.Item
 														className={'mb-0'}
-														name='instore_country'
+														// name='instore_country'
 														rules={[
 															{
 																required:
@@ -992,9 +1121,13 @@ function WarehouseComponent(props) {
 														<Input
 															placeholder='Country'
 															name='instore_country'
+															value={
+																locationDetail?.instore_country
+															}
 															onChange={e =>
 																changeValue(e)
 															}
+															required
 														/>
 													</Form.Item>
 												</Col>
