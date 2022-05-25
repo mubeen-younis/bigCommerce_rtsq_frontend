@@ -786,7 +786,7 @@ function WarehouseComponent(props) {
 										</Form.Item>
 									</Col>
 								</Row>
-								<Row gutter={30} align='middle' className={'mb-2'}>
+								{/* <Row gutter={30} align='middle' className={'mb-2'}>
 									<Col
 										className='gutter-row'
 										xs={24}
@@ -822,10 +822,10 @@ function WarehouseComponent(props) {
 											/>
 										</Form.Item>
 									</Col>
-								</Row>
+								</Row> */}
 
 								{/* Other option fields */}
-								{locationDetail?.default_location === 'other' && (
+								{/* {locationDetail?.default_location === 'other' && (
 									<>
 										<Row gutter={30} className='mb-2'>
 											<Col
@@ -991,7 +991,7 @@ function WarehouseComponent(props) {
 											</Col>
 										</Row>
 									</>
-								)}
+								)} */}
 
 								<Row gutter={30}>
 									<Col
