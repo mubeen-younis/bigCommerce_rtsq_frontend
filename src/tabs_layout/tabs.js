@@ -47,10 +47,15 @@ function TabsLayout() {
 			for (const ic of installedCarriers) {
 				if (+ic.id === +carrierId) {
 					const isFedexSmallCarrier = ic.slug === 'fedex-small'
+					const isUspsSmallCarrier = ic.slug === 'usps-small'
 
 					dispatch({
 						type: 'SET_FEDEX_SMALL_CARRIER',
-						payload: isFedexSmallCarrier,
+						payload: isUspsSmallCarrier ? false : isFedexSmallCarrier,
+					})
+					dispatch({
+						type: 'SET_USPS_SMALL_CARRIER',
+						payload: isFedexSmallCarrier ? false : isUspsSmallCarrier,
 					})
 
 					setComponent(slugs.indexOf(ic.slug))
