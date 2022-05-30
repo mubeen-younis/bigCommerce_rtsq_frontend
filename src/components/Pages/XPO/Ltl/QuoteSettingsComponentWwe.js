@@ -35,7 +35,7 @@ const initialState = {
 	hold_at_terminal_price: '',
 	weight_of_handling_unit: '',
 	max_weight_per_handling_unit: '',
-	return_rates: false,
+	return_rates_threshold: false,
 	weight_threshold: '',
 }
 
@@ -240,10 +240,10 @@ function QuoteSettingsComponentWwe(props) {
 						xl={18}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								checked={quoteSettingsState.return_rates}
+								checked={quoteSettingsState.return_rates_threshold}
 								onChange={e =>
 									handleStateChange(
-										'return_rates',
+										'return_rates_threshold',
 										e.target.checked
 									)
 								}
