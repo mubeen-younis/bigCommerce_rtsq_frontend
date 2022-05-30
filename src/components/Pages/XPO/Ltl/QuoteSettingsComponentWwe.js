@@ -282,7 +282,15 @@ function QuoteSettingsComponentWwe(props) {
 						md={24}
 						lg={24}
 						xl={18}>
-						<Form.Item className={'mb-0'} name='weight_threshold'>
+						<Form.Item
+							className={'mb-0'}
+							name='weight_threshold'
+							rules={[
+								{
+									require:
+										quoteSettingsState.return_rates_threshold,
+								},
+							]}>
 							<Input
 								maxLength='7'
 								value={quoteSettingsState.weight_threshold}
@@ -291,6 +299,7 @@ function QuoteSettingsComponentWwe(props) {
 								step='0.001'
 								max='20000'
 								pattern='[0-9.?(0-9){2}?]+%?$'
+								required={quoteSettingsState.return_rates_threshold}
 							/>
 						</Form.Item>
 					</Col>
