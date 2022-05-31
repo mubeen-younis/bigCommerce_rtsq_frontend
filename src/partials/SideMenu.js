@@ -24,7 +24,6 @@ function SideMenu(props) {
 		else if (name.includes('plans')) setActiveMenu('100')
 		else if (name.includes('warehouses')) setActiveMenu('101')
 		else if (name.includes('fdo')) setActiveMenu('102')
-		else if (name.includes('av')) setActiveMenu('103')
 		else if (name.includes('addon'))
 			setActiveMenu('addon-' + name.substring(name.lastIndexOf('/') + 1))
 		else setActiveMenu(name.substring(name.lastIndexOf('/') + 1))
@@ -73,13 +72,6 @@ function SideMenu(props) {
 					warnkey={102}
 					onClick={() => setActiveMenu('102')}>
 					<Link to={`/fdo`}>FreightDesk Online</Link>
-				</Menu.Item>
-
-				<Menu.Item
-					key='103'
-					warnkey={103}
-					onClick={() => setActiveMenu('103')}>
-					<Link to={`/av`}>Address Validation</Link>
 				</Menu.Item>
 
 				<Title className={'carriers-name'} level={5}>
