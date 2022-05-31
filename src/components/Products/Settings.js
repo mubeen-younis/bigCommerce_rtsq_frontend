@@ -29,6 +29,7 @@ const Settings = ({
 		installedCarriers,
 		installedAddons,
 		token,
+		store,
 	} = useSelector(state => state)
 	const dispatch = useDispatch()
 
@@ -215,14 +216,18 @@ const Settings = ({
 					</Col>
 					<Col span={12}>
 						<Form.Item
-							label='Weight (lbs)'
+							label={`Weight (${
+								store?.weight_units?.toLowerCase() ?? 'lbs'
+							})`}
 							rules={[
 								{ required: true, message: 'Weight is required' },
 							]}>
 							<Input
 								id={'weight' + index}
 								name='weight'
-								placeholder='Weight (lbs)'
+								placeholder={`Weight (${
+									store?.weight_units?.toLowerCase() ?? 'lbs'
+								})`}
 								type='number'
 								value={product?.weight}
 								onChange={e => {
