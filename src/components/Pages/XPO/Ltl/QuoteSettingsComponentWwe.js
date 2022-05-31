@@ -276,7 +276,7 @@ function QuoteSettingsComponentWwe(props) {
                   type='number'
                   min='0'
                   step='0.001'
-                  max='20000'
+                  max='150'
                   pattern='[0-9.?(0-9){2}?]+%?$'
                   required={quoteSettingsState.return_rates_threshold}
                 />
