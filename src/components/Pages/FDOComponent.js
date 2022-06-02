@@ -18,7 +18,7 @@ const { Title } = Typography
 const FDOComponent = () => {
 	const [fdoConnected, setfdoConnected] = useState(false)
 	const [fdoId, setFdoId] = useState('')
-	const [fdoData, setFdoData] = useState({})
+	const [, setFdoData] = useState({})
 	const [loading, setLoading] = useState(false)
 	const [visible, setVisible] = useState(false)
 	const dispatch = useDispatch()

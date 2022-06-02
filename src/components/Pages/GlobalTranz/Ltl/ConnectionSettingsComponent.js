@@ -71,6 +71,8 @@ function ConnectionSettingsComponent(props) {
 				fdoCouponInfo ? fdoCouponInfo?.code ?? '' : ''
 			)
 		)
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch, token])
 
 	const handleStateChange = useCallback((e, index) => {
