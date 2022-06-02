@@ -105,12 +105,19 @@ const FDOComponent = () => {
 					},
 				}
 				const { data } = await axios.post(url, { av_company_id: id }, config)
-
 				if (!data.error) {
-					setAVData(data?.data ?? {})
-					setVisible(false)(id && id?.length > 0)
-						? setAVId(id)
-						: setAVId('')
+					setVisible(false)
+
+					if (id && id?.length > 0) {
+						setAVId(id)
+						setAVData({
+							...(data?.data ?? {}),
+							av_company_id: id,
+						})
+					} else {
+						setAVId('')
+						setAVData(data?.data ?? {})
+					}
 				}
 
 				dispatch({
