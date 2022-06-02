@@ -4,6 +4,14 @@ import { handlingFeeMarkup } from '../../../../Utilities/numberValidation'
 
 const { Title } = Typography
 
+const Markup = () => (
+	<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+		<label className={'text-gray'}>
+			Markup (e.g Currency 1.0 or percentage 5%)
+		</label>
+	</Col>
+)
+
 const DomesticServices = ({
 	quoteSettingsState,
 	checkAll,
@@ -74,11 +82,7 @@ const DomesticServices = ({
 					</Form.Item>
 				</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
-					</label>
-				</Col>
+				<Markup />
 			</Row>
 
 			<Row gutter={24} align='middle' className={'mb-2'}>
@@ -113,11 +117,7 @@ const DomesticServices = ({
 					</Form.Item>
 				</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
-					</label>
-				</Col>
+				<Markup />
 			</Row>
 
 			<Row gutter={24} align='middle' className={'mb-2'}>
@@ -152,11 +152,7 @@ const DomesticServices = ({
 					</Form.Item>
 				</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
-					</label>
-				</Col>
+				<Markup />
 			</Row>
 
 			<Row gutter={24} align='middle' className={'mb-2'}>
@@ -193,11 +189,7 @@ const DomesticServices = ({
 					</Form.Item>
 				</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
-					</label>
-				</Col>
+				<Markup />
 			</Row>
 
 			<Row gutter={24} align='middle' className={'mb-2'}>
@@ -232,11 +224,7 @@ const DomesticServices = ({
 					</Form.Item>
 				</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
-					</label>
-				</Col>
+				<Markup />
 			</Row>
 
 			<Row gutter={24} align='middle' className={'mb-2'}>
