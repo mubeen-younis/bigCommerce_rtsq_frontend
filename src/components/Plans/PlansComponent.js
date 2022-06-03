@@ -254,6 +254,7 @@ function PlansComponent() {
     clearForm()
     SetUpdatePaymentMethodCheck(true)
   }, [clearForm])
+  console.log('currentplan' + currentPlan)
 
   return plans ? (
     <Fragment>
