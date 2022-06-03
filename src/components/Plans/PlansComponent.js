@@ -124,7 +124,6 @@ function PlansComponent() {
 
   const onFinish = (values) => {
     if (updatePaymentMethodCheck) {
-      console.log(2)
       const data = {
         ...values,
         card_number: number,
@@ -254,7 +253,6 @@ function PlansComponent() {
     clearForm()
     SetUpdatePaymentMethodCheck(true)
   }, [clearForm])
-  console.log('currentplan' + currentPlan)
 
   return plans ? (
     <Fragment>
@@ -333,7 +331,7 @@ function PlansComponent() {
                   checked={paymenyMethod === 1}
                   onChange={() => setPaymenyMethod(1)}
                 >
-                  **** **** ****
+                  **** **** **** {currentPlan?.last4}
                 </Radio>
                 <p className='mt-2'>Add new payment method</p>
                 <Radio
