@@ -48,13 +48,19 @@ export const getShippingGroups = token => async dispatch => {
 	}
 }
 
-export const saveShippingGroup = shipping_group => async dispatch => {
+export const saveShippingGroup = (shipping_group, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading'))
 
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
+
 		const {
 			data: { error, data, message },
-		} = await axios.post('save_shipping_group', shipping_group)
+		} = await axios.post('save_shipping_group', shipping_group, config)
 
 		if (!error) {
 			if (data?.save === 1) {
@@ -75,13 +81,19 @@ export const saveShippingGroup = shipping_group => async dispatch => {
 	}
 }
 
-export const deleteShippingGroup = uuid => async dispatch => {
+export const deleteShippingGroup = (uuid, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading'))
 
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
+
 		const {
 			data: { error, data, message },
-		} = await axios.post('delete_shipping_group', { uuid })
+		} = await axios.post('delete_shipping_group', { uuid }, config)
 
 		if (!error) {
 			dispatch({

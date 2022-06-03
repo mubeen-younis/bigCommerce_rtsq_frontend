@@ -19,6 +19,8 @@ import axios from 'axios'
 import Title from 'antd/lib/typography/Title'
 
 const { Option } = Select
+let aloneItem = 0,
+	weightBasedItem = 0
 
 function OrderSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
@@ -45,6 +47,7 @@ function OrderSettingsComponent(props) {
 		isSearched: 0,
 		status: null,
 	})
+	const [, setWeightBasedItem] = useState(0)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -334,7 +337,12 @@ function OrderSettingsComponent(props) {
 			key: 'id',
 			render: (id, record) => (
 				<Space size='middle'>
-					<Button onClick={() => showOrderDetails(id, record)}>
+					<Button
+						onClick={() => {
+							aloneItem = 0
+							weightBasedItem = 0
+							showOrderDetails(id, record)
+						}}>
 						Shipping Detail
 					</Button>
 				</Space>
@@ -342,18 +350,20 @@ function OrderSettingsComponent(props) {
 		},
 	]
 
-	const repeactItemAlone = (bin, showShipOwnTitle) => {
-		let data = []
+	const repeatItemAlone = (bin, showShipOwnTitle) => {
+		let data = [<br />]
+
 		for (let i = 0; i < bin?.quantity; i++) {
 			data.push(
 				<div>
-					{showShipOwnTitle === 1 && (
+					{showShipOwnTitle === 1 && aloneItem === 0 && (
 						<h3
 							style={{
 								textAlign: 'center',
 								marginTop: '15px',
 								width: '100%',
-							}}>
+							}}
+							className='alone-title'>
 							These items were quoted as shipping as their own package.
 						</h3>
 					)}
@@ -377,12 +387,67 @@ function OrderSettingsComponent(props) {
 				</div>
 			)
 		}
-		return data
+
+		aloneItem = 1
+		return (
+			<div style={{ clear: 'both' }}>
+				<div style={{ width: '100%' }}> </div>
+				{data}
+			</div>
+		)
+	}
+
+	const showWeightBasedItem = (bin, showShipOwnTitle) => {
+		let data = [<br />]
+
+		for (let i = 0; i < bin?.quantity; i++) {
+			data.push(
+				<div>
+					{showShipOwnTitle === 1 && weightBasedItem === 0 && (
+						<h3
+							style={{
+								textAlign: 'center',
+								marginTop: '15px',
+								width: '100%',
+							}}
+							className='weight-title'>
+							These items were quoted as weight based.
+						</h3>
+					)}
+					<Col
+						span={6}
+						style={{
+							textAlign: 'center',
+							float: 'left',
+							marginTop: '10px',
+							paddingLeft: '0px',
+							paddingRight: '0px',
+						}}>
+						<span style={{ width: '100%', float: 'left' }}>
+							{bin?.weight}
+						</span>
+						<img src={bin?.image_complete} alt={bin?.image_complete} />
+					</Col>
+					{(showShipOwnTitle = '')}
+				</div>
+			)
+		}
+
+		weightBasedItem = 1
+		return (
+			<div style={{ clear: 'both' }}>
+				<div style={{ width: '100%' }}> </div>
+				{data}
+			</div>
+		)
 	}
 
 	const countBoxes = widget => {
 		let countBoxes = 0
-		widget?.sbs?.forEach(bin => bin?.type !== 'item' && ++countBoxes)
+		widget?.sbs?.forEach(
+			bin =>
+				bin?.type !== 'item' && bin?.type !== 'weight_based' && ++countBoxes
+		)
 
 		return countBoxes
 	}
@@ -390,71 +455,78 @@ function OrderSettingsComponent(props) {
 	const widgetData = widget => {
 		let showShipOwnTitle = 0
 		let numBoxes = countBoxes(widget)
-		return widget?.sbs?.map((bin, count) => {
-			return bin?.type === 'item' ? (
-				repeactItemAlone(bin, ++showShipOwnTitle)
-			) : (
-				// not own packaging
-				<Row gutter={24}>
-					<Col span={24}>
-						<Row gutter={24} className={'mt-4'}>
-							<Col span={8} style={{ marginTop: '33px' }}>
-								<strong>
-									Box {count + 1} of {numBoxes}
-									<br /> Number of items: {
-										bin?.number_of_items
-									}{' '}
+		const types = ['item', 'weight_based']
+		const sbs = widget?.sbs ?? []
+
+		return sbs?.map((bin, count) => {
+			const type = bin?.type ?? ''
+			showShipOwnTitle = 0
+
+			if (type === types[0]) {
+				return repeatItemAlone(bin, ++showShipOwnTitle)
+			} else if (type === types[1]) {
+				return showWeightBasedItem(bin, ++showShipOwnTitle)
+			} else {
+				return (
+					<Row gutter={24}>
+						<Col span={24}>
+							<Row gutter={24} className={'mt-4'}>
+								<Col span={8} style={{ marginTop: '33px' }}>
+									<strong>
+										Box {count + 1} of {numBoxes}
+										<br /> Number of items:{' '}
+										{bin?.number_of_items} <br />
+										{bin?.nickname}
+									</strong>
+								</Col>
+								<Col span={16}>
+									<span>
+										{bin?.d}
+										{bin?.w}
+										{bin?.h}
+									</span>
 									<br />
-									{bin?.nickname}
-								</strong>
-							</Col>
-							<Col span={16}>
-								<span>
-									{bin?.d}
-									{bin?.w}
-									{bin?.h}
-								</span>
-								<br />
-								<img
-									src={bin?.image_complete}
-									alt={bin?.image_complete}
-								/>
-								<br />
-							</Col>
-						</Row>
-					</Col>
-					<Col span={24}>
-						<Row gutter={24}>
-							<Col span={24}>
-								<strong>Steps:</strong>
-							</Col>
-							{widget?.sbs?.type !== 'item'
-								? bin?.items.map(box => (
-										<>
-											<Col
-												span={6}
-												style={{ textAlign: 'center' }}>
-												<img
-													src={box?.image_sbs}
-													style={{ margin: '5px' }}
-													alt={box?.image_sbs}
-												/>
-												<br />
-												<span>
-													{box?.product_name} <br />{' '}
-													{box?.d + ' x '}
-													{box?.w + ' x '}
-													{box?.h}
-												</span>
-												<br />
-											</Col>
-										</>
-								  ))
-								: ''}
-						</Row>
-					</Col>
-				</Row>
-			)
+									<img
+										src={bin?.image_complete}
+										alt={bin?.image_complete}
+									/>
+									<br />
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<Row gutter={24}>
+								<Col span={24}>
+									<strong>Steps:</strong>
+								</Col>
+								{widget?.sbs?.type !== 'item'
+									? bin?.items.map(box => (
+											<>
+												<Col
+													span={6}
+													style={{ textAlign: 'center' }}>
+													<img
+														src={box?.image_sbs}
+														style={{ margin: '5px' }}
+														alt={box?.image_sbs}
+													/>
+													<br />
+													<span>
+														{box?.product_name} <br />{' '}
+														{box?.d + ' x '}
+														{box?.w + ' x '}
+														{box?.h}
+													</span>
+													<br />
+												</Col>
+											</>
+									  ))
+									: ''}
+							</Row>
+						</Col>
+					</Row>
+				)
+			}
 		})
 	}
 

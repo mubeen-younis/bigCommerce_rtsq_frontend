@@ -283,8 +283,8 @@ function ImportCsvComponent() {
 								for Small Package (parcel) and LTL freight. The file
 								contains a column with the heading "Quote Method".
 								For each row of your file, input an "S" to quote the
-								product as Small Package (parcel) or "L" to quote the
-								product as LTL Freight.
+								product as Small Package (parcel),  "L" to quote the
+								product as LTL Freight and "PD" to quote the product as in-store pickup and/or local delivery.
 							</p>
 							<p>
 								Omit columns from the file that you do not want

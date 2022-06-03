@@ -15,6 +15,13 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 			},
 		})
 
+		const isTestConnection = type === 'GET_CONNECTION_SETTINGS' && data.testType
+		Object.keys(data).map(
+			elem =>
+				(data[elem] =
+					typeof data[elem] == 'string' ? data[elem].trim() : data[elem])
+		)
+
 		axios
 			.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data, config)
 			.then(({ data }) => {
@@ -24,7 +31,17 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 							type: type,
 							payload: JSON.parse(data?.data?.value),
 						})
-					} else if (data?.data) {
+
+						if (
+							url === 'submit_connection_settings' &&
+							data?.data['fdoCouponCarrierInfo'] !== undefined
+						) {
+							dispatch({
+								type: 'GET_FDO_COUPON_CARRIER_INFO',
+								payload: data?.data?.fdoCouponCarrierInfo,
+							})
+						}
+					} else if (data?.data && !isTestConnection) {
 						dispatch({
 							type: type,
 							payload: data?.data,

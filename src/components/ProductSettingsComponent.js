@@ -441,15 +441,6 @@ function ProductSettingsComponent(props) {
 			if (prd.weight === null || prd.weight <= 0) {
 				error = true
 				msg = 'Weight must be greater than 0.'
-			} else if (prd.length === null || prd.length <= 0) {
-				error = true
-				msg = 'Length must be greater than 0.'
-			} else if (prd.width === null || prd.width <= 0) {
-				error = true
-				msg = 'Width must be greater than 0.'
-			} else if (prd.height === null || prd.height <= 0) {
-				error = true
-				msg = 'Height must be greater than 0.'
 			} else if (prd.dropship_enabled === 1 || prd.dropship_enabled) {
 				if (!prd.dropship_location) {
 					error = true
@@ -467,7 +458,7 @@ function ProductSettingsComponent(props) {
 		}
 
 		if (!error) {
-			onSubmit() //props.submitProductSettings({ products: productVariants }, props.token, setState)
+			onSubmit()
 		} else {
 			dispatch({
 				type: 'ALERT_MESSAGE',
@@ -603,24 +594,18 @@ function ProductSettingsComponent(props) {
 							) : null}
 						</Row>
 						{productVariants?.length > 0
-							? productVariants?.map((product, index) => {
-									/*let settings =
-											product.settings != '' ? JSON.parse(product.settings) : {},
-										oneProduct = { ...settings, ...product }*/
-
-									return (
-										<Settings
-											count={productVariants?.length}
-											key={index}
-											index={index}
-											copyShippingMethod={copyShippingMethod}
-											copyShippingParams={copyShippingParams}
-											onChangeVariant={onChangeVariant}
-											product={product}
-											addonCheck={addonCheck}
-										/>
-									)
-							  })
+							? productVariants?.map((product, index) => (
+									<Settings
+										count={productVariants?.length}
+										key={index}
+										index={index}
+										copyShippingMethod={copyShippingMethod}
+										copyShippingParams={copyShippingParams}
+										onChangeVariant={onChangeVariant}
+										product={product}
+										addonCheck={addonCheck}
+									/>
+							  ))
 							: null}
 					</Form>
 				)}

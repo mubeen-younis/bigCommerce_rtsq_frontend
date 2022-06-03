@@ -4,7 +4,12 @@ import { Form, Button, Col, Row, Select, Checkbox, Input } from 'antd'
 import { getLocations } from '../../Actions/Warehouse'
 
 const { Option } = Select
-const smallCarriers = ['small-package', 'ups-small', 'fedex-small']
+const smallCarriers = [
+	'small-package',
+	'ups-small',
+	'fedex-small',
+	'unishippers-small',
+]
 
 const Settings = ({
 	count,
@@ -24,6 +29,7 @@ const Settings = ({
 		installedCarriers,
 		installedAddons,
 		token,
+		store,
 	} = useSelector(state => state)
 	const dispatch = useDispatch()
 
@@ -67,7 +73,7 @@ const Settings = ({
 						<h2>{product?.sku ? 'SKU: ' + product?.sku : ''}</h2>
 					</Col>
 				</Row>
-				<Row gutter={16}>
+				<Row gutter={16} className='mb-0'>
 					<Col span={24}>
 						<Form.Item style={{ marginBottom: '0px' }}>
 							<Checkbox
@@ -77,9 +83,11 @@ const Settings = ({
 									onChangeVariant(
 										index,
 										'freight_enabled',
-										!product?.freight_enabled
+										e.target.checked
 									)
 									onChangeVariant(index, 'parcel_enabled', false)
+									onChangeVariant(index, 'quote_as_instore', false)
+									onChangeVariant(index, 'quote_as_local', false)
 								}}
 								checked={product?.freight_enabled}>
 								Quote as an LTL shipment
@@ -98,6 +106,8 @@ const Settings = ({
 										e.target.checked
 									)
 									onChangeVariant(index, 'freight_enabled', false)
+									onChangeVariant(index, 'quote_as_instore', false)
+									onChangeVariant(index, 'quote_as_local', false)
 								}}
 								checked={product?.parcel_enabled}>
 								Quote as a parcel shipment
@@ -105,6 +115,46 @@ const Settings = ({
 						</Form.Item>
 					</Col>
 				</Row>
+
+				<Row
+					gutter={16}
+					style={{
+						marginTop: '-1.1rem',
+					}}>
+					<Col span={24} className='mb-0'>
+						<Form.Item>
+							<Checkbox
+								name='quote_as_local'
+								id={'quote_as_local' + index}
+								onChange={e => {
+									onChangeVariant(
+										index,
+										'quote_as_local',
+										e.target.checked
+									)
+									onChangeVariant(index, 'freight_enabled', false)
+									onChangeVariant(index, 'parcel_enabled', false)
+									onChangeVariant(index, 'quote_as_instore', false)
+								}}
+								checked={product?.quote_as_local}>
+								Only show options for in-store pickup and/or local
+								delivery
+							</Checkbox>
+							<br></br>
+							<p
+								style={{
+									'font-size': '11px',
+									'margin-left': '25px',
+								}}>
+								In-store pickup and/or local delivery must be enabled
+								for the warehouse/drop-ship location.
+								Carrier-provided shipping rates will not be
+								presented.
+							</p>
+						</Form.Item>
+					</Col>
+				</Row>
+
 				{count > 1 && index === 0 && (
 					<Row gutter={24}>
 						<Col span={24}>
@@ -166,14 +216,18 @@ const Settings = ({
 					</Col>
 					<Col span={12}>
 						<Form.Item
-							label='Weight (lbs)'
+							label={`Weight (${
+								store?.weight_units?.toLowerCase() ?? 'lbs'
+							})`}
 							rules={[
 								{ required: true, message: 'Weight is required' },
 							]}>
 							<Input
 								id={'weight' + index}
 								name='weight'
-								placeholder='Weight (lbs)'
+								placeholder={`Weight (${
+									store?.weight_units?.toLowerCase() ?? 'lbs'
+								})`}
 								type='number'
 								value={product?.weight}
 								onChange={e => {
