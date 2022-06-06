@@ -15,6 +15,7 @@ import LiftGateDelivery from '../../../LiftGateDelivery'
 // import HoldAtTerminal from '../../../HoldAtTerminal'
 import HandlingUnit from '../../../HandlingUnit'
 import SaveButton from '../../../SaveButton'
+import WeightThreshold from '../../../WeightThreshold'
 
 const initialState = {
   label_as: '',
@@ -35,8 +36,7 @@ const initialState = {
   hold_at_terminal_price: '',
   weight_of_handling_unit: '',
   max_weight_per_handling_unit: '',
-  return_rates_threshold: false,
-  weight_threshold: '',
+  weight_threshold: '150',
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -199,91 +199,15 @@ function QuoteSettingsComponentWwe(props) {
           radStatus={radStatus}
         />
 
-        {/* <HoldAtTerminal
-					quoteSettingsState={quoteSettingsState}
-					handleChange={handleStateChange}
-				/> */}
+        <WeightThreshold
+          quoteSettingsState={quoteSettingsState}
+          handleStateChange={handleStateChange}
+        />
 
         <HandlingUnit
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
         />
-
-        <Row gutter={30} className='mb-3'>
-          <Col
-            className='gutter-row'
-            style={{ paddingTop: '11px' }}
-            xs={24}
-            sm={24}
-            md={24}
-            lg={24}
-            xl={6}
-          >
-            <label className={'text-gray'}>
-              Return LTL quotes when an order parcel shipment weight exceeds the
-              weight threshold
-            </label>
-          </Col>
-          <Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={18}>
-            <Form.Item className={'mb-0'}>
-              <Checkbox
-                checked={quoteSettingsState.return_rates_threshold}
-                onChange={(e) =>
-                  handleStateChange('return_rates_threshold', e.target.checked)
-                }
-              />
-            </Form.Item>
-            <div className={'text-gray'}>
-              Return LTL quotes when an order parcel shipment weight exceeds the
-              weight threshold When checked, the LTL Freight Quote will return
-              quotes when an order’s total weight exceeds the weight threshold
-              (the maximum permitted by WWE and UPS), even if none of the
-              products have settings to indicate that it will ship LTL Freight.
-              To increase the accuracy of the returned quote(s), all products
-              should have accurate weights and dimensions.
-            </div>
-          </Col>
-        </Row>
-
-        {quoteSettingsState.return_rates_threshold && (
-          <Row gutter={30} className={'mb-3'}>
-            <Col
-              className='gutter-row'
-              style={{ paddingTop: '11px' }}
-              xs={24}
-              sm={24}
-              md={24}
-              lg={24}
-              xl={6}
-            >
-              <label className={'text-gray'}>
-                Weight threshold for LTL Freight Quotes
-              </label>
-            </Col>
-            <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-              <Form.Item
-                className={'mb-0'}
-                name='weight_threshold'
-                rules={[
-                  {
-                    require: quoteSettingsState.return_rates_threshold,
-                  },
-                ]}
-              >
-                <Input
-                  maxLength='7'
-                  value={quoteSettingsState.weight_threshold}
-                  type='number'
-                  min='0'
-                  step='0.001'
-                  max='150'
-                  pattern='[0-9.?(0-9){2}?]+%?$'
-                  required={quoteSettingsState.return_rates_threshold}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-        )}
 
         <SaveButton />
       </Form>
