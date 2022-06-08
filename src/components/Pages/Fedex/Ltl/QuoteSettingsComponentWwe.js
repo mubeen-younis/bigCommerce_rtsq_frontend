@@ -45,8 +45,7 @@ const initialState = {
   max_weight_per_handling_unit: '',
   returnRates: false,
   quote_details: 1,
-  return_rates_threshold: false,
-  weight_threshold: '',
+  weight_threshold: '150',
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -296,14 +295,14 @@ function QuoteSettingsComponentWwe(props) {
 					handleChange={handleStateChange}
 				/> */}
 
-        <HandlingUnit
-          quoteSettingsState={quoteSettingsState}
-          handleChange={handleStateChange}
-        />
-
         <WeightThreshold
           quoteSettingsState={quoteSettingsState}
           handleStateChange={handleStateChange}
+        />
+
+        <HandlingUnit
+          quoteSettingsState={quoteSettingsState}
+          handleChange={handleStateChange}
         />
 
         <Discounts

@@ -37,8 +37,7 @@ const initialState = {
   third_party_country: 'US',
   third_party_city: null,
   third_party_state: null,
-  return_rates_threshold: false,
-  weight_threshold: '',
+  weight_threshold: '150',
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -211,15 +210,16 @@ function QuoteSettingsComponentWwe(props) {
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
         />
-        <HandlingUnit
-          quoteSettingsState={quoteSettingsState}
-          handleChange={handleStateChange}
-        />
 
         <WeightThreshold
           quoteSettingsState={quoteSettingsState}
           handleStateChange={handleStateChange}
         />
+        <HandlingUnit
+          quoteSettingsState={quoteSettingsState}
+          handleChange={handleStateChange}
+        />
+
         {/*}
 				<Row gutter={30} className={'mb-3'}>
 					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>

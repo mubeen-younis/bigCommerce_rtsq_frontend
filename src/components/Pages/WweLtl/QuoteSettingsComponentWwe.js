@@ -34,8 +34,7 @@ const initialState = {
   own_arrangement: 0,
   own_arrangement_text: '',
   insurance_category: '84-General Merchandise',
-  return_rates_threshold: false,
-  weight_threshold: '',
+  weight_threshold: '150',
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -248,14 +247,13 @@ function QuoteSettingsComponentWwe(props) {
           </Col>
         </Row>
 
-        <HandlingUnit
-          quoteSettingsState={quoteSettingsState}
-          handleChange={handleStateChange}
-        />
-
         <WeightThreshold
           quoteSettingsState={quoteSettingsState}
           handleStateChange={handleStateChange}
+        />
+        <HandlingUnit
+          quoteSettingsState={quoteSettingsState}
+          handleChange={handleStateChange}
         />
 
         <Row gutter={30} className={'mb-3'}>

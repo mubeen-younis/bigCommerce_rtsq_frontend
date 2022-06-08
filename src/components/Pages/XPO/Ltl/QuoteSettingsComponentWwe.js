@@ -36,8 +36,7 @@ const initialState = {
   hold_at_terminal_price: '',
   weight_of_handling_unit: '',
   max_weight_per_handling_unit: '',
-  return_rates_threshold: false,
-  weight_threshold: '',
+  weight_threshold: '150',
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -200,19 +199,14 @@ function QuoteSettingsComponentWwe(props) {
           radStatus={radStatus}
         />
 
-        {/* <HoldAtTerminal
-					quoteSettingsState={quoteSettingsState}
-					handleChange={handleStateChange}
-				/> */}
+        <WeightThreshold
+          quoteSettingsState={quoteSettingsState}
+          handleStateChange={handleStateChange}
+        />
 
         <HandlingUnit
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
-        />
-
-        <WeightThreshold
-          quoteSettingsState={quoteSettingsState}
-          handleStateChange={handleStateChange}
         />
 
         <SaveButton />

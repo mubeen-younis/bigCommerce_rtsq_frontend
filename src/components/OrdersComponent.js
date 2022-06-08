@@ -47,7 +47,6 @@ function OrderSettingsComponent(props) {
 		isSearched: 0,
 		status: null,
 	})
-	const [, setWeightBasedItem] = useState(0)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
