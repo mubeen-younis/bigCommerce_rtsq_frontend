@@ -23,7 +23,7 @@ const WeightThreshold = ({ quoteSettingsState, handleStateChange }) => {
         </label>
       </Col>
       <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-        <Form.Item className={'mb-0'} name='weight_threshold'>
+        <Form.Item className={'mb-0'}>
           <Input
             maxLength='7'
             value={quoteSettingsState.weight_threshold}
@@ -31,6 +31,9 @@ const WeightThreshold = ({ quoteSettingsState, handleStateChange }) => {
             min='0'
             step='0.001'
             max='150'
+            onChange={(e) =>
+              handleStateChange('weight_threshold', e.target.value)
+            }
             pattern='[0-9.?(0-9){2}?]+%?$'
           />
         </Form.Item>
