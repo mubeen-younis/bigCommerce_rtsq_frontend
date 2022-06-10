@@ -11,6 +11,7 @@ import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
+import WeightThreshold from '../../WeightThreshold'
 
 const initialState = {
 	number_of_options: 1,
@@ -154,6 +155,11 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
+				/>
+
+				<WeightThreshold
+					quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
 				/>
 
 				<HandlingUnit
