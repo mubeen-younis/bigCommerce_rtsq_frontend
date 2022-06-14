@@ -159,7 +159,7 @@ function QuoteSettingsComponentWwe(props) {
 
 				<WeightThreshold
 					quoteSettingsState={quoteSettingsState}
-					handleChange={handleStateChange}
+					handleStateChange={handleStateChange}
 				/>
 
 				<HandlingUnit
