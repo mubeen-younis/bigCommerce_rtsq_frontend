@@ -90,7 +90,7 @@ function WarehouseComponent(props) {
         setXpoEnabled(true)
       }
     })
-  }, [xpoEnabled])
+  }, [])
 
   const onFinish = (values) => {
     let data = city.length
