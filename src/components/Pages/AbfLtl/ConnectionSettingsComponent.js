@@ -47,7 +47,7 @@ function ConnectionSettingsComponent(props) {
 					label='ID'
 					name='business_id'
 					rules={[{ required: true, message: 'Business ID' }]}>
-					<Input placeholder='Busine ID' />
+					<Input placeholder='Business ID' />
 				</Form.Item>
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
