@@ -69,7 +69,7 @@ function SideMenu(props) {
           <Link to={`/fdo`}>FreightDesk Online</Link>
         </Menu.Item>
 
-        <Menu.Item key='103' warnkey={103} onClick={() => setActiveMenu('102')}>
+        <Menu.Item key='103' warnkey={103} onClick={() => setActiveMenu('103')}>
           <Link to={`/av`}>Address Validation</Link>
         </Menu.Item>
 
