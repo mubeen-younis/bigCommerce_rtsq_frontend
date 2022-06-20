@@ -43,6 +43,7 @@ function TabsLayout() {
 				'rl-ltl',
 				'unishippers-small',
 				'yrc-ltl',
+				'abf-ltl',
 			]
 
 			for (const ic of installedCarriers) {
