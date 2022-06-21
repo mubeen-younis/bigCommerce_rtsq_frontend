@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState, useRef } from 'react'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { Form, Table, Button, Space, Skeleton, Input } from 'antd'
 
 import { postData } from '../Actions/Action'
@@ -27,8 +27,10 @@ const CarriersComponent = props => {
 		carrierServices: true,
 	})
 	const searchRef = useRef('')
+	const [title, setTitle] = useState('')
 
 	const dispatch = useDispatch()
+	const { installedCarriers } = useSelector(state => state)
 
 	const {
 		getAddTabSettings,
@@ -50,6 +52,11 @@ const CarriersComponent = props => {
 		// eslint-disable-next-line
 	}, [carrierId, token, state.selectedRowKeys])
 
+	useEffect(() => {
+		const title = installedCarriers?.find(carrier => +carrier.id === +carrierId)
+		setTitle(title.name)
+	}, [carrierId, installedCarriers])
+
 	const getCarrierServices = () => {
 		//getServices(token, carrierId, '')
 		if (!services) {
@@ -62,7 +69,10 @@ const CarriersComponent = props => {
 	}
 
 	const saveCarriers = () => {
-		if (state.selectedRowKeys.length === 0  && rowSelection?.selectedRowKeys?.length === 0) {
+		if (
+			state.selectedRowKeys.length === 0 &&
+			rowSelection?.selectedRowKeys?.length === 0
+		) {
 			dispatch({
 				type: 'ALERT_MESSAGE',
 				payload: {
@@ -79,7 +89,10 @@ const CarriersComponent = props => {
 			})
 		} else {
 			const data = {
-				services: state.selectedRowKeys?.length === 0 ? rowSelection?.selectedRowKeys : state.selectedRowKeys,
+				services:
+					state.selectedRowKeys?.length === 0
+						? rowSelection?.selectedRowKeys
+						: state.selectedRowKeys,
 				carrierId: carrierId,
 			}
 
@@ -117,7 +130,11 @@ const CarriersComponent = props => {
 	const { selectedRowKeys } = state
 	let rowSelection = {}
 
-	if (carriersSettings && state.selectedRowKeys.length === 0 && state.carrierServices) {
+	if (
+		carriersSettings &&
+		state.selectedRowKeys.length === 0 &&
+		state.carrierServices
+	) {
 		rowSelection = {
 			selectedRowKeys: [...selectedRowKeys, ...carriersSettings],
 			onChange: onSelectChange,
@@ -144,17 +161,18 @@ const CarriersComponent = props => {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> Identifies which carriers are included in the quote
-				response, not what is displayed in the shopping cart. Identify what
-				displays in the shopping cart in the Quote Settings. For example, you may
-				include quote responses from all carriers, but elect to only show the
-				cheapest three in the shopping cart.
+				<strong>Note!</strong> Identifies which carriers are included in the
+				quote response, not what is displayed in the shopping cart. Identify
+				what displays in the shopping cart in the Quote Settings. For
+				example, you may include quote responses from all carriers, but elect
+				to only show the cheapest three in the shopping cart.
 			</div>
 			<p>
-				Not all carriers service all origin and destination points. If a carrier
-				doesn't service the ship to address, it is automatically omitted from the
-				quote response. Consider conferring with your Worldwide Express
-				representative if you'd like to narrow the number of carrier responses.
+				Not all carriers service all origin and destination points. If a
+				carrier doesn't service the ship to address, it is automatically
+				omitted from the quote response. Consider conferring with your{' '}
+				{title} representative if you'd like to narrow the number of carrier
+				responses.
 			</p>
 			<Input
 				placeholder='Search carriers'
@@ -172,27 +190,34 @@ const CarriersComponent = props => {
 			/>
 			<br />
 			<br />
-			{services ? 
-			<><Table
-				className='custom-table'
-				rowSelection={rowSelection}
-				columns={columns}
-				dataSource={filteredServices ?? services}
-				total={50}
-			/>
-			<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
-				<Space>
-					<Button
-						type='primary'
-						size={'large'}
-						htmlType='submit'
-						name={`test`}
-						onClick={saveCarriers}>
-						Save Settings
-					</Button>
-				</Space>
-			</Form.Item></>:
-			<Skeleton active />}
+			{services ? (
+				<>
+					<Table
+						className='custom-table'
+						rowSelection={rowSelection}
+						columns={columns}
+						dataSource={filteredServices ?? services}
+						total={filteredServices?.length ?? services.length}
+						pagination={{
+							showSizeChanger: true,
+						}}
+					/>
+					<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
+						<Space>
+							<Button
+								type='primary'
+								size={'large'}
+								htmlType='submit'
+								name={`test`}
+								onClick={saveCarriers}>
+								Save Settings
+							</Button>
+						</Space>
+					</Form.Item>
+				</>
+			) : (
+				<Skeleton active />
+			)}
 		</Fragment>
 	)
 }
@@ -209,7 +234,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		postData: (data, type, url, token) => dispatch(postData(data, type, url, token)),
+		postData: (data, type, url, token) =>
+			dispatch(postData(data, type, url, token)),
 		getServices: (token, id, type) => dispatch(getServices(token, id, type)),
 		getAddTabSettings: (token, carrierId) =>
 			dispatch(getAddTabSettings(token, carrierId)),
