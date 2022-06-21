@@ -201,6 +201,15 @@ function BoxSizesComponent(props) {
 		[boxSizeForm]
 	)
 
+	const setUspsBoxFields = useCallback((val = '', opt) => {
+		boxSizeForm.setFieldsValue({
+			nickname: String(opt.children),
+			length: 0,
+			width: 0,
+			height: 0,
+		})
+	}, [])
+
 	const onFinish = values => {
 		const {
 			length,
@@ -372,6 +381,24 @@ function BoxSizesComponent(props) {
 		setOperation(true)
 		setLoadBoxSize(true)
 		setBoxSize({ ...record })
+
+		if (['UMEB', 'UPMB', 'UFLAT'].includes(record?.box_name)) {
+			let index = 0
+			for (const key in uspsBoxTypes) {
+				if (uspsBoxTypes[key].lable === record.nickname) {
+					index = key
+					break
+				}
+			}
+
+			let box_name = record.box_name + index
+			boxSizeForm.setFieldsValue({
+				...record,
+				box_name,
+			})
+		} else {
+			boxSizeForm.setFieldsValue(record)
+		}
 		boxSizeForm.setFieldsValue(record)
 		setVisibleAddBox(true)
 
@@ -723,14 +750,17 @@ function BoxSizesComponent(props) {
 																	},
 																]}>
 																<Select
-																//defaultValue='Merchant defined Box (default)'
-																//name='box_name'
-																// onChange={opt =>
-																// 	populateBoxValues(
-																// 		opt
-																// 	)
-																// }
-																>
+																	defaultValue='Merchant defined Box (default)'
+																	name='box_name'
+																	onChange={(
+																		val,
+																		opt
+																	) =>
+																		setUspsBoxFields(
+																			val,
+																			opt
+																		)
+																	}>
 																	{uspsBoxTypes.map(
 																		(bt, i) => (
 																			<Option

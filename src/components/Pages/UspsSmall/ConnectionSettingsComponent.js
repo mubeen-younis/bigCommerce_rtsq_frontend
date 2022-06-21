@@ -33,8 +33,8 @@ function ConnectionSettingsComponent() {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have a YRC account to use this
-				application. If you don't have one, contact YRC at 1-800-610-6500.
+				<strong>Note!</strong> You must have a USPS Small account to use this
+				application.
 			</div>
 			<Form
 				layout='vertical'
