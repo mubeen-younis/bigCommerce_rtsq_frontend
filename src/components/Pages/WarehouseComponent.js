@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import {
   Select,
   Typography,
@@ -64,6 +64,7 @@ function WarehouseComponent(props) {
   const [originRatesCity, setOriginRatesCity] = useState([])
   const [, setAction] = useState('')
   const [locationId, setLocationId] = useState(null)
+  const [xpoEnabled, setXpoEnabled] = useState(false)
   const dispatch = useDispatch()
   const {
     postData,
@@ -77,9 +78,19 @@ function WarehouseComponent(props) {
     warehouse,
     dropships,
     token,
+    installedCarriers,
     // plansInfo,
   } = props
+
   const [form] = Form.useForm()
+
+  useEffect(() => {
+    installedCarriers?.map((insCar) => {
+      if (insCar.slug === 'xpo-ltl' && insCar.is_enabled) {
+        setXpoEnabled(true)
+      }
+    })
+  }, [])
 
   const onFinish = (values) => {
     let data = city.length
@@ -616,6 +627,26 @@ function WarehouseComponent(props) {
                       />
                     </Form.Item>
                   </Col>
+
+                  {xpoEnabled && (
+                    <Col
+                      className='gutter-row'
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                    >
+                      <Form.Item className={'mb-2'} label='XPO Account Number'>
+                        <Input
+                          name='xpo_account_number'
+                          placeholder='XPO Account Number'
+                          value={locationDetail?.xpo_account_number}
+                          onChange={changeValue}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
                 </Row>
                 <Row gutter={30}>
                   <Col
@@ -1502,6 +1533,7 @@ const mapStateToProps = (state) => {
     confirmModal: state.confirmModal,
     token: state.token,
     plansInfo: state.plansInfo,
+    installedCarriers: state.installedCarriers,
   }
 }
 
