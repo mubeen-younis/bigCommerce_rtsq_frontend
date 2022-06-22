@@ -637,10 +637,13 @@ function WarehouseComponent(props) {
                       lg={24}
                       xl={24}
                     >
-                      <Form.Item className={'mb-2'} label='XPO Account Number'>
+                      <Form.Item
+                        className={'mb-2'}
+                        label='XPO LFQ Account Number'
+                      >
                         <Input
                           name='xpo_account_number'
-                          placeholder='XPO Account Number'
+                          placeholder='XPO LFQ Account Number'
                           value={locationDetail?.xpo_account_number}
                           onChange={changeValue}
                         />
