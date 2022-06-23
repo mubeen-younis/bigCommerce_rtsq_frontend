@@ -2,34 +2,20 @@ import React, { Fragment, useState, useEffect } from 'react'
 import { Form, Input, Button, Space, Skeleton } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
-import PromoCodeNote from '../../PromoCodeNote'
-import PromoCodeField from '../../PromoCodeField'
-import { getFDOCouponCarrierInfo } from '../../../Actions/FDOActions'
 
-function ConnectionSettingsComponent(props) {
+const initialState = {
+	username: '',
+	password: '',
+}
+
+function ConnectionSettingsComponent() {
 	const [testType, setTestType] = useState(false)
 	const dispatch = useDispatch()
-	const {
-		connectionSettings,
-		token,
-		carrierId,
-		fdoCouponInfo,
-		fdoCouponCarrierInfo,
-	} = useSelector(state => state)
+	const { connectionSettings, token, carrierId } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
 
-	useEffect(() => {
-		dispatch(
-			getFDOCouponCarrierInfo(
-				token,
-				'unishippers-small',
-				fdoCouponInfo ? fdoCouponInfo?.code ?? '' : ''
-			)
-		)
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dispatch, token])
+	useEffect(() => {}, [connectionSettings])
 
 	const onFinish = values => {
 		values = {
@@ -38,9 +24,6 @@ function ConnectionSettingsComponent(props) {
 			carrierId,
 			installed_carrier_id: carrierId,
 		}
-
-		if (fdoCouponCarrierInfo)
-			values.is_enabled = fdoCouponCarrierInfo.is_enabled ?? false
 
 		dispatch(
 			postData(
@@ -57,41 +40,27 @@ function ConnectionSettingsComponent(props) {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have a Unishippers (unishippers.com)
-				account to use this application. If you don’t have one, contact
-				Unishippers at 1-800-999-8721 and ask to be contacted by a sales
-				person from the office serving your area or{' '}
+				<strong>Note!</strong> You must have a freight enabled FreightQuote
+				account to use this application. If you do not have one, fill this
+				form to{' '}
 				<a
-					href='https://www.unishippers.com/request-new-account/'
+					href='https://b2b.freightquote.com/signup.aspx'
 					target='_blank'
 					rel='noreferrer'>
 					click here
 				</a>{' '}
-				to access the online new account request form.
+				register online.
 			</div>
-			<PromoCodeNote carrierName='Unishippers Small' />
-
 			<Form
 				layout='vertical'
 				name='connection_settings'
 				className='connection-settings'
 				size='large'
-				initialValues={connectionSettings}
+				initialValues={connectionSettings ?? initialState}
+				autoComplete='off'
+				scrollToFirstError
+				role='form'
 				onFinish={onFinish}>
-				<Form.Item
-					label='Unishippers Customer Number'
-					name='unishippers_customer_number'
-					rules={[
-						{ required: true, message: 'Unishippers Customer Number' },
-					]}>
-					<Input placeholder='Unishippers Customer Number' />
-				</Form.Item>
-				<Form.Item
-					label='UPS Account Number'
-					name='ups_account_number'
-					rules={[{ required: true, message: 'UPS Account Number' }]}>
-					<Input placeholder='UPS Account Number' />
-				</Form.Item>
 				<Form.Item
 					label='Username'
 					name='username'
@@ -104,10 +73,6 @@ function ConnectionSettingsComponent(props) {
 					rules={[{ required: true, message: 'Password' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
-				<Form.Item label='Request Key' name='request_key'>
-					<Input placeholder='Request Key' />
-				</Form.Item>
-				<PromoCodeField />
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

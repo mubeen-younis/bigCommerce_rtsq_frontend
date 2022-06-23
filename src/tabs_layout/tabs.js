@@ -24,7 +24,6 @@ function TabsLayout() {
 
 	useEffect(() => {
 		if (localStorage.getItem('tab')) setTab(localStorage.getItem('tab'))
-		console.log(tab)
 
 		return () => localStorage.removeItem('tab')
 	}, [tab])
@@ -42,6 +41,8 @@ function TabsLayout() {
 				'xpo-ltl',
 				'rl-ltl',
 				'unishippers-small',
+				'yrc-ltl',
+				'freightquote-ltl',
 				'saia-ltl',
 			]
 
@@ -93,7 +94,7 @@ function TabsLayout() {
 				<TabPane tab='Connection Settings' key='1'>
 					{useLoadComponent(component)[0]}
 				</TabPane>
-				{[0].includes(component) && (
+				{[0, 11].includes(component) && (
 					<TabPane tab='Carriers' key='2'>
 						<CarriersComponent />
 					</TabPane>

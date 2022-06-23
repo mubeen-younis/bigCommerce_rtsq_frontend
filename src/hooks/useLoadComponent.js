@@ -20,6 +20,10 @@ import {
 	QSRLLTl,
 	CSUnishippersSmall,
 	QSUnishippiersSmall,
+	CSFreightQuoteLtl,
+	QSFreightQuoteLtl,
+	CSYRCLtl,
+	QSYrcLtl,
 	CSSaiaLtl,
 	QSSaiaLtl,
 } from '../components/Pages'
@@ -36,6 +40,8 @@ const useLoadComponent = index => {
 		<CSXpoLtl />,
 		<CSRLLTl />,
 		<CSUnishippersSmall />,
+		<CSYRCLtl />,
+		<CSFreightQuoteLtl />,
 		<CSSaiaLtl />,
 	]
 	const quoteSettingsList = [
@@ -49,6 +55,8 @@ const useLoadComponent = index => {
 		<QSXpoLtl />,
 		<QSRLLTl />,
 		<QSUnishippiersSmall />,
+		<QSYrcLtl />,
+		<QSFreightQuoteLtl />,
 		<QSSaiaLtl />,
 	]
 
