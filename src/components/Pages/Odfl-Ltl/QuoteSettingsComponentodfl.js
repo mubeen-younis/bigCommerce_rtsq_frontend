@@ -15,6 +15,7 @@ import RAD from '../../RAD'
 import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
+import WeightThreshold from '../../WeightThreshold'
 
 const { Option } = Select
 const initialState = {
@@ -217,183 +218,19 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
+				
+				<WeightThreshold
+					quoteSettingsState={quoteSettingsState}
+					handleStateChange={handleStateChange}
+				/>
+
 				<HandlingUnit
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-				{/*}
-				<Row gutter={30} className={'mb-3'}>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-						<label className={'text-gray'}>
-							Do not return rates if the shipping address appears to be a post office box
-						</label>
-					</Col>
-					<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox
-								name='return_rates'
-								checked={
-									props?.plansInfo?.plan_type > 1 ? quoteSettingsState.returnRates : false
-								}
-								onChange={() =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										returnRates: !quoteSettingsState.returnRates,
-									})
-								}
-								//disabled={props?.plansInfo?.plan_type < 2 ? true : false}
-							>
-							</Checkbox>
-						</Form.Item>
-					</Col>
-				</Row>
-				{*/}
-
-				<Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}>
-							Relationship To Shipper
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={18}>
-						<Form.Item className={'mb-0'} name='shipper_relationship'>
-							<Select
-								defaultValue={
-									quoteSettingsState.shipper_relationship
-								}
-								size={'large'}
-								style={{ width: '100%' }}
-								onChange={value => {
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										shipper_relationship: value,
-									})
-								}}>
-								<Option value='shipper'>Shipper</Option>
-								<Option value='third_party'>Third Party</Option>
-							</Select>
-						</Form.Item>
-						<div className={'text-gray'}>
-							How you identify yourself when getting quotes on UPS.com
-						</div>
-					</Col>
-				</Row>
-				{quoteSettingsState.shipper_relationship === 'third_party' ? (
-					<>
-						<Row gutter={30} className={'mb-3'}>
-							<Col
-								className='gutter-row'
-								style={{ paddingTop: '11px' }}
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={6}>
-								<label className={'text-gray'}>
-									Third Party Country or Territory
-								</label>
-							</Col>
-							<Col
-								className='gutter-row'
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={18}>
-								<Form.Item
-									className={'mb-0'}
-									name='third_party_country'>
-									<Select
-										defaultValue={
-											quoteSettingsState.third_party_country
-										}
-										size={'large'}
-										style={{ width: '100%' }}
-										onChange={value => {
-											setQuoteSettingsState({
-												...quoteSettingsState,
-												third_party_country: value,
-											})
-										}}>
-										<Option value='US'>United States</Option>
-										<Option value='CA'>Canada</Option>
-										<Option value='GU'>Guam</Option>
-										<Option value='MX'>Mexico</Option>
-										<Option value='PR'>Puerto Rico</Option>
-										<Option value='VI'>US Virgin Islands</Option>
-									</Select>
-								</Form.Item>
-								<div className={'text-gray'}>
-									Select the third party country
-								</div>
-							</Col>
-						</Row>
-						<Row gutter={30} className={'mb-3'}>
-							<Col
-								className='gutter-row'
-								style={{ paddingTop: '11px' }}
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={6}>
-								<label className={'text-gray'}>
-									Third Party Postal Code
-								</label>
-							</Col>
-							<Col
-								className='gutter-row'
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={18}>
-								<Form.Item className={'mb-0'} name='third_party_zip'>
-									<Input
-										pattern='[0-9]*'
-										type='number'
-										onKeyDown={blockInvalidChar}
-										onChange={e => {
-											getGoogleLocation(e.target.value)
-										}}
-									/>
-								</Form.Item>
-
-								<div className={'text-gray'}>
-									Enter the third party postal code. (For US, enter
-									only the 5 digit ZIP code.)
-								</div>
-								<Form.Item
-									style={{ display: 'none' }}
-									className={'mb-0'}
-									name='third_party_city'>
-									<Input type='text' />
-								</Form.Item>
-								<Form.Item
-									style={{ display: 'none' }}
-									className={'mb-0'}
-									name='third_party_state'>
-									<Input type='text' />
-								</Form.Item>
-							</Col>
-						</Row>
-					</>
-				) : null}
 
 				<SaveButton />
+				
 			</Form>
 		</Fragment>
 	)
