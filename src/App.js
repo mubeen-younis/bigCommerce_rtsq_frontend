@@ -62,10 +62,7 @@ function App(props) {
   } = props
 
   const dispatch = useDispatch()
-<<<<<<< HEAD
   const cPlan = useSelector((state) => state.currentPlan)
-=======
->>>>>>> 33066e9458da0adde44b10dd63cc9defa986c9ee
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -163,7 +160,6 @@ function App(props) {
 
     return <Spin indicator={antIcon} />
   }
-<<<<<<< HEAD
   console.log('vc', cPlan)
   return (
     <Router>
@@ -191,27 +187,6 @@ function App(props) {
               <Route path='/:carrier_id' component={RendorCarrier} />
             </Switch>
 
-=======
-
-  return (
-    <Router>
-      <Layout>
-        <SideMenu />
-
-        <Layout>
-          <Header className={'top-header'} style={{ padding: 0 }} />
-          <Content className={'body-content'}>
-            <Switch>
-              <Route exact path='/' component={ShippingCarriersComponent} />
-              <Route exact path='/plans' component={PlansComponent} />
-              <Route path='/fdo' component={FDOComponent} />
-              <Route path='/av' component={AVComponent} />
-              <Route path='/warehouses' component={WarehouseComponent} />
-              <Route path='/addon/:addon_id' component={RendorAddon} />
-              <Route path='/:carrier_id' component={RendorCarrier} />
-            </Switch>
-
->>>>>>> 33066e9458da0adde44b10dd63cc9defa986c9ee
             <Modal
               title={confirmModal !== null ? confirmModal.title : ''}
               visible={confirmModal !== null ? confirmModal.on : false}
