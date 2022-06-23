@@ -11,6 +11,8 @@ import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
 import useLoadComponent from '../hooks/useLoadComponent'
 import ShippingGroup from '../components/Pages/ShippingGroup'
+// import AlertMessage from "../Utilities/AlertMessage";
+// import BoxSizesComponent from '../components/Pages/BoxSizesComponent';
 
 const { TabPane } = Tabs
 
@@ -22,7 +24,6 @@ function TabsLayout() {
 
 	useEffect(() => {
 		if (localStorage.getItem('tab')) setTab(localStorage.getItem('tab'))
-		console.log(tab)
 
 		return () => localStorage.removeItem('tab')
 	}, [tab])
@@ -40,6 +41,8 @@ function TabsLayout() {
 				'xpo-ltl',
 				'rl-ltl',
 				'unishippers-small',
+				'yrc-ltl',
+				'freightquote-ltl',
 				'dayross-ltl',
 			]
 
@@ -91,7 +94,7 @@ function TabsLayout() {
 				<TabPane tab='Connection Settings' key='1'>
 					{useLoadComponent(component)[0]}
 				</TabPane>
-				{[0].includes(component) && (
+				{[0, 11].includes(component) && (
 					<TabPane tab='Carriers' key='2'>
 						<CarriersComponent />
 					</TabPane>
@@ -122,7 +125,7 @@ function TabsLayout() {
 				<TabPane tab='Import CSV' key='9'>
 					<ImportCsvComponent />
 				</TabPane>
-				<TabPane tab='User Guide' key='11'>
+				<TabPane tab='User Guide' key='12'>
 					<UserGuideComponent />
 				</TabPane>
 			</Tabs>

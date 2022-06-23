@@ -1,7 +1,10 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { Form, Input, Button, Space, Skeleton, Select } from 'antd'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
+import PromoCodeNote from '../../../PromoCodeNote'
+import PromoCodeField from '../../../PromoCodeField'
+import { getFDOCouponCarrierInfo } from '../../../../Actions/FDOActions'
 
 const { Option } = Select
 
@@ -21,10 +24,15 @@ function ConnectionSettingsComponent(props) {
 	const [state, setState] = useState({
 		global_tranz: initialValues,
 		cerasis: initialValues,
+		promo_code: '',
 	})
-	// const { carrier_type } = useSelector(state => state)
 	const dispatch = useDispatch()
 	const [form] = Form.useForm()
+	const { fdoCouponInfo, fdoCouponCarrierInfo, token } = useSelector(
+		state => state
+	)
+	const [mounted, setMounted] = useState(false)
+
 	useEffect(() => {
 		if (
 			props.connectionSettings &&
@@ -39,6 +47,7 @@ function ConnectionSettingsComponent(props) {
 					...props.connectionSettings?.global_tranz,
 				},
 				cerasis: { ...initialValues, ...props.connectionSettings?.cerasis },
+				promo_code: props?.connectionSettings?.promo_code || '',
 			})
 			setConnectionState(prevState => ({
 				...prevState,
@@ -50,7 +59,21 @@ function ConnectionSettingsComponent(props) {
 				payload: props.connectionSettings?.api_type || 'GTZ',
 			})
 		}
+
+		setMounted(true)
 	}, [dispatch, props.connectionSettings])
+
+	useEffect(() => {
+		dispatch(
+			getFDOCouponCarrierInfo(
+				token,
+				'gtz-ltl',
+				fdoCouponInfo ? fdoCouponInfo?.code ?? '' : ''
+			)
+		)
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dispatch, token])
 
 	const handleStateChange = useCallback((e, index) => {
 		setState(prevState => ({
@@ -73,7 +96,11 @@ function ConnectionSettingsComponent(props) {
 			carrierId: props.carrierId,
 			api_type: apiType,
 			...state,
+			...values,
 		}
+
+		if (fdoCouponCarrierInfo)
+			values.is_enabled = fdoCouponCarrierInfo.is_enabled ?? false
 
 		props.postData(values, props.token)
 	}
@@ -99,9 +126,18 @@ function ConnectionSettingsComponent(props) {
 		]
 	)
 
+	const populateInitialValues = useCallback(
+		() =>
+			apiType === 'GTZ'
+				? { ...state.global_tranz, promo_code: state.promo_code }
+				: { ...state.cerasis, promo_code: state.promo_code },
+		[apiType, state.cerasis, state.global_tranz, state.promo_code]
+	)
+
 	if (
 		props.connectionSettings === null ||
-		props.connectionSettings === undefined
+		props.connectionSettings === undefined ||
+		!mounted
 	) {
 		return <Skeleton active />
 	} else {
@@ -118,15 +154,15 @@ function ConnectionSettingsComponent(props) {
 					this application. If you do not have one contact GlobalTranz at
 					866-275-1407.
 				</div>
+				<PromoCodeNote carrierName='GlobalTranz' />
+
 				<Form
 					layout='vertical'
 					name='connection_settings'
 					className='connection-settings'
 					size={'large'}
 					onFinish={onFinish}
-					initialValues={
-						apiType === 'GTZ' ? state.global_tranz : state.cerasis
-					}
+					initialValues={populateInitialValues()}
 					form={form}>
 					<Form.Item
 						label='Which API Will You Connect To?'
@@ -283,6 +319,7 @@ function ConnectionSettingsComponent(props) {
 							</Form.Item>
 						</>
 					)}
+					<PromoCodeField />
 
 					<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 						<Space>

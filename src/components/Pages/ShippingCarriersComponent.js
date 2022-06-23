@@ -20,45 +20,69 @@ function ShippingCarriersComponent(props) {
 	const dispatch = useDispatch()
 	// const { currentPlan } = useSelector(state => state)
 	const getInstalledCarriers = (carrier_type = 1) => {
-		return props.installedCarriers.map((value, key) => {
-			return (
-				carrier_type === value.carrier_type && (
-					<Col
-						className='gutter-row mb-3'
-						xs={24}
-						sm={12}
-						md={8}
-						lg={8}
-						xl={6}
-						key={key}>
-						<Card className={'card-custom'} style={{ width: '100%' }}>
-							<div className={'card-inner'}>
-								<figure>
-									<Image
-										preview={false}
-										src={`images/${value.logo}`}
-									/>
-								</figure>
-								{/* <Meta title={value.name} description='' /> */}
-								{value.is_enabled === 1 ? (
-									<Fragment>
-										<Link
-											to={`/${value.id}`}
-											style={{ display: 'inline-block' }}>
+		return props.installedCarriers
+			.sort((carr1, carr2) => carr1.name > carr2.name)
+			.map((value, key) => {
+				return (
+					carrier_type === value.carrier_type && (
+						<Col
+							className='gutter-row mb-3'
+							xs={24}
+							sm={12}
+							md={8}
+							lg={8}
+							xl={6}
+							key={key}>
+							<Card
+								className={'card-custom'}
+								style={{ width: '100%' }}>
+								<div className={'card-inner'}>
+									<figure>
+										<Image
+											preview={false}
+											src={`images/${value.logo}`}
+										/>
+									</figure>
+									{/* <Meta title={value.name} description='' /> */}
+									{value.is_enabled === 1 ? (
+										<Fragment>
+											<Link
+												to={`/${value.id}`}
+												style={{ display: 'inline-block' }}>
+												<Button
+													className={''}
+													type='primary'
+													style={{ marginRight: '6px' }}
+													onClick={() =>
+														dispatch({
+															type: 'SET_ACTIVE_MENU',
+															payload:
+																value.id.toString(),
+														})
+													}>
+													Settings
+												</Button>
+											</Link>
+
 											<Button
 												className={''}
 												type='primary'
-												style={{ marginRight: '6px' }}
-												onClick={() =>
-													dispatch({
-														type: 'SET_ACTIVE_MENU',
-														payload: value.id.toString(),
-													})
-												}>
-												Settings
+												onClick={() => {
+													props.changeCarrierStatus(
+														value.id,
+														props.token
+													)
+												}}
+												/* disabled={
+									props.alertMessageType && props.alertMessageType === 'loading' ? 1 : 0
+								} */
+											>
+												{value.is_enabled === 1
+													? 'Disable'
+													: 'Enable'}
 											</Button>
-										</Link>
-
+										</Fragment>
+									) : (
 										<Button
 											className={''}
 											type='primary'
@@ -76,86 +100,118 @@ function ShippingCarriersComponent(props) {
 												? 'Disable'
 												: 'Enable'}
 										</Button>
-									</Fragment>
-								) : (
-									<Button
-										className={''}
-										type='primary'
-										onClick={() => {
-											props.changeCarrierStatus(
-												value.id,
-												props.token
-											)
-										}}
-										/* disabled={
-									props.alertMessageType && props.alertMessageType === 'loading' ? 1 : 0
-								} */
-									>
-										{value.is_enabled === 1
-											? 'Disable'
-											: 'Enable'}
-									</Button>
-								)}
-							</div>
-						</Card>
-					</Col>
+									)}
+								</div>
+							</Card>
+						</Col>
+					)
 				)
-			)
-		})
+			})
 	}
 
 	const getInstalledAddons = () => {
-		return props.installedAddons.map((value, key) => {
-			return (
-				<Col
-					className='gutter-row mb-3'
-					xs={24}
-					sm={24}
-					md={8}
-					lg={8}
-					xl={6}
-					key={key}>
-					<Card className={'card-custom'} style={{ width: '100%' }}>
-						<div className={'card-inner'}>
-							<figure>
-								<Image
-									preview={false}
-									src={`images/${value.logo}`}
-								/>
-								{/* <img
+		return props.installedAddons
+			.sort((add1, add2) => add1.name > add2.name)
+			.map((value, key) => {
+				return (
+					<Col
+						className='gutter-row mb-3'
+						xs={24}
+						sm={24}
+						md={8}
+						lg={8}
+						xl={6}
+						key={key}>
+						<Card className={'card-custom'} style={{ width: '100%' }}>
+							<div className={'card-inner'}>
+								<figure>
+									<Image
+										preview={false}
+										src={`images/${value.logo}`}
+									/>
+									{/* <img
 									style={{ height: '175px' }}
 									src={`images/${value.logo}`}
 									alt={'text alt'}
 								/> */}
-							</figure>
-							{/* <Meta title={value.name} description='' /> */}
-							<Button
-								// className={'mt-3'}
-								type='primary'
-								onClick={() =>
-									props.changeAddonStatus(value.id, props.token)
-								}
-								/* disabled={
+								</figure>
+								{/* <Meta title={value.name} description='' /> */}
+								<Button
+									// className={'mt-3'}
+									type='primary'
+									onClick={() =>
+										props.changeAddonStatus(
+											value.id,
+											props.token
+										)
+									}
+									/* disabled={
 									props.alertMessageType && props.alertMessageType === 'loading' ? 1 : 0
 								} */
-							>
-								{value.is_enabled === 1 ? 'Disable' : 'Enable'}
-							</Button>
-						</div>
-					</Card>
-				</Col>
-			)
-		})
+								>
+									{value.is_enabled === 1 ? 'Disable' : 'Enable'}
+								</Button>
+							</div>
+						</Card>
+					</Col>
+				)
+			})
 	}
 
 	const getEnitureCarriers = (carrier_type = 1) => {
-		return props.carriers.map((value, key) => {
-			return (
-				carrier_type === value.carrier_type && (
+		return props?.carriers
+			?.sort((carr1, carr2) => carr1.name > carr2.name)
+			.map((value, key) => {
+				return (
+					carrier_type === value.carrier_type && (
+						<Col
+							className='gutter-row mb-3'
+							xs={24}
+							sm={12}
+							md={8}
+							lg={8}
+							xl={6}
+							key={key}>
+							<Card
+								className={'card-custom'}
+								style={{ width: '100%' }}>
+								<div className={'card-inner'}>
+									<figure>
+										<Image
+											preview={false}
+											src={`images/${value.logo}`}
+										/>
+									</figure>
+									{/* <Meta title={value.name} description='' /> */}
+									<Button
+										// className={'mt-3'}
+										type='primary'
+										onClick={() =>
+											props.installCarrier(
+												value.id,
+												props.token
+											)
+										}
+										disabled={value.status ? false : true}>
+										{value.status ? 'Install' : 'Coming Soon'}
+									</Button>
+								</div>
+							</Card>
+						</Col>
+					)
+				)
+			})
+	}
+
+	const getRecommendedAddons = () => {
+		return props.addons
+			.sort((add1, add2) => add1.name > add2.name)
+			.map((value, key) => {
+				return (
 					<Col
 						className='gutter-row mb-3'
 						xs={24}
-						sm={12}
+						sm={24}
 						md={8}
 						lg={8}
 						xl={6}
@@ -173,7 +229,7 @@ function ShippingCarriersComponent(props) {
 									// className={'mt-3'}
 									type='primary'
 									onClick={() =>
-										props.installCarrier(value.id, props.token)
+										props.installAddon(value.id, props.token)
 									}
 									disabled={value.status ? false : true}>
 									{value.status ? 'Install' : 'Coming Soon'}
@@ -182,44 +238,7 @@ function ShippingCarriersComponent(props) {
 						</Card>
 					</Col>
 				)
-			)
-		})
-	}
-
-	const getRecommendedAddons = () => {
-		return props.addons.map((value, key) => {
-			return (
-				<Col
-					className='gutter-row mb-3'
-					xs={24}
-					sm={24}
-					md={8}
-					lg={8}
-					xl={6}
-					key={key}>
-					<Card className={'card-custom'} style={{ width: '100%' }}>
-						<div className={'card-inner'}>
-							<figure>
-								<Image
-									preview={false}
-									src={`images/${value.logo}`}
-								/>
-							</figure>
-							{/* <Meta title={value.name} description='' /> */}
-							<Button
-								// className={'mt-3'}
-								type='primary'
-								onClick={() =>
-									props.installAddon(value.id, props.token)
-								}
-								disabled={value.status ? false : true}>
-								{value.status ? 'Install' : 'Coming Soon'}
-							</Button>
-						</div>
-					</Card>
-				</Col>
-			)
-		})
+			})
 	}
 
 	return (
@@ -365,7 +384,9 @@ function ShippingCarriersComponent(props) {
 					<Title level={4}>Other Available LTL Freight Providers</Title>
 				</Col>
 
-				{props.carriers && props.carriers.length > 0 ? (
+				{props?.carriers?.length > 0 &&
+				props.carriers.filter(carr => +carr.carrier_type === 1)?.length >
+					0 ? (
 					getEnitureCarriers(1)
 				) : (
 					<Col
@@ -387,7 +408,9 @@ function ShippingCarriersComponent(props) {
 					</Title>
 				</Col>
 
-				{props.carriers && props.carriers.length > 0 ? (
+				{props?.carriers?.length > 0 &&
+				props.carriers.filter(carr => +carr.carrier_type === 2)?.length >
+					0 ? (
 					getEnitureCarriers(2)
 				) : (
 					<Col

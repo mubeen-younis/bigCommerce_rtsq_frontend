@@ -1,17 +1,21 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
-import { Form, Skeleton } from 'antd'
-import { connect, useDispatch, useSelector } from 'react-redux'
-import { postData } from '../../../../Actions/Action'
-import { getQuoteSettings } from '../../../../Actions/Settings'
-import { validateHandlingFeeMarkup } from '../../../../Utilities/numberValidation'
-import GlobalTranz from './QuoteSettings/GlobalTranz'
-import Cerasis from './QuoteSettings/Cerasis'
-import HandlingUnit from '../../../HandlingUnit'
-import SaveButton from '../../../SaveButton'
-import WeightThreshold from '../../../WeightThreshold'
+import { Row, Col, Form, Input, Skeleton } from 'antd'
+import { connect, useDispatch } from 'react-redux'
+import CutOffTime from '../../CutOffTime'
+import { postData } from '../../../Actions/Action'
+import {
+  validateHandlingFeeMarkup,
+  LableAsLimit,
+} from '../../../Utilities/numberValidation'
+import RAD from '../../RAD'
+import LiftGateDelivery from '../../LiftGateDelivery'
+import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
+import HandlingUnit from '../../HandlingUnit'
+import SaveButton from '../../SaveButton'
+import WeightThreshold from '../../WeightThreshold'
 
 const initialState = {
-  showDeliveryEstimate: false,
+  label_as: '',
   delivery_estimate_options: 1,
   order_cut_off_time: '',
   fulfillment_offset_days: '',
@@ -26,17 +30,14 @@ const initialState = {
   autoDetectedResidentialAddressesLfg: false,
   weight_of_handling_unit: '',
   max_weight_per_handling_unit: '',
-  handling_free_markup: '',
-  returnRates: false,
   weight_threshold: '150',
 }
 
-function QuoteSettingsComponentWwe(props) {
-  const dispatch = useDispatch()
+function QuoteSettingsComponent(props) {
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
-  const { carrier_type } = useSelector((state) => state)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -48,13 +49,6 @@ function QuoteSettingsComponentWwe(props) {
   const radCheck = props.installedAddons.find(
     (add) => add.short_code === 'RAD' && add.is_enabled === 1
   )
-
-  const handleStateChange = useCallback((name, value) => {
-    setQuoteSettingsState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }))
-  }, [])
 
   let radStatus = false
   if (radCheck !== undefined) {
@@ -77,35 +71,17 @@ function QuoteSettingsComponentWwe(props) {
 
   const onFinish = (data) => {
     data = {
-      ...data,
       ...quoteSettingsState,
+      ...data,
       carrierId: +props.carrierId,
     }
 
     let errormsg = ''
-    if (
-      !quoteSettingsState?.quickest_service &&
-      quoteSettingsState?.method === 0 &&
-      carrier_type === 'GTZ'
-    ) {
-      errormsg = 'Please select at least one service option.'
-    }
 
-    /*if (errormsg === '') {
-			errormsg = validateHandlingFeeMarkup(
-				data?.weight_of_handling_unit,
-				'Weight of Handling Unit',
-				true
-			)
-		}
-
-		if (errormsg === '') {
-			errormsg = validateHandlingFeeMarkup(
-				data?.max_weight_per_handling_unit,
-				'Maximum Weight per Handling Unit',
-				true
-			)
-		}*/
+    /*errormsg = validateHandlingFeeMarkup(
+			data?.weight_of_handling_unit,
+			'Weight of Handling Unit'
+		)*/
 
     if (errormsg === '') {
       errormsg = validateHandlingFeeMarkup(
@@ -115,7 +91,14 @@ function QuoteSettingsComponentWwe(props) {
     }
 
     if (errormsg === '') {
-      props.postData(data, props.token)
+      dispatch(
+        postData(
+          data,
+          'GET_QUOTE_SETTINGS',
+          'submit_quote_settings',
+          props.token
+        )
+      )
     } else {
       dispatch({
         type: 'ALERT_MESSAGE',
@@ -134,6 +117,13 @@ function QuoteSettingsComponentWwe(props) {
     }
   }
 
+  const handleStateChange = useCallback((name, value) => {
+    setQuoteSettingsState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }))
+  }, [])
+
   return loading || !props.quoteSettings ? (
     <Skeleton active />
   ) : (
@@ -147,21 +137,55 @@ function QuoteSettingsComponentWwe(props) {
         onFinish={onFinish}
         initialValues={props.quoteSettings}
       >
-        {carrier_type === 'GTZ' && (
-          <GlobalTranz
-            quoteSettingsState={quoteSettingsState}
-            setQuoteSettingsState={setQuoteSettingsState}
-            radStatus={radStatus}
-          />
-        )}
+        <Row gutter={30} className={'mb-3'}>
+          <Col
+            className='gutter-row'
+            style={{ paddingTop: '11px' }}
+            xs={24}
+            sm={24}
+            md={24}
+            lg={24}
+            xl={6}
+          >
+            <label className={'text-gray'}>Label As</label>
+          </Col>
+          <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
+            <Form.Item className={'mb-0'} name='label_as'>
+              <Input
+                name='label_as'
+                value={props?.quoteSettings?.label_as ?? ''}
+                onKeyDown={LableAsLimit}
+              />
+            </Form.Item>
+            <div className={'text-gray'}>
+              What the user sees during checkout, e.g. "Freight". If left blank
+              will default to "Freight".
+            </div>
+          </Col>
+        </Row>
 
-        {carrier_type === 'CRS' && (
-          <Cerasis
-            quoteSettingsState={quoteSettingsState}
-            setQuoteSettingsState={setQuoteSettingsState}
-            radStatus={radStatus}
-          />
-        )}
+        <DeliveryEstimateOptions
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
+
+        <CutOffTime
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+          handleChange={handleStateChange}
+        />
+
+        <RAD
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+          radStatus={radStatus}
+        />
+
+        <LiftGateDelivery
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+          radStatus={radStatus}
+        />
 
         <WeightThreshold
           quoteSettingsState={quoteSettingsState}
@@ -172,6 +196,7 @@ function QuoteSettingsComponentWwe(props) {
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
         />
+
         <SaveButton />
       </Form>
     </Fragment>
@@ -190,18 +215,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    postData: (data, token) =>
-      dispatch(
-        postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)
-      ),
-    getSettings: (token, carrier_id) =>
-      dispatch(getQuoteSettings(token, carrier_id)),
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(QuoteSettingsComponentWwe)
+export default connect(mapStateToProps)(QuoteSettingsComponent)
