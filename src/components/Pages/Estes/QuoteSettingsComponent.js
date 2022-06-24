@@ -12,7 +12,6 @@ import DeliveryEstimateOptions from '../../../components/DeliveryEstimateOptions
 import CutOffTime from '../../../components/CutOffTime'
 import RAD from '../../../components/RAD'
 import LiftGateDelivery from '../../../components/LiftGateDelivery'
-import HoldAtTerminal from '../../../components/HoldAtTerminal'
 import HandlingUnit from '../../../components/HandlingUnit'
 import SaveButton from '../../../components/SaveButton'
 import WeightThreshold from '../../WeightThreshold'
@@ -198,11 +197,6 @@ function QuoteSettingsComponentWwe(props) {
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
-        />
-
-        <HoldAtTerminal
-          quoteSettingsState={quoteSettingsState}
-          handleChange={handleStateChange}
         />
         <WeightThreshold
           quoteSettingsState={quoteSettingsState}
