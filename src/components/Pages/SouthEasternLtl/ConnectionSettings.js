@@ -73,7 +73,7 @@ function ConnectionSettingsComponent(props) {
 					<Col span={12}>
 						<Form.Item
 							label='Customer Address'
-							name='customer_address'
+							name='customer_name'
 							rules={[{ required: true, message: 'Customer Name' }]}>
 							<Input type='text' placeholder='Customer Name' />
 						</Form.Item>
@@ -128,7 +128,6 @@ function ConnectionSettingsComponent(props) {
 							<Input
 								type='text'
 								placeholder='Customer Zip Code'
-								maxLength={2}
 							/>
 						</Form.Item>
 					</Col>
