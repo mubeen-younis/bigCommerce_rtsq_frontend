@@ -39,11 +39,12 @@ function ConnectionSettingsComponent(props) {
 				account to use this application. If you don’t have one, contact
 				Estes Express at 866-378-3748 , or email {' '}
 				<a
-					href=''
+					href='mailto:customercare@estes-express.com'
 					target='_blank'
 					rel='noreferrer'>
-					cutomercare@estes-express.com.
-				</a>{' '}
+					customercare@estes-express.com
+				</a>
+				.
 			</div>
 			<Form
 				layout='vertical'
