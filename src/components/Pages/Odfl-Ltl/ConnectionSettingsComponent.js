@@ -32,8 +32,13 @@ function ConnectionSettingsComponent(props) {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have an LTL freight enabled ODFL account to use
-				this application. If you do not have one, call ????.
+				<strong>Note!</strong> You must have an Old Dominion Freight Lines account to use this application. if you don't have one, contact Old Dominion Freight Lines at 800-235-5569, or email{' '}
+				<a
+					href='mailto:customer.service@odfl.com'
+				    target='_blank'
+					rel='noreferrer'>
+					customer.service@odfl.com
+				</a>{' '} 
 			</div>
 			<Form
 				layout='vertical'
