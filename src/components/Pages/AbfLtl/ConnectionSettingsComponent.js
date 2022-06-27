@@ -33,8 +33,8 @@ function ConnectionSettingsComponent(props) {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have a ABF account to use this
-				application. If you don't have one, contact ABF at 1-800-610-6500.
+				<strong>Note!</strong> You must have a ABF Freight account to use this
+				application. If you do not have one, contact ABF Freight at 800-610-5544.
 			</div>
 			<Form
 				layout='vertical'
