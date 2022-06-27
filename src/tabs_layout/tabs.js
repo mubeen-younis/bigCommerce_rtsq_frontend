@@ -43,6 +43,7 @@ function TabsLayout() {
 				'unishippers-small',
 				'yrc-ltl',
 				'freightquote-ltl',
+				'southeastern-ltl',
 			]
 
 			for (const ic of installedCarriers) {
