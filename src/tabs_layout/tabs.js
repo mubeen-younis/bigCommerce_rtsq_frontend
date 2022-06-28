@@ -123,12 +123,6 @@ function TabsLayout() {
             <BoxSizesComponent />
           </TabPane>
         )}
-        {/* 	<TabPane tab='Import CSV' key='9'>
-					<ImportCsvComponent />
-				</TabPane> */}
-        {/*   <TabPane tab='User Guide' key='12'>
-          <UserGuideComponent />
-        </TabPane> */}
       </Tabs>
     </Fragment>
   )

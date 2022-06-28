@@ -160,7 +160,7 @@ function App(props) {
 
     return <Spin indicator={antIcon} />
   }
-  console.log('vc', cPlan)
+
   return (
     <Router>
       <Layout>

@@ -37,10 +37,8 @@ function SideMenu(props) {
       breakpoint='lg'
       collapsedWidth='0'
       onBreakpoint={(broken) => {
-        // console.log(broken);
       }}
       onCollapse={(collapsed, type) => {
-        // console.log(collapsed, type)
       }}
       className={'sidemenu'}
       width={240}
@@ -117,10 +115,6 @@ function SideMenu(props) {
               <Menu.Item>No Carrier is Installed/Enabled</Menu.Item>
             ) : null}
 
-            {/*props.installedCarriers && props.installedCarriers.length === 0 ? (
-					<Menu.Item>No Carrier Installed</Menu.Item>
-				) : null*/}
-
             {props?.installedCarriers?.map((carrier) =>
               carrier.is_enabled && carrier.carrier_type === 1 ? (
                 <Menu.Item
@@ -144,10 +138,6 @@ function SideMenu(props) {
               <Menu.Item>No Carrier is Installed/Enabled</Menu.Item>
             ) : null}
 
-            {/*props.installedCarriers && props.installedCarriers.length === 0 ? (
-					<Menu.Item>No Carrier Installed</Menu.Item>
-				) : null*/}
-
             {props?.installedCarriers?.map((carrier) =>
               carrier.is_enabled && carrier.carrier_type === 2 ? (
                 <Menu.Item
@@ -164,9 +154,6 @@ function SideMenu(props) {
             <Title className={'carriers-name'} level={5}>
               Add-ons
             </Title>
-            {/*props.installedAddons && props.installedAddons.length === 0 ? (
-					<Menu.Item>No Addon Installed</Menu.Item>
-				) : null*/}
 
             {props?.installedAddons?.every((add) => add.is_enabled === 0) ? (
               <Menu.Item>No Add-on is Installed/Enabled</Menu.Item>

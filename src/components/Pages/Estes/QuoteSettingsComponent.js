@@ -90,11 +90,6 @@ function QuoteSettingsComponentWwe(props) {
     }
     let errormsg = ''
 
-    /*errormsg = validateHandlingFeeMarkup(
-			data?.weight_of_handling_unit,
-			'Weight of Handling Unit'
-		)*/
-
     if (errormsg === '') {
       errormsg = validateHandlingFeeMarkup(
         data?.handling_free_markup,
