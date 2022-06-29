@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
@@ -33,6 +33,7 @@ import AVComponent from './components/Pages/AVComponent'
 import { getFDOCouponInfo } from './Actions/FDOActions'
 import ImportCsvComponent from './components/Pages/ImportCsvComponent'
 import UserGuideComponent from './components/Pages/UserGuideComponent'
+import AppLogs from './components/Pages/AppLogs'
 
 const { Header, Content } = Layout
 
@@ -61,6 +62,7 @@ function App(props) {
     getShippingGroups,
   } = props
 
+  const [logsRoute, setLogsRoute] = useState(false)
   const dispatch = useDispatch()
   const cPlan = useSelector((state) => state.currentPlan)
 
@@ -110,6 +112,14 @@ function App(props) {
     setStoreData,
     setToken,
   ])
+
+  useEffect(() =>
+  {
+    const pathName = window.location.pathname
+    if (pathName.includes('app_logs')) {
+      setLogsRoute(true)
+    }
+  }, [window.location.pathname])
 
   message.config({
     maxCount: 1,
@@ -164,12 +174,13 @@ function App(props) {
   return (
     <Router>
       <Layout>
-        <SideMenu />
+        {!logsRoute && <SideMenu />}
 
         <Layout>
           <Header className={'top-header'} style={{ padding: 0 }} />
           <Content className={'body-content'}>
             <Switch>
+              <Route path='/app_logs' component={AppLogs} />
               <Route exact path='/'>
                 {cPlan?.plan_id ? (
                   <ShippingCarriersComponent />
