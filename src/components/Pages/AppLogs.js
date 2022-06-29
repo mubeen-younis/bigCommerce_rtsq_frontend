@@ -1,29 +1,55 @@
 import React, { useEffect, useState } from 'react'
 import { Space, Button, Table, Col, Input, Row, Skeleton } from 'antd'
 import axios from 'axios'
+import Title from 'antd/lib/typography/Title'
 
 const columns = [
 	{
-		title: 'Log Id',
+		title: 'Id',
 		dataIndex: 'id',
 		key: 'id',
-		sortOrder: false,
+		sortOrder: true,
 		ellipsis: true,
 	},
 	{
-		title: 'Data',
-		dataIndex: 'log',
-		key: 'log',
+		title: 'Status',
+		dataIndex: 'level',
+		key: 'level',
+	},
+	{
+		title: 'Type',
+		dataIndex: 'level_name',
+		key: 'level_name',
+	},
+	{
+		title: 'Environment',
+		dataIndex: 'channel',
+		key: 'channel',
 	},
 	{
 		title: 'Date Created',
-		dataIndex: 'date_created',
-		key: 'date_created',
+		dataIndex: 'created_at',
+		key: 'created_at',
 	},
 	{
-		title: 'Status',
-		dataIndex: 'status',
-		key: 'status',
+		title: 'User Agent',
+		dataIndex: 'user_agent',
+		key: 'user_agent',
+	},
+	{
+		title: 'Origin Address',
+		dataIndex: 'remote_addr',
+		key: 'remote_addr',
+	},
+	{
+		title: 'Checkout Quotes',
+		dataIndex: 'formatted',
+		key: 'formatted',
+	},
+	{
+		title: 'Data',
+		dataIndex: 'message',
+		key: 'message',
 	},
 	{
 		title: 'Action',
@@ -37,64 +63,31 @@ const columns = [
 	},
 ]
 
-const data = [
-	{
-		id: '1',
-		log: 'this is log data',
-		date_created: '2020-01-01',
-		status: 'success',
-	},
-	{
-		id: '2',
-		log: 'this is log data',
-		date_created: '2020-01-01',
-		status: 'success',
-	},
-	{
-		id: '3',
-		log: 'this is log data',
-		date_created: '2020-01-01',
-		status: 'error',
-	},
-	{
-		id: '4',
-		log: 'this is log data',
-		date_created: '2020-01-01',
-		status: 'success',
-	},
-	{
-		id: '5',
-		log: 'this is log data',
-		date_created: '2020-01-01',
-		status: 'error',
-	},
-	{
-		id: '6',
-		log: 'this is log data',
-		date_created: '2020-01-01',
-		status: 'success',
-	},
-]
-
 const AppLogs = () => {
 	const [logs, setLogs] = useState([])
 	const [loading, setLoading] = useState(false)
 	const [search, setSearch] = useState('')
 	const [filteredLogs, setFilteredLogs] = useState([])
 
-	const fetchLogs = async (search = '') => {
+	const fetchLogs = async () => {
 		try {
 			setLoading(true)
 
-			const url = `${process.env.REACT_APP_ENITURE_API_URL}/api_logs?${search}`
-			const response = await axios.get(url)
-			const data = await response.json()
+			let config = {}
+			if (search.trim().length) {
+				config = { params: { search } }
+			}
+
+			const url = `${process.env.REACT_APP_ENITURE_API_URL}/api_logs`
+			const { data } = await axios.get(url, config)
 			if (!data.error) {
-				setLogs(data)
+				search.trim().length
+					? setFilteredLogs(data?.data?.data ?? [])
+					: setLogs(data?.data?.data ?? [])
 			}
 
 			setLoading(false)
-		} catch (error) {
+		} catch (err) {
 			setLoading(false)
 		}
 	}
@@ -103,17 +96,16 @@ const AppLogs = () => {
 		fetchLogs()
 	}, [])
 
-	const handleSearch = e => {
-		setSearch(e.target.value)
-		const searchValue = Number(e.target.value)
-		const filteredLogs = data.filter(log => log.id.includes(searchValue))
-		setFilteredLogs(filteredLogs)
-	}
-
 	if (loading) return <Skeleton active />
 
 	return (
 		<>
+			<Title
+				style={{
+					textAlign: 'center',
+				}}>
+				App Logs
+			</Title>
 			<Row gutter={30} className='mb-3'>
 				<Col span={20}>
 					<Input
@@ -123,11 +115,11 @@ const AppLogs = () => {
 						pattern='[0-9]*'
 						size='large'
 						value={search}
-						onChange={handleSearch}
+						onChange={e => setSearch(e.target.value)}
 					/>
 				</Col>
 				<Col span={4} style={{ paddingLeft: '0px' }}>
-					<Button type='primary' size='large'>
+					<Button type='primary' size='large' onClick={fetchLogs}>
 						Search
 					</Button>
 				</Col>
@@ -137,7 +129,8 @@ const AppLogs = () => {
 				columns={columns}
 				dataSource={filteredLogs?.length > 0 ? filteredLogs : logs}
 				pagination={{
-					pageSize: 10,
+					position: ['topRight', 'bottomRight'],
+					showSizeChanger: true,
 				}}
 			/>
 		</>
