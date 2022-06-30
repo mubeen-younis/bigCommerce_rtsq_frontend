@@ -30,6 +30,9 @@ const columns = [
 		title: 'Date Created',
 		dataIndex: 'created_at',
 		key: 'created_at',
+		defaultSortOrder: 'descend',
+		sorter: (a, b) => new Date(a.created_at) - new Date(b.created_at),
+		sortDirections: ['descend', 'ascend'],
 	},
 	{
 		title: 'User Agent',
