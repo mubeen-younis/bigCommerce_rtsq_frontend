@@ -38,8 +38,8 @@ function ConnectionSettingsComponent(props) {
 		<Fragment>
 			<div className={'note-bx'}>
 				<strong>Note!</strong> You must have a shipping account with Day &
-				Ross to use this application. If you not please contact Day & Ross at
-				866-329-7677 or{' '}
+				Ross to use this application. If you do not please contact Day & Ross
+				at 866-329-7677 or{' '}
 				<a
 					href='mailto:custservice@dayandrossinc.ca'
 					target='_blank'
