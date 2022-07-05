@@ -40,6 +40,7 @@ function TabsLayout() {
 				'yrc-ltl',
 				'freightquote-ltl',
 				'estes-ltl',
+				'dayross-ltl',
 				'odfl-ltl',
 			]
 
