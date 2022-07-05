@@ -24,6 +24,8 @@ import {
 	QSFreightQuoteLtl,
 	CSYRCLtl,
 	QSYrcLtl,
+	CSEstesLtl,
+	QSEstestLtl,
 	CSDayRossLtl,
 	QSDayRossLtl,
 } from '../components/Pages'
@@ -42,6 +44,7 @@ const useLoadComponent = index => {
 		<CSUnishippersSmall />,
 		<CSYRCLtl />,
 		<CSFreightQuoteLtl />,
+		<CSEstesLtl />,
 		<CSDayRossLtl />,
 	]
 	const quoteSettingsList = [
@@ -57,6 +60,7 @@ const useLoadComponent = index => {
 		<QSUnishippiersSmall />,
 		<QSYrcLtl />,
 		<QSFreightQuoteLtl />,
+		<QSEstestLtl />,
 		<QSDayRossLtl />,
 	]
 

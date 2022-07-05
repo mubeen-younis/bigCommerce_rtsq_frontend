@@ -1,11 +1,16 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom'
 import { Layout, message, Modal, Spin } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import './App.css'
 import './responsive.css'
 import SideMenu from './partials/SideMenu'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { getLocations } from './Actions/Warehouse'
 import {
   getInstalledCarriers,
@@ -26,6 +31,8 @@ import WarehouseComponent from './components/Pages/WarehouseComponent'
 import FDOComponent from './components/Pages/FDOComponent'
 import AVComponent from './components/Pages/AVComponent'
 import { getFDOCouponInfo } from './Actions/FDOActions'
+import ImportCsvComponent from './components/Pages/ImportCsvComponent'
+import UserGuideComponent from './components/Pages/UserGuideComponent'
 
 const { Header, Content } = Layout
 
@@ -55,6 +62,7 @@ function App(props) {
   } = props
 
   const dispatch = useDispatch()
+  const cPlan = useSelector((state) => state.currentPlan)
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -162,9 +170,17 @@ function App(props) {
           <Header className={'top-header'} style={{ padding: 0 }} />
           <Content className={'body-content'}>
             <Switch>
-              <Route exact path='/' component={ShippingCarriersComponent} />
+              <Route exact path='/'>
+                {cPlan?.plan_id ? (
+                  <ShippingCarriersComponent />
+                ) : (
+                  <Redirect to='/plans' />
+                )}
+              </Route>
               <Route exact path='/plans' component={PlansComponent} />
               <Route path='/fdo' component={FDOComponent} />
+              <Route path='/importcsv' component={ImportCsvComponent} />
+              <Route path='/user_guide' component={UserGuideComponent} />
               <Route path='/av' component={AVComponent} />
               <Route path='/warehouses' component={WarehouseComponent} />
               <Route path='/addon/:addon_id' component={RendorAddon} />
