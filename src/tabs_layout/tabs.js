@@ -45,6 +45,7 @@ function TabsLayout() {
 				'freightquote-ltl',
 				'estes-ltl',
 				'dayross-ltl',
+				'tql-ltl',
 			]
 
 			for (const ic of installedCarriers) {
