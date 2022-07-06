@@ -75,19 +75,9 @@ const AppLogs = () => {
 	const fetchLogs = async () => {
 		try {
 			setLoading(true)
-
-			let config = {}
-			if (search.trim().length) {
-				config = { params: { search } }
-			}
-
-			const url = `${process.env.REACT_APP_ENITURE_API_URL}/api_logs`
-			const { data } = await axios.get(url, config)
-			if (!data.error) {
-				search.trim().length
-					? setFilteredLogs(data?.data?.data ?? [])
-					: setLogs(data?.data?.data ?? [])
-			}
+			const url = `${process.env.REACT_APP_ENITURE_API_URL}/api_logs?search=`+search
+			const { data } = await axios.get(url)
+			setFilteredLogs(data?.data?.data ?? [])
 
 			setLoading(false)
 		} catch (err) {
@@ -114,7 +104,7 @@ const AppLogs = () => {
 					<Input
 						placeholder='Search by log id'
 						className='col-8'
-						type='number'
+						type='text'
 						pattern='[0-9]*'
 						size='large'
 						value={search}

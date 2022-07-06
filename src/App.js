@@ -65,6 +65,7 @@ function App(props) {
   const [logsRoute, setLogsRoute] = useState(false)
   const dispatch = useDispatch()
   const cPlan = useSelector((state) => state.currentPlan)
+  const pathName = window.location.pathname
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -83,20 +84,23 @@ function App(props) {
       getShippingGroups(token)
       dispatch(getFDOCouponInfo(token))
     }
-
-    const devEnv = process?.env?.NODE_ENV === 'development'
-    if (devEnv) {
-      const localToken =
-        urlParams.get('store') ?? localStorage.getItem('store') ?? null
-
-      setToken(localToken)
-      fetchAppData(localToken)
-    } else {
-      const prodToken = urlParams.get('store') ?? null
-
-      dispatch({ type: 'TOKEN', payload: prodToken })
-      fetchAppData(prodToken)
-    }
+ 
+      const devEnv = process?.env?.NODE_ENV === 'development'
+      if (devEnv) {
+        const localToken =
+          urlParams.get('store') ?? localStorage.getItem('store') ?? null
+  
+        setToken(localToken)
+        if (!pathName.includes('app_logs')) {
+        fetchAppData(localToken)
+        }
+      } else {
+        const prodToken = urlParams.get('store') ?? null
+  
+        dispatch({ type: 'TOKEN', payload: prodToken })
+        fetchAppData(prodToken)
+      }
+  
   }, [
     currentPlan,
     dispatch,
@@ -115,7 +119,6 @@ function App(props) {
 
   useEffect(() =>
   {
-    const pathName = window.location.pathname
     if (pathName.includes('app_logs')) {
       setLogsRoute(true)
     }
@@ -124,6 +127,14 @@ function App(props) {
   message.config({
     maxCount: 1,
   })
+
+  if (pathName.includes('app_logs')) {
+    return <AppLogs/>
+  }
+  if (alertMessageType === 'Token Mismatch') {
+    return <h2 text='danger'>Invalid Token! Contact your administrator.</h2>
+  }
+
 
   const showMessageNotice = () => {
     if (alertMessageType === 'success') {
