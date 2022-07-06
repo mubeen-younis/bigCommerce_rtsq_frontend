@@ -67,7 +67,6 @@ const columns = [
 ]
 
 const AppLogs = () => {
-	const [logs, setLogs] = useState([])
 	const [loading, setLoading] = useState(false)
 	const [search, setSearch] = useState('')
 	const [filteredLogs, setFilteredLogs] = useState([])
@@ -120,7 +119,7 @@ const AppLogs = () => {
 			<Table
 				className='custom-table'
 				columns={columns}
-				dataSource={filteredLogs?.length > 0 ? filteredLogs : logs}
+				dataSource={filteredLogs?.length > 0 ? filteredLogs : []}
 				pagination={{
 					position: ['topRight', 'bottomRight'],
 					showSizeChanger: true,
