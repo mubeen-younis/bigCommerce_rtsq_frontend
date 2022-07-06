@@ -1,5 +1,5 @@
 import React from 'react'
-import QSComponent from '../YrcLtl/QuoteSettingsComponent'
+import QSComponent from '../FreightQuoteLtl/QuoteSettingsComponent'
 
 const QuoteSettingsComponent = () => <QSComponent />
 
