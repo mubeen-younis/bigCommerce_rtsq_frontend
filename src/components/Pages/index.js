@@ -12,6 +12,7 @@ export { default as CSUnishippersSmall } from './Unishippiers/ConnectionSettings
 export { default as CSFreightQuoteLtl } from './FreightQuoteLtl/ConnectionSettingsComponent'
 export { default as CSYRCLtl } from './YrcLtl/ConnectionSettingsComponent'
 export { default as CSEstesLtl } from './Estes/ConnectionSettingsComponent'
+export { default as CSDayRossLtl } from './Day&Ross/ConnectionSetiingsComponent'
 
 // Quote Settings Component
 export { default as QSWweltl } from './WweLtl/QuoteSettingsComponentWwe'
@@ -27,3 +28,4 @@ export { default as QSUnishippiersSmall } from './Unishippiers/QuoteSettingsComp
 export { default as QSFreightQuoteLtl } from './FreightQuoteLtl/QuoteSettingsComponent'
 export { default as QSYrcLtl } from './YrcLtl/QuoteSettingsComponent'
 export { default as QSEstestLtl } from './Estes/QuoteSettingsComponent'
+export { default as QSDayRossLtl } from './Day&Ross/QuoteSettingsComponent'
