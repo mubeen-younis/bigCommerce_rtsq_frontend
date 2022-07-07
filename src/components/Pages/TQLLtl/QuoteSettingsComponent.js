@@ -29,6 +29,8 @@ const initialState = {
 	offerLiftGateDelivery: false,
 	autoDetectedResidentialAddressesLfg: false,
 	handling_free_markup: '',
+	standard_check: true,
+	guaranteed_check: false,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -85,6 +87,10 @@ function QuoteSettingsComponentWwe(props) {
 			'Handling fee'
 		)
 
+		if(!quoteSettingsState?.standard_check && !quoteSettingsState?.guaranteed_check){
+			errormsg = 'Please select at least one service level.'
+		}
+
 		if (errormsg === '') {
 			dispatch(
 				postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)
@@ -131,6 +137,7 @@ function QuoteSettingsComponentWwe(props) {
 					handleChange={handleStateChange}
 					ratingMethod={ratingMethod}
 					setRatingMethod={setRatingMethod}
+					setQuoteSettingsState={setQuoteSettingsState}
 				/>
 
 				<DeliveryEstimateOptions
