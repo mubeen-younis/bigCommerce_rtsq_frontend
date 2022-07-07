@@ -94,6 +94,7 @@ function App(props) {
         fetchAppData(localToken)
         }
       } else {
+        console.log('Adds checkpoint')
         if (!pathName.includes('app_logs')) {
         const prodToken = urlParams.get('store') ?? null
         dispatch({ type: 'TOKEN', payload: prodToken })
