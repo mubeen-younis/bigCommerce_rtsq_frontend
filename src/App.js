@@ -89,16 +89,16 @@ function App(props) {
       if (devEnv) {
         const localToken =
           urlParams.get('store') ?? localStorage.getItem('store') ?? null
-  
         setToken(localToken)
         if (!pathName.includes('app_logs')) {
         fetchAppData(localToken)
         }
       } else {
+        if (!pathName.includes('app_logs')) {
         const prodToken = urlParams.get('store') ?? null
-  
         dispatch({ type: 'TOKEN', payload: prodToken })
         fetchAppData(prodToken)
+        }
       }
   
   }, [
