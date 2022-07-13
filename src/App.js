@@ -1,11 +1,16 @@
-import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom'
 import { Layout, message, Modal, Spin } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import './App.css'
 import './responsive.css'
 import SideMenu from './partials/SideMenu'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { getLocations } from './Actions/Warehouse'
 import {
   getInstalledCarriers,
@@ -26,6 +31,9 @@ import WarehouseComponent from './components/Pages/WarehouseComponent'
 import FDOComponent from './components/Pages/FDOComponent'
 import AVComponent from './components/Pages/AVComponent'
 import { getFDOCouponInfo } from './Actions/FDOActions'
+import ImportCsvComponent from './components/Pages/ImportCsvComponent'
+import UserGuideComponent from './components/Pages/UserGuideComponent'
+import AppLogs from './components/Pages/AppLogs'
 
 const { Header, Content } = Layout
 
@@ -54,7 +62,10 @@ function App(props) {
     getShippingGroups,
   } = props
 
+  const [logsRoute, setLogsRoute] = useState(false)
   const dispatch = useDispatch()
+  const cPlan = useSelector((state) => state.currentPlan)
+  const pathName = window.location.pathname
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -73,20 +84,21 @@ function App(props) {
       getShippingGroups(token)
       dispatch(getFDOCouponInfo(token))
     }
-
-    const devEnv = process?.env?.NODE_ENV === 'development'
-    if (devEnv) {
-      const localToken =
-        urlParams.get('store') ?? localStorage.getItem('store') ?? null
-
-      setToken(localToken)
-      fetchAppData(localToken)
-    } else {
-      const prodToken = urlParams.get('store') ?? null
-
-      dispatch({ type: 'TOKEN', payload: prodToken })
-      fetchAppData(prodToken)
-    }
+ 
+      const devEnv = process?.env?.NODE_ENV === 'development'
+      if (devEnv) {
+        const localToken =
+          urlParams.get('store') ?? localStorage.getItem('store') ?? null
+        setToken(localToken)
+        if (!pathName.includes('app_logs')) {
+        fetchAppData(localToken)
+        }
+      } else {
+        const prodToken = urlParams.get('store') ?? null
+        dispatch({ type: 'TOKEN', payload: prodToken })
+        fetchAppData(prodToken)
+      }
+  
   }, [
     currentPlan,
     dispatch,
@@ -103,9 +115,24 @@ function App(props) {
     setToken,
   ])
 
+  useEffect(() =>
+  {
+    if (pathName.includes('app_logs')) {
+      setLogsRoute(true)
+    }
+  }, [window.location.pathname])
+
   message.config({
     maxCount: 1,
   })
+
+  if (pathName.includes('app_logs')) {
+    return <AppLogs/>
+  }
+  if (alertMessageType === 'Token Mismatch') {
+    return <h2 text='danger'>Invalid Token! Contact your administrator.</h2>
+  }
+
 
   const showMessageNotice = () => {
     if (alertMessageType === 'success') {
@@ -156,15 +183,24 @@ function App(props) {
   return (
     <Router>
       <Layout>
-        <SideMenu />
+        {!logsRoute && <SideMenu />}
 
         <Layout>
           <Header className={'top-header'} style={{ padding: 0 }} />
           <Content className={'body-content'}>
             <Switch>
-              <Route exact path='/' component={ShippingCarriersComponent} />
+              <Route path='/app_logs' component={AppLogs} />
+              <Route exact path='/'>
+                {cPlan?.plan_id ? (
+                  <ShippingCarriersComponent />
+                ) : (
+                  <Redirect to='/plans' />
+                )}
+              </Route>
               <Route exact path='/plans' component={PlansComponent} />
               <Route path='/fdo' component={FDOComponent} />
+              <Route path='/importcsv' component={ImportCsvComponent} />
+              <Route path='/user_guide' component={UserGuideComponent} />
               <Route path='/av' component={AVComponent} />
               <Route path='/warehouses' component={WarehouseComponent} />
               <Route path='/addon/:addon_id' component={RendorAddon} />

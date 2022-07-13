@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from 'react'
 import { Layout, Menu, Typography } from 'antd'
 import { Link } from 'react-router-dom'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 const { Sider } = Layout
 const { Title } = Typography
 
 function SideMenu(props) {
   const dispatch = useDispatch()
-
+  const { currentPlan } = useSelector((state) => state)
   const setActiveMenu = useCallback(
     (menuId) => {
       dispatch({
@@ -25,6 +25,8 @@ function SideMenu(props) {
     else if (name.includes('warehouses')) setActiveMenu('101')
     else if (name.includes('fdo')) setActiveMenu('102')
     else if (name.includes('av')) setActiveMenu('103')
+    else if (name.includes('importcsv')) setActiveMenu('104')
+    else if (name.includes('user_guide')) setActiveMenu('105')
     else if (name.includes('addon'))
       setActiveMenu('addon-' + name.substring(name.lastIndexOf('/') + 1))
     else setActiveMenu(name.substring(name.lastIndexOf('/') + 1))
@@ -35,10 +37,8 @@ function SideMenu(props) {
       breakpoint='lg'
       collapsedWidth='0'
       onBreakpoint={(broken) => {
-        // console.log(broken);
       }}
       onCollapse={(collapsed, type) => {
-        // console.log(collapsed, type)
       }}
       className={'sidemenu'}
       width={240}
@@ -54,100 +54,123 @@ function SideMenu(props) {
         defaultSelectedKeys={'99'}
         selectedKeys={props.activeMenu}
       >
-        <Menu.Item key='99' warnkey='99' onClick={() => setActiveMenu('99')}>
-          <Link to='/'>Dashboard</Link>
-        </Menu.Item>
+        {currentPlan?.plan_id && (
+          <Menu.Item key='99' warnkey='99' onClick={() => setActiveMenu('99')}>
+            <Link to='/'>Dashboard</Link>
+          </Menu.Item>
+        )}
 
         <Menu.Item key='100' warnkey='100' onClick={() => setActiveMenu('100')}>
           <Link to='/plans'>Plans</Link>
         </Menu.Item>
-        <Menu.Item key='101' warnkey='101' onClick={() => setActiveMenu('101')}>
-          <Link to='/warehouses'>Warehouses</Link>
-        </Menu.Item>
-
-        <Menu.Item key='102' warnkey={102} onClick={() => setActiveMenu('102')}>
-          <Link to={`/fdo`}>FreightDesk Online</Link>
-        </Menu.Item>
-
-        <Menu.Item key='103' warnkey={103} onClick={() => setActiveMenu('103')}>
-          <Link to={`/av`}>Address Validation</Link>
-        </Menu.Item>
-
-        <Title className={'carriers-name'} level={5}>
-          LTL Freight Providers
-        </Title>
-
-        {props?.installedCarriers
-          ?.filter((car) => car.carrier_type === 1)
-          .every((carr) => carr.is_enabled === 0) ? (
-          <Menu.Item>No Carrier is Installed/Enabled</Menu.Item>
-        ) : null}
-
-        {/*props.installedCarriers && props.installedCarriers.length === 0 ? (
-					<Menu.Item>No Carrier Installed</Menu.Item>
-				) : null*/}
-
-        {props?.installedCarriers?.map((carrier) =>
-          carrier.is_enabled && carrier.carrier_type === 1 ? (
+        {currentPlan?.plan_id && (
+          <>
             <Menu.Item
-              key={carrier.id.toString()}
-              warnkey={carrier.id.toString()}
-              active='true'
-              onClick={() => setActiveMenu(carrier.id.toString())}
+              key='101'
+              warnkey='101'
+              onClick={() => setActiveMenu('101')}
             >
-              <Link to={`/${carrier.id}`}>{carrier.name}</Link>
+              <Link to='/warehouses'>Warehouses</Link>
             </Menu.Item>
-          ) : null
-        )}
 
-        <Title className={'carriers-name'} level={5}>
-          Parcel & Postal Providers
-        </Title>
-
-        {props?.installedCarriers
-          ?.filter((car) => car.carrier_type === 2)
-          .every((carr) => carr.is_enabled === 0) ? (
-          <Menu.Item>No Carrier is Installed/Enabled</Menu.Item>
-        ) : null}
-
-        {/*props.installedCarriers && props.installedCarriers.length === 0 ? (
-					<Menu.Item>No Carrier Installed</Menu.Item>
-				) : null*/}
-
-        {props?.installedCarriers?.map((carrier) =>
-          carrier.is_enabled && carrier.carrier_type === 2 ? (
             <Menu.Item
-              key={carrier.id.toString()}
-              warnkey={carrier.id.toString()}
-              onClick={() => setActiveMenu(carrier.id.toString())}
-              active='true'
+              key='102'
+              warnkey={102}
+              onClick={() => setActiveMenu('102')}
             >
-              <Link to={`/${carrier.id}`}>{carrier.name}</Link>
+              <Link to={`/fdo`}>FreightDesk Online</Link>
             </Menu.Item>
-          ) : null
-        )}
 
-        <Title className={'carriers-name'} level={5}>
-          Add-ons
-        </Title>
-        {/*props.installedAddons && props.installedAddons.length === 0 ? (
-					<Menu.Item>No Addon Installed</Menu.Item>
-				) : null*/}
-
-        {props?.installedAddons?.every((add) => add.is_enabled === 0) ? (
-          <Menu.Item>No Add-on is Installed/Enabled</Menu.Item>
-        ) : null}
-
-        {props?.installedAddons?.map((addon) =>
-          addon.is_enabled ? (
             <Menu.Item
-              key={'addon-' + addon.id.toString()}
-              warnkey={'addon-' + addon.id.toString()}
-              onClick={() => setActiveMenu('addon-' + addon.id.toString())}
+              key='103'
+              warnkey={103}
+              onClick={() => setActiveMenu('103')}
             >
-              <Link to={`/addon/${addon.id}`}>{addon.name}</Link>
+              <Link to={`/av`}>Address Validation</Link>
             </Menu.Item>
-          ) : null
+
+            <Menu.Item
+              key='104'
+              warnkey={104}
+              onClick={() => setActiveMenu('104')}
+            >
+              <Link to={`/importcsv`}>Import CSV</Link>
+            </Menu.Item>
+
+            <Menu.Item
+              key='105'
+              warnkey={105}
+              onClick={() => setActiveMenu('105')}
+            >
+              <Link to={`/user_guide`}>User Guide</Link>
+            </Menu.Item>
+
+            <Title className={'carriers-name'} level={5}>
+              LTL Freight Providers
+            </Title>
+
+            {props?.installedCarriers
+              ?.filter((car) => car.carrier_type === 1)
+              .every((carr) => carr.is_enabled === 0) ? (
+              <Menu.Item>No Carrier is Installed/Enabled</Menu.Item>
+            ) : null}
+
+            {props?.installedCarriers?.map((carrier) =>
+              carrier.is_enabled && carrier.carrier_type === 1 ? (
+                <Menu.Item
+                  key={carrier.id.toString()}
+                  warnkey={carrier.id.toString()}
+                  active='true'
+                  onClick={() => setActiveMenu(carrier.id.toString())}
+                >
+                  <Link to={`/${carrier.id}`}>{carrier.name}</Link>
+                </Menu.Item>
+              ) : null
+            )}
+
+            <Title className={'carriers-name'} level={5}>
+              Parcel & Postal Providers
+            </Title>
+
+            {props?.installedCarriers
+              ?.filter((car) => car.carrier_type === 2)
+              .every((carr) => carr.is_enabled === 0) ? (
+              <Menu.Item>No Carrier is Installed/Enabled</Menu.Item>
+            ) : null}
+
+            {props?.installedCarriers?.map((carrier) =>
+              carrier.is_enabled && carrier.carrier_type === 2 ? (
+                <Menu.Item
+                  key={carrier.id.toString()}
+                  warnkey={carrier.id.toString()}
+                  onClick={() => setActiveMenu(carrier.id.toString())}
+                  active='true'
+                >
+                  <Link to={`/${carrier.id}`}>{carrier.name}</Link>
+                </Menu.Item>
+              ) : null
+            )}
+
+            <Title className={'carriers-name'} level={5}>
+              Add-ons
+            </Title>
+
+            {props?.installedAddons?.every((add) => add.is_enabled === 0) ? (
+              <Menu.Item>No Add-on is Installed/Enabled</Menu.Item>
+            ) : null}
+
+            {props?.installedAddons?.map((addon) =>
+              addon.is_enabled ? (
+                <Menu.Item
+                  key={'addon-' + addon.id.toString()}
+                  warnkey={'addon-' + addon.id.toString()}
+                  onClick={() => setActiveMenu('addon-' + addon.id.toString())}
+                >
+                  <Link to={`/addon/${addon.id}`}>{addon.name}</Link>
+                </Menu.Item>
+              ) : null
+            )}
+          </>
         )}
       </Menu>
     </Sider>
