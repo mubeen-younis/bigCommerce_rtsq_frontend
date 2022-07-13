@@ -28,6 +28,8 @@ import {
 	QSEstestLtl,
 	CSDayRossLtl,
 	QSDayRossLtl,
+	CSOdflLtl,
+	QSOdflLtl,
 } from '../components/Pages'
 
 const useLoadComponent = index => {
@@ -46,6 +48,7 @@ const useLoadComponent = index => {
 		<CSFreightQuoteLtl />,
 		<CSEstesLtl />,
 		<CSDayRossLtl />,
+		<CSOdflLtl />,
 	]
 	const quoteSettingsList = [
 		<QSWweltl />,
@@ -62,6 +65,7 @@ const useLoadComponent = index => {
 		<QSFreightQuoteLtl />,
 		<QSEstestLtl />,
 		<QSDayRossLtl />,
+		<QSOdflLtl />,
 	]
 
 	return [connectionSettigsList[+index], quoteSettingsList[+index]]
