@@ -13,6 +13,7 @@ export { default as CSFreightQuoteLtl } from './FreightQuoteLtl/ConnectionSettin
 export { default as CSYRCLtl } from './YrcLtl/ConnectionSettingsComponent'
 export { default as CSEstesLtl } from './Estes/ConnectionSettingsComponent'
 export { default as CSDayRossLtl } from './Day&Ross/ConnectionSetiingsComponent'
+export { default as CSOdflLtl } from './Odfl-Ltl/ConnectionSettingsComponent'
 export { default as CSSaiaLtl } from './SaiaLtl/ConnectionSettingsComponent'
 
 // Quote Settings Component
@@ -30,4 +31,5 @@ export { default as QSFreightQuoteLtl } from './FreightQuoteLtl/QuoteSettingsCom
 export { default as QSYrcLtl } from './YrcLtl/QuoteSettingsComponent'
 export { default as QSEstestLtl } from './Estes/QuoteSettingsComponent'
 export { default as QSDayRossLtl } from './Day&Ross/QuoteSettingsComponent'
+export { default as QSOdflLtl } from './Odfl-Ltl/QuoteSettingsComponentodfl'
 export { default as QSSaiaLtl } from './SaiaLtl/QuoteSettingsComponent'
