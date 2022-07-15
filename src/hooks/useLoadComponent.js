@@ -32,6 +32,8 @@ import {
 	QSOdflLtl,
 	CSSaiaLtl,
 	QSSaiaLtl,
+	DaylightLtl,
+	QSDayLightLtl,
 } from '../components/Pages'
 
 const useLoadComponent = index => {
@@ -52,6 +54,7 @@ const useLoadComponent = index => {
 		<CSDayRossLtl />,
 		<CSOdflLtl />,
 		<CSSaiaLtl />,
+		<DaylightLtl />,
 	]
 	const quoteSettingsList = [
 		<QSWweltl />,
@@ -70,6 +73,7 @@ const useLoadComponent = index => {
 		<QSDayRossLtl />,
 		<QSOdflLtl />,
 		<QSSaiaLtl />,
+		<QSDayLightLtl />,
 	]
 
 	return [connectionSettigsList[+index], quoteSettingsList[+index]]
