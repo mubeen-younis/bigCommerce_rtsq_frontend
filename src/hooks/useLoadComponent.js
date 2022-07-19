@@ -30,6 +30,8 @@ import {
 	QSDayRossLtl,
 	CSOdflLtl,
 	QSOdflLtl,
+	CSSaiaLtl,
+	QSSaiaLtl,
 	CSAbfLtl,
 	QSAbfLtl,
 } from '../components/Pages'
@@ -51,6 +53,7 @@ const useLoadComponent = index => {
 		<CSEstesLtl />,
 		<CSDayRossLtl />,
 		<CSOdflLtl />,
+		<CSSaiaLtl />,
 		<CSAbfLtl />,
 	]
 	const quoteSettingsList = [
@@ -69,6 +72,7 @@ const useLoadComponent = index => {
 		<QSEstestLtl />,
 		<QSDayRossLtl />,
 		<QSOdflLtl />,
+		<QSSaiaLtl />,
 		<QSAbfLtl />,
 	]
 
