@@ -32,6 +32,7 @@ import {
 	QSOdflLtl,
 	CSSaiaLtl,
 	QSSaiaLtl,
+	CSPurolatorSmall,
 } from '../components/Pages'
 
 const useLoadComponent = index => {
@@ -52,6 +53,7 @@ const useLoadComponent = index => {
 		<CSDayRossLtl />,
 		<CSOdflLtl />,
 		<CSSaiaLtl />,
+		<CSPurolatorSmall />
 	]
 	const quoteSettingsList = [
 		<QSWweltl />,

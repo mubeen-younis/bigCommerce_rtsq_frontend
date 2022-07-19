@@ -15,6 +15,7 @@ export { default as CSEstesLtl } from './Estes/ConnectionSettingsComponent'
 export { default as CSDayRossLtl } from './Day&Ross/ConnectionSetiingsComponent'
 export { default as CSOdflLtl } from './Odfl-Ltl/ConnectionSettingsComponent'
 export { default as CSSaiaLtl } from './SaiaLtl/ConnectionSettingsComponent'
+export { default as CSPurolatorSmall } from './PurolatorSmall/ConnectionSettingsComponentPurolatorSmall'
 
 // Quote Settings Component
 export { default as QSWweltl } from './WweLtl/QuoteSettingsComponentWwe'

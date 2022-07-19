@@ -43,6 +43,7 @@ function TabsLayout() {
 				'dayross-ltl',
 				'odfl-ltl',
 				'saia-ltl',
+				'purolator-small'
 			]
 
 			for (const ic of installedCarriers) {
