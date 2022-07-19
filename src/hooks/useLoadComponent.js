@@ -33,6 +33,7 @@ import {
 	CSSaiaLtl,
 	QSSaiaLtl,
 	CSPurolatorSmall,
+	QSPurolatorSmall,
 } from '../components/Pages'
 
 const useLoadComponent = index => {
@@ -72,6 +73,7 @@ const useLoadComponent = index => {
 		<QSDayRossLtl />,
 		<QSOdflLtl />,
 		<QSSaiaLtl />,
+		<QSPurolatorSmall />,
 	]
 
 	return [connectionSettigsList[+index], quoteSettingsList[+index]]

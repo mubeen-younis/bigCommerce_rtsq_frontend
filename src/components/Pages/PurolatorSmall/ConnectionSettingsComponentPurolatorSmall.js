@@ -62,7 +62,6 @@ function ConnectionSettingsComponent(props) {
 					register online
 				</a>{' '}.
 			</div>
-			<PromoCodeNote carrierName='Worldwide Express Small' />
 
 			<Form
 				layout='vertical'
@@ -130,7 +129,6 @@ function ConnectionSettingsComponent(props) {
 					rules={[{ required: true, message: 'Production Key Password' }]}>
 					<Input placeholder='Production Key Password' />
 				</Form.Item>
-				<PromoCodeField />
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
