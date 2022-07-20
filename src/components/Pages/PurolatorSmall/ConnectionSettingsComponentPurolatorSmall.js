@@ -83,17 +83,9 @@ function ConnectionSettingsComponent(props) {
 					<Input placeholder='Registered Account Number' />
 				</Form.Item>
 				<Row>
-				<Col span={12}>
+				<Col span={24}>
 				<Form.Item
-							label='Registered Address'
-							name='senderCountryCode'
-							rules={[{ required: true, message: 'Country' }]}>
-							<Input type='text' placeholder='Country' />
-				</Form.Item>
-				</Col>
-				<Col span={12}>
-				<Form.Item
-							style={{ marginTop: '2em' , marginLeft: '2em' }}
+				            label='Registered Address'
 							name='senderCity'
 							rules={[{ required: true, message: 'City' }]}>
 							<Input type='text' placeholder='City' />
