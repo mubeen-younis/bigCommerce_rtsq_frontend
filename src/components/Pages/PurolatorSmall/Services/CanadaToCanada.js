@@ -36,7 +36,6 @@ const CanadaToCanada = ({
           <Form.Item className="mb-0">
             <Checkbox
               name="select_all"
-              value={true}
               checked={checkAll}
               onChange={allCheckHandler}
             ></Checkbox>
@@ -52,10 +51,7 @@ const CanadaToCanada = ({
           <Form.Item className={"mb-0"}>
             <Checkbox
               name="purolator_express"
-              value={true}
-              checked={
-                quoteSettingsState?.carrier_services?.ups_ground ? true : null
-              }
+              checked={quoteSettingsState?.carrier_services?.purolator_express}
               onChange={onCheck}
             ></Checkbox>
           </Form.Item>
@@ -63,8 +59,10 @@ const CanadaToCanada = ({
         <Col span={14}>
           <Form.Item className={"mb-0"}>
             <Input
-              name={"purolator_express_markup"}
-              value={quoteSettingsState?.carrier_services?.ups_ground_markup}
+              name="purolator_express_markup"
+              value={
+                quoteSettingsState?.carrier_services?.purolator_express_markup
+              }
               onChange={onChange}
               onKeyDown={handlingFeeMarkup}
               maxLength="7"
@@ -88,8 +86,9 @@ const CanadaToCanada = ({
           <Form.Item className={"mb-0"}>
             <Checkbox
               name="purolator_express_9am"
-              value={true}
-              checked={quoteSettingsState?.carrier_services?.ups_2nd_day_air}
+              checked={
+                quoteSettingsState?.carrier_services?.purolator_express_9am
+              }
               onChange={onCheck}
             ></Checkbox>
           </Form.Item>
@@ -98,9 +97,10 @@ const CanadaToCanada = ({
           <Form.Item className={"mb-0"}>
             <Input
               value={
-                quoteSettingsState?.carrier_services?.ups_2nd_day_air_markup
+                quoteSettingsState?.carrier_services
+                  ?.purolator_express_9am_markup
               }
-              name={"purolator_express_9am_markup"}
+              name="purolator_express_9am_markup"
               onChange={onChange}
               onKeyDown={handlingFeeMarkup}
               maxLength="7"
@@ -124,8 +124,9 @@ const CanadaToCanada = ({
           <Form.Item className={"mb-0"}>
             <Checkbox
               name="purolator_express_10_30am"
-              value={true}
-              checked={quoteSettingsState?.carrier_services?.ups_2nd_day_air_am}
+              checked={
+                quoteSettingsState?.carrier_services?.purolator_express_10_30am
+              }
               onChange={onCheck}
             ></Checkbox>
           </Form.Item>
@@ -134,9 +135,10 @@ const CanadaToCanada = ({
           <Form.Item className={"mb-0"}>
             <Input
               value={
-                quoteSettingsState?.carrier_services?.ups_2nd_day_air_am_markup
+                quoteSettingsState?.carrier_services
+                  ?.purolator_express_10_30am_markup
               }
-              name={"purolator_express_10_30am_markup"}
+              name="purolator_express_10_30am_markup"
               onChange={onChange}
               onKeyDown={handlingFeeMarkup}
               maxLength="7"
@@ -160,10 +162,7 @@ const CanadaToCanada = ({
           <Form.Item className={"mb-0"}>
             <Checkbox
               name="purolator_ground"
-              value={true}
-              checked={
-                quoteSettingsState?.carrier_services?.ups_next_day_air_saver
-              }
+              checked={quoteSettingsState?.carrier_services?.purolator_ground}
               onChange={onCheck}
             ></Checkbox>
           </Form.Item>
@@ -172,10 +171,9 @@ const CanadaToCanada = ({
           <Form.Item className={"mb-0"}>
             <Input
               value={
-                quoteSettingsState?.carrier_services
-                  ?.ups_next_day_air_saver_markup
+                quoteSettingsState?.carrier_services?.purolator_ground_markup
               }
-              name={"purolator_ground_markup"}
+              name="purolator_ground_markup"
               onChange={onChange}
               onKeyDown={handlingFeeMarkup}
               maxLength="7"
@@ -199,8 +197,9 @@ const CanadaToCanada = ({
           <Form.Item className={"mb-0"}>
             <Checkbox
               name="purolator_ground_9AM"
-              value={true}
-              checked={quoteSettingsState?.carrier_services?.ups_next_day_air}
+              checked={
+                quoteSettingsState?.carrier_services?.purolator_ground_9AM
+              }
               onChange={onCheck}
             ></Checkbox>
           </Form.Item>
@@ -210,10 +209,11 @@ const CanadaToCanada = ({
             <Input
               //maxLength='7'
               value={
-                quoteSettingsState?.carrier_services?.ups_next_day_air_markup
+                quoteSettingsState?.carrier_services
+                  ?.purolator_ground_9AM_markup
               }
               //pattern='[0-9.?(0-9){2}?]+%?$'
-              name={"purolator_ground_9AM_markup"}
+              name="purolator_ground_9AM_markup"
               onChange={onChange}
               onKeyDown={handlingFeeMarkup}
               maxLength="7"
@@ -237,9 +237,8 @@ const CanadaToCanada = ({
           <Form.Item className={"mb-0"}>
             <Checkbox
               name="purolator_ground_10_30AM"
-              value={true}
               checked={
-                quoteSettingsState?.carrier_services?.ups_next_day_air_early
+                quoteSettingsState?.carrier_services?.purolator_ground_10_30AM
               }
               onChange={onCheck}
             ></Checkbox>
@@ -251,10 +250,10 @@ const CanadaToCanada = ({
               //maxLength='7'
               value={
                 quoteSettingsState?.carrier_services
-                  ?.ups_next_day_air_early_markup
+                  ?.purolator_ground_10_30AM_markup
               }
               //pattern='[0-9.?(0-9){2}?]+%?$'
-              name={"purolator_ground_10_30AM_markup"}
+              name="purolator_ground_10_30AM_markup"
               onChange={onChange}
               onKeyDown={handlingFeeMarkup}
               maxLength="7"

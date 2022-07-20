@@ -19,42 +19,7 @@ import SaveButton from "../../SaveButton"
 
 const { Title } = Typography
 const initialState = {
-  carrier_services: {
-    ups_ground: false,
-    ups_2nd_day_air: false,
-    ups_2nd_day_air_am: false,
-    ups_next_day_air_saver: false,
-    ups_next_day_air: false,
-    ups_next_day_air_early: false,
-    ups_3_day_select: false,
-    ups_ground_markup: "",
-    ups_2nd_day_air_markup: "",
-    ups_2nd_day_air_am_markup: "",
-    ups_next_day_air_saver_markup: "",
-    ups_next_day_air_markup: "",
-    ups_next_day_air_early_markup: "",
-    ups_3_day_select_markup: "",
-    ups_standard: false,
-    ups_worldwide_expedited: false,
-    ups_worldwide_saver: false,
-    ups_worldwide_express: false,
-    ups_worldwide_express_plus: false,
-    ups_standard_markup: "",
-    ups_worldwide_expedited_markup: "",
-    ups_worldwide_saver_markup: "",
-    ups_worldwide_express_markup: "",
-    ups_worldwide_express_plus_markup: "",
-    ups_surepost_less_than_1lb: false,
-    ups_surepost_1lb_or_greater: false,
-    ups_surepost_bound_printed_matter: false,
-    ups_surepost_media_mail: false,
-    ups_ground_with_freight_pricing: false,
-    ups_surepost_less_than_1lb_markup: "",
-    ups_surepost_1lb_or_greater_markup: "",
-    ups_surepost_bound_printed_matter_markup: "",
-    ups_surepost_media_mail_markup: "",
-    ups_ground_with_freight_pricing_markup: "",
-  },
+  carrier_services: {},
   delivery_estimate_options: 1,
   showDeliveryEstimate: false,
   order_cut_off_time: "",
@@ -72,13 +37,13 @@ const initialState = {
   air_hazardous_material_fee: null,
   handling_fee_markup: null,
   quote_details: null,
-  rate_source: 1,
 }
 
 function QuoteSettingsComponentWweSmall(props) {
   const [loading, setLoading] = useState(true)
   const [checkAll, setCheckAll] = useState(false)
   const [internationalcheckAll, setInternationalCheckAll] = useState(false)
+  const [CanadaToUSCheckAll, setCanadaToUSCheckAll] = useState(false)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
   const dispatch = useDispatch()
 
@@ -92,25 +57,30 @@ function QuoteSettingsComponentWweSmall(props) {
   const getQuoteSettings = () => {
     const checks = props.quoteSettings.carrier_services
     if (
-      checks?.ups_ground &&
-      checks?.ups_3_day_select &&
-      checks?.ups_2nd_day_air &&
-      checks?.ups_2nd_day_air_am &&
-      checks?.ups_next_day_air &&
-      checks?.ups_next_day_air_saver &&
-      checks?.ups_next_day_air_early
+      checks?.purolator_express &&
+      checks?.purolator_express_9am &&
+      checks?.purolator_express_10_30am &&
+      checks?.purolator_ground &&
+      checks?.purolator_ground_9AM &&
+      checks?.purolator_ground_10_30AM
     ) {
       setCheckAll(true)
     }
 
     if (
-      checks?.ups_standard &&
-      checks?.ups_worldwide_expedited &&
-      checks?.ups_worldwide_saver &&
-      checks?.ups_worldwide_express &&
-      checks?.ups_worldwide_express_plus
+      checks?.purolator_express_international &&
+      checks?.purolator_express_international_12_am
     ) {
       setInternationalCheckAll(true)
+    }
+
+    if (
+      checks?.purolator_ground_us &&
+      checks?.purolator_express_us &&
+      checks?.purolator_express_us_9_am &&
+      checks?.purolator_express_us_10_30am
+    ) {
+      setCanadaToUSCheckAll(true)
     }
 
     setQuoteSettingsState({ ...quoteSettingsState, ...props.quoteSettings })
@@ -142,16 +112,17 @@ function QuoteSettingsComponentWweSmall(props) {
 		}*/
 
     const checks = {
-      ups_ground: quoteSettingsState?.carrier_services?.ups_ground,
-      ups_3_day_select: quoteSettingsState?.carrier_services?.ups_3_day_select,
-      ups_2nd_day_air: quoteSettingsState?.carrier_services?.ups_2nd_day_air,
-      ups_2nd_day_air_am:
-        quoteSettingsState?.carrier_services?.ups_2nd_day_air_am,
-      ups_next_day_air: quoteSettingsState?.carrier_services?.ups_next_day_air,
-      ups_next_day_air_saver:
-        quoteSettingsState?.carrier_services?.ups_next_day_air_saver,
-      ups_next_day_air_early:
-        quoteSettingsState?.carrier_services?.ups_next_day_air_early,
+      purolator_express:
+        quoteSettingsState?.carrier_services?.purolator_express,
+      purolator_express_9am:
+        quoteSettingsState?.carrier_services?.purolator_express_9am,
+      purolator_express_10_30am:
+        quoteSettingsState?.carrier_services?.purolator_express_10_30am,
+      purolator_ground: quoteSettingsState?.carrier_services?.purolator_ground,
+      purolator_ground_9AM:
+        quoteSettingsState?.carrier_services?.purolator_ground_9AM,
+      purolator_ground_10_30AM:
+        quoteSettingsState?.carrier_services?.purolator_ground_10_30AM,
     }
     if (Object.keys(checks).includes(e.target.name)) {
       checks[e.target.name] = e.target.checked
@@ -160,15 +131,11 @@ function QuoteSettingsComponentWweSmall(props) {
     }
 
     const internationalChecks = {
-      ups_standard: quoteSettingsState?.carrier_services?.ups_standard,
-      ups_worldwide_expedited:
-        quoteSettingsState?.carrier_services?.ups_worldwide_expedited,
-      ups_worldwide_saver:
-        quoteSettingsState?.carrier_services?.ups_worldwide_saver,
-      ups_worldwide_express:
-        quoteSettingsState?.carrier_services?.ups_worldwide_express,
-      ups_worldwide_express_plus:
-        quoteSettingsState?.carrier_services?.ups_worldwide_express_plus,
+      purolator_express_international:
+        quoteSettingsState?.carrier_services?.purolator_express_international,
+      purolator_express_international_12_am:
+        quoteSettingsState?.carrier_services
+          ?.purolator_express_international_12_am,
     }
 
     if (Object.keys(internationalChecks).includes(e.target.name)) {
@@ -177,6 +144,25 @@ function QuoteSettingsComponentWweSmall(props) {
         ck => ck
       )
       setInternationalCheckAll(internationalIsCheckAll)
+    }
+
+    const canadaToUSChecks = {
+      purolator_ground_us:
+        quoteSettingsState?.carrier_services?.purolator_ground_us,
+      purolator_express_us:
+        quoteSettingsState?.carrier_services?.purolator_express_us,
+      purolator_express_us_9_am:
+        quoteSettingsState?.carrier_services?.purolator_express_us_9_am,
+      purolator_express_us_10_30am:
+        quoteSettingsState?.carrier_services?.purolator_express_us_10_30am,
+    }
+
+    if (Object.keys(canadaToUSChecks).includes(e.target.name)) {
+      canadaToUSChecks[e.target.name] = e.target.checked
+      const CanadaToUSIsCheckAll = Object.values(canadaToUSChecks).every(
+        ck => ck
+      )
+      setCanadaToUSCheckAll(CanadaToUSIsCheckAll)
     }
   }
 
@@ -187,13 +173,12 @@ function QuoteSettingsComponentWweSmall(props) {
       ...quoteSettingsState,
       carrier_services: {
         ...quoteSettingsState.carrier_services,
-        ups_ground: !checkAll,
-        ups_3_day_select: !checkAll,
-        ups_2nd_day_air: !checkAll,
-        ups_2nd_day_air_am: !checkAll,
-        ups_next_day_air_saver: !checkAll,
-        ups_next_day_air: !checkAll,
-        ups_next_day_air_early: !checkAll,
+        purolator_express: !checkAll,
+        purolator_express_9am: !checkAll,
+        purolator_express_10_30am: !checkAll,
+        purolator_ground: !checkAll,
+        purolator_ground_9AM: !checkAll,
+        purolator_ground_10_30AM: !checkAll,
       },
     })
   }
@@ -205,11 +190,23 @@ function QuoteSettingsComponentWweSmall(props) {
       ...quoteSettingsState,
       carrier_services: {
         ...quoteSettingsState.carrier_services,
-        ups_standard: checked,
-        ups_worldwide_expedited: checked,
-        ups_worldwide_saver: checked,
-        ups_worldwide_express: checked,
-        ups_worldwide_express_plus: checked,
+        purolator_express_international: checked,
+        purolator_express_international_12_am: checked,
+      },
+    })
+  }
+
+  const CanadatoUSAllCheckHandler = checked => {
+    setCanadaToUSCheckAll(checked)
+
+    setQuoteSettingsState({
+      ...quoteSettingsState,
+      carrier_services: {
+        ...quoteSettingsState.carrier_services,
+        purolator_ground_us: checked,
+        purolator_express_us: checked,
+        purolator_express_us_9_am: checked,
+        purolator_express_us_10_30am: checked,
       },
     })
   }
@@ -217,75 +214,64 @@ function QuoteSettingsComponentWweSmall(props) {
   const onFinish = data => {
     let CS = quoteSettingsState?.carrier_services ?? {}
     let checkCS =
-      CS?.ups_2nd_day_air ||
-      CS?.ups_2nd_day_air_am ||
-      CS?.ups_3_day_select ||
-      CS?.ups_ground ||
-      CS?.ups_next_day_air ||
-      CS?.ups_next_day_air_early ||
-      CS?.ups_next_day_air_saver ||
-      CS?.ups_standard ||
-      CS?.ups_worldwide_expedited ||
-      CS?.ups_worldwide_saver ||
-      CS?.ups_worldwide_express ||
-      CS?.ups_worldwide_express_plus ||
-      CS?.ups_surepost_less_than_1lb ||
-      CS?.ups_surepost_1lb_or_greater ||
-      CS?.ups_surepost_bound_printed_matter ||
-      CS?.ups_surepost_media_mail ||
-      CS?.ups_ground_with_freight_pricing
+      CS?.purolator_express ||
+      CS?.purolator_express_9am ||
+      CS?.purolator_express_10_30am ||
+      CS?.purolator_ground ||
+      CS?.purolator_ground_9AM ||
+      CS?.purolator_ground_10_30AM ||
+      CS?.purolator_express_international ||
+      CS?.purolator_express_international_12_am ||
+      CS?.purolator_ground_us ||
+      CS?.purolator_express_us ||
+      CS?.purolator_express_us_9_am ||
+      CS?.purolator_express_us_10_30am
 
     console.log(quoteSettingsState) //return false;
     var errormsg = ""
     if (errormsg === "") {
       errormsg = validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_ground_markup,
-        "UPS Ground markup ",
+        quoteSettingsState?.carrier_services?.purolator_express_markup,
+        "Purolator Express markup ",
         true
       )
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_3_day_select_markup,
-        "UPS 3 Day Select markup",
+        quoteSettingsState?.carrier_services?.purolator_express_9am_markup,
+        "Purolator Express 9 A.M. markup",
         true
       )
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_2nd_day_air_markup,
-        "UPS 2nd Day Air markup",
+        quoteSettingsState?.carrier_services?.purolator_express_10_30am_markup,
+        "Purolator Express 10:30 A.M. markup",
         true
       )
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_2nd_day_air_am_markup,
-        "UPS 2nd Day Air A.M. markup",
+        quoteSettingsState?.carrier_services?.purolator_ground_markup,
+        "Purolator Ground markup",
         true
       )
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_next_day_air_saver_markup,
-        "UPS Next Day Air Saver markup",
+        quoteSettingsState?.carrier_services?.purolator_ground_9AM_markup,
+        "Purolator Ground 9 A.M. markup",
         true
       )
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_next_day_air_markup,
-        "UPS Next Day Air markup",
+        quoteSettingsState?.carrier_services?.purolator_ground_10_30AM_markup,
+        "Purolator Ground 10:30 A.M. markup",
         true
       )
     }
-    if (errormsg === "") {
-      errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_next_day_air_early_markup,
-        "UPS Next Day Air Early markup",
-        true
-      )
-    }
+
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
         quoteSettingsState?.handling_fee_markup,
@@ -309,44 +295,37 @@ function QuoteSettingsComponentWweSmall(props) {
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_surepost_less_than_1lb_markup,
-        "UPS SurePost Less than 1LB",
-        true
-      )
-    }
-    console.log(
-      errormsg,
-      "test",
-      quoteSettingsState?.ups_surepost_less_than_1lb_markup
-    )
-    if (errormsg === "") {
-      errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services
-          ?.ups_surepost_1lb_or_greater_markup,
-        "UPS SurePost 1LB or greater",
+        quoteSettingsState?.carrier_services?.purolator_ground_us_markup,
+        "Purolator Ground U.S.",
         true
       )
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services
-          ?.ups_surepost_bound_printed_matter_markup,
-        "UPS SurePost Bound Printed Matter",
+        quoteSettingsState?.carrier_services?.purolator_express_us_markup,
+        "Purolator Express U.S.",
         true
       )
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_surepost_media_mail_markup,
-        "UPS SurePost Media Mail",
+        quoteSettingsState?.carrier_services?.purolator_express_us_9_am_markup,
+        "Purolator Express U.S. 9 A.M",
+        true
+      )
+    }
+    if (errormsg === "") {
+      errormsg += validateHandlingFeeMarkup(
+        quoteSettingsState?.carrier_services?.purolator_express_us_10_am_markup,
+        "Purolator Express U.S. 10 A.M.",
         true
       )
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
         quoteSettingsState?.carrier_services
-          ?.ups_ground_with_freight_pricing_markup,
-        "UPS Ground with Freight Pricing",
+          ?.purolator_express_international_markup,
+        "Purolator Express International",
         true
       )
     }
@@ -354,36 +333,9 @@ function QuoteSettingsComponentWweSmall(props) {
     /////////////////International////////////
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_standard_markup,
-        "UPS Standard",
-        true
-      )
-    }
-    if (errormsg === "") {
-      errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_worldwide_expedited_markup,
-        "UPS Worldwide Expedited",
-        true
-      )
-    }
-    if (errormsg === "") {
-      errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_worldwide_saver_markup,
-        "UPS Worldwide Saver",
-        true
-      )
-    }
-    if (errormsg === "") {
-      errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_worldwide_express_markup,
-        "UPS Worldwide Express",
-        true
-      )
-    }
-    if (errormsg === "") {
-      errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.ups_worldwide_express_plus_markup,
-        "UPS Worldwide Express Plus",
+        quoteSettingsState?.carrier_services
+          ?.purolator_express_international_12_am_markup,
+        "Purolator Express International 12 A.M.",
         true
       )
     }
@@ -485,8 +437,8 @@ function QuoteSettingsComponentWweSmall(props) {
 
           <CanadaToUS
             quoteSettingsState={quoteSettingsState}
-            internationalcheckAll={internationalcheckAll}
-            internationalAllCheckHandler={internationalAllCheckHandler}
+            CanadaToUSCheckAll={CanadaToUSCheckAll}
+            CanadatoUSAllCheckHandler={CanadatoUSAllCheckHandler}
             onChange={onChange}
             onCheck={onCheck}
           />
@@ -541,9 +493,6 @@ function QuoteSettingsComponentWweSmall(props) {
                 type="text"
                 name="handling_fee_markup"
                 maxLength="7"
-                //pattern='[0-9.?(0-9){2}?]+%?$'
-                //pattern="^[\-\+]\s*\d+\s*$"
-                //pattern='^[%$][-+]?\d+([,.]\d{1,2})?|^[-+]?\d+([,.]\d{1,2})?[%]?'
                 value={quoteSettingsState?.handling_fee_markup}
                 onChange={e =>
                   setQuoteSettingsState({

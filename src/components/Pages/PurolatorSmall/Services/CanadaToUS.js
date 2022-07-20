@@ -5,16 +5,16 @@ import { handlingFeeMarkup } from "../../../../Utilities/numberValidation"
 const { Title } = Typography
 
 const CanadaToUS_services = [
-  "Purolator Ground U.S.",
-  "Purolator Express U.S.",
-  "Purolator Express U.S. 9 AM",
-  "Purolator Express U.S. 10:30 AM",
+  "Purolator Ground US",
+  "Purolator Express US",
+  "Purolator Express US 9 AM",
+  "Purolator Express US 10 30AM",
 ]
 
 const CanadaToUS = ({
   quoteSettingsState,
-  internationalcheckAll,
-  internationalAllCheckHandler,
+  CanadaToUSCheckAll,
+  CanadatoUSAllCheckHandler,
   onChange,
   onCheck,
 }) => {
@@ -37,8 +37,8 @@ const CanadaToUS = ({
             <Checkbox
               name="select_all"
               value={true}
-              checked={internationalcheckAll}
-              onChange={e => internationalAllCheckHandler(e.target.checked)}
+              checked={CanadaToUSCheckAll}
+              onChange={e => CanadatoUSAllCheckHandler(e.target.checked)}
             ></Checkbox>
           </Form.Item>
         </Col>
