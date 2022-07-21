@@ -10,6 +10,7 @@ function ConnectionSettingsComponent(props) {
 		skeleton_loading: true,
 	})
 	const [form] = Form.useForm()
+	const [thirdPartyCheck, setThirdPartyCheck] = useState(false)
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
@@ -125,17 +126,22 @@ function ConnectionSettingsComponent(props) {
 							rules={[
 								{ required: true, message: 'Customer Zip Code' },
 							]}>
-							<Input
-								type='text'
-								placeholder='Customer Zip Code'
-							/>
+							<Input type='text' placeholder='Customer Zip Code' />
 						</Form.Item>
 					</Col>
 				</Row>
 
 				<Form.Item
 					label='Third Party Account Number'
-					name='third_party_account'>
+					name='third_party_account_number'
+					rules={[
+						{
+							required: thirdPartyCheck,
+							message: thirdPartyCheck
+								? 'Third Party Account Number'
+								: '',
+						},
+					]}>
 					<Input type='text' />
 				</Form.Item>
 
@@ -144,8 +150,14 @@ function ConnectionSettingsComponent(props) {
 					label='Access Level'
 					rules={[{ required: true, message: 'Access Level' }]}>
 					<Radio.Group>
-						<Radio value='Shipper'>Shipper</Radio>
-						<Radio value='third_party_account'>
+						<Radio
+							value='Shipper'
+							onChange={() => setThirdPartyCheck(false)}>
+							Shipper
+						</Radio>
+						<Radio
+							value='third_party_account_number'
+							onChange={() => setThirdPartyCheck(true)}>
 							Third Party Account Number
 						</Radio>
 					</Radio.Group>
