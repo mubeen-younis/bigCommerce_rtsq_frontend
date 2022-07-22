@@ -36,38 +36,6 @@ function ConnectionSettingsComponent() {
 				<strong>Note!</strong> You must have a USPS Small account to use this
 				application.
 			</div>
-			<Form
-				layout='vertical'
-				name='connection_settings'
-				className='connection-settings'
-				size='large'
-				initialValues={connectionSettings}
-				onFinish={onFinish}>
-				<Form.Item label='Username' name='username'>
-					<Input placeholder='Username' />
-				</Form.Item>
-
-				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
-					<Space>
-						<Button
-							type='primary'
-							size='large'
-							htmlType='submit'
-							name='test'
-							onClick={() => handleTypeChange(true)}>
-							Test Connection
-						</Button>
-						<Button
-							type='primary'
-							size='large'
-							htmlType='submit'
-							name='save'
-							onClick={() => handleTypeChange(false)}>
-							Save Settings
-						</Button>
-					</Space>
-				</Form.Item>
-			</Form>
 		</Fragment>
 	)
 }
