@@ -58,11 +58,11 @@ function QuoteSettingsComponentWweSmall(props) {
     const checks = props.quoteSettings.carrier_services
     if (
       checks?.purolator_express &&
-      checks?.purolator_express_9am &&
-      checks?.purolator_express_10_30am &&
+      checks?.purolator_express_9AM &&
+      checks?.purolator_express_10__30AM &&
       checks?.purolator_ground &&
       checks?.purolator_ground_9AM &&
-      checks?.purolator_ground_10_30AM
+      checks?.purolator_ground_10__30AM
     ) {
       setCheckAll(true)
     }
@@ -114,15 +114,15 @@ function QuoteSettingsComponentWweSmall(props) {
     const checks = {
       purolator_express:
         quoteSettingsState?.carrier_services?.purolator_express,
-      purolator_express_9am:
-        quoteSettingsState?.carrier_services?.purolator_express_9am,
-      purolator_express_10_30am:
-        quoteSettingsState?.carrier_services?.purolator_express_10_30am,
+      purolator_express_9AM:
+        quoteSettingsState?.carrier_services?.purolator_express_9AM,
+      purolator_express_10__30AM:
+        quoteSettingsState?.carrier_services?.purolator_express_10__30AM,
       purolator_ground: quoteSettingsState?.carrier_services?.purolator_ground,
       purolator_ground_9AM:
         quoteSettingsState?.carrier_services?.purolator_ground_9AM,
-      purolator_ground_10_30AM:
-        quoteSettingsState?.carrier_services?.purolator_ground_10_30AM,
+      purolator_ground_10__30AM:
+        quoteSettingsState?.carrier_services?.purolator_ground_10__30AM,
     }
     if (Object.keys(checks).includes(e.target.name)) {
       checks[e.target.name] = e.target.checked
@@ -174,11 +174,11 @@ function QuoteSettingsComponentWweSmall(props) {
       carrier_services: {
         ...quoteSettingsState.carrier_services,
         purolator_express: !checkAll,
-        purolator_express_9am: !checkAll,
-        purolator_express_10_30am: !checkAll,
+        purolator_express_9AM: !checkAll,
+        purolator_express_10__30AM: !checkAll,
         purolator_ground: !checkAll,
         purolator_ground_9AM: !checkAll,
-        purolator_ground_10_30AM: !checkAll,
+        purolator_ground_10__30AM: !checkAll,
       },
     })
   }
@@ -215,11 +215,11 @@ function QuoteSettingsComponentWweSmall(props) {
     let CS = quoteSettingsState?.carrier_services ?? {}
     let checkCS =
       CS?.purolator_express ||
-      CS?.purolator_express_9am ||
-      CS?.purolator_express_10_30am ||
+      CS?.purolator_express_9AM ||
+      CS?.purolator_express_10__30AM ||
       CS?.purolator_ground ||
       CS?.purolator_ground_9AM ||
-      CS?.purolator_ground_10_30AM ||
+      CS?.purolator_ground_10__30AM ||
       CS?.purolator_express_international ||
       CS?.purolator_express_international_12_am ||
       CS?.purolator_ground_us ||
@@ -238,14 +238,14 @@ function QuoteSettingsComponentWweSmall(props) {
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.purolator_express_9am_markup,
+        quoteSettingsState?.carrier_services?.purolator_express9_a_m_markup,
         "Purolator Express 9 A.M. markup",
         true
       )
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.purolator_express_10_30am_markup,
+        quoteSettingsState?.carrier_services?.purolator_express10_30_a_m_markup,
         "Purolator Express 10:30 A.M. markup",
         true
       )
@@ -259,14 +259,14 @@ function QuoteSettingsComponentWweSmall(props) {
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.purolator_ground_9AM_markup,
+        quoteSettingsState?.carrier_services?.purolator_ground9_a_m_markup,
         "Purolator Ground 9 A.M. markup",
         true
       )
     }
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.purolator_ground_10_30AM_markup,
+        quoteSettingsState?.carrier_services?.purolator_ground10_30_a_m_markup,
         "Purolator Ground 10:30 A.M. markup",
         true
       )

@@ -85,9 +85,9 @@ const CanadaToCanada = ({
         <Col span={12}>
           <Form.Item className={"mb-0"}>
             <Checkbox
-              name="purolator_express_9am"
+              name="purolator_express_9AM"
               checked={
-                quoteSettingsState?.carrier_services?.purolator_express_9am
+                quoteSettingsState?.carrier_services?.purolator_express_9AM
               }
               onChange={onCheck}
             ></Checkbox>
@@ -98,9 +98,9 @@ const CanadaToCanada = ({
             <Input
               value={
                 quoteSettingsState?.carrier_services
-                  ?.purolator_express_9am_markup
+                  ?.purolator_express9_a_m_markup
               }
-              name="purolator_express_9am_markup"
+              name="purolator_express9_a_m_markup"
               onChange={onChange}
               onKeyDown={handlingFeeMarkup}
               maxLength="7"
@@ -123,9 +123,9 @@ const CanadaToCanada = ({
         <Col span={12}>
           <Form.Item className={"mb-0"}>
             <Checkbox
-              name="purolator_express_10_30am"
+              name="purolator_express_10__30AM"
               checked={
-                quoteSettingsState?.carrier_services?.purolator_express_10_30am
+                quoteSettingsState?.carrier_services?.purolator_express_10__30AM
               }
               onChange={onCheck}
             ></Checkbox>
@@ -136,9 +136,9 @@ const CanadaToCanada = ({
             <Input
               value={
                 quoteSettingsState?.carrier_services
-                  ?.purolator_express_10_30am_markup
+                  ?.purolator_express10_30_a_m_markup
               }
-              name="purolator_express_10_30am_markup"
+              name="purolator_express10_30_a_m_markup"
               onChange={onChange}
               onKeyDown={handlingFeeMarkup}
               maxLength="7"
@@ -210,10 +210,10 @@ const CanadaToCanada = ({
               //maxLength='7'
               value={
                 quoteSettingsState?.carrier_services
-                  ?.purolator_ground_9AM_markup
+                  ?.purolator_ground9_a_m_markup
               }
               //pattern='[0-9.?(0-9){2}?]+%?$'
-              name="purolator_ground_9AM_markup"
+              name="purolator_ground9_a_m_markup"
               onChange={onChange}
               onKeyDown={handlingFeeMarkup}
               maxLength="7"
@@ -236,9 +236,9 @@ const CanadaToCanada = ({
         <Col span={12}>
           <Form.Item className={"mb-0"}>
             <Checkbox
-              name="purolator_ground_10_30AM"
+              name="purolator_ground_10__30AM"
               checked={
-                quoteSettingsState?.carrier_services?.purolator_ground_10_30AM
+                quoteSettingsState?.carrier_services?.purolator_ground_10__30AM
               }
               onChange={onCheck}
             ></Checkbox>
@@ -250,10 +250,10 @@ const CanadaToCanada = ({
               //maxLength='7'
               value={
                 quoteSettingsState?.carrier_services
-                  ?.purolator_ground_10_30AM_markup
+                  ?.purolator_ground10_30_a_m_markup
               }
               //pattern='[0-9.?(0-9){2}?]+%?$'
-              name="purolator_ground_10_30AM_markup"
+              name="purolator_ground10_30_a_m_markup"
               onChange={onChange}
               onKeyDown={handlingFeeMarkup}
               maxLength="7"
