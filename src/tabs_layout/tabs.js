@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Tabs } from 'antd'
 import CarriersComponent from '../components/CarriersComponent'
 import ProductSettingsComponent from '../components/ProductSettingsComponent'
-import UserGuideComponent from '../components/Pages/UserGuideComponent'
-import ImportCsvComponent from '../components/Pages/ImportCsvComponent'
 import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
 import OrdersComponent from '../components/OrdersComponent'
 import PlanStatusHeading from '../partials/PlanStatusHeading'
@@ -22,7 +20,6 @@ function TabsLayout() {
 
 	useEffect(() => {
 		if (localStorage.getItem('tab')) setTab(localStorage.getItem('tab'))
-		console.log(tab)
 
 		return () => localStorage.removeItem('tab')
 	}, [tab])
@@ -41,6 +38,13 @@ function TabsLayout() {
 				'rl-ltl',
 				'unishippers-small',
 				'yrc-ltl',
+				'freightquote-ltl',
+				'estes-ltl',
+				'dayross-ltl',
+				'odfl-ltl',
+				'saia-ltl',
+				'abf-ltl',
+				'southeastern-ltl',
 				'usps-small',
 			]
 
@@ -125,12 +129,6 @@ function TabsLayout() {
 						<BoxSizesComponent />
 					</TabPane>
 				)}
-				<TabPane tab='Import CSV' key='9'>
-					<ImportCsvComponent />
-				</TabPane>
-				<TabPane tab='User Guide' key='12'>
-					<UserGuideComponent />
-				</TabPane>
 			</Tabs>
 		</Fragment>
 	)

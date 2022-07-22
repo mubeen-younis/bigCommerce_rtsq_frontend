@@ -36,6 +36,15 @@ const makeColumns = (sortProducts, showProductDetails) => {
 			/*sorter: (a, b) => a.name.length - b.name.length,
 			sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,*/
 			ellipsis: true,
+			render: text =>
+				text && text?.length > 50 ? (
+					<>
+						<p>{`${text?.substring(0, 50)}`}</p>
+						<p>{`${text?.substring(50)}`}</p>
+					</>
+				) : (
+					text
+				),
 		},
 		{
 			title: 'Product Id',
