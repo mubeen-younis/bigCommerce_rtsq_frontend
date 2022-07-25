@@ -17,6 +17,7 @@ export { default as CSOdflLtl } from './Odfl-Ltl/ConnectionSettingsComponent'
 export { default as CSSaiaLtl } from './SaiaLtl/ConnectionSettingsComponent'
 export { default as CSAbfLtl } from './AbfLtl/ConnectionSettingsComponent'
 export { default as CSSouthEasternLtl } from './SouthEasternLtl/ConnectionSettings'
+export { default as CSFreightQuoteChrLtl } from './FreightQuoteChr/ConnectionSettingsComponent'
 
 // Quote Settings Component
 export { default as QSWweltl } from './WweLtl/QuoteSettingsComponentWwe'

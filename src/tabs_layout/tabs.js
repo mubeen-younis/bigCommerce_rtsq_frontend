@@ -45,6 +45,7 @@ function TabsLayout() {
 				'saia-ltl',
 				'abf-ltl',
 				'southeastern-ltl',
+				'freightquote-chr-ltl',
 			]
 
 			for (const ic of installedCarriers) {

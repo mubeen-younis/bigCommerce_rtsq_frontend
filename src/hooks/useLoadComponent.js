@@ -36,6 +36,7 @@ import {
 	QSAbfLtl,
 	CSSouthEasternLtl,
 	QSSouthEasternLtl,
+	CSFreightQuoteChrLtl,
 } from '../components/Pages'
 
 const useLoadComponent = index => {
@@ -58,6 +59,7 @@ const useLoadComponent = index => {
 		<CSSaiaLtl />,
 		<CSAbfLtl />,
 		<CSSouthEasternLtl />,
+		<CSFreightQuoteChrLtl />,
 	]
 	const quoteSettingsList = [
 		<QSWweltl />,
