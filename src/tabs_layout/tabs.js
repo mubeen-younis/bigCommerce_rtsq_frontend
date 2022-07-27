@@ -16,6 +16,7 @@ function TabsLayout() {
 	const { installedCarriers, carrierId } = useSelector(state => state)
 	const [component, setComponent] = useState(0)
 	const [tab, setTab] = useState('1')
+	const [carrierSlug, setCarrierSlug] = useState('')
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -58,6 +59,7 @@ function TabsLayout() {
 					})
 
 					setComponent(slugs.indexOf(ic.slug))
+					setCarrierSlug(ic.slug)
 					break
 				}
 			}
@@ -73,19 +75,6 @@ function TabsLayout() {
 
 	return (
 		<Fragment>
-			{/*planInfo && !planInfo.isExpired && (
-				<div className='note-bx'>
-					You are currently on <strong>{plans[planInfo.plan_type]}</strong> Plan.
-					{planInfo.plan_type === 0 ? '' : `The plan renews on ${planInfo.expiry_date}.`}
-				</div>
-			)}
-
-			{planInfo && planInfo.isExpired && (
-				<div className='note-bx'>
-					Error! Connection failed due to license expired. Please upgrage/renew your
-					license from eniture.com dashboard.
-				</div>
-			)*/}
 			<PlanStatusHeading />
 
 			<Tabs
@@ -96,12 +85,14 @@ function TabsLayout() {
 				<TabPane tab='Connection Settings' key='1'>
 					{useLoadComponent(component)[0]}
 				</TabPane>
-				{[0].includes(component) && (
+				{['ltl-quotes', 'freightquote-ltl', 'freightquote-chr-ltl'].includes(
+					carrierSlug
+				) && (
 					<TabPane tab='Carriers' key='2'>
 						<CarriersComponent />
 					</TabPane>
 				)}
-				{[6].includes(component) && (
+				{['gtz-ltl'].includes(carrierSlug) && (
 					<TabPane tab='Carriers' key='2'>
 						<GTZCarriersComponent />
 					</TabPane>
