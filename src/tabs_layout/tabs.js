@@ -45,6 +45,7 @@ function TabsLayout() {
 				'saia-ltl',
 				'abf-ltl',
 				'southeastern-ltl',
+				'dbsc',
 			]
 
 			for (const ic of installedCarriers) {

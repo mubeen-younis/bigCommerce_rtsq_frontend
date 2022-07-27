@@ -34,6 +34,7 @@ import { getFDOCouponInfo } from './Actions/FDOActions'
 import ImportCsvComponent from './components/Pages/ImportCsvComponent'
 import UserGuideComponent from './components/Pages/UserGuideComponent'
 import AppLogs from './components/Pages/AppLogs'
+import DBSC from './components/Pages/DBSC/DBSCComponent'
 
 const { Header, Content } = Layout
 
@@ -201,6 +202,7 @@ function App(props) {
               <Route path='/fdo' component={FDOComponent} />
               <Route path='/importcsv' component={ImportCsvComponent} />
               <Route path='/user_guide' component={UserGuideComponent} />
+              <Route path='/dbsc' component={DBSC} />
               <Route path='/av' component={AVComponent} />
               <Route path='/warehouses' component={WarehouseComponent} />
               <Route path='/addon/:addon_id' component={RendorAddon} />
