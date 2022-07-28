@@ -9,6 +9,7 @@ const smallCarriers = [
 	'ups-small',
 	'fedex-small',
 	'unishippers-small',
+	'usps-small',
 ]
 
 const Settings = ({

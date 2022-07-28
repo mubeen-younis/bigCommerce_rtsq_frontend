@@ -36,6 +36,8 @@ import {
 	QSAbfLtl,
 	CSSouthEasternLtl,
 	QSSouthEasternLtl,
+	CSUspsSmall,
+	QSUspsSmall,
 	CSTQLLtl,
 	QSTQLLtl,
 } from '../components/Pages'
@@ -60,6 +62,7 @@ const useLoadComponent = index => {
 		<CSSaiaLtl />,
 		<CSAbfLtl />,
 		<CSSouthEasternLtl />,
+		<CSUspsSmall />,
 		<CSTQLLtl />,
 	]
 	const quoteSettingsList = [
@@ -81,6 +84,7 @@ const useLoadComponent = index => {
 		<QSSaiaLtl />,
 		<QSAbfLtl />,
 		<QSSouthEasternLtl />,
+		<QSUspsSmall />,
 		<QSTQLLtl />,
 	]
 
