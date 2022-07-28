@@ -104,15 +104,7 @@ function SideMenu(props) {
             >
               <Link to={`/user_guide`}>User Guide</Link>
             </Menu.Item>
-
-            <Menu.Item
-              key='106'
-              warnkey={106}
-              onClick={() => setActiveMenu('106')}
-            >
-              <Link to={`/dbsc`}>Distance Shipping Calculator</Link>
-            </Menu.Item>
-
+            
             <Title className={'carriers-name'} level={5}>
               LTL Freight Providers
             </Title>
