@@ -1,34 +1,53 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Col, Form, Input, Modal, Row, Select, Radio, Space } from 'antd'
 import RatesList from './RatesList'
 
 const { Option } = Select
 const { TextArea } = Input
 
-const AddRate = ({ visible, toggleAddProfileModal }) => {
-	const [shippingClass, setShippingClass] = useState(false)
+const AddRate = () => {
+	const [isOpen, setIsOpen] = useState(false)
 	const [form] = Form.useForm()
+	const [initialValues, setInitialValues] = useState({
+		display_as: '',
+		distance_preference: 1,
+		description: '',
+		rate: '',
+		distance_unit: 'mile',
+		distance_measurement: 'route',
+		minimum_distance: '',
+		maximum_distance: '',
+		minimum_weight: '',
+		maximum_weight: '',
+		minimum_length: '',
+		maximum_length: '',
+		distance_adjustment: '',
+		rate_adjustment: '',
+		minimum_shipping_quote: '',
+		maximum_shipping_quote: '',
+		rate_calculation_method: 1,
+	})
+
+	useEffect(() => {}, [])
 
 	const onFinish = useCallback(values => {
 		console.log('Received values of form: ', form.getFieldsValue())
 	}, [])
 
 	return (
-		<Space direction='horizontal' size='large' className='w-100'>
+		<Space direction='vertical' size='large' className='w-100'>
 			<Row gutter={30}>
 				<Modal
 					title='Add rate'
-					visible={false}
-					onCancel={() => toggleAddProfileModal(false)}
+					visible={isOpen}
+					onCancel={() => setIsOpen(false)}
 					onOk={() => {}}
 					centered
 					width={800}
 					destroyOnClose
 					okText='Save'
 					footer={[
-						<Button
-							key='back'
-							onClick={() => toggleAddProfileModal(false)}>
+						<Button key='back' onClick={() => setIsOpen(false)}>
 							Cancel
 						</Button>,
 						<Button
@@ -45,7 +64,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 						className='form-wrp'
 						size='large'
 						form={form}
-						// initialValues={{}}
+						initialValues={initialValues}
 						onFinish={onFinish}>
 						<Row gutter={30}>
 							<Col
@@ -58,6 +77,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Display as'
+									name='display_as'
 									rules={[
 										{
 											required: false,
@@ -65,9 +85,9 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 										},
 									]}>
 									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
+
+									// value={locationDetail.nickname}
+									// onChange={changeValue}
 									/>
 								</Form.Item>
 								<div className='text-gray'>
@@ -85,6 +105,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='Distance display preferences:'
+									name='distance_preference'
 									rules={[
 										{
 											required: false,
@@ -123,6 +144,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='Description'
+									name='description'
 									rules={[
 										{
 											required: false,
@@ -145,6 +167,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Rate'
+									name='rate'
 									rules={[
 										{
 											required: false,
@@ -152,9 +175,9 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 										},
 									]}>
 									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
+
+									// value={locationDetail.nickname}
+									// onChange={changeValue}
 									/>
 								</Form.Item>
 							</Col>
@@ -169,17 +192,17 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Distance unit'
+									name='distance_unit'
 									rules={[
 										{
 											required: false,
 											message: 'Distance unit',
 										},
 									]}>
-									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
-									/>
+									<Select>
+										<Option value='mile'>Mile</Option>
+										<Option value='kilometer'>Kilometer</Option>
+									</Select>
 								</Form.Item>
 							</Col>
 
@@ -193,17 +216,19 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Distance measured by'
+									name='distance_measurement'
 									rules={[
 										{
 											required: false,
 											message: 'Distance measured by',
 										},
 									]}>
-									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
-									/>
+									<Select>
+										<Option value='route'>Route</Option>
+										<Option value='straight_line'>
+											Staright Line
+										</Option>
+									</Select>
 								</Form.Item>
 							</Col>
 						</Row>
@@ -219,6 +244,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Minimum distance'
+									name='minimum_distance'
 									rules={[
 										{
 											required: false,
@@ -226,9 +252,9 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 										},
 									]}>
 									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
+
+									// value={locationDetail.nickname}
+									// onChange={changeValue}
 									/>
 								</Form.Item>
 							</Col>
@@ -243,6 +269,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Maximum distance'
+									name='maximum_distance'
 									rules={[
 										{
 											required: false,
@@ -250,9 +277,9 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 										},
 									]}>
 									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
+
+									// value={locationDetail.nickname}
+									// onChange={changeValue}
 									/>
 								</Form.Item>
 							</Col>
@@ -269,6 +296,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Minimum weight'
+									name='minimum_weight'
 									rules={[
 										{
 											required: false,
@@ -276,9 +304,9 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 										},
 									]}>
 									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
+
+									// value={locationDetail.nickname}
+									// onChange={changeValue}
 									/>
 								</Form.Item>
 							</Col>
@@ -293,6 +321,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Maximum weight'
+									name='maximum_weight'
 									rules={[
 										{
 											required: false,
@@ -300,11 +329,36 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 										},
 									]}>
 									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
+
+									// value={locationDetail.nickname}
+									// onChange={changeValue}
 									/>
 								</Form.Item>
+							</Col>
+						</Row>
+
+						<Row gutter={30}>
+							<Col
+								className='gutter-row mb-2'
+								xs={12}
+								sm={12}
+								md={12}
+								lg={12}
+								xl={12}
+								style={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}>
+								<Radio>And</Radio>
+							</Col>
+							<Col
+								className='gutter-row mb-2'
+								xs={12}
+								sm={12}
+								md={12}
+								lg={12}
+								xl={12}>
+								<Radio>Or</Radio>
 							</Col>
 						</Row>
 
@@ -319,6 +373,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Minimum length'
+									name='minimum_length'
 									rules={[
 										{
 											required: false,
@@ -326,9 +381,9 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 										},
 									]}>
 									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
+
+									// value={locationDetail.nickname}
+									// onChange={changeValue}
 									/>
 								</Form.Item>
 							</Col>
@@ -343,6 +398,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Maximum length'
+									name='maximum_length'
 									rules={[
 										{
 											required: false,
@@ -350,9 +406,9 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 										},
 									]}>
 									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
+
+									// value={locationDetail.nickname}
+									// onChange={changeValue}
 									/>
 								</Form.Item>
 							</Col>
@@ -369,6 +425,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Distance adjustment'
+									name='distance_adjustment'
 									rules={[
 										{
 											required: false,
@@ -376,9 +433,9 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 										},
 									]}>
 									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
+
+									// value={locationDetail.nickname}
+									// onChange={changeValue}
 									/>
 								</Form.Item>
 							</Col>
@@ -393,6 +450,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Rate adjustment'
+									name='rate_adjustment'
 									rules={[
 										{
 											required: false,
@@ -400,9 +458,9 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 										},
 									]}>
 									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
+
+									// value={locationDetail.nickname}
+									// onChange={changeValue}
 									/>
 								</Form.Item>
 							</Col>
@@ -419,6 +477,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Minimum shipping quote'
+									name='minimum_shipping_quote'
 									rules={[
 										{
 											required: false,
@@ -426,9 +485,8 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 										},
 									]}>
 									<Input
-										name='display_as'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
+									// value={locationDetail.nickname}
+									// onChange={changeValue}
 									/>
 								</Form.Item>
 							</Col>
@@ -443,6 +501,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-0'
 									label='Maximum shipping quote'
+									name='maximum_shipping_quote'
 									rules={[
 										{
 											required: false,
@@ -450,7 +509,7 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 										},
 									]}>
 									<Input
-										name='display_as'
+										name='maximum_shipping_quote'
 										// value={locationDetail.nickname}
 										// onChange={changeValue}
 									/>
@@ -468,10 +527,11 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 								xl={24}>
 								<Form.Item
 									className='mb-0'
+									name='rate_calculation_method'
 									rules={[
 										{
 											required: false,
-											message: 'Display as',
+											message: 'Rate calculation method',
 										},
 									]}>
 									<Radio.Group
@@ -502,6 +562,9 @@ const AddRate = ({ visible, toggleAddProfileModal }) => {
 
 			{/* Rates List */}
 			<RatesList />
+			<Button type='primary' onClick={() => setIsOpen(!isOpen)}>
+				Add rate
+			</Button>
 		</Space>
 	)
 }

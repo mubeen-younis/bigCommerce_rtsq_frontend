@@ -1,5 +1,5 @@
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 const { Option } = Select
 const { TextArea } = Input
@@ -7,6 +7,15 @@ const { TextArea } = Input
 const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	const [shippingClass, setShippingClass] = useState(false)
 	const [form] = Form.useForm()
+	const [initialValues, setInitialValues] = useState({
+		nickname: '',
+		shipping_class: [],
+		class_name: '',
+		class_slug: '',
+		class_description: '',
+	})
+
+	useEffect(() => {}, [])
 
 	const setModalTitle = useCallback(() => {
 		const postfix = shippingClass ? ' class' : ' profile'
@@ -14,7 +23,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	}, [shippingClass])
 
 	const onFinish = useCallback(values => {
-		console.log('Received values of form: ', form.getFieldsValue())
+		console.log('Received values of form: ', values)
 	}, [])
 
 	return (
@@ -23,7 +32,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 				title={setModalTitle()}
 				visible={visible}
 				onCancel={() => toggleAddProfileModal(false)}
-				onOk={() => {}}
+				onOk={() => form.submit()}
 				centered
 				destroyOnClose
 				okText='Save'
@@ -41,13 +50,13 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 				]}>
 				<Form
 					layout='vertical'
-					name='add_warehouse_info'
+					name='add_profile_info'
 					className='form-wrp'
 					size='large'
 					form={form}
-					// initialValues={{}}
+					initialValues={initialValues}
 					onFinish={onFinish}>
-					{!shippingClass && (
+					{!shippingClass ? (
 						<Row gutter={30}>
 							<Col
 								className='gutter-row'
@@ -59,6 +68,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='Nickname'
+									name='nickname'
 									rules={[
 										{
 											required: false,
@@ -84,6 +94,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='Shipping class'
+									name='shipping_class'
 									rules={[
 										{
 											required: false,
@@ -94,6 +105,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 										showSearch
 										placeholder='Search shipping classes'
 										optionFilterProp='children'
+										mode='tags'
 										// onChange={onChange}
 										// onSearch={onSearch}
 										filterOption={(input, option) =>
@@ -127,10 +139,10 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 								</Form.Item>
 							</Col>
 						</Row>
+					) : (
+						/* Add shipping class */
+						<AddShippingClass />
 					)}
-
-					{/* Add shipping class */}
-					{shippingClass && <AddShippingClass />}
 				</Form>
 			</Modal>
 		</Row>

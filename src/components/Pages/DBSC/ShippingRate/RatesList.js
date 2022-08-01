@@ -1,4 +1,5 @@
-import { Row, Space, Table } from 'antd'
+import { Col, Row, Space, Table } from 'antd'
+import Title from 'antd/lib/typography/Title'
 import React from 'react'
 
 const RatesList = () => {
@@ -7,12 +8,6 @@ const RatesList = () => {
 			key: '1',
 			name: 'Mike',
 			age: 32,
-			address: '10 Downing Street',
-		},
-		{
-			key: '2',
-			name: 'John',
-			age: 42,
 			address: '10 Downing Street',
 		},
 	]
@@ -62,11 +57,21 @@ const RatesList = () => {
 
 	return (
 		<>
+			<Row gutter={30} className='mb-2'>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+					<Title level={5}>Test Zone</Title>
+				</Col>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+					<p>Africa, Algeria, 8388, 83838, 89383</p>
+				</Col>
+			</Row>
+
 			<Table
 				dataSource={dataSource}
 				columns={columns}
 				size='large'
 				className='custom-table'
+				pagination={false}
 			/>
 		</>
 	)

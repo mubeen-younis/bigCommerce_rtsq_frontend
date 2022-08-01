@@ -1,33 +1,78 @@
-import React, { useCallback, useState } from 'react'
-import { Button, Col, Form, Input, Modal, Row, Select, Radio, Space } from 'antd'
+import React, { useCallback, useEffect, useState } from 'react'
+import {
+	Button,
+	Col,
+	Form,
+	Input,
+	Modal,
+	Row,
+	Select,
+	Radio,
+	Space,
+	Card,
+} from 'antd'
 import AddZone from '../ShippingZone/AddZone'
+import Title from 'antd/lib/typography/Title'
 
 const { Option } = Select
 
-const AddOrigin = ({ visible, toggleAddProfileModal }) => {
-	const [shippingClass, setShippingClass] = useState(false)
+const AddOrigin = () => {
+	const [isOpen, setIsOpen] = useState(false)
 	const [form] = Form.useForm()
+	const [initialValues, setInitialValues] = useState({
+		nickname: '',
+		street_address: '',
+		city: '',
+		state: '',
+		postal_code: '',
+		country_code: '',
+		shipping_origin: '',
+		shipping_origin_type: '',
+	})
+
+	useEffect(() => {}, [])
 
 	const onFinish = useCallback(values => {
 		console.log('Received values of form: ', form.getFieldsValue())
 	}, [])
 
 	return (
-		<>
+		<Card>
+			<Row gutter={30} className='mb-2'>
+				<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={12}>
+					<Title level={4}>Shipping from</Title>
+				</Col>
+				<Col
+					className='gutter-row'
+					xs={12}
+					sm={12}
+					md={12}
+					lg={12}
+					xl={12}
+					style={{ textAlign: 'right' }}>
+					<Button type='link' onClick={() => setIsOpen(true)}>
+						Add shipping origin
+					</Button>
+				</Col>
+
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+					<p className='mb-0'>trx</p>
+					<p>8865 White Ibis Way , Navarre FL 32566 ,United States</p>
+				</Col>
+			</Row>
+
 			<Row gutter={30}>
 				<Modal
 					title='Add shipping origin'
-					visible={visible}
-					onCancel={() => toggleAddProfileModal(false)}
+					visible={isOpen}
+					onCancel={() => setIsOpen(false)}
 					onOk={() => {}}
 					centered
 					width={800}
 					destroyOnClose
 					okText='Save'
 					footer={[
-						<Button
-							key='back'
-							onClick={() => toggleAddProfileModal(false)}>
+						<Button key='back' onClick={() => setIsOpen(false)}>
 							Cancel
 						</Button>,
 						<Button
@@ -44,7 +89,7 @@ const AddOrigin = ({ visible, toggleAddProfileModal }) => {
 						className='form-wrp'
 						size='large'
 						form={form}
-						// initialValues={{}}
+						initialValues={initialValues}
 						onFinish={onFinish}>
 						<Row gutter={30}>
 							<Col
@@ -57,6 +102,7 @@ const AddOrigin = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='Nickname'
+									name='nickname'
 									rules={[
 										{
 											required: false,
@@ -80,6 +126,7 @@ const AddOrigin = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='Street address'
+									name='street_address'
 									rules={[
 										{
 											required: false,
@@ -104,6 +151,7 @@ const AddOrigin = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='City'
+									name='city'
 									rules={[
 										{
 											required: false,
@@ -128,6 +176,7 @@ const AddOrigin = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='State or Province'
+									name='state'
 									rules={[
 										{
 											required: false,
@@ -152,6 +201,7 @@ const AddOrigin = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='Postal Code'
+									name='postal_code'
 									rules={[
 										{
 											required: false,
@@ -177,6 +227,7 @@ const AddOrigin = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='Country code'
+									name='country_code'
 									rules={[
 										{
 											required: false,
@@ -202,6 +253,7 @@ const AddOrigin = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='Add the shipping origin'
+									name='shipping_origin'
 									rules={[
 										{
 											required: false,
@@ -231,6 +283,7 @@ const AddOrigin = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='Availability in other plugins by Eniture Technology'
+									name='shipping_origin_type'
 									rules={[
 										{
 											required: false,
@@ -251,12 +304,8 @@ const AddOrigin = ({ visible, toggleAddProfileModal }) => {
 			</Row>
 
 			{/* Add Shipping Zone */}
-			<Row gutter={30}>
-				<Col xs={24} sm={24} md={24} lg={24} xl={24}>
-					<AddZone />
-				</Col>
-			</Row>
-		</>
+			<AddZone />
+		</Card>
 	)
 }
 
