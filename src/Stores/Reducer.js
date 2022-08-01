@@ -50,6 +50,7 @@ const initialState = {
 	shippingGroups: null,
 	fdoCouponInfo: null,
 	fdoCouponCarrierInfo: null,
+	isUspsSmallCarrier: false,
 }
 
 const Reducer = (state = initialState, action) => {
@@ -574,6 +575,12 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				isFedexSmallCarrier: action.payload,
+			}
+		}
+		case types.SET_USPS_SMALL_CARRIER: {
+			return {
+				...state,
+				isUspsSmallCarrier: action.payload,
 			}
 		}
 		/* Shipping Groups */
