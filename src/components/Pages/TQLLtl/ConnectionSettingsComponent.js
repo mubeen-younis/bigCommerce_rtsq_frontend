@@ -58,6 +58,12 @@ function ConnectionSettingsComponent(props) {
 					<Input placeholder='Client ID' />
 				</Form.Item>
 				<Form.Item
+					label='Client Secret'
+					name='clientSecret'
+					rules={[{ required: true, message: 'Client Secret' }]}>
+					<Input placeholder='Client Secret' />
+				</Form.Item>
+				<Form.Item
 					label='Username'
 					name='traxUsername'
 					rules={[{ required: true, message: 'Username' }]}>
