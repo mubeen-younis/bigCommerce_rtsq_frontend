@@ -1,19 +1,14 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { Form, Input, Button, Space, Skeleton, Row, Col, Radio } from 'antd'
+import { Form, Input, Button, Space, Skeleton } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 
 function ConnectionSettingsComponent(props) {
 	const [testType, setTestType] = useState(false)
-	const [rates, setRates] = useState(0)
 	const dispatch = useDispatch()
 	const { connectionSettings, token, carrierId } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
-
-	useEffect(() => {
-		if (connectionSettings) setRates(connectionSettings?.yrc_rates ?? 0)
-	}, [connectionSettings])
 
 	const onFinish = values => {
 		values = {
@@ -42,7 +37,8 @@ function ConnectionSettingsComponent(props) {
 				application. If you do not have one, fill this form to{' '}
 				<a href='https://register.tql.com/' target='_blank' rel='noreferrer'>
 					register online
-				</a>.
+				</a>
+				.
 			</div>
 			<Form
 				layout='vertical'
@@ -60,7 +56,7 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item
 					label='Client Secret'
 					name='clientSecret'
-					rules={[{ required: true, message: 'Client Secret' }]}>
+					rules={[{ required: false, message: 'Client Secret' }]}>
 					<Input placeholder='Client Secret' />
 				</Form.Item>
 				<Form.Item
