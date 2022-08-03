@@ -2,11 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Col, Form, Input, Modal, Row, Select, Radio, Space } from 'antd'
 import RatesList from './RatesList'
 import { useDispatch, useSelector } from 'react-redux'
+import types from '../../../../Stores/types'
+import { getDbscData, addDbscData } from '../../../../Actions/DbscActions'
 
 const { Option } = Select
 const { TextArea } = Input
 
-const AddRate = () => {
+const AddRate = ({ zoneId }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [form] = Form.useForm()
 	const [initialValues, setInitialValues] = useState({
@@ -32,10 +34,18 @@ const AddRate = () => {
 	const dispatch = useDispatch()
 	const { shippingZones } = useSelector(state => state)
 
-	useEffect(() => {}, [])
+	useEffect(() => {
+		dispatch(getDbscData('get_dbsc_rates', types.GET_DBSC_RATES))
+	}, [])
 
 	const onFinish = useCallback(values => {
-		console.log('Received values of form: ', form.getFieldsValue())
+		dispatch(
+			addDbscData(
+				'add_dbsc_rates',
+				{ ...values, dbsc_zone_id: zoneId },
+				types.ADD_DBSC_RATE
+			)
+		)
 	}, [])
 
 	return (
@@ -84,15 +94,11 @@ const AddRate = () => {
 									name='display_as'
 									rules={[
 										{
-											required: false,
+											required: true,
 											message: 'Display as',
 										},
 									]}>
-									<Input
-
-									// value={locationDetail.nickname}
-									// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 								<div className='text-gray'>
 									Customers will see this at checkout
@@ -174,15 +180,11 @@ const AddRate = () => {
 									name='rate'
 									rules={[
 										{
-											required: false,
+											required: true,
 											message: 'Rate',
 										},
 									]}>
-									<Input
-
-									// value={locationDetail.nickname}
-									// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 							</Col>
 
@@ -220,7 +222,7 @@ const AddRate = () => {
 								<Form.Item
 									className='mb-0'
 									label='Distance measured by'
-									name='distance_measurement'
+									name='distance_measured_by'
 									rules={[
 										{
 											required: false,
@@ -228,8 +230,8 @@ const AddRate = () => {
 										},
 									]}>
 									<Select>
-										<Option value='route'>Route</Option>
-										<Option value='straight_line'>
+										<Option value='Route'>Route</Option>
+										<Option value='Straight Line'>
 											Staright Line
 										</Option>
 									</Select>
@@ -255,11 +257,7 @@ const AddRate = () => {
 											message: 'Minimum distance',
 										},
 									]}>
-									<Input
-
-									// value={locationDetail.nickname}
-									// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 							</Col>
 
@@ -280,11 +278,7 @@ const AddRate = () => {
 											message: 'Maximum distance',
 										},
 									]}>
-									<Input
-
-									// value={locationDetail.nickname}
-									// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 							</Col>
 						</Row>
@@ -307,11 +301,7 @@ const AddRate = () => {
 											message: 'Minimum weight',
 										},
 									]}>
-									<Input
-
-									// value={locationDetail.nickname}
-									// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 							</Col>
 
@@ -332,11 +322,7 @@ const AddRate = () => {
 											message: 'Maximum weight',
 										},
 									]}>
-									<Input
-
-									// value={locationDetail.nickname}
-									// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 							</Col>
 						</Row>
@@ -384,11 +370,7 @@ const AddRate = () => {
 											message: 'Minimum length',
 										},
 									]}>
-									<Input
-
-									// value={locationDetail.nickname}
-									// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 							</Col>
 
@@ -409,11 +391,7 @@ const AddRate = () => {
 											message: 'Maximum length',
 										},
 									]}>
-									<Input
-
-									// value={locationDetail.nickname}
-									// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 							</Col>
 						</Row>
@@ -436,11 +414,7 @@ const AddRate = () => {
 											message: 'Distance adjustment',
 										},
 									]}>
-									<Input
-
-									// value={locationDetail.nickname}
-									// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 							</Col>
 
@@ -461,11 +435,7 @@ const AddRate = () => {
 											message: 'Rate adjustment',
 										},
 									]}>
-									<Input
-
-									// value={locationDetail.nickname}
-									// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 							</Col>
 						</Row>
@@ -488,10 +458,7 @@ const AddRate = () => {
 											message: 'Minimum shipping quote',
 										},
 									]}>
-									<Input
-									// value={locationDetail.nickname}
-									// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 							</Col>
 
@@ -512,11 +479,7 @@ const AddRate = () => {
 											message: 'Maximum shipping quote',
 										},
 									]}>
-									<Input
-										name='maximum_shipping_quote'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 							</Col>
 						</Row>
@@ -538,10 +501,7 @@ const AddRate = () => {
 											message: 'Rate calculation method',
 										},
 									]}>
-									<Radio.Group
-										onChange={() => {}}
-										// value={value}
-									>
+									<Radio.Group onChange={() => {}}>
 										<Space direction='vertical'>
 											<Radio value={1}>
 												The calculated shipping rate is for
@@ -565,7 +525,7 @@ const AddRate = () => {
 			</Row>
 
 			{/* Rates List */}
-			<RatesList />
+			<RatesList zoneId={zoneId} />
 			<Button type='primary' onClick={() => setIsOpen(!isOpen)}>
 				Add rate
 			</Button>

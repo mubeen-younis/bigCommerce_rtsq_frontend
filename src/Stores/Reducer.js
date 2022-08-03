@@ -656,6 +656,21 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				shippingZones: action.payload,
 			}
+		case types.ADD_DBSC_ZONE:
+			return {
+				...state,
+				shippingZones: [...state.shippingZones, action.payload],
+			}
+		case types.GET_DBSC_RATES:
+			return {
+				...state,
+				shippingRates: action.payload,
+			}
+		case types.ADD_DBSC_RATE:
+			return {
+				...state,
+				shippingRates: [...state.shippingRates, action.payload],
+			}
 
 		default:
 			return state

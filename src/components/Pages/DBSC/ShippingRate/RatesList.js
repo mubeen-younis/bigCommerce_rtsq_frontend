@@ -1,37 +1,41 @@
-import { Col, Row, Space, Table } from 'antd'
-import Title from 'antd/lib/typography/Title'
-import React from 'react'
+import { Skeleton, Table } from 'antd'
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-const RatesList = () => {
-	const dataSource = [
-		{
-			key: '1',
-			name: 'Mike',
-			age: 32,
-			address: '10 Downing Street',
-		},
-	]
+const RatesList = ({ zoneId }) => {
+	const dispatch = useDispatch()
+	const { shippingRates } = useSelector(state => state)
 
 	const columns = [
 		{
 			title: 'Display as',
-			dataIndex: 'name',
-			key: 'name',
+			dataIndex: 'display_as',
+			key: 'display_as',
 		},
 		{
 			title: 'Rate',
-			dataIndex: 'age',
-			key: 'age',
+			dataIndex: 'rate',
+			key: 'rate',
+			render: text => <span>${Number(text).toFixed(2)} / Item</span>,
 		},
 		{
 			title: 'Distance measured by',
-			dataIndex: 'address',
-			key: 'address',
+			dataIndex: 'distance_measured_by',
+			key: 'distance_measured_by',
 		},
 		{
 			title: 'Distance',
-			dataIndex: 'address',
-			key: 'address',
+			dataIndex: 'distance',
+			key: 'distance',
+			render: (text, record) =>
+				`${record.minimum_distance} km - ${record.maximum_distance} km`,
+		},
+		{
+			title: 'Weight',
+			dataIndex: 'weight',
+			key: 'weight',
+			render: (text, record) =>
+				`${record.minimum_weight} lbs - ${record.maximum_weight} lbs`,
 		},
 		{
 			title: 'And / Or',
@@ -42,22 +46,35 @@ const RatesList = () => {
 			title: 'Length',
 			dataIndex: 'address',
 			key: 'address',
+			render: (text, record) =>
+				`${record.minimum_length} in - ${record.maximum_length} in`,
 		},
 		{
 			title: 'Quote',
-			dataIndex: 'address',
-			key: 'address',
+			dataIndex: 'quote',
+			key: 'quote',
+			render: (text, record) =>
+				`${Number(record.minimum_shipping_quote).toFixed(2)} - ${Number(
+					record.minimum_shipping_quote
+				).toFixed(2)}`,
 		},
 		{
 			title: 'Action',
-			dataIndex: 'address',
-			key: 'address',
+			dataIndex: 'action',
+			key: 'action',
 		},
 	]
 
+	const filterRatesData = useCallback(() => {
+		const rates = shippingRates?.filter(rate => rate.dbsc_zone_id === zoneId)
+		return rates
+	}, [shippingRates])
+
+	if (!shippingRates) return <Skeleton active />
+
 	return (
 		<Table
-			dataSource={dataSource}
+			dataSource={filterRatesData()}
 			columns={columns}
 			size='large'
 			className='custom-table'

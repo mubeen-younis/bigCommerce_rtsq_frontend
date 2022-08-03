@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
 	Button,
 	Col,
@@ -11,11 +11,12 @@ import {
 	Space,
 	Card,
 } from 'antd'
-import AddRate from '../ShippingRate/AddRate'
 import Title from 'antd/lib/typography/Title'
 import { useDispatch, useSelector } from 'react-redux'
+import { addDbscData, getDbscData } from '../../../../Actions/DbscActions'
+import types from '../../../../Stores/types'
+import ZonesList from './ZonesList'
 
-const { Option } = Select
 const { TextArea } = Input
 
 const AddZone = ({ profileId }) => {
@@ -24,13 +25,23 @@ const AddZone = ({ profileId }) => {
 	const [initialValues, setInitialValues] = useState({
 		zone_name: '',
 		define_by_zone: 1,
-		zone_regions: [],
+		selected_region: [],
+		postcode: '',
 	})
 	const dispatch = useDispatch()
-	const { shippingZones } = useSelector(state => state)
+
+	useEffect(() => {
+		dispatch(getDbscData('get_dbsc_zones', types.GET_DBSC_ZONES))
+	}, [])
 
 	const onFinish = useCallback(values => {
-		console.log('Received values of form: ', form.getFieldsValue())
+		dispatch(
+			addDbscData(
+				'add_dbsc_zone',
+				{ ...values, profile_id: profileId },
+				types.ADD_DBSC_ZONE
+			)
+		)
 	}, [])
 
 	return (
@@ -52,6 +63,9 @@ const AddZone = ({ profileId }) => {
 					</Button>
 				</Col>
 			</Row>
+
+			{/* Zones List */}
+			<ZonesList profileId={profileId} />
 
 			{/* Add New Shipping Zone */}
 			{isOpen && (
@@ -102,11 +116,7 @@ const AddZone = ({ profileId }) => {
 											message: 'Zone name',
 										},
 									]}>
-									<Input
-										name='zone_name'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
-									/>
+									<Input />
 								</Form.Item>
 							</Col>
 							<Col
@@ -151,7 +161,7 @@ const AddZone = ({ profileId }) => {
 								xl={24}>
 								<Form.Item
 									className='mb-2'
-									name='zone_regions'
+									name='selected_region'
 									rules={[
 										{
 											required: false,
@@ -159,22 +169,16 @@ const AddZone = ({ profileId }) => {
 										},
 									]}>
 									<Select mode='tags'>
-										<option value=''>Select Category</option>
-										<option value='LABEL URL'>
-											CATEGORY NAME 1
+										<option value=''>Select Region</option>
+										<option value='region 1'>Region 1</option>
+										<option value='Africa'>
+											&nbsp;&nbsp;&nbsp;Africa
 										</option>
-										<option value='LABEL URL'>
-											&nbsp;&nbsp;&nbsp;SUBCATEGORY NAME 1.1
+										<option value='Algeria'>
+											&nbsp;&nbsp;&nbsp;Algeria
 										</option>
-										<option value='LABEL URL'>
-											&nbsp;&nbsp;&nbsp;SUBCATEGORY NAME 1.2
-										</option>
-										<option value='LABEL URL'>
-											CATEGORY NAME 2
-										</option>
-										<option value='LABEL URL'>
-											CATEGORY NAME 3
-										</option>
+										<option value='Region 2'>Region 2</option>
+										<option value='Region 3'>Region 3</option>
 									</Select>
 								</Form.Item>
 							</Col>
@@ -189,16 +193,24 @@ const AddZone = ({ profileId }) => {
 									xl={24}>
 									<Form.Item
 										className='mb-2'
+										name='postcode'
 										rules={[
 											{
 												required: false,
-												message: 'postal_codes',
+												message: 'Postal Codes',
 											},
 										]}>
 										<TextArea
 											className='mb-1'
 											rows={4}
 											placeholder='List 1 postcode per line'
+											onChange={e =>
+												setInitialValues(prevVal => ({
+													...prevVal,
+													postcode: e.target.value,
+												}))
+											}
+											value={initialValues.postcode}
 										/>
 										<p>
 											Postcodes containing wildcards (e.g.
@@ -220,9 +232,6 @@ const AddZone = ({ profileId }) => {
 					</Form>
 				</Modal>
 			)}
-
-			{/* Shipping Rates */}
-			<AddRate />
 		</Card>
 	)
 }
