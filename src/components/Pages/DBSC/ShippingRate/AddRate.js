@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Col, Form, Input, Modal, Row, Select, Radio, Space } from 'antd'
 import RatesList from './RatesList'
+import { useDispatch, useSelector } from 'react-redux'
 
 const { Option } = Select
 const { TextArea } = Input
@@ -27,6 +28,9 @@ const AddRate = () => {
 		maximum_shipping_quote: '',
 		rate_calculation_method: 1,
 	})
+
+	const dispatch = useDispatch()
+	const { shippingZones } = useSelector(state => state)
 
 	useEffect(() => {}, [])
 

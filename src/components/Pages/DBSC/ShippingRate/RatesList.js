@@ -56,24 +56,13 @@ const RatesList = () => {
 	]
 
 	return (
-		<>
-			<Row gutter={30} className='mb-2'>
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<Title level={5}>Test Zone</Title>
-				</Col>
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<p>Africa, Algeria, 8388, 83838, 89383</p>
-				</Col>
-			</Row>
-
-			<Table
-				dataSource={dataSource}
-				columns={columns}
-				size='large'
-				className='custom-table'
-				pagination={false}
-			/>
-		</>
+		<Table
+			dataSource={dataSource}
+			columns={columns}
+			size='large'
+			className='custom-table'
+			pagination={false}
+		/>
 	)
 }
 

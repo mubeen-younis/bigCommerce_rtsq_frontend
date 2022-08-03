@@ -1,5 +1,11 @@
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
 import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
+import {
+	addShippingClass,
+	addShippingProfile,
+} from '../../../../Actions/DbscActions'
 
 const { Option } = Select
 const { TextArea } = Input
@@ -11,9 +17,12 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 		nickname: '',
 		shipping_class: [],
 		class_name: '',
-		class_slug: '',
-		class_description: '',
+		slug: '',
+		description: '',
 	})
+
+	const dispatch = useDispatch()
+	const { shippingClasses } = useSelector(state => state)
 
 	useEffect(() => {}, [])
 
@@ -22,16 +31,23 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 		return `Add shipping ${postfix}`
 	}, [shippingClass])
 
-	const onFinish = useCallback(values => {
-		console.log('Received values of form: ', values)
-	}, [])
+	const onFinish = useCallback(
+		values => {
+			if (shippingClass) dispatch(addShippingClass(values))
+			else dispatch(addShippingProfile(values))
+		},
+		[shippingClass]
+	)
 
 	return (
 		<Row gutter={30}>
 			<Modal
 				title={setModalTitle()}
 				visible={visible}
-				onCancel={() => toggleAddProfileModal(false)}
+				onCancel={() => {
+					toggleAddProfileModal(false)
+					setShippingClass(false)
+				}}
 				onOk={() => form.submit()}
 				centered
 				destroyOnClose
@@ -71,16 +87,11 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 									name='nickname'
 									rules={[
 										{
-											required: false,
+											required: true,
 											message: 'Nickname',
 										},
 									]}>
-									<Input
-										name='nickname'
-										placeholder='Nickname'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
-									/>
+									<Input placeholder='Nickname' />
 								</Form.Item>
 							</Col>
 
@@ -94,10 +105,10 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 								<Form.Item
 									className='mb-2'
 									label='Shipping class'
-									name='shipping_class'
+									name='shipping_classes'
 									rules={[
 										{
-											required: false,
+											required: true,
 											message: 'Shipping class',
 										},
 									]}>
@@ -113,9 +124,13 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 												.toLowerCase()
 												.includes(input.toLowerCase())
 										}>
-										<Option value='jack'>Jack</Option>
-										<Option value='lucy'>Lucy</Option>
-										<Option value='tom'>Tom</Option>
+										{shippingClasses.map(cls => (
+											<Option
+												key={cls.id}
+												value={cls.class_name}>
+												{cls.class_name}
+											</Option>
+										))}
 									</Select>
 								</Form.Item>
 							</Col>
@@ -141,7 +156,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 						</Row>
 					) : (
 						/* Add shipping class */
-						<AddShippingClass />
+						<AddShippingClass shippingClass={shippingClass} />
 					)}
 				</Form>
 			</Modal>
@@ -149,7 +164,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	)
 }
 
-const AddShippingClass = () => {
+const AddShippingClass = ({ shippingClass }) => {
 	return (
 		<Row gutter={30}>
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -159,53 +174,39 @@ const AddShippingClass = () => {
 					name='class_name'
 					rules={[
 						{
-							required: false,
+							required: shippingClass,
 							message: 'Shipping class',
 						},
 					]}>
-					<Input
-						name='class_name'
-						placeholder='Class name'
-						// value={locationDetail.nickname}
-						// onChange={changeValue}
-					/>
+					<Input placeholder='Class name' />
 				</Form.Item>
 			</Col>
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 				<Form.Item
 					className='mb-2'
 					label='Slug'
-					name='class_slug'
+					name='slug'
 					rules={[
 						{
-							required: false,
+							required: shippingClass,
 							message: 'Slug',
 						},
 					]}>
-					<Input
-						name='class_slug'
-						placeholder='Class slug'
-						// value={locationDetail.nickname}
-						// onChange={changeValue}
-					/>
+					<Input placeholder='Class slug' />
 				</Form.Item>
 			</Col>
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 				<Form.Item
 					className='mb-2'
 					label='Description'
-					name='class_description'
+					name='description'
 					rules={[
 						{
-							required: false,
+							required: shippingClass,
 							message: 'Description',
 						},
 					]}>
-					<TextArea
-						name='description'
-						// value={locationDetail.nickname}
-						// onChange={changeValue}
-					/>
+					<TextArea />
 				</Form.Item>
 			</Col>
 		</Row>

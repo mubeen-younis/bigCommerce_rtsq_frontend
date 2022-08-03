@@ -13,27 +13,41 @@ import {
 } from 'antd'
 import AddZone from '../ShippingZone/AddZone'
 import Title from 'antd/lib/typography/Title'
+import OriginsList from './OriginsList'
+import { getDbscData } from '../../../../Actions/DbscActions'
+import { useDispatch } from 'react-redux'
+import types from '../../../../Stores/types'
+import { addDbscData } from '../../../../Actions/DbscActions'
 
 const { Option } = Select
 
-const AddOrigin = () => {
+const AddOrigin = ({ profileId }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [form] = Form.useForm()
 	const [initialValues, setInitialValues] = useState({
 		nickname: '',
 		street_address: '',
 		city: '',
-		state: '',
+		state_or_province: '',
 		postal_code: '',
-		country_code: '',
-		shipping_origin: '',
-		shipping_origin_type: '',
+		country: '',
+		from_shipping_origin: 1,
+		availability_in_other_plugins: 1,
 	})
+	const dispatch = useDispatch()
 
-	useEffect(() => {}, [])
+	useEffect(() => {
+		dispatch(getDbscData('get_dbsc_origins', types.GET_DBSC_ORIGINS))
+	}, [])
 
 	const onFinish = useCallback(values => {
-		console.log('Received values of form: ', form.getFieldsValue())
+		dispatch(
+			addDbscData(
+				'add_dbsc_origin',
+				{ ...values, profile_id: profileId },
+				types.ADD_DBSC_ORIGIN
+			)
+		)
 	}, [])
 
 	return (
@@ -55,10 +69,7 @@ const AddOrigin = () => {
 					</Button>
 				</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<p className='mb-0'>trx</p>
-					<p>8865 White Ibis Way , Navarre FL 32566 ,United States</p>
-				</Col>
+				<OriginsList profileId={profileId} />
 			</Row>
 
 			<Row gutter={30}>
@@ -176,7 +187,7 @@ const AddOrigin = () => {
 								<Form.Item
 									className='mb-2'
 									label='State or Province'
-									name='state'
+									name='state_or_province'
 									rules={[
 										{
 											required: false,
@@ -227,7 +238,7 @@ const AddOrigin = () => {
 								<Form.Item
 									className='mb-2'
 									label='Country code'
-									name='country_code'
+									name='country'
 									rules={[
 										{
 											required: false,
@@ -235,7 +246,7 @@ const AddOrigin = () => {
 										},
 									]}>
 									<Input
-										name='country_code'
+										name='country'
 										placeholder='US'
 										// value={locationDetail.nickname}
 										// onChange={changeValue}
@@ -253,7 +264,7 @@ const AddOrigin = () => {
 								<Form.Item
 									className='mb-2'
 									label='Add the shipping origin'
-									name='shipping_origin'
+									name='from_shipping_origin'
 									rules={[
 										{
 											required: false,
@@ -283,7 +294,7 @@ const AddOrigin = () => {
 								<Form.Item
 									className='mb-2'
 									label='Availability in other plugins by Eniture Technology'
-									name='shipping_origin_type'
+									name='availability_in_other_plugins'
 									rules={[
 										{
 											required: false,
@@ -292,9 +303,13 @@ const AddOrigin = () => {
 										},
 									]}>
 									<Select>
-										<Option>Not available</Option>
-										<Option>Available as a warehouse</Option>
-										<Option>Available as a dropship</Option>
+										<Option value={1}>Not available</Option>
+										<Option value={2}>
+											Available as a warehouse
+										</Option>
+										<Option value={3}>
+											Available as a dropship
+										</Option>
 									</Select>
 								</Form.Item>
 							</Col>
@@ -304,7 +319,7 @@ const AddOrigin = () => {
 			</Row>
 
 			{/* Add Shipping Zone */}
-			<AddZone />
+			<AddZone profileId={profileId} />
 		</Card>
 	)
 }

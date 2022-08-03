@@ -13,11 +13,12 @@ import {
 } from 'antd'
 import AddRate from '../ShippingRate/AddRate'
 import Title from 'antd/lib/typography/Title'
+import { useDispatch, useSelector } from 'react-redux'
 
 const { Option } = Select
 const { TextArea } = Input
 
-const AddZone = ({ visible, toggleAddProfileModal }) => {
+const AddZone = ({ profileId }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [form] = Form.useForm()
 	const [initialValues, setInitialValues] = useState({
@@ -25,6 +26,8 @@ const AddZone = ({ visible, toggleAddProfileModal }) => {
 		define_by_zone: 1,
 		zone_regions: [],
 	})
+	const dispatch = useDispatch()
+	const { shippingZones } = useSelector(state => state)
 
 	const onFinish = useCallback(values => {
 		console.log('Received values of form: ', form.getFieldsValue())
@@ -155,7 +158,24 @@ const AddZone = ({ visible, toggleAddProfileModal }) => {
 											message: 'Zone regions',
 										},
 									]}>
-									<Select mode='tags'></Select>
+									<Select mode='tags'>
+										<option value=''>Select Category</option>
+										<option value='LABEL URL'>
+											CATEGORY NAME 1
+										</option>
+										<option value='LABEL URL'>
+											&nbsp;&nbsp;&nbsp;SUBCATEGORY NAME 1.1
+										</option>
+										<option value='LABEL URL'>
+											&nbsp;&nbsp;&nbsp;SUBCATEGORY NAME 1.2
+										</option>
+										<option value='LABEL URL'>
+											CATEGORY NAME 2
+										</option>
+										<option value='LABEL URL'>
+											CATEGORY NAME 3
+										</option>
+									</Select>
 								</Form.Item>
 							</Col>
 

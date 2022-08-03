@@ -50,6 +50,12 @@ const initialState = {
 	shippingGroups: null,
 	fdoCouponInfo: null,
 	fdoCouponCarrierInfo: null,
+	/* Dbsc states */
+	shippingProfiles: null,
+	shippingClasses: null,
+	shippingOrigins: null,
+	shippingZones: null,
+	shippingRates: null,
 }
 
 const Reducer = (state = initialState, action) => {
@@ -613,6 +619,43 @@ const Reducer = (state = initialState, action) => {
 				fdoCouponCarrierInfo: action.payload,
 			}
 		}
+
+		/* Dbsc Reducer actions */
+		case types.GET_DBSC_PROFILES:
+			return {
+				...state,
+				shippingProfiles: action.payload,
+			}
+		case types.ADD_DBSC_PROFILE:
+			return {
+				...state,
+				shippingProfiles: [...state.shippingProfiles, action.payload],
+			}
+		case types.GET_DBSC_CLASSES:
+			return {
+				...state,
+				shippingClasses: action.payload,
+			}
+		case types.ADD_DBSC_CLASS:
+			return {
+				...state,
+				shippingClasses: [...state.shippingClasses, action.payload],
+			}
+		case types.GET_DBSC_ORIGINS:
+			return {
+				...state,
+				shippingOrigins: action.payload,
+			}
+		case types.ADD_DBSC_ORIGIN:
+			return {
+				...state,
+				shippingOrigins: [...state.shippingOrigins, action.payload],
+			}
+		case types.GET_DBSC_ZONES:
+			return {
+				...state,
+				shippingZones: action.payload,
+			}
 
 		default:
 			return state
