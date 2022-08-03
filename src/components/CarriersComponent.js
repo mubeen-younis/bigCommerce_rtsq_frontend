@@ -204,7 +204,7 @@ const CarriersComponent = props => {
 							hideOnSinglePage: title === "TQL",
 						}}
 					/>
-					<Form.Item style={{ textAlign: 'right', marginBottom: '0' ,marginTop: '15px'}}>
+					<Form.Item style={styles}>
 						<Space>
 							<Button
 								type='primary'
@@ -222,6 +222,12 @@ const CarriersComponent = props => {
 			)}
 		</Fragment>
 	)
+}
+
+const styles = {
+	textAlign: 'right',
+	marginBottom: '0',
+	marginTop: '15px',
 }
 
 const mapStateToProps = state => {
