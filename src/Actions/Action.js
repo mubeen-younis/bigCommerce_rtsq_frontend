@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import axios from 'axios'
 
 export const postData = (data, type, url, token, setVisibleWarehouse = null) => {
@@ -7,13 +8,8 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 		},
 	}
 	return dispatch => {
-		dispatch({
-			type: 'ALERT_MESSAGE',
-			payload: {
-				showAlertMessage: true,
-				alertMessageType: 'loading',
-			},
-		})
+	
+		const hideMessage=message.loading('Loading. Please wait...',0)
 
 		const isTestConnection = type === 'GET_CONNECTION_SETTINGS' && data.testType
 		Object.keys(data).map(
@@ -52,7 +48,7 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 						setVisibleWarehouse(false)
 					}
 				}
-
+				hideMessage()
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
