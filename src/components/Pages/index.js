@@ -18,6 +18,7 @@ export { default as CSSaiaLtl } from './SaiaLtl/ConnectionSettingsComponent'
 export { default as CSAbfLtl } from './AbfLtl/ConnectionSettingsComponent'
 export { default as CSSouthEasternLtl } from './SouthEasternLtl/ConnectionSettings'
 export { default as CSUspsSmall } from './UspsSmall/ConnectionSettingsComponent'
+export { default as CSTQLLtl } from './TQLLtl/ConnectionSettingsComponent'
 export { default as CSEchoLtl } from './EchoLogisticsLtl/ConnectionSettingsComponent'
 
 // Quote Settings Component
@@ -40,4 +41,5 @@ export { default as QSSaiaLtl } from './SaiaLtl/QuoteSettingsComponent'
 export { default as QSAbfLtl } from './AbfLtl/QuoteSettingsComponent'
 export { default as QSSouthEasternLtl } from './SouthEasternLtl/QuoteSettings'
 export { default as QSUspsSmall } from './UspsSmall/QuoteSettingsComponent'
+export { default as QSTQLLtl } from './TQLLtl/QuoteSettingsComponent'
 export { default as QSEchoLtl } from './EchoLogisticsLtl/QuoteSettingsComponent'
