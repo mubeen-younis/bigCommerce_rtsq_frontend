@@ -113,7 +113,7 @@ const RatesList = ({ zoneId }) => {
 			?.filter(rate => rate.dbsc_zone_id === zoneId)
 			?.map(rate => ({
 				...rate,
-				key: rate.id,
+				key: rate.display_as,
 			}))
 		return rates
 	}, [shippingRates])
@@ -127,6 +127,7 @@ const RatesList = ({ zoneId }) => {
 			size='large'
 			className='custom-table'
 			pagination={false}
+			style={{ marginBottom: '0' }}
 		/>
 	)
 }

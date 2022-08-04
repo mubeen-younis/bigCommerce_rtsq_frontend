@@ -6,6 +6,7 @@ import {
 	addShippingClass,
 	addShippingProfile,
 } from '../../../../Actions/DbscActions'
+import ShippingProfile from './ShippingProfile'
 
 const { Option } = Select
 const { TextArea } = Input
@@ -20,6 +21,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 		slug: '',
 		description: '',
 	})
+	const [action, setAction] = useState('')
 
 	const dispatch = useDispatch()
 	const { shippingClasses } = useSelector(state => state)
@@ -39,128 +41,146 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 		[shippingClass]
 	)
 
+	const editProfile = useCallback(() => {
+		setAction('edit')
+
+		form.setFieldsValue({})
+	}, [])
+
 	return (
-		<Row gutter={30}>
-			<Modal
-				title={setModalTitle()}
-				visible={visible}
-				onCancel={() => {
-					toggleAddProfileModal(false)
-					setShippingClass(false)
-				}}
-				onOk={() => form.submit()}
-				centered
-				destroyOnClose
-				okText='Save'
-				footer={[
-					<Button key='back' onClick={() => toggleAddProfileModal(false)}>
-						Cancel
-					</Button>,
-					<Button
-						key='submit'
-						type='primary'
-						// loading={loading}
-						onClick={() => form.submit()}>
-						Save
-					</Button>,
-				]}>
-				<Form
-					layout='vertical'
-					name='add_profile_info'
-					className='form-wrp'
-					size='large'
-					form={form}
-					initialValues={initialValues}
-					onFinish={onFinish}>
-					{!shippingClass ? (
-						<Row gutter={30}>
-							<Col
-								className='gutter-row'
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={24}>
-								<Form.Item
-									className='mb-2'
-									label='Nickname'
-									name='nickname'
-									rules={[
-										{
-											required: true,
-											message: 'Nickname',
-										},
-									]}>
-									<Input placeholder='Nickname' />
-								</Form.Item>
-							</Col>
+		<>
+			<ShippingProfile editProfile={editProfile} />
 
-							<Col
-								className='gutter-row'
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={24}>
-								<Form.Item
-									className='mb-2'
-									label='Shipping class'
-									name='shipping_classes'
-									rules={[
-										{
-											required: true,
-											message: 'Shipping class',
-										},
-									]}>
-									<Select
-										showSearch
-										placeholder='Search shipping classes'
-										optionFilterProp='children'
-										mode='tags'
-										// onChange={onChange}
-										// onSearch={onSearch}
-										filterOption={(input, option) =>
-											option.children
-												.toLowerCase()
-												.includes(input.toLowerCase())
-										}>
-										{shippingClasses.map(cls => (
-											<Option
-												key={cls.id}
-												value={cls.class_name}>
-												{cls.class_name}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
-							</Col>
+			{visible && (
+				<Row gutter={30}>
+					<Modal
+						title={setModalTitle()}
+						visible={visible}
+						onCancel={() => {
+							toggleAddProfileModal(false)
+							setShippingClass(false)
+						}}
+						onOk={() => form.submit()}
+						centered
+						destroyOnClose
+						okText='Save'
+						footer={[
+							<Button
+								key='back'
+								onClick={() => toggleAddProfileModal(false)}>
+								Cancel
+							</Button>,
+							<Button
+								key='submit'
+								type='primary'
+								// loading={loading}
+								onClick={() => form.submit()}>
+								Save
+							</Button>,
+						]}>
+						<Form
+							layout='vertical'
+							name='add_profile_info'
+							className='form-wrp'
+							size='large'
+							form={form}
+							initialValues={initialValues}
+							onFinish={onFinish}>
+							{!shippingClass ? (
+								<Row gutter={30}>
+									<Col
+										className='gutter-row'
+										xs={24}
+										sm={24}
+										md={24}
+										lg={24}
+										xl={24}>
+										<Form.Item
+											className='mb-2'
+											label='Nickname'
+											name='nickname'
+											rules={[
+												{
+													required: true,
+													message: 'Nickname',
+												},
+											]}>
+											<Input placeholder='Nickname' />
+										</Form.Item>
+									</Col>
 
-							<Col
-								className='gutter-row'
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={24}>
-								<Form.Item>
-									<Button
-										type='text'
-										htmlType='button'
-										onClick={() =>
-											setShippingClass(prevState => !prevState)
-										}>
-										Add a new shipping class
-									</Button>
-								</Form.Item>
-							</Col>
-						</Row>
-					) : (
-						/* Add shipping class */
-						<AddShippingClass shippingClass={shippingClass} />
-					)}
-				</Form>
-			</Modal>
-		</Row>
+									<Col
+										className='gutter-row'
+										xs={24}
+										sm={24}
+										md={24}
+										lg={24}
+										xl={24}>
+										<Form.Item
+											className='mb-2'
+											label='Shipping class'
+											name='shipping_classes'
+											rules={[
+												{
+													required: true,
+													message: 'Shipping class',
+												},
+											]}>
+											<Select
+												showSearch
+												placeholder='Search shipping classes'
+												optionFilterProp='children'
+												mode='tags'
+												// onChange={onChange}
+												// onSearch={onSearch}
+												filterOption={(input, option) =>
+													option.children
+														.toLowerCase()
+														.includes(
+															input.toLowerCase()
+														)
+												}>
+												{shippingClasses.map(cls => (
+													<Option
+														key={cls.id}
+														value={cls.class_name}>
+														{cls.class_name}
+													</Option>
+												))}
+											</Select>
+										</Form.Item>
+									</Col>
+
+									<Col
+										className='gutter-row'
+										xs={24}
+										sm={24}
+										md={24}
+										lg={24}
+										xl={24}>
+										<Form.Item>
+											<Button
+												type='text'
+												htmlType='button'
+												onClick={() =>
+													setShippingClass(
+														prevState => !prevState
+													)
+												}>
+												Add a new shipping class
+											</Button>
+										</Form.Item>
+									</Col>
+								</Row>
+							) : (
+								/* Add shipping class */
+								<AddShippingClass shippingClass={shippingClass} />
+							)}
+						</Form>
+					</Modal>
+				</Row>
+			)}
+		</>
 	)
 }
 

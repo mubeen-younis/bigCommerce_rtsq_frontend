@@ -665,6 +665,13 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				shippingOrigins: [...state.shippingOrigins, action.payload],
 			}
+		case types.DELETE_DBSC_ORIGIN:
+			return {
+				...state,
+				shippingOrigins: state.shippingOrigins.filter(
+					so => so.id !== action.payload
+				),
+			}
 		case types.GET_DBSC_ZONES:
 			return {
 				...state,
@@ -674,6 +681,13 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				shippingZones: [...state.shippingZones, action.payload],
+			}
+		case types.DELETE_DBSC_ZONE:
+			return {
+				...state,
+				shippingZones: state.shippingZones.filter(
+					z => z.id !== action.payload
+				),
 			}
 		case types.GET_DBSC_RATES:
 			return {

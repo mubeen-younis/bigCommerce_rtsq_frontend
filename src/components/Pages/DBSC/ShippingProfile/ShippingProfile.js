@@ -7,14 +7,14 @@ import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
 
-const ShippingProfile = () => {
+const ShippingProfile = ({ editProfile }) => {
 	const { shippingProfiles } = useSelector(state => state)
 	const dispatch = useDispatch()
 
 	return (
 		<Space direction='vertical' size='large' className='w-100'>
 			{shippingProfiles?.map(pf => (
-				<Card key={pf.id}>
+				<Card key={pf.p_nickname}>
 					<Row gutter={30} className='mb-1'>
 						<Col
 							className='gutter-row'
@@ -36,7 +36,7 @@ const ShippingProfile = () => {
 							<Button type='link' onClick={() => {}}>
 								...
 							</Button>
-							<Button type='link' onClick={() => {}}>
+							<Button type='link' onClick={editProfile}>
 								Edit
 							</Button>
 							<Button
@@ -65,9 +65,10 @@ const ShippingProfile = () => {
 							md={24}
 							lg={24}
 							xl={24}>
-							{JSON.parse(pf?.shipping_classes)?.map(cls => (
-								<p key={pf?.id}>{cls}</p>
-							))}
+							{pf?.shipping_classes &&
+								JSON.parse(pf?.shipping_classes)?.map(cls => (
+									<p key={pf?.id}>{cls}</p>
+								))}
 						</Col>
 					</Row>
 

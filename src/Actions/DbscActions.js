@@ -127,18 +127,17 @@ export const deleteDbscData = (url, reqData, type) => async dispatch => {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
 		const { data } = await axios().post(url, reqData)
-		console.log(data)
 		if (!data.error) {
 			dispatch({
 				type,
 				payload: data.data,
 			})
-
-			// dispatch(setModalData('', false, '', null, ''))
+			dispatch(setModalData('', false, '', null, ''))
 		}
 
 		dispatch(dispatchAlert(true, data.error ? 'error' : 'success', data.message))
 	} catch (err) {
+		console.log(err)
 		dispatch(dispatchAlert(false, 'error', 'Something went wrong'))
 	}
 }

@@ -45,13 +45,10 @@ const ShippingRatesComponent = () => {
 				</Col>
 			</Row>
 
-			<ShippingProfile />
-			{addProfileModal && (
-				<AddProfile
-					visible={addProfileModal}
-					toggleAddProfileModal={toggleAddProfileModal}
-				/>
-			)}
+			<AddProfile
+				visible={addProfileModal}
+				toggleAddProfileModal={toggleAddProfileModal}
+			/>
 		</>
 	)
 }

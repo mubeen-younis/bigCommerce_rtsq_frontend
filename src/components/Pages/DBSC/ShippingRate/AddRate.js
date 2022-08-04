@@ -526,7 +526,10 @@ const AddRate = ({ zoneId }) => {
 
 			{/* Rates List */}
 			<RatesList zoneId={zoneId} />
-			<Button type='primary' onClick={() => setIsOpen(!isOpen)}>
+			<Button
+				type='primary'
+				className='mt-0'
+				onClick={() => setIsOpen(!isOpen)}>
 				Add rate
 			</Button>
 		</Space>

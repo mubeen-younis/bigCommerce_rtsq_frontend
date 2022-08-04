@@ -9,7 +9,7 @@ const ConfirmDeleteModal = () => {
 
 	const handleConfirm = useCallback(() => {
 		dispatch(
-			deleteDbscData(modalData.url, { id: modalData.data }, modalData.type)
+			deleteDbscData(modalData.url, { id: modalData.data }, modalData.action)
 		)
 	}, [modalData])
 
