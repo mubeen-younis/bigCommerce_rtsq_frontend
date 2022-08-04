@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, memo, useState } from 'react'
 import {
 	Button,
 	Col,
@@ -14,8 +14,12 @@ import {
 import AddZone from '../ShippingZone/AddZone'
 import Title from 'antd/lib/typography/Title'
 import OriginsList from './OriginsList'
-import { getDbscData } from '../../../../Actions/DbscActions'
-import { useDispatch } from 'react-redux'
+import {
+	getDbscData,
+	setConfirmModalData,
+	updateDbscData,
+} from '../../../../Actions/DbscActions'
+import { useDispatch, useSelector } from 'react-redux'
 import types from '../../../../Stores/types'
 import { addDbscData } from '../../../../Actions/DbscActions'
 
@@ -31,8 +35,12 @@ const AddOrigin = ({ profileId }) => {
 		state_or_province: '',
 		postal_code: '',
 		country: '',
-		from_shipping_origin: 1,
-		availability_in_other_plugins: 1,
+		from_shipping_origin: '1',
+		availability_in_other_plugins: '1',
+	})
+	const [action, setAction] = useState({
+		type: 'add',
+		payload: null,
 	})
 	const dispatch = useDispatch()
 
@@ -40,14 +48,37 @@ const AddOrigin = ({ profileId }) => {
 		dispatch(getDbscData('get_dbsc_origins', types.GET_DBSC_ORIGINS))
 	}, [])
 
-	const onFinish = useCallback(values => {
-		dispatch(
-			addDbscData(
-				'add_dbsc_origin',
-				{ ...values, profile_id: profileId },
-				types.ADD_DBSC_ORIGIN
-			)
-		)
+	const onFinish = useCallback(
+		values => {
+			if (action.type === 'edit') {
+				dispatch(
+					updateDbscData(
+						'',
+						{ ...values, id: action.payload.id },
+						types.UPDATE_DBSC_ORIGIN
+					)
+				)
+			} else {
+				dispatch(
+					addDbscData(
+						'add_dbsc_origin',
+						{ ...values, profile_id: profileId },
+						types.ADD_DBSC_ORIGIN
+					)
+				)
+			}
+		},
+		[action.type, profileId, dispatch]
+	)
+
+	const editOrigin = useCallback(values => {
+		setIsOpen(true)
+		setAction({
+			type: 'edit',
+			payload: values,
+		})
+
+		form.setFieldsValue({ ...values, nickname: values.ori_nickname })
 	}, [])
 
 	return (
@@ -64,12 +95,24 @@ const AddOrigin = ({ profileId }) => {
 					lg={12}
 					xl={12}
 					style={{ textAlign: 'right' }}>
-					<Button type='link' onClick={() => setIsOpen(true)}>
+					<Button
+						type='link'
+						onClick={() => {
+							setIsOpen(true)
+							setConfirmModalData(
+								'Add',
+								true,
+								'',
+								null,
+								types.ADD_DBSC_ORIGIN,
+								'ORIGIN'
+							)
+						}}>
 						Add shipping origin
 					</Button>
 				</Col>
 
-				<OriginsList profileId={profileId} />
+				<OriginsList profileId={profileId} editOrigin={editOrigin} />
 			</Row>
 
 			<Row gutter={30}>
@@ -120,11 +163,7 @@ const AddOrigin = ({ profileId }) => {
 											message: 'Nickname',
 										},
 									]}>
-									<Input
-										name='nickname'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
-									/>
+									<Input name='nickname' />
 								</Form.Item>
 							</Col>
 							<Col
@@ -147,8 +186,6 @@ const AddOrigin = ({ profileId }) => {
 									<Input
 										name='Street_address'
 										placeholder='6180 Buffington Road'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
 									/>
 								</Form.Item>
 							</Col>
@@ -169,12 +206,7 @@ const AddOrigin = ({ profileId }) => {
 											message: 'City',
 										},
 									]}>
-									<Input
-										name='city'
-										placeholder='Atlanta'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
-									/>
+									<Input name='city' placeholder='Atlanta' />
 								</Form.Item>
 							</Col>
 							<Col
@@ -194,12 +226,7 @@ const AddOrigin = ({ profileId }) => {
 											message: 'State or Province',
 										},
 									]}>
-									<Input
-										name='state'
-										placeholder='GA'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
-									/>
+									<Input name='state' placeholder='GA' />
 								</Form.Item>
 							</Col>
 							<Col
@@ -219,12 +246,7 @@ const AddOrigin = ({ profileId }) => {
 											message: 'Postal Code',
 										},
 									]}>
-									<Input
-										name='postal_code'
-										placeholder='30349'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
-									/>
+									<Input name='postal_code' placeholder='30349' />
 								</Form.Item>
 							</Col>
 
@@ -245,12 +267,7 @@ const AddOrigin = ({ profileId }) => {
 											message: 'Country code',
 										},
 									]}>
-									<Input
-										name='country'
-										placeholder='US'
-										// value={locationDetail.nickname}
-										// onChange={changeValue}
-									/>
+									<Input name='country' placeholder='US' />
 								</Form.Item>
 							</Col>
 
@@ -271,12 +288,12 @@ const AddOrigin = ({ profileId }) => {
 											message: 'Add the shipping origin',
 										},
 									]}>
-									<Radio.Group onChange={() => {}} value={1}>
+									<Radio.Group>
 										<Space direction='vertical'>
-											<Radio value={1}>
+											<Radio value='1'>
 												To this Shipping From profile
 											</Radio>
-											<Radio value={2}>
+											<Radio value='2'>
 												As a new Shipping From profile
 											</Radio>
 										</Space>
@@ -303,11 +320,11 @@ const AddOrigin = ({ profileId }) => {
 										},
 									]}>
 									<Select>
-										<Option value={1}>Not available</Option>
-										<Option value={2}>
+										<Option value='1'>Not available</Option>
+										<Option value='2'>
 											Available as a warehouse
 										</Option>
-										<Option value={3}>
+										<Option value='3'>
 											Available as a dropship
 										</Option>
 									</Select>
@@ -324,4 +341,4 @@ const AddOrigin = ({ profileId }) => {
 	)
 }
 
-export default AddOrigin
+export default memo(AddOrigin)

@@ -61,8 +61,10 @@ const initialState = {
 		title: '',
 		data: null,
 		action: '',
-		url: ',',
+		url: '',
+		type: '',
 	},
+	dbscBigComZones: null,
 }
 
 const Reducer = (state = initialState, action) => {
@@ -638,6 +640,13 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				shippingProfiles: [...state.shippingProfiles, action.payload],
 			}
+		case types.UPDATE_DBSC_PROFILE:
+			return {
+				...state,
+				shippingProfiles: state.shippingProfiles.map(sp =>
+					sp.id === action.payload.id ? action.payload : sp
+				),
+			}
 		case types.DELETE_DBSC_PROFILE:
 			return {
 				...state,
@@ -655,6 +664,20 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				shippingClasses: [...state.shippingClasses, action.payload],
 			}
+		case types.UPDATE_DBSC_CLASS:
+			return {
+				...state,
+				shippingClasses: state.shippingClasses.map(sc =>
+					sc.id === action.payload.id ? action.payload : sc
+				),
+			}
+		case types.DELETE_DBSC_CLASS:
+			return {
+				...state,
+				shippingClasses: state.shippingClasses.filter(
+					sc => sc.id !== action.payload
+				),
+			}
 		case types.GET_DBSC_ORIGINS:
 			return {
 				...state,
@@ -664,6 +687,13 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				shippingOrigins: [...state.shippingOrigins, action.payload],
+			}
+		case types.UPDATE_DBSC_ORIGIN:
+			return {
+				...state,
+				shippingOrigins: state.shippingOrigins.map(so =>
+					so.id === action.payload.id ? action.payload : so
+				),
 			}
 		case types.DELETE_DBSC_ORIGIN:
 			return {
@@ -682,6 +712,13 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				shippingZones: [...state.shippingZones, action.payload],
 			}
+		case types.UPDATE_DBSC_ZONE:
+			return {
+				...state,
+				shippingZones: state.shippingZones.map(sz =>
+					sz.id === action.payload.id ? action.payload : sz
+				),
+			}
 		case types.DELETE_DBSC_ZONE:
 			return {
 				...state,
@@ -699,6 +736,13 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				shippingRates: [...state.shippingRates, action.payload],
 			}
+		case types.UPDATE_DBSC_RATE:
+			return {
+				...state,
+				shippingRates: state.shippingRates.map(sr =>
+					sr.id === action.payload.id ? action.payload : sr
+				),
+			}
 		case types.DELETE_DBSC_RATE:
 			return {
 				...state,
@@ -710,6 +754,11 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				modalData: { ...state.modalData, ...action.payload },
+			}
+		case types.GET_DBSC_BC_ZONES:
+			return {
+				...state,
+				dbscBigComZones: action.payload,
 			}
 
 		default:

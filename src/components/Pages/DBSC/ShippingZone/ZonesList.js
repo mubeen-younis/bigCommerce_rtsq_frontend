@@ -1,6 +1,6 @@
 import { Button, Col, Row, Skeleton } from 'antd'
 import Title from 'antd/lib/typography/Title'
-import React from 'react'
+import React, { memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
@@ -78,4 +78,4 @@ const ZonesList = ({ profileId }) => {
 	)
 }
 
-export default ZonesList
+export default memo(ZonesList)

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import AddProfile from './ShippingProfile/AddProfile'
 import ShippingProfile from './ShippingProfile/ShippingProfile'
 import types from '../../../Stores/types'
-import { getDbscData } from '../../../Actions/DbscActions'
+import { getDbscData, getDbscZones } from '../../../Actions/DbscActions'
 
 const { Title } = Typography
 
@@ -21,7 +21,8 @@ const ShippingRatesComponent = () => {
 	useEffect(() => {
 		dispatch(getDbscData('get_dbsc_profiles', types.GET_DBSC_PROFILES))
 		dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES))
-	}, [])
+		dispatch(getDbscZones())
+	}, [dispatch])
 
 	if (!shippingProfiles) return <Skeleton active />
 

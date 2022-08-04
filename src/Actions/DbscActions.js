@@ -85,7 +85,6 @@ export const addShippingClass = classData => async dispatch => {
 export const addShippingProfile = profileData => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
-		console.log(profileData)
 
 		const { data } = await axios().post('add_dbsc_profile', profileData)
 		console.log(data)
@@ -120,7 +119,23 @@ export const addDbscData = (url, reqData, type) => async dispatch => {
 	}
 }
 
-export const updateDbscData = (url, reqData, type) => async dispatch => {}
+export const updateDbscData = (url, reqData, type) => async dispatch => {
+	try {
+		dispatch(dispatchAlert(true, 'loading', ''))
+
+		const { data } = await axios().post(url, reqData)
+		if (!data.error) {
+			dispatch({
+				type,
+				payload: data.data,
+			})
+		}
+
+		dispatch(dispatchAlert(true, data.error ? 'error' : 'success', data.message))
+	} catch (err) {
+		dispatch(dispatchAlert(false, 'error', 'Something went wrong'))
+	}
+}
 
 export const deleteDbscData = (url, reqData, type) => async dispatch => {
 	try {
@@ -137,24 +152,41 @@ export const deleteDbscData = (url, reqData, type) => async dispatch => {
 
 		dispatch(dispatchAlert(true, data.error ? 'error' : 'success', data.message))
 	} catch (err) {
-		console.log(err)
 		dispatch(dispatchAlert(false, 'error', 'Something went wrong'))
 	}
 }
 
-export const setConfirmModalData = (
-	title = '',
-	visible = false,
-	url = '',
-	data = null,
-	action = ''
-) => ({
-	type: 'SET_MODAL_DATA',
-	payload: {
-		title,
-		visible,
-		url,
-		data,
-		action,
-	},
-})
+export const getDbscZones = () => async dispatch => {
+	try {
+		dispatch(dispatchAlert(false, 'loading', ''))
+
+		const { data } = await axios().get('get_zones_bc')
+		if (!data.error) {
+			dispatch({
+				type: 'GET_DBSC_BC_ZONES',
+				payload: data.data,
+			})
+		}
+
+		dispatch(
+			dispatchAlert(false, data.error ? 'error' : 'success', data.message)
+		)
+	} catch (err) {
+		dispatch(dispatchAlert(false, 'error', 'Something went wrong'))
+	}
+}
+
+export const setConfirmModalData =
+	(title = '', visible = false, url = '', data = null, action = '', type = '') =>
+	dispatch =>
+		dispatch({
+			type: 'SET_MODAL_DATA',
+			payload: {
+				title,
+				visible,
+				url,
+				data,
+				action,
+				type,
+			},
+		})

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
 
-const OriginsList = ({ profileId }) => {
+const OriginsList = ({ profileId, editOrigin }) => {
 	const { shippingOrigins } = useSelector(state => state)
 	const dispatch = useDispatch()
 
@@ -40,7 +40,21 @@ const OriginsList = ({ profileId }) => {
 							<Button type='link' onClick={() => {}}>
 								...
 							</Button>
-							<Button type='link' onClick={() => {}}>
+							<Button
+								type='link'
+								onClick={() => {
+									editOrigin(org)
+									// dispatch(
+									// 	setConfirmModalData(
+									// 		'Update',
+									// 		true,
+									// 		'',
+									// 		org,
+									// 		types.UPDATE_DBSC_ORIGIN,
+									// 		'ORIGIN'
+									// 	)
+									// )
+								}}>
 								Edit
 							</Button>
 							<Button

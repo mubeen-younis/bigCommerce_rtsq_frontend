@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import {
 	Button,
 	Col,
@@ -24,11 +24,12 @@ const AddZone = ({ profileId }) => {
 	const [form] = Form.useForm()
 	const [initialValues, setInitialValues] = useState({
 		zone_name: '',
-		define_by_zone: 1,
+		define_by_zone: '1',
 		selected_region: [],
 		postcode: '',
 	})
 	const dispatch = useDispatch()
+	const { dbscBigComZones } = useSelector(state => state)
 
 	useEffect(() => {
 		dispatch(getDbscData('get_dbsc_zones', types.GET_DBSC_ZONES))
@@ -112,46 +113,14 @@ const AddZone = ({ profileId }) => {
 									name='zone_name'
 									rules={[
 										{
-											required: false,
+											required: true,
 											message: 'Zone name',
 										},
 									]}>
 									<Input />
 								</Form.Item>
 							</Col>
-							<Col
-								className='gutter-row'
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={24}>
-								<Form.Item
-									className='mb-2'
-									label='Define by zone'
-									name='define_by_zone'
-									rules={[
-										{
-											required: false,
-											message: 'Define by zone',
-										},
-									]}>
-									<Radio.Group
-										onChange={e => {
-											setInitialValues(prevVal => ({
-												...prevVal,
-												define_by_zone: +e.target.value,
-											}))
-										}}>
-										<Radio value={1}>
-											Country and/or State / Province
-										</Radio>
-										<Radio value={2}>
-											Postal Code by Country
-										</Radio>
-									</Radio.Group>
-								</Form.Item>
-							</Col>
+
 							<Col
 								className='gutter-row'
 								xs={24}
@@ -162,72 +131,26 @@ const AddZone = ({ profileId }) => {
 								<Form.Item
 									className='mb-2'
 									name='selected_region'
+									label='Zone Regions'
 									rules={[
 										{
-											required: false,
+											required: true,
 											message: 'Zone regions',
 										},
 									]}>
-									<Select mode='tags'>
-										<option value=''>Select Region</option>
-										<option value='region 1'>Region 1</option>
-										<option value='Africa'>
-											&nbsp;&nbsp;&nbsp;Africa
-										</option>
-										<option value='Algeria'>
-											&nbsp;&nbsp;&nbsp;Algeria
-										</option>
-										<option value='Region 2'>Region 2</option>
-										<option value='Region 3'>Region 3</option>
+									<Select
+										mode='tags'
+										placeholder='Select regions with within this zone'>
+										{dbscBigComZones?.map(zone => (
+											<Select.Option
+												key={zone.id}
+												value={zone.id}>
+												{zone.name}
+											</Select.Option>
+										))}
 									</Select>
 								</Form.Item>
 							</Col>
-
-							{initialValues.define_by_zone === 2 && (
-								<Col
-									className='gutter-row'
-									xs={24}
-									sm={24}
-									md={24}
-									lg={24}
-									xl={24}>
-									<Form.Item
-										className='mb-2'
-										name='postcode'
-										rules={[
-											{
-												required: false,
-												message: 'Postal Codes',
-											},
-										]}>
-										<TextArea
-											className='mb-1'
-											rows={4}
-											placeholder='List 1 postcode per line'
-											onChange={e =>
-												setInitialValues(prevVal => ({
-													...prevVal,
-													postcode: e.target.value,
-												}))
-											}
-											value={initialValues.postcode}
-										/>
-										<p>
-											Postcodes containing wildcards (e.g.
-											CB23*) or fully numeric ranges (e.g.
-											90210...99000) are also supported. Please
-											see the shipping zones{' '}
-											<a
-												href='https://docs.woocommerce.com/document/setting-up-shipping-zones/#section-3'
-												target='_blank'
-												rel='noopener noreferrer'>
-												documentation
-											</a>{' '}
-											for more information.
-										</p>
-									</Form.Item>
-								</Col>
-							)}
 						</Row>
 					</Form>
 				</Modal>
@@ -236,4 +159,4 @@ const AddZone = ({ profileId }) => {
 	)
 }
 
-export default AddZone
+export default memo(AddZone)

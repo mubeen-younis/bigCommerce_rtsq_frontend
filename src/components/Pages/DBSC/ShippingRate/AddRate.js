@@ -13,7 +13,7 @@ const AddRate = ({ zoneId }) => {
 	const [form] = Form.useForm()
 	const [initialValues, setInitialValues] = useState({
 		display_as: '',
-		distance_preference: 1,
+		distance_preference: '1',
 		description: '',
 		rate: '',
 		distance_unit: 'Mile',
@@ -127,11 +127,11 @@ const AddRate = ({ zoneId }) => {
 										// value={value}
 									>
 										<Space direction='vertical'>
-											<Radio value={1}>
+											<Radio value='1'>
 												Don't display a description with the
 												Display As label.
 											</Radio>
-											<Radio value={2}>
+											<Radio value='2'>
 												Display the distance between the
 												ship-from and ship-to address.
 											</Radio>

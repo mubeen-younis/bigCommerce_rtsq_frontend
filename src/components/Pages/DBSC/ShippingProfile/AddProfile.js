@@ -1,11 +1,13 @@
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
 	addShippingClass,
 	addShippingProfile,
+	updateDbscData,
 } from '../../../../Actions/DbscActions'
+import types from '../../../../Stores/types'
 import ShippingProfile from './ShippingProfile'
 
 const { Option } = Select
@@ -14,19 +16,20 @@ const { TextArea } = Input
 const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	const [shippingClass, setShippingClass] = useState(false)
 	const [form] = Form.useForm()
-	const [initialValues, setInitialValues] = useState({
+	const [initialValues] = useState({
 		nickname: '',
-		shipping_class: [],
+		shipping_classes: [],
 		class_name: '',
 		slug: '',
 		description: '',
 	})
-	const [action, setAction] = useState('')
+	const [action, setAction] = useState({
+		type: '',
+		payload: null,
+	})
 
 	const dispatch = useDispatch()
 	const { shippingClasses } = useSelector(state => state)
-
-	useEffect(() => {}, [])
 
 	const setModalTitle = useCallback(() => {
 		const postfix = shippingClass ? ' class' : ' profile'
@@ -35,16 +38,41 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 
 	const onFinish = useCallback(
 		values => {
+			if (action.type === 'edit') {
+				dispatch(
+					updateDbscData(
+						'update_dbsc_profile',
+						{ ...values, id: action.payload.id },
+						types.UPDATE_DBSC_PROFILE
+					)
+				)
+				form.resetFields()
+				return
+			}
+
 			if (shippingClass) dispatch(addShippingClass(values))
 			else dispatch(addShippingProfile(values))
+			form.resetFields()
 		},
-		[shippingClass]
+		[shippingClass, action.type, action.payload, dispatch]
 	)
 
-	const editProfile = useCallback(() => {
-		setAction('edit')
+	const editProfile = useCallback(values => {
+		setAction({
+			type: 'edit',
+			payload: values,
+		})
+		toggleAddProfileModal(true)
 
-		form.setFieldsValue({})
+		const formData = {
+			...values,
+			nickname: values.p_nickname,
+			shipping_classes: values.shipping_classes
+				? JSON.parse(values.shipping_classes)
+				: [],
+		}
+
+		form.setFieldsValue(formData)
 	}, [])
 
 	return (
@@ -59,6 +87,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 						onCancel={() => {
 							toggleAddProfileModal(false)
 							setShippingClass(false)
+							form.resetFields()
 						}}
 						onOk={() => form.submit()}
 						centered
@@ -233,4 +262,4 @@ const AddShippingClass = ({ shippingClass }) => {
 	)
 }
 
-export default AddProfile
+export default memo(AddProfile)

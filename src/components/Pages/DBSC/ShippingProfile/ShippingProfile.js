@@ -1,6 +1,6 @@
 import { Button, Card, Col, Row, Space } from 'antd'
 import Title from 'antd/lib/typography/Title'
-import React from 'react'
+import React, { memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AddOrigin from '../ShippingOrigin/AddOrigin'
 import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal'
@@ -36,7 +36,7 @@ const ShippingProfile = ({ editProfile }) => {
 							<Button type='link' onClick={() => {}}>
 								...
 							</Button>
-							<Button type='link' onClick={editProfile}>
+							<Button type='link' onClick={() => editProfile(pf)}>
 								Edit
 							</Button>
 							<Button
@@ -82,4 +82,4 @@ const ShippingProfile = ({ editProfile }) => {
 	)
 }
 
-export default ShippingProfile
+export default memo(ShippingProfile)
