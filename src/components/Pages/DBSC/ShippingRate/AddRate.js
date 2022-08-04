@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import { Button, Col, Form, Input, Modal, Row, Select, Radio, Space } from 'antd'
 import RatesList from './RatesList'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,9 +11,9 @@ const { TextArea } = Input
 const AddRate = ({ zoneId }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [form] = Form.useForm()
-	const [initialValues, setInitialValues] = useState({
+	const [initialValues] = useState({
 		display_as: '',
-		distance_preference: '1',
+		distance_display_preferences: '1',
 		description: '',
 		rate: '',
 		distance_unit: 'Mile',
@@ -22,30 +22,68 @@ const AddRate = ({ zoneId }) => {
 		maximum_distance: '',
 		minimum_weight: '',
 		maximum_weight: '',
+		and_or: 'And',
 		minimum_length: '',
 		maximum_length: '',
 		distance_adjustment: '',
 		rate_adjustment: '',
 		minimum_shipping_quote: '',
 		maximum_shipping_quote: '',
-		rate_calculation_method: 1,
+		rating_method: '1',
+	})
+	const [andOr, setAndOr] = useState('And')
+	const [action, setAction] = useState({
+		type: 'add',
+		payload: null,
 	})
 
 	const dispatch = useDispatch()
-	const { shippingZones } = useSelector(state => state)
+	const { alertMessageType } = useSelector(state => state)
 
 	useEffect(() => {
 		dispatch(getDbscData('get_dbsc_rates', types.GET_DBSC_RATES))
 	}, [])
 
-	const onFinish = useCallback(values => {
-		dispatch(
-			addDbscData(
-				'add_dbsc_rates',
-				{ ...values, dbsc_zone_id: zoneId },
-				types.ADD_DBSC_RATE
-			)
-		)
+	useEffect(() => {
+		if (alertMessageType === 'success') {
+			form.resetFields()
+			setAction({ type: '', payload: null })
+			setIsOpen(false)
+		}
+	}, [alertMessageType])
+
+	const onFinish = useCallback(
+		values => {
+			if (action.type === 'edit') {
+				dispatch(
+					addDbscData(
+						'update_dbsc_rates',
+						{ ...values, id: action.payload.id },
+						types.UPDATE_DBSC_RATE
+					)
+				)
+			} else {
+				dispatch(
+					addDbscData(
+						'add_dbsc_rates',
+						{ ...values, dbsc_zone_id: zoneId, and_or: andOr },
+						types.ADD_DBSC_RATE
+					)
+				)
+			}
+		},
+		[action.type, zoneId, dispatch]
+	)
+
+	const editRate = useCallback(values => {
+		setIsOpen(true)
+		setAction({
+			type: 'edit',
+			payload: values,
+		})
+		setAndOr(values.and_or)
+
+		form.setFieldsValue(values)
 	}, [])
 
 	return (
@@ -54,7 +92,10 @@ const AddRate = ({ zoneId }) => {
 				<Modal
 					title='Add rate'
 					visible={isOpen}
-					onCancel={() => setIsOpen(false)}
+					onCancel={() => {
+						setIsOpen(false)
+						form.resetFields()
+					}}
 					onOk={() => {}}
 					centered
 					width={800}
@@ -115,17 +156,14 @@ const AddRate = ({ zoneId }) => {
 								<Form.Item
 									className='mb-2'
 									label='Distance display preferences:'
-									name='distance_preference'
+									name='distance_display_preferences'
 									rules={[
 										{
 											required: false,
 											message: 'Distance display preferences:',
 										},
 									]}>
-									<Radio.Group
-										onChange={() => {}}
-										// value={value}
-									>
+									<Radio.Group>
 										<Space direction='vertical'>
 											<Radio value='1'>
 												Don't display a description with the
@@ -339,7 +377,12 @@ const AddRate = ({ zoneId }) => {
 									display: 'flex',
 									justifyContent: 'flex-end',
 								}}>
-								<Radio>And</Radio>
+								<Radio
+									checked={andOr === 'And'}
+									value='And'
+									onChange={e => setAndOr(e.target.value)}>
+									And
+								</Radio>
 							</Col>
 							<Col
 								className='gutter-row mb-2'
@@ -348,7 +391,12 @@ const AddRate = ({ zoneId }) => {
 								md={12}
 								lg={12}
 								xl={12}>
-								<Radio>Or</Radio>
+								<Radio
+									checked={andOr === 'Or'}
+									value='Or'
+									onChange={e => setAndOr(e.target.value)}>
+									Or
+								</Radio>
 							</Col>
 						</Row>
 
@@ -494,24 +542,24 @@ const AddRate = ({ zoneId }) => {
 								xl={24}>
 								<Form.Item
 									className='mb-0'
-									name='rate_calculation_method'
+									name='rating_method'
 									rules={[
 										{
 											required: false,
 											message: 'Rate calculation method',
 										},
 									]}>
-									<Radio.Group onChange={() => {}}>
+									<Radio.Group>
 										<Space direction='vertical'>
-											<Radio value={1}>
+											<Radio value='1'>
 												The calculated shipping rate is for
 												the contents of the Cart
 											</Radio>
-											<Radio value={2}>
+											<Radio value='2'>
 												Multiply the calculated shipping rate
 												by the number of items in the Cart
 											</Radio>
-											<Radio value={3}>
+											<Radio value='3'>
 												Just show flat rate, do not calculate
 												rates based on distance
 											</Radio>
@@ -525,7 +573,7 @@ const AddRate = ({ zoneId }) => {
 			</Row>
 
 			{/* Rates List */}
-			<RatesList zoneId={zoneId} />
+			<RatesList zoneId={zoneId} editRate={editRate} />
 			<Button
 				type='primary'
 				className='mt-0'
@@ -536,4 +584,4 @@ const AddRate = ({ zoneId }) => {
 	)
 }
 
-export default AddRate
+export default memo(AddRate)

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
 
-const RatesList = ({ zoneId }) => {
+const RatesList = ({ zoneId, editRate }) => {
 	const dispatch = useDispatch()
 	const { shippingRates } = useSelector(state => state)
 
@@ -13,6 +13,12 @@ const RatesList = ({ zoneId }) => {
 			title: 'Display as',
 			dataIndex: 'display_as',
 			key: 'display_as',
+			render: (text, record) => (
+				<>
+					<p>{record.display_as}</p>
+					<p>{record.description}</p>
+				</>
+			),
 		},
 		{
 			title: 'Rate',
@@ -57,7 +63,7 @@ const RatesList = ({ zoneId }) => {
 			key: 'quote',
 			render: (text, record) =>
 				`${Number(record.minimum_shipping_quote).toFixed(2)} - ${Number(
-					record.minimum_shipping_quote
+					record.maximum_shipping_quote
 				).toFixed(2)}`,
 		},
 		{
@@ -66,7 +72,11 @@ const RatesList = ({ zoneId }) => {
 			key: 'action',
 			render: (text, record) => (
 				<>
-					<Button type='link' onClick={() => {}}>
+					<Button
+						type='link'
+						onClick={() => {
+							editRate(record)
+						}}>
 						Edit
 					</Button>
 					<Button

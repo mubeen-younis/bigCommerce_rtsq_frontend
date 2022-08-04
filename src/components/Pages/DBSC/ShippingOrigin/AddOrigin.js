@@ -28,7 +28,7 @@ const { Option } = Select
 const AddOrigin = ({ profileId }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [form] = Form.useForm()
-	const [initialValues, setInitialValues] = useState({
+	const [initialValues] = useState({
 		nickname: '',
 		street_address: '',
 		city: '',
@@ -43,17 +43,26 @@ const AddOrigin = ({ profileId }) => {
 		payload: null,
 	})
 	const dispatch = useDispatch()
+	const { alertMessageType } = useSelector(state => state)
 
 	useEffect(() => {
 		dispatch(getDbscData('get_dbsc_origins', types.GET_DBSC_ORIGINS))
 	}, [])
+
+	useEffect(() => {
+		if (alertMessageType === 'success') {
+			form.resetFields()
+			setAction({ type: '', payload: null })
+			setIsOpen(false)
+		}
+	}, [alertMessageType])
 
 	const onFinish = useCallback(
 		values => {
 			if (action.type === 'edit') {
 				dispatch(
 					updateDbscData(
-						'',
+						'update_dbsc_origin',
 						{ ...values, id: action.payload.id },
 						types.UPDATE_DBSC_ORIGIN
 					)
@@ -88,7 +97,7 @@ const AddOrigin = ({ profileId }) => {
 					<Title level={4}>Shipping from</Title>
 				</Col>
 				<Col
-					className='gutter-row'
+					className='gutter-row mb-2'
 					xs={12}
 					sm={12}
 					md={12}
@@ -119,7 +128,10 @@ const AddOrigin = ({ profileId }) => {
 				<Modal
 					title='Add shipping origin'
 					visible={isOpen}
-					onCancel={() => setIsOpen(false)}
+					onCancel={() => {
+						setIsOpen(false)
+						form.resetFields()
+					}}
 					onOk={() => {}}
 					centered
 					width={800}

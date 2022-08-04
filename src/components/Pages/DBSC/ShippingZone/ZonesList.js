@@ -1,14 +1,22 @@
 import { Button, Col, Row, Skeleton } from 'antd'
 import Title from 'antd/lib/typography/Title'
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
 import AddRate from '../ShippingRate/AddRate'
 
-const ZonesList = ({ profileId }) => {
+const ZonesList = ({ profileId, editZone }) => {
 	const dispatch = useDispatch()
-	const { shippingZones } = useSelector(state => state)
+	const { shippingZones, dbscBigComZones } = useSelector(state => state)
+
+	const formatZoneRegions = useCallback((regionIdsArr = []) => {
+		const regions = regionIdsArr ? JSON.parse(regionIdsArr) : []
+		return dbscBigComZones
+			.filter(zone => regions.includes(zone.id))
+			.map(zone => zone.name)
+			.join(', ')
+	}, [])
 
 	if (!shippingZones) return <Skeleton active />
 
@@ -33,10 +41,7 @@ const ZonesList = ({ profileId }) => {
 							md={12}
 							lg={12}
 							xl={12}>
-							<p>
-								{JSON.parse(zone?.selected_region)?.join(', ')},
-								8388, 83838, 89383
-							</p>
+							<p>{formatZoneRegions(zone?.selected_region)}</p>
 						</Col>
 						<Col
 							className='gutter-row'
@@ -46,10 +51,11 @@ const ZonesList = ({ profileId }) => {
 							lg={12}
 							xl={12}
 							style={{ textAlign: 'right' }}>
-							<Button type='link' onClick={() => {}}>
-								...
-							</Button>
-							<Button type='link' onClick={() => {}}>
+							<Button
+								type='link'
+								onClick={() => {
+									editZone(zone)
+								}}>
 								Edit
 							</Button>
 							<Button

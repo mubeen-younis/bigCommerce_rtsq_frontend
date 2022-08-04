@@ -1,5 +1,5 @@
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
-import React, { memo, useCallback, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
@@ -29,7 +29,16 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	})
 
 	const dispatch = useDispatch()
-	const { shippingClasses } = useSelector(state => state)
+	const { shippingClasses, alertMessageType } = useSelector(state => state)
+
+	useEffect(() => {
+		if (alertMessageType === 'success') {
+			form.resetFields()
+			setAction({ type: '', payload: null })
+			setShippingClass(false)
+			toggleAddProfileModal(false)
+		}
+	}, [alertMessageType])
 
 	const setModalTitle = useCallback(() => {
 		const postfix = shippingClass ? ' class' : ' profile'

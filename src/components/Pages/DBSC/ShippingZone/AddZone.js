@@ -1,51 +1,117 @@
 import React, { memo, useCallback, useEffect, useState } from 'react'
-import {
-	Button,
-	Col,
-	Form,
-	Input,
-	Modal,
-	Row,
-	Select,
-	Radio,
-	Space,
-	Card,
-} from 'antd'
+import { Button, Col, Form, Input, Modal, Row, Select, Card } from 'antd'
 import Title from 'antd/lib/typography/Title'
 import { useDispatch, useSelector } from 'react-redux'
-import { addDbscData, getDbscData } from '../../../../Actions/DbscActions'
+import {
+	addDbscData,
+	getDbscData,
+	updateDbscData,
+} from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
 import ZonesList from './ZonesList'
-
-const { TextArea } = Input
 
 const AddZone = ({ profileId }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [form] = Form.useForm()
-	const [initialValues, setInitialValues] = useState({
+	const [initialValues] = useState({
 		zone_name: '',
 		define_by_zone: '1',
 		selected_region: [],
 		postcode: '',
 	})
+	const [action, setAction] = useState({
+		type: 'add',
+		payload: null,
+	})
+	const [originExist, setOriginExist] = useState(false)
 	const dispatch = useDispatch()
-	const { dbscBigComZones } = useSelector(state => state)
+	const { dbscBigComZones, shippingZones, alertMessageType, shippingOrigins } =
+		useSelector(state => state)
 
 	useEffect(() => {
-		dispatch(getDbscData('get_dbsc_zones', types.GET_DBSC_ZONES))
+		if (!shippingZones) {
+			dispatch(getDbscData('get_dbsc_zones', types.GET_DBSC_ZONES))
+		}
 	}, [])
 
-	const onFinish = useCallback(values => {
-		dispatch(
-			addDbscData(
-				'add_dbsc_zone',
-				{ ...values, profile_id: profileId },
-				types.ADD_DBSC_ZONE
+	useEffect(() => {
+		if (alertMessageType === 'success') {
+			form.resetFields()
+			setAction({ type: '', payload: null })
+			setIsOpen(false)
+		}
+
+		if (shippingOrigins) {
+			const origins = shippingOrigins.filter(
+				origin => origin.profile_id === profileId
 			)
-		)
+
+			if (origins.length > 0) {
+				setOriginExist(true)
+			}
+		}
+	}, [alertMessageType, shippingOrigins])
+
+	const onFinish = useCallback(
+		values => {
+			if (action.type === 'edit') {
+				dispatch(
+					updateDbscData(
+						'update_dbsc_zone',
+						{ ...values, id: action.payload.id },
+						types.UPDATE_DBSC_ZONE
+					)
+				)
+			} else {
+				dispatch(
+					addDbscData(
+						'add_dbsc_zone',
+						{ ...values, profile_id: profileId },
+						types.ADD_DBSC_ZONE
+					)
+				)
+			}
+		},
+		[action.type, profileId, dispatch]
+	)
+
+	const editZone = useCallback(values => {
+		setIsOpen(true)
+		setAction({
+			type: 'edit',
+			payload: values,
+		})
+
+		const regions = values.selected_region
+			? JSON.parse(values.selected_region)
+			: []
+		form.setFieldsValue({ ...values, selected_region: regions })
 	}, [])
 
-	return (
+	const filterZoneRegions = useCallback(() => {
+		if (shippingZones) {
+			if (action.type === 'edit') {
+				return dbscBigComZones
+			}
+
+			const regions = []
+			const zones = shippingZones?.filter(
+				zone => zone.profile_id === profileId
+			)
+
+			zones.forEach(zone => {
+				if (zone.selected_region) {
+					regions.push(...JSON.parse(zone.selected_region))
+				}
+			})
+
+			return dbscBigComZones.filter(region => !regions.includes(region.id))
+		}
+
+		return []
+	}, [])
+
+	return originExist ? (
 		<Card>
 			<Row gutter={30} className='mb-2'>
 				<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -59,21 +125,32 @@ const AddZone = ({ profileId }) => {
 					lg={12}
 					xl={12}
 					style={{ textAlign: 'right' }}>
-					<Button type='link' onClick={() => setIsOpen(true)}>
+					<Button
+						type='link'
+						onClick={() => {
+							setIsOpen(true)
+							setAction({
+								type: 'add',
+								payload: null,
+							})
+						}}>
 						Add shipping zone
 					</Button>
 				</Col>
 			</Row>
 
 			{/* Zones List */}
-			<ZonesList profileId={profileId} />
+			<ZonesList profileId={profileId} editZone={editZone} />
 
 			{/* Add New Shipping Zone */}
 			{isOpen && (
 				<Modal
 					title='Create zone'
 					visible={isOpen}
-					onCancel={() => setIsOpen(false)}
+					onCancel={() => {
+						setIsOpen(false)
+						form.resetFields()
+					}}
 					onOk={() => {}}
 					centered
 					width={800}
@@ -141,11 +218,19 @@ const AddZone = ({ profileId }) => {
 									<Select
 										mode='tags'
 										placeholder='Select regions with within this zone'>
-										{dbscBigComZones?.map(zone => (
+										{/* {filterZoneRegions().map(region => (
 											<Select.Option
-												key={zone.id}
-												value={zone.id}>
-												{zone.name}
+												key={region.id}
+												value={region.id.toString()}>
+												{console.log(region)}
+												{region.name}
+											</Select.Option>
+										))} */}
+										{dbscBigComZones?.map(region => (
+											<Select.Option
+												key={region.id}
+												value={region.id}>
+												{region.name}
 											</Select.Option>
 										))}
 									</Select>
@@ -156,7 +241,7 @@ const AddZone = ({ profileId }) => {
 				</Modal>
 			)}
 		</Card>
-	)
+	) : null
 }
 
 export default memo(AddZone)

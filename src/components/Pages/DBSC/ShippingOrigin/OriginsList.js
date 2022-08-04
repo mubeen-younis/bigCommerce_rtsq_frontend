@@ -37,23 +37,10 @@ const OriginsList = ({ profileId, editOrigin }) => {
 							lg={12}
 							xl={12}
 							style={{ textAlign: 'right' }}>
-							<Button type='link' onClick={() => {}}>
-								...
-							</Button>
 							<Button
 								type='link'
 								onClick={() => {
 									editOrigin(org)
-									// dispatch(
-									// 	setConfirmModalData(
-									// 		'Update',
-									// 		true,
-									// 		'',
-									// 		org,
-									// 		types.UPDATE_DBSC_ORIGIN,
-									// 		'ORIGIN'
-									// 	)
-									// )
 								}}>
 								Edit
 							</Button>

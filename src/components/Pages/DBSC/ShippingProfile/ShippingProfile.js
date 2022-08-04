@@ -1,6 +1,6 @@
-import { Button, Card, Col, Row, Space } from 'antd'
+import { Button, Card, Col, Popover, Row, Space } from 'antd'
 import Title from 'antd/lib/typography/Title'
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AddOrigin from '../ShippingOrigin/AddOrigin'
 import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal'
@@ -8,6 +8,7 @@ import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
 
 const ShippingProfile = ({ editProfile }) => {
+	const [action, setAction] = useState(false)
 	const { shippingProfiles } = useSelector(state => state)
 	const dispatch = useDispatch()
 
@@ -33,9 +34,6 @@ const ShippingProfile = ({ editProfile }) => {
 							lg={12}
 							xl={12}
 							style={{ textAlign: 'right' }}>
-							<Button type='link' onClick={() => {}}>
-								...
-							</Button>
 							<Button type='link' onClick={() => editProfile(pf)}>
 								Edit
 							</Button>

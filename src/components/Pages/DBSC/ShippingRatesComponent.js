@@ -1,5 +1,5 @@
 import { Button, Col, Row, Skeleton, Typography } from 'antd'
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AddProfile from './ShippingProfile/AddProfile'
 import ShippingProfile from './ShippingProfile/ShippingProfile'
@@ -19,7 +19,9 @@ const ShippingRatesComponent = () => {
 	)
 
 	useEffect(() => {
-		dispatch(getDbscData('get_dbsc_profiles', types.GET_DBSC_PROFILES))
+		if (!shippingProfiles) {
+			dispatch(getDbscData('get_dbsc_profiles', types.GET_DBSC_PROFILES))
+		}
 		dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES))
 		dispatch(getDbscZones())
 	}, [dispatch])
@@ -54,4 +56,4 @@ const ShippingRatesComponent = () => {
 	)
 }
 
-export default ShippingRatesComponent
+export default memo(ShippingRatesComponent)
