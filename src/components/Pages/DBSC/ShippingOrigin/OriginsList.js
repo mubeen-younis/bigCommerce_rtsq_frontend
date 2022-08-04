@@ -1,9 +1,12 @@
-import { Col, Skeleton } from 'antd'
+import { Button, Col, Skeleton } from 'antd'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setConfirmModalData } from '../../../../Actions/DbscActions'
+import types from '../../../../Stores/types'
 
 const OriginsList = ({ profileId }) => {
 	const { shippingOrigins } = useSelector(state => state)
+	const dispatch = useDispatch()
 
 	if (!shippingOrigins) return <Skeleton active />
 
@@ -11,20 +14,52 @@ const OriginsList = ({ profileId }) => {
 		<>
 			{shippingOrigins?.map(org =>
 				org.profile_id === profileId ? (
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}>
-						<p className='mb-0'>{org?.ori_nickname}</p>
-						<p>
-							{org?.street_address} , {org?.city}{' '}
-							{org?.state_or_province} {org?.postal_code} ,
-							{org?.country}
-						</p>
-					</Col>
+					<>
+						<Col
+							className='gutter-row'
+							xs={12}
+							sm={12}
+							md={12}
+							lg={12}
+							xl={12}>
+							<p className='mb-0'>{org?.ori_nickname}</p>
+							<p>
+								{org?.street_address} , {org?.city}{' '}
+								{org?.state_or_province} {org?.postal_code} ,
+								{org?.country}
+							</p>
+						</Col>
+						<Col
+							className='gutter-row'
+							xs={12}
+							sm={12}
+							md={12}
+							lg={12}
+							xl={12}
+							style={{ textAlign: 'right' }}>
+							<Button type='link' onClick={() => {}}>
+								...
+							</Button>
+							<Button type='link' onClick={() => {}}>
+								Edit
+							</Button>
+							<Button
+								type='link'
+								onClick={() => {
+									dispatch(
+										setConfirmModalData(
+											'origin',
+											true,
+											'delete_dbsc_origin',
+											org.id,
+											types.DELETE_DBSC_ORIGIN
+										)
+									)
+								}}>
+								Delete
+							</Button>
+						</Col>
+					</>
 				) : null
 			)}
 		</>

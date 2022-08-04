@@ -1,5 +1,5 @@
 import axios from '../Utilities/axios'
-import { dispatchAlert } from '../Utilities/dispatchAlert'
+import { dispatchAlert, setModalData } from '../Utilities/dispatchAlert'
 
 export const getShippingProfiles = () => async dispatch => {
 	try {
@@ -119,3 +119,43 @@ export const addDbscData = (url, reqData, type) => async dispatch => {
 		dispatch(dispatchAlert(false, 'error', 'Something went wrong'))
 	}
 }
+
+export const updateDbscData = (url, reqData, type) => async dispatch => {}
+
+export const deleteDbscData = (url, reqData, type) => async dispatch => {
+	try {
+		dispatch(dispatchAlert(true, 'loading', ''))
+
+		const { data } = await axios().post(url, reqData)
+		console.log(data)
+		if (!data.error) {
+			dispatch({
+				type,
+				payload: data.data,
+			})
+
+			// dispatch(setModalData('', false, '', null, ''))
+		}
+
+		dispatch(dispatchAlert(true, data.error ? 'error' : 'success', data.message))
+	} catch (err) {
+		dispatch(dispatchAlert(false, 'error', 'Something went wrong'))
+	}
+}
+
+export const setConfirmModalData = (
+	title = '',
+	visible = false,
+	url = '',
+	data = null,
+	action = ''
+) => ({
+	type: 'SET_MODAL_DATA',
+	payload: {
+		title,
+		visible,
+		url,
+		data,
+		action,
+	},
+})

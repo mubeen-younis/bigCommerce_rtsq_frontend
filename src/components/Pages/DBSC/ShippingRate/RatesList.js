@@ -1,6 +1,8 @@
-import { Skeleton, Table } from 'antd'
+import { Button, Popover, Skeleton, Table } from 'antd'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { setConfirmModalData } from '../../../../Actions/DbscActions'
+import types from '../../../../Stores/types'
 
 const RatesList = ({ zoneId }) => {
 	const dispatch = useDispatch()
@@ -39,8 +41,8 @@ const RatesList = ({ zoneId }) => {
 		},
 		{
 			title: 'And / Or',
-			dataIndex: 'address',
-			key: 'address',
+			dataIndex: 'and_or',
+			key: 'and_or',
 		},
 		{
 			title: 'Length',
@@ -62,11 +64,57 @@ const RatesList = ({ zoneId }) => {
 			title: 'Action',
 			dataIndex: 'action',
 			key: 'action',
+			render: (text, record) => (
+				<>
+					<Button type='link' onClick={() => {}}>
+						Edit
+					</Button>
+					<Button
+						type='link'
+						onClick={() => {
+							dispatch(
+								setConfirmModalData(
+									'rate',
+									true,
+									'delete_dbsc_rates',
+									record.id,
+									types.DELETE_DBSC_RATE
+								)
+							)
+						}}>
+						Delete
+					</Button>
+				</>
+			),
+			// render: (text, record) => (
+			// 	<Popover
+			// 		content={
+			// 			<>
+			// 				<div>
+			// 					<Button type='link'>Edit</Button>
+			// 				</div>
+			// 				<div>
+			// 					<Button type='link'>Delete</Button>
+			// 				</div>
+			// 			</>
+			// 		}
+			// 		title=''
+			// 		trigger='click'
+			// 		visible={true}
+			// 		onVisibleChange={() => {}}>
+			// 		<Button type='link'>...</Button>
+			// 	</Popover>
+			// ),
 		},
 	]
 
 	const filterRatesData = useCallback(() => {
-		const rates = shippingRates?.filter(rate => rate.dbsc_zone_id === zoneId)
+		const rates = shippingRates
+			?.filter(rate => rate.dbsc_zone_id === zoneId)
+			?.map(rate => ({
+				...rate,
+				key: rate.id,
+			}))
 		return rates
 	}, [shippingRates])
 

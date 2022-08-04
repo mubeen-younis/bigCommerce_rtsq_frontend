@@ -1,7 +1,9 @@
-import { Col, Row, Skeleton } from 'antd'
+import { Button, Col, Row, Skeleton } from 'antd'
 import Title from 'antd/lib/typography/Title'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { setConfirmModalData } from '../../../../Actions/DbscActions'
+import types from '../../../../Stores/types'
 import AddRate from '../ShippingRate/AddRate'
 
 const ZonesList = ({ profileId }) => {
@@ -26,15 +28,45 @@ const ZonesList = ({ profileId }) => {
 						</Col>
 						<Col
 							className='gutter-row'
-							xs={24}
-							sm={24}
-							md={24}
-							lg={24}
-							xl={24}>
+							xs={12}
+							sm={12}
+							md={12}
+							lg={12}
+							xl={12}>
 							<p>
 								{JSON.parse(zone?.selected_region)?.join(', ')},
 								8388, 83838, 89383
 							</p>
+						</Col>
+						<Col
+							className='gutter-row'
+							xs={12}
+							sm={12}
+							md={12}
+							lg={12}
+							xl={12}
+							style={{ textAlign: 'right' }}>
+							<Button type='link' onClick={() => {}}>
+								...
+							</Button>
+							<Button type='link' onClick={() => {}}>
+								Edit
+							</Button>
+							<Button
+								type='link'
+								onClick={() => {
+									dispatch(
+										setConfirmModalData(
+											'zone',
+											true,
+											'delete_dbsc_zone',
+											zone.id,
+											types.DELETE_DBSC_ZONE
+										)
+									)
+								}}>
+								Delete
+							</Button>
 						</Col>
 
 						{/* Shipping Rates */}

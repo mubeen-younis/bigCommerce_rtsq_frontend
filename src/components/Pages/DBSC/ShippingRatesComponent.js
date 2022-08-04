@@ -4,11 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import AddProfile from './ShippingProfile/AddProfile'
 import ShippingProfile from './ShippingProfile/ShippingProfile'
 import types from '../../../Stores/types'
-import {
-	getShippingProfiles,
-	getShippingClasses,
-	getDbscData,
-} from '../../../Actions/DbscActions'
+import { getDbscData } from '../../../Actions/DbscActions'
 
 const { Title } = Typography
 

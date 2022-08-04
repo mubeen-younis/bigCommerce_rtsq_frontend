@@ -56,6 +56,13 @@ const initialState = {
 	shippingOrigins: null,
 	shippingZones: null,
 	shippingRates: null,
+	modalData: {
+		visible: false,
+		title: '',
+		data: null,
+		action: '',
+		url: ',',
+	},
 }
 
 const Reducer = (state = initialState, action) => {
@@ -631,6 +638,13 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				shippingProfiles: [...state.shippingProfiles, action.payload],
 			}
+		case types.DELETE_DBSC_PROFILE:
+			return {
+				...state,
+				shippingProfiles: state.shippingProfiles.filter(
+					sp => sp.id !== action.payload
+				),
+			}
 		case types.GET_DBSC_CLASSES:
 			return {
 				...state,
@@ -670,6 +684,18 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				shippingRates: [...state.shippingRates, action.payload],
+			}
+		case types.DELETE_DBSC_RATE:
+			return {
+				...state,
+				shippingRates: state.shippingRates.filter(
+					sr => sr.id !== action.payload
+				),
+			}
+		case types.SET_MODAL_DATA:
+			return {
+				...state,
+				modalData: { ...state.modalData, ...action.payload },
 			}
 
 		default:
