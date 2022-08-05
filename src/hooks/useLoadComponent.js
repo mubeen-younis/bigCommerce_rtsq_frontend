@@ -34,6 +34,16 @@ import {
 	QSSaiaLtl,
 	DaylightLtl,
 	QSDayLightLtl,
+	CSAbfLtl,
+	QSAbfLtl,
+	CSSouthEasternLtl,
+	QSSouthEasternLtl,
+	CSUspsSmall,
+	QSUspsSmall,
+	CSEchoLtl,
+	QSEchoLtl,
+	CSTQLLtl,
+	QSTQLLtl,
 } from '../components/Pages'
 
 const useLoadComponent = index => {
@@ -54,6 +64,11 @@ const useLoadComponent = index => {
 		<CSDayRossLtl />,
 		<CSOdflLtl />,
 		<CSSaiaLtl />,
+		<CSAbfLtl />,
+		<CSSouthEasternLtl />,
+		<CSUspsSmall />,
+		<CSTQLLtl />,
+		<CSEchoLtl />,
 		<DaylightLtl />,
 	]
 	const quoteSettingsList = [
@@ -73,6 +88,11 @@ const useLoadComponent = index => {
 		<QSDayRossLtl />,
 		<QSOdflLtl />,
 		<QSSaiaLtl />,
+		<QSAbfLtl />,
+		<QSSouthEasternLtl />,
+		<QSUspsSmall />,
+		<QSTQLLtl />,
+		<QSEchoLtl />,
 		<QSDayLightLtl />,
 	]
 
