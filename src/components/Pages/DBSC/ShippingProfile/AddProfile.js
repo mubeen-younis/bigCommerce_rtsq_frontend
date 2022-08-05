@@ -222,7 +222,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	)
 }
 
-const AddShippingClass = ({ shippingClass }) => {
+export const AddShippingClass = ({ shippingClass }) => {
 	return (
 		<Row gutter={30}>
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
