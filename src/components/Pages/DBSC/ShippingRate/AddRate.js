@@ -42,7 +42,7 @@ const AddRate = ({ zoneId }) => {
 
 	useEffect(() => {
 		dispatch(getDbscData('get_dbsc_rates', types.GET_DBSC_RATES))
-	}, [])
+	}, [dispatch])
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
@@ -50,7 +50,7 @@ const AddRate = ({ zoneId }) => {
 			setAction({ type: '', payload: null })
 			setIsOpen(false)
 		}
-	}, [alertMessageType])
+	}, [alertMessageType, form])
 
 	const onFinish = useCallback(
 		values => {
@@ -72,19 +72,22 @@ const AddRate = ({ zoneId }) => {
 				)
 			}
 		},
-		[action.type, zoneId, dispatch]
+		[action?.type, action?.payload?.id, dispatch, zoneId, andOr]
 	)
 
-	const editRate = useCallback(values => {
-		setIsOpen(true)
-		setAction({
-			type: 'edit',
-			payload: values,
-		})
-		setAndOr(values.and_or)
+	const editRate = useCallback(
+		values => {
+			setIsOpen(true)
+			setAction({
+				type: 'edit',
+				payload: values,
+			})
+			setAndOr(values.and_or)
 
-		form.setFieldsValue(values)
-	}, [])
+			form.setFieldsValue(values)
+		},
+		[form]
+	)
 
 	return (
 		<Space direction='vertical' size='large' className='w-100'>
@@ -572,14 +575,20 @@ const AddRate = ({ zoneId }) => {
 				</Modal>
 			</Row>
 
-			{/* Rates List */}
-			<RatesList zoneId={zoneId} editRate={editRate} />
-			<Button
-				type='primary'
-				className='mt-0'
-				onClick={() => setIsOpen(!isOpen)}>
-				Add rate
-			</Button>
+			<Row gutter={30}>
+				<Col span={24} className='mb-1'>
+					{/* Rates List */}
+					<RatesList zoneId={zoneId} editRate={editRate} />
+				</Col>
+				<Col span={24}>
+					<Button
+						type='primary'
+						className='mt-0'
+						onClick={() => setIsOpen(!isOpen)}>
+						Add rate
+					</Button>
+				</Col>
+			</Row>
 		</Space>
 	)
 }

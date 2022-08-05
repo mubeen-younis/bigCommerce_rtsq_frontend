@@ -1,6 +1,6 @@
-import { Button, Card, Col, Popover, Row, Space } from 'antd'
+import { Button, Card, Col, Row, Space } from 'antd'
 import Title from 'antd/lib/typography/Title'
-import React, { memo, useState } from 'react'
+import React, { memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AddOrigin from '../ShippingOrigin/AddOrigin'
 import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal'
@@ -8,7 +8,6 @@ import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
 
 const ShippingProfile = ({ editProfile }) => {
-	const [action, setAction] = useState(false)
 	const { shippingProfiles } = useSelector(state => state)
 	const dispatch = useDispatch()
 
@@ -37,21 +36,23 @@ const ShippingProfile = ({ editProfile }) => {
 							<Button type='link' onClick={() => editProfile(pf)}>
 								Edit
 							</Button>
-							<Button
-								type='link'
-								onClick={() => {
-									dispatch(
-										setConfirmModalData(
-											'profile',
-											true,
-											'delete_dbsc_profile',
-											pf.id,
-											types.DELETE_DBSC_PROFILE
+							{!pf?.is_general_profile && (
+								<Button
+									type='link'
+									onClick={() => {
+										dispatch(
+											setConfirmModalData(
+												'profile',
+												true,
+												'delete_dbsc_profile',
+												pf.id,
+												types.DELETE_DBSC_PROFILE
+											)
 										)
-									)
-								}}>
-								Delete
-							</Button>
+									}}>
+									Delete
+								</Button>
+							)}
 						</Col>
 					</Row>
 

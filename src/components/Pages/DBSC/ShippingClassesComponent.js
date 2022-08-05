@@ -1,11 +1,7 @@
-import React, { memo, useCallback, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import { Button, Form, Modal, Space, Table } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	addDbscData,
-	setConfirmModalData,
-	updateDbscData,
-} from '../../../Actions/DbscActions'
+import { setConfirmModalData, updateDbscData } from '../../../Actions/DbscActions'
 import types from '../../../Stores/types'
 import ConfirmDeleteModal from './Modals/ConfirmDeleteModal'
 import { AddShippingClass } from './ShippingProfile/AddProfile'
@@ -18,9 +14,16 @@ const App = () => {
 		slug: '',
 		description: '',
 	})
-
+	const [classId, setClassId] = useState(null)
 	const dispatch = useDispatch()
-	const { shippingClasses } = useSelector(state => state)
+	const { shippingClasses, alertMessageType } = useSelector(state => state)
+
+	useEffect(() => {
+		if (alertMessageType === 'success') {
+			setIsOpen(false)
+			setClassId(null)
+		}
+	}, [alertMessageType])
 
 	const columns = [
 		{
@@ -48,6 +51,7 @@ const App = () => {
 						type='link'
 						onClick={() => {
 							setIsOpen(true)
+							setClassId(record.id)
 							form.setFieldsValue(record)
 						}}>
 						Edit
@@ -59,7 +63,7 @@ const App = () => {
 								setConfirmModalData(
 									'class',
 									true,
-									'delete_dbsc_profile',
+									'delete_shipping_class',
 									record.id,
 									types.DELETE_DBSC_CLASS,
 									''
@@ -73,15 +77,18 @@ const App = () => {
 		},
 	]
 
-	const onFinish = useCallback(values => {
-		dispatch(
-			updateDbscData(
-				'update_shipping_class',
-				{ ...values, id: values.id },
-				types.UPDATE_DBSC_CLASS
+	const onFinish = useCallback(
+		values => {
+			dispatch(
+				updateDbscData(
+					'update_shipping_class',
+					{ ...values, id: classId },
+					types.UPDATE_DBSC_CLASS
+				)
 			)
-		)
-	}, [])
+		},
+		[classId, dispatch]
+	)
 
 	return (
 		<>

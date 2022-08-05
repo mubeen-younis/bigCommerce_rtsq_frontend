@@ -1,4 +1,4 @@
-import { Button, Popover, Skeleton, Table } from 'antd'
+import { Button, Skeleton, Table } from 'antd'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
@@ -36,14 +36,26 @@ const RatesList = ({ zoneId, editRate }) => {
 			dataIndex: 'distance',
 			key: 'distance',
 			render: (text, record) =>
-				`${record.minimum_distance} km - ${record.maximum_distance} km`,
+				`${
+					record.minimum_distance
+						? record.minimum_distance + ' km'
+						: 0 + ' mi'
+				} - ${
+					record.maximum_distance ? record.maximum_distance + ' km' : ' up'
+				}`,
 		},
 		{
 			title: 'Weight',
 			dataIndex: 'weight',
 			key: 'weight',
 			render: (text, record) =>
-				`${record.minimum_weight} lbs - ${record.maximum_weight} lbs`,
+				`${
+					record.minimum_weight
+						? record.minimum_weight + ' lbs'
+						: 0 + ' lbs'
+				} - ${
+					record.maximum_weight ? record.maximum_weight + ' lbs' : ' up'
+				}`,
 		},
 		{
 			title: 'And / Or',
@@ -55,16 +67,22 @@ const RatesList = ({ zoneId, editRate }) => {
 			dataIndex: 'address',
 			key: 'address',
 			render: (text, record) =>
-				`${record.minimum_length} in - ${record.maximum_length} in`,
+				`${
+					record.minimum_length ? record.maximum_length + ' in' : 0 + ' in'
+				} - ${
+					record.maximum_length ? record.maximum_length + ' in' : ' up'
+				}`,
 		},
 		{
 			title: 'Quote',
 			dataIndex: 'quote',
 			key: 'quote',
 			render: (text, record) =>
-				`${Number(record.minimum_shipping_quote).toFixed(2)} - ${Number(
+				`${Number(record.minimum_shipping_quote).toFixed(2)} - ${
 					record.maximum_shipping_quote
-				).toFixed(2)}`,
+						? Number(record.maximum_shipping_quote).toFixed(2)
+						: ' up'
+				}`,
 		},
 		{
 			title: 'Action',
@@ -96,25 +114,6 @@ const RatesList = ({ zoneId, editRate }) => {
 					</Button>
 				</>
 			),
-			// render: (text, record) => (
-			// 	<Popover
-			// 		content={
-			// 			<>
-			// 				<div>
-			// 					<Button type='link'>Edit</Button>
-			// 				</div>
-			// 				<div>
-			// 					<Button type='link'>Delete</Button>
-			// 				</div>
-			// 			</>
-			// 		}
-			// 		title=''
-			// 		trigger='click'
-			// 		visible={true}
-			// 		onVisibleChange={() => {}}>
-			// 		<Button type='link'>...</Button>
-			// 	</Popover>
-			// ),
 		},
 	]
 
@@ -125,8 +124,9 @@ const RatesList = ({ zoneId, editRate }) => {
 				...rate,
 				key: rate.display_as,
 			}))
+
 		return rates
-	}, [shippingRates])
+	}, [shippingRates, zoneId])
 
 	if (!shippingRates) return <Skeleton active />
 
@@ -135,7 +135,7 @@ const RatesList = ({ zoneId, editRate }) => {
 			dataSource={filterRatesData()}
 			columns={columns}
 			size='large'
-			className='custom-table'
+			className='custom-table mb-0'
 			pagination={false}
 			style={{ marginBottom: '0' }}
 		/>

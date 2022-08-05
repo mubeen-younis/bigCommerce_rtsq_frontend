@@ -47,7 +47,7 @@ const AddOrigin = ({ profileId }) => {
 
 	useEffect(() => {
 		dispatch(getDbscData('get_dbsc_origins', types.GET_DBSC_ORIGINS))
-	}, [])
+	}, [dispatch])
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
@@ -55,7 +55,7 @@ const AddOrigin = ({ profileId }) => {
 			setAction({ type: '', payload: null })
 			setIsOpen(false)
 		}
-	}, [alertMessageType])
+	}, [alertMessageType, form])
 
 	const onFinish = useCallback(
 		values => {
@@ -77,18 +77,21 @@ const AddOrigin = ({ profileId }) => {
 				)
 			}
 		},
-		[action.type, profileId, dispatch]
+		[action?.type, action?.payload?.id, dispatch, profileId]
 	)
 
-	const editOrigin = useCallback(values => {
-		setIsOpen(true)
-		setAction({
-			type: 'edit',
-			payload: values,
-		})
+	const editOrigin = useCallback(
+		values => {
+			setIsOpen(true)
+			setAction({
+				type: 'edit',
+				payload: values,
+			})
 
-		form.setFieldsValue({ ...values, nickname: values.ori_nickname })
-	}, [])
+			form.setFieldsValue({ ...values, nickname: values.ori_nickname })
+		},
+		[form]
+	)
 
 	return (
 		<Card>

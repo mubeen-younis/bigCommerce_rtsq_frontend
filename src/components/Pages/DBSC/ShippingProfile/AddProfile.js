@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
+import { Button, Col, Form, Input, Modal, Radio, Row, Select, Space } from 'antd'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -18,6 +18,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	const [form] = Form.useForm()
 	const [initialValues] = useState({
 		nickname: '',
+		allow_all_classes: 0,
 		shipping_classes: [],
 		class_name: '',
 		slug: '',
@@ -25,7 +26,9 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	})
 	const [action, setAction] = useState({
 		type: 'add',
-		payload: null,
+		payload: {
+			id: '',
+		},
 	})
 
 	const dispatch = useDispatch()
@@ -36,11 +39,14 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	useEffect(() => {
 		if (alertMessageType === 'success') {
 			form.resetFields()
-			setAction({ type: '', payload: null })
+			setAction({
+				type: '',
+				payload: {},
+			})
 			setShippingClass(false)
 			toggleAddProfileModal(false)
 		}
-	}, [alertMessageType])
+	}, [alertMessageType, form, toggleAddProfileModal])
 
 	const setModalTitle = useCallback(() => {
 		const postfix = shippingClass ? ' class' : ' profile'
@@ -65,26 +71,29 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 			else dispatch(addShippingProfile(values))
 			form.resetFields()
 		},
-		[shippingClass, action.type, action.payload, dispatch]
+		[action?.type, action?.payload?.id, shippingClass, dispatch, form]
 	)
 
-	const editProfile = useCallback(values => {
-		setAction({
-			type: 'edit',
-			payload: values,
-		})
-		toggleAddProfileModal(true)
+	const editProfile = useCallback(
+		values => {
+			setAction({
+				type: 'edit',
+				payload: values,
+			})
+			toggleAddProfileModal(true)
 
-		const formData = {
-			...values,
-			nickname: values.p_nickname,
-			shipping_classes: values.shipping_classes
-				? JSON.parse(values.shipping_classes)
-				: [],
-		}
+			const formData = {
+				...values,
+				nickname: values.p_nickname,
+				shipping_classes: values.shipping_classes
+					? JSON.parse(values.shipping_classes)
+					: [],
+			}
 
-		form.setFieldsValue(formData)
-	}, [])
+			form.setFieldsValue(formData)
+		},
+		[form, toggleAddProfileModal]
+	)
 
 	const filterShippingClasses = useCallback(() => {
 		if (shippingProfiles && action.type !== 'edit') {
@@ -165,9 +174,60 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 													message: 'Nickname',
 												},
 											]}>
-											<Input placeholder='Nickname' />
+											<Input
+												placeholder='Nickname'
+												readOnly={
+													action.type === 'edit' &&
+													action?.payload
+														?.is_general_profile
+												}
+												disabled={
+													action.type === 'edit' &&
+													action?.payload
+														?.is_general_profile
+												}
+											/>
 										</Form.Item>
 									</Col>
+
+									{action.type === 'edit' &&
+									action?.payload?.is_general_profile ? (
+										<Col
+											className='gutter-row'
+											xs={24}
+											sm={24}
+											md={24}
+											lg={24}
+											xl={24}>
+											<Form.Item
+												name='allow_all_classes'
+												rules={[
+													{
+														required: true,
+														message: '',
+													},
+												]}>
+												<Radio.Group>
+													<Space
+														direction='vertical'
+														size='middle'>
+														<Radio value={0}>
+															Use the General Profile
+															for all products not
+															included in another
+															shipping profile
+														</Radio>
+														<Radio value={1}>
+															Use the General Profile
+															only for products that
+															have the following
+															Shipping Class(es)
+														</Radio>
+													</Space>
+												</Radio.Group>
+											</Form.Item>
+										</Col>
+									) : null}
 
 									<Col
 										className='gutter-row'
@@ -182,7 +242,12 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 											name='shipping_classes'
 											rules={[
 												{
-													required: true,
+													required:
+														action.type === 'edit' &&
+														action?.payload
+															?.is_general_profile
+															? false
+															: true,
 													message: 'Shipping class',
 												},
 											]}>

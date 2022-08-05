@@ -32,7 +32,7 @@ const AddZone = ({ profileId }) => {
 		if (!shippingZones) {
 			dispatch(getDbscData('get_dbsc_zones', types.GET_DBSC_ZONES))
 		}
-	}, [])
+	}, [dispatch, shippingZones])
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
@@ -46,11 +46,10 @@ const AddZone = ({ profileId }) => {
 				origin => origin.profile_id === profileId
 			)
 
-			if (origins.length > 0) {
-				setOriginExist(true)
-			}
+			if (origins.length) setOriginExist(true)
+			else setOriginExist(false)
 		}
-	}, [alertMessageType, shippingOrigins])
+	}, [alertMessageType, form, profileId, shippingOrigins, originExist])
 
 	const onFinish = useCallback(
 		values => {
@@ -72,7 +71,7 @@ const AddZone = ({ profileId }) => {
 				)
 			}
 		},
-		[action.type, profileId, dispatch]
+		[action?.type, action.payload?.id, dispatch, profileId]
 	)
 
 	const editZone = useCallback(
@@ -88,7 +87,7 @@ const AddZone = ({ profileId }) => {
 				: []
 			form.setFieldsValue({ ...values, selected_region: regions })
 		},
-		[action.type, form]
+		[form]
 	)
 
 	const filterZoneRegions = useCallback(() => {
@@ -103,8 +102,9 @@ const AddZone = ({ profileId }) => {
 					regions.push(...JSON.parse(zone.selected_region))
 				}
 			})
+
 			const filteredRegions = dbscBigComZones.filter(
-				zr => !regions.includes(zr.id)
+				zr => !regions.includes(zr.id.toString())
 			)
 
 			return filteredRegions

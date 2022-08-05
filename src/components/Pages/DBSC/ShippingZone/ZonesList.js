@@ -10,13 +10,16 @@ const ZonesList = ({ profileId, editZone }) => {
 	const dispatch = useDispatch()
 	const { shippingZones, dbscBigComZones } = useSelector(state => state)
 
-	const formatZoneRegions = useCallback((regionIdsArr = []) => {
-		const regions = regionIdsArr ? JSON.parse(regionIdsArr) : []
-		return dbscBigComZones
-			.filter(zone => regions.includes(zone.id))
-			.map(zone => zone.name)
-			.join(', ')
-	}, [])
+	const formatZoneRegions = useCallback(
+		(regionIdsArr = []) => {
+			const regions = regionIdsArr ? JSON.parse(regionIdsArr) : []
+			return dbscBigComZones
+				.filter(zone => regions.includes(zone.id.toString()))
+				.map(zone => zone.name)
+				.join(', ')
+		},
+		[dbscBigComZones]
+	)
 
 	if (!shippingZones) return <Skeleton active />
 
