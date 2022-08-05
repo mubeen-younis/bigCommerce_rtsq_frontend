@@ -34,6 +34,8 @@ import { getFDOCouponInfo } from './Actions/FDOActions'
 import ImportCsvComponent from './components/Pages/ImportCsvComponent'
 import UserGuideComponent from './components/Pages/UserGuideComponent'
 import AppLogs from './components/Pages/AppLogs'
+import { getDbscData}from './Actions/DbscActions'
+import types from './Stores/types'
 
 const { Header, Content } = Layout
 
@@ -83,6 +85,7 @@ function App(props) {
       getStorePlans()
       getShippingGroups(token)
       dispatch(getFDOCouponInfo(token))
+		  dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES))
     }
  
       const devEnv = process?.env?.NODE_ENV === 'development'
