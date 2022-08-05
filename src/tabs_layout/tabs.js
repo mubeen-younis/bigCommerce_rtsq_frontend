@@ -10,6 +10,7 @@ import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersCo
 import useLoadComponent from '../hooks/useLoadComponent'
 import ShippingGroup from '../components/Pages/ShippingGroup'
 import ShippingRatesComponent from '../components/Pages/DBSC/ShippingRatesComponent'
+import ShippingClassesComponent from '../components/Pages/DBSC/ShippingClassesComponent'
 
 const { TabPane } = Tabs
 
@@ -99,6 +100,9 @@ function TabsLayout() {
 				</TabPane>
 				<TabPane tab='Shipping Rates' key='9'>
 					<ShippingRatesComponent />
+				</TabPane>
+				<TabPane tab='Shipping Classes' key='10'>
+					<ShippingClassesComponent />
 				</TabPane>
 				<TabPane tab='Quote Settings' key='5'>
 					{useLoadComponent(component)[1]}
