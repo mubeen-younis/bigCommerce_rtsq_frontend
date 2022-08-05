@@ -75,25 +75,24 @@ const AddZone = ({ profileId }) => {
 		[action.type, profileId, dispatch]
 	)
 
-	const editZone = useCallback(values => {
-		setIsOpen(true)
-		setAction({
-			type: 'edit',
-			payload: values,
-		})
+	const editZone = useCallback(
+		values => {
+			setIsOpen(true)
+			setAction({
+				type: 'edit',
+				payload: values,
+			})
 
-		const regions = values.selected_region
-			? JSON.parse(values.selected_region)
-			: []
-		form.setFieldsValue({ ...values, selected_region: regions })
-	}, [])
+			const regions = values.selected_region
+				? JSON.parse(values.selected_region)
+				: []
+			form.setFieldsValue({ ...values, selected_region: regions })
+		},
+		[action.type, form]
+	)
 
 	const filterZoneRegions = useCallback(() => {
-		if (shippingZones) {
-			if (action.type === 'edit') {
-				return dbscBigComZones
-			}
-
+		if (shippingZones && action.type !== 'edit') {
 			const regions = []
 			const zones = shippingZones?.filter(
 				zone => zone.profile_id === profileId
@@ -104,12 +103,15 @@ const AddZone = ({ profileId }) => {
 					regions.push(...JSON.parse(zone.selected_region))
 				}
 			})
+			const filteredRegions = dbscBigComZones.filter(
+				zr => !regions.includes(zr.id)
+			)
 
-			return dbscBigComZones.filter(region => !regions.includes(region.id))
+			return filteredRegions
 		}
 
-		return []
-	}, [])
+		return dbscBigComZones
+	}, [action.type, dbscBigComZones, profileId, shippingZones])
 
 	return originExist ? (
 		<Card>
@@ -218,21 +220,20 @@ const AddZone = ({ profileId }) => {
 									<Select
 										mode='multiple'
 										placeholder='Select regions with within this zone'>
-										{/* {filterZoneRegions().map(region => (
-											<Select.Option
-												key={region.id}
-												value={region.id.toString()}>
-												{console.log(region)}
-												{region.name}
-											</Select.Option>
-										))} */}
-										{dbscBigComZones?.map(region => (
+										{filterZoneRegions().map(region => (
 											<Select.Option
 												key={region.id}
 												value={region.id.toString()}>
 												{region.name}
 											</Select.Option>
 										))}
+										{/* {dbscBigComZones?.map(region => (
+											<Select.Option
+												key={region.id}
+												value={region.id.toString()}>
+												{region.name}
+											</Select.Option>
+										))} */}
 									</Select>
 								</Form.Item>
 							</Col>
