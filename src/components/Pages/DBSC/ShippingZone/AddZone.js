@@ -58,7 +58,7 @@ const AddZone = ({ profileId }) => {
 				dispatch(
 					updateDbscData(
 						'update_dbsc_zone',
-						{ ...values, id: action.payload.id },
+						{ ...values, id: action.payload.id, profile_id: profileId },
 						types.UPDATE_DBSC_ZONE
 					)
 				)
@@ -216,7 +216,7 @@ const AddZone = ({ profileId }) => {
 										},
 									]}>
 									<Select
-										mode='tags'
+										mode='multiple'
 										placeholder='Select regions with within this zone'>
 										{/* {filterZoneRegions().map(region => (
 											<Select.Option
@@ -229,7 +229,7 @@ const AddZone = ({ profileId }) => {
 										{dbscBigComZones?.map(region => (
 											<Select.Option
 												key={region.id}
-												value={region.id}>
+												value={region.id.toString()}>
 												{region.name}
 											</Select.Option>
 										))}

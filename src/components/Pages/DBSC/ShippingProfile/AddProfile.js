@@ -24,12 +24,14 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 		description: '',
 	})
 	const [action, setAction] = useState({
-		type: '',
+		type: 'add',
 		payload: null,
 	})
 
 	const dispatch = useDispatch()
-	const { shippingClasses, alertMessageType } = useSelector(state => state)
+	const { shippingClasses, alertMessageType, shippingProfiles } = useSelector(
+		state => state
+	)
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
@@ -84,6 +86,25 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 		form.setFieldsValue(formData)
 	}, [])
 
+	const filterShippingClasses = useCallback(() => {
+		if (shippingProfiles && action.type !== 'edit') {
+			const classesArr = []
+			shippingProfiles.forEach(prof => {
+				if (prof?.shipping_classes) {
+					classesArr.push(...JSON.parse(prof.shipping_classes))
+				}
+			})
+
+			const filteredClasses = shippingClasses.filter(
+				classObj => !classesArr.includes(classObj.class_name)
+			)
+
+			return filteredClasses
+		}
+
+		return shippingClasses
+	}, [action, shippingClasses, shippingProfiles])
+
 	return (
 		<>
 			<ShippingProfile editProfile={editProfile} />
@@ -94,6 +115,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 						title={setModalTitle()}
 						visible={visible}
 						onCancel={() => {
+							setAction({ type: 'add', payload: null })
 							toggleAddProfileModal(false)
 							setShippingClass(false)
 							form.resetFields()
@@ -165,26 +187,17 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 												},
 											]}>
 											<Select
-												showSearch
 												placeholder='Search shipping classes'
-												optionFilterProp='children'
-												mode='tags'
-												// onChange={onChange}
-												// onSearch={onSearch}
-												filterOption={(input, option) =>
-													option.children
-														.toLowerCase()
-														.includes(
-															input.toLowerCase()
-														)
-												}>
-												{shippingClasses.map(cls => (
-													<Option
-														key={cls.id}
-														value={cls.class_name}>
-														{cls.class_name}
-													</Option>
-												))}
+												mode='multiple'>
+												{filterShippingClasses()?.map(
+													cls => (
+														<Option
+															key={cls.id.toString()}
+															value={cls.class_name}>
+															{cls.class_name}
+														</Option>
+													)
+												)}
 											</Select>
 										</Form.Item>
 									</Col>
