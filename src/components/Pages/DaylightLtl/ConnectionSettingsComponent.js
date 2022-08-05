@@ -33,15 +33,8 @@ function ConnectionSettingsComponent(props) {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have a SAIA LTL Freight account to
-				use this application. If you don’t have one, contact SAIA LTL Freight
-				at +1 800-765-7242 or email{' '}
-				<a
-					href='mailto:customerservice@saia.com'
-					target='_blank'
-					rel='noreferrer'>
-					customerservice@saia.com
-				</a>{' '}
+				<strong>Note!</strong> You must have a DayLight LTL Freight account
+				to use this application.
 			</div>
 
 			<Form
