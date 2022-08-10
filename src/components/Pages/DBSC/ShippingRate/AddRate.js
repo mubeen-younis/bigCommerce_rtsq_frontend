@@ -8,7 +8,7 @@ import { getDbscData, addDbscData } from '../../../../Actions/DbscActions'
 const { Option } = Select
 const { TextArea } = Input
 
-const AddRate = ({ zoneId }) => {
+const AddRate = ({ zoneId, rates }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [form] = Form.useForm()
 	const [initialValues] = useState({
@@ -578,8 +578,13 @@ const AddRate = ({ zoneId }) => {
 			<Row gutter={30}>
 				<Col span={24} className='mb-1'>
 					{/* Rates List */}
-					<RatesList zoneId={zoneId} editRate={editRate} />
+					<RatesList
+						zoneId={zoneId}
+						editRate={editRate}
+						shippingRates={rates}
+					/>
 				</Col>
+
 				<Col span={24}>
 					<Button
 						type='primary'

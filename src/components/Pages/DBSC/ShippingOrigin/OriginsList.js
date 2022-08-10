@@ -1,20 +1,18 @@
-import { Button, Col, Skeleton } from 'antd'
-import React from 'react'
+import { Button, Col, Row } from 'antd'
+import React, { Fragment, memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
+import AddZone from '../ShippingZone/AddZone'
 
-const OriginsList = ({ profileId, editOrigin }) => {
-	const { shippingOrigins } = useSelector(state => state)
+const OriginsList = ({ profileId, editOrigin, shippingOrigins, originId }) => {
+	const { shippingProfiles } = useSelector(state => state)
 	const dispatch = useDispatch()
 
-	if (!shippingOrigins) return <Skeleton active />
-
-	return (
-		<>
-			{shippingOrigins?.map(org =>
-				org.profile_id === profileId ? (
-					<>
+	return shippingOrigins
+		? shippingOrigins?.map(org => (
+				<Fragment key={org.id}>
+					<Row>
 						<Col
 							className='gutter-row'
 							xs={12}
@@ -60,11 +58,14 @@ const OriginsList = ({ profileId, editOrigin }) => {
 								Delete
 							</Button>
 						</Col>
-					</>
-				) : null
-			)}
-		</>
-	)
+					</Row>
+
+					<AddZone
+						shippingZones={shippingProfiles?.zones?.[originId] ?? []}
+					/>
+				</Fragment>
+		  ))
+		: null
 }
 
-export default OriginsList
+export default memo(OriginsList)

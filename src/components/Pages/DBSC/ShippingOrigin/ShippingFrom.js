@@ -1,46 +1,56 @@
-import { Button, Col, Row, Typography } from 'antd'
-import React, { memo } from 'react'
-import { setConfirmModalData } from '../../../../Actions/DbscActions'
-import types from '../../../../Stores/types'
+import { Button, Card, Col, Row, Typography } from 'antd'
+import React, { memo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import OriginsList from './OriginsList'
 
 const { Title } = Typography
 
-const ShippingFrom = ({ profileId, editOrigin, setIsOpen }) => {
-	return (
-		<Row gutter={30} className='mb-2'>
-			<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={12}>
-				<Title level={4}>Shipping from</Title>
-			</Col>
+const ShippingFrom = ({ profileId, editOrigin, setIsOpen, origins }) => {
+	const [parentId, setParentId] = useState(null)
+	const { shippingProfiles } = useSelector(state => state)
 
-			<Col
-				className='gutter-row mb-2'
-				xs={12}
-				sm={12}
-				md={12}
-				lg={12}
-				xl={12}
-				style={{ textAlign: 'right' }}>
-				<Button
-					type='link'
-					onClick={() => {
-						setIsOpen(true)
-						setConfirmModalData(
-							'Add',
-							true,
-							'',
-							null,
-							types.ADD_DBSC_ORIGIN,
-							'ORIGIN'
-						)
-					}}>
-					Add shipping origin
-				</Button>
-			</Col>
+	return origins && origins.length
+		? origins.map(origin => (
+				<Card key={origin.id} className='mb-2'>
+					<Row gutter={30} className='mb-2'>
+						<Col
+							className='gutter-row'
+							xs={12}
+							sm={12}
+							md={12}
+							lg={12}
+							xl={12}>
+							<Title level={4}>Shipping from</Title>
+						</Col>
 
-			<OriginsList profileId={profileId} editOrigin={editOrigin} />
-		</Row>
-	)
+						<Col
+							className='gutter-row mb-2'
+							xs={12}
+							sm={12}
+							md={12}
+							lg={12}
+							xl={12}
+							style={{ textAlign: 'right' }}>
+							<Button
+								type='link'
+								onClick={() => {
+									setIsOpen(true)
+									setParentId(origin.id)
+								}}>
+								Add shipping origin
+							</Button>
+						</Col>
+					</Row>
+
+					<OriginsList
+						profileId={profileId}
+						editOrigin={editOrigin}
+						shippingOrigins={shippingProfiles?.origin?.[origin.id] ?? []}
+						originId={origin.id}
+					/>
+				</Card>
+		  ))
+		: null
 }
 
 export default memo(ShippingFrom)

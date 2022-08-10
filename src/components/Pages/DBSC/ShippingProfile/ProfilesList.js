@@ -1,18 +1,18 @@
-import { Button, Card, Col, Row, Space } from 'antd'
-import Title from 'antd/lib/typography/Title'
+import { Button, Card, Col, Row, Space, Typography } from 'antd'
 import React, { memo } from 'react'
-import { useDispatch } from 'react-redux'
-import AddOrigin from '../ShippingOrigin/AddOrigin'
-import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal'
-import { setConfirmModalData } from '../../../../Actions/DbscActions'
-import types from '../../../../Stores/types'
+import { useSelector } from 'react-redux'
+import ShippingFrom from '../ShippingOrigin/ShippingFrom'
 
-const ShippingProfile = ({ editProfile, shippingProfiles }) => {
-	const dispatch = useDispatch()
+const { Title } = Typography
+
+const ProfilesList = () => {
+	const { shippingProfiles } = useSelector(state => state)
+
+	console.log('shippingProfiles', shippingProfiles.store_profiles)
 
 	return (
 		<Space direction='vertical' size='large' className='w-100'>
-			{shippingProfiles?.map(pf => (
+			{shippingProfiles?.store_profiles?.map(pf => (
 				<Card key={pf.p_nickname}>
 					<Row gutter={30} className='mb-1'>
 						<Col
@@ -32,23 +32,11 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 							lg={12}
 							xl={12}
 							style={{ textAlign: 'right' }}>
-							<Button type='link' onClick={() => editProfile(pf)}>
+							<Button type='link' onClick={() => {}}>
 								Edit
 							</Button>
 							{!pf?.is_general_profile && (
-								<Button
-									type='link'
-									onClick={() => {
-										dispatch(
-											setConfirmModalData(
-												'profile',
-												true,
-												'delete_dbsc_profile',
-												pf.id,
-												types.DELETE_DBSC_PROFILE
-											)
-										)
-									}}>
+								<Button type='link' onClick={() => {}}>
 									Delete
 								</Button>
 							)}
@@ -70,14 +58,16 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 						</Col>
 					</Row>
 
-					{/* Shipping Origin */}
-					<AddOrigin profileId={pf.id} />
+					<ShippingFrom
+						origins={shippingProfiles?.origins[pf.id]}
+						profileId={pf.id}
+					/>
 				</Card>
 			))}
 
-			<ConfirmDeleteModal />
+			{/* <ConfirmDeleteModal /> */}
 		</Space>
 	)
 }
 
-export default memo(ShippingProfile)
+export default memo(ProfilesList)

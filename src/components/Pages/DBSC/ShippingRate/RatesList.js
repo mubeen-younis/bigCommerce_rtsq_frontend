@@ -1,12 +1,12 @@
-import { Button, Skeleton, Table } from 'antd'
+import { Button, Table } from 'antd'
 import React, { useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { memo } from 'react'
+import { useDispatch } from 'react-redux'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
 
-const RatesList = ({ zoneId, editRate }) => {
+const RatesList = ({ zoneId, editRate, shippingRates }) => {
 	const dispatch = useDispatch()
-	const { shippingRates } = useSelector(state => state)
 
 	const columns = [
 		{
@@ -117,18 +117,16 @@ const RatesList = ({ zoneId, editRate }) => {
 		},
 	]
 
-	const filterRatesData = useCallback(() => {
-		const rates = shippingRates
-			?.filter(rate => rate.dbsc_zone_id === zoneId)
-			?.map(rate => ({
+	const filterRatesData = useCallback(
+		() =>
+			shippingRates?.map(rate => ({
 				...rate,
 				key: rate.display_as,
-			}))
+			})),
+		[shippingRates]
+	)
 
-		return rates
-	}, [shippingRates, zoneId])
-
-	if (!shippingRates) return <Skeleton active />
+	// if (!shippingRates) return <Skeleton active />
 
 	return (
 		<Table
@@ -142,4 +140,4 @@ const RatesList = ({ zoneId, editRate }) => {
 	)
 }
 
-export default RatesList
+export default memo(RatesList)

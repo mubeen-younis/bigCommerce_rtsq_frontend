@@ -2,15 +2,11 @@ import React, { memo, useCallback, useEffect, useState } from 'react'
 import { Button, Col, Form, Input, Modal, Row, Select, Card } from 'antd'
 import Title from 'antd/lib/typography/Title'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	addDbscData,
-	getDbscData,
-	updateDbscData,
-} from '../../../../Actions/DbscActions'
+import { addDbscData, updateDbscData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
 import ZonesList from './ZonesList'
 
-const AddZone = ({ profileId }) => {
+const AddZone = ({ profileId, shippingZones }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [form] = Form.useForm()
 	const [initialValues] = useState({
@@ -25,14 +21,11 @@ const AddZone = ({ profileId }) => {
 	})
 	const [originExist, setOriginExist] = useState(false)
 	const dispatch = useDispatch()
-	const { dbscBigComZones, shippingZones, alertMessageType, shippingOrigins } =
-		useSelector(state => state)
-
-	useEffect(() => {
-		if (!shippingZones) {
-			dispatch(getDbscData('get_dbsc_zones', types.GET_DBSC_ZONES))
-		}
-	}, [dispatch, shippingZones])
+	const {
+		dbscBigComZones,
+		/* shippingZones, */ alertMessageType,
+		shippingOrigins,
+	} = useSelector(state => state)
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
@@ -93,11 +86,7 @@ const AddZone = ({ profileId }) => {
 	const filterZoneRegions = useCallback(() => {
 		if (shippingZones && action.type !== 'edit') {
 			const regions = []
-			const zones = shippingZones?.filter(
-				zone => zone.profile_id === profileId
-			)
-
-			zones.forEach(zone => {
+			shippingZones?.forEach(zone => {
 				if (zone.selected_region) {
 					regions.push(...JSON.parse(zone.selected_region))
 				}
@@ -111,9 +100,9 @@ const AddZone = ({ profileId }) => {
 		}
 
 		return dbscBigComZones
-	}, [action.type, dbscBigComZones, profileId, shippingZones])
+	}, [action.type, dbscBigComZones, shippingZones])
 
-	return originExist ? (
+	return (
 		<Card>
 			<Row gutter={30} className='mb-2'>
 				<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -142,7 +131,11 @@ const AddZone = ({ profileId }) => {
 			</Row>
 
 			{/* Zones List */}
-			<ZonesList profileId={profileId} editZone={editZone} />
+			<ZonesList
+				profileId={profileId}
+				shippingZones={shippingZones}
+				editZone={editZone}
+			/>
 
 			{/* Add New Shipping Zone */}
 			{isOpen && (
@@ -227,13 +220,6 @@ const AddZone = ({ profileId }) => {
 												{region.name}
 											</Select.Option>
 										))}
-										{/* {dbscBigComZones?.map(region => (
-											<Select.Option
-												key={region.id}
-												value={region.id.toString()}>
-												{region.name}
-											</Select.Option>
-										))} */}
 									</Select>
 								</Form.Item>
 							</Col>
@@ -242,7 +228,7 @@ const AddZone = ({ profileId }) => {
 				</Modal>
 			)}
 		</Card>
-	) : null
+	)
 }
 
 export default memo(AddZone)

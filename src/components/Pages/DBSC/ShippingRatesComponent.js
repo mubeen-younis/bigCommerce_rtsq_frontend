@@ -17,17 +17,17 @@ const ShippingRatesComponent = () => {
 		[]
 	)
 
-	// useEffect(() => {
-	// 	if (!shippingProfiles) {
-	// 		dispatch(getDbscData('get_dbsc_profiles', types.GET_DBSC_PROFILES))
-	// 	}
-	// 	if (!shippingClasses) {
-	// 		dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES))
-	// 	}
-	// 	dispatch(getDbscZones())
-	// }, [dispatch, shippingClasses, shippingProfiles])
+	useEffect(() => {
+		if (!shippingProfiles) {
+			dispatch(getDbscData('get_dbsc_profiles', types.GET_DBSC_PROFILES))
+		}
+		if (!shippingClasses) {
+			dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES))
+		}
+		dispatch(getDbscZones())
+	}, [dispatch, shippingProfiles, shippingClasses])
 
-	// if (!shippingProfiles) return <Skeleton active />
+	if (!shippingProfiles) return <Skeleton active />
 
 	return (
 		<>
@@ -50,8 +50,8 @@ const ShippingRatesComponent = () => {
 			</Row>
 
 			<AddProfile
-				visible={addProfileModal}
 				toggleAddProfileModal={toggleAddProfileModal}
+				visible={addProfileModal}
 			/>
 		</>
 	)

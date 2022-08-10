@@ -1,7 +1,6 @@
 import { Button, Col, Form, Input, Modal, Radio, Row, Select, Space } from 'antd'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
 import {
 	addShippingClass,
 	addShippingProfile,
@@ -96,9 +95,13 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	)
 
 	const filterShippingClasses = useCallback(() => {
-		if (shippingProfiles && action.type !== 'edit') {
+		if (
+			shippingProfiles &&
+			shippingProfiles.store_profiles &&
+			action.type !== 'edit'
+		) {
 			const classesArr = []
-			shippingProfiles.forEach(prof => {
+			shippingProfiles.store_profiles?.forEach(prof => {
 				if (prof?.shipping_classes) {
 					classesArr.push(...JSON.parse(prof.shipping_classes))
 				}
@@ -116,7 +119,14 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 
 	return (
 		<>
-			{/* <ShippingProfile editProfile={editProfile} /> */}
+			<ShippingProfile
+				editProfile={editProfile}
+				shippingProfiles={
+					shippingProfiles && shippingProfiles.store_profiles
+						? shippingProfiles.store_profiles
+						: []
+				}
+			/>
 
 			{visible && (
 				<Row gutter={30}>
@@ -254,7 +264,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 											<Select
 												placeholder='Search shipping classes'
 												mode='multiple'>
-												{/* {filterShippingClasses()?.map(
+												{filterShippingClasses()?.map(
 													cls => (
 														<Option
 															key={cls.id.toString()}
@@ -262,7 +272,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 															{cls.class_name}
 														</Option>
 													)
-												)} */}
+												)}
 											</Select>
 										</Form.Item>
 									</Col>
@@ -349,4 +359,4 @@ export const AddShippingClass = ({ shippingClass }) => {
 	)
 }
 
-export default AddProfile
+export default memo(AddProfile)

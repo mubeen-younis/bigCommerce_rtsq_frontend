@@ -1,17 +1,5 @@
 import React, { useCallback, useEffect, memo, useState } from 'react'
-import {
-	Button,
-	Col,
-	Form,
-	Input,
-	Modal,
-	Row,
-	Select,
-	Radio,
-	Space,
-	Card,
-} from 'antd'
-import AddZone from '../ShippingZone/AddZone'
+import { Button, Col, Form, Input, Modal, Row, Select, Radio, Space } from 'antd'
 import { getDbscData, updateDbscData } from '../../../../Actions/DbscActions'
 import { useDispatch, useSelector } from 'react-redux'
 import types from '../../../../Stores/types'
@@ -37,9 +25,8 @@ const AddOrigin = ({ profileId }) => {
 		type: 'add',
 		payload: null,
 	})
-	const [parentOriginId, setParentOriginId] = useState(null)
 	const dispatch = useDispatch()
-	const { alertMessageType } = useSelector(state => state)
+	const { alertMessageType, shippingProfiles } = useSelector(state => state)
 
 	useEffect(() => {
 		dispatch(getDbscData('get_dbsc_origins', types.GET_DBSC_ORIGINS))
@@ -84,17 +71,18 @@ const AddOrigin = ({ profileId }) => {
 				payload: values,
 			})
 
-			form.setFieldsValue({ ...values, nickname: values.ori_nickname })
+			form.setFieldsValue(values)
 		},
 		[form]
 	)
 
 	return (
-		<Card>
+		<>
 			<ShippingFrom
 				profileId={profileId}
 				setIsOpen={setIsOpen}
 				editOrigin={editOrigin}
+				origins={shippingProfiles?.origins?.[profileId] ?? []}
 			/>
 
 			<Row gutter={30}>
@@ -329,10 +317,7 @@ const AddOrigin = ({ profileId }) => {
 					</Form>
 				</Modal>
 			</Row>
-
-			{/* Add Shipping Zone */}
-			<AddZone profileId={profileId} />
-		</Card>
+		</>
 	)
 }
 
