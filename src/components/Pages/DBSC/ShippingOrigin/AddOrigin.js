@@ -12,16 +12,11 @@ import {
 	Card,
 } from 'antd'
 import AddZone from '../ShippingZone/AddZone'
-import Title from 'antd/lib/typography/Title'
-import OriginsList from './OriginsList'
-import {
-	getDbscData,
-	setConfirmModalData,
-	updateDbscData,
-} from '../../../../Actions/DbscActions'
+import { getDbscData, updateDbscData } from '../../../../Actions/DbscActions'
 import { useDispatch, useSelector } from 'react-redux'
 import types from '../../../../Stores/types'
 import { addDbscData } from '../../../../Actions/DbscActions'
+import ShippingFrom from './ShippingFrom'
 
 const { Option } = Select
 
@@ -42,6 +37,7 @@ const AddOrigin = ({ profileId }) => {
 		type: 'add',
 		payload: null,
 	})
+	const [parentOriginId, setParentOriginId] = useState(null)
 	const dispatch = useDispatch()
 	const { alertMessageType } = useSelector(state => state)
 
@@ -63,7 +59,7 @@ const AddOrigin = ({ profileId }) => {
 				dispatch(
 					updateDbscData(
 						'update_dbsc_origin',
-						{ ...values, id: action.payload.id },
+						{ ...values, id: action.payload.id, profile_id: profileId },
 						types.UPDATE_DBSC_ORIGIN
 					)
 				)
@@ -95,37 +91,11 @@ const AddOrigin = ({ profileId }) => {
 
 	return (
 		<Card>
-			<Row gutter={30} className='mb-2'>
-				<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={12}>
-					<Title level={4}>Shipping from</Title>
-				</Col>
-				<Col
-					className='gutter-row mb-2'
-					xs={12}
-					sm={12}
-					md={12}
-					lg={12}
-					xl={12}
-					style={{ textAlign: 'right' }}>
-					<Button
-						type='link'
-						onClick={() => {
-							setIsOpen(true)
-							setConfirmModalData(
-								'Add',
-								true,
-								'',
-								null,
-								types.ADD_DBSC_ORIGIN,
-								'ORIGIN'
-							)
-						}}>
-						Add shipping origin
-					</Button>
-				</Col>
-
-				<OriginsList profileId={profileId} editOrigin={editOrigin} />
-			</Row>
+			<ShippingFrom
+				profileId={profileId}
+				setIsOpen={setIsOpen}
+				editOrigin={editOrigin}
+			/>
 
 			<Row gutter={30}>
 				<Modal
@@ -174,7 +144,7 @@ const AddOrigin = ({ profileId }) => {
 									name='nickname'
 									rules={[
 										{
-											required: false,
+											required: true,
 											message: 'Nickname',
 										},
 									]}>
@@ -194,7 +164,7 @@ const AddOrigin = ({ profileId }) => {
 									name='street_address'
 									rules={[
 										{
-											required: false,
+											required: true,
 											message: 'Street address',
 										},
 									]}>
@@ -217,7 +187,7 @@ const AddOrigin = ({ profileId }) => {
 									name='city'
 									rules={[
 										{
-											required: false,
+											required: true,
 											message: 'City',
 										},
 									]}>
@@ -237,8 +207,13 @@ const AddOrigin = ({ profileId }) => {
 									name='state_or_province'
 									rules={[
 										{
-											required: false,
+											required: true,
 											message: 'State or Province',
+										},
+										{
+											max: 2,
+											message:
+												'Maximum 2 characters allowed e.g CA',
 										},
 									]}>
 									<Input name='state' placeholder='GA' />
@@ -257,7 +232,7 @@ const AddOrigin = ({ profileId }) => {
 									name='postal_code'
 									rules={[
 										{
-											required: false,
+											required: true,
 											message: 'Postal Code',
 										},
 									]}>
@@ -278,8 +253,13 @@ const AddOrigin = ({ profileId }) => {
 									name='country'
 									rules={[
 										{
-											required: false,
+											required: true,
 											message: 'Country code',
+										},
+										{
+											len: 2,
+											message:
+												'Maximum 2 characters allowed e.g US.',
 										},
 									]}>
 									<Input name='country' placeholder='US' />

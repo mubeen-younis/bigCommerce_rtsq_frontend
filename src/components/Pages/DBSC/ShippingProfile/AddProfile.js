@@ -116,7 +116,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 
 	return (
 		<>
-			<ShippingProfile editProfile={editProfile} />
+			{/* <ShippingProfile editProfile={editProfile} /> */}
 
 			{visible && (
 				<Row gutter={30}>
@@ -254,7 +254,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 											<Select
 												placeholder='Search shipping classes'
 												mode='multiple'>
-												{filterShippingClasses()?.map(
+												{/* {filterShippingClasses()?.map(
 													cls => (
 														<Option
 															key={cls.id.toString()}
@@ -262,7 +262,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 															{cls.class_name}
 														</Option>
 													)
-												)}
+												)} */}
 											</Select>
 										</Form.Item>
 									</Col>
@@ -349,4 +349,4 @@ export const AddShippingClass = ({ shippingClass }) => {
 	)
 }
 
-export default memo(AddProfile)
+export default AddProfile

@@ -2,7 +2,6 @@ import { Button, Col, Row, Skeleton, Typography } from 'antd'
 import React, { useState, useCallback, useEffect, memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AddProfile from './ShippingProfile/AddProfile'
-import ShippingProfile from './ShippingProfile/ShippingProfile'
 import types from '../../../Stores/types'
 import { getDbscData, getDbscZones } from '../../../Actions/DbscActions'
 
@@ -18,17 +17,17 @@ const ShippingRatesComponent = () => {
 		[]
 	)
 
-	useEffect(() => {
-		if (!shippingProfiles) {
-			dispatch(getDbscData('get_dbsc_profiles', types.GET_DBSC_PROFILES))
-		}
-		if (!shippingClasses) {
-			dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES))
-		}
-		dispatch(getDbscZones())
-	}, [dispatch])
+	// useEffect(() => {
+	// 	if (!shippingProfiles) {
+	// 		dispatch(getDbscData('get_dbsc_profiles', types.GET_DBSC_PROFILES))
+	// 	}
+	// 	if (!shippingClasses) {
+	// 		dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES))
+	// 	}
+	// 	dispatch(getDbscZones())
+	// }, [dispatch, shippingClasses, shippingProfiles])
 
-	if (!shippingProfiles) return <Skeleton active />
+	// if (!shippingProfiles) return <Skeleton active />
 
 	return (
 		<>
