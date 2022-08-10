@@ -142,7 +142,7 @@ function App(props) {
     } else if (alertMessageType === 'warning') {
       message.warning(alertMessage)
     } else if (alertMessageType === 'loading') {
-      message.loading('Loading. Please wait...')
+     // message.loading('Loading. Please wait...')
     }
   }
 

@@ -8,6 +8,13 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 		},
 	}
 	return dispatch => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		})
 	
 		const hideMessage=message.loading('Loading. Please wait...',0)
 
