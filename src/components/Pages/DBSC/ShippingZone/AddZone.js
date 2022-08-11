@@ -19,27 +19,15 @@ const AddZone = ({ profileId, shippingZones }) => {
 		type: 'add',
 		payload: null,
 	})
-	const [originExist, setOriginExist] = useState(false)
 	const dispatch = useDispatch()
-	const { dbscBigComZones, alertMessageType, shippingOrigins } = useSelector(
-		state => state
-	)
+	const { dbscBigComZones, alertMessageType } = useSelector(state => state)
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
 			setAction({ type: '', payload: null })
 			setIsOpen(false)
 		}
-
-		if (shippingOrigins) {
-			const origins = shippingOrigins.filter(
-				origin => origin.profile_id === profileId
-			)
-
-			if (origins.length) setOriginExist(true)
-			else setOriginExist(false)
-		}
-	}, [alertMessageType, form, profileId, shippingOrigins, originExist])
+	}, [alertMessageType])
 
 	const onFinish = useCallback(
 		values => {
@@ -142,6 +130,11 @@ const AddZone = ({ profileId, shippingZones }) => {
 					onCancel={() => {
 						setIsOpen(false)
 						form.resetFields()
+						setAction({
+							...action,
+							type: 'add',
+							payload: {},
+						})
 					}}
 					onOk={() => {}}
 					centered

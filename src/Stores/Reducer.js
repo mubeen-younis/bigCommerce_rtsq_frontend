@@ -745,13 +745,23 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				shippingZones: [...state.shippingZones, action.payload],
 			}
-		case types.UPDATE_DBSC_ZONE:
+		case types.UPDATE_DBSC_ZONE: {
+			const { id, dbsc_origin_id } = action.payload
+			const updatedZones = state?.shippingProfiles?.zones[dbsc_origin_id]?.map(
+				zone => (zone.id === id ? action.payload : zone)
+			)
+
 			return {
 				...state,
-				shippingZones: state.shippingZones.map(sz =>
-					sz.id === action.payload.id ? action.payload : sz
-				),
+				shippingProfiles: {
+					...state.shippingProfiles,
+					zones: {
+						...state.shippingProfiles.zones,
+						[dbsc_origin_id]: updatedZones,
+					},
+				},
 			}
+		}
 		case types.DELETE_DBSC_ZONE:
 			return {
 				...state,

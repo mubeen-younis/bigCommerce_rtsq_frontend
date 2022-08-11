@@ -38,15 +38,17 @@ const AddOrigin = ({ profileId }) => {
 	const onFinish = useCallback(
 		values => {
 			if (action.type === 'edit') {
+				const payload = {
+					...values,
+					id: action.payload.id,
+					profile_id: profileId,
+					parentId: action.payload.parentId,
+				}
+
 				dispatch(
 					updateDbscData(
 						'update_dbsc_origin',
-						{
-							...values,
-							id: action.payload.id,
-							profile_id: profileId,
-							parentId: action.payload.parentId,
-						},
+						payload,
 						types.UPDATE_DBSC_ORIGIN
 					)
 				)

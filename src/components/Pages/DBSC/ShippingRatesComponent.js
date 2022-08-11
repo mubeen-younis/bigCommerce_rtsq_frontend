@@ -27,7 +27,7 @@ const ShippingRatesComponent = () => {
 			dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES))
 		}
 		if (!dbscBigComZones) dispatch(getDbscZones())
-	}, [dispatch, shippingProfiles, shippingClasses, dbscBigComZones])
+	}, [dispatch])
 
 	if (!shippingProfiles) return <Skeleton active />
 
