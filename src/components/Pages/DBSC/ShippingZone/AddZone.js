@@ -21,15 +21,12 @@ const AddZone = ({ profileId, shippingZones }) => {
 	})
 	const [originExist, setOriginExist] = useState(false)
 	const dispatch = useDispatch()
-	const {
-		dbscBigComZones,
-		/* shippingZones, */ alertMessageType,
-		shippingOrigins,
-	} = useSelector(state => state)
+	const { dbscBigComZones, alertMessageType, shippingOrigins } = useSelector(
+		state => state
+	)
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
-			form.resetFields()
 			setAction({ type: '', payload: null })
 			setIsOpen(false)
 		}

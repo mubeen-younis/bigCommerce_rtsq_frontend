@@ -638,21 +638,33 @@ const Reducer = (state = initialState, action) => {
 		case types.ADD_DBSC_PROFILE:
 			return {
 				...state,
-				shippingProfiles: [...state.shippingProfiles, action.payload],
+				shippingProfiles: {
+					...state.shippingProfiles,
+					store_profiles: [
+						...state.shippingProfiles.store_profiles,
+						action.payload,
+					],
+				},
 			}
 		case types.UPDATE_DBSC_PROFILE:
 			return {
 				...state,
-				shippingProfiles: state.shippingProfiles.map(sp =>
-					sp.id === action.payload.id ? action.payload : sp
-				),
+				shippingProfiles: {
+					...state.shippingProfiles,
+					store_profiles: state?.shippingProfiles?.store_profiles?.map(
+						sp => (sp.id === action.payload.id ? action.payload : sp)
+					),
+				},
 			}
 		case types.DELETE_DBSC_PROFILE:
 			return {
 				...state,
-				shippingProfiles: state.shippingProfiles.filter(
-					sp => sp.id !== action.payload
-				),
+				shippingProfiles: {
+					...state.shippingProfiles,
+					store_profiles: state?.shippingProfiles?.store_profiles?.filter(
+						sp => sp.id !== action.payload
+					),
+				},
 			}
 		case types.GET_DBSC_CLASSES:
 			return {

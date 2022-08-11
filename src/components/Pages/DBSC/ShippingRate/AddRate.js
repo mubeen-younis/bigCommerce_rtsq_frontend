@@ -3,7 +3,7 @@ import { Button, Col, Form, Input, Modal, Row, Select, Radio, Space } from 'antd
 import RatesList from './RatesList'
 import { useDispatch, useSelector } from 'react-redux'
 import types from '../../../../Stores/types'
-import { getDbscData, addDbscData } from '../../../../Actions/DbscActions'
+import { addDbscData } from '../../../../Actions/DbscActions'
 
 const { Option } = Select
 const { TextArea } = Input
@@ -41,12 +41,7 @@ const AddRate = ({ zoneId, rates }) => {
 	const { alertMessageType } = useSelector(state => state)
 
 	useEffect(() => {
-		dispatch(getDbscData('get_dbsc_rates', types.GET_DBSC_RATES))
-	}, [dispatch])
-
-	useEffect(() => {
 		if (alertMessageType === 'success') {
-			form.resetFields()
 			setAction({ type: '', payload: null })
 			setIsOpen(false)
 		}

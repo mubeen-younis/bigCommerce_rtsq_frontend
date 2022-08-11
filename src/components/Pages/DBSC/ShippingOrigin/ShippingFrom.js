@@ -9,6 +9,41 @@ const ShippingFrom = ({ profileId, editOrigin, setIsOpen, origins }) => {
 	const [parentId, setParentId] = useState(null)
 	const { shippingProfiles } = useSelector(state => state)
 
+	if (!origins || !origins.length) {
+		return (
+			<Card>
+				<Row gutter={30} className='mb-2'>
+					<Col
+						className='gutter-row'
+						xs={12}
+						sm={12}
+						md={12}
+						lg={12}
+						xl={12}>
+						<Title level={4}>Shipping from</Title>
+					</Col>
+
+					<Col
+						className='gutter-row mb-2'
+						xs={12}
+						sm={12}
+						md={12}
+						lg={12}
+						xl={12}
+						style={{ textAlign: 'right' }}>
+						<Button
+							type='link'
+							onClick={() => {
+								setIsOpen(true)
+							}}>
+							Add shipping origin
+						</Button>
+					</Col>
+				</Row>
+			</Card>
+		)
+	}
+
 	return origins && origins.length
 		? origins.map(origin => (
 				<Card key={origin.id} className='mb-2'>

@@ -37,7 +37,6 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
-			form.resetFields()
 			setAction({
 				type: '',
 				payload: {},
@@ -62,15 +61,13 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 						types.UPDATE_DBSC_PROFILE
 					)
 				)
-				form.resetFields()
 				return
 			}
 
 			if (shippingClass) dispatch(addShippingClass(values))
 			else dispatch(addShippingProfile(values))
-			form.resetFields()
 		},
-		[action?.type, action?.payload?.id, shippingClass, dispatch, form]
+		[action.type, action.payload.id, shippingClass, dispatch]
 	)
 
 	const editProfile = useCallback(
@@ -115,7 +112,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 		}
 
 		return shippingClasses
-	}, [action, shippingClasses, shippingProfiles])
+	}, [action?.type, shippingClasses, shippingProfiles])
 
 	return (
 		<>
