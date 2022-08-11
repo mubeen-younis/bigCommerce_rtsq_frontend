@@ -1,12 +1,17 @@
 import { Button, Card, Col, Row, Typography } from 'antd'
-import React, { memo, useState } from 'react'
+import React, { memo } from 'react'
 import { useSelector } from 'react-redux'
 import OriginsList from './OriginsList'
 
 const { Title } = Typography
 
-const ShippingFrom = ({ profileId, editOrigin, setIsOpen, origins }) => {
-	const [parentId, setParentId] = useState(null)
+const ShippingFrom = ({
+	profileId,
+	editOrigin,
+	setIsOpen,
+	origins,
+	setOriginId,
+}) => {
 	const { shippingProfiles } = useSelector(state => state)
 
 	if (!origins || !origins.length) {
@@ -35,6 +40,7 @@ const ShippingFrom = ({ profileId, editOrigin, setIsOpen, origins }) => {
 							type='link'
 							onClick={() => {
 								setIsOpen(true)
+								setOriginId(null)
 							}}>
 							Add shipping origin
 						</Button>
@@ -70,7 +76,7 @@ const ShippingFrom = ({ profileId, editOrigin, setIsOpen, origins }) => {
 								type='link'
 								onClick={() => {
 									setIsOpen(true)
-									setParentId(origin.id)
+									setOriginId(origin.id)
 								}}>
 								Add shipping origin
 							</Button>

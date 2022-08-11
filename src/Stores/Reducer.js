@@ -696,9 +696,20 @@ const Reducer = (state = initialState, action) => {
 				shippingOrigins: action.payload,
 			}
 		case types.ADD_DBSC_ORIGIN: {
+			console.log('ADD_DBSC_ORIGIN', action.payload)
+			const { origin_id } = action.payload
 			return {
 				...state,
-				shippingOrigins: [...state.shippingOrigins, action.payload],
+				shippingProfiles: {
+					...state.shippingProfiles,
+					origin: {
+						...state.shippingProfiles.origin,
+						[origin_id]: [
+							...state.shippingProfiles.origin[origin_id],
+							action.payload,
+						],
+					},
+				},
 			}
 		}
 		case types.UPDATE_DBSC_ORIGIN: {

@@ -25,6 +25,8 @@ const AddOrigin = ({ profileId }) => {
 		type: 'add',
 		payload: null,
 	})
+	const [originId, setOriginId] = useState(null)
+
 	const dispatch = useDispatch()
 	const { alertMessageType, shippingProfiles } = useSelector(state => state)
 
@@ -42,7 +44,7 @@ const AddOrigin = ({ profileId }) => {
 					...values,
 					id: action.payload.id,
 					profile_id: profileId,
-					parentId: action.payload.parentId,
+					origin_id: originId,
 				}
 
 				dispatch(
@@ -56,19 +58,13 @@ const AddOrigin = ({ profileId }) => {
 				dispatch(
 					addDbscData(
 						'add_dbsc_origin',
-						{ ...values, profile_id: profileId },
+						{ ...values, profile_id: profileId, origin_id: originId },
 						types.ADD_DBSC_ORIGIN
 					)
 				)
 			}
 		},
-		[
-			action.type,
-			action?.payload?.id,
-			action?.payload?.parentId,
-			dispatch,
-			profileId,
-		]
+		[action.type, action.payload.id, dispatch, profileId, originId]
 	)
 
 	const editOrigin = useCallback(
@@ -91,6 +87,7 @@ const AddOrigin = ({ profileId }) => {
 				setIsOpen={setIsOpen}
 				editOrigin={editOrigin}
 				origins={shippingProfiles?.origins?.[profileId] ?? []}
+				setOriginId={setOriginId}
 			/>
 
 			<Row gutter={30}>
