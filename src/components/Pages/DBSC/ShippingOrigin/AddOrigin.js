@@ -41,7 +41,12 @@ const AddOrigin = ({ profileId }) => {
 				dispatch(
 					updateDbscData(
 						'update_dbsc_origin',
-						{ ...values, id: action.payload.id, profile_id: profileId },
+						{
+							...values,
+							id: action.payload.id,
+							profile_id: profileId,
+							parentId: action.payload.parentId,
+						},
 						types.UPDATE_DBSC_ORIGIN
 					)
 				)
@@ -55,7 +60,13 @@ const AddOrigin = ({ profileId }) => {
 				)
 			}
 		},
-		[action?.type, action?.payload?.id, dispatch, profileId]
+		[
+			action.type,
+			action?.payload?.id,
+			action?.payload?.parentId,
+			dispatch,
+			profileId,
+		]
 	)
 
 	const editOrigin = useCallback(

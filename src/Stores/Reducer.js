@@ -701,11 +701,15 @@ const Reducer = (state = initialState, action) => {
 				shippingOrigins: [...state.shippingOrigins, action.payload],
 			}
 		case types.UPDATE_DBSC_ORIGIN:
+			console.log(action.payload)
 			return {
 				...state,
-				shippingOrigins: state.shippingOrigins.map(so =>
-					so.id === action.payload.id ? action.payload : so
-				),
+				shippingProfiles: {
+					...state.shippingProfiles,
+					origin: state?.shippingProfiles?.origin?.action.payload?.origin_id?.map(
+						so => (so.id === action.payload.id ? action.payload : so)
+					),
+				},
 			}
 		case types.DELETE_DBSC_ORIGIN:
 			return {

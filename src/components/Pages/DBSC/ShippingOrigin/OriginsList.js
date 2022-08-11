@@ -20,7 +20,7 @@ const OriginsList = ({ profileId, editOrigin, shippingOrigins, originId }) => {
 							md={12}
 							lg={12}
 							xl={12}>
-							<p className='mb-0'>{org?.ori_nickname}</p>
+							<p className='mb-0'>{org?.nickname}</p>
 							<p>
 								{org?.street_address} , {org?.city}{' '}
 								{org?.state_or_province} {org?.postal_code} ,
@@ -38,7 +38,11 @@ const OriginsList = ({ profileId, editOrigin, shippingOrigins, originId }) => {
 							<Button
 								type='link'
 								onClick={() => {
-									editOrigin(org)
+									// editOrigin(org)
+									editOrigin({
+										...org,
+										parentId: originId,
+									})
 								}}>
 								Edit
 							</Button>
