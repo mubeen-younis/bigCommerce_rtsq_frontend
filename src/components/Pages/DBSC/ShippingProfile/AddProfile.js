@@ -17,7 +17,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	const [form] = Form.useForm()
 	const [initialValues] = useState({
 		nickname: '',
-		allow_all_classes: 0,
+		allow_all_classes: 2,
 		shipping_classes: [],
 		class_name: '',
 		slug: '',
@@ -29,6 +29,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 			id: '',
 		},
 	})
+	const [isRequired, setIsRequired] = useState(true)
 
 	const dispatch = useDispatch()
 	const { shippingClasses, alertMessageType, shippingProfiles } = useSelector(
@@ -67,8 +68,13 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 			if (shippingClass) dispatch(addShippingClass(values))
 			else dispatch(addShippingProfile(values))
 		},
-		[action.type, action.payload.id, shippingClass, dispatch]
+		[action.type, action.payload?.id, shippingClass, dispatch]
 	)
+
+	const toggleShippingClassValidity = useCallback((allow_all_classes = false) => {
+		if (+allow_all_classes === 1) setIsRequired(false)
+		else setIsRequired(true)
+	}, [])
 
 	const editProfile = useCallback(
 		values => {
@@ -77,6 +83,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 				payload: values,
 			})
 			toggleAddProfileModal(true)
+			toggleShippingClassValidity(values?.allow_all_classes)
 
 			const formData = {
 				...values,
@@ -88,7 +95,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 
 			form.setFieldsValue(formData)
 		},
-		[form, toggleAddProfileModal]
+		[form, toggleAddProfileModal, toggleShippingClassValidity]
 	)
 
 	const filterShippingClasses = useCallback(() => {
@@ -134,6 +141,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 							setAction({ type: 'add', payload: null })
 							toggleAddProfileModal(false)
 							setShippingClass(false)
+							setIsRequired(true)
 							form.resetFields()
 						}}
 						onOk={() => form.submit()}
@@ -218,13 +226,21 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 													<Space
 														direction='vertical'
 														size='middle'>
-														<Radio value={0}>
+														<Radio
+															value={1}
+															onChange={() =>
+																setIsRequired(false)
+															}>
 															Use the General Profile
 															for all products not
 															included in another
 															shipping profile
 														</Radio>
-														<Radio value={1}>
+														<Radio
+															value={2}
+															onChange={() =>
+																setIsRequired(true)
+															}>
 															Use the General Profile
 															only for products that
 															have the following
@@ -249,12 +265,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 											name='shipping_classes'
 											rules={[
 												{
-													required:
-														action.type === 'edit' &&
-														action?.payload
-															?.is_general_profile
-															? false
-															: true,
+													required: isRequired,
 													message: 'Shipping class',
 												},
 											]}>

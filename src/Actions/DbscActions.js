@@ -68,7 +68,6 @@ export const addShippingClass = classData => async dispatch => {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
 		const { data } = await axios().post('add_shipping_class', classData)
-		console.log(data)
 		if (!data.error) {
 			dispatch({
 				type: 'ADD_DBSC_CLASS',
@@ -87,7 +86,6 @@ export const addShippingProfile = profileData => async dispatch => {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
 		const { data } = await axios().post('add_dbsc_profile', profileData)
-		console.log(data)
 		if (!data.error) {
 			dispatch({
 				type: 'ADD_DBSC_PROFILE',

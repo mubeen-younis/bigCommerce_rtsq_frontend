@@ -53,9 +53,7 @@ const initialState = {
 	/* Dbsc states */
 	shippingProfiles: null,
 	shippingClasses: null,
-	shippingOrigins: null,
-	shippingZones: null,
-	shippingRates: null,
+	dbscBigComZones: null,
 	modalData: {
 		visible: false,
 		title: '',
@@ -64,7 +62,6 @@ const initialState = {
 		url: '',
 		type: '',
 	},
-	dbscBigComZones: null,
 }
 
 const Reducer = (state = initialState, action) => {
@@ -629,43 +626,7 @@ const Reducer = (state = initialState, action) => {
 			}
 		}
 
-		/* Dbsc Reducer actions */
-		case types.GET_DBSC_PROFILES:
-			return {
-				...state,
-				shippingProfiles: action.payload,
-			}
-		case types.ADD_DBSC_PROFILE:
-			return {
-				...state,
-				shippingProfiles: {
-					...state.shippingProfiles,
-					store_profiles: [
-						...state.shippingProfiles.store_profiles,
-						action.payload,
-					],
-				},
-			}
-		case types.UPDATE_DBSC_PROFILE:
-			return {
-				...state,
-				shippingProfiles: {
-					...state.shippingProfiles,
-					store_profiles: state?.shippingProfiles?.store_profiles?.map(
-						sp => (sp.id === action.payload.id ? action.payload : sp)
-					),
-				},
-			}
-		case types.DELETE_DBSC_PROFILE:
-			return {
-				...state,
-				shippingProfiles: {
-					...state.shippingProfiles,
-					store_profiles: state?.shippingProfiles?.store_profiles?.filter(
-						sp => sp.id !== action.payload
-					),
-				},
-			}
+		/* Shipping Classes */
 		case types.GET_DBSC_CLASSES:
 			return {
 				...state,
@@ -690,24 +651,57 @@ const Reducer = (state = initialState, action) => {
 					sc => sc.id !== action.payload
 				),
 			}
-		case types.GET_DBSC_ORIGINS:
+
+		/* Shipping Profiles */
+		case types.GET_DBSC_PROFILES:
 			return {
 				...state,
-				shippingOrigins: action.payload,
+				shippingProfiles: action.payload,
 			}
+		case types.ADD_DBSC_PROFILE:
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					store_profiles: [
+						...state?.shippingProfiles?.store_profiles,
+						action.payload,
+					],
+				},
+			}
+		case types.UPDATE_DBSC_PROFILE:
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					store_profiles: state?.shippingProfiles?.store_profiles?.map(
+						sp => (sp.id === action.payload.id ? action.payload : sp)
+					),
+				},
+			}
+		case types.DELETE_DBSC_PROFILE:
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					store_profiles: state?.shippingProfiles?.store_profiles?.filter(
+						sp => sp.id !== action.payload
+					),
+				},
+			}
+
+		/* Shipping Origins */
 		case types.ADD_DBSC_ORIGIN: {
-			console.log('ADD_DBSC_ORIGIN', action.payload)
 			const { origin_id } = action.payload
+			const prevOrigins = state.shippingProfiles.origin?.[origin_id] ?? []
+
 			return {
 				...state,
 				shippingProfiles: {
 					...state.shippingProfiles,
 					origin: {
-						...state.shippingProfiles.origin,
-						[origin_id]: [
-							...state.shippingProfiles.origin[origin_id],
-							action.payload,
-						],
+						...state.shippingProfiles?.origin,
+						[origin_id]: [...prevOrigins, action.payload],
 					},
 				},
 			}
@@ -746,16 +740,25 @@ const Reducer = (state = initialState, action) => {
 				},
 			}
 		}
-		case types.GET_DBSC_ZONES:
+
+		/* Shipping Zones */
+		case types.ADD_DBSC_ZONE: {
+			const { dbsc_origin_id } = action.payload
+
 			return {
 				...state,
-				shippingZones: action.payload,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					zones: {
+						...state.shippingProfiles.zones,
+						[dbsc_origin_id]: [
+							...state.shippingProfiles.zones[dbsc_origin_id],
+							action.payload,
+						],
+					},
+				},
 			}
-		case types.ADD_DBSC_ZONE:
-			return {
-				...state,
-				shippingZones: [...state.shippingZones, action.payload],
-			}
+		}
 		case types.UPDATE_DBSC_ZONE: {
 			const { id, dbsc_origin_id } = action.payload
 			const updatedZones = state?.shippingProfiles?.zones[dbsc_origin_id]?.map(
@@ -773,37 +776,78 @@ const Reducer = (state = initialState, action) => {
 				},
 			}
 		}
-		case types.DELETE_DBSC_ZONE:
+		case types.DELETE_DBSC_ZONE: {
+			const { id, origin_id } = action.payload
+			const updatedZones = state?.shippingProfiles?.zones[origin_id]?.filter(
+				zone => zone.id !== id
+			)
+
 			return {
 				...state,
-				shippingZones: state.shippingZones.filter(
-					z => z.id !== action.payload
-				),
+				shippingProfiles: {
+					...state.shippingProfiles,
+					zones: {
+						...state.shippingProfiles.zones,
+						[origin_id]: updatedZones,
+					},
+				},
 			}
-		case types.GET_DBSC_RATES:
+		}
+
+		/* Shipping Rates */
+		case types.ADD_DBSC_RATE: {
+			const { dbsc_shipping_zone_id } = action.payload
 			return {
 				...state,
-				shippingRates: action.payload,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					rates: {
+						...state.shippingProfiles.rates,
+						[dbsc_shipping_zone_id]: [
+							...state?.shippingProfiles?.rates?.[
+								dbsc_shipping_zone_id
+							],
+							action.payload,
+						],
+					},
+				},
 			}
-		case types.ADD_DBSC_RATE:
+		}
+		case types.UPDATE_DBSC_RATE: {
+			const { id, dbsc_shipping_zone_id } = action.payload
+			const updatedRates = state.shippingProfiles.rates[
+				dbsc_shipping_zone_id
+			].map(rate => (rate.id === id ? action.payload : rate))
+
 			return {
 				...state,
-				shippingRates: [...state.shippingRates, action.payload],
+				shippingProfiles: {
+					...state.shippingProfiles,
+					rates: {
+						...state.shippingProfiles.rates,
+						[dbsc_shipping_zone_id]: updatedRates,
+					},
+				},
 			}
-		case types.UPDATE_DBSC_RATE:
+		}
+		case types.DELETE_DBSC_RATE: {
+			const { id, zone_id } = action.payload
+			const updatedRates = state.shippingProfiles.rates[zone_id].filter(
+				rate => rate.id !== id
+			)
+
 			return {
 				...state,
-				shippingRates: state.shippingRates.map(sr =>
-					sr.id === action.payload.id ? action.payload : sr
-				),
+				shippingProfiles: {
+					...state.shippingProfiles,
+					rates: {
+						...state.shippingProfiles.rates,
+						[zone_id]: updatedRates,
+					},
+				},
 			}
-		case types.DELETE_DBSC_RATE:
-			return {
-				...state,
-				shippingRates: state.shippingRates.filter(
-					sr => sr.id !== action.payload
-				),
-			}
+		}
+
 		case types.SET_MODAL_DATA:
 			return {
 				...state,

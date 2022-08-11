@@ -8,8 +8,6 @@ const { Title } = Typography
 const ProfilesList = () => {
 	const { shippingProfiles } = useSelector(state => state)
 
-	console.log('shippingProfiles', shippingProfiles.store_profiles)
-
 	return (
 		<Space direction='vertical' size='large' className='w-100'>
 			{shippingProfiles?.store_profiles?.map(pf => (
@@ -64,8 +62,6 @@ const ProfilesList = () => {
 					/>
 				</Card>
 			))}
-
-			{/* <ConfirmDeleteModal /> */}
 		</Space>
 	)
 }

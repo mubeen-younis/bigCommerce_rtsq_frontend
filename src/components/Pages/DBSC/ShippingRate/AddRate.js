@@ -15,6 +15,8 @@ const AddRate = ({ zoneId, rates }) => {
 		display_as: '',
 		distance_display_preferences: '1',
 		description: '',
+		address_type: '1',
+		default_unknown_address_type: '1',
 		rate: '',
 		distance_unit: 'Mile',
 		distance_measured_by: 'Route',
@@ -67,7 +69,7 @@ const AddRate = ({ zoneId, rates }) => {
 				)
 			}
 		},
-		[action?.type, action?.payload?.id, dispatch, zoneId, andOr]
+		[action?.type, action.payload?.id, dispatch, zoneId, andOr]
 	)
 
 	const editRate = useCallback(
@@ -199,6 +201,53 @@ const AddRate = ({ zoneId, rates }) => {
 									]}>
 									<TextArea className='mb-1' rows={2} />
 								</Form.Item>
+							</Col>
+						</Row>
+
+						<Row gutter={30} className='mb-2'>
+							<Col
+								className='gutter-row'
+								xs={12}
+								sm={12}
+								md={12}
+								lg={12}
+								xl={12}>
+								<Form.Item
+									className='mb-0'
+									label='Address Type'
+									name='address_type'
+									rules={[
+										{
+											required: true,
+											message: 'Address Type',
+										},
+									]}>
+									<Select>
+										<Option value='1'>
+											Commercial and residential
+										</Option>
+										<Option value='2'>Commercial</Option>
+										<Option value='3'>Residential</Option>
+									</Select>
+								</Form.Item>
+							</Col>
+							<Col
+								className='gutter-row'
+								xs={12}
+								sm={12}
+								md={12}
+								lg={12}
+								xl={12}>
+								<Space direction='horizontal' size='middle'>
+									<Form.Item
+										label='Default unknown address type to'
+										name='default_unknown_address_type'>
+										<Radio.Group>
+											<Radio value='1'>Commercial</Radio>
+											<Radio value='2'>Residential</Radio>
+										</Radio.Group>
+									</Form.Item>
+								</Space>
 							</Col>
 						</Row>
 
@@ -571,7 +620,12 @@ const AddRate = ({ zoneId, rates }) => {
 			</Row>
 
 			<Row gutter={30}>
-				<Col span={24} className='mb-1'>
+				<Col
+					span={24}
+					className='mb-0'
+					style={{
+						marginBottom: '0',
+					}}>
 					{/* Rates List */}
 					<RatesList
 						zoneId={zoneId}
@@ -580,10 +634,15 @@ const AddRate = ({ zoneId, rates }) => {
 					/>
 				</Col>
 
-				<Col span={24}>
+				<Col
+					span={24}
+					className='mb-0'
+					style={{
+						marginTop: '0',
+					}}>
 					<Button
 						type='primary'
-						className='mt-0'
+						className='mt-0 mb-1'
 						onClick={() => setIsOpen(!isOpen)}>
 						Add rate
 					</Button>

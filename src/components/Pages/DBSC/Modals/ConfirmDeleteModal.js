@@ -11,7 +11,7 @@ const ConfirmDeleteModal = () => {
 		dispatch(
 			deleteDbscData(modalData.url, { id: modalData.data }, modalData.action)
 		)
-	}, [modalData])
+	}, [dispatch, modalData.action, modalData.data, modalData.url])
 
 	return (
 		<Modal
