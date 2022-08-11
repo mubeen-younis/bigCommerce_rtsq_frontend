@@ -49,6 +49,7 @@ function TabsLayout() {
 				'usps-small',
 				'tql-ltl',
 				'echo-ltl',
+				'daylight-ltl',
 			]
 
 			for (const ic of installedCarriers) {
