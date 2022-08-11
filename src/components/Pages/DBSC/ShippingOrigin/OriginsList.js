@@ -67,6 +67,7 @@ const OriginsList = ({ profileId, editOrigin, shippingOrigins, originId }) => {
 					<AddZone
 						shippingZones={shippingProfiles?.zones?.[originId] ?? []}
 						profileId={profileId}
+						originId={originId}
 					/>
 				</Fragment>
 		  ))

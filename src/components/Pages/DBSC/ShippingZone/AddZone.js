@@ -6,7 +6,7 @@ import { addDbscData, updateDbscData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
 import ZonesList from './ZonesList'
 
-const AddZone = ({ profileId, shippingZones }) => {
+const AddZone = ({ profileId, shippingZones, originId }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [form] = Form.useForm()
 	const [initialValues] = useState({
@@ -43,13 +43,17 @@ const AddZone = ({ profileId, shippingZones }) => {
 				dispatch(
 					addDbscData(
 						'add_dbsc_zone',
-						{ ...values, profile_id: profileId },
+						{
+							...values,
+							profile_id: profileId,
+							dbsc_origin_id: originId,
+						},
 						types.ADD_DBSC_ZONE
 					)
 				)
 			}
 		},
-		[action?.type, action.payload?.id, dispatch, profileId]
+		[action?.type, action.payload?.id, dispatch, profileId, originId]
 	)
 
 	const editZone = useCallback(

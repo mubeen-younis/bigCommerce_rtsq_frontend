@@ -64,7 +64,7 @@ const AddOrigin = ({ profileId }) => {
 				)
 			}
 		},
-		[action.type, action.payload.id, dispatch, profileId, originId]
+		[action.type, action.payload?.id, dispatch, profileId, originId]
 	)
 
 	const editOrigin = useCallback(
@@ -264,65 +264,73 @@ const AddOrigin = ({ profileId }) => {
 								</Form.Item>
 							</Col>
 
-							<Col
-								className='gutter-row'
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={24}>
-								<Form.Item
-									className='mb-2'
-									label='Add the shipping origin'
-									name='from_shipping_origin'
-									rules={[
-										{
-											required: false,
-											message: 'Add the shipping origin',
-										},
-									]}>
-									<Radio.Group>
-										<Space direction='vertical'>
-											<Radio value='1'>
-												To this Shipping From profile
-											</Radio>
-											<Radio value='2'>
-												As a new Shipping From profile
-											</Radio>
-										</Space>
-									</Radio.Group>
-								</Form.Item>
-							</Col>
+							{action.type !== 'edit' && (
+								<>
+									<Col
+										className='gutter-row'
+										xs={24}
+										sm={24}
+										md={24}
+										lg={24}
+										xl={24}>
+										<Form.Item
+											className='mb-2'
+											label='Add the shipping origin'
+											name='from_shipping_origin'
+											rules={[
+												{
+													required: false,
+													message:
+														'Add the shipping origin',
+												},
+											]}>
+											<Radio.Group>
+												<Space direction='vertical'>
+													<Radio value='1'>
+														To this Shipping From profile
+													</Radio>
+													<Radio value='2'>
+														As a new Shipping From
+														profile
+													</Radio>
+												</Space>
+											</Radio.Group>
+										</Form.Item>
+									</Col>
 
-							<Col
-								className='gutter-row'
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={24}>
-								<Form.Item
-									className='mb-2'
-									label='Availability in other plugins by Eniture Technology'
-									name='availability_in_other_plugins'
-									rules={[
-										{
-											required: false,
-											message:
-												'Availability in other plugins by Eniture Technology',
-										},
-									]}>
-									<Select>
-										<Option value='1'>Not available</Option>
-										<Option value='2'>
-											Available as a warehouse
-										</Option>
-										<Option value='3'>
-											Available as a dropship
-										</Option>
-									</Select>
-								</Form.Item>
-							</Col>
+									<Col
+										className='gutter-row'
+										xs={24}
+										sm={24}
+										md={24}
+										lg={24}
+										xl={24}>
+										<Form.Item
+											className='mb-2'
+											label='Availability in other plugins by Eniture Technology'
+											name='availability_in_other_plugins'
+											rules={[
+												{
+													required: false,
+													message:
+														'Availability in other plugins by Eniture Technology',
+												},
+											]}>
+											<Select>
+												<Option value='1'>
+													Not available
+												</Option>
+												<Option value='2'>
+													Available as a warehouse
+												</Option>
+												<Option value='3'>
+													Available as a dropship
+												</Option>
+											</Select>
+										</Form.Item>
+									</Col>
+								</>
+							)}
 						</Row>
 					</Form>
 				</Modal>
