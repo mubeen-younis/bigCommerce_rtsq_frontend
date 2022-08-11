@@ -98,6 +98,11 @@ const AddOrigin = ({ profileId }) => {
 					onCancel={() => {
 						setIsOpen(false)
 						form.resetFields()
+						setAction({
+							...action,
+							type: 'add',
+							payload: {},
+						})
 					}}
 					onOk={() => {}}
 					centered

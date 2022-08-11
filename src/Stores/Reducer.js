@@ -695,29 +695,46 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				shippingOrigins: action.payload,
 			}
-		case types.ADD_DBSC_ORIGIN:
+		case types.ADD_DBSC_ORIGIN: {
 			return {
 				...state,
 				shippingOrigins: [...state.shippingOrigins, action.payload],
 			}
-		case types.UPDATE_DBSC_ORIGIN:
-			console.log(action.payload)
+		}
+		case types.UPDATE_DBSC_ORIGIN: {
+			const { id, origin_id } = action.payload
+			const updatedOrigins = state.shippingProfiles.origin[origin_id].map(
+				org => (org.id === id ? action.payload : org)
+			)
+
 			return {
 				...state,
 				shippingProfiles: {
 					...state.shippingProfiles,
-					origin: state?.shippingProfiles?.origin?.action.payload?.origin_id?.map(
-						so => (so.id === action.payload.id ? action.payload : so)
-					),
+					origin: {
+						...state.shippingProfiles.origin,
+						[origin_id]: updatedOrigins,
+					},
 				},
 			}
-		case types.DELETE_DBSC_ORIGIN:
+		}
+		case types.DELETE_DBSC_ORIGIN: {
+			const { origin_id, id } = action.payload
+			const updatedOrigins = state.shippingProfiles.origin[origin_id].filter(
+				org => org.id !== id
+			)
+
 			return {
 				...state,
-				shippingOrigins: state.shippingOrigins.filter(
-					so => so.id !== action.payload
-				),
+				shippingProfiles: {
+					...state.shippingProfiles,
+					origin: {
+						...state.shippingProfiles.origin,
+						[origin_id]: updatedOrigins,
+					},
+				},
 			}
+		}
 		case types.GET_DBSC_ZONES:
 			return {
 				...state,
