@@ -21,6 +21,7 @@ export { default as CSUspsSmall } from './UspsSmall/ConnectionSettingsComponent'
 export { default as CSTQLLtl } from './TQLLtl/ConnectionSettingsComponent'
 export { default as CSEchoLtl } from './EchoLogisticsLtl/ConnectionSettingsComponent'
 export { default as CSPurolatorSmall } from './PurolatorSmall/ConnectionSettingsComponentPurolatorSmall'
+export { default as DaylightLtl } from './DaylightLtl/ConnectionSettingsComponent'
 
 // Quote Settings Component
 export { default as QSWweltl } from './WweLtl/QuoteSettingsComponentWwe'
@@ -45,3 +46,4 @@ export { default as QSUspsSmall } from './UspsSmall/QuoteSettingsComponent'
 export { default as QSTQLLtl } from './TQLLtl/QuoteSettingsComponent'
 export { default as QSEchoLtl } from './EchoLogisticsLtl/QuoteSettingsComponent'
 export { default as QSPurolatorSmall } from './PurolatorSmall/QuoteSettingsComponent'
+export { default as QSDayLightLtl } from './DaylightLtl/QuoteSettingsComponent'

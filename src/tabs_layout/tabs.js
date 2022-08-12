@@ -50,6 +50,7 @@ function TabsLayout() {
 				'tql-ltl',
 				'echo-ltl',
 				'purolator-small',
+				'daylight-ltl',
 			]
 
 			for (const ic of installedCarriers) {

@@ -34,6 +34,8 @@ import {
 	QSSaiaLtl,
 	CSPurolatorSmall,
 	QSPurolatorSmall,
+	DaylightLtl,
+	QSDayLightLtl,
 	CSAbfLtl,
 	QSAbfLtl,
 	CSSouthEasternLtl,
@@ -70,6 +72,7 @@ const useLoadComponent = index => {
 		<CSTQLLtl />,
 		<CSEchoLtl />,
 		<CSPurolatorSmall />,
+		<DaylightLtl />,
 	]
 	const quoteSettingsList = [
 		<QSWweltl />,
@@ -94,6 +97,7 @@ const useLoadComponent = index => {
 		<QSTQLLtl />,
 		<QSEchoLtl />,
 		<QSPurolatorSmall />,
+		<QSDayLightLtl />,
 	]
 
 	return [connectionSettigsList[+index], quoteSettingsList[+index]]
