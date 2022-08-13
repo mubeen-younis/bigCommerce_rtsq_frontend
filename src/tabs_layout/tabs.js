@@ -18,8 +18,8 @@ function TabsLayout() {
   const { installedCarriers, carrierId } = useSelector((state) => state);
   const [component, setComponent] = useState(0);
   const [tab, setTab] = useState("1");
+  const [carrierSlug, setCarrierSlug] = useState("");
   const dispatch = useDispatch();
-  const dbscID = 18;
 
   useEffect(() => {
     if (localStorage.getItem("tab")) setTab(localStorage.getItem("tab"));
@@ -47,26 +47,33 @@ function TabsLayout() {
       "saia-ltl",
       "abf-ltl",
       "southeastern-ltl",
+      "usps-small",
+      "tql-ltl",
+      "echo-ltl",
+      "daylight-ltl",
       "dbsc",
     ];
+
     for (const ic of installedCarriers) {
       if (+ic.id === +carrierId) {
         const isFedexSmallCarrier = ic.slug === "fedex-small";
+        const isUspsSmallCarrier = ic.slug === "usps-small";
 
         dispatch({
           type: "SET_FEDEX_SMALL_CARRIER",
-          payload: isFedexSmallCarrier,
+          payload: isUspsSmallCarrier ? false : isFedexSmallCarrier,
+        });
+        dispatch({
+          type: "SET_USPS_SMALL_CARRIER",
+          payload: isFedexSmallCarrier ? false : isUspsSmallCarrier,
         });
 
         setComponent(slugs.indexOf(ic.slug));
+        setCarrierSlug(ic.slug);
         break;
       }
     }
   };
-
-  // Calling hook to get the name of connection settings and quote settings component name
-  const [connSettingsComponent, quoteSettingsComponent] =
-    useLoadComponent(component);
 
   useEffect(() => {
     loadComponent();
@@ -77,59 +84,51 @@ function TabsLayout() {
     setTab(key);
   }, []);
 
+  const loadedComponent = useLoadComponent(component);
+
   return (
     <Fragment>
       <PlanStatusHeading />
 
-      <Tabs
-        className={"tabs-wrp"}
-        onChange={handleActiveTab}
-        // activeKey={tab}
-        type="card"
-      >
-        {![dbscID].includes(component) && (
-          <TabPane tab="Connection Setthings" key="1">
-            {connSettingsComponent}
+      <Tabs className={"tabs-wrp"} onChange={handleActiveTab} type="card">
+        {carrierSlug !== "usps-small" && (
+          <TabPane tab="Connection Settings" key="1">
+            {loadedComponent[0]}
           </TabPane>
         )}
-
-        {[0].includes(component) && (
+        {["ltl-quotes", "freightquote-ltl", "tql-ltl"].includes(
+          carrierSlug
+        ) && (
           <TabPane tab="Carriers" key="2">
             <CarriersComponent />
           </TabPane>
         )}
-        {[6].includes(component) && (
+        {["gtz-ltl"].includes(carrierSlug) && (
           <TabPane tab="Carriers" key="2">
             <GTZCarriersComponent />
           </TabPane>
         )}
-        {[dbscID].includes(component) && (
-          <>
-            <TabPane tab="Shipping Rates" key="9">
-              <ShippingRatesComponent />
-            </TabPane>
-            <TabPane tab="Shipping Classes" key="10">
-              <ShippingClassesComponent />
-            </TabPane>
-          </>
-        )}
+
+        <TabPane tab="Shipping Rates" key="9">
+          <ShippingRatesComponent />
+        </TabPane>
+        <TabPane tab="Shipping Classes" key="10">
+          <ShippingClassesComponent />
+        </TabPane>
         <TabPane tab="Shipping Groups" key="4">
           <ShippingGroup />
         </TabPane>
-
-        {![dbscID].includes(component) && (
-          <TabPane tab="Quote Settings" key="5">
-            {quoteSettingsComponent}
-          </TabPane>
-        )}
+        <TabPane tab="Quote Settings" key="5">
+          {useLoadComponent(component)[1]}
+        </TabPane>
         <TabPane tab="Product Settings" key="6">
           <ProductSettingsComponent />
         </TabPane>
         <TabPane tab="Orders" key="7">
           <OrdersComponent />
         </TabPane>
-
-        {[1, 3, 5, 9].includes(component) && (
+        {/* Need to check 18 number */}
+        {[1, 3, 5, 9, 18].includes(component) && (
           <TabPane tab="Box Sizes" key="8">
             <BoxSizesComponent />
           </TabPane>
