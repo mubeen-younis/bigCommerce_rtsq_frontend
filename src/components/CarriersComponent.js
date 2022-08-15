@@ -164,7 +164,7 @@ const CarriersComponent = props => {
 				<strong>Note!</strong> Identifies which carriers are included in the
 				quote response, not what is displayed in the shopping cart. Identify
 				what displays in the shopping cart in the Quote Settings. For
-				example, you may include quote responses from all carriers, but elect
+				example, you may include quote responses from all carriers, but select
 				to only show the cheapest three in the shopping cart.
 			</div>
 			<p>
@@ -199,10 +199,12 @@ const CarriersComponent = props => {
 						dataSource={filteredServices ?? services}
 						total={filteredServices?.length ?? services.length}
 						pagination={{
-							showSizeChanger: true,
+							showSizeChanger: title !== "TQL" ,
+							pageSize: title !== "TQL" ? 10 : 30,
+							hideOnSinglePage: title === "TQL",
 						}}
 					/>
-					<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
+					<Form.Item style={styles}>
 						<Space>
 							<Button
 								type='primary'
@@ -220,6 +222,12 @@ const CarriersComponent = props => {
 			)}
 		</Fragment>
 	)
+}
+
+const styles = {
+	textAlign: 'right',
+	marginBottom: '0',
+	marginTop: '15px',
 }
 
 const mapStateToProps = state => {

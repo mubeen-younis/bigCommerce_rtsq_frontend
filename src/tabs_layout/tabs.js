@@ -46,16 +46,25 @@ function TabsLayout() {
 				'saia-ltl',
 				'abf-ltl',
 				'southeastern-ltl',
+				'usps-small',
+				'tql-ltl',
+				'echo-ltl',
+				'daylight-ltl',
 				'freightquote-chr-ltl',
 			]
 
 			for (const ic of installedCarriers) {
 				if (+ic.id === +carrierId) {
 					const isFedexSmallCarrier = ic.slug === 'fedex-small'
+					const isUspsSmallCarrier = ic.slug === 'usps-small'
 
 					dispatch({
 						type: 'SET_FEDEX_SMALL_CARRIER',
-						payload: isFedexSmallCarrier,
+						payload: isUspsSmallCarrier ? false : isFedexSmallCarrier,
+					})
+					dispatch({
+						type: 'SET_USPS_SMALL_CARRIER',
+						payload: isFedexSmallCarrier ? false : isUspsSmallCarrier,
 					})
 
 					setComponent(slugs.indexOf(ic.slug))
@@ -73,19 +82,19 @@ function TabsLayout() {
 		setTab(key)
 	}, [])
 
+	const loadedComponent = useLoadComponent(component)
+
 	return (
 		<Fragment>
 			<PlanStatusHeading />
 
-			<Tabs
-				className={'tabs-wrp'}
-				onChange={handleActiveTab}
-				// activeKey={tab}
-				type='card'>
-				<TabPane tab='Connection Settings' key='1'>
-					{useLoadComponent(component)[0]}
-				</TabPane>
-				{['ltl-quotes', 'freightquote-ltl', 'freightquote-chr-ltl'].includes(
+			<Tabs className={'tabs-wrp'} onChange={handleActiveTab} type='card'>
+				{carrierSlug !== 'usps-small' && (
+					<TabPane tab='Connection Settings' key='1'>
+						{loadedComponent[0]}
+					</TabPane>
+				)}
+				{['ltl-quotes', 'freightquote-ltl', 'tql-ltl'].includes(
 					carrierSlug
 				) && (
 					<TabPane tab='Carriers' key='2'>
@@ -110,7 +119,7 @@ function TabsLayout() {
 					<OrdersComponent />
 				</TabPane>
 
-				{[1, 3, 5, 9].includes(component) && (
+				{[1, 3, 5, 9, 18].includes(component) && (
 					<TabPane tab='Box Sizes' key='8'>
 						<BoxSizesComponent />
 					</TabPane>
