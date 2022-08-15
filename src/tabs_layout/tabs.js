@@ -94,9 +94,12 @@ function TabsLayout() {
 						{loadedComponent[0]}
 					</TabPane>
 				)}
-				{['ltl-quotes', 'freightquote-ltl', 'tql-ltl'].includes(
-					carrierSlug
-				) && (
+				{[
+					'ltl-quotes',
+					'freightquote-ltl',
+					'tql-ltl',
+					'freightquote-chr-ltl',
+				].includes(carrierSlug) && (
 					<TabPane tab='Carriers' key='2'>
 						<CarriersComponent />
 					</TabPane>
