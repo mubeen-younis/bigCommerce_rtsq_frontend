@@ -465,11 +465,6 @@ function QuoteSettingsComponentWweSmall(props) {
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
         />
-        <RAD
-          quoteSettingsState={quoteSettingsState}
-          setQuoteSettingsState={setQuoteSettingsState}
-          radStatus={radStatus}
-        />
         <HazardousMaterial
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
