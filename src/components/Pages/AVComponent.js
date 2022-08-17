@@ -141,6 +141,24 @@ const FDOComponent = () => {
 		[dispatch, token]
 	)
 
+	const displayPromoCodeMessage = useCallback(
+		(msg = '') => {
+			const msgStr = 'Click the button below to apply the promo code'
+
+			if (msg.trim().length > 0 && msg.includes(msgStr)) {
+				const newMsg = `<strong>Note! </strong> Get Address Validation free for one year by using promo code [<b>${avData?.coupon_code}</b>]. Click `
+				const btn = (
+					<Button onClick={applyPromoCode} type='link'>
+						here
+					</Button>
+				)
+
+				return newMsg + btn + ' to apply the promo code.'
+			}
+		},
+		[applyPromoCode, avData?.coupon_code]
+	)
+
 	if (loading) return <Skeleton active />
 
 	return (
