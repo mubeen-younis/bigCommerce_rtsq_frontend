@@ -121,6 +121,14 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 		return shippingClasses
 	}, [action?.type, shippingClasses, shippingProfiles])
 
+	const clearStates = useCallback(() => {
+		setAction({ type: 'add', payload: null })
+		toggleAddProfileModal(false)
+		setShippingClass(false)
+		setIsRequired(true)
+		form.resetFields()
+	}, [form, toggleAddProfileModal])
+
 	return (
 		<>
 			<ShippingProfile
@@ -137,21 +145,13 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 					<Modal
 						title={setModalTitle()}
 						visible={visible}
-						onCancel={() => {
-							setAction({ type: 'add', payload: null })
-							toggleAddProfileModal(false)
-							setShippingClass(false)
-							setIsRequired(true)
-							form.resetFields()
-						}}
+						onCancel={() => clearStates()}
 						onOk={() => form.submit()}
 						centered
 						destroyOnClose
 						okText='Save'
 						footer={[
-							<Button
-								key='back'
-								onClick={() => toggleAddProfileModal(false)}>
+							<Button key='back' onClick={() => clearStates()}>
 								Cancel
 							</Button>,
 							<Button
