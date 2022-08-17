@@ -84,16 +84,17 @@ function TabsLayout() {
     setTab(key);
   }, []);
 
-  const loadedComponent = useLoadComponent(component);
+  const [connSettingsComponent, quoteSettingsComponent] =
+    useLoadComponent(component);
 
   return (
     <Fragment>
       <PlanStatusHeading />
 
       <Tabs className={"tabs-wrp"} onChange={handleActiveTab} type="card">
-        {carrierSlug !== "usps-small" && (
+        {(carrierSlug !== "usps-small" || carrierSlug !== "dbsc") && (
           <TabPane tab="Connection Settings" key="1">
-            {loadedComponent[0]}
+            {connSettingsComponent}
           </TabPane>
         )}
         {["ltl-quotes", "freightquote-ltl", "tql-ltl"].includes(
@@ -108,26 +109,31 @@ function TabsLayout() {
             <GTZCarriersComponent />
           </TabPane>
         )}
-
-        <TabPane tab="Shipping Rates" key="9">
-          <ShippingRatesComponent />
-        </TabPane>
-        <TabPane tab="Shipping Classes" key="10">
-          <ShippingClassesComponent />
-        </TabPane>
+        {["dbsc"].includes(carrierSlug) && (
+          <>
+            <TabPane tab="Shipping Rates" key="9">
+              <ShippingRatesComponent />
+            </TabPane>
+            <TabPane tab="Shipping Classes" key="10">
+              <ShippingClassesComponent />
+            </TabPane>
+          </>
+        )}
         <TabPane tab="Shipping Groups" key="4">
           <ShippingGroup />
         </TabPane>
-        <TabPane tab="Quote Settings" key="5">
-          {useLoadComponent(component)[1]}
-        </TabPane>
+        {!["dbsc"].includes(carrierSlug) && (
+          <TabPane tab="Quote Settings" key="5">
+            {quoteSettingsComponent}
+          </TabPane>
+        )}
         <TabPane tab="Product Settings" key="6">
           <ProductSettingsComponent />
         </TabPane>
         <TabPane tab="Orders" key="7">
           <OrdersComponent />
         </TabPane>
-        {/* Need to check 18 number */}
+        {/* Need to add small carriers index */}
         {[1, 3, 5, 9, 18].includes(component) && (
           <TabPane tab="Box Sizes" key="8">
             <BoxSizesComponent />
