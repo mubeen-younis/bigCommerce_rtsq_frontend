@@ -296,11 +296,16 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 											<Button
 												type='text'
 												htmlType='button'
-												onClick={() =>
+												onClick={() => {
 													setShippingClass(
 														prevState => !prevState
 													)
-												}>
+													form.resetFields()
+													setAction({
+														type: 'add',
+														payload: {},
+													})
+												}}>
 												Add a new shipping class
 											</Button>
 										</Form.Item>
