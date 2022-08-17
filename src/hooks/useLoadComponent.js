@@ -48,8 +48,7 @@ import {
 } from "../components/Pages";
 
 const useLoadComponent = (index) => {
-  console.log(index);
-  const connectionSettigsList = [
+    const connectionSettigsList = [
     <CSWweltl />,
     <CSWweSmall />,
     <CSUpsLtl />,
