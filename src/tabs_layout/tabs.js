@@ -106,17 +106,11 @@ function TabsLayout() {
 						<GTZCarriersComponent />
 					</TabPane>
 				)}
-				<TabPane tab='Shipping Groups' key='4'>
-					<ShippingGroup />
-				</TabPane>
 				<TabPane tab='Quote Settings' key='5'>
 					{useLoadComponent(component)[1]}
 				</TabPane>
 				<TabPane tab='Product Settings' key='6'>
 					<ProductSettingsComponent />
-				</TabPane>
-				<TabPane tab='Orders' key='7'>
-					<OrdersComponent />
 				</TabPane>
 
 				{[1, 3, 5, 9, 18].includes(component) && (
