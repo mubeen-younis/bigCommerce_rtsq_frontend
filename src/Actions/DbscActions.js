@@ -1,11 +1,21 @@
-import axios from '../Utilities/axios'
+// import axios from '../Utilities/axios'
+import axios from 'axios'
 import { dispatchAlert, setModalData } from '../Utilities/dispatchAlert'
 
 export const getShippingProfiles = token => async dispatch => {
 	try {
 		dispatch(dispatchAlert(false, 'loading', ''))
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
 
-		const { data } = await axios(token).get('get_dbsc_profiles')
+		// const { data } = await axios(token).get('get_dbsc_profiles')
+		const { data } = await axios.get(
+			`${process.env.REACT_APP_ENITURE_API_URL}/get_dbsc_profiles`,
+			config
+		)
 		if (!data.error) {
 			dispatch({
 				type: 'GET_DBSC_PROFILES',
@@ -24,8 +34,17 @@ export const getShippingProfiles = token => async dispatch => {
 export const getShippingClasses = token => async dispatch => {
 	try {
 		dispatch(dispatchAlert(false, 'loading', ''))
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
 
-		const { data } = await axios(token).get('get_shipping_classes')
+		// const { data } = await axios(token).get('get_shipping_classes')
+		const { data } = await axios.get(
+			`${process.env.REACT_APP_ENITURE_API_URL}/get_shipping_classes`,
+			config
+		)
 		if (!data.error) {
 			dispatch({
 				type: 'GET_DBSC_CLASSES',
@@ -46,8 +65,17 @@ export const getDbscData =
 	async dispatch => {
 		try {
 			dispatch(dispatchAlert(false, 'loading', ''))
+			const config = {
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
+			}
 
-			const { data } = await axios(token).get(url)
+			// const { data } = await axios(token).get(url)
+			const { data } = await axios.get(
+				`${process.env.REACT_APP_ENITURE_API_URL}/${url}`,
+				config
+			)
 			if (!data.error) {
 				dispatch({
 					type,
@@ -66,8 +94,19 @@ export const getDbscData =
 export const addShippingClass = (classData, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
 
-		const { data } = await axios(token).post('add_shipping_class', classData)
+		// const { data } = await axios(token).post('add_shipping_class', classData)
+		const { data } = await axios.post(
+			`${process.env.REACT_APP_ENITURE_API_URL}/add_shipping_class`,
+			classData,
+			config
+		)
+
 		if (!data.error) {
 			dispatch({
 				type: 'ADD_DBSC_CLASS',
@@ -85,7 +124,18 @@ export const addShippingProfile = (profileData, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		const { data } = await axios(token).post('add_dbsc_profile', profileData)
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
+
+		// const { data } = await axios(token).post('add_dbsc_profile', profileData)
+		const { data } = await axios.post(
+			`${process.env.REACT_APP_ENITURE_API_URL}/add_dbsc_profile`,
+			profileData,
+			config
+		)
 		if (!data.error) {
 			dispatch({
 				type: 'ADD_DBSC_PROFILE',
@@ -103,7 +153,18 @@ export const addDbscData = (url, reqData, type, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		const { data } = await axios(token).post(url, reqData)
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
+
+		// const { data } = await axios(token).post(url, reqData)
+		const { data } = await axios.post(
+			`${process.env.REACT_APP_ENITURE_API_URL}/${url}`,
+			reqData,
+			config
+		)
 		if (!data.error) {
 			dispatch({
 				type,
@@ -120,8 +181,20 @@ export const addDbscData = (url, reqData, type, token) => async dispatch => {
 export const updateDbscData = (url, reqData, type, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
 
-		const { data } = await axios(token).post(url, reqData)
+		/* Destructuring the data property from the response object. */
+
+		// const { data } = await axios(token).post(url, reqData)
+		const { data } = await axios.post(
+			`${process.env.REACT_APP_ENITURE_API_URL}/${url}`,
+			reqData,
+			config
+		)
 		if (!data.error) {
 			dispatch({
 				type,
@@ -139,7 +212,18 @@ export const deleteDbscData = (url, reqData, type, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		const { data } = await axios(token).post(url, reqData)
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
+
+		// const { data } = await axios(token).post(url, reqData)
+		const { data } = await axios.post(
+			`${process.env.REACT_APP_ENITURE_API_URL}/${url}`,
+			reqData,
+			config
+		)
 		if (!data.error) {
 			dispatch({
 				type,
@@ -157,8 +241,17 @@ export const deleteDbscData = (url, reqData, type, token) => async dispatch => {
 export const getDbscZones = token => async dispatch => {
 	try {
 		dispatch(dispatchAlert(false, 'loading', ''))
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
 
-		const { data } = await axios(token).get('get_zones_bc')
+		// const { data } = await axios(token).get('get_zones_bc')
+		const { data } = await axios.get(
+			`${process.env.REACT_APP_ENITURE_API_URL}/get_zones_bc`,
+			config
+		)
 		if (!data.error) {
 			dispatch({
 				type: 'GET_DBSC_BC_ZONES',
