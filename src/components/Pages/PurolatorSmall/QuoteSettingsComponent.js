@@ -106,11 +106,6 @@ function QuoteSettingsComponentWweSmall(props) {
       },
     })
 
-    /*if (checkAll && !e.target.checked) {
-			setCheckAll(false)
-			return
-		}*/
-
     const checks = {
       purolator_express:
         quoteSettingsState?.carrier_services?.purolator_express,
