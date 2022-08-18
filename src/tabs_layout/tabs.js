@@ -4,13 +4,20 @@ import { Tabs } from 'antd'
 import CarriersComponent from '../components/CarriersComponent'
 import ProductSettingsComponent from '../components/ProductSettingsComponent'
 import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
-import OrdersComponent from '../components/OrdersComponent'
 import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
 import useLoadComponent from '../hooks/useLoadComponent'
-import ShippingGroup from '../components/Pages/ShippingGroup'
 
 const { TabPane } = Tabs
+
+const smallCarriersSlugs = [
+	'small-package',
+	'ups-small',
+	'fedex-small',
+	'unishippers-small',
+	'usps-small',
+	'purolator-small',
+]
 
 function TabsLayout() {
 	const { installedCarriers, carrierId } = useSelector(state => state)
@@ -49,8 +56,8 @@ function TabsLayout() {
 				'usps-small',
 				'tql-ltl',
 				'echo-ltl',
-				'purolator-small',
 				'daylight-ltl',
+				'purolator-small',
 			]
 
 			for (const ic of installedCarriers) {
@@ -113,7 +120,7 @@ function TabsLayout() {
 					<ProductSettingsComponent />
 				</TabPane>
 
-				{[1, 3, 5, 9, 18].includes(component) && (
+				{smallCarriersSlugs.includes(carrierSlug) && (
 					<TabPane tab='Box Sizes' key='8'>
 						<BoxSizesComponent />
 					</TabPane>

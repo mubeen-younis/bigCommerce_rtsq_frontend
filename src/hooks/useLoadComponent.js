@@ -71,8 +71,8 @@ const useLoadComponent = index => {
 		<CSUspsSmall />,
 		<CSTQLLtl />,
 		<CSEchoLtl />,
-		<CSPurolatorSmall />,
 		<DaylightLtl />,
+		<CSPurolatorSmall />,
 	]
 	const quoteSettingsList = [
 		<QSWweltl />,
@@ -96,8 +96,8 @@ const useLoadComponent = index => {
 		<QSUspsSmall />,
 		<QSTQLLtl />,
 		<QSEchoLtl />,
-		<QSPurolatorSmall />,
 		<QSDayLightLtl />,
+		<QSPurolatorSmall />,
 	]
 
 	return [connectionSettigsList[+index], quoteSettingsList[+index]]
