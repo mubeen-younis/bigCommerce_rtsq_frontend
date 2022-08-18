@@ -54,7 +54,7 @@ const CarriersComponent = props => {
 
 	useEffect(() => {
 		const title = installedCarriers?.find(carrier => +carrier.id === +carrierId)
-		setTitle(title.name)
+		setTitle(title.name === 'FreightQuote CHR' ? 'C.H. Robinson' : title.name)
 	}, [carrierId, installedCarriers])
 
 	const getCarrierServices = () => {
@@ -164,8 +164,8 @@ const CarriersComponent = props => {
 				<strong>Note!</strong> Identifies which carriers are included in the
 				quote response, not what is displayed in the shopping cart. Identify
 				what displays in the shopping cart in the Quote Settings. For
-				example, you may include quote responses from all carriers, but select
-				to only show the cheapest three in the shopping cart.
+				example, you may include quote responses from all carriers, but
+				select to only show the cheapest three in the shopping cart.
 			</div>
 			<p>
 				Not all carriers service all origin and destination points. If a
@@ -199,9 +199,9 @@ const CarriersComponent = props => {
 						dataSource={filteredServices ?? services}
 						total={filteredServices?.length ?? services.length}
 						pagination={{
-							showSizeChanger: title !== "TQL" ,
-							pageSize: title !== "TQL" ? 10 : 30,
-							hideOnSinglePage: title === "TQL",
+							showSizeChanger: title !== 'TQL',
+							pageSize: title !== 'TQL' ? 10 : 30,
+							hideOnSinglePage: title === 'TQL',
 						}}
 					/>
 					<Form.Item style={styles}>
