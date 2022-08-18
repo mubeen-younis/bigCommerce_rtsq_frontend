@@ -127,6 +127,8 @@ const CarriersComponent = props => {
 		}
 	}
 
+	const isTqlOrChr = () => ['TQL', 'C.H. Robinson'].includes(title)
+
 	const { selectedRowKeys } = state
 	let rowSelection = {}
 
@@ -199,9 +201,9 @@ const CarriersComponent = props => {
 						dataSource={filteredServices ?? services}
 						total={filteredServices?.length ?? services.length}
 						pagination={{
-							showSizeChanger: title !== 'TQL',
-							pageSize: title !== 'TQL' ? 10 : 30,
-							hideOnSinglePage: title === 'TQL',
+							showSizeChanger: !isTqlOrChr(),
+							pageSize: !isTqlOrChr() ? 10 : 40,
+							hideOnSinglePage: isTqlOrChr(),
 						}}
 					/>
 					<Form.Item style={styles}>
