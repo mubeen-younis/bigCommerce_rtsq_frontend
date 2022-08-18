@@ -227,7 +227,6 @@ function QuoteSettingsComponentWweSmall(props) {
       CS?.purolator_express_us_9_am ||
       CS?.purolator_express_us_10_30am
 
-    console.log(quoteSettingsState) //return false;
     var errormsg = ""
     if (errormsg === "") {
       errormsg = validateHandlingFeeMarkup(
