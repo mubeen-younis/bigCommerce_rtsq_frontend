@@ -1,11 +1,11 @@
 import axios from '../Utilities/axios'
 import { dispatchAlert, setModalData } from '../Utilities/dispatchAlert'
 
-export const getShippingProfiles = () => async dispatch => {
+export const getShippingProfiles = token => async dispatch => {
 	try {
 		dispatch(dispatchAlert(false, 'loading', ''))
 
-		const { data } = await axios().get('get_dbsc_profiles')
+		const { data } = await axios(token).get('get_dbsc_profiles')
 		if (!data.error) {
 			dispatch({
 				type: 'GET_DBSC_PROFILES',
@@ -21,11 +21,11 @@ export const getShippingProfiles = () => async dispatch => {
 	}
 }
 
-export const getShippingClasses = () => async dispatch => {
+export const getShippingClasses = token => async dispatch => {
 	try {
 		dispatch(dispatchAlert(false, 'loading', ''))
 
-		const { data } = await axios().get('get_shipping_classes')
+		const { data } = await axios(token).get('get_shipping_classes')
 		if (!data.error) {
 			dispatch({
 				type: 'GET_DBSC_CLASSES',
@@ -42,12 +42,12 @@ export const getShippingClasses = () => async dispatch => {
 }
 
 export const getDbscData =
-	(url = '', type = '') =>
+	(url = '', type = '', token = '') =>
 	async dispatch => {
 		try {
 			dispatch(dispatchAlert(false, 'loading', ''))
 
-			const { data } = await axios().get(url)
+			const { data } = await axios(token).get(url)
 			if (!data.error) {
 				dispatch({
 					type,
@@ -63,11 +63,11 @@ export const getDbscData =
 		}
 	}
 
-export const addShippingClass = classData => async dispatch => {
+export const addShippingClass = (classData, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		const { data } = await axios().post('add_shipping_class', classData)
+		const { data } = await axios(token).post('add_shipping_class', classData)
 		if (!data.error) {
 			dispatch({
 				type: 'ADD_DBSC_CLASS',
@@ -81,11 +81,11 @@ export const addShippingClass = classData => async dispatch => {
 	}
 }
 
-export const addShippingProfile = profileData => async dispatch => {
+export const addShippingProfile = (profileData, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		const { data } = await axios().post('add_dbsc_profile', profileData)
+		const { data } = await axios(token).post('add_dbsc_profile', profileData)
 		if (!data.error) {
 			dispatch({
 				type: 'ADD_DBSC_PROFILE',
@@ -99,11 +99,11 @@ export const addShippingProfile = profileData => async dispatch => {
 	}
 }
 
-export const addDbscData = (url, reqData, type) => async dispatch => {
+export const addDbscData = (url, reqData, type, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		const { data } = await axios().post(url, reqData)
+		const { data } = await axios(token).post(url, reqData)
 		if (!data.error) {
 			dispatch({
 				type,
@@ -117,11 +117,11 @@ export const addDbscData = (url, reqData, type) => async dispatch => {
 	}
 }
 
-export const updateDbscData = (url, reqData, type) => async dispatch => {
+export const updateDbscData = (url, reqData, type, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		const { data } = await axios().post(url, reqData)
+		const { data } = await axios(token).post(url, reqData)
 		if (!data.error) {
 			dispatch({
 				type,
@@ -135,11 +135,11 @@ export const updateDbscData = (url, reqData, type) => async dispatch => {
 	}
 }
 
-export const deleteDbscData = (url, reqData, type) => async dispatch => {
+export const deleteDbscData = (url, reqData, type, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		const { data } = await axios().post(url, reqData)
+		const { data } = await axios(token).post(url, reqData)
 		if (!data.error) {
 			dispatch({
 				type,
@@ -154,11 +154,11 @@ export const deleteDbscData = (url, reqData, type) => async dispatch => {
 	}
 }
 
-export const getDbscZones = () => async dispatch => {
+export const getDbscZones = token => async dispatch => {
 	try {
 		dispatch(dispatchAlert(false, 'loading', ''))
 
-		const { data } = await axios().get('get_zones_bc')
+		const { data } = await axios(token).get('get_zones_bc')
 		if (!data.error) {
 			dispatch({
 				type: 'GET_DBSC_BC_ZONES',

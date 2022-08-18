@@ -32,9 +32,8 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	const [isRequired, setIsRequired] = useState(true)
 
 	const dispatch = useDispatch()
-	const { shippingClasses, alertMessageType, shippingProfiles } = useSelector(
-		state => state
-	)
+	const { shippingClasses, alertMessageType, shippingProfiles, token } =
+		useSelector(state => state)
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
@@ -59,16 +58,17 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 					updateDbscData(
 						'update_dbsc_profile',
 						{ ...values, id: action.payload.id },
-						types.UPDATE_DBSC_PROFILE
+						types.UPDATE_DBSC_PROFILE,
+						token
 					)
 				)
 				return
 			}
 
-			if (shippingClass) dispatch(addShippingClass(values))
+			if (shippingClass) dispatch(addShippingClass(values, token))
 			else dispatch(addShippingProfile(values))
 		},
-		[action.type, action.payload?.id, shippingClass, dispatch]
+		[action.type, action.payload?.id, shippingClass, dispatch, token]
 	)
 
 	const toggleShippingClassValidity = useCallback((allow_all_classes = false) => {

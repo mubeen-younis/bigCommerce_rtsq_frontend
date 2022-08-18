@@ -1,8 +1,6 @@
 import axios from 'axios'
 
-export default function axiosInstance() {
-	const token = localStorage.getItem('store')
-
+export default function axiosInstance(token) {
 	const instance = axios.create({
 		baseURL: process.env.REACT_APP_ENITURE_API_URL,
 		headers: {
