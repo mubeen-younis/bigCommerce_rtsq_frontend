@@ -11,6 +11,13 @@ import useLoadComponent from '../hooks/useLoadComponent'
 import ShippingGroup from '../components/Pages/ShippingGroup'
 
 const { TabPane } = Tabs
+const smallCarriersSlugs = [
+	'small-package',
+	'ups-small',
+	'fedex-small',
+	'unishippers-small',
+	'usps-small',
+]
 
 function TabsLayout() {
 	const { installedCarriers, carrierId } = useSelector(state => state)
@@ -82,7 +89,7 @@ function TabsLayout() {
 		setTab(key)
 	}, [])
 
-	const loadedComponent = useLoadComponent(component)
+	const [connectionSettings, quoteSettings] = useLoadComponent(component)
 
 	return (
 		<Fragment>
@@ -91,13 +98,14 @@ function TabsLayout() {
 			<Tabs className={'tabs-wrp'} onChange={handleActiveTab} type='card'>
 				{carrierSlug !== 'usps-small' && (
 					<TabPane tab='Connection Settings' key='1'>
-						{loadedComponent[0]}
+						{connectionSettings}
 					</TabPane>
 				)}
 				{[
 					'ltl-quotes',
 					'freightquote-ltl',
 					'tql-ltl',
+					'echo-ltl',
 					'freightquote-chr-ltl',
 				].includes(carrierSlug) && (
 					<TabPane tab='Carriers' key='2'>
@@ -113,7 +121,7 @@ function TabsLayout() {
 					<ShippingGroup />
 				</TabPane>
 				<TabPane tab='Quote Settings' key='5'>
-					{useLoadComponent(component)[1]}
+					{quoteSettings}
 				</TabPane>
 				<TabPane tab='Product Settings' key='6'>
 					<ProductSettingsComponent />
@@ -122,7 +130,7 @@ function TabsLayout() {
 					<OrdersComponent />
 				</TabPane>
 
-				{[1, 3, 5, 9, 18].includes(component) && (
+				{smallCarriersSlugs.includes(carrierSlug) && (
 					<TabPane tab='Box Sizes' key='8'>
 						<BoxSizesComponent />
 					</TabPane>

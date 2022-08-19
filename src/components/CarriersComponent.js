@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useRef } from 'react'
+import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { Form, Table, Button, Space, Skeleton, Input } from 'antd'
 
@@ -101,10 +101,6 @@ const CarriersComponent = props => {
 	}
 
 	const onSelectChange = selectedRowKeys => {
-		// if (filteredServices) {
-		// 	setFilteredKeys(selectedRowKeys)
-		// }
-
 		setState({
 			...state,
 			selectedRowKeys,
@@ -127,7 +123,10 @@ const CarriersComponent = props => {
 		}
 	}
 
-	const isTqlOrChr = () => ['TQL', 'C.H. Robinson'].includes(title)
+	const isTqlOrChr = useCallback(() => {
+		const carrArr = ['TQL', 'C.H. Robinson']
+		return carrArr.includes(title)
+	}, [title])
 
 	const { selectedRowKeys } = state
 	let rowSelection = {}
