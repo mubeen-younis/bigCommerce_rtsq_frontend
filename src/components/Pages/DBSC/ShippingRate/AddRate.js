@@ -24,7 +24,7 @@ const AddRate = ({ zoneId, rates }) => {
 		maximum_distance: '',
 		minimum_weight: '',
 		maximum_weight: '',
-		and_or: 'And',
+		//and_or: 'And',
 		minimum_length: '',
 		maximum_length: '',
 		distance_adjustment: '',
@@ -55,7 +55,7 @@ const AddRate = ({ zoneId, rates }) => {
 				dispatch(
 					addDbscData(
 						'update_dbsc_rates',
-						{ ...values, id: action.payload.id },
+						{ ...values, id: action.payload.id, and_or: andOr },
 						types.UPDATE_DBSC_RATE
 					)
 				)
@@ -427,7 +427,7 @@ const AddRate = ({ zoneId, rates }) => {
 								<Radio
 									checked={andOr === 'And'}
 									value='And'
-									onChange={e => setAndOr(e.target.value)}>
+									onChange={e => setAndOr("And")}>
 									And
 								</Radio>
 							</Col>
@@ -441,7 +441,7 @@ const AddRate = ({ zoneId, rates }) => {
 								<Radio
 									checked={andOr === 'Or'}
 									value='Or'
-									onChange={e => setAndOr(e.target.value)}>
+									onChange={e => setAndOr("Or")}>
 									Or
 								</Radio>
 							</Col>
