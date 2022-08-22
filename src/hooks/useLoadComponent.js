@@ -32,6 +32,8 @@ import {
 	QSOdflLtl,
 	CSSaiaLtl,
 	QSSaiaLtl,
+	CSPurolatorSmall,
+	QSPurolatorSmall,
 	DaylightLtl,
 	QSDayLightLtl,
 	CSAbfLtl,
@@ -72,6 +74,7 @@ const useLoadComponent = index => {
 		<CSTQLLtl />,
 		<CSEchoLtl />,
 		<DaylightLtl />,
+		<CSPurolatorSmall />,
 		<CSFreightQuoteChrLtl />,
 	]
 	const quoteSettingsList = [
@@ -97,6 +100,7 @@ const useLoadComponent = index => {
 		<QSTQLLtl />,
 		<QSEchoLtl />,
 		<QSDayLightLtl />,
+		<QSPurolatorSmall />,
 		<QSFreightQuoteChrLtl />,
 	]
 

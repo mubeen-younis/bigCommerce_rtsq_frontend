@@ -4,19 +4,19 @@ import { Tabs } from 'antd'
 import CarriersComponent from '../components/CarriersComponent'
 import ProductSettingsComponent from '../components/ProductSettingsComponent'
 import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
-import OrdersComponent from '../components/OrdersComponent'
 import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
 import useLoadComponent from '../hooks/useLoadComponent'
-import ShippingGroup from '../components/Pages/ShippingGroup'
 
 const { TabPane } = Tabs
+
 const smallCarriersSlugs = [
 	'small-package',
 	'ups-small',
 	'fedex-small',
 	'unishippers-small',
 	'usps-small',
+	'purolator-small',
 ]
 
 function TabsLayout() {
@@ -57,6 +57,7 @@ function TabsLayout() {
 				'tql-ltl',
 				'echo-ltl',
 				'daylight-ltl',
+				'purolator-small',
 				'freightquote-chr-ltl',
 			]
 
@@ -117,17 +118,11 @@ function TabsLayout() {
 						<GTZCarriersComponent />
 					</TabPane>
 				)}
-				<TabPane tab='Shipping Groups' key='4'>
-					<ShippingGroup />
-				</TabPane>
 				<TabPane tab='Quote Settings' key='5'>
 					{quoteSettings}
 				</TabPane>
 				<TabPane tab='Product Settings' key='6'>
 					<ProductSettingsComponent />
-				</TabPane>
-				<TabPane tab='Orders' key='7'>
-					<OrdersComponent />
 				</TabPane>
 
 				{smallCarriersSlugs.includes(carrierSlug) && (
