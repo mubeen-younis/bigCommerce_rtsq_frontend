@@ -114,7 +114,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 			const filteredClasses = shippingClasses.filter(
 				classObj => !classesArr.includes(classObj.class_name)
 			)
-
+console.log();
 			return filteredClasses
 		}
 
