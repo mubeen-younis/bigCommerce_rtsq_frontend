@@ -145,19 +145,19 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 					<Modal
 						title={setModalTitle()}
 						visible={visible}
-						onCancel={() => clearStates()}
-						onOk={() => form.submit()}
+						onCancel={clearStates}
+						onOk={form.submit}
 						centered
 						destroyOnClose
+						afterClose={clearStates}
 						okText='Save'
 						footer={[
-							<Button key='back' onClick={() => clearStates()}>
+							<Button key='back' onClick={clearStates}>
 								Cancel
 							</Button>,
 							<Button
 								key='submit'
 								type='primary'
-								// loading={loading}
 								onClick={() => form.submit()}>
 								Save
 							</Button>,

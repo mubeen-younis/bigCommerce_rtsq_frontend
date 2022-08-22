@@ -109,6 +109,7 @@ const AddOrigin = ({ profileId }) => {
 					centered
 					width={800}
 					destroyOnClose
+					afterClose={form.resetFields}
 					okText='Save'
 					footer={[
 						<Button key='back' onClick={() => setIsOpen(false)}>
@@ -117,7 +118,6 @@ const AddOrigin = ({ profileId }) => {
 						<Button
 							key='submit'
 							type='primary'
-							// loading={loading}
 							onClick={() => form.submit()}>
 							Save
 						</Button>,
