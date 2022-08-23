@@ -5,18 +5,13 @@ import { deleteDbscData, setConfirmModalData } from '../../../../Actions/DbscAct
 
 const ConfirmDeleteModal = () => {
 	const dispatch = useDispatch()
-	const { modalData, token } = useSelector(state => state)
+	const { modalData } = useSelector(state => state)
 
 	const handleConfirm = useCallback(() => {
 		dispatch(
-			deleteDbscData(
-				modalData.url,
-				{ id: modalData.data },
-				modalData.action,
-				token
-			)
+			deleteDbscData(modalData.url, { id: modalData.data }, modalData.action)
 		)
-	}, [dispatch, modalData?.action, modalData?.data, modalData?.url, token])
+	}, [dispatch, modalData?.action, modalData?.data, modalData?.url])
 
 	return (
 		<Modal

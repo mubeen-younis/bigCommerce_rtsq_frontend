@@ -20,7 +20,7 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 		payload: null,
 	})
 	const dispatch = useDispatch()
-	const { dbscBigComZones, alertMessageType, token } = useSelector(state => state)
+	const { dbscBigComZones, alertMessageType } = useSelector(state => state)
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
@@ -36,8 +36,7 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 					updateDbscData(
 						'update_dbsc_zone',
 						{ ...values, id: action.payload.id, profile_id: profileId },
-						types.UPDATE_DBSC_ZONE,
-						token
+						types.UPDATE_DBSC_ZONE
 					)
 				)
 			} else {
@@ -49,13 +48,12 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 							profile_id: profileId,
 							dbsc_origin_id: originId,
 						},
-						types.ADD_DBSC_ZONE,
-						token
+						types.ADD_DBSC_ZONE
 					)
 				)
 			}
 		},
-		[action?.type, action.payload?.id, dispatch, profileId, originId, token]
+		[action?.type, action.payload?.id, dispatch, profileId, originId]
 	)
 
 	const editZone = useCallback(
@@ -146,7 +144,6 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 					centered
 					width={800}
 					destroyOnClose
-					afterClose={form.resetFields}
 					okText='Save'
 					footer={[
 						<Button key='back' onClick={() => setIsOpen(false)}>
@@ -155,6 +152,7 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 						<Button
 							key='submit'
 							type='primary'
+							// loading={loading}
 							onClick={() => form.submit()}>
 							Save
 						</Button>,

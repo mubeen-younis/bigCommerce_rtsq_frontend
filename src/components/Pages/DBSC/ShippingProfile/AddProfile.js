@@ -58,8 +58,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 					updateDbscData(
 						'update_dbsc_profile',
 						{ ...values, id: action.payload.id },
-						types.UPDATE_DBSC_PROFILE,
-						token
+						types.UPDATE_DBSC_PROFILE
 					)
 				)
 				return
@@ -68,7 +67,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 			if (shippingClass) dispatch(addShippingClass(values, token))
 			else dispatch(addShippingProfile(values, token))
 		},
-		[action.type, action.payload?.id, shippingClass, dispatch, token]
+		[action.type, action.payload.id, shippingClass, dispatch, token]
 	)
 
 	const toggleShippingClassValidity = useCallback((allow_all_classes = false) => {
@@ -145,19 +144,19 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 					<Modal
 						title={setModalTitle()}
 						visible={visible}
-						onCancel={clearStates}
-						onOk={form.submit}
+						onCancel={() => clearStates()}
+						onOk={() => form.submit()}
 						centered
 						destroyOnClose
-						afterClose={clearStates}
 						okText='Save'
 						footer={[
-							<Button key='back' onClick={clearStates}>
+							<Button key='back' onClick={() => clearStates()}>
 								Cancel
 							</Button>,
 							<Button
 								key='submit'
 								type='primary'
+								// loading={loading}
 								onClick={() => form.submit()}>
 								Save
 							</Button>,

@@ -85,7 +85,7 @@ function App(props) {
       getStorePlans()
       getShippingGroups(token)
       dispatch(getFDOCouponInfo(token))
-		  dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES, token))
+		  dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES))
     }
  
       const devEnv = process?.env?.NODE_ENV === 'development'
