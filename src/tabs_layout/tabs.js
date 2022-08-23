@@ -58,6 +58,7 @@ function TabsLayout() {
 				'echo-ltl',
 				'daylight-ltl',
 				'purolator-small',
+				'freightquote-chr-ltl',
 			]
 
 			for (const ic of installedCarriers) {
@@ -89,7 +90,7 @@ function TabsLayout() {
 		setTab(key)
 	}, [])
 
-	const loadedComponent = useLoadComponent(component)
+	const [connectionSettings, quoteSettings] = useLoadComponent(component)
 
 	return (
 		<Fragment>
@@ -98,12 +99,16 @@ function TabsLayout() {
 			<Tabs className={'tabs-wrp'} onChange={handleActiveTab} type='card'>
 				{carrierSlug !== 'usps-small' && (
 					<TabPane tab='Connection Settings' key='1'>
-						{loadedComponent[0]}
+						{connectionSettings}
 					</TabPane>
 				)}
-				{['ltl-quotes', 'freightquote-ltl', 'tql-ltl'].includes(
-					carrierSlug
-				) && (
+				{[
+					'ltl-quotes',
+					'freightquote-ltl',
+					'tql-ltl',
+					'echo-ltl',
+					'freightquote-chr-ltl',
+				].includes(carrierSlug) && (
 					<TabPane tab='Carriers' key='2'>
 						<CarriersComponent />
 					</TabPane>
@@ -114,7 +119,7 @@ function TabsLayout() {
 					</TabPane>
 				)}
 				<TabPane tab='Quote Settings' key='5'>
-					{useLoadComponent(component)[1]}
+					{quoteSettings}
 				</TabPane>
 				<TabPane tab='Product Settings' key='6'>
 					<ProductSettingsComponent />

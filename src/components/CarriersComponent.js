@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useRef } from 'react'
+import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { Form, Table, Button, Space, Skeleton, Input } from 'antd'
 
@@ -54,7 +54,7 @@ const CarriersComponent = props => {
 
 	useEffect(() => {
 		const title = installedCarriers?.find(carrier => +carrier.id === +carrierId)
-		setTitle(title.name)
+		setTitle(title.name === 'FreightQuote CHR' ? 'C.H. Robinson' : title.name)
 	}, [carrierId, installedCarriers])
 
 	const getCarrierServices = () => {
@@ -101,10 +101,6 @@ const CarriersComponent = props => {
 	}
 
 	const onSelectChange = selectedRowKeys => {
-		// if (filteredServices) {
-		// 	setFilteredKeys(selectedRowKeys)
-		// }
-
 		setState({
 			...state,
 			selectedRowKeys,
@@ -126,6 +122,11 @@ const CarriersComponent = props => {
 			})
 		}
 	}
+
+	const isTqlOrChr = useCallback(() => {
+		const carrArr = ['TQL', 'C.H. Robinson']
+		return carrArr.includes(title)
+	}, [title])
 
 	const { selectedRowKeys } = state
 	let rowSelection = {}
@@ -164,8 +165,8 @@ const CarriersComponent = props => {
 				<strong>Note!</strong> Identifies which carriers are included in the
 				quote response, not what is displayed in the shopping cart. Identify
 				what displays in the shopping cart in the Quote Settings. For
-				example, you may include quote responses from all carriers, but select
-				to only show the cheapest three in the shopping cart.
+				example, you may include quote responses from all carriers, but
+				select to only show the cheapest three in the shopping cart.
 			</div>
 			<p>
 				Not all carriers service all origin and destination points. If a
@@ -199,9 +200,9 @@ const CarriersComponent = props => {
 						dataSource={filteredServices ?? services}
 						total={filteredServices?.length ?? services.length}
 						pagination={{
-							showSizeChanger: title !== "TQL" ,
-							pageSize: title !== "TQL" ? 10 : 30,
-							hideOnSinglePage: title === "TQL",
+							showSizeChanger: !isTqlOrChr(),
+							pageSize: !isTqlOrChr() ? 10 : 40,
+							hideOnSinglePage: isTqlOrChr(),
 						}}
 					/>
 					<Form.Item style={styles}>
