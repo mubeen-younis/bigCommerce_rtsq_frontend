@@ -66,7 +66,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 			}
 
 			if (shippingClass) dispatch(addShippingClass(values, token))
-			else dispatch(addShippingProfile(values))
+			else dispatch(addShippingProfile(values, token))
 		},
 		[action.type, action.payload?.id, shippingClass, dispatch, token]
 	)
