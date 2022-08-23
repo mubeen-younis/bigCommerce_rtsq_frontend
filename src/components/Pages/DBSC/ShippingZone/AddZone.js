@@ -22,11 +22,19 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 	const dispatch = useDispatch()
 	const { dbscBigComZones, alertMessageType } = useSelector(state => state)
 
+	const clearStates = useCallback(() => {
+		setIsOpen(false)
+		form.resetFields()
+		form.setFieldValue(initialValues)
+		setAction({
+			...action,
+			type: 'add',
+			payload: {},
+		})
+	}, [action, form, initialValues])
+
 	useEffect(() => {
-		if (alertMessageType === 'success') {
-			setAction({ type: '', payload: null })
-			setIsOpen(false)
-		}
+		if (alertMessageType === 'success') clearStates()
 	}, [alertMessageType])
 
 	const onFinish = useCallback(
@@ -131,22 +139,15 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 				<Modal
 					title='Create zone'
 					visible={isOpen}
-					onCancel={() => {
-						setIsOpen(false)
-						form.resetFields()
-						setAction({
-							...action,
-							type: 'add',
-							payload: {},
-						})
-					}}
+					onCancel={clearStates}
 					onOk={() => {}}
 					centered
 					width={800}
 					destroyOnClose
+					afterClose={clearStates}
 					okText='Save'
 					footer={[
-						<Button key='back' onClick={() => setIsOpen(false)}>
+						<Button key='back' onClick={clearStates}>
 							Cancel
 						</Button>,
 						<Button

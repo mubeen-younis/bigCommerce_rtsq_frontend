@@ -42,11 +42,19 @@ const AddRate = ({ zoneId, rates }) => {
 	const dispatch = useDispatch()
 	const { alertMessageType } = useSelector(state => state)
 
+	const clearStates = useCallback(() => {
+		setIsOpen(false)
+		form.resetFields()
+		form.setFieldValue(initialValues)
+		setAction({
+			...action,
+			type: 'add',
+			payload: {},
+		})
+	}, [action, form, initialValues])
+
 	useEffect(() => {
-		if (alertMessageType === 'success') {
-			setAction({ type: '', payload: null })
-			setIsOpen(false)
-		}
+		if (alertMessageType === 'success') clearStates()
 	}, [alertMessageType, form])
 
 	const onFinish = useCallback(
@@ -92,17 +100,15 @@ const AddRate = ({ zoneId, rates }) => {
 				<Modal
 					title='Add rate'
 					visible={isOpen}
-					onCancel={() => {
-						setIsOpen(false)
-						form.resetFields()
-					}}
+					onCancel={clearStates}
 					onOk={() => {}}
 					centered
 					width={800}
 					destroyOnClose
+					afterClose={clearStates}
 					okText='Save'
 					footer={[
-						<Button key='back' onClick={() => setIsOpen(false)}>
+						<Button key='back' onClick={clearStates}>
 							Cancel
 						</Button>,
 						<Button
@@ -427,7 +433,7 @@ const AddRate = ({ zoneId, rates }) => {
 								<Radio
 									checked={andOr === 'And'}
 									value='And'
-									onChange={e => setAndOr("And")}>
+									onChange={e => setAndOr('And')}>
 									And
 								</Radio>
 							</Col>
@@ -441,7 +447,7 @@ const AddRate = ({ zoneId, rates }) => {
 								<Radio
 									checked={andOr === 'Or'}
 									value='Or'
-									onChange={e => setAndOr("Or")}>
+									onChange={e => setAndOr('Or')}>
 									Or
 								</Radio>
 							</Col>

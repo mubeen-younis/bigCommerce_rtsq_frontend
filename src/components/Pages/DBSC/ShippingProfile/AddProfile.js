@@ -36,14 +36,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 		useSelector(state => state)
 
 	useEffect(() => {
-		if (alertMessageType === 'success') {
-			setAction({
-				type: '',
-				payload: {},
-			})
-			setShippingClass(false)
-			toggleAddProfileModal(false)
-		}
+		if (alertMessageType === 'success') clearStates()
 	}, [alertMessageType, form, toggleAddProfileModal])
 
 	const setModalTitle = useCallback(() => {
@@ -67,10 +60,10 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 			if (shippingClass) dispatch(addShippingClass(values, token))
 			else dispatch(addShippingProfile(values, token))
 		},
-		[action.type, action.payload.id, shippingClass, dispatch, token]
+		[action.type, action.payload?.id, shippingClass, dispatch, token]
 	)
 
-	const toggleShippingClassValidity = useCallback((allow_all_classes = false) => {
+	const toggleShippingClassValidity = useCallback(allow_all_classes => {
 		if (+allow_all_classes === 1) setIsRequired(false)
 		else setIsRequired(true)
 	}, [])
@@ -126,7 +119,8 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 		setShippingClass(false)
 		setIsRequired(true)
 		form.resetFields()
-	}, [form, toggleAddProfileModal])
+		form.setFieldsValue(initialValues)
+	}, [form, initialValues, toggleAddProfileModal])
 
 	return (
 		<>
