@@ -28,7 +28,7 @@ const AddOrigin = ({ profileId }) => {
 	const [originId, setOriginId] = useState(null)
 
 	const dispatch = useDispatch()
-	const { alertMessageType, shippingProfiles } = useSelector(state => state)
+	const { alertMessageType, shippingProfiles, token } = useSelector(state => state)
 
 	const clearStates = useCallback(() => {
 		setIsOpen(false)
@@ -59,7 +59,8 @@ const AddOrigin = ({ profileId }) => {
 					updateDbscData(
 						'update_dbsc_origin',
 						payload,
-						types.UPDATE_DBSC_ORIGIN
+						types.UPDATE_DBSC_ORIGIN,
+						token
 					)
 				)
 			} else {
@@ -67,12 +68,13 @@ const AddOrigin = ({ profileId }) => {
 					addDbscData(
 						'add_dbsc_origin',
 						{ ...values, profile_id: profileId, origin_id: originId },
-						types.ADD_DBSC_ORIGIN
+						types.ADD_DBSC_ORIGIN,
+						token
 					)
 				)
 			}
 		},
-		[action.type, action.payload?.id, dispatch, profileId, originId]
+		[action.type, action.payload?.id, dispatch, profileId, originId, token]
 	)
 
 	const editOrigin = useCallback(

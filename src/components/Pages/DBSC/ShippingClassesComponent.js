@@ -16,7 +16,7 @@ const App = () => {
 	})
 	const [classId, setClassId] = useState(null)
 	const dispatch = useDispatch()
-	const { shippingClasses, alertMessageType } = useSelector(state => state)
+	const { shippingClasses, alertMessageType, token } = useSelector(state => state)
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
@@ -83,11 +83,12 @@ const App = () => {
 				updateDbscData(
 					'update_shipping_class',
 					{ ...values, id: classId },
-					types.UPDATE_DBSC_CLASS
+					types.UPDATE_DBSC_CLASS,
+					token
 				)
 			)
 		},
-		[classId, dispatch]
+		[classId, dispatch, token]
 	)
 
 	return (

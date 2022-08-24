@@ -10,9 +10,8 @@ const { Title } = Typography
 const ShippingRatesComponent = () => {
 	const [addProfileModal, setAddProfileModal] = useState()
 	const dispatch = useDispatch()
-	const { shippingProfiles, shippingClasses, dbscBigComZones } = useSelector(
-		state => state
-	)
+	const { shippingProfiles, shippingClasses, dbscBigComZones, token } =
+		useSelector(state => state)
 
 	const toggleAddProfileModal = useCallback(
 		(open = false) => setAddProfileModal(open),
@@ -21,13 +20,17 @@ const ShippingRatesComponent = () => {
 
 	useEffect(() => {
 		if (!shippingProfiles) {
-			dispatch(getDbscData('get_dbsc_profiles', types.GET_DBSC_PROFILES))
+			dispatch(
+				getDbscData('get_dbsc_profiles', types.GET_DBSC_PROFILES, token)
+			)
 		}
 		if (!shippingClasses) {
-			dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES))
+			dispatch(
+				getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES, token)
+			)
 		}
-		if (!dbscBigComZones) dispatch(getDbscZones())
-	}, [dispatch])
+		if (!dbscBigComZones) dispatch(getDbscZones(token))
+	}, [dispatch, token])
 
 	if (!shippingProfiles) return <Skeleton active />
 

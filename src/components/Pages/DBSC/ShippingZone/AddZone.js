@@ -20,7 +20,7 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 		payload: null,
 	})
 	const dispatch = useDispatch()
-	const { dbscBigComZones, alertMessageType } = useSelector(state => state)
+	const { dbscBigComZones, alertMessageType, token } = useSelector(state => state)
 
 	const clearStates = useCallback(() => {
 		setIsOpen(false)
@@ -44,7 +44,8 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 					updateDbscData(
 						'update_dbsc_zone',
 						{ ...values, id: action.payload.id, profile_id: profileId },
-						types.UPDATE_DBSC_ZONE
+						types.UPDATE_DBSC_ZONE,
+						token
 					)
 				)
 			} else {
@@ -56,12 +57,13 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 							profile_id: profileId,
 							dbsc_origin_id: originId,
 						},
-						types.ADD_DBSC_ZONE
+						types.ADD_DBSC_ZONE,
+						token
 					)
 				)
 			}
 		},
-		[action?.type, action.payload?.id, dispatch, profileId, originId]
+		[action?.type, action.payload?.id, dispatch, profileId, originId, token]
 	)
 
 	const editZone = useCallback(

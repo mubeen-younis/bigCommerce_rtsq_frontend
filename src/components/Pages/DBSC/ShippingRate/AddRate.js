@@ -40,7 +40,7 @@ const AddRate = ({ zoneId, rates }) => {
 	})
 
 	const dispatch = useDispatch()
-	const { alertMessageType } = useSelector(state => state)
+	const { alertMessageType, token } = useSelector(state => state)
 
 	const clearStates = useCallback(() => {
 		setIsOpen(false)
@@ -64,7 +64,8 @@ const AddRate = ({ zoneId, rates }) => {
 					addDbscData(
 						'update_dbsc_rates',
 						{ ...values, id: action.payload.id, and_or: andOr },
-						types.UPDATE_DBSC_RATE
+						types.UPDATE_DBSC_RATE,
+						token
 					)
 				)
 			} else {
@@ -72,12 +73,13 @@ const AddRate = ({ zoneId, rates }) => {
 					addDbscData(
 						'add_dbsc_rates',
 						{ ...values, dbsc_zone_id: zoneId, and_or: andOr },
-						types.ADD_DBSC_RATE
+						types.ADD_DBSC_RATE,
+						token
 					)
 				)
 			}
 		},
-		[action?.type, action.payload?.id, dispatch, zoneId, andOr]
+		[action?.type, action.payload?.id, dispatch, zoneId, andOr, token]
 	)
 
 	const editRate = useCallback(
