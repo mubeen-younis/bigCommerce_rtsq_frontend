@@ -33,7 +33,7 @@ const AddOrigin = ({ profileId }) => {
 	const clearStates = useCallback(() => {
 		setIsOpen(false)
 		form.resetFields()
-		form.setFieldValue(initialValues)
+		form.setFieldsValue(initialValues)
 		setAction({
 			...action,
 			type: 'add',

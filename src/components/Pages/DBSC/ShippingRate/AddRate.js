@@ -45,7 +45,7 @@ const AddRate = ({ zoneId, rates }) => {
 	const clearStates = useCallback(() => {
 		setIsOpen(false)
 		form.resetFields()
-		form.setFieldValue(initialValues)
+		form.setFieldsValue(initialValues)
 		setAction({
 			...action,
 			type: 'add',
