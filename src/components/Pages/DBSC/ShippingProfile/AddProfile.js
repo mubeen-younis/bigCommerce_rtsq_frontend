@@ -51,7 +51,8 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 					updateDbscData(
 						'update_dbsc_profile',
 						{ ...values, id: action.payload.id },
-						types.UPDATE_DBSC_PROFILE
+						types.UPDATE_DBSC_PROFILE,
+						token
 					)
 				)
 				return
