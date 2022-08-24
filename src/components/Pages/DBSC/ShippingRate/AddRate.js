@@ -89,7 +89,12 @@ const AddRate = ({ zoneId, rates }) => {
 			})
 			setAndOr(values.and_or)
 
-			form.setFieldsValue(values)
+			form.setFieldsValue({
+				...values,
+				address_type: values?.address_type.toString() ?? '1',
+				default_unknown_address_type:
+					values?.default_unknown_address_type.toString() ?? '1',
+			})
 		},
 		[form]
 	)
