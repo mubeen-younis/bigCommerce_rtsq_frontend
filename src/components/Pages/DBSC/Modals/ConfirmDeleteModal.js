@@ -5,7 +5,7 @@ import { deleteDbscData, setConfirmModalData } from '../../../../Actions/DbscAct
 
 const ConfirmDeleteModal = () => {
 	const dispatch = useDispatch()
-	const { modalData } = useSelector(state => state)
+	const { modalData, alertMessageType } = useSelector(state => state)
 
 	const handleConfirm = useCallback(() => {
 		dispatch(
@@ -31,7 +31,11 @@ const ConfirmDeleteModal = () => {
 					}>
 					Cancel
 				</Button>,
-				<Button key='submit' type='primary' onClick={handleConfirm}>
+				<Button
+					key='submit'
+					type='primary'
+					onClick={handleConfirm}
+					loading={alertMessageType === 'loading'}>
 					Confirm
 				</Button>,
 			]}>

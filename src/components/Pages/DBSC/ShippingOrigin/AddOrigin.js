@@ -88,6 +88,13 @@ const AddOrigin = ({ profileId }) => {
 		[form]
 	)
 
+	const checkProfileOrigins = useCallback(() => {
+		const origins = shippingProfiles?.origins?.[profileId] ?? []
+		if (shippingProfiles && origins?.length > 0) return true
+
+		return false
+	}, [profileId, shippingProfiles])
+
 	return (
 		<>
 			<ShippingFrom
@@ -116,7 +123,7 @@ const AddOrigin = ({ profileId }) => {
 						<Button
 							key='submit'
 							type='primary'
-							// loading={loading}
+							loading={alertMessageType === 'loading'}
 							onClick={() => form.submit()}>
 							Save
 						</Button>,
@@ -267,37 +274,40 @@ const AddOrigin = ({ profileId }) => {
 
 							{action.type !== 'edit' && (
 								<>
-									<Col
-										className='gutter-row'
-										xs={24}
-										sm={24}
-										md={24}
-										lg={24}
-										xl={24}>
-										<Form.Item
-											className='mb-2'
-											label='Add the shipping origin'
-											name='from_shipping_origin'
-											rules={[
-												{
-													required: false,
-													message:
-														'Add the shipping origin',
-												},
-											]}>
-											<Radio.Group>
-												<Space direction='vertical'>
-													<Radio value='1'>
-														To this Shipping From profile
-													</Radio>
-													<Radio value='2'>
-														As a new Shipping From
-														profile
-													</Radio>
-												</Space>
-											</Radio.Group>
-										</Form.Item>
-									</Col>
+									{checkProfileOrigins() && (
+										<Col
+											className='gutter-row'
+											xs={24}
+											sm={24}
+											md={24}
+											lg={24}
+											xl={24}>
+											<Form.Item
+												className='mb-2'
+												label='Add the shipping origin'
+												name='from_shipping_origin'
+												rules={[
+													{
+														required: false,
+														message:
+															'Add the shipping origin',
+													},
+												]}>
+												<Radio.Group>
+													<Space direction='vertical'>
+														<Radio value='1'>
+															To this Shipping From
+															profile
+														</Radio>
+														<Radio value='2'>
+															As a new Shipping From
+															profile
+														</Radio>
+													</Space>
+												</Radio.Group>
+											</Form.Item>
+										</Col>
+									)}
 
 									<Col
 										className='gutter-row'

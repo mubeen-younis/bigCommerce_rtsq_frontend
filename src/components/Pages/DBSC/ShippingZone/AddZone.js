@@ -121,6 +121,13 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 								type: 'add',
 								payload: null,
 							})
+							dispatch({
+								type: 'ALERT_MESSAGE',
+								payload: {
+									showAlertMessage: false,
+									alertMessageType: '',
+								},
+							})
 						}}>
 						Add shipping zone
 					</Button>
@@ -153,7 +160,7 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 						<Button
 							key='submit'
 							type='primary'
-							// loading={loading}
+							loading={alertMessageType === 'loading'}
 							onClick={() => form.submit()}>
 							Save
 						</Button>,

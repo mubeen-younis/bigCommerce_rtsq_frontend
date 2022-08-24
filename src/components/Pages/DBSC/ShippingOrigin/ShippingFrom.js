@@ -1,6 +1,6 @@
 import { Button, Card, Col, Row, Typography } from 'antd'
 import React, { memo } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import OriginsList from './OriginsList'
 
 const { Title } = Typography
@@ -13,6 +13,7 @@ const ShippingFrom = ({
 	setOriginId,
 }) => {
 	const { shippingProfiles } = useSelector(state => state)
+	const dispatch = useDispatch()
 
 	if (!origins || !origins.length) {
 		return (
@@ -41,6 +42,13 @@ const ShippingFrom = ({
 							onClick={() => {
 								setIsOpen(true)
 								setOriginId(null)
+								dispatch({
+									type: 'ALERT_MESSAGE',
+									payload: {
+										showAlertMessage: false,
+										alertMessageType: '',
+									},
+								})
 							}}>
 							Add shipping origin
 						</Button>
@@ -77,6 +85,13 @@ const ShippingFrom = ({
 								onClick={() => {
 									setIsOpen(true)
 									setOriginId(origin.id)
+									dispatch({
+										type: 'ALERT_MESSAGE',
+										payload: {
+											showAlertMessage: false,
+											alertMessageType: '',
+										},
+									})
 								}}>
 								Add shipping origin
 							</Button>

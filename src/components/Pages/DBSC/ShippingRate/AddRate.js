@@ -119,7 +119,7 @@ const AddRate = ({ zoneId, rates }) => {
 						<Button
 							key='submit'
 							type='primary'
-							// loading={loading}
+							loading={alertMessageType === 'loading'}
 							onClick={() => form.submit()}>
 							Save
 						</Button>,
@@ -654,7 +654,16 @@ const AddRate = ({ zoneId, rates }) => {
 					<Button
 						type='primary'
 						className='mt-0 mb-1'
-						onClick={() => setIsOpen(!isOpen)}>
+						onClick={() => {
+							setIsOpen(!isOpen)
+							dispatch({
+								type: 'ALERT_MESSAGE',
+								payload: {
+									showAlertMessage: false,
+									alertMessageType: '',
+								},
+							})
+						}}>
 						Add rate
 					</Button>
 				</Col>
