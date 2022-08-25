@@ -126,7 +126,7 @@ const FDOComponent = () => {
 						<b>"Connect"</b>. Don't have a Validate Addresses account
 						yet? Click{' '}
 						<a
-							href='https://validate-addresses.com/'
+							href='https://validate-addresses.com/register'
 							target='_blank'
 							rel='noreferrer'>
 							here{' '}
