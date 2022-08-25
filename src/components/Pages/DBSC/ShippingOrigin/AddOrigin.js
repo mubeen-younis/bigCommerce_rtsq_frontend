@@ -67,7 +67,13 @@ const AddOrigin = ({ profileId }) => {
 				dispatch(
 					addDbscData(
 						'add_dbsc_origin',
-						{ ...values, profile_id: profileId, origin_id: originId },
+						{
+							...values,
+							profile_id: profileId,
+							origin_id: originId,
+							from_shipping_origin:
+								values?.from_shipping_origin ?? '1',
+						},
 						types.ADD_DBSC_ORIGIN,
 						token
 					)

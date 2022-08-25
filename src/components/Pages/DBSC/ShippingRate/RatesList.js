@@ -68,7 +68,7 @@ const RatesList = ({ zoneId, editRate, shippingRates }) => {
 			key: 'address',
 			render: (text, record) =>
 				`${
-					record.minimum_length ? record.maximum_length + ' in' : 0 + ' in'
+					record.minimum_length ? record.minimum_length + ' in' : 0 + ' in'
 				} - ${
 					record.maximum_length ? record.maximum_length + ' in' : ' up'
 				}`,

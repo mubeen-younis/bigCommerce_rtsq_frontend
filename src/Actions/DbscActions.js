@@ -226,6 +226,31 @@ export const getDbscZones = token => async dispatch => {
 	}
 }
 
+export const getDbscOtherSettings = token => async dispatch => {
+	try {
+		const { data } = await axios.get(
+			`${process.env.REACT_APP_ENITURE_API_URL}/get_dbsc_other_settings`,
+			reqConfig(token)
+		)
+		console.log(data)
+	} catch (err) {
+		console.log(err)
+	}
+}
+
+export const saveDbscOtherSettings = (reqData, token) => async dispatch => {
+	try {
+		const { data } = await axios.post(
+			`${process.env.REACT_APP_ENITURE_API_URL}/save_dbsc_other_settings`,
+			reqData,
+			reqConfig(token)
+		)
+		console.log(data)
+	} catch (err) {
+		console.log(err)
+	}
+}
+
 export const setConfirmModalData =
 	(title = '', visible = false, url = '', data = null, action = '', type = '') =>
 	dispatch =>

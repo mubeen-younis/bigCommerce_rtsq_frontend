@@ -11,6 +11,7 @@ import useLoadComponent from '../hooks/useLoadComponent'
 import ShippingGroup from '../components/Pages/ShippingGroup'
 import ShippingRatesComponent from '../components/Pages/DBSC/ShippingRatesComponent'
 import ShippingClassesComponent from '../components/Pages/DBSC/ShippingClassesComponent'
+import OtherSettings from '../components/Pages/DBSC/OtherSettings'
 
 const { TabPane } = Tabs
 
@@ -114,7 +115,10 @@ function TabsLayout() {
 						<TabPane tab='Shipping Rates' key='9'>
 							<ShippingRatesComponent />
 						</TabPane>
-						<TabPane tab='Shipping Classes' key='10'>
+						<TabPane tab='Other Settings' key='10'>
+							<OtherSettings />
+						</TabPane>
+						<TabPane tab='Shipping Classes' key='11'>
 							<ShippingClassesComponent />
 						</TabPane>
 					</>
