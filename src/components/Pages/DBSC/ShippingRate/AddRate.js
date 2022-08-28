@@ -655,7 +655,9 @@ const AddRate = ({ zoneId, rates }) => {
 					}}>
 					<Button
 						type='primary'
-						className='mt-0 mb-1'
+						className={`${
+							rates && rates?.length > 0 ? 'mt-2' : 'mt-0'
+						} mb-1`}
 						onClick={() => {
 							setIsOpen(!isOpen)
 							dispatch({

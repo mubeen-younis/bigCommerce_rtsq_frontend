@@ -93,6 +93,13 @@ const RatesList = ({ zoneId, editRate, shippingRates }) => {
 					<Button
 						type='link'
 						onClick={() => {
+							dispatch({
+								type: 'ALERT_MESSAGE',
+								payload: {
+									showAlertMessage: false,
+									alertMessageType: '',
+								},
+							})
 							editRate(record)
 						}}>
 						Edit

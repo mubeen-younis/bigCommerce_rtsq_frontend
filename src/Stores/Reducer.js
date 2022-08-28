@@ -54,6 +54,7 @@ const initialState = {
 	shippingProfiles: null,
 	shippingClasses: null,
 	dbscBigComZones: null,
+	dbscOtherSettings: null,
 	modalData: {
 		visible: false,
 		title: '',
@@ -657,6 +658,15 @@ const Reducer = (state = initialState, action) => {
 				shippingClasses: state.shippingClasses.filter(
 					sc => sc.id !== action.payload
 				),
+			}
+
+		/* Dbsc other settings */
+
+		case types.SET_DBSC_OTHER_SETTINGS:
+		case types.GET_DBSC_OTHER_SETTINGS:
+			return {
+				...state,
+				dbscOtherSettings: action.payload,
 			}
 
 		/* Shipping Profiles */

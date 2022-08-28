@@ -32,7 +32,18 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 							lg={12}
 							xl={12}
 							style={{ textAlign: 'right' }}>
-							<Button type='link' onClick={() => editProfile(pf)}>
+							<Button
+								type='link'
+								onClick={() => {
+									dispatch({
+										type: 'ALERT_MESSAGE',
+										payload: {
+											showAlertMessage: false,
+											alertMessageType: '',
+										},
+									})
+									editProfile(pf)
+								}}>
 								Edit
 							</Button>
 							{!pf?.is_general_profile && (

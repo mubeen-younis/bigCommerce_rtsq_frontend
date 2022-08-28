@@ -1,8 +1,10 @@
-import { Form, Input, Radio, Skeleton, Space } from 'antd'
-import axios from 'axios'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import SaveButton from '../../SaveButton'
+import { Button, Col, Form, Input, Radio, Row, Skeleton, Space } from 'antd'
+import React, { useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+	getDbscOtherSettings,
+	saveDbscOtherSettings,
+} from '../../../Actions/DbscActions'
 
 const initialValues = {
 	multi_label: '',
@@ -11,40 +13,28 @@ const initialValues = {
 
 const OtherSettings = () => {
 	const [form] = Form.useForm()
-	const [initialState, setInitialState] = useState({})
-
-	const { token } = useSelector(state => state)
-
-	useEffect(() => {
-		const fetchSettings = async () => {
-			const { data } = await axios.get(
-				`${process.env.REACT_APP_ENITURE_API_URL}/get_dbsc_other_settings`,
-				{ headers: { authorization: `Bearer ${token}` } }
-			)
-			if (!data.error) {
-				setInitialState(data?.data ?? {})
-				form.setFieldsValue(data?.data ?? {})
-			}
-		}
-
-		fetchSettings()
-	}, [token, form])
-
-	const onFinish = useCallback(
-		async values => {
-			console.log(initialState, values)
-			const { data } = await axios.post(
-				`${process.env.REACT_APP_ENITURE_API_URL}/save_dbsc_other_settings`,
-				values,
-				{ headers: { authorization: `Bearer ${token}` } }
-			)
-
-			console.log(data)
-		},
-		[token, initialState]
+	const dispatch = useDispatch()
+	const { token, dbscOtherSettings, alertMessageType } = useSelector(
+		state => state
 	)
 
-	if (!initialState || initialState === null) return <Skeleton active />
+	useEffect(() => {
+		if (!dbscOtherSettings) dispatch(getDbscOtherSettings(token))
+	}, [token, dbscOtherSettings, dispatch])
+
+	const onFinish = useCallback(
+		values => {
+			const data = {
+				...dbscOtherSettings,
+				...values,
+			}
+
+			dispatch(saveDbscOtherSettings(data, token))
+		},
+		[dbscOtherSettings, dispatch, token]
+	)
+
+	if (!dbscOtherSettings) return <Skeleton active />
 
 	return (
 		<Form
@@ -53,15 +43,28 @@ const OtherSettings = () => {
 			className='other-settings'
 			size='large'
 			form={form}
-			initialValues={initialValues}
+			initialValues={dbscOtherSettings ?? initialValues}
 			onFinish={onFinish}>
-			<Form.Item label={<b>Multi-shipment label</b>} name='multi_label'>
-				<Input />
-				<div className={'text-gray'}>
-					Enter the label to use when more than one shipment is required
-					for the order
-				</div>
-			</Form.Item>
+			<Row gutter={30}>
+				<Col span={24}>
+					<Form.Item
+						label={<b>Multi-shipment label</b>}
+						name='multi_label'
+						className='mb-0'
+						rules={[
+							{
+								required: false,
+								message: 'Multi-shipment Label',
+							},
+						]}>
+						<Input />
+					</Form.Item>
+					<div className='text-gray mt-0 mb-3'>
+						Enter the label to use when more than one shipment is
+						required for the order
+					</div>
+				</Col>
+			</Row>
 
 			<Form.Item
 				label={
@@ -98,7 +101,21 @@ const OtherSettings = () => {
 				</Radio.Group>
 			</Form.Item>
 
-			<SaveButton />
+			<Row gutter={30} className={'mt-3'}>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+					<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
+						<Space>
+							<Button
+								type='primary'
+								size='large'
+								htmlType='submit'
+								loading={alertMessageType === 'loading'}>
+								Save Settings
+							</Button>
+						</Space>
+					</Form.Item>
+				</Col>
+			</Row>
 		</Form>
 	)
 }

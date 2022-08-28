@@ -1,6 +1,8 @@
 // import axios from '../Utilities/axios'
 import axios from 'axios'
+import types from '../Stores/types'
 import { dispatchAlert, setModalData } from '../Utilities/dispatchAlert'
+import { message } from 'antd'
 
 const reqConfig = token => {
 	const config = {
@@ -228,26 +230,89 @@ export const getDbscZones = token => async dispatch => {
 
 export const getDbscOtherSettings = token => async dispatch => {
 	try {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		})
+
 		const { data } = await axios.get(
 			`${process.env.REACT_APP_ENITURE_API_URL}/get_dbsc_other_settings`,
-			reqConfig(token)
+			{
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
+			}
 		)
-		console.log(data)
+		if (!data.error) {
+			dispatch({
+				type: types.GET_DBSC_OTHER_SETTINGS,
+				payload: data.data,
+			})
+		}
+
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: false,
+				alertMessage: '',
+				alertMessageType: data.error ? 'error' : 'success',
+			},
+		})
 	} catch (err) {
-		console.log(err)
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: false,
+				alertMessageType: '',
+			},
+		})
 	}
 }
 
 export const saveDbscOtherSettings = (reqData, token) => async dispatch => {
 	try {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		})
+		// const hideMessage = message.loading('Loading. Please wait...', 5)
+		// hideMessage()
+
 		const { data } = await axios.post(
 			`${process.env.REACT_APP_ENITURE_API_URL}/save_dbsc_other_settings`,
 			reqData,
 			reqConfig(token)
 		)
-		console.log(data)
+
+		if (!data.error) {
+			dispatch({
+				type: types.SET_DBSC_OTHER_SETTINGS,
+				payload: data.data,
+			})
+		}
+
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessage: data.message,
+				alertMessageType: data.error ? 'error' : 'success',
+			},
+		})
 	} catch (err) {
-		console.log(err)
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: false,
+				alertMessageType: '',
+			},
+		})
 	}
 }
 

@@ -39,6 +39,13 @@ const OriginsList = ({ profileId, editOrigin, shippingOrigins, originId }) => {
 							type='link'
 							onClick={() => {
 								// editOrigin(org)
+								dispatch({
+									type: 'ALERT_MESSAGE',
+									payload: {
+										showAlertMessage: false,
+										alertMessageType: '',
+									},
+								})
 								editOrigin({
 									...org,
 									parentId: originId,

@@ -53,6 +53,13 @@ const ZonesList = ({ profileId, editZone, shippingZones }) => {
 						<Button
 							type='link'
 							onClick={() => {
+								dispatch({
+									type: 'ALERT_MESSAGE',
+									payload: {
+										showAlertMessage: false,
+										alertMessageType: '',
+									},
+								})
 								editZone(zone)
 							}}>
 							Edit
