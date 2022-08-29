@@ -105,7 +105,7 @@ const AddRate = ({ zoneId, rates }) => {
 		<Space direction='vertical' size='large' className='w-100'>
 			<Row gutter={30}>
 				<Modal
-					title='Add rate'
+					title={`${action.type === 'edit' ? 'Edit' : 'Add'} rate`}
 					visible={isOpen}
 					onCancel={clearStates}
 					onOk={() => {}}

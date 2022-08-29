@@ -649,7 +649,11 @@ function OrderSettingsComponent(props) {
 												<h3>Origin and Services</h3>
 												<ul>
 													<li>
-														{widget?.locationtype}:{' '}
+														{(
+															widget.locationtype + ''
+														).trim().length
+															? `${widget.locationtype}: `
+															: ''}
 														{widget?.address}
 													</li>
 													<li>

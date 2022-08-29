@@ -7,6 +7,7 @@ import {
 	updateDbscData,
 } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
+import { setModalTitle } from '../../../../Utilities/modalActions'
 import ShippingProfile from './ShippingProfile'
 
 const { Option } = Select
@@ -39,10 +40,11 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 		if (alertMessageType === 'success') clearStates()
 	}, [alertMessageType, form, toggleAddProfileModal])
 
-	const setModalTitle = useCallback(() => {
-		const postfix = shippingClass ? ' class' : ' profile'
-		return `Add shipping ${postfix}`
-	}, [shippingClass])
+	// const setModalTitle = useCallback(() => {
+	// 	const act = action.type === 'edit' ? 'Edit' : 'Add'
+	// 	const postfix = shippingClass ? ' class' : ' profile'
+	// 	return `${act} shipping ${postfix}`
+	// }, [shippingClass, action.type])
 
 	const onFinish = useCallback(
 		values => {
@@ -108,10 +110,10 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 				classObj => !classesArr.includes(classObj.class_name)
 			)
 
-			return filteredClasses
+			return filteredClasses ?? []
 		}
 
-		return shippingClasses
+		return shippingClasses ?? []
 	}, [action?.type, shippingClasses, shippingProfiles])
 
 	const clearStates = useCallback(() => {
@@ -137,7 +139,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 			{visible && (
 				<Row gutter={30}>
 					<Modal
-						title={setModalTitle()}
+						title={setModalTitle(action.type, shippingClass)}
 						visible={visible}
 						onCancel={clearStates}
 						onOk={() => form.submit()}

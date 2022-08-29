@@ -1,11 +1,13 @@
 import { Button, Col, Row } from 'antd'
-import React, { Fragment, memo } from 'react'
+import React, { memo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
+import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal'
 import AddZone from '../ShippingZone/AddZone'
 
 const OriginsList = ({ profileId, editOrigin, shippingOrigins, originId }) => {
+	const [orgId, setOrgId] = useState(null)
 	const { shippingProfiles } = useSelector(state => state)
 	const dispatch = useDispatch()
 
@@ -56,6 +58,7 @@ const OriginsList = ({ profileId, editOrigin, shippingOrigins, originId }) => {
 						<Button
 							type='link'
 							onClick={() => {
+								setOrgId(org.id)
 								dispatch(
 									setConfirmModalData(
 										'origin',
@@ -72,6 +75,7 @@ const OriginsList = ({ profileId, editOrigin, shippingOrigins, originId }) => {
 				</Row>
 			))}
 
+			<ConfirmDeleteModal id={orgId} />
 			<AddZone
 				shippingZones={shippingProfiles?.zones?.[originId] ?? []}
 				profileId={profileId}

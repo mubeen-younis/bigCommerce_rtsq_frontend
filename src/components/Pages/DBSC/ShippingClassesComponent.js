@@ -1,12 +1,19 @@
 import React, { memo, useCallback, useEffect, useState } from 'react'
-import { Button, Form, Modal, Space, Table } from 'antd'
+import { Button, Col, Form, Modal, Row, Space, Table, Typography } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { setConfirmModalData, updateDbscData } from '../../../Actions/DbscActions'
+import {
+	addDbscData,
+	setConfirmModalData,
+	updateDbscData,
+} from '../../../Actions/DbscActions'
 import types from '../../../Stores/types'
 import ConfirmDeleteModal from './Modals/ConfirmDeleteModal'
 import { AddShippingClass } from './ShippingProfile/AddProfile'
 
+const { Title } = Typography
+
 const App = () => {
+	const [action, setAction] = useState('add')
 	const [isOpen, setIsOpen] = useState(false)
 	const [form] = Form.useForm()
 	const [initialValues] = useState({
@@ -19,10 +26,7 @@ const App = () => {
 	const { shippingClasses, alertMessageType, token } = useSelector(state => state)
 
 	useEffect(() => {
-		if (alertMessageType === 'success') {
-			setIsOpen(false)
-			setClassId(null)
-		}
+		if (alertMessageType === 'success') clearStates()
 	}, [alertMessageType])
 
 	const columns = [
@@ -50,6 +54,7 @@ const App = () => {
 					<Button
 						type='link'
 						onClick={() => {
+							setAction('edit')
 							setIsOpen(true)
 							setClassId(record.id)
 							form.setFieldsValue(record)
@@ -59,6 +64,7 @@ const App = () => {
 					<Button
 						type='link'
 						onClick={() => {
+							setClassId(record.id)
 							dispatch(
 								setConfirmModalData(
 									'class',
@@ -79,33 +85,77 @@ const App = () => {
 
 	const onFinish = useCallback(
 		values => {
+			console.log(action, values)
+			if (action === 'edit') {
+				dispatch(
+					updateDbscData(
+						'update_shipping_class',
+						{ ...values, id: classId },
+						types.UPDATE_DBSC_CLASS,
+						token
+					)
+				)
+
+				return
+			}
+
 			dispatch(
-				updateDbscData(
-					'update_shipping_class',
-					{ ...values, id: classId },
-					types.UPDATE_DBSC_CLASS,
+				addDbscData(
+					'add_shipping_class',
+					values,
+					types.ADD_DBSC_CLASS,
 					token
 				)
 			)
 		},
-		[classId, dispatch, token]
+		[classId, dispatch, token, action]
 	)
+
+	const handleAddClass = useCallback(() => {
+		setClassId(false)
+		form.resetFields()
+		form.setFieldsValue(initialValues)
+		setAction('add')
+	}, [form, initialValues])
+
+	const clearStates = useCallback(() => {
+		setIsOpen(false)
+		handleAddClass()
+	}, [handleAddClass])
 
 	return (
 		<>
+			<Row gutter={30} className='mb-2'>
+				<Col span={12}>
+					<Title level={4}>Shipping Classes </Title>
+				</Col>
+				<Col
+					span={12}
+					style={{
+						textAlign: 'right',
+					}}>
+					<Button
+						type='primary'
+						onClick={() => {
+							setIsOpen(true)
+							handleAddClass()
+						}}>
+						Add Shipping Class
+					</Button>
+				</Col>
+			</Row>
+
 			<Table columns={columns} dataSource={shippingClasses} />
-			<ConfirmDeleteModal />
+			<ConfirmDeleteModal id={classId} />
 			{isOpen && (
 				<Modal
-					title='Edit shipping class'
+					title={`${action === 'edit' ? 'Edit' : 'Add'} shipping class`}
 					visible={isOpen}
-					onCancel={() => {
-						setIsOpen(false)
-						form.resetFields()
-					}}
+					onCancel={clearStates}
 					onOk={() => form.submit()}
 					centered
 					destroyOnClose
+					afterClose={clearStates}
 					okText='Save'
 					footer={[
 						<Button key='back' onClick={() => setIsOpen(false)}>
@@ -114,6 +164,7 @@ const App = () => {
 						<Button
 							key='submit'
 							type='primary'
+							loading={alertMessageType === 'loading'}
 							onClick={() => form.submit()}>
 							Save
 						</Button>,

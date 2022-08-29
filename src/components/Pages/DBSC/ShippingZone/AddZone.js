@@ -146,7 +146,7 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 			{/* Add New Shipping Zone */}
 			{isOpen && (
 				<Modal
-					title='Create zone'
+					title={`${action.type === 'edit' ? 'Edit' : 'Create'} zone`}
 					visible={isOpen}
 					onCancel={clearStates}
 					onOk={() => {}}

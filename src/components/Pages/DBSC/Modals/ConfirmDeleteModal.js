@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteDbscData, setConfirmModalData } from '../../../../Actions/DbscActions'
 
-const ConfirmDeleteModal = () => {
+const ConfirmDeleteModal = ({ id }) => {
 	const dispatch = useDispatch()
 	const { modalData, alertMessageType, token } = useSelector(state => state)
 
@@ -21,7 +21,7 @@ const ConfirmDeleteModal = () => {
 	return (
 		<Modal
 			title='Delete confirmation'
-			visible={modalData.visible}
+			visible={modalData.visible && modalData.data && +modalData.data === +id}
 			onCancel={() => dispatch(setConfirmModalData('', false, '', null, ''))}
 			onOk={handleConfirm}
 			centered

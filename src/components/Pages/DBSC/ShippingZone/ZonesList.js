@@ -1,12 +1,14 @@
 import { Button, Col, Row } from 'antd'
 import Title from 'antd/lib/typography/Title'
-import React, { memo, useCallback } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
+import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal'
 import AddRate from '../ShippingRate/AddRate'
 
 const ZonesList = ({ profileId, editZone, shippingZones }) => {
+	const [zoneId, setZoneId] = useState(null)
 	const dispatch = useDispatch()
 	const { shippingProfiles, dbscBigComZones } = useSelector(state => state)
 
@@ -67,6 +69,7 @@ const ZonesList = ({ profileId, editZone, shippingZones }) => {
 						<Button
 							type='link'
 							onClick={() => {
+								setZoneId(zone.id)
 								dispatch(
 									setConfirmModalData(
 										'zone',
@@ -81,6 +84,7 @@ const ZonesList = ({ profileId, editZone, shippingZones }) => {
 						</Button>
 					</Col>
 
+					<ConfirmDeleteModal id={zoneId} />
 					{/* Shipping Rates */}
 					<AddRate
 						rates={shippingProfiles?.rates?.[zone.id] ?? []}

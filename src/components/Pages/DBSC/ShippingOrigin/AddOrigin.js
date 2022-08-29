@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import types from '../../../../Stores/types'
 import { addDbscData } from '../../../../Actions/DbscActions'
 import ShippingFrom from './ShippingFrom'
+import { setModalTitle } from '../../../../Utilities/modalActions'
 
 const { Option } = Select
 
@@ -115,7 +116,7 @@ const AddOrigin = ({ profileId }) => {
 
 			<Row gutter={30}>
 				<Modal
-					title='Add shipping origin'
+					title={setModalTitle(action.type, false, 'origin')}
 					visible={isOpen}
 					onCancel={clearStates}
 					onOk={() => {}}

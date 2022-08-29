@@ -1,11 +1,13 @@
 import { Button, Table } from 'antd'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { memo } from 'react'
 import { useDispatch } from 'react-redux'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
+import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal'
 
 const RatesList = ({ zoneId, editRate, shippingRates }) => {
+	const [rateId, setRateId] = useState(null)
 	const dispatch = useDispatch()
 
 	const columns = [
@@ -107,6 +109,7 @@ const RatesList = ({ zoneId, editRate, shippingRates }) => {
 					<Button
 						type='link'
 						onClick={() => {
+							setRateId(record.id)
 							dispatch(
 								setConfirmModalData(
 									'rate',
@@ -136,14 +139,18 @@ const RatesList = ({ zoneId, editRate, shippingRates }) => {
 	// if (!shippingRates) return <Skeleton active />
 
 	return (
-		<Table
-			dataSource={filterRatesData()}
-			columns={columns}
-			size='large'
-			className='custom-table mb-0'
-			pagination={false}
-			style={{ marginBottom: '0' }}
-		/>
+		<>
+			<Table
+				dataSource={filterRatesData()}
+				columns={columns}
+				size='large'
+				className='custom-table mb-0'
+				pagination={false}
+				style={{ marginBottom: '0' }}
+			/>
+
+			<ConfirmDeleteModal id={rateId} />
+		</>
 	)
 }
 

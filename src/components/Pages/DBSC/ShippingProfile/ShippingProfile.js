@@ -1,6 +1,6 @@
 import { Button, Card, Col, Row, Space } from 'antd'
 import Title from 'antd/lib/typography/Title'
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import AddOrigin from '../ShippingOrigin/AddOrigin'
 import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal'
@@ -9,6 +9,7 @@ import types from '../../../../Stores/types'
 
 const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 	const dispatch = useDispatch()
+	const [profileId, setProfileId] = useState(null)
 
 	return (
 		<Space direction='vertical' size='large' className='w-100'>
@@ -50,6 +51,7 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 								<Button
 									type='link'
 									onClick={() => {
+										setProfileId(pf.id)
 										dispatch(
 											setConfirmModalData(
 												'profile',
@@ -86,7 +88,7 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 				</Card>
 			))}
 
-			<ConfirmDeleteModal />
+			<ConfirmDeleteModal id={profileId} />
 		</Space>
 	)
 }
