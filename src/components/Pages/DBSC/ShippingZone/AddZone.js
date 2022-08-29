@@ -91,9 +91,9 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 				}
 			})
 
-			const filteredRegions = dbscBigComZones.filter(
-				zr => !regions.includes(zr.id.toString())
-			)
+			const filteredRegions =
+				dbscBigComZones?.filter(zr => !regions.includes(zr.id.toString())) ??
+				[]
 
 			return filteredRegions ?? []
 		}

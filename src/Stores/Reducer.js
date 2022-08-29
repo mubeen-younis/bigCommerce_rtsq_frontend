@@ -723,14 +723,16 @@ const Reducer = (state = initialState, action) => {
 			} else {
 				origin_id = action.payload?.origin_id
 			}
-			const prevOrigins = state.shippingProfiles.origin[origin_id] ?? []
+			const prevOrigins = state.shippingProfiles.origin
+				? state.shippingProfiles.origin?.origin_id
+				: []
 
 			const updatedData = {
 				...state.shippingProfiles,
 				origin: {
-					...state.shippingProfiles?.origin,
+					...(state.shippingProfiles?.origin ?? []),
 					[origin_id]: [
-						...prevOrigins,
+						...(prevOrigins ?? []),
 						isNew ? action.payload.origin : action.payload,
 					],
 				},
@@ -792,7 +794,7 @@ const Reducer = (state = initialState, action) => {
 				shippingProfiles: {
 					...state.shippingProfiles,
 					zones: {
-						...state.shippingProfiles.zones,
+						...(state.shippingProfiles.zones ?? []),
 						[dbsc_origin_id]: [
 							...(state.shippingProfiles.zones[dbsc_origin_id] ?? []),
 							action.payload,
@@ -844,9 +846,9 @@ const Reducer = (state = initialState, action) => {
 				shippingProfiles: {
 					...state.shippingProfiles,
 					rates: {
-						...state.shippingProfiles.rates,
+						...(state.shippingProfiles.rates ?? []),
 						[dbsc_shipping_zone_id]: [
-							...(state?.shippingProfiles.rates[
+							...(state.shippingProfiles.rates[
 								dbsc_shipping_zone_id
 							] ?? []),
 							action.payload,
