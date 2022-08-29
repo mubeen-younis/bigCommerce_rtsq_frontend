@@ -95,10 +95,10 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 				zr => !regions.includes(zr.id.toString())
 			)
 
-			return filteredRegions
+			return filteredRegions ?? []
 		}
 
-		return dbscBigComZones
+		return dbscBigComZones ?? []
 	}, [action.type, dbscBigComZones, shippingZones])
 
 	return (
@@ -217,7 +217,7 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 									<Select
 										mode='multiple'
 										placeholder='Select regions with within this zone'>
-										{filterZoneRegions().map(region => (
+										{filterZoneRegions()?.map(region => (
 											<Select.Option
 												key={region.id}
 												value={region.id.toString()}>
