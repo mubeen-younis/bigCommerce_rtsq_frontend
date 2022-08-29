@@ -18,7 +18,6 @@ export const getShippingProfiles = token => async dispatch => {
 	try {
 		dispatch(dispatchAlert(false, 'loading', ''))
 
-		// const { data } = await axios().get('get_dbsc_profiles')
 		const { data } = await axios.get(
 			`${process.env.REACT_APP_ENITURE_API_URL}/get_dbsc_profiles`,
 			reqConfig(token)
@@ -42,7 +41,6 @@ export const getShippingClasses = token => async dispatch => {
 	try {
 		dispatch(dispatchAlert(false, 'loading', ''))
 
-		// const { data } = await axios().get('get_shipping_classes')
 		const { data } = await axios.get(
 			`${process.env.REACT_APP_ENITURE_API_URL}/get_shipping_classes`,
 			reqConfig(token)
@@ -68,7 +66,6 @@ export const getDbscData =
 		try {
 			dispatch(dispatchAlert(false, 'loading', ''))
 
-			// const { data } = await axios().get(url)
 			const { data } = await axios.get(
 				`${process.env.REACT_APP_ENITURE_API_URL}/${url}`,
 				reqConfig(token)
@@ -92,7 +89,6 @@ export const addShippingClass = (classData, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		// const { data } = await axios().post('add_shipping_class', classData)
 		const { data } = await axios.post(
 			`${process.env.REACT_APP_ENITURE_API_URL}/add_shipping_class`,
 			classData,
@@ -115,7 +111,6 @@ export const addShippingProfile = (profileData, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		// const { data } = await axios().post('add_dbsc_profile', profileData)
 		const { data } = await axios.post(
 			`${process.env.REACT_APP_ENITURE_API_URL}/add_dbsc_profile`,
 			profileData,
@@ -138,7 +133,6 @@ export const addDbscData = (url, reqData, type, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		// const { data } = await axios().post(url, reqData)
 		const { data } = await axios.post(
 			`${process.env.REACT_APP_ENITURE_API_URL}/${url}`,
 			reqData,
@@ -161,7 +155,6 @@ export const updateDbscData = (url, reqData, type, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		// const { data } = await axios().post(url, reqData)
 		const { data } = await axios.post(
 			`${process.env.REACT_APP_ENITURE_API_URL}/${url}`,
 			reqData,
@@ -184,7 +177,6 @@ export const deleteDbscData = (url, reqData, type, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading', ''))
 
-		// const { data } = await axios().post(url, reqData)
 		const { data } = await axios.post(
 			`${process.env.REACT_APP_ENITURE_API_URL}/${url}`,
 			reqData,
@@ -208,7 +200,6 @@ export const getDbscZones = token => async dispatch => {
 	try {
 		dispatch(dispatchAlert(false, 'loading', ''))
 
-		// const { data } = await axios().get('get_zones_bc')
 		const { data } = await axios.get(
 			`${process.env.REACT_APP_ENITURE_API_URL}/get_zones_bc`,
 			reqConfig(token)
@@ -233,7 +224,7 @@ export const getDbscOtherSettings = token => async dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
-				showAlertMessage: true,
+				showAlertMessage: false,
 				alertMessageType: 'loading',
 			},
 		})
