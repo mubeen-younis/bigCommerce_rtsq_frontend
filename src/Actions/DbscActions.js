@@ -2,7 +2,7 @@
 import axios from 'axios'
 import types from '../Stores/types'
 import { dispatchAlert, setModalData } from '../Utilities/dispatchAlert'
-import { message } from 'antd'
+// import { message } from 'antd'
 
 const reqConfig = token => {
 	const config = {
