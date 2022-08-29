@@ -49,44 +49,6 @@ const FDOComponent = () => {
 		fetchStore()
 	}, [token])
 
-	const applyPromoCode = useCallback(async () => {
-		const config = {
-			headers: {
-				authorization: `Bearer ${token}`,
-			},
-		}
-		try {
-			dispatch({
-				type: 'ALERT_MESSAGE',
-				payload: {
-					showAlertMessage: true,
-					alertMessageType: 'loading',
-				},
-			})
-
-			const url = `${process.env.REACT_APP_ENITURE_API_URL}/apply_promo_code?type=av`
-			const { data } = await axios.post(url, {}, config)
-			if (!data.error) setAVData(data?.data ?? {})
-
-			dispatch({
-				type: 'ALERT_MESSAGE',
-				payload: {
-					alertMessage: data.message,
-					showAlertMessage: data.error,
-					alertMessageType: data.error ? 'error' : 'success',
-				},
-			})
-		} catch (err) {
-			dispatch({
-				type: 'ALERT_MESSAGE',
-				payload: {
-					showAlertMessage: false,
-					alertMessageType: '',
-				},
-			})
-		}
-	}, [dispatch, token])
-
 	const submitHandler = useCallback(
 		async (id = '') => {
 			try {
@@ -156,47 +118,21 @@ const FDOComponent = () => {
 							rel='noreferrer'>
 							(validate-addresses.com)
 						</a>{' '}
-						is a cloud-based platform that verifies an order’s address
-						details after the order is placed. It is also the most
-						economical way. You won’t be paying to validate an address
-						every time someone enters the checkout process and then
-						abandons the cart. Connect your store to Validate Address and
-						virtually eliminate to avoid spending your time validating
-						addresses.{' '}
+						is a cloud-based platform that verifies an order's ship-to
+						address after the order is placed. It helps eliminate the
+						cost associated with shipping orders to invalid addresses. To
+						connect your store to Validate Addresses, enter your Validate
+						Addresses ID number in the field below and click{' '}
+						<b>"Connect"</b>. Don't have a Validate Addresses account
+						yet? Click{' '}
 						<a
-							href='https://validate-addresses.com/'
+							href='https://validate-addresses.com/register'
 							target='_blank'
 							rel='noreferrer'>
-							(Learn more)
+							here{' '}
 						</a>
+						to register
 					</p>
-
-					{/* Message display */}
-					{avData?.message && (
-						<p
-							className='note-bx'
-							dangerouslySetInnerHTML={{
-								__html: avData?.message,
-							}}
-						/>
-					)}
-
-					{/* Promo Code section */}
-					{+avData?.used < 1 && (
-						<>
-							{+avData?.is_already_user === 1 && (
-								<div
-									style={{
-										display: 'flex',
-										justifyContent: 'center',
-									}}>
-									<Button onClick={applyPromoCode} type='primary'>
-										Apply Promo Code
-									</Button>
-								</div>
-							)}
-						</>
-					)}
 				</Col>
 			</Row>
 

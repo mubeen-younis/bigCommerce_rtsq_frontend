@@ -36,6 +36,8 @@ import UserGuideComponent from './components/Pages/UserGuideComponent'
 import AppLogs from './components/Pages/AppLogs'
 import { getDbscData}from './Actions/DbscActions'
 import types from './Stores/types'
+import OrdersComponent from './components/OrdersComponent'
+import ShippingGroupsComponent from './components/Pages/ShippingGroup'
 
 const { Header, Content } = Layout
 
@@ -203,6 +205,8 @@ function App(props) {
               <Route exact path='/plans' component={PlansComponent} />
               <Route path='/fdo' component={FDOComponent} />
               <Route path='/importcsv' component={ImportCsvComponent} />
+              <Route path='/shipping_groups' component={ShippingGroupsComponent} />
+              <Route path='/orders' component={OrdersComponent} />
               <Route path='/user_guide' component={UserGuideComponent} />
               <Route path='/av' component={AVComponent} />
               <Route path='/warehouses' component={WarehouseComponent} />

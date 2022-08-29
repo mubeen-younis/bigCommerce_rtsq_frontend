@@ -23,9 +23,11 @@ function SideMenu(props) {
     if (name.match(/\/$/)) setActiveMenu('99')
     else if (name.includes('plans')) setActiveMenu('100')
     else if (name.includes('warehouses')) setActiveMenu('101')
+    else if (name.includes('shipping_groups')) setActiveMenu('106')
     else if (name.includes('fdo')) setActiveMenu('102')
     else if (name.includes('av')) setActiveMenu('103')
     else if (name.includes('importcsv')) setActiveMenu('104')
+    else if (name.includes('orders')) setActiveMenu('107')
     else if (name.includes('user_guide')) setActiveMenu('105')
     else if (name.includes('addon'))
       setActiveMenu('addon-' + name.substring(name.lastIndexOf('/') + 1))
@@ -74,6 +76,14 @@ function SideMenu(props) {
             </Menu.Item>
 
             <Menu.Item
+              key='106'
+              warnkey={106}
+              onClick={() => setActiveMenu('106')}
+            >
+              <Link to={`/shipping_groups`}>Shipping Groups</Link>
+            </Menu.Item>
+
+            <Menu.Item
               key='102'
               warnkey={102}
               onClick={() => setActiveMenu('102')}
@@ -95,6 +105,14 @@ function SideMenu(props) {
               onClick={() => setActiveMenu('104')}
             >
               <Link to={`/importcsv`}>Import CSV</Link>
+            </Menu.Item>
+
+            <Menu.Item
+              key='107'
+              warnkey={107}
+              onClick={() => setActiveMenu('107')}
+            >
+              <Link to={`/orders`}>Orders</Link>
             </Menu.Item>
 
             <Menu.Item
