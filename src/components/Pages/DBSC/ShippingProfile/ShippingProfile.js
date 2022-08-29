@@ -6,6 +6,7 @@ import AddOrigin from '../ShippingOrigin/AddOrigin'
 import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
+import ActionButtons from '../ActionButtons'
 
 const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 	const dispatch = useDispatch()
@@ -33,38 +34,57 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 							lg={12}
 							xl={12}
 							style={{ textAlign: 'right' }}>
-							<Button
-								type='link'
-								onClick={() => {
-									dispatch({
-										type: 'ALERT_MESSAGE',
-										payload: {
-											showAlertMessage: false,
-											alertMessageType: '',
-										},
-									})
-									editProfile(pf)
-								}}>
-								Edit
-							</Button>
-							{!pf?.is_general_profile && (
-								<Button
-									type='link'
-									onClick={() => {
-										setProfileId(pf.id)
-										dispatch(
-											setConfirmModalData(
-												'profile',
-												true,
-												'delete_dbsc_profile',
-												pf.id,
-												types.DELETE_DBSC_PROFILE
+							<ActionButtons>
+								<div>
+									<Button
+										type='link'
+										onClick={() => {
+											dispatch({
+												type: 'ALERT_MESSAGE',
+												payload: {
+													showAlertMessage: false,
+													alertMessageType: '',
+												},
+											})
+											editProfile(pf)
+											dispatch({
+												type: types.SET_ACTION_BUTTONS_VISIBILITY,
+												payload: {
+													visible: false,
+													id: null,
+												},
+											})
+										}}>
+										Edit
+									</Button>
+								</div>
+
+								{!pf?.is_general_profile && (
+									<Button
+										type='link'
+										onClick={() => {
+											setProfileId(pf.id)
+											dispatch(
+												setConfirmModalData(
+													'profile',
+													true,
+													'delete_dbsc_profile',
+													pf.id,
+													types.DELETE_DBSC_PROFILE
+												)
 											)
-										)
-									}}>
-									Delete
-								</Button>
-							)}
+											dispatch({
+												type: types.SET_ACTION_BUTTONS_VISIBILITY,
+												payload: {
+													visible: false,
+													id: null,
+												},
+											})
+										}}>
+										Delete
+									</Button>
+								)}
+							</ActionButtons>
 						</Col>
 					</Row>
 

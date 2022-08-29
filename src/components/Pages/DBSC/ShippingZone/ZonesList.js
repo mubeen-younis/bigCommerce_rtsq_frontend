@@ -4,6 +4,7 @@ import React, { memo, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
+import ActionButtons from '../ActionButtons'
 import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal'
 import AddRate from '../ShippingRate/AddRate'
 
@@ -52,36 +53,55 @@ const ZonesList = ({ profileId, editZone, shippingZones }) => {
 						lg={12}
 						xl={12}
 						style={{ textAlign: 'right' }}>
-						<Button
-							type='link'
-							onClick={() => {
-								dispatch({
-									type: 'ALERT_MESSAGE',
-									payload: {
-										showAlertMessage: false,
-										alertMessageType: '',
-									},
-								})
-								editZone(zone)
-							}}>
-							Edit
-						</Button>
-						<Button
-							type='link'
-							onClick={() => {
-								setZoneId(zone.id)
-								dispatch(
-									setConfirmModalData(
-										'zone',
-										true,
-										'delete_dbsc_zone',
-										zone.id,
-										types.DELETE_DBSC_ZONE
+						<ActionButtons>
+							<div>
+								<Button
+									type='link'
+									onClick={() => {
+										dispatch({
+											type: 'ALERT_MESSAGE',
+											payload: {
+												showAlertMessage: false,
+												alertMessageType: '',
+											},
+										})
+										editZone(zone)
+										dispatch({
+											type: types.SET_ACTION_BUTTONS_VISIBILITY,
+											payload: {
+												visible: false,
+												id: null,
+											},
+										})
+									}}>
+									Edit
+								</Button>
+							</div>
+
+							<Button
+								type='link'
+								onClick={() => {
+									setZoneId(zone.id)
+									dispatch(
+										setConfirmModalData(
+											'zone',
+											true,
+											'delete_dbsc_zone',
+											zone.id,
+											types.DELETE_DBSC_ZONE
+										)
 									)
-								)
-							}}>
-							Delete
-						</Button>
+									dispatch({
+										type: types.SET_ACTION_BUTTONS_VISIBILITY,
+										payload: {
+											visible: false,
+											id: null,
+										},
+									})
+								}}>
+								Delete
+							</Button>
+						</ActionButtons>
 					</Col>
 
 					<ConfirmDeleteModal id={zoneId} />

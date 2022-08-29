@@ -4,6 +4,7 @@ import { memo } from 'react'
 import { useDispatch } from 'react-redux'
 import { setConfirmModalData } from '../../../../Actions/DbscActions'
 import types from '../../../../Stores/types'
+import ActionButtons from '../ActionButtons'
 import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal'
 
 const RatesList = ({ zoneId, editRate, shippingRates }) => {
@@ -91,21 +92,31 @@ const RatesList = ({ zoneId, editRate, shippingRates }) => {
 			dataIndex: 'action',
 			key: 'action',
 			render: (text, record) => (
-				<>
-					<Button
-						type='link'
-						onClick={() => {
-							dispatch({
-								type: 'ALERT_MESSAGE',
-								payload: {
-									showAlertMessage: false,
-									alertMessageType: '',
-								},
-							})
-							editRate(record)
-						}}>
-						Edit
-					</Button>
+				<ActionButtons>
+					<div>
+						<Button
+							type='link'
+							onClick={() => {
+								dispatch({
+									type: 'ALERT_MESSAGE',
+									payload: {
+										showAlertMessage: false,
+										alertMessageType: '',
+									},
+								})
+								editRate(record)
+								dispatch({
+									type: types.SET_ACTION_BUTTONS_VISIBILITY,
+									payload: {
+										visible: false,
+										id: null,
+									},
+								})
+							}}>
+							Edit
+						</Button>
+					</div>
+
 					<Button
 						type='link'
 						onClick={() => {
@@ -119,10 +130,17 @@ const RatesList = ({ zoneId, editRate, shippingRates }) => {
 									types.DELETE_DBSC_RATE
 								)
 							)
+							dispatch({
+								type: types.SET_ACTION_BUTTONS_VISIBILITY,
+								payload: {
+									visible: false,
+									id: null,
+								},
+							})
 						}}>
 						Delete
 					</Button>
-				</>
+				</ActionButtons>
 			),
 		},
 	]

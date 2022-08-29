@@ -64,6 +64,10 @@ const initialState = {
 		type: '',
 	},
 	isUspsSmallCarrier: false,
+	actionButtons: {
+		visible: false,
+		id: null,
+	},
 }
 
 const Reducer = (state = initialState, action) => {
@@ -895,6 +899,15 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				dbscBigComZones: action.payload,
+			}
+
+		case types.SET_ACTION_BUTTONS_VISIBILITY:
+			return {
+				...state,
+				actionButtons: {
+					visible: action.payload.visible,
+					id: action.payload.id,
+				},
 			}
 
 		default:

@@ -15,6 +15,7 @@ const { TextArea } = Input
 
 const AddProfile = ({ visible, toggleAddProfileModal }) => {
 	const [shippingClass, setShippingClass] = useState(false)
+	const [fromProfile, setFromProfile] = useState(false)
 	const [form] = Form.useForm()
 	const [initialValues] = useState({
 		nickname: '',
@@ -37,14 +38,13 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 		useSelector(state => state)
 
 	useEffect(() => {
-		if (alertMessageType === 'success') clearStates()
-	}, [alertMessageType, form, toggleAddProfileModal])
-
-	// const setModalTitle = useCallback(() => {
-	// 	const act = action.type === 'edit' ? 'Edit' : 'Add'
-	// 	const postfix = shippingClass ? ' class' : ' profile'
-	// 	return `${act} shipping ${postfix}`
-	// }, [shippingClass, action.type])
+		if (alertMessageType === 'success') {
+			if (fromProfile) {
+				setShippingClass(false)
+				toggleAddProfileModal(true)
+			} else clearStates()
+		}
+	}, [alertMessageType, form, toggleAddProfileModal, fromProfile])
 
 	const onFinish = useCallback(
 		values => {
@@ -61,7 +61,10 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 			}
 
 			if (shippingClass) dispatch(addShippingClass(values, token))
-			else dispatch(addShippingProfile(values, token))
+			else {
+				dispatch(addShippingProfile(values, token))
+				setFromProfile(false)
+			}
 		},
 		[action.type, action.payload?.id, shippingClass, dispatch, token]
 	)
@@ -118,9 +121,10 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 
 	const clearStates = useCallback(() => {
 		setAction({ type: 'add', payload: null })
-		toggleAddProfileModal(false)
 		setShippingClass(false)
 		setIsRequired(true)
+		setFromProfile(false)
+		toggleAddProfileModal(false)
 		form.resetFields()
 		form.setFieldsValue(initialValues)
 	}, [form, initialValues, toggleAddProfileModal])
@@ -294,10 +298,10 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 												type='text'
 												htmlType='button'
 												onClick={() => {
+													setFromProfile(true)
 													setShippingClass(
 														prevState => !prevState
 													)
-													form.resetFields()
 													setAction({
 														type: 'add',
 														payload: {},
