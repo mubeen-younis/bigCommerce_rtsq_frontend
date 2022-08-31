@@ -8,6 +8,7 @@ import { validateHandlingFeeMarkup } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import CutOffTime from '../../CutOffTime'
 import RAD from '../../RAD'
+import InsideDeliverySettings from '../../InsideDeliverySettings'
 import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from './RatingMethod'
@@ -26,6 +27,8 @@ const initialState = {
   residentialPickup: false,
   alwaysResidentialDelivery: false,
   autoDetectedResidentialAddresses: false,
+  liftGatePickup: false,
+  insideDelivery: false,
   alwaysLiftGatePickup: false,
   alwaysLiftGateDelivery: false,
   offerLiftGateDelivery: false,
@@ -168,6 +171,11 @@ function QuoteSettingsComponentWwe(props) {
           radStatus={radStatus}
         />
 
+        <InsideDeliverySettings
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
+        
         <Row gutter={30} className={'mb-3'}>
           <Col
             className='gutter-row'
