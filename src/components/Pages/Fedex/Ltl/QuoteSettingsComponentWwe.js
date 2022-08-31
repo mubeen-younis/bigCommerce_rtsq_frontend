@@ -10,12 +10,13 @@ import {
 import RAD from '../../../RAD'
 import LiftGateDelivery from '../../../LiftGateDelivery'
 import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
-// import HoldAtTerminal from '../../../HoldAtTerminal'
+import HoldAtTerminal from '../../../HoldAtTerminal'
 import Discounts from '../../../Discounts'
 import HandlingUnit from '../../../HandlingUnit'
 import SaveButton from '../../../SaveButton'
 import QuoteServices from './QuoteServices'
 import WeightThreshold from '../../../WeightThreshold'
+import ReturnRates from '../../../ReturnRates'
 
 const initialState = {
   fedex_freight_economy_label: '',
@@ -43,7 +44,7 @@ const initialState = {
   autoDetectedResidentialAddressesLfg: false,
   weight_of_handling_unit: '',
   max_weight_per_handling_unit: '',
-  returnRates: false,
+  return_rates: false,
   quote_details: 1,
   weight_threshold: '150',
 }
@@ -290,10 +291,10 @@ function QuoteSettingsComponentWwe(props) {
           radStatus={radStatus}
         />
 
-        {/* <HoldAtTerminal
+        <HoldAtTerminal
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
-				/> */}
+				/>
 
         <WeightThreshold
           quoteSettingsState={quoteSettingsState}
@@ -308,6 +309,11 @@ function QuoteSettingsComponentWwe(props) {
         <Discounts
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
+        />
+        
+        <ReturnRates
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
         />
 
         <SaveButton />
