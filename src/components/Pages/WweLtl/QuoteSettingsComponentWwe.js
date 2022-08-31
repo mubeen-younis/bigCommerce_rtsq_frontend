@@ -13,6 +13,7 @@ import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ReturnRates from '../../ReturnRates'
 
 const { Option } = Select
 const initialState = {
@@ -35,6 +36,7 @@ const initialState = {
   own_arrangement_text: '',
   insurance_category: '84-General Merchandise',
   weight_threshold: '150',
+  return_rates: false
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -324,6 +326,11 @@ function QuoteSettingsComponentWwe(props) {
             </Col>
           </Row>
         )}
+
+        <ReturnRates
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
 
         <SaveButton />
       </Form>
