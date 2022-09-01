@@ -11,6 +11,7 @@ const LiftGateDelivery = ({
 	quoteSettingsState,
 	setQuoteSettingsState,
 	radStatus,
+	showLiftGatePickup = false,
 }) => {
 	const dispatch = useDispatch()
 	const { installedAddons } = useSelector(state => state)
@@ -32,25 +33,42 @@ const LiftGateDelivery = ({
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 				<Title level={4}>Lift gate settings</Title>
 			</Col>
-			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-				<label className={'text-gray'}>
-					Always include lift gate pick up
-				</label>
-			</Col>
-			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-				<Form.Item className={'mb-0'}>
-					<Checkbox
-						name='liftGatePickup'
-						value={true}
-						checked={quoteSettingsState.liftGatePickup}
-						onChange={(e) =>
-							setQuoteSettingsState({
-								...quoteSettingsState,
-								liftGatePickup: e.target.checked
-							})
-						}></Checkbox>
-				</Form.Item>
-			</Col>
+			{showLiftGatePickup && (
+				<>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={12}
+						md={12}
+						lg={12}
+						xl={6}>
+						<label className={'text-gray'}>
+							Always include lift gate pick up
+						</label>
+					</Col>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={12}
+						md={12}
+						lg={12}
+						xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name='liftGatePickup'
+								value={true}
+								checked={quoteSettingsState.liftGatePickup}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										liftGatePickup: e.target.checked,
+									})
+								}></Checkbox>
+						</Form.Item>
+					</Col>
+				</>
+			)}
+
 			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 				<label className={'text-gray'}>
 					Always quote lift gate delivery

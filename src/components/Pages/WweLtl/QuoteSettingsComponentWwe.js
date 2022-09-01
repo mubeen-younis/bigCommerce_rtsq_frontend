@@ -171,6 +171,7 @@ function QuoteSettingsComponentWwe(props) {
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
+          showLiftGatePickup={true}
         />
 
         <InsideDeliverySettings
