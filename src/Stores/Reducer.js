@@ -773,15 +773,24 @@ const Reducer = (state = initialState, action) => {
 				org => org.id !== id
 			)
 
+			const updatedData = {
+				...state.shippingProfiles,
+				origin: {
+					...state.shippingProfiles.origin,
+					[origin_id]: updatedOrigins,
+				},
+			}
+
+			// if (updatedData.origin) {
+			// 	const orgsList = updatedData.origin[origin_id] ?? []
+			// 	if (!orgsList?.length) {
+			// 		delete updatedData.origins[origin_id]
+			// 	}
+			// }
+
 			return {
 				...state,
-				shippingProfiles: {
-					...state.shippingProfiles,
-					origin: {
-						...state.shippingProfiles.origin,
-						[origin_id]: updatedOrigins,
-					},
-				},
+				shippingProfiles: updatedData,
 			}
 		}
 

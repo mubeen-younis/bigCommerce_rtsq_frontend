@@ -99,7 +99,15 @@ const AddOrigin = ({ profileId }) => {
 
 	const checkProfileOrigins = useCallback(() => {
 		const origins = shippingProfiles?.origins?.[profileId] ?? []
-		if (shippingProfiles && origins?.length > 0) return true
+		let filteredOrigins = []
+		if (origins && origins?.length > 0) {
+			filteredOrigins =
+				origins?.filter(
+					org => (shippingProfiles?.origin[org.id] ?? [])?.length
+				) ?? []
+		}
+
+		if (shippingProfiles && filteredOrigins?.length > 0) return true
 
 		return false
 	}, [profileId, shippingProfiles])

@@ -15,7 +15,15 @@ const ShippingFrom = ({
 	const { shippingProfiles } = useSelector(state => state)
 	const dispatch = useDispatch()
 
-	if (!origins || !origins.length) {
+	let filteredOrigins = []
+	if (origins && origins?.length > 0) {
+		filteredOrigins =
+			origins?.filter(
+				org => (shippingProfiles?.origin[org.id] ?? [])?.length
+			) ?? []
+	}
+
+	if (!origins || !origins?.length || !filteredOrigins?.length) {
 		return (
 			<Card>
 				<Row gutter={30} className='mb-2'>
@@ -58,8 +66,8 @@ const ShippingFrom = ({
 		)
 	}
 
-	return origins && origins.length
-		? origins.map(origin => (
+	return filteredOrigins && filteredOrigins?.length > 0
+		? filteredOrigins.map(origin => (
 				<Card key={origin.id} className='mb-2'>
 					<Row gutter={30} className='mb-2'>
 						<Col
