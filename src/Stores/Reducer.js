@@ -724,7 +724,7 @@ const Reducer = (state = initialState, action) => {
 				origin_id = action.payload?.origin_id
 			}
 			const prevOrigins = state.shippingProfiles.origin
-				? state.shippingProfiles.origin?.origin_id
+				? state.shippingProfiles.origin[origin_id]
 				: []
 
 			const updatedData = {

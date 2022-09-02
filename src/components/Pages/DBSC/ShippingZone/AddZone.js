@@ -216,7 +216,12 @@ const AddZone = ({ profileId, shippingZones, originId }) => {
 									]}>
 									<Select
 										mode='multiple'
-										placeholder='Select regions with within this zone'>
+										placeholder='Select regions with within this zone'
+										filterOption={(input, option) =>
+											option.children
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}>
 										{filterZoneRegions()?.map(region => (
 											<Select.Option
 												key={region.id}

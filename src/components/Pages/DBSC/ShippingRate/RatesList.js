@@ -41,10 +41,20 @@ const RatesList = ({ zoneId, editRate, shippingRates }) => {
 			render: (text, record) =>
 				`${
 					record.minimum_distance
-						? record.minimum_distance + ' km'
+						? `${record.minimum_distance} ${
+								record.distance_unit.toLowerCase() === 'mile'
+									? 'mile'
+									: 'km'
+						  }`
 						: 0 + ' mi'
 				} - ${
-					record.maximum_distance ? record.maximum_distance + ' km' : ' up'
+					record.maximum_distance
+						? `${record.maximum_distance} ${
+								record.distance_unit.toLowerCase() === 'mile'
+									? 'mile'
+									: 'km'
+						  }`
+						: ' up'
 				}`,
 		},
 		{
