@@ -438,21 +438,12 @@ const Settings = ({
 									'shipping_group_enabled',
 									false
 								)
-								onChangeVariant(
-									index,
-									'shipping_class_enabled',
-									false
-								)
 								onChangeVariant(index, 'shipping_group', null)
-								onChangeVariant(index, 'shipping_class', null)
 							}}
 							name='dropship_enabled'
 							id={'dropship_enabled' + index}
 							checked={product?.dropship_enabled}
-							disabled={
-								product?.shipping_group_enabled ||
-								product?.shipping_class_enabled
-							}>
+							disabled={product?.shipping_group_enabled}>
 							Dropship this product
 						</Checkbox>
 					</Col>
@@ -468,49 +459,12 @@ const Settings = ({
 								)
 								onChangeVariant(index, 'dropship_enabled', false)
 								onChangeVariant(index, 'dropship_location', null)
-								onChangeVariant(
-									index,
-									'shipping_class_enabled',
-									false
-								)
-								onChangeVariant(index, 'shipping_class', null)
 							}}
 							name='shipping_group_enabled'
 							id={'shipping_group_enabled' + index}
 							checked={product?.shipping_group_enabled}
-							disabled={
-								product?.dropship_enabled ||
-								product?.shipping_class_enabled
-							}>
+							disabled={product?.dropship_enabled}>
 							Assign this product to a shipping group
-						</Checkbox>
-					</Col>
-
-					<Col span={24} style={{ marginTop: '7px' }}>
-						<Checkbox
-							onChange={e => {
-								onChangeVariant(
-									index,
-									'shipping_class_enabled',
-									e.target.checked
-								)
-								onChangeVariant(index, 'dropship_enabled', false)
-								onChangeVariant(index, 'dropship_location', null)
-								onChangeVariant(
-									index,
-									'shipping_group_enabled',
-									false
-								)
-								onChangeVariant(index, 'shipping_group', null)
-							}}
-							name='shipping_class_enabled'
-							id={'shipping_class_enabled' + index}
-							checked={product?.shipping_class_enabled}
-							disabled={
-								product?.dropship_enabled ||
-								product?.shipping_group_enabled
-							}>
-							Assign this product to a shipping class
 						</Checkbox>
 					</Col>
 				</Row>
@@ -591,6 +545,22 @@ const Settings = ({
 				) : null}
 
 				{/* Shipping Classes */}
+				<Col span={24} style={{ marginTop: '7px' }}>
+					<Checkbox
+						onChange={e => {
+							onChangeVariant(
+								index,
+								'shipping_class_enabled',
+								e.target.checked
+							)
+						}}
+						name='shipping_class_enabled'
+						id={'shipping_class_enabled' + index}
+						checked={product?.shipping_class_enabled}>
+						Assign this product to a shipping class
+					</Checkbox>
+				</Col>
+
 				{product?.shipping_class_enabled ? (
 					<Row gutter={16}>
 						<Col span={24} style={{ marginTop: '7px' }}>
