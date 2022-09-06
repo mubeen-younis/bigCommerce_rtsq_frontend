@@ -40,16 +40,15 @@ function ConnectionSettingsComponent() {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have a freight enabled FreightQuote
-				account to use this application. If you do not have one, fill this
-				form to{' '}
+				<strong>Note!</strong> You must have an account with C.H. Robinson to
+				use this application. If you don't have one, use{' '}
 				<a
-					href='https://b2b.freightquote.com/signup.aspx'
+					href='https://www.chrobinson.com/en-us/contact/connect-with-an-expert/'
 					target='_blank'
 					rel='noreferrer'>
-					click here
+					this link
 				</a>{' '}
-				register online.
+				to connect to an expert.
 			</div>
 			<Form
 				layout='vertical'
