@@ -264,7 +264,7 @@ function QuoteSettingsComponentWwe(props) {
         />
         <HandlingUnit
           quoteSettingsState={quoteSettingsState}
-          handleStateChange={handleStateChange}
+          handleChange={handleStateChange}
         />
 
         <Row gutter={30} className={'mb-3'}>
