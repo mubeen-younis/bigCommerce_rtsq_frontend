@@ -7,6 +7,10 @@ import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
 import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
 import useLoadComponent from '../hooks/useLoadComponent'
+import ShippingGroup from '../components/Pages/ShippingGroup'
+import ShippingRatesComponent from '../components/Pages/DBSC/ShippingRatesComponent'
+import ShippingClassesComponent from '../components/Pages/DBSC/ShippingClassesComponent'
+import OtherSettings from '../components/Pages/DBSC/OtherSettings'
 
 const { TabPane } = Tabs
 
@@ -59,6 +63,7 @@ function TabsLayout() {
 				'daylight-ltl',
 				'purolator-small',
 				'freightquote-chr-ltl',
+				'dbsc',
 			]
 
 			for (const ic of installedCarriers) {
@@ -90,16 +95,17 @@ function TabsLayout() {
 		setTab(key)
 	}, [])
 
-	const [connectionSettings, quoteSettings] = useLoadComponent(component)
+	const [connSettingsComponent, quoteSettingsComponent] =
+		useLoadComponent(component)
 
 	return (
 		<Fragment>
 			<PlanStatusHeading />
 
 			<Tabs className={'tabs-wrp'} onChange={handleActiveTab} type='card'>
-				{carrierSlug !== 'usps-small' && (
+				{carrierSlug !== 'usps-small' && carrierSlug !== 'dbsc' && (
 					<TabPane tab='Connection Settings' key='1'>
-						{connectionSettings}
+						{connSettingsComponent}
 					</TabPane>
 				)}
 				{[
@@ -118,13 +124,31 @@ function TabsLayout() {
 						<GTZCarriersComponent />
 					</TabPane>
 				)}
-				<TabPane tab='Quote Settings' key='5'>
-					{quoteSettings}
+				{['dbsc'].includes(carrierSlug) && (
+					<>
+						<TabPane tab='Shipping Rates' key='9'>
+							<ShippingRatesComponent />
+						</TabPane>
+						<TabPane tab='Other Settings' key='10'>
+							<OtherSettings />
+						</TabPane>
+						<TabPane tab='Shipping Classes' key='11'>
+							<ShippingClassesComponent />
+						</TabPane>
+					</>
+				)}
+				<TabPane tab='Shipping Groups' key='4'>
+					<ShippingGroup />
 				</TabPane>
+				{!['dbsc'].includes(carrierSlug) && (
+					<TabPane tab='Quote Settings' key='5'>
+						{quoteSettingsComponent}
+					</TabPane>
+				)}
 				<TabPane tab='Product Settings' key='6'>
 					<ProductSettingsComponent />
 				</TabPane>
-
+				{/* Need to add small carriers index */}
 				{smallCarriersSlugs.includes(carrierSlug) && (
 					<TabPane tab='Box Sizes' key='8'>
 						<BoxSizesComponent />

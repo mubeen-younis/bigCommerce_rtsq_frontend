@@ -10,3 +10,20 @@ export const dispatchAlert = (
 		alertMessageType,
 	},
 })
+
+export const setModalData = (
+	title = '',
+	visible = false,
+	url = '',
+	data = null,
+	action = ''
+) => ({
+	type: 'SET_MODAL_DATA',
+	payload: {
+		title,
+		visible,
+		url,
+		data,
+		action,
+	},
+})

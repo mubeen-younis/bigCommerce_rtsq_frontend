@@ -1,0 +1,120 @@
+import { Button, Card, Col, Row, Typography } from 'antd'
+import React, { memo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import OriginsList from './OriginsList'
+
+const { Title } = Typography
+
+const ShippingFrom = ({
+	profileId,
+	editOrigin,
+	setIsOpen,
+	origins,
+	setOriginId,
+}) => {
+	const { shippingProfiles } = useSelector(state => state)
+	const dispatch = useDispatch()
+
+	let filteredOrigins = []
+	if (origins && origins?.length > 0) {
+		filteredOrigins =
+			origins?.filter(
+				org => (shippingProfiles?.origin[org.id] ?? [])?.length
+			) ?? []
+	}
+
+	if (!origins || !origins?.length || !filteredOrigins?.length) {
+		return (
+			<Card>
+				<Row gutter={30} className='mb-2'>
+					<Col
+						className='gutter-row'
+						xs={12}
+						sm={12}
+						md={12}
+						lg={12}
+						xl={12}>
+						<Title level={4}>Shipping from</Title>
+					</Col>
+
+					<Col
+						className='gutter-row mb-2'
+						xs={12}
+						sm={12}
+						md={12}
+						lg={12}
+						xl={12}
+						style={{ textAlign: 'right' }}>
+						<Button
+							type='link'
+							onClick={() => {
+								setIsOpen(true)
+								setOriginId(null)
+								dispatch({
+									type: 'ALERT_MESSAGE',
+									payload: {
+										showAlertMessage: false,
+										alertMessageType: '',
+									},
+								})
+							}}>
+							Add shipping origin
+						</Button>
+					</Col>
+				</Row>
+			</Card>
+		)
+	}
+
+	return filteredOrigins && filteredOrigins?.length > 0
+		? filteredOrigins.map(origin => (
+				<Card key={origin.id} className='mb-2'>
+					<Row gutter={30} className='mb-2'>
+						<Col
+							className='gutter-row'
+							xs={12}
+							sm={12}
+							md={12}
+							lg={12}
+							xl={12}>
+							<Title level={4}>Shipping from</Title>
+						</Col>
+
+						<Col
+							className='gutter-row mb-2'
+							xs={12}
+							sm={12}
+							md={12}
+							lg={12}
+							xl={12}
+							style={{ textAlign: 'right' }}>
+							<Button
+								type='link'
+								onClick={() => {
+									setIsOpen(true)
+									setOriginId(origin.id)
+									dispatch({
+										type: 'ALERT_MESSAGE',
+										payload: {
+											showAlertMessage: false,
+											alertMessageType: '',
+										},
+									})
+								}}>
+								Add shipping origin
+							</Button>
+						</Col>
+					</Row>
+
+					<OriginsList
+						profileId={profileId}
+						editOrigin={editOrigin}
+						shippingOrigins={shippingProfiles?.origin?.[origin.id] ?? []}
+						originId={origin.id}
+					/>
+				</Card>
+		  ))
+		: null
+}
+
+export default memo(ShippingFrom)

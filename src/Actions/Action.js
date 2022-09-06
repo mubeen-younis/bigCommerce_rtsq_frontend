@@ -1,4 +1,3 @@
-import { message } from 'antd'
 import axios from 'axios'
 
 export const postData = (data, type, url, token, setVisibleWarehouse = null) => {
@@ -15,8 +14,6 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 				alertMessageType: 'loading',
 			},
 		})
-	
-		const hideMessage=message.loading('Loading. Please wait...',20)
 
 		const isTestConnection = type === 'GET_CONNECTION_SETTINGS' && data.testType
 		Object.keys(data).map(
@@ -28,7 +25,6 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 		axios
 			.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data, config)
 			.then(({ data }) => {
-				hideMessage()
 				if (!data.error) {
 					if (data?.data?.value) {
 						dispatch({
@@ -56,7 +52,7 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 						setVisibleWarehouse(false)
 					}
 				}
-			
+
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
@@ -66,9 +62,7 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 					},
 				})
 			})
-			.catch(error => {
-				hideMessage()
-			})
+			.catch(error => {})
 	}
 }
 
