@@ -1,8 +1,6 @@
-// import axios from '../Utilities/axios'
 import axios from 'axios'
 import types from '../Stores/types'
 import { dispatchAlert, setModalData } from '../Utilities/dispatchAlert'
-// import { message } from 'antd'
 
 const reqConfig = token => {
 	const config = {
@@ -272,8 +270,6 @@ export const saveDbscOtherSettings = (reqData, token) => async dispatch => {
 				alertMessageType: 'loading',
 			},
 		})
-		// const hideMessage = message.loading('Loading. Please wait...', 5)
-		// hideMessage()
 
 		const { data } = await axios.post(
 			`${process.env.REACT_APP_ENITURE_API_URL}/save_dbsc_other_settings`,

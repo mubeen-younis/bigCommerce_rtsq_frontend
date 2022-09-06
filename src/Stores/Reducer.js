@@ -781,13 +781,6 @@ const Reducer = (state = initialState, action) => {
 				},
 			}
 
-			// if (updatedData.origin) {
-			// 	const orgsList = updatedData.origin[origin_id] ?? []
-			// 	if (!orgsList?.length) {
-			// 		delete updatedData.origins[origin_id]
-			// 	}
-			// }
-
 			return {
 				...state,
 				shippingProfiles: updatedData,

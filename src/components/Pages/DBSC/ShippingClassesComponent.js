@@ -85,7 +85,6 @@ const App = () => {
 
 	const onFinish = useCallback(
 		values => {
-			console.log(action, values)
 			if (action === 'edit') {
 				dispatch(
 					updateDbscData(

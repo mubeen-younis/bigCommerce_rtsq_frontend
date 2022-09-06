@@ -43,7 +43,6 @@ const OriginsList = ({ profileId, editOrigin, shippingOrigins, originId }) => {
 								<Button
 									type='link'
 									onClick={() => {
-										// editOrigin(org)
 										dispatch({
 											type: 'ALERT_MESSAGE',
 											payload: {

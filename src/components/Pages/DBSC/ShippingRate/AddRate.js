@@ -24,7 +24,6 @@ const AddRate = ({ zoneId, rates }) => {
 		maximum_distance: '',
 		minimum_weight: '',
 		maximum_weight: '',
-		//and_or: 'And',
 		minimum_length: '',
 		maximum_length: '',
 		distance_adjustment: '',

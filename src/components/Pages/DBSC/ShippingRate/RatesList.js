@@ -164,8 +164,6 @@ const RatesList = ({ zoneId, editRate, shippingRates }) => {
 		[shippingRates]
 	)
 
-	// if (!shippingRates) return <Skeleton active />
-
 	return (
 		<>
 			<Table
