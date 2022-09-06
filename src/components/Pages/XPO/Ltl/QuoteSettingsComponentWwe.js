@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
-import { Row, Form, Col, Input, Skeleton, Checkbox } from 'antd'
+import { Row, Form, Col, Input, Skeleton } from 'antd'
 
 import { connect, useDispatch } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
@@ -12,7 +12,7 @@ import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../CutOffTime'
 import RAD from '../../../RAD'
 import LiftGateDelivery from '../../../LiftGateDelivery'
-// import HoldAtTerminal from '../../../HoldAtTerminal'
+import HoldAtTerminal from '../../../HoldAtTerminal'
 import HandlingUnit from '../../../HandlingUnit'
 import SaveButton from '../../../SaveButton'
 import WeightThreshold from '../../../WeightThreshold'
@@ -197,6 +197,11 @@ function QuoteSettingsComponentWwe(props) {
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
+        />
+        
+        <HoldAtTerminal
+          quoteSettingsState={quoteSettingsState}
+          handleChange={handleStateChange}
         />
 
         <WeightThreshold
