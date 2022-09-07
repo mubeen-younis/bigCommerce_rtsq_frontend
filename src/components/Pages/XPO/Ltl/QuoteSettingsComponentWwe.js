@@ -15,6 +15,7 @@ import LiftGateDelivery from '../../../LiftGateDelivery'
 import HoldAtTerminal from '../../../HoldAtTerminal'
 import HandlingUnit from '../../../HandlingUnit'
 import SaveButton from '../../../SaveButton'
+import ReturnRates from '../../../ReturnRates'
 import WeightThreshold from '../../../WeightThreshold'
 
 const initialState = {
@@ -212,6 +213,11 @@ function QuoteSettingsComponentWwe(props) {
         <HandlingUnit
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
+        />
+
+        <ReturnRates
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
         />
 
         <SaveButton />
