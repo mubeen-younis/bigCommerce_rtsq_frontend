@@ -463,6 +463,14 @@ function ProductSettingsComponent(props) {
 					error = true
 					msg = 'Shipping group is required'
 				}
+			} else if (
+				prd.shipping_class_enabled === 1 ||
+				prd.shipping_class_enabled
+			) {
+				if (!prd.shipping_class) {
+					error = true
+					msg = 'Shipping class is required'
+				}
 			}
 		}
 

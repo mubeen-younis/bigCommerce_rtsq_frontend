@@ -31,6 +31,7 @@ const Settings = ({
 		installedAddons,
 		token,
 		store,
+		shippingClasses,
 	} = useSelector(state => state)
 	const dispatch = useDispatch()
 
@@ -535,6 +536,59 @@ const Settings = ({
 										shippingGroups.map(value => (
 											<Option value={value.id} key={value.id}>
 												{value.nickname}
+											</Option>
+										))}
+								</Select>
+							</Form.Item>
+						</Col>
+					</Row>
+				) : null}
+
+				{/* Shipping Classes */}
+				<Col span={24} style={{ marginTop: '7px' }}>
+					<Checkbox
+						onChange={e => {
+							onChangeVariant(
+								index,
+								'shipping_class_enabled',
+								e.target.checked
+							)
+						}}
+						name='shipping_class_enabled'
+						id={'shipping_class_enabled' + index}
+						checked={product?.shipping_class_enabled}>
+						Assign this product to a shipping class
+					</Checkbox>
+				</Col>
+
+				{product?.shipping_class_enabled ? (
+					<Row gutter={16}>
+						<Col span={24} style={{ marginTop: '7px' }}>
+							<Form.Item label='Shipping Class'>
+								<Select
+									placeholder='Shipping Class'
+									size={'large'}
+									style={{ width: '100%' }}
+									name='shipping_class'
+									id={'shipping_class' + index}
+									defaultValue={product?.shipping_class ?? null}
+									value={product?.shipping_class ?? null}
+									onChange={location =>
+										onChangeVariant(
+											index,
+											'shipping_class',
+											location
+										)
+									}>
+									{shippingClasses && (
+										<Option value={null}>
+											Select Shipping Class
+										</Option>
+									)}
+									{shippingClasses &&
+										shippingClasses.map(value => (
+											<Option value={value.id} key={value.id}>
+												{value.class_name}
 											</Option>
 										))}
 								</Select>

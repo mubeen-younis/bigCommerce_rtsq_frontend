@@ -50,7 +50,24 @@ const initialState = {
 	shippingGroups: null,
 	fdoCouponInfo: null,
 	fdoCouponCarrierInfo: null,
+	/* Dbsc states */
+	shippingProfiles: null,
+	shippingClasses: null,
+	dbscBigComZones: null,
+	dbscOtherSettings: null,
+	modalData: {
+		visible: false,
+		title: '',
+		data: null,
+		action: '',
+		url: '',
+		type: '',
+	},
 	isUspsSmallCarrier: false,
+	actionButtons: {
+		visible: false,
+		id: null,
+	},
 }
 
 const Reducer = (state = initialState, action) => {
@@ -620,6 +637,282 @@ const Reducer = (state = initialState, action) => {
 				fdoCouponCarrierInfo: action.payload,
 			}
 		}
+
+		/* Shipping Classes */
+		case types.GET_DBSC_CLASSES:
+			return {
+				...state,
+				shippingClasses: action.payload,
+			}
+		case types.ADD_DBSC_CLASS:
+			return {
+				...state,
+				shippingClasses: [...state.shippingClasses, action.payload],
+			}
+		case types.UPDATE_DBSC_CLASS:
+			return {
+				...state,
+				shippingClasses: state.shippingClasses.map(sc =>
+					sc.id === action.payload.id ? action.payload : sc
+				),
+			}
+		case types.DELETE_DBSC_CLASS:
+			return {
+				...state,
+				shippingClasses: state.shippingClasses.filter(
+					sc => sc.id !== action.payload
+				),
+			}
+
+		/* Dbsc other settings */
+
+		case types.SET_DBSC_OTHER_SETTINGS:
+		case types.GET_DBSC_OTHER_SETTINGS:
+			return {
+				...state,
+				dbscOtherSettings: action.payload,
+			}
+
+		/* Shipping Profiles */
+		case types.GET_DBSC_PROFILES:
+			return {
+				...state,
+				shippingProfiles: action.payload,
+			}
+		case types.ADD_DBSC_PROFILE:
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					store_profiles: [
+						...state?.shippingProfiles?.store_profiles,
+						action.payload,
+					],
+				},
+			}
+		case types.UPDATE_DBSC_PROFILE:
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					store_profiles: state?.shippingProfiles?.store_profiles?.map(
+						sp => (sp.id === action.payload.id ? action.payload : sp)
+					),
+				},
+			}
+		case types.DELETE_DBSC_PROFILE:
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					store_profiles: state?.shippingProfiles?.store_profiles?.filter(
+						sp => sp.id !== action.payload
+					),
+				},
+			}
+
+		/* Shipping Origins */
+		case types.ADD_DBSC_ORIGIN: {
+			let origin_id = null,
+				profile_id = null,
+				isNew = false
+			if (action.payload.newOrigin && action.payload.origin) {
+				origin_id = action.payload.origin.origin_id
+				profile_id = action.payload.newOrigin.profile_id
+				isNew = true
+			} else {
+				origin_id = action.payload?.origin_id
+			}
+			const prevOrigins = state.shippingProfiles.origin
+				? state.shippingProfiles.origin[origin_id]
+				: []
+
+			const updatedData = {
+				...state.shippingProfiles,
+				origin: {
+					...(state.shippingProfiles?.origin ?? []),
+					[origin_id]: [
+						...(prevOrigins ?? []),
+						isNew ? action.payload.origin : action.payload,
+					],
+				},
+			}
+
+			if (isNew) {
+				updatedData['origins'][profile_id] = [
+					...(state.shippingProfiles.origins[profile_id] ?? []),
+					action.payload.newOrigin,
+				]
+			}
+
+			return {
+				...state,
+				shippingProfiles: updatedData,
+			}
+		}
+		case types.UPDATE_DBSC_ORIGIN: {
+			const { id, origin_id } = action.payload
+			const updatedOrigins = state.shippingProfiles.origin[origin_id].map(
+				org => (org.id === id ? action.payload : org)
+			)
+
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					origin: {
+						...state.shippingProfiles.origin,
+						[origin_id]: updatedOrigins,
+					},
+				},
+			}
+		}
+		case types.DELETE_DBSC_ORIGIN: {
+			const { origin_id, id } = action.payload
+			const updatedOrigins = state.shippingProfiles.origin[origin_id].filter(
+				org => org.id !== id
+			)
+
+			const updatedData = {
+				...state.shippingProfiles,
+				origin: {
+					...state.shippingProfiles.origin,
+					[origin_id]: updatedOrigins,
+				},
+			}
+
+			return {
+				...state,
+				shippingProfiles: updatedData,
+			}
+		}
+
+		/* Shipping Zones */
+		case types.ADD_DBSC_ZONE: {
+			const { dbsc_origin_id } = action.payload
+
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					zones: {
+						...(state.shippingProfiles.zones ?? []),
+						[dbsc_origin_id]: [
+							...(state.shippingProfiles.zones[dbsc_origin_id] ?? []),
+							action.payload,
+						],
+					},
+				},
+			}
+		}
+		case types.UPDATE_DBSC_ZONE: {
+			const { id, dbsc_origin_id } = action.payload
+			const updatedZones = state?.shippingProfiles?.zones[dbsc_origin_id]?.map(
+				zone => (zone.id === id ? action.payload : zone)
+			)
+
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					zones: {
+						...state.shippingProfiles.zones,
+						[dbsc_origin_id]: updatedZones,
+					},
+				},
+			}
+		}
+		case types.DELETE_DBSC_ZONE: {
+			const { id, origin_id } = action.payload
+			const updatedZones = state?.shippingProfiles?.zones[origin_id]?.filter(
+				zone => zone.id !== id
+			)
+
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					zones: {
+						...state.shippingProfiles.zones,
+						[origin_id]: updatedZones,
+					},
+				},
+			}
+		}
+
+		/* Shipping Rates */
+		case types.ADD_DBSC_RATE: {
+			const { dbsc_shipping_zone_id } = action.payload
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					rates: {
+						...(state.shippingProfiles.rates ?? []),
+						[dbsc_shipping_zone_id]: [
+							...(state.shippingProfiles.rates[
+								dbsc_shipping_zone_id
+							] ?? []),
+							action.payload,
+						],
+					},
+				},
+			}
+		}
+		case types.UPDATE_DBSC_RATE: {
+			const { id, dbsc_shipping_zone_id } = action.payload
+			const updatedRates = state.shippingProfiles.rates[
+				dbsc_shipping_zone_id
+			].map(rate => (rate.id === id ? action.payload : rate))
+
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					rates: {
+						...state.shippingProfiles.rates,
+						[dbsc_shipping_zone_id]: updatedRates,
+					},
+				},
+			}
+		}
+		case types.DELETE_DBSC_RATE: {
+			const { id, zone_id } = action.payload
+			const updatedRates = state.shippingProfiles.rates[zone_id].filter(
+				rate => rate.id !== id
+			)
+
+			return {
+				...state,
+				shippingProfiles: {
+					...state.shippingProfiles,
+					rates: {
+						...state.shippingProfiles.rates,
+						[zone_id]: updatedRates,
+					},
+				},
+			}
+		}
+
+		case types.SET_MODAL_DATA:
+			return {
+				...state,
+				modalData: { ...state.modalData, ...action.payload },
+			}
+		case types.GET_DBSC_BC_ZONES:
+			return {
+				...state,
+				dbscBigComZones: action.payload,
+			}
+
+		case types.SET_ACTION_BUTTONS_VISIBILITY:
+			return {
+				...state,
+				actionButtons: {
+					visible: action.payload.visible,
+					id: action.payload.id,
+				},
+			}
 
 		default:
 			return state

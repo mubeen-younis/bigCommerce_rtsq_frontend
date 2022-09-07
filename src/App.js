@@ -34,6 +34,8 @@ import { getFDOCouponInfo } from './Actions/FDOActions'
 import ImportCsvComponent from './components/Pages/ImportCsvComponent'
 import UserGuideComponent from './components/Pages/UserGuideComponent'
 import AppLogs from './components/Pages/AppLogs'
+import { getDbscData}from './Actions/DbscActions'
+import types from './Stores/types'
 import OrdersComponent from './components/OrdersComponent'
 import ShippingGroupsComponent from './components/Pages/ShippingGroup'
 
@@ -85,6 +87,7 @@ function App(props) {
       getStorePlans()
       getShippingGroups(token)
       dispatch(getFDOCouponInfo(token))
+		  dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES, token))
     }
  
       const devEnv = process?.env?.NODE_ENV === 'development'
@@ -144,7 +147,7 @@ function App(props) {
     } else if (alertMessageType === 'warning') {
       message.warning(alertMessage)
     } else if (alertMessageType === 'loading') {
-  
+      message.loading('Loading. Please wait...')
     }
   }
 
