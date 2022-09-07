@@ -1,5 +1,15 @@
-import React, { Fragment, useCallback, useState } from 'react'
-import { Form, Input, Button, Space, Skeleton, Row, Col, Checkbox } from 'antd'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import {
+	Form,
+	Input,
+	Button,
+	Space,
+	Skeleton,
+	Row,
+	Col,
+	Checkbox,
+	Radio,
+} from 'antd'
 import { connect } from 'react-redux'
 
 import { postData } from '../../../../Actions/Action'
@@ -10,10 +20,15 @@ function ConnectionSettingsComponent(props) {
 		skeleton_loading: true,
 	})
 	const [form] = Form.useForm()
+	const [accountType, setAccountType] = useState('shipper')
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
 	}
+
+	useEffect(() => {
+		form.validateFields()
+	}, [accountType, form])
 
 	const copyBillingAdressValues = useCallback(
 		copy => {
@@ -119,7 +134,12 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item
 					label='Shipper Account Number'
 					name='shipping_account_number'
-					rules={[{ required: true, message: 'Shipper Account Number' }]}>
+					rules={[
+						{
+							required: accountType === 'shipper',
+							message: 'Shipper Account Number',
+						},
+					]}>
 					<Input type='text' placeholder='Shipper Account Number' />
 				</Form.Item>
 
@@ -250,8 +270,37 @@ function ConnectionSettingsComponent(props) {
 
 				<Form.Item
 					label='Third Party Account Number'
-					name='third_party_account'>
+					name='third_party_account'
+					rules={[
+						{
+							required: accountType === 'thirdParty',
+							message: 'Third Party Account Number',
+						},
+					]}>
 					<Input type='text' />
+				</Form.Item>
+
+				<Form.Item
+					name='account_type'
+					rules={[{ required: true, message: 'Account Type' }]}>
+					<Radio.Group defaultValue={accountType}>
+						<Radio
+							value='shipper'
+							onClick={() => {
+								setAccountType('shipper')
+								form.validateFields()
+							}}>
+							Test Shipper Account Number
+						</Radio>
+						<Radio
+							value='thirdParty'
+							onClick={() => {
+								setAccountType('thirdParty')
+								form.validateFields(['thirdParty'])
+							}}>
+							Test Third Party Account Number
+						</Radio>
+					</Radio.Group>
 				</Form.Item>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
