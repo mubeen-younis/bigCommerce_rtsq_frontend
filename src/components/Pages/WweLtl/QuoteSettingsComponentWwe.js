@@ -8,11 +8,13 @@ import { validateHandlingFeeMarkup } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import CutOffTime from '../../CutOffTime'
 import RAD from '../../RAD'
+import InsideDeliverySettings from '../../InsideDeliverySettings'
 import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ReturnRates from '../../ReturnRates'
 
 const { Option } = Select
 const initialState = {
@@ -26,6 +28,8 @@ const initialState = {
   residentialPickup: false,
   alwaysResidentialDelivery: false,
   autoDetectedResidentialAddresses: false,
+  liftGatePickup: false,
+  insideDelivery: false,
   alwaysLiftGatePickup: false,
   alwaysLiftGateDelivery: false,
   offerLiftGateDelivery: false,
@@ -35,6 +39,7 @@ const initialState = {
   own_arrangement_text: '',
   insurance_category: '84-General Merchandise',
   weight_threshold: '150',
+  return_rates: false
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -166,8 +171,14 @@ function QuoteSettingsComponentWwe(props) {
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
+          showLiftGatePickup={true}
         />
 
+        <InsideDeliverySettings
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
+        
         <Row gutter={30} className={'mb-3'}>
           <Col
             className='gutter-row'
@@ -253,7 +264,7 @@ function QuoteSettingsComponentWwe(props) {
         />
         <HandlingUnit
           quoteSettingsState={quoteSettingsState}
-          handleStateChange={handleStateChange}
+          handleChange={handleStateChange}
         />
 
         <Row gutter={30} className={'mb-3'}>
@@ -324,6 +335,11 @@ function QuoteSettingsComponentWwe(props) {
             </Col>
           </Row>
         )}
+
+        <ReturnRates
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
 
         <SaveButton />
       </Form>
