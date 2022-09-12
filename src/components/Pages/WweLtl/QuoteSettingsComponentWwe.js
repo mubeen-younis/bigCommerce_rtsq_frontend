@@ -8,11 +8,13 @@ import { validateHandlingFeeMarkup } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import CutOffTime from '../../CutOffTime'
 import RAD from '../../RAD'
+import InsideDeliverySettings from '../../InsideDeliverySettings'
 import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ReturnRates from '../../ReturnRates'
 
 const { Option } = Select
 const initialState = {
@@ -45,6 +47,7 @@ function QuoteSettingsComponentWwe(props) {
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
   const [ratingMethod, setRatingMethod] = useState(1)
+  //const [isRadEnable, setIsRadEnable] = useState(1);
 
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -168,8 +171,14 @@ function QuoteSettingsComponentWwe(props) {
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
+          showLiftGatePickup={true}
         />
-                
+
+        <InsideDeliverySettings
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
+        
         <Row gutter={30} className={'mb-3'}>
           <Col
             className='gutter-row'
@@ -326,7 +335,12 @@ function QuoteSettingsComponentWwe(props) {
             </Col>
           </Row>
         )}
-        
+
+        <ReturnRates
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
+
         <SaveButton />
       </Form>
     </Fragment>
