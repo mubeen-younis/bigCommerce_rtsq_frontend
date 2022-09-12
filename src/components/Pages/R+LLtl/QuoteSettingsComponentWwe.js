@@ -18,6 +18,7 @@ import SaveButton from '../../SaveButton'
 import QuoteServices from './QuoteServices'
 import WeightThreshold from '../../WeightThreshold'
 import ReturnRates from '../../ReturnRates'
+import InsideDeliverySettings from '../../InsideDeliverySettings'
 
 const initialState = {
   label_as: '',
@@ -255,6 +256,11 @@ function QuoteSettingsComponentWwe(props) {
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
+        />
+
+        <InsideDeliverySettings
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
         />
 
         <HoldAtTerminal
