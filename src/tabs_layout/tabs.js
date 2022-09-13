@@ -11,17 +11,9 @@ import ShippingGroup from '../components/Pages/ShippingGroup'
 import ShippingRatesComponent from '../components/Pages/DBSC/ShippingRatesComponent'
 import ShippingClassesComponent from '../components/Pages/DBSC/ShippingClassesComponent'
 import OtherSettings from '../components/Pages/DBSC/OtherSettings'
+import PalletBoxSizesComponent from '../components/PalletPackaging/PalletBoxSizesComponent'
 
 const { TabPane } = Tabs
-
-const smallCarriersSlugs = [
-	'small-package',
-	'ups-small',
-	'fedex-small',
-	'unishippers-small',
-	'usps-small',
-	'purolator-small',
-]
 
 function TabsLayout() {
 	const { installedCarriers, carrierId } = useSelector(state => state)
@@ -98,6 +90,17 @@ function TabsLayout() {
 	const [connSettingsComponent, quoteSettingsComponent] =
 		useLoadComponent(component)
 
+	const showTab = useCallback(
+		(type = 0) =>
+			installedCarriers
+				? installedCarriers
+						?.filter(ic => +ic.carrier_type === type)
+						?.map(carr => carr.slug)
+						.includes(carrierSlug)
+				: false,
+		[carrierSlug, installedCarriers]
+	)
+
 	return (
 		<Fragment>
 			<PlanStatusHeading />
@@ -149,9 +152,15 @@ function TabsLayout() {
 					<ProductSettingsComponent />
 				</TabPane>
 				{/* Need to add small carriers index */}
-				{smallCarriersSlugs.includes(carrierSlug) && (
+				{showTab(2) && (
 					<TabPane tab='Box Sizes' key='8'>
 						<BoxSizesComponent />
+					</TabPane>
+				)}
+
+				{showTab(1) && (
+					<TabPane tab='Pallets' key='9'>
+						<PalletBoxSizesComponent />
 					</TabPane>
 				)}
 			</Tabs>
