@@ -13,6 +13,7 @@ import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ReturnRates from '../../ReturnRates'
 
 const initialState = {
   label_as: '',
@@ -195,6 +196,11 @@ function QuoteSettingsComponent(props) {
         <HandlingUnit
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
+        />
+
+        <ReturnRates
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
         />
 
         <SaveButton />
