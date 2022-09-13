@@ -44,7 +44,9 @@ function ConnectionSettingsComponent(props) {
 				name='connection_settings'
 				className='connection-settings'
 				size={'large'}
-				initialValues={props.connectionSettings}
+				initialValues={{... props.connectionSettings, 
+				rates_my_freight_based: props.connectionSettings?.rates_my_freight_based ?? 0
+				}}
 				onFinish={onFinish}
 			>
 				<Form.Item
@@ -87,6 +89,17 @@ function ConnectionSettingsComponent(props) {
 					<Radio.Group>
 						<Radio value='test'>Testing</Radio>
 						<Radio value='pro'>Production</Radio>
+					</Radio.Group>
+				</Form.Item>
+
+				<Form.Item
+					name='rates_my_freight_based'
+					label='TForce rates my freight based on weight and '
+					rules={[{ required: true, message: 'TForce rates my freight based on weight' }]}
+				>
+					<Radio.Group>
+						<Radio value={0}>Freight class</Radio>
+						<Radio value={1}>Dimensions</Radio>
 					</Radio.Group>
 				</Form.Item>
 
