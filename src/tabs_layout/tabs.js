@@ -151,13 +151,12 @@ function TabsLayout() {
 				<TabPane tab='Product Settings' key='6'>
 					<ProductSettingsComponent />
 				</TabPane>
-				{/* Need to add small carriers index */}
+
 				{showTab(2) && (
 					<TabPane tab='Box Sizes' key='8'>
 						<BoxSizesComponent />
 					</TabPane>
 				)}
-
 				{showTab(1) && (
 					<TabPane tab='Pallets' key='9'>
 						<PalletBoxSizesComponent />

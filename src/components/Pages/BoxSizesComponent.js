@@ -1121,7 +1121,9 @@ function BoxSizesComponent(props) {
 							className={'custom-table mt-3'}
 							dataSource={
 								props.boxSizes
-									? props.boxSizes /*addKeysToList(props.boxSizes) */
+									? props.boxSizes?.filter(
+											bs => +bs?.box_type !== 4
+									  )
 									: []
 							}
 							columns={columns}

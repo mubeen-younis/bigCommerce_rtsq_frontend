@@ -83,8 +83,8 @@ function AutoDetectResidentialComponent(props) {
 				onOk={changePalletPlan}
 				okText='Confirm'
 				cancelButtonProps={{ style: { display: 'none' } }}>
-				You have elected to enable the Box Sizes feature. By confirming this
-				election you will be charged for the{' '}
+				You have elected to enable the Pallet Packaging feature. By
+				confirming this election you will be charged for the{' '}
 				{Intl.NumberFormat('en-US').format(newPlan?.htis)}/mo ($
 				{newPlan?.cost}.00) plan. To ensure service continuity the plan will
 				automatically renew each month, or when the plan is depleted,
