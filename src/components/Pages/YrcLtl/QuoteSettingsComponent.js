@@ -14,6 +14,7 @@ import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import ReturnRates from '../../ReturnRates'
+import LimitedAccessSettings from '../../LimitedAccessSettings'
 
 const initialState = {
   label_as: '',
@@ -186,6 +187,11 @@ function QuoteSettingsComponent(props) {
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
+        />
+
+        <LimitedAccessSettings
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
         />
 
         <WeightThreshold
