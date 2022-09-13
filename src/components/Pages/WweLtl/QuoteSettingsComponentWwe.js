@@ -47,7 +47,6 @@ function QuoteSettingsComponentWwe(props) {
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
   const [ratingMethod, setRatingMethod] = useState(1)
-  //const [isRadEnable, setIsRadEnable] = useState(1);
 
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
