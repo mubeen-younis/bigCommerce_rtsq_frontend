@@ -3,10 +3,10 @@ import React from 'react'
 
 const ReturnRates = ({ quoteSettingsState, setQuoteSettingsState }) => {
 	return (
-		<Row gutter={30} align='middle'>
+		<Row gutter={30} align='middle' className='mb-2'>
 			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 				<label className='text-gray'>
-					Do not return rates if the shipping address appears to be a post
+					Don't return rates if the ship-to address appears to be a post
 					office box
 				</label>
 			</Col>
