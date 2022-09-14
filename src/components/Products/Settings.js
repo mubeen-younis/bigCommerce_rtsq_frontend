@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Button, Col, Row, Select, Checkbox, Input } from 'antd'
+import { Form, Button, Col, Row, Select, Checkbox, Input, Typography } from 'antd'
 import { getLocations } from '../../Actions/Warehouse'
 
 const { Option } = Select
@@ -10,7 +10,10 @@ const smallCarriers = [
 	'fedex-small',
 	'unishippers-small',
 	'usps-small',
+	'purolator-small',
 ]
+
+const { Title } = Typography
 
 const Settings = ({
 	count,
@@ -596,6 +599,44 @@ const Settings = ({
 						</Col>
 					</Row>
 				) : null}
+
+				<Title level={5}>LTL Pallet Packaging</Title>
+				<Col span={24} style={{ marginTop: '7px' }}>
+					<Checkbox
+						onChange={e => {
+							onChangeVariant(
+								index,
+								'allow_vertical',
+								e.target.checked
+							)
+							onChangeVariant(index, 'ship_own_package', false)
+							onChangeVariant(index, 'ship_multiple_package', false)
+						}}
+						name='allow_vertical'
+						id={'allow_vertical' + index}
+						checked={product?.allow_vertical}
+						disabled={isSbsSuspended}>
+						Allow vertical rotation on pallet
+					</Checkbox>
+				</Col>
+				<Col span={24} style={{ marginTop: '7px' }}>
+					<Checkbox
+						onChange={e => {
+							onChangeVariant(
+								index,
+								'ship_own_package',
+								e.target.checked
+							)
+							onChangeVariant(index, 'allow_vertical', false)
+							onChangeVariant(index, 'ship_multiple_package', false)
+						}}
+						name='ship_own_package'
+						id={'ship_own_package' + index}
+						checked={product?.ship_own_package}
+						disabled={isSbsSuspended}>
+						Ship as own pallet
+					</Checkbox>
+				</Col>
 
 				{count > 1 && index === 0 && (
 					<Row gutter={24} style={{ marginTop: '20px' }}>
