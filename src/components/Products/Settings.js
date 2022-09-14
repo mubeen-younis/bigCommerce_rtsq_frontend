@@ -35,6 +35,7 @@ const Settings = ({
 		token,
 		store,
 		shippingClasses,
+		palletPlans,
 	} = useSelector(state => state)
 	const dispatch = useDispatch()
 
@@ -60,6 +61,12 @@ const Settings = ({
 		? true
 		: false || (sbsPlans && sbsPlans?.currentPackage?.status === 3)
 
+	const isPalletPkgSuspended = installedAddons?.find(
+		add => add.short_code === 'PLT' && add.is_enabled === 0
+	)
+		? true
+		: false || (palletPlans && palletPlans?.currentPackage?.status === 3)
+
 	useEffect(() => {
 		if (isSbsSuspended) {
 			onChangeVariant(index, 'allow_vertical', false)
@@ -67,8 +74,20 @@ const Settings = ({
 			onChangeVariant(index, 'ship_multiple_package', false)
 		}
 
+		if (isPalletPkgSuspended) {
+			onChangeVariant(index, 'pallet_vertical_rotation', false)
+			onChangeVariant(index, 'own_pallet', false)
+		}
+
 		dispatch(getLocations(token))
-	}, [dispatch, index, isSbsSuspended, onChangeVariant, token])
+	}, [
+		dispatch,
+		index,
+		isSbsSuspended,
+		onChangeVariant,
+		token,
+		isPalletPkgSuspended,
+	])
 
 	return (
 		<Fragment key={index}>
@@ -600,43 +619,43 @@ const Settings = ({
 					</Row>
 				) : null}
 
-				<Title level={5}>LTL Pallet Packaging</Title>
-				<Col span={24} style={{ marginTop: '7px' }}>
-					<Checkbox
-						onChange={e => {
-							onChangeVariant(
-								index,
-								'allow_vertical',
-								e.target.checked
-							)
-							onChangeVariant(index, 'ship_own_package', false)
-							onChangeVariant(index, 'ship_multiple_package', false)
-						}}
-						name='allow_vertical'
-						id={'allow_vertical' + index}
-						checked={product?.allow_vertical}
-						disabled={isSbsSuspended}>
-						Allow vertical rotation on pallet
-					</Checkbox>
-				</Col>
-				<Col span={24} style={{ marginTop: '7px' }}>
-					<Checkbox
-						onChange={e => {
-							onChangeVariant(
-								index,
-								'ship_own_package',
-								e.target.checked
-							)
-							onChangeVariant(index, 'allow_vertical', false)
-							onChangeVariant(index, 'ship_multiple_package', false)
-						}}
-						name='ship_own_package'
-						id={'ship_own_package' + index}
-						checked={product?.ship_own_package}
-						disabled={isSbsSuspended}>
-						Ship as own pallet
-					</Checkbox>
-				</Col>
+				{!isSmallCarrier && (
+					<>
+						<Title level={5}>LTL Pallet Packaging</Title>
+						<Col span={24} style={{ marginTop: '7px' }}>
+							<Checkbox
+								onChange={e => {
+									onChangeVariant(
+										index,
+										'pallet_vertical_rotation',
+										e.target.checked
+									)
+								}}
+								name='pallet_vertical_rotation'
+								id={'pallet_vertical_rotation' + index}
+								checked={product?.pallet_vertical_rotation}
+								disabled={isPalletPkgSuspended}>
+								Allow vertical rotation on pallet
+							</Checkbox>
+						</Col>
+						<Col span={24} style={{ marginTop: '7px' }}>
+							<Checkbox
+								onChange={e =>
+									onChangeVariant(
+										index,
+										'own_pallet',
+										e.target.checked
+									)
+								}
+								name='own_pallet'
+								id={'own_pallet' + index}
+								checked={product?.own_pallet}
+								disabled={isPalletPkgSuspended}>
+								Ship as own pallet
+							</Checkbox>
+						</Col>
+					</>
+				)}
 
 				{count > 1 && index === 0 && (
 					<Row gutter={24} style={{ marginTop: '20px' }}>
