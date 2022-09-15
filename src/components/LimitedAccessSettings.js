@@ -26,6 +26,7 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState }) =>
 							setQuoteSettingsState(prevSettings => ({
 								...prevSettings,
 								offer_limited_access_delivery: e.target.checked,
+								alwaysResidentialDelivery: false,
 							}))
 						}
 					/>
