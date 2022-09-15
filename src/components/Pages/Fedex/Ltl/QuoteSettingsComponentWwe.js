@@ -305,17 +305,15 @@ function QuoteSettingsComponentWwe(props) {
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
         />
-
+        <ReturnRates
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />  
+          
         <Discounts
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
         />
-        
-        <ReturnRates
-          quoteSettingsState={quoteSettingsState}
-          setQuoteSettingsState={setQuoteSettingsState}
-        />
-
         <SaveButton />
       </Form>
     </Fragment>
