@@ -14,6 +14,7 @@ import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import ReturnRates from '../../ReturnRates'
+import HoldAtTerminal from '../../HoldAtTerminal'
 
 const initialState = {
 	label_as: '',
@@ -184,6 +185,11 @@ function QuoteSettingsComponent(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
+
+				<HoldAtTerminal
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<WeightThreshold 
 					quoteSettingsState={quoteSettingsState}
