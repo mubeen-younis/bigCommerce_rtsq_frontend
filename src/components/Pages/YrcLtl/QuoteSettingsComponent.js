@@ -13,6 +13,8 @@ import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ReturnRates from '../../ReturnRates'
+import LimitedAccessSettings from '../../LimitedAccessSettings'
 
 const initialState = {
   label_as: '',
@@ -187,6 +189,11 @@ function QuoteSettingsComponent(props) {
           radStatus={radStatus}
         />
 
+        <LimitedAccessSettings
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
+
         <WeightThreshold
           quoteSettingsState={quoteSettingsState}
           handleStateChange={handleStateChange}
@@ -195,6 +202,11 @@ function QuoteSettingsComponent(props) {
         <HandlingUnit
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
+        />
+
+        <ReturnRates
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
         />
 
         <SaveButton />
