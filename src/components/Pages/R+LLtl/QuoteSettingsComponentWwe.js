@@ -12,11 +12,13 @@ import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import CutOffTime from '../../CutOffTime'
 import RAD from '../../RAD'
 import LiftGateDelivery from '../../LiftGateDelivery'
-// import HoldAtTerminal from '../../HoldAtTerminal'
+import HoldAtTerminal from '../../HoldAtTerminal'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import QuoteServices from './QuoteServices'
 import WeightThreshold from '../../WeightThreshold'
+import ReturnRates from '../../ReturnRates'
+import InsideDeliverySettings from '../../InsideDeliverySettings'
 
 const initialState = {
   label_as: '',
@@ -256,6 +258,16 @@ function QuoteSettingsComponentWwe(props) {
           radStatus={radStatus}
         />
 
+        <InsideDeliverySettings
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
+
+        <HoldAtTerminal
+          quoteSettingsState={quoteSettingsState}
+          handleChange={handleStateChange}
+        />
+
         <WeightThreshold
           quoteSettingsState={quoteSettingsState}
           handleStateChange={handleStateChange}
@@ -298,38 +310,12 @@ function QuoteSettingsComponentWwe(props) {
             </div>
           </Col>
         </Row>
-
-        <Row gutter={30} className={'mb-3'}>
-          <Col
-            className='gutter-row'
-            style={{ paddingTop: '11px' }}
-            xs={24}
-            sm={12}
-            md={12}
-            lg={12}
-            xl={6}
-          >
-            <label className={'text-gray'}>
-              Do not return rates if the shipping address appears to be a post
-              office box
-            </label>
-          </Col>
-          <Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-            <Form.Item className={'mb-0'}>
-              <Checkbox
-                name='returnRates'
-                checked={quoteSettingsState.returnRates}
-                onChange={() => {
-                  setQuoteSettingsState({
-                    ...quoteSettingsState,
-                    returnRates: !quoteSettingsState.returnRates,
-                  })
-                }}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-
+        
+        <ReturnRates
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
+          
         <SaveButton />
       </Form>
       <Modal
