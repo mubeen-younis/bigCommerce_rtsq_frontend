@@ -1,19 +1,14 @@
-import React, { Fragment, useState, useEffect } from 'react'
-import { Form, Input, Button, Space, Skeleton, Row, Col, Radio } from 'antd'
+import React, { Fragment, useState } from 'react'
+import { Form, Input, Button, Space, Skeleton, } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 
 function ConnectionSettingsComponent(props) {
 	const [testType, setTestType] = useState(false)
 	const dispatch = useDispatch()
-	const [rates, setRates] = useState('ShipAff')
 	const { connectionSettings, token, carrierId } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
-
-	useEffect(() => {
-		if (connectionSettings) setRates(connectionSettings?.request_freight_quotes ?? 'ShipAff')
-	}, [connectionSettings])
 
 	const onFinish = values => {
 		values = {
@@ -21,7 +16,6 @@ function ConnectionSettingsComponent(props) {
 			testType,
 			carrierId,
 			installed_carrier_id: carrierId,
-			request_freight_quotes: rates,
 		}
 
 		dispatch(
@@ -55,27 +49,6 @@ function ConnectionSettingsComponent(props) {
 					rules={[{ required: true, message: 'Business ID' }]}>
 					<Input placeholder='Business ID' />
 				</Form.Item>
-				<Row gutter={30} className='mb-1'>
-					<Col xl={16} lg={12} md={12} sm={8} xs={8}>
-						<Radio
-							onChange={() => setRates('ShipAff')}
-							defaultChecked
-							checked={rates === 'ShipAff'}
-							>
-							Request LTL freight quotes as the shipper
-						</Radio>
-					</Col>
-				</Row>
-				<Row gutter={30} className='mb-1'>
-					<Col xl={16} lg={12} md={12} sm={8} xs={8}>
-						<Radio
-							onChange={() => setRates('TPBPay')}
-							checked={rates === 'TPBPay'}
-							>
-							Request LTL freight quotes as a 3rd party
-						</Radio>
-					</Col>
-				</Row>
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
 						<Button
