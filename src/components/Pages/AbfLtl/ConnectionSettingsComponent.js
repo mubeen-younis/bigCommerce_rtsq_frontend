@@ -1,5 +1,5 @@
-import React, { Fragment, useState, useEffect } from 'react'
-import { Form, Input, Button, Space, Skeleton, Row, Col, Radio } from 'antd'
+import React, { Fragment, useState } from 'react'
+import { Form, Input, Button, Space, Skeleton, } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 

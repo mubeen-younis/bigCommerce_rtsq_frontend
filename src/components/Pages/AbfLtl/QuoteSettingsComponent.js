@@ -193,7 +193,7 @@ function QuoteSettingsComponent(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-
+				
 				<SaveButton />
 			</Form>
 		</Fragment>
