@@ -13,6 +13,7 @@ import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import ReturnRates from '../../ReturnRates'
+import TruckloadSettings from '../../TruckloadSettings'
 
 const initialState = {
 	number_of_options: 1,
@@ -132,6 +133,13 @@ function QuoteSettingsComponentWwe(props) {
 					handleChange={handleStateChange}
 					ratingMethod={ratingMethod}
 					setRatingMethod={setRatingMethod}
+				/>
+
+				<TruckloadSettings
+					props={props}
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+					handleChange={handleStateChange}
 				/>
 
 				<DeliveryEstimateOptions
