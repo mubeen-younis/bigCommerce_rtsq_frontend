@@ -621,7 +621,9 @@ const Settings = ({
 
 				{!isSmallCarrier && (
 					<>
-						<Title level={5}>LTL Pallet Packaging</Title>
+						<Title level={5} className='mt-3'>
+							LTL Pallet Packaging
+						</Title>
 						<Col span={24} style={{ marginTop: '7px' }}>
 							<Checkbox
 								onChange={e => {
