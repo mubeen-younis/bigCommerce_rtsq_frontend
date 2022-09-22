@@ -14,6 +14,7 @@ import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import ReturnRates from '../../ReturnRates'
 import TruckloadSettings from '../../TruckloadSettings'
+import { getServices, getAddTabSettings } from '../../../Actions/Carriers'
 
 const initialState = {
 	number_of_options: 1,
@@ -36,9 +37,10 @@ const initialState = {
 function QuoteSettingsComponentWwe(props) {
 	const dispatch = useDispatch()
 	const [loading, setLoading] = useState(true)
+	const [truckLoading, setTruckLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const [ratingMethod, setRatingMethod] = useState(1)
-	const { quoteSettings, installedAddons, token, carrierId, radPlans } =
+	const { quoteSettings, installedAddons, token, carrierId, radPlans, carriersSettings } =
 		useSelector(state => state)
 
 	useEffect(() => {
@@ -60,6 +62,14 @@ function QuoteSettingsComponentWwe(props) {
 			dispatch(getQuoteSettings(token, carrierId))
 		}
 	}, [carrierId, dispatch, quoteSettings, token])
+
+	useEffect(() => {
+		if(!carriersSettings){
+			dispatch(getServices(token, carrierId))
+			dispatch(getAddTabSettings(token, carrierId))
+		}
+		setTruckLoading(false)
+	}, [])
 
 	const radCheck = installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
@@ -116,7 +126,7 @@ function QuoteSettingsComponentWwe(props) {
 		}))
 	}, [])
 
-	return loading || quoteSettings === undefined || quoteSettings === null ? (
+	return loading || quoteSettings === undefined || quoteSettings === null || truckLoading ? (
 		<Skeleton active />
 	) : (
 		<Fragment>
