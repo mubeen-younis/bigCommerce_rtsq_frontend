@@ -98,8 +98,8 @@ function AutoDetectResidentialComponent(props) {
 					<Card style={{ width: '100%' }}>
 						<p>
 							The Pallet Size feature calculates the optimal packaging
-							solution based on your standard box sizes. The solution
-							is available graphically to assist order fulfillment. The
+							solution based on your pallet sizes. The solution is
+							available graphically to assist order fulfillment. The
 							next subscription begins when the current one expires or
 							is depleted, which ever comes first. Refer to the{' '}
 							<a

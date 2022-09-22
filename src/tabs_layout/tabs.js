@@ -158,7 +158,7 @@ function TabsLayout() {
 					</TabPane>
 				)}
 				{showTab(1) && (
-					<TabPane tab='Pallets' key='9'>
+					<TabPane tab='Pallets' key='12'>
 						<PalletBoxSizesComponent />
 					</TabPane>
 				)}
