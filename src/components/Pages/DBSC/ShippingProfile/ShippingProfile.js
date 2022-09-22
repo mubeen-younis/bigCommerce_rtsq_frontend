@@ -15,7 +15,7 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 	return (
 		<Space direction='vertical' size='large' className='w-100'>
 			{shippingProfiles?.map(pf => (
-				<Card key={pf.p_nickname}>
+				<Card key={pf.p_nickname} style={cardStyles}>
 					<Row gutter={30} className='mb-1'>
 						<Col
 							className='gutter-row'
@@ -96,10 +96,24 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 							md={24}
 							lg={24}
 							xl={24}>
-							{pf?.shipping_classes &&
-								JSON.parse(pf?.shipping_classes)?.map(cls => (
-									<p key={pf?.id}>{cls}</p>
-								))}
+							{pf?.is_general_profile &&
+							+pf?.allow_all_classes === 1 ? (
+								<p>
+									For all products not included in another shipping
+									profile.
+								</p>
+							) : (
+								<>
+									<p>
+										Applies only to products with the following
+										shipping class(es):
+									</p>
+									{pf?.shipping_classes &&
+										JSON.parse(pf?.shipping_classes)?.map(
+											cls => <p key={pf?.id}>{cls}</p>
+										)}
+								</>
+							)}
 						</Col>
 					</Row>
 
@@ -111,6 +125,10 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 			<ConfirmDeleteModal id={profileId} />
 		</Space>
 	)
+}
+
+const cardStyles = {
+	border: '1px solid',
 }
 
 export default memo(ShippingProfile)
