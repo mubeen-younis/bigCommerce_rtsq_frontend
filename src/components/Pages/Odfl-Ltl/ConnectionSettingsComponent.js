@@ -73,11 +73,11 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 
 				<Form.Item
-					label='Sender Zip'
+					label='Billing Postal Code'
 					name='billing_postal_Code'
-					rules={[{ required: true, message: 'Sender Zip' }]}
+					rules={[{ required: true, message: 'Billing Postal Code' }]}
 				>
-					<Input placeholder='Sender Zip' />
+					<Input placeholder='Billing Postal Code' />
 				</Form.Item>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
