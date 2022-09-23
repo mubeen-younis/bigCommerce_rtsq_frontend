@@ -369,3 +369,6 @@ body {
 .sepSettings {
 	padding: 10px;
 }
+.card-border {
+	border: 1px solid lightgrey;
+}

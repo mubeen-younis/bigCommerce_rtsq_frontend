@@ -41,6 +41,7 @@ function ShippingCarriersComponent(props) {
 										<Image
 											preview={false}
 											src={`images/${value.logo}`}
+											className='mb-2'
 										/>
 									</figure>
 									{/* <Meta title={value.name} description='' /> */}
@@ -128,6 +129,7 @@ function ShippingCarriersComponent(props) {
 									<Image
 										preview={false}
 										src={`images/${value.logo}`}
+										className='mb-2'
 									/>
 									{/* <img
 									style={{ height: '175px' }}
@@ -180,6 +182,7 @@ function ShippingCarriersComponent(props) {
 										<Image
 											preview={false}
 											src={`images/${value.logo}`}
+											className='mb-2'
 										/>
 									</figure>
 									{/* <Meta title={value.name} description='' /> */}
@@ -222,6 +225,7 @@ function ShippingCarriersComponent(props) {
 									<Image
 										preview={false}
 										src={`images/${value.logo}`}
+										className='mb-2'
 									/>
 								</figure>
 								{/* <Meta title={value.name} description='' /> */}
