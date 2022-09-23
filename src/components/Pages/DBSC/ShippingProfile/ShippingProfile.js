@@ -15,7 +15,7 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 	return (
 		<Space direction='vertical' size='large' className='w-100'>
 			{shippingProfiles?.map(pf => (
-				<Card key={pf.p_nickname} style={cardStyles}>
+				<Card key={pf.p_nickname} className='card-border'>
 					<Row gutter={30} className='mb-1'>
 						<Col
 							className='gutter-row'
@@ -125,10 +125,6 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 			<ConfirmDeleteModal id={profileId} />
 		</Space>
 	)
-}
-
-const cardStyles = {
-	border: '1px solid',
 }
 
 export default memo(ShippingProfile)
