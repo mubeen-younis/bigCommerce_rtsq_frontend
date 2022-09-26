@@ -21,7 +21,7 @@ function ShippingCarriersComponent(props) {
 	// const { currentPlan } = useSelector(state => state)
 	const getInstalledCarriers = (carrier_type = 1) => {
 		return props.installedCarriers
-			.sort((carr1, carr2) => carr1.name > carr2.name)
+			.sort((carr1, carr2) => (carr1.name > carr2.name ? 1 : -1))
 			.map((value, key) => {
 				return (
 					carrier_type === value.carrier_type && (
@@ -112,7 +112,7 @@ function ShippingCarriersComponent(props) {
 
 	const getInstalledAddons = () => {
 		return props.installedAddons
-			.sort((add1, add2) => add1.name > add2.name)
+			.sort((add1, add2) => (add1.name > add2.name ? 1 : -1))
 			.map((value, key) => {
 				return (
 					<Col
@@ -162,7 +162,7 @@ function ShippingCarriersComponent(props) {
 
 	const getEnitureCarriers = (carrier_type = 1) => {
 		return props?.carriers
-			?.sort((carr1, carr2) => carr1.name > carr2.name)
+			?.sort((carr1, carr2) => (carr1.name > carr2.name ? 1 : -1))
 			.map((value, key) => {
 				return (
 					carrier_type === value.carrier_type && (
@@ -208,7 +208,7 @@ function ShippingCarriersComponent(props) {
 
 	const getRecommendedAddons = () => {
 		return props.addons
-			.sort((add1, add2) => add1.name > add2.name)
+			.sort((add1, add2) => (add1.name > add2.name ? 1 : -1))
 			.map((value, key) => {
 				return (
 					<Col
