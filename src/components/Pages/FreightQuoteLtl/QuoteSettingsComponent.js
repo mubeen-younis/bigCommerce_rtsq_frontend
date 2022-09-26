@@ -149,6 +149,7 @@ function QuoteSettingsComponentWwe(props) {
 					props={props}
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
+					ratingMethod={ratingMethod}
 					handleChange={handleStateChange}
 				/>
 

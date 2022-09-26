@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect} from "react"
 import { Row, Col, Form, Typography, Input, Checkbox } from "antd"
 import { LableAsLimit } from "../Utilities/numberValidation"
 import { useSelector } from "react-redux"
@@ -10,11 +10,12 @@ const TruckloadSettings = ({
   quoteSettingsState,
   setQuoteSettingsState,
   props,
+  ratingMethod,
 }) => {
   const { carriersSettings } = useSelector(state => state)
 
   const checkServiceEnabled = service => {
-    return carriersSettings && carriersSettings.includes(service)
+    return carriersSettings && carriersSettings.includes(service) && +ratingMethod !== 3
   }
 
   const filterService = () => {
