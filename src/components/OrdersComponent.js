@@ -376,6 +376,7 @@ function OrderSettingsComponent(props) {
 							paddingLeft: '0px',
 							paddingRight: '0px',
 						}}>
+						<h4>{bin?.items[0]?.['product_name'] ?? ''}</h4>
 						<span style={{ width: '100%', float: 'left' }}>
 							{bin?.d}
 							{bin?.w}
