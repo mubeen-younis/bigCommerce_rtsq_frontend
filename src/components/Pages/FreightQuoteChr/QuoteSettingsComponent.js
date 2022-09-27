@@ -13,11 +13,14 @@ import RatingMethod from '../FreightQuoteLtl/RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import ReturnRates from '../../ReturnRates'
+import FqChrTruckloadSettings from '../../FqChrTruckloadSettings'
+import { getServices, getAddTabSettings } from '../../../Actions/Carriers'
 
 const initialState = {
 	number_of_options: 1,
 	showDeliveryEstimate: false,
 	delivery_estimate_options: 1,
+	tl_equipment_type: 1,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
 	all_week_days_select: true,
@@ -35,9 +38,10 @@ const initialState = {
 function QuoteSettingsComponentWwe(props) {
 	const dispatch = useDispatch()
 	const [loading, setLoading] = useState(true)
+	const [truckLoading, setTruckLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const [ratingMethod, setRatingMethod] = useState(1)
-	const { quoteSettings, installedAddons, token, carrierId, radPlans } =
+	const { quoteSettings, installedAddons, token, carrierId, radPlans, carriersSettings } =
 		useSelector(state => state)
 
 	useEffect(() => {
@@ -59,6 +63,14 @@ function QuoteSettingsComponentWwe(props) {
 			dispatch(getQuoteSettings(token, carrierId))
 		}
 	}, [carrierId, dispatch, quoteSettings, token])
+
+	useEffect(() => {
+		if(!carriersSettings){
+			dispatch(getServices(token, carrierId))
+			dispatch(getAddTabSettings(token, carrierId))
+		}
+		setTruckLoading(false)
+	}, [carriersSettings])
 
 	const radCheck = installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
@@ -115,7 +127,7 @@ function QuoteSettingsComponentWwe(props) {
 		}))
 	}, [])
 
-	return loading || quoteSettings === undefined || quoteSettings === null ? (
+	return loading || quoteSettings === undefined || quoteSettings === null || truckLoading ? (
 		<Skeleton active />
 	) : (
 		<Fragment>
@@ -132,6 +144,14 @@ function QuoteSettingsComponentWwe(props) {
 					handleChange={handleStateChange}
 					ratingMethod={ratingMethod}
 					setRatingMethod={setRatingMethod}
+				/>
+
+				<FqChrTruckloadSettings
+					props={props}
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+					ratingMethod={ratingMethod}
+					handleChange={handleStateChange}
 				/>
 
 				<DeliveryEstimateOptions
