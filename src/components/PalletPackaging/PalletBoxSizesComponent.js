@@ -69,24 +69,14 @@ function BoxSizesComponent(props) {
 	const onFinish = values => {
 		const { length, width, height, max_weight, box_weight, box_fee } = values
 		let error = ''
-		error = valueLimit(length, 108, 'interior length')
-		error += valueLimit(width, 108, 'interior width')
-		error += valueLimit(height, 108, 'interior height')
 
-		error += valueLimit(max_weight, 150, 'max weight')
-
-		error += valueLimitAfterDecimal(length, 2, 'interior length')
-		error += valueLimitAfterDecimal(width, 2, 'interior width')
-		error += valueLimitAfterDecimal(height, 2, 'interior height')
+		error += valueLimitAfterDecimal(length, 2, 'length')
+		error += valueLimitAfterDecimal(width, 2, 'width')
+		error += valueLimitAfterDecimal(height, 2, 'height')
 
 		error += valueLimitAfterDecimal(max_weight, 3, 'max weight')
-		error += valueLimitAfterDecimal(box_weight, 3, 'box weight')
-		error += valueLimitAfterDecimal(box_fee, 3, 'box fee')
-
-		// const limit = 165
-		// const int_girth = 2 * (+width + +height) + +length
-		// if (int_girth > limit)
-		// 	error = 'Interior length plus girth cannot exceed ' + limit + '.'
+		error += valueLimitAfterDecimal(box_weight, 3, 'pallet weight')
+		error += valueLimitAfterDecimal(box_fee, 3, 'pallet fee')
 
 		if (error !== '') {
 			if (error.includes('exploder')) error = error.split('exploder')[0]

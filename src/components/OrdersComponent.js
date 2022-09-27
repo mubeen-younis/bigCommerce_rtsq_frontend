@@ -349,8 +349,9 @@ function OrderSettingsComponent(props) {
 		},
 	]
 
-	const repeatItemAlone = (bin, showShipOwnTitle) => {
+	const repeatItemAlone = (bin, showShipOwnTitle, isPalletWidget = false) => {
 		let data = [<br />]
+		aloneItem = isPalletWidget ? 0 : aloneItem
 
 		for (let i = 0; i < bin?.quantity; i++) {
 			data.push(
@@ -477,7 +478,7 @@ function OrderSettingsComponent(props) {
 			showShipOwnTitle = 0
 
 			if (type === types[0]) {
-				return repeatItemAlone(bin, ++showShipOwnTitle)
+				return repeatItemAlone(bin, ++showShipOwnTitle, isPalletWidget)
 			} else if (type === types[1] && !isPalletWidget) {
 				return showWeightBasedItem(bin, ++showShipOwnTitle)
 			} else {
