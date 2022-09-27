@@ -12,6 +12,7 @@ import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from '../FreightQuoteLtl/RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ReturnRates from '../../ReturnRates'
 
 const initialState = {
 	number_of_options: 1,
@@ -166,6 +167,11 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
+
+				<ReturnRates
+        			quoteSettingsState={quoteSettingsState}
+        			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
 
 				<SaveButton />
 			</Form>
