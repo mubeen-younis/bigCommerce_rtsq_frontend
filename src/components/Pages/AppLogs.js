@@ -16,6 +16,8 @@ const AppLogs = () => {
     position: ["topRight", "bottomRight"],
     pageSizeOptions: ["20", "30", "50", "100"],
   });
+  const urlParams = new URLSearchParams(window.location.search)
+  const store = urlParams.get('store') ?? '';
 
   const fetchLogs = async () => {
     try {
@@ -28,7 +30,9 @@ const AppLogs = () => {
         `&page_size=` +
         pagination.pageSize +
         `&sort_order=` +
-        sortOrderCreated;
+        sortOrderCreated + 
+        `&store=` + 
+        store;
       const url = `${process.env.REACT_APP_ENITURE_API_URL}/api_logs?` + params;
       const { data } = await axios.get(url);
       updateTableState(data);
