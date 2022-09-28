@@ -12,6 +12,7 @@ import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ReturnRates from '../../ReturnRates'
 
 const initialState = {
 	number_of_options: 1,
@@ -31,6 +32,7 @@ const initialState = {
 	handling_free_markup: '',
 	standard_check: true,
 	guaranteed_check: false,
+	return_rates: false,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -87,7 +89,10 @@ function QuoteSettingsComponentWwe(props) {
 			'Handling fee'
 		)
 
-		if(!quoteSettingsState?.standard_check && !quoteSettingsState?.guaranteed_check){
+		if (
+			!quoteSettingsState?.standard_check &&
+			!quoteSettingsState?.guaranteed_check
+		) {
 			errormsg = 'Please select at least one service level.'
 		}
 
@@ -172,6 +177,11 @@ function QuoteSettingsComponentWwe(props) {
 				<HandlingUnit
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
+				/>
+
+				<ReturnRates
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
 				/>
 
 				<SaveButton />
