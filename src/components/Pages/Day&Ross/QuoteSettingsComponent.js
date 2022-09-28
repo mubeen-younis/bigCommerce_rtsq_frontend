@@ -11,10 +11,11 @@ import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import CutOffTime from '../../CutOffTime'
 import RAD from '../../RAD'
 import LiftGateDelivery from '../../LiftGateDelivery'
-// import HoldAtTerminal from '../../HoldAtTerminal'
+import HoldAtTerminal from '../../HoldAtTerminal'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ReturnRates from '../../ReturnRates'
 
 const initialState = {
 	label_as: '',
@@ -36,6 +37,7 @@ const initialState = {
 	max_weight_per_handling_unit: '',
 	handling_free_markup: '',
 	quoting_currency: 'USD',
+	return_rates: false,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -207,21 +209,25 @@ function QuoteSettingsComponentWwe(props) {
 					radStatus={radStatus}
 				/>
 
-				{/* <HoldAtTerminal
+				<HoldAtTerminal
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
-				/> */}
+				/>
 
 				<WeightThreshold
 					quoteSettingsState={quoteSettingsState}
 					handleStateChange={handleStateChange}
 				/>
-					
+
 				<HandlingUnit
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-					
+
+				<ReturnRates
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
 
 				{/* <Row gutter={30} className={'mb-3'}>
 					<Col
