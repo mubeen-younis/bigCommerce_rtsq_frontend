@@ -16,6 +16,7 @@ import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import ReturnRates from '../../ReturnRates'
+import DomesticServices from './Services/DomesticServices'
 
 const initialState = {
 	label_as: '',
@@ -149,6 +150,7 @@ function QuoteSettingsComponentWwe(props) {
 				form={form}
 				onFinish={onFinish}
 				initialValues={props.quoteSettings}>
+				<DomesticServices />
 				<Row gutter={30} className={'mb-3'}>
 					<Col
 						className='gutter-row'
@@ -228,38 +230,6 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 				/>
-
-				{/* <Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}>
-							Freight rate quoted in:
-						</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={18}>
-						<Form.Item className={'mb-0'} name='quoting_currency'>
-							<Select
-								defaultValue='USD'
-								options={[
-									{ label: 'USD', value: 'USD' },
-									{ label: 'CAD', value: 'CAD' },
-								]}
-							/>
-						</Form.Item>
-					</Col>
-				</Row> */}
 
 				<SaveButton />
 			</Form>
