@@ -1,45 +1,99 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Row, Col, Typography, Form, Checkbox, Input } from 'antd'
 import { handlingFeeMarkup } from '../../../../Utilities/numberValidation'
 
 const { Title } = Typography
 
-const international_services = ['Ground Service', 'AM Service', 'Urgent PAC']
+const domestic_services = ['Ground Service', 'AM Service', 'Urgent PAC']
 
-const DomesticServices = ({
-	quoteSettingsState,
-	internationalcheckAll,
-	internationalAllCheckHandler,
-	onChange,
-	onCheck,
-}) => {
+const DomesticServices = ({ quoteSettingsState, setQuoteSettingsState }) => {
+	const selectAllServices = useCallback(
+		e => {
+			setQuoteSettingsState(prevState => ({
+				...prevState,
+				select_all_domestic_services: e.target.checked,
+				carrier_services: {
+					...prevState?.carrier_services,
+					ground_service: e.target.checked,
+					am_service: e.target.checked,
+					urgent_pac: e.target.checked,
+				},
+			}))
+		},
+		[setQuoteSettingsState]
+	)
+
+	const makeSrvcIndex = useCallback(
+		(srvcName = '') => srvcName.toLowerCase().trim().replaceAll(' ', '_'),
+		[]
+	)
+
+	const handleServiceCheckAndValue = useCallback(
+		(e, type = '') => {
+			const checkType = 'input'
+			const key =
+				type === checkType ? e.target.name + '_makrup' : e.target.name
+			const value = type === checkType ? e.target.value : e.target.checked
+
+			let toggleSelectAllCheck =
+				quoteSettingsState?.select_all_domestic_services ?? false
+
+			if (type !== checkType) {
+				const servicesChecked = domestic_services
+					.filter(ds => makeSrvcIndex(ds) !== e.target.name)
+					.every(
+						srvc =>
+							quoteSettingsState.carrier_services[makeSrvcIndex(srvc)]
+					)
+
+				if (servicesChecked && value) toggleSelectAllCheck = true
+				else toggleSelectAllCheck = false
+			}
+
+			setQuoteSettingsState(prevState => ({
+				...prevState,
+				select_all_domestic_services: toggleSelectAllCheck,
+				carrier_services: {
+					...prevState?.carrier_services,
+					[key]: value,
+				},
+			}))
+		},
+		[
+			makeSrvcIndex,
+			quoteSettingsState.carrier_services,
+			quoteSettingsState?.select_all_domestic_services,
+			setQuoteSettingsState,
+		]
+	)
+
 	return (
 		<Col span={12}>
 			<Row gutter={30} align='middle' className={'mb-2'}>
 				<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={12}>
 					<Title level={5} style={{ textAlign: 'center' }}>
-						International Services
+						Domestic Services
 					</Title>
 				</Col>
 			</Row>
 
 			<Row gutter={24} align='middle' className={'mb-2'}>
 				<Col span={12}>
-					<label className={'text-gray'}>Select All Services</label>
+					<label className='text-gray'>Select All Services</label>
 				</Col>
 				<Col span={12}>
 					<Form.Item className='mb-0'>
 						<Checkbox
-							name='select_all'
-							value={true}
-							checked={internationalcheckAll}
-							onChange={e =>
-								internationalAllCheckHandler(e.target.checked)
-							}></Checkbox>
+							checked={
+								quoteSettingsState?.select_all_domestic_services
+							}
+							onChange={selectAllServices}
+						/>
 					</Form.Item>
 				</Col>
 			</Row>
-			{international_services.map(is => (
+
+			{domestic_services.map(is => (
 				<Row gutter={24} align='middle' className={'mb-2'}>
 					<Col span={12}>
 						<label className={'text-gray'}>{is}</label>
@@ -47,14 +101,14 @@ const DomesticServices = ({
 					<Col span={12}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name={is.toLowerCase().trim().replaceAll(' ', '_')}
-								value={true}
+								name={makeSrvcIndex(is)}
 								checked={
 									quoteSettingsState?.carrier_services?.[
-										is.toLowerCase().trim().replaceAll(' ', '_')
+										makeSrvcIndex(is)
 									]
 								}
-								onChange={onCheck}></Checkbox>
+								onChange={e => handleServiceCheckAndValue(e)}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={14}>
@@ -62,18 +116,13 @@ const DomesticServices = ({
 							<Input
 								value={
 									quoteSettingsState?.carrier_services?.[
-										is
-											.toLowerCase()
-											.trim()
-											.replaceAll(' ', '_') + '_markup'
+										makeSrvcIndex(is) + '_markup'
 									]
 								}
-								//pattern='[0-9.?(0-9){2}?]+%?$'
-								name={
-									is.toLowerCase().trim().replaceAll(' ', '_') +
-									'_markup'
+								name={makeSrvcIndex(is) + '_markup'}
+								onChange={e =>
+									handleServiceCheckAndValue(e, 'input')
 								}
-								onChange={onChange}
 								onKeyDown={handlingFeeMarkup}
 								maxLength='7'
 								type='text'
