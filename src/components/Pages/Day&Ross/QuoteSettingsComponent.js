@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { Row, Form, Col, Input, Skeleton } from 'antd'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
 import {
@@ -17,6 +17,12 @@ import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import ReturnRates from '../../ReturnRates'
 import DomesticServices from './Services/DomesticServices'
+import InternationalServices from './Services/InternationalServices'
+import TwoManDelivery from './DeliverySettings/TwoManDelivery'
+import AppointmentDelivery from './DeliverySettings/AppointmentDelivery'
+import PremiumFreightServices, {
+	premiumFreightServices,
+} from './Services/PremiumFreightServices'
 
 const initialState = {
 	label_as: '',
@@ -39,6 +45,17 @@ const initialState = {
 	handling_free_markup: '',
 	quoting_currency: 'USD',
 	return_rates: false,
+	carrier_services: {},
+}
+
+const API_TYPE = 'sameday'
+
+export const hanldeChecksDisability = quoteSettingsState => {
+	const disabled = [...Object.keys(premiumFreightServices)].some(key =>
+		Boolean(quoteSettingsState[key])
+	)
+
+	return disabled
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -46,6 +63,7 @@ function QuoteSettingsComponentWwe(props) {
 	const [form] = Form.useForm()
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
+	const { dayRossApiType } = useSelector(state => state)
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -91,11 +109,6 @@ function QuoteSettingsComponentWwe(props) {
 			}
 		}
 		let errormsg = ''
-
-		/*errormsg = validateHandlingFeeMarkup(
-			data?.weight_of_handling_unit,
-			'Weight of Handling Unit'
-		)*/
 
 		if (errormsg === '') {
 			errormsg = validateHandlingFeeMarkup(
@@ -150,43 +163,57 @@ function QuoteSettingsComponentWwe(props) {
 				form={form}
 				onFinish={onFinish}
 				initialValues={props.quoteSettings}>
-				<DomesticServices />
-				<Row gutter={30} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={6}>
-						<label className={'text-gray'}>Label As</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={18}>
-						<Form.Item className={'mb-0'} name='label_as'>
-							<Input
-								name='label_as'
-								value={
-									props.quoteSettings
-										? props.quoteSettings.label_as
-										: ''
-								}
-								onKeyDown={LableAsLimit}
-							/>
-						</Form.Item>
-						<div className={'text-gray'}>
-							What the user sees during checkout, e.g. "LTL Freight".
-							If left blank, "Freight" will be displayed as the
-							shipping method.
-						</div>
-					</Col>
-				</Row>
+				{dayRossApiType === API_TYPE && (
+					<Row gutter={30}>
+						<DomesticServices
+							setQuoteSettingsState={setQuoteSettingsState}
+							quoteSettingsState={quoteSettingsState}
+						/>
+						<InternationalServices
+							setQuoteSettingsState={setQuoteSettingsState}
+							quoteSettingsState={quoteSettingsState}
+						/>
+					</Row>
+				)}
+
+				{dayRossApiType !== API_TYPE && (
+					<Row gutter={30} className={'mb-3'}>
+						<Col
+							className='gutter-row'
+							style={{ paddingTop: '11px' }}
+							xs={24}
+							sm={24}
+							md={24}
+							lg={24}
+							xl={6}>
+							<label className={'text-gray'}>Label As</label>
+						</Col>
+						<Col
+							className='gutter-row'
+							xs={24}
+							sm={24}
+							md={24}
+							lg={24}
+							xl={18}>
+							<Form.Item className={'mb-0'} name='label_as'>
+								<Input
+									name='label_as'
+									value={
+										props.quoteSettings
+											? props.quoteSettings.label_as
+											: ''
+									}
+									onKeyDown={LableAsLimit}
+								/>
+							</Form.Item>
+							<div className={'text-gray'}>
+								What the user sees during checkout, e.g. "LTL
+								Freight". If left blank, "Freight" will be displayed
+								as the shipping method.
+							</div>
+						</Col>
+					</Row>
+				)}
 
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
@@ -211,10 +238,29 @@ function QuoteSettingsComponentWwe(props) {
 					radStatus={radStatus}
 				/>
 
-				<HoldAtTerminal
-					quoteSettingsState={quoteSettingsState}
-					handleChange={handleStateChange}
-				/>
+				{dayRossApiType === API_TYPE && (
+					<>
+						<TwoManDelivery
+							quoteSettingsState={quoteSettingsState}
+							setQuoteSettingsState={setQuoteSettingsState}
+						/>
+						<AppointmentDelivery
+							quoteSettingsState={quoteSettingsState}
+							setQuoteSettingsState={setQuoteSettingsState}
+						/>
+						<PremiumFreightServices
+							quoteSettingsState={quoteSettingsState}
+							setQuoteSettingsState={setQuoteSettingsState}
+						/>
+					</>
+				)}
+
+				{dayRossApiType !== API_TYPE && (
+					<HoldAtTerminal
+						quoteSettingsState={quoteSettingsState}
+						handleChange={handleStateChange}
+					/>
+				)}
 
 				<WeightThreshold
 					quoteSettingsState={quoteSettingsState}

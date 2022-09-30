@@ -3,6 +3,8 @@ import { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, Form, Typography, Checkbox } from 'antd'
+import { premiumFreightServices } from './Pages/Day&Ross/Services/PremiumFreightServices'
+import { hanldeChecksDisability } from './Pages/Day&Ross/QuoteSettingsComponent'
 
 const { Title } = Typography,
 	RAD_ADDON = 'RAD'
@@ -87,8 +89,15 @@ const LiftGateDelivery = ({
 									!quoteSettingsState.alwaysLiftGateDelivery,
 								offerLiftGateDelivery: false,
 								autoDetectedResidentialAddressesLfg: false,
+								always_two_man_delivery: false,
+								offer_two_man_delivery: false,
+								offer_appointment_delivery: false,
+								always_appointment_delivery: false,
 							})
-						}></Checkbox>
+						}
+						disabled={hanldeChecksDisability(
+							quoteSettingsState
+						)}></Checkbox>
 				</Form.Item>
 			</Col>
 			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
@@ -107,8 +116,14 @@ const LiftGateDelivery = ({
 								offerLiftGateDelivery:
 									!quoteSettingsState.offerLiftGateDelivery,
 								alwaysLiftGateDelivery: false,
+								always_two_man_delivery: false,
+								offer_two_man_delivery: false,
+								offer_appointment_delivery: false,
+								always_appointment_delivery: false,
 							})
-						}></Checkbox>
+						}
+						disabled={hanldeChecksDisability(quoteSettingsState)}
+					/>
 				</Form.Item>
 			</Col>
 
@@ -131,6 +146,10 @@ const LiftGateDelivery = ({
 								autoDetectedResidentialAddressesLfg:
 									!quoteSettingsState.autoDetectedResidentialAddressesLfg,
 								alwaysLiftGateDelivery: false,
+								always_two_man_delivery: false,
+								offer_two_man_delivery: false,
+								offer_appointment_delivery: false,
+								always_appointment_delivery: false,
 							})
 						}
 						disabled={

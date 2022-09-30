@@ -68,6 +68,7 @@ const initialState = {
 		visible: false,
 		id: null,
 	},
+	dayRossApiType: 'general_freight',
 }
 
 const Reducer = (state = initialState, action) => {
@@ -912,6 +913,12 @@ const Reducer = (state = initialState, action) => {
 					visible: action.payload.visible,
 					id: action.payload.id,
 				},
+			}
+
+		case types.SET_DAYROSS_API_TYPE:
+			return {
+				...state,
+				dayRossApiType: action.payload,
 			}
 
 		default:
