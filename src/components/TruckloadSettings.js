@@ -136,7 +136,6 @@ const TruckloadSettings = ({
               type="number"
               min="0"
               step="0.001"
-              max="150"
               onChange={e =>
                 setQuoteSettingsState(prevSettings => ({
                   ...prevSettings,
