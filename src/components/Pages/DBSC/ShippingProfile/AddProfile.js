@@ -287,7 +287,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 									</Col>
 
 									<Col
-										className='gutter-row'
+										className='gutter-row mt-1'
 										xs={24}
 										sm={24}
 										md={24}
@@ -295,7 +295,7 @@ const AddProfile = ({ visible, toggleAddProfileModal }) => {
 										xl={24}>
 										<Form.Item>
 											<Button
-												type='text'
+												type='primary'
 												htmlType='button'
 												onClick={() => {
 													setFromProfile(true)
