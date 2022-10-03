@@ -11,7 +11,14 @@ function ConnectionSettingsComponent(props) {
 
 	const handleTypeChange = type => setTestType(type)
 
-	useEffect(() => {}, [props.connectionSettings])
+	useEffect(() => {
+		if (connectionSettings) {
+			dispatch({
+				type: types.SET_DAYROSS_API_TYPE,
+				payload: connectionSettings?.api_type ?? 'general_freight',
+			})
+		}
+	}, [connectionSettings, dispatch])
 
 	const onFinish = values => {
 		values = {
