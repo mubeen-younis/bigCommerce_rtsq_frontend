@@ -13,6 +13,8 @@ import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ReturnRates from '../../ReturnRates'
+import HoldAtTerminal from '../../HoldAtTerminal'
 
 const initialState = {
 	label_as: '',
@@ -30,6 +32,8 @@ const initialState = {
 	autoDetectedResidentialAddressesLfg: false,
 	weight_of_handling_unit: '',
 	max_weight_per_handling_unit: '',
+	hold_at_terminal: false,
+	hold_at_terminal_price: '',
 }
 
 function QuoteSettingsComponent(props) {
@@ -184,14 +188,24 @@ function QuoteSettingsComponent(props) {
 					radStatus={radStatus}
 				/>
 
-				<WeightThreshold 
+				<HoldAtTerminal
 					quoteSettingsState={quoteSettingsState}
-          			handleStateChange={handleStateChange}
+					handleChange={handleStateChange}
+				/>
+
+				<WeightThreshold
+					quoteSettingsState={quoteSettingsState}
+					handleStateChange={handleStateChange}
 				/>
 
 				<HandlingUnit
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
+				/>
+
+				<ReturnRates
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
 				/>
 
 				<SaveButton />

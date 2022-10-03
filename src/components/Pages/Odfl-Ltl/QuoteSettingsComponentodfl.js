@@ -16,6 +16,7 @@ import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ReturnRates from '../../ReturnRates'
 
 const { Option } = Select
 const initialState = {
@@ -228,6 +229,11 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
+
+				<ReturnRates
+        			quoteSettingsState={quoteSettingsState}
+        			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
 
 				<SaveButton />
 				

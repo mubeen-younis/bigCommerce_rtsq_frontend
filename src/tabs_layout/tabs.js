@@ -7,7 +7,6 @@ import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
 import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
 import useLoadComponent from '../hooks/useLoadComponent'
-import ShippingGroup from '../components/Pages/ShippingGroup'
 import ShippingRatesComponent from '../components/Pages/DBSC/ShippingRatesComponent'
 import ShippingClassesComponent from '../components/Pages/DBSC/ShippingClassesComponent'
 import OtherSettings from '../components/Pages/DBSC/OtherSettings'
@@ -140,9 +139,7 @@ function TabsLayout() {
 						</TabPane>
 					</>
 				)}
-				<TabPane tab='Shipping Groups' key='4'>
-					<ShippingGroup />
-				</TabPane>
+
 				{!['dbsc'].includes(carrierSlug) && (
 					<TabPane tab='Quote Settings' key='5'>
 						{quoteSettingsComponent}
