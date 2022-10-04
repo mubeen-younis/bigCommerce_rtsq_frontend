@@ -290,10 +290,18 @@ function BoxSizesComponent(props) {
 															{
 																required: true,
 																message:
-																	'Nickname Required',
+																	'Nickname is required',
+															},
+															{
+																max: 30,
+																message:
+																	'Nickname length must be less than or equal to 30 characters.',
 															},
 														]}>
-														<Input placeholder='Nickname' />
+														<Input
+															placeholder='Nickname'
+															maxLength={30}
+														/>
 													</Form.Item>
 												</Col>
 
@@ -312,7 +320,7 @@ function BoxSizesComponent(props) {
 															{
 																required: true,
 																message:
-																	'Length Required',
+																	'Length (in) is required',
 															},
 															pattern,
 														]}>
@@ -343,7 +351,7 @@ function BoxSizesComponent(props) {
 															{
 																required: true,
 																message:
-																	'Width Required',
+																	'Width (in) is required',
 															},
 															pattern,
 														]}>
@@ -373,7 +381,7 @@ function BoxSizesComponent(props) {
 															{
 																required: true,
 																message:
-																	'Max Height Required',
+																	'Max Height (in) is required',
 															},
 															pattern,
 														]}>
@@ -405,7 +413,7 @@ function BoxSizesComponent(props) {
 															{
 																required: true,
 																message:
-																	'Pallet Height Required',
+																	'Pallet Height (in) is required',
 															},
 														]}>
 														<Input
@@ -435,7 +443,7 @@ function BoxSizesComponent(props) {
 															{
 																required: true,
 																message:
-																	'Max Weight Required',
+																	'Max Weight (LBS) is required',
 															},
 															pattern,
 														]}>
@@ -466,7 +474,7 @@ function BoxSizesComponent(props) {
 															{
 																required: true,
 																message:
-																	'Pallet Weight Required',
+																	'Pallet Weight (LBS) is required',
 															},
 															pattern,
 														]}>
@@ -529,7 +537,7 @@ function BoxSizesComponent(props) {
 																	? true
 																	: false
 															}>
-															Is Available
+															Available
 														</Checkbox>
 													</Form.Item>
 												</Col>

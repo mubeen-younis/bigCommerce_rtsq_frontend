@@ -351,7 +351,7 @@ function OrderSettingsComponent(props) {
 
 	const repeatItemAlone = (bin, showShipOwnTitle, isPalletWidget = false) => {
 		let data = [<br />]
-		aloneItem = isPalletWidget ? 0 : aloneItem
+		aloneItem = isPalletWidget && aloneItem === 0 ? 0 : aloneItem
 
 		for (let i = 0; i < bin?.quantity; i++) {
 			data.push(
@@ -364,7 +364,8 @@ function OrderSettingsComponent(props) {
 								width: '100%',
 							}}
 							className='alone-title'>
-							These items were quoted as shipping as their own package.
+							These items were quoted as shipping as their own{' '}
+							{isPalletWidget ? 'pallet' : 'package'}.
 						</h3>
 					)}
 					<Col
