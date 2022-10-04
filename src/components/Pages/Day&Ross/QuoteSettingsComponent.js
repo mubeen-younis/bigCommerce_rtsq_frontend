@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
-import { Row, Form, Col, Input, Skeleton } from 'antd'
+import { Row, Form, Col, Input, Skeleton, Typography } from 'antd'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
@@ -23,6 +23,8 @@ import AppointmentDelivery from './DeliverySettings/AppointmentDelivery'
 import PremiumFreightServices, {
 	premiumFreightServices,
 } from './Services/PremiumFreightServices'
+
+const { Title } = Typography
 
 const initialState = {
 	label_as: '',
@@ -165,6 +167,31 @@ function QuoteSettingsComponentWwe(props) {
 				initialValues={props.quoteSettings}>
 				{dayRossApiType === API_TYPE && (
 					<Row gutter={30}>
+						<Col
+							className='gutter-row'
+							xs={24}
+							sm={24}
+							md={24}
+							lg={24}
+							xl={24}>
+							<Title level={4}>Standard LTL Freight Services</Title>
+						</Col>
+
+						<Col
+							className='gutter-row mb-3'
+							xs={24}
+							sm={24}
+							md={24}
+							lg={24}
+							xl={24}>
+							<label className={'text-black'}>
+								The services selected will display in the cart if
+								they are available for the origin and destination
+								addresses, and if the Same Day Division Quotes API
+								has been enabled for the corresponding shipping zone.
+							</label>
+						</Col>
+
 						<DomesticServices
 							setQuoteSettingsState={setQuoteSettingsState}
 							quoteSettingsState={quoteSettingsState}
