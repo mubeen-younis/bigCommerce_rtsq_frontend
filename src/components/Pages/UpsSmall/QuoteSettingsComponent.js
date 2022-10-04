@@ -13,6 +13,7 @@ import GroundTransit from '../../GroundTransit'
 import RAD from '../../RAD'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
+import ReturnRates from '../../ReturnRates'
 
 const { Title } = Typography
 const initialState = {
@@ -500,6 +501,10 @@ function QuoteSettingsComponentWweSmall(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
+				<ReturnRates
+          			quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
 				<HazardousMaterial
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
