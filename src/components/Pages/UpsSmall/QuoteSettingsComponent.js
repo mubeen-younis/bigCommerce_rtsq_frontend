@@ -76,6 +76,7 @@ const initialState = {
 function QuoteSettingsComponentWweSmall(props) {
 	const [loading, setLoading] = useState(true)
 	const [checkAll, setCheckAll] = useState(false)
+	const [checkAllSimpleRate, setCheckAllSimpleRate] = useState(false)
 	const [internationalcheckAll, setInternationalCheckAll] = useState(false)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
@@ -99,6 +100,15 @@ function QuoteSettingsComponentWweSmall(props) {
 			checks?.ups_next_day_air_early
 		) {
 			setCheckAll(true)
+		}
+
+		if (
+			checks?.simple_rate_ups_ground &&
+			checks?.simple_rate_ups_2nd_day_air &&
+			checks?.simple_rate_ups_next_day_air_saver &&
+			checks?.simple_rate_ups_3_day_select
+		) {
+			setCheckAllSimpleRate(true)
 		}
 
 		if (
@@ -156,6 +166,18 @@ function QuoteSettingsComponentWweSmall(props) {
 			setCheckAll(isCheckedAll)
 		}
 
+		const checksSimpleRate = {
+			simple_rate_ups_ground: quoteSettingsState?.carrier_services?.simple_rate_ups_ground,
+			simple_rate_ups_2nd_day_air: quoteSettingsState?.carrier_services?.simple_rate_ups_2nd_day_air,
+			simple_rate_ups_next_day_air_saver: quoteSettingsState?.carrier_services?.simple_rate_ups_next_day_air_saver,
+			simple_rate_ups_3_day_select: quoteSettingsState?.carrier_services?.simple_rate_ups_3_day_select,
+		}
+		if(Object.keys(checksSimpleRate).includes(e.target.name)){
+			checksSimpleRate[e.target.name] = e.target.checked
+			const isCheckedAll = Object.values(checksSimpleRate).every(ck => ck)
+			setCheckAllSimpleRate(isCheckedAll)
+		}
+
 		const internationalChecks = {
 			ups_standard: quoteSettingsState?.carrier_services?.ups_standard,
 			ups_worldwide_expedited:
@@ -173,6 +195,21 @@ function QuoteSettingsComponentWweSmall(props) {
 			const internationalIsCheckAll = Object.values(internationalChecks).every(ck => ck)
 			setInternationalCheckAll(internationalIsCheckAll)
 		}
+	}
+
+	const allCheckHandlerSimpleRate = () => {
+		setCheckAllSimpleRate(!checkAllSimpleRate)
+
+		setQuoteSettingsState({
+			...quoteSettingsState,
+			carrier_services: {
+				...quoteSettingsState.carrier_services,
+				simple_rate_ups_ground: !checkAllSimpleRate,
+				simple_rate_ups_2nd_day_air: !checkAllSimpleRate,
+				simple_rate_ups_next_day_air_saver: !checkAllSimpleRate,
+				simple_rate_ups_3_day_select: !checkAllSimpleRate,
+			},
+		})
 	}
 
 	const allCheckHandler = () => {
@@ -464,7 +501,9 @@ function QuoteSettingsComponentWweSmall(props) {
 					<DomesticServices
 						quoteSettingsState={quoteSettingsState}
 						checkAll={checkAll}
+						checkAllSimpleRate={checkAllSimpleRate}
 						allCheckHandler={allCheckHandler}
+						allCheckHandlerSimpleRate={allCheckHandlerSimpleRate}
 						onCheck={onCheck}
 						onChange={onChange}
 					/>
