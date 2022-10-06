@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Form, Typography, Checkbox } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
+import { API_TYPE } from './Pages/Day&Ross/QuoteSettingsComponent'
 // import { useEffect } from 'react'
 
 const { Title } = Typography
@@ -9,7 +10,7 @@ const RAD_ADDON = 'RAD'
 
 const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) => {
 	const dispatch = useDispatch()
-	const { installedAddons } = useSelector(state => state)
+	const { installedAddons, dayRossApiType } = useSelector(state => state)
 
 	// useEffect(() => {
 	// 	if (radStatus) {
@@ -31,6 +32,13 @@ const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) 
 	const isRadInstalled = installedAddons?.find(add => add.short_code === RAD_ADDON)
 		? true
 		: false
+
+	const isRADDisabled = useCallback(() => {
+		let isDisabled = false
+		console.log(quoteSettingsState)
+
+		return isDisabled
+	}, [quoteSettingsState])
 
 	return (
 		<Row gutter={30} align='middle' className={'mb-4'}>
@@ -92,45 +100,62 @@ const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) 
 								offer_limited_access_delivery: false,
 							})
 						}
+						disabled={isRADDisabled}
 					/>
 				</Form.Item>
 			</Col>
 
-			<>
-				<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
-					<label className={'text-gray'}>
-						Auto-detect residential addresses
-					</label>
-				</Col>
-				<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
-					<Form.Item className={'mb-0'}>
-						<Checkbox
-							name='autoDetectedResidentialAddresses'
-							checked={
-								quoteSettingsState.autoDetectedResidentialAddresses
-							}
-							onChange={e =>
-								setQuoteSettingsState({
-									...quoteSettingsState,
-									autoDetectedResidentialAddresses:
-										e.target.checked,
-									alwaysResidentialDelivery: false,
-								})
-							}
-							disabled={!radStatus}
-						/>
-						{!isRadInstalled && (
-							<label className={'ml-4'} style={{ marginLeft: '10px' }}>
-								Click{' '}
-								<Link to='/' onClick={setActiveMenu}>
-									here
-								</Link>{' '}
-								to add the Residential Address Detection add-on.
-							</label>
-						)}
-					</Form.Item>
-				</Col>
-			</>
+			{dayRossApiType !== API_TYPE && (
+				<>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={12}
+						md={12}
+						lg={12}
+						xl={6}>
+						<label className={'text-gray'}>
+							Auto-detect residential addresses
+						</label>
+					</Col>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={12}
+						md={12}
+						lg={12}
+						xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name='autoDetectedResidentialAddresses'
+								checked={
+									quoteSettingsState.autoDetectedResidentialAddresses
+								}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										autoDetectedResidentialAddresses:
+											e.target.checked,
+										alwaysResidentialDelivery: false,
+									})
+								}
+								disabled={!radStatus}
+							/>
+							{!isRadInstalled && (
+								<label
+									className={'ml-4'}
+									style={{ marginLeft: '10px' }}>
+									Click{' '}
+									<Link to='/' onClick={setActiveMenu}>
+										here
+									</Link>{' '}
+									to add the Residential Address Detection add-on.
+								</label>
+							)}
+						</Form.Item>
+					</Col>
+				</>
+			)}
 		</Row>
 	)
 }

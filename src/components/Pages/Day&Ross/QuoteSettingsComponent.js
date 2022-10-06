@@ -50,7 +50,7 @@ const initialState = {
 	carrier_services: {},
 }
 
-const API_TYPE = 'sameday'
+export const API_TYPE = 'sameday'
 
 export const hanldeChecksDisability = quoteSettingsState => {
 	const disabled = [...Object.keys(premiumFreightServices)].some(key =>
