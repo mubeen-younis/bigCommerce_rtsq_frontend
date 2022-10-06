@@ -1,5 +1,6 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
+import {upsBoxTypes, boxDiscription } from '../../Utilities/constants'
 import { Link } from 'react-router-dom'
 import {
 	Select,
@@ -140,11 +141,12 @@ function BoxSizesComponent(props) {
 	const [productBoxVisible, setProductBoxVisible] = useState(false)
 	const [loadBoxSize, setLoadBoxSize] = useState(false)
 	const [boxType, setBoxType] = useState('')
+	const [discription, setDiscription] = useState({})
 	const [operation, setOperation] = useState(false)
 	const [recordId, setRecordId] = useState(0)
 	const [deleteBoxModal, setDeleteBoxModal] = useState(false)
 	const dispatch = useDispatch()
-	const { productBoxes, isFedexSmallCarrier, isUspsSmallCarrier } = useSelector(
+	const { productBoxes, isFedexSmallCarrier, isUspsSmallCarrier, isUpsSmallCarrier} = useSelector(
 		state => state
 	)
 	const [boxSizeForm] = Form.useForm()
@@ -200,6 +202,20 @@ function BoxSizesComponent(props) {
 		},
 		[boxSizeForm]
 	)
+
+	const upsBoxInfo = useCallback(
+		(box_id = '') => {
+			setDiscription(boxDiscription[box_id])
+		},
+		[]
+	)
+
+	const setDiscriptionText = 
+		<>
+			<span>{discription?.dimensions}</span><br/>
+			<span>{discription?.cb_dimensions}</span><br/>
+			<span>{discription?.size_samples}</span>
+		</>
 
 	const setUspsBoxFields = useCallback((val = '', opt) => {
 		boxSizeForm.setFieldsValue({
@@ -286,7 +302,7 @@ function BoxSizesComponent(props) {
 			const boxType =
 				values?.box_name === 'Merchant defined Box (default)'
 					? 1
-					: (isFedexSmallCarrier && 2) || (isUspsSmallCarrier && 3)
+					: (isFedexSmallCarrier && 2) || (isUspsSmallCarrier && 3) || (isUpsSmallCarrier && 5)
 			if (!operation) {
 				props.addBoxSize(
 					props.token,
@@ -730,6 +746,70 @@ function BoxSizesComponent(props) {
 																</Select>
 															</Form.Item>
 														</Col>
+													) : isUpsSmallCarrier ? (
+														<>
+														<Col
+															className='gutter-row'
+															xs={24}
+															sm={24}
+															md={24}
+															lg={24}
+															xl={24}>
+															<Form.Item
+																className={'mb-2'}
+																label='Box Type'
+																name='box_name'
+																rules={[
+																	{
+																		required: true,
+																		message:
+																			'Box Type Required',
+																	},
+																]}>
+																<Select
+																	//defaultValue='Merchant defined Box (default)'
+																	//name='box_name'
+																	onChange={opt =>
+																		upsBoxInfo(
+																			opt
+																		)
+																	}>
+																	<Option value='Merchant defined Box (default)'>
+																		Merchant
+																		defined Box
+																		(default)
+																	</Option>
+																	{upsBoxTypes.map(
+																		bt => (
+																			<Option
+																				value={
+																					bt.id
+																				}
+																				key={
+																					bt.id
+																				}>
+																				{
+																					bt.label
+																				}
+																			</Option>
+																		)
+																	)}
+																</Select>
+															</Form.Item>
+														</Col>
+														{discription?.dimensions && discription?.dimensions?.length > 0 && <Col
+														className='gutter-row note-bx'
+															xs={24}
+															sm={24}
+															md={24}
+															lg={24}
+															xl={24}>
+															<Form.Item>
+																{setDiscriptionText}
+															</Form.Item>
+														</Col>
+														}
+														</>
 													) : isUspsSmallCarrier ? (
 														<Col
 															className='gutter-row'
