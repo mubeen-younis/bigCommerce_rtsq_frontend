@@ -246,14 +246,17 @@ function BoxSizesComponent(props) {
 		</>
 	)
 
-	const setUspsBoxFields = useCallback((val = '', opt) => {
-		boxSizeForm.setFieldsValue({
-			nickname: String(opt.children),
-			length: 0,
-			width: 0,
-			height: 0,
-		})
-	}, [])
+	const setUspsBoxFields = useCallback(
+		(val = '', opt) => {
+			boxSizeForm.setFieldsValue({
+				nickname: String(opt.children),
+				length: 0,
+				width: 0,
+				height: 0,
+			})
+		},
+		[boxSizeForm]
+	)
 
 	const onFinish = values => {
 		const {
@@ -674,7 +677,7 @@ function BoxSizesComponent(props) {
 										setOperation(false)
 										setVisibleAddBox(true)
 										boxSizeForm.setFieldsValue(initialState)
-										setDiscriptionText({})
+										setDiscription({})
 									}}>
 									Add Box
 								</Button>
