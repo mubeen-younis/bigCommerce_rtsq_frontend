@@ -1,6 +1,6 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
-import {upsBoxTypes, boxDiscription } from '../../Utilities/constants'
+import { upsBoxTypes, boxDiscription } from '../../Utilities/constants'
 import { Link } from 'react-router-dom'
 import {
 	Select,
@@ -146,9 +146,12 @@ function BoxSizesComponent(props) {
 	const [recordId, setRecordId] = useState(0)
 	const [deleteBoxModal, setDeleteBoxModal] = useState(false)
 	const dispatch = useDispatch()
-	const { productBoxes, isFedexSmallCarrier, isUspsSmallCarrier, isUpsSmallCarrier} = useSelector(
-		state => state
-	)
+	const {
+		productBoxes,
+		isFedexSmallCarrier,
+		isUspsSmallCarrier,
+		isUpsSmallCarrier,
+	} = useSelector(state => state)
 	const [boxSizeForm] = Form.useForm()
 
 	useEffect(() => {
@@ -219,7 +222,7 @@ function BoxSizesComponent(props) {
 				const { label } = upsBoxTypes.filter(bt => bt.id === box_id)[0]
 
 				const newValues = {
-					nickname: label
+					nickname: label,
 				}
 
 				setBoxSize(prevState => ({
@@ -233,12 +236,15 @@ function BoxSizesComponent(props) {
 		[boxSizeForm]
 	)
 
-	const setDiscriptionText = 
+	const setDiscriptionText = (
 		<>
-			<span>Dimensions: {discription?.dimensions}</span><br/>
-			<span>Common Box Dimensions: {discription?.cb_dimensions}</span><br/>
+			<span>Dimensions: {discription?.dimensions}</span>
+			<br />
+			<span>Common Box Dimensions: {discription?.cb_dimensions}</span>
+			<br />
 			<span>Size Samples: {discription?.size_samples}</span>
 		</>
+	)
 
 	const setUspsBoxFields = useCallback((val = '', opt) => {
 		boxSizeForm.setFieldsValue({
@@ -325,7 +331,9 @@ function BoxSizesComponent(props) {
 			const boxType =
 				values?.box_name === 'Merchant defined Box (default)'
 					? 1
-					: (isFedexSmallCarrier && 2) || (isUspsSmallCarrier && 3) || (isUpsSmallCarrier && 5)
+					: (isFedexSmallCarrier && 2) ||
+					  (isUspsSmallCarrier && 3) ||
+					  (isUpsSmallCarrier && 5)
 			if (!operation) {
 				props.addBoxSize(
 					props.token,
@@ -666,6 +674,7 @@ function BoxSizesComponent(props) {
 										setOperation(false)
 										setVisibleAddBox(true)
 										boxSizeForm.setFieldsValue(initialState)
+										setDiscriptionText({})
 									}}>
 									Add Box
 								</Button>
@@ -771,67 +780,76 @@ function BoxSizesComponent(props) {
 														</Col>
 													) : isUpsSmallCarrier ? (
 														<>
-														<Col
-															className='gutter-row'
-															xs={24}
-															sm={24}
-															md={24}
-															lg={24}
-															xl={24}>
-															<Form.Item
-																className={'mb-2'}
-																label='Box Type'
-																name='box_name'
-																rules={[
-																	{
-																		required: true,
-																		message:
-																			'Box Type Required',
-																	},
-																]}>
-																<Select
-																	//defaultValue='Merchant defined Box (default)'
-																	//name='box_name'
-																	onChange={opt =>
-																		upsBoxInfo(
-																			opt
-																		)
-																	}>
-																	<Option value='Merchant defined Box (default)'>
-																		Merchant
-																		defined Box
-																		(default)
-																	</Option>
-																	{upsBoxTypes.map(
-																		bt => (
-																			<Option
-																				value={
-																					bt.id
-																				}
-																				key={
-																					bt.id
-																				}>
-																				{
-																					bt.label
-																				}
-																			</Option>
-																		)
-																	)}
-																</Select>
-															</Form.Item>
-														</Col>
-														{discription?.dimensions && discription?.dimensions?.length > 0 && <Col
-														className='gutter-row note-bx'
-															xs={24}
-															sm={24}
-															md={24}
-															lg={24}
-															xl={24}>
-															<Form.Item>
-																{setDiscriptionText}
-															</Form.Item>
-														</Col>
-														}
+															<Col
+																className='gutter-row'
+																xs={24}
+																sm={24}
+																md={24}
+																lg={24}
+																xl={24}>
+																<Form.Item
+																	className={
+																		'mb-2'
+																	}
+																	label='Box Type'
+																	name='box_name'
+																	rules={[
+																		{
+																			required: true,
+																			message:
+																				'Box Type Required',
+																		},
+																	]}>
+																	<Select
+																		//defaultValue='Merchant defined Box (default)'
+																		//name='box_name'
+																		onChange={opt =>
+																			upsBoxInfo(
+																				opt
+																			)
+																		}>
+																		<Option value='Merchant defined Box (default)'>
+																			Merchant
+																			defined
+																			Box
+																			(default)
+																		</Option>
+																		{upsBoxTypes.map(
+																			bt => (
+																				<Option
+																					value={
+																						bt.id
+																					}
+																					key={
+																						bt.id
+																					}>
+																					{
+																						bt.label
+																					}
+																				</Option>
+																			)
+																		)}
+																	</Select>
+																</Form.Item>
+															</Col>
+															{discription?.dimensions &&
+																discription
+																	?.dimensions
+																	?.length > 0 && (
+																	<Col
+																		className='gutter-row note-bx'
+																		xs={24}
+																		sm={24}
+																		md={24}
+																		lg={24}
+																		xl={24}>
+																		<Form.Item>
+																			{
+																				setDiscriptionText
+																			}
+																		</Form.Item>
+																	</Col>
+																)}
 														</>
 													) : isUspsSmallCarrier ? (
 														<Col
