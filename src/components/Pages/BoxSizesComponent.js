@@ -206,15 +206,38 @@ function BoxSizesComponent(props) {
 	const upsBoxInfo = useCallback(
 		(box_id = '') => {
 			setDiscription(boxDiscription[box_id])
+
+			if (box_id === 'Merchant defined Box (default)') {
+				setBoxSize(prevState => ({
+					...initialState,
+					...prevState,
+				}))
+				boxSizeForm.setFieldsValue({
+					...initialState,
+				})
+			} else {
+				const { label } = upsBoxTypes.filter(bt => bt.id === box_id)[0]
+
+				const newValues = {
+					nickname: label
+				}
+
+				setBoxSize(prevState => ({
+					...prevState,
+					...newValues,
+				}))
+
+				boxSizeForm.setFieldsValue(newValues)
+			}
 		},
-		[]
+		[boxSizeForm]
 	)
 
 	const setDiscriptionText = 
 		<>
-			<span>{discription?.dimensions}</span><br/>
-			<span>{discription?.cb_dimensions}</span><br/>
-			<span>{discription?.size_samples}</span>
+			<span>Dimensions: {discription?.dimensions}</span><br/>
+			<span>Common Box Dimensions: {discription?.cb_dimensions}</span><br/>
+			<span>Size Samples: {discription?.size_samples}</span>
 		</>
 
 	const setUspsBoxFields = useCallback((val = '', opt) => {
