@@ -105,8 +105,6 @@ export const changeAddonSuspendStatus = (addon_id, token, action) => {
 					},
 				})
 			})
-			.catch(err => {
-				console.log(err)
-			})
+			.catch(err => {})
 	}
 }
