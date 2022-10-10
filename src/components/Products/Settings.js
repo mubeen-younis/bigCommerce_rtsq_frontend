@@ -636,7 +636,9 @@ const Settings = ({
 								name='pallet_vertical_rotation'
 								id={'pallet_vertical_rotation' + index}
 								checked={product?.pallet_vertical_rotation}
-								disabled={isPalletPkgSuspended}>
+								disabled={
+									isPalletPkgSuspended || product?.parcel_enabled
+								}>
 								Allow vertical rotation on pallet
 							</Checkbox>
 						</Col>
@@ -652,7 +654,9 @@ const Settings = ({
 								name='own_pallet'
 								id={'own_pallet' + index}
 								checked={product?.own_pallet}
-								disabled={isPalletPkgSuspended}>
+								disabled={
+									isPalletPkgSuspended || product?.parcel_enabled
+								}>
 								Ship as own pallet
 							</Checkbox>
 						</Col>

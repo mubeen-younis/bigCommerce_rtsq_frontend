@@ -220,7 +220,8 @@ function BoxSizesComponent(props) {
 
 	return !addonCheck ? (
 		<h1>
-			Click <Link to='/'>here</Link> to add the {addonCheck?.name} add-on.
+			Click <Link to='/?addon=true'>here</Link> to add the {addonCheck?.name}{' '}
+			add-on.
 		</h1>
 	) : (
 		<Fragment>
