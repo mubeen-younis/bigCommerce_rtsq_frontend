@@ -5,9 +5,9 @@ import { handlingFeeMarkup } from '../../../../../Utilities/numberValidation'
 const { Title } = Typography
 export const domestic_services = [
 	'Ground Home Delivery',
-	//'Date Certain Home Delivery',
-	//'Evening Home Delivery',
-	//'Appointment Home Delivery',
+	'Date Certain Home Delivery',
+	'Evening Home Delivery',
+	'Appointment Home Delivery',
 	'Ground',
 	'Express Saver',
 	'2 Day',
@@ -102,7 +102,7 @@ const DomesticServices = ({
 				</Col>
 			</Row>
 
-			{/*}<Row gutter={30} align='middle' className={'mb-2'}>
+			{}<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>
 									Date Certain Home Delivery
@@ -240,7 +240,7 @@ const DomesticServices = ({
 									Markup (e.g Currency 1.0 or percentage 5%)
 								</label>
 							</Col>
-						</Row> {*/}
+						</Row> {}
 
 			<Row gutter={30} align='middle' className={'mb-2'}>
 				<Col span={20}>
