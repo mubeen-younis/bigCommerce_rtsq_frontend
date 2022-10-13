@@ -329,7 +329,7 @@ const AddRate = ({ zoneId, rates }) => {
 									<Select>
 										<Option value='Route'>Route</Option>
 										<Option value='Straight Line'>
-											Staright Line
+											Straight Line
 										</Option>
 									</Select>
 								</Form.Item>
@@ -612,15 +612,15 @@ const AddRate = ({ zoneId, rates }) => {
 										<Space direction='vertical'>
 											<Radio value='1'>
 												The calculated shipping rate is for
-												the contents of the Cart
+												the contents of the cart.
 											</Radio>
 											<Radio value='2'>
 												Multiply the calculated shipping rate
-												by the number of items in the Cart
+												by the number of items in the cart.
 											</Radio>
 											<Radio value='3'>
-												Just show flat rate, do not calculate
-												rates based on distance
+												Just show a flat rate. Do not
+												calculate rates based on distance.
 											</Radio>
 										</Space>
 									</Radio.Group>

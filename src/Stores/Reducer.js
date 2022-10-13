@@ -68,6 +68,9 @@ const initialState = {
 		visible: false,
 		id: null,
 	},
+
+	/* Pallet packaging */
+	palletPlans: null,
 }
 
 const Reducer = (state = initialState, action) => {
@@ -450,6 +453,28 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				sbsPlans: action.payload,
+			}
+		}
+
+		case types.PLT_PLANS: {
+			if (
+				action.payload?.severity === 'SUCCESS' &&
+				action.payload?.Message.includes(
+					'disabled the Pallet Packaging Detection plugin'
+				)
+			) {
+				return {
+					...state,
+					palletPlans: {
+						...state.palletPlans,
+						...action.payload,
+					},
+				}
+			}
+
+			return {
+				...state,
+				palletPlans: action.payload,
 			}
 		}
 
