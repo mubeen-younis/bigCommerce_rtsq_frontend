@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { connect, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 import {
 	Typography,
 	Row,
@@ -23,7 +22,6 @@ import {
 } from '../../Actions/BoxSizes'
 import {
 	handlingFeeMarkup,
-	valueLimit,
 	valueLimitAfterDecimal,
 	blockInvalidChar,
 } from '../../Utilities/numberValidation'
@@ -214,16 +212,7 @@ function BoxSizesComponent(props) {
 		},
 	]
 
-	const addonCheck = props.installedAddons.find(
-		add => add.name === 'Standard Box Sizes'
-	)
-
-	return !addonCheck ? (
-		<h1>
-			Click <Link to='/?addon=true'>here</Link> to add the {addonCheck?.name}{' '}
-			add-on.
-		</h1>
-	) : (
+	return (
 		<Fragment>
 			<Row gutter={30} justify='center' className={'mb-3'}>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>

@@ -3,14 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Tabs } from 'antd'
 import CarriersComponent from '../components/CarriersComponent'
 import ProductSettingsComponent from '../components/ProductSettingsComponent'
-import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
 import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
 import useLoadComponent from '../hooks/useLoadComponent'
 import ShippingRatesComponent from '../components/Pages/DBSC/ShippingRatesComponent'
 import ShippingClassesComponent from '../components/Pages/DBSC/ShippingClassesComponent'
 import OtherSettings from '../components/Pages/DBSC/OtherSettings'
-import PalletBoxSizesComponent from '../components/PalletPackaging/PalletBoxSizesComponent'
 
 const { TabPane } = Tabs
 
@@ -89,17 +87,6 @@ function TabsLayout() {
 	const [connSettingsComponent, quoteSettingsComponent] =
 		useLoadComponent(component)
 
-	const showTab = useCallback(
-		(type = 0) =>
-			installedCarriers
-				? installedCarriers
-						?.filter(ic => +ic.carrier_type === type)
-						?.map(carr => carr.slug)
-						.includes(carrierSlug)
-				: false,
-		[carrierSlug, installedCarriers]
-	)
-
 	return (
 		<Fragment>
 			<PlanStatusHeading />
@@ -148,17 +135,6 @@ function TabsLayout() {
 				<TabPane tab='Product Settings' key='6'>
 					<ProductSettingsComponent />
 				</TabPane>
-
-				{showTab(2) && (
-					<TabPane tab='Box Sizes' key='8'>
-						<BoxSizesComponent />
-					</TabPane>
-				)}
-				{showTab(1) && (
-					<TabPane tab='Pallets' key='12'>
-						<PalletBoxSizesComponent />
-					</TabPane>
-				)}
 			</Tabs>
 		</Fragment>
 	)

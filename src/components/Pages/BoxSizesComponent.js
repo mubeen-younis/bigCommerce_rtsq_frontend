@@ -1,6 +1,5 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import {
 	Select,
 	Typography,
@@ -62,7 +61,7 @@ const productBoxInitialState = {
 	box_fee: '',
 }
 
-const boxTypes = [
+const fedexBoxTypes = [
 	{ label: 'Fedex Envelope (9.5 x 12.5)', id: 'FEDEX_ENVELOPE__19-5_12-5_0-5-1' },
 	{
 		label: 'Fedex Reusable Envelope (9.5 x 15.5)',
@@ -116,16 +115,12 @@ const boxTypes = [
 ]
 
 const uspsBoxTypes = [
-	{
-		lable: 'Merchant defined Box (default)',
-		id: 'Merchant defined Box (default)',
-	},
-	{ lable: 'USPS Priority Mail Box', id: 'UPMB' },
-	{ lable: 'USPS Priority Mail Express Box', id: 'UMEB' },
-	{ lable: 'USPS Priority Mail Large Flat Rate Box', id: 'UFLAT' },
-	{ lable: 'USPS Priority Mail Medium Flat Rate Box', id: 'UFLAT' },
-	{ lable: 'USPS Priority Mail Small Flat Rate Box', id: 'UFLAT' },
-	{ lable: 'USPS Priority Mail Padded Flat Rate Envelope', id: 'UFLAT' },
+	{ label: 'USPS Priority Mail Box', id: 'UPMB' },
+	{ label: 'USPS Priority Mail Express Box', id: 'UMEB' },
+	{ label: 'USPS Priority Mail Large Flat Rate Box', id: 'UFLAT' },
+	{ label: 'USPS Priority Mail Medium Flat Rate Box', id: 'UFLAT' },
+	{ label: 'USPS Priority Mail Small Flat Rate Box', id: 'UFLAT' },
+	{ label: 'USPS Priority Mail Padded Flat Rate Envelope', id: 'UFLAT' },
 ]
 
 const pattern = {
@@ -144,9 +139,12 @@ function BoxSizesComponent(props) {
 	const [recordId, setRecordId] = useState(0)
 	const [deleteBoxModal, setDeleteBoxModal] = useState(false)
 	const dispatch = useDispatch()
-	const { productBoxes, isFedexSmallCarrier, isUspsSmallCarrier } = useSelector(
-		state => state
-	)
+	const {
+		productBoxes,
+		isFedexSmallCarrier,
+		isUspsSmallCarrier,
+		installedCarriers,
+	} = useSelector(state => state)
 	const [boxSizeForm] = Form.useForm()
 
 	useEffect(() => {
@@ -166,7 +164,7 @@ function BoxSizesComponent(props) {
 					...initialState,
 				})
 			} else {
-				const { label } = boxTypes.filter(bt => bt.id === box_id)[0]
+				const { label } = fedexBoxTypes.filter(bt => bt.id === box_id)[0]
 				const dimensions = label
 					.substring(label.indexOf('(') + 1, label.indexOf(')'))
 					.replaceAll(' ', '')
@@ -201,14 +199,19 @@ function BoxSizesComponent(props) {
 		[boxSizeForm]
 	)
 
-	const setUspsBoxFields = useCallback((val = '', opt) => {
-		boxSizeForm.setFieldsValue({
-			nickname: String(opt.children),
-			length: 0,
-			width: 0,
-			height: 0,
-		})
-	}, [])
+	const setUspsBoxFields = useCallback(
+		(val = '', opt) => {
+			boxSizeForm.setFieldsValue({
+				nickname: String(opt.children),
+				length: 0,
+				width: 0,
+				height: 0,
+				max_weight: 0,
+				box_weight: 0,
+			})
+		},
+		[boxSizeForm]
+	)
 
 	const onFinish = values => {
 		const {
@@ -423,6 +426,29 @@ function BoxSizesComponent(props) {
 		setDeleteBoxModal(true)
 	}
 
+	const handleBoxTypes = useCallback(() => {
+		let boxTypes = []
+
+		if (installedCarriers && installedCarriers?.length > 0) {
+			const isFedexSmallEnabled = installedCarriers?.filter(
+				insCarr => insCarr.slug === 'fedex-small' && insCarr.is_enabled
+			)
+			const isUspsSmallEnabled = installedCarriers?.filter(
+				insCarr => insCarr.slug === 'usps-small' && insCarr.is_enabled
+			)
+
+			if (isFedexSmallEnabled?.length > 0 && isUspsSmallEnabled?.length > 0) {
+				boxTypes = [...fedexBoxTypes, ...uspsBoxTypes]
+			} else if (isFedexSmallEnabled?.length > 0) {
+				boxTypes = fedexBoxTypes
+			} else if (isUspsSmallEnabled?.length > 0) {
+				boxTypes = uspsBoxTypes
+			}
+		}
+
+		return boxTypes
+	}, [installedCarriers])
+
 	const columns = [
 		{
 			key: 'nickname',
@@ -560,15 +586,7 @@ function BoxSizesComponent(props) {
 		},
 	]
 
-	const addonCheck = props.installedAddons.find(
-		add => add.name === 'Standard Box Sizes'
-	)
-
-	return !addonCheck ? (
-		<h1>
-			Click <Link to='/'>here</Link> to add the {addonCheck?.name} add-on.
-		</h1>
-	) : (
+	return (
 		<Fragment>
 			<Row gutter={30} justify='center' className={'mb-3'}>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -679,140 +697,75 @@ function BoxSizesComponent(props) {
 														<Input placeholder='Nickname' />
 													</Form.Item>
 												</Col>
-												<>
-													{isFedexSmallCarrier ? (
-														<Col
-															className='gutter-row'
-															xs={24}
-															sm={24}
-															md={24}
-															lg={24}
-															xl={24}>
-															<Form.Item
-																className={'mb-2'}
-																label='Box Type'
-																name='box_name'
-																rules={[
-																	{
-																		required: true,
-																		message:
-																			'Box Type Required',
-																	},
-																]}>
-																<Select
-																	//defaultValue='Merchant defined Box (default)'
-																	//name='box_name'
-																	onChange={opt =>
-																		populateBoxValues(
-																			opt
-																		)
-																	}>
-																	<Option value='Merchant defined Box (default)'>
-																		Merchant
-																		defined Box
-																		(default)
-																	</Option>
-																	{boxTypes.map(
-																		bt => (
-																			<Option
-																				value={
-																					bt.id
-																				}
-																				key={
-																					bt.id
-																				}>
-																				{
-																					bt.label
-																				}
-																			</Option>
-																		)
-																	)}
-																</Select>
-															</Form.Item>
-														</Col>
-													) : isUspsSmallCarrier ? (
-														<Col
-															className='gutter-row'
-															xs={24}
-															sm={24}
-															md={24}
-															lg={24}
-															xl={24}>
-															<Form.Item
-																className={'mb-2'}
-																label='Box Type'
-																name='box_name'
-																rules={[
-																	{
-																		required: true,
-																		message:
-																			'Box Type Required',
-																	},
-																]}>
-																<Select
-																	defaultValue='Merchant defined Box (default)'
-																	name='box_name'
-																	onChange={(
-																		val,
-																		opt
-																	) =>
-																		setUspsBoxFields(
+
+												<Col
+													className='gutter-row'
+													xs={24}
+													sm={24}
+													md={24}
+													lg={24}
+													xl={24}>
+													<Form.Item
+														className={'mb-2'}
+														label='Box Type'
+														name='box_name'
+														rules={[
+															{
+																required: true,
+																message:
+																	'Box Type Required',
+															},
+														]}>
+														<Select
+															onChange={(val, opt) =>
+																val
+																	?.toLowerCase()
+																	?.includes(
+																		'fedex'
+																	)
+																	? populateBoxValues(
+																			val
+																	  )
+																	: setUspsBoxFields(
 																			val,
 																			opt
-																		)
-																	}>
-																	{uspsBoxTypes.map(
-																		(bt, i) => (
-																			<Option
-																				value={
-																					bt.id +
-																					i
-																				}
-																				key={
-																					bt.id +
-																					i
-																				}>
-																				{
-																					bt.lable
-																				}
-																			</Option>
-																		)
-																	)}
-																</Select>
-															</Form.Item>
-														</Col>
-													) : (
-														<Col
-															className='gutter-row'
-															xs={24}
-															sm={24}
-															md={24}
-															lg={24}
-															xl={24}>
-															<Form.Item
-																className={'mb-2'}
-																label='Box Type'
-																name='box_name'
-																rules={[
-																	{
-																		required: true,
-																		message:
-																			'Box Type Required',
-																	},
-																]}>
-																<Select
-																	//defaultValue='Merchant defined Box (default)'
-																	name='box_name'>
-																	<Option value='Merchant defined Box (default)'>
-																		Merchant
-																		defined Box
-																		(default)
+																	  )
+															}>
+															<Option value='Merchant defined Box (default)'>
+																Merchant defined Box
+																(default)
+															</Option>
+															{handleBoxTypes()?.map(
+																(bt, i) => (
+																	<Option
+																		value={
+																			bt?.label
+																				?.toLowerCase()
+																				?.includes(
+																					'usps'
+																				)
+																				? bt.id +
+																				  i
+																				: bt.id
+																		}
+																		key={
+																			bt?.label
+																				?.toLowerCase()
+																				?.includes(
+																					'usps'
+																				)
+																				? bt.id +
+																				  i
+																				: bt.id
+																		}>
+																		{bt.label}
 																	</Option>
-																</Select>
-															</Form.Item>
-														</Col>
-													)}
-												</>
+																)
+															)}
+														</Select>
+													</Form.Item>
+												</Col>
+
 												<Col
 													className='gutter-row'
 													xs={24}

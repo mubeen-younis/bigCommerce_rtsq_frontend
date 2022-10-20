@@ -7,6 +7,7 @@ import {
 	changeAddonSuspendStatus,
 } from '../../Actions/Pallets'
 import { useCallback } from 'react'
+import PalletBoxSizesComponent from './PalletBoxSizesComponent'
 
 const { Title } = Typography
 const { Option } = Select
@@ -94,7 +95,7 @@ function AutoDetectResidentialComponent(props) {
 			</Modal>
 
 			<Row gutter={24} justify='center' className={'mb-3'}>
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={12}>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={22}>
 					<Card style={{ width: '100%' }}>
 						<p>
 							The Pallet Size feature calculates the optimal packaging
@@ -285,6 +286,12 @@ function AutoDetectResidentialComponent(props) {
 							</Fragment>
 						)}
 					</Card>
+				</Col>
+			</Row>
+
+			<Row gutter={24} justify='center' className='mb-3'>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={22}>
+					<PalletBoxSizesComponent />
 				</Col>
 			</Row>
 		</Fragment>
