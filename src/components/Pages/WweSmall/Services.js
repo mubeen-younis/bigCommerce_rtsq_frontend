@@ -28,6 +28,18 @@ const Services = ({
 				</Col>
 			</Row>
 
+			<Row gutter={24} className='mb-2'>
+				<Col
+					className='gutter-row text-center'
+					xs={6}
+					sm={6}
+					md={6}
+					lg={6}
+					xl={6}>
+					<Title level={5}>US Domestic Services</Title>
+				</Col>
+			</Row>
+
 			<Row gutter={24} align='middle' className={'mb-2'}>
 				<Col className='gutter-row' xs={12} sm={12} md={12} lg={8} xl={6}>
 					<label className={'text-gray'}>Select All Services</label>
@@ -78,7 +90,7 @@ const Services = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -117,7 +129,7 @@ const Services = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -155,7 +167,7 @@ const Services = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -194,7 +206,7 @@ const Services = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -233,7 +245,7 @@ const Services = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -272,7 +284,7 @@ const Services = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -313,7 +325,7 @@ const Services = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -354,7 +366,7 @@ const Services = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>

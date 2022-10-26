@@ -14,6 +14,7 @@ import HazardousMaterial from '../../HazardousMaterial'
 import RAD from '../../RAD'
 import SaveButton from '../../SaveButton'
 import Services from './Services'
+import ReturnRates from '../../ReturnRates'
 
 const initialState = {
 	carrier_services: {
@@ -355,6 +356,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</div>
 					</Col>
 				</Row>
+
+				<ReturnRates
+					quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
 
 				<SaveButton />
 			</Form>
