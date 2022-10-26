@@ -1,16 +1,18 @@
 import React, { useCallback } from 'react'
 import { Row, Col, Typography, Form, Checkbox, Input } from 'antd'
 import { handlingFeeMarkup } from '../../../../Utilities/numberValidation'
-import QuoteSettingsComponent, {
-	hanldeChecksDisability,
-} from '../QuoteSettingsComponent'
+import { hanldeChecksDisability } from '../QuoteSettingsComponent'
 import { premiumFreightServices } from './PremiumFreightServices'
 
 const { Title } = Typography
 
 const domestic_services = ['Ground Service', 'AM Service', 'Urgent PAC']
 
-const DomesticServices = ({ quoteSettingsState, setQuoteSettingsState }) => {
+const DomesticServices = ({
+	quoteSettingsState,
+	setQuoteSettingsState,
+	sameDayApi,
+}) => {
 	const selectAllServices = useCallback(
 		e => {
 			setQuoteSettingsState(prevState => ({
@@ -93,7 +95,10 @@ const DomesticServices = ({ quoteSettingsState, setQuoteSettingsState }) => {
 								quoteSettingsState?.select_all_domestic_services
 							}
 							onChange={selectAllServices}
-							disabled={hanldeChecksDisability(quoteSettingsState)}
+							disabled={hanldeChecksDisability(
+								quoteSettingsState,
+								sameDayApi
+							)}
 						/>
 					</Form.Item>
 				</Col>
@@ -114,7 +119,10 @@ const DomesticServices = ({ quoteSettingsState, setQuoteSettingsState }) => {
 									]
 								}
 								onChange={e => handleServiceCheckAndValue(e)}
-								disabled={hanldeChecksDisability(quoteSettingsState)}
+								disabled={hanldeChecksDisability(
+									quoteSettingsState,
+									sameDayApi
+								)}
 							/>
 						</Form.Item>
 					</Col>
@@ -133,7 +141,10 @@ const DomesticServices = ({ quoteSettingsState, setQuoteSettingsState }) => {
 								onKeyDown={handlingFeeMarkup}
 								maxLength='7'
 								type='text'
-								disabled={hanldeChecksDisability(quoteSettingsState)}
+								disabled={hanldeChecksDisability(
+									quoteSettingsState,
+									sameDayApi
+								)}
 							/>
 						</Form.Item>
 					</Col>
@@ -146,7 +157,7 @@ const DomesticServices = ({ quoteSettingsState, setQuoteSettingsState }) => {
 						lg={24}
 						xl={24}>
 						<label className={'text-gray'}>
-							Markup (e.g Currency 1.0 or percentage 5%)
+							Markup (e.g Currency 1.00 or percentage 5%)
 						</label>
 					</Col>
 				</Row>

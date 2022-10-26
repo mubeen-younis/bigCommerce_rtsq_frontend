@@ -2,24 +2,19 @@ import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Form, Typography, Checkbox } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { API_TYPE } from './Pages/Day&Ross/QuoteSettingsComponent'
-// import { useEffect } from 'react'
 
 const { Title } = Typography
 const RAD_ADDON = 'RAD'
 
-const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) => {
+const RAD = ({
+	quoteSettingsState,
+	setQuoteSettingsState,
+	radStatus,
+	carrier,
+	sameDayApi = false,
+}) => {
 	const dispatch = useDispatch()
-	const { installedAddons, dayRossApiType } = useSelector(state => state)
-
-	// useEffect(() => {
-	// 	if (radStatus) {
-	// 		setQuoteSettingsState(prevState => ({
-	// 			...prevState,
-	// 			alwaysResidentialDelivery: false,
-	// 		}))
-	// 	}
-	// }, [radStatus, setQuoteSettingsState])
+	const { installedAddons } = useSelector(state => state)
 
 	const setActiveMenu = useCallback(
 		() =>
@@ -35,10 +30,20 @@ const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) 
 
 	const isRADDisabled = useCallback(() => {
 		let isDisabled = false
-		console.log(quoteSettingsState)
+
+		if (sameDayApi) {
+			if (
+				quoteSettingsState?.deliver_to_threshold ||
+				quoteSettingsState?.deliver_to_room_of_choice
+			) {
+				isDisabled = false
+			} else {
+				isDisabled = true
+			}
+		}
 
 		return isDisabled
-	}, [quoteSettingsState])
+	}, [quoteSettingsState, sameDayApi])
 
 	return (
 		<Row gutter={30} align='middle' className={'mb-4'}>
@@ -100,12 +105,12 @@ const RAD = ({ quoteSettingsState, setQuoteSettingsState, radStatus, carrier }) 
 								offer_limited_access_delivery: false,
 							})
 						}
-						disabled={isRADDisabled}
+						disabled={isRADDisabled()}
 					/>
 				</Form.Item>
 			</Col>
 
-			{dayRossApiType !== API_TYPE && (
+			{!sameDayApi && (
 				<>
 					<Col
 						className='gutter-row'

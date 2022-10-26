@@ -8,7 +8,11 @@ const { Title } = Typography
 
 const international_services = ['US Next PM', 'US 2nd Day', 'US Ground']
 
-const InternationalServices = ({ quoteSettingsState, setQuoteSettingsState }) => {
+const InternationalServices = ({
+	quoteSettingsState,
+	setQuoteSettingsState,
+	sameDayApi,
+}) => {
 	const selectAllServices = useCallback(
 		e => {
 			setQuoteSettingsState(prevState => ({
@@ -91,7 +95,10 @@ const InternationalServices = ({ quoteSettingsState, setQuoteSettingsState }) =>
 								quoteSettingsState?.select_all_international_services
 							}
 							onChange={selectAllServices}
-							disabled={hanldeChecksDisability(quoteSettingsState)}
+							disabled={hanldeChecksDisability(
+								quoteSettingsState,
+								sameDayApi
+							)}
 						/>
 					</Form.Item>
 				</Col>
@@ -112,7 +119,10 @@ const InternationalServices = ({ quoteSettingsState, setQuoteSettingsState }) =>
 									]
 								}
 								onChange={e => handleServiceCheckAndValue(e)}
-								disabled={hanldeChecksDisability(quoteSettingsState)}
+								disabled={hanldeChecksDisability(
+									quoteSettingsState,
+									sameDayApi
+								)}
 							/>
 						</Form.Item>
 					</Col>
@@ -132,7 +142,10 @@ const InternationalServices = ({ quoteSettingsState, setQuoteSettingsState }) =>
 								onKeyDown={handlingFeeMarkup}
 								maxLength='7'
 								type='text'
-								disabled={hanldeChecksDisability(quoteSettingsState)}
+								disabled={hanldeChecksDisability(
+									quoteSettingsState,
+									sameDayApi
+								)}
 							/>
 						</Form.Item>
 					</Col>
@@ -144,7 +157,7 @@ const InternationalServices = ({ quoteSettingsState, setQuoteSettingsState }) =>
 						lg={24}
 						xl={24}>
 						<label className='text-gray'>
-							Markup (e.g Currency 1.0 or percentage 5%)
+							Markup (e.g Currency 1.00 or percentage 5%)
 						</label>
 					</Col>
 				</Row>

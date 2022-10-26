@@ -52,10 +52,14 @@ const initialState = {
 
 export const API_TYPE = 'sameday'
 
-export const hanldeChecksDisability = quoteSettingsState => {
-	const disabled = [...Object.keys(premiumFreightServices)].some(key =>
-		Boolean(quoteSettingsState[key])
-	)
+export const hanldeChecksDisability = (quoteSettingsState, sameDayApi = false) => {
+	let disabled = false
+
+	if (sameDayApi) {
+		disabled = [...Object.keys(premiumFreightServices)].some(key =>
+			Boolean(quoteSettingsState[key])
+		)
+	}
 
 	return disabled
 }
@@ -195,10 +199,12 @@ function QuoteSettingsComponentWwe(props) {
 						<DomesticServices
 							setQuoteSettingsState={setQuoteSettingsState}
 							quoteSettingsState={quoteSettingsState}
+							sameDayApi={dayRossApiType === API_TYPE}
 						/>
 						<InternationalServices
 							setQuoteSettingsState={setQuoteSettingsState}
 							quoteSettingsState={quoteSettingsState}
+							sameDayApi={dayRossApiType === API_TYPE}
 						/>
 					</Row>
 				)}
@@ -257,12 +263,14 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
+					sameDayApi={dayRossApiType === API_TYPE}
 				/>
 
 				<LiftGateDelivery
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
+					sameDayApi={dayRossApiType === API_TYPE}
 				/>
 
 				{dayRossApiType === API_TYPE && (
