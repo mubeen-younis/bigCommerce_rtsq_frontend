@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Button, Col, Row, Select, Checkbox, Input } from 'antd'
+import { Form, Button, Col, Row, Select, Checkbox, Input, Typography } from 'antd'
 import { getLocations } from '../../Actions/Warehouse'
 
 const { Option } = Select
@@ -10,7 +10,10 @@ const smallCarriers = [
 	'fedex-small',
 	'unishippers-small',
 	'usps-small',
+	'purolator-small',
 ]
+
+const { Title } = Typography
 
 const Settings = ({
 	count,
@@ -32,6 +35,7 @@ const Settings = ({
 		token,
 		store,
 		shippingClasses,
+		palletPlans,
 	} = useSelector(state => state)
 	const dispatch = useDispatch()
 
@@ -57,6 +61,12 @@ const Settings = ({
 		? true
 		: false || (sbsPlans && sbsPlans?.currentPackage?.status === 3)
 
+	const isPalletPkgSuspended = installedAddons?.find(
+		add => add.short_code === 'PLT' && add.is_enabled === 0
+	)
+		? true
+		: false || (palletPlans && palletPlans?.currentPackage?.status === 3)
+
 	useEffect(() => {
 		if (isSbsSuspended) {
 			onChangeVariant(index, 'allow_vertical', false)
@@ -64,8 +74,20 @@ const Settings = ({
 			onChangeVariant(index, 'ship_multiple_package', false)
 		}
 
+		if (isPalletPkgSuspended) {
+			onChangeVariant(index, 'pallet_vertical_rotation', false)
+			onChangeVariant(index, 'own_pallet', false)
+		}
+
 		dispatch(getLocations(token))
-	}, [dispatch, index, isSbsSuspended, onChangeVariant, token])
+	}, [
+		dispatch,
+		index,
+		isSbsSuspended,
+		onChangeVariant,
+		token,
+		isPalletPkgSuspended,
+	])
 
 	return (
 		<Fragment key={index}>
@@ -596,6 +618,50 @@ const Settings = ({
 						</Col>
 					</Row>
 				) : null}
+
+				{!isSmallCarrier && (
+					<>
+						<Title level={5} className='mt-3'>
+							LTL Pallet Packaging
+						</Title>
+						<Col span={24} style={{ marginTop: '7px' }}>
+							<Checkbox
+								onChange={e => {
+									onChangeVariant(
+										index,
+										'pallet_vertical_rotation',
+										e.target.checked
+									)
+								}}
+								name='pallet_vertical_rotation'
+								id={'pallet_vertical_rotation' + index}
+								checked={product?.pallet_vertical_rotation}
+								disabled={
+									isPalletPkgSuspended || product?.parcel_enabled
+								}>
+								Allow vertical rotation on pallet
+							</Checkbox>
+						</Col>
+						<Col span={24} style={{ marginTop: '7px' }}>
+							<Checkbox
+								onChange={e =>
+									onChangeVariant(
+										index,
+										'own_pallet',
+										e.target.checked
+									)
+								}
+								name='own_pallet'
+								id={'own_pallet' + index}
+								checked={product?.own_pallet}
+								disabled={
+									isPalletPkgSuspended || product?.parcel_enabled
+								}>
+								Ship as own pallet
+							</Checkbox>
+						</Col>
+					</>
+				)}
 
 				{count > 1 && index === 0 && (
 					<Row gutter={24} style={{ marginTop: '20px' }}>
