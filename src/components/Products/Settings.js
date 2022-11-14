@@ -470,29 +470,7 @@ const Settings = ({
 						</Checkbox>
 					</Col>
 
-					{/* Shipping Group Check */}
-					<Col span={24} style={{ marginTop: '7px' }}>
-						<Checkbox
-							onChange={e => {
-								onChangeVariant(
-									index,
-									'shipping_group_enabled',
-									e.target.checked
-								)
-								onChangeVariant(index, 'dropship_enabled', false)
-								onChangeVariant(index, 'dropship_location', null)
-							}}
-							name='shipping_group_enabled'
-							id={'shipping_group_enabled' + index}
-							checked={product?.shipping_group_enabled}
-							disabled={product?.dropship_enabled}>
-							Assign this product to a shipping group
-						</Checkbox>
-					</Col>
-				</Row>
-
-				{product?.dropship_enabled ? (
-					<Row gutter={16}>
+					{product?.dropship_enabled ? (
 						<Col span={24} style={{ marginTop: '7px' }}>
 							<Form.Item label='Dropship Location'>
 								<Select
@@ -527,11 +505,29 @@ const Settings = ({
 								</Select>
 							</Form.Item>
 						</Col>
-					</Row>
-				) : null}
+					) : null}
 
-				{product?.shipping_group_enabled ? (
-					<Row gutter={16}>
+					{/* Shipping Group Check */}
+					<Col span={24} style={{ marginTop: '7px' }}>
+						<Checkbox
+							onChange={e => {
+								onChangeVariant(
+									index,
+									'shipping_group_enabled',
+									e.target.checked
+								)
+								onChangeVariant(index, 'dropship_enabled', false)
+								onChangeVariant(index, 'dropship_location', null)
+							}}
+							name='shipping_group_enabled'
+							id={'shipping_group_enabled' + index}
+							checked={product?.shipping_group_enabled}
+							disabled={product?.dropship_enabled}>
+							Assign this product to a shipping group
+						</Checkbox>
+					</Col>
+
+					{product?.shipping_group_enabled ? (
 						<Col span={24} style={{ marginTop: '7px' }}>
 							<Form.Item label='Shipping Group'>
 								<Select
@@ -563,8 +559,8 @@ const Settings = ({
 								</Select>
 							</Form.Item>
 						</Col>
-					</Row>
-				) : null}
+					) : null}
+				</Row>
 
 				{/* Shipping Classes */}
 				<Col span={24} style={{ marginTop: '7px' }}>
