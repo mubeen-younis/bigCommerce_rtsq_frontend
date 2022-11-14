@@ -161,24 +161,24 @@ function BoxSizesComponent(props) {
 			dataIndex: 'width',
 		},
 		{
-			key: 'height',
-			title: 'Max Height (in)',
-			dataIndex: 'height',
-		},
-		{
 			key: 'ext_height',
-			title: 'Pallet Height (in)',
+			title: 'Height (in)',
 			dataIndex: 'ext_height',
-		},
-		{
-			key: 'maxWeight',
-			title: 'Max Weight (LBS)',
-			dataIndex: 'max_weight',
 		},
 		{
 			key: 'palletWeight',
 			title: 'Pallet Weight (LBS)',
 			dataIndex: 'box_weight',
+		},
+		{
+			key: 'height',
+			title: 'Max Height (in)',
+			dataIndex: 'height',
+		},
+		{
+			key: 'maxWeight',
+			title: 'Max Weight (LBS)',
+			dataIndex: 'max_weight',
 		},
 		{
 			key: 'palletFee',
@@ -187,7 +187,7 @@ function BoxSizesComponent(props) {
 		},
 		{
 			key: 'available',
-			title: 'Available',
+			title: 'Is Available',
 			dataIndex: 'availability',
 		},
 		{
@@ -365,38 +365,7 @@ function BoxSizesComponent(props) {
 													xl={12}>
 													<Form.Item
 														className={'mb-2'}
-														label='Max Height (in)'
-														name='height'
-														rules={[
-															{
-																required: true,
-																message:
-																	'Max Height (in) is required',
-															},
-															pattern,
-														]}>
-														<Input
-															type='number'
-															onKeyDown={
-																handlingFeeMarkup
-															}
-															step='0.01'
-															min={0}
-															placeholder='Max Height (in)'
-														/>
-													</Form.Item>
-												</Col>
-
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Pallet Height (in)'
+														label='Height (in)'
 														name='ext_height'
 														rules={[
 															pattern,
@@ -414,37 +383,6 @@ function BoxSizesComponent(props) {
 															min='0'
 															step='0.01'
 															placeholder='Pallet Height (in)'
-														/>
-													</Form.Item>
-												</Col>
-
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Max Weight (LBS)'
-														name='max_weight'
-														rules={[
-															{
-																required: true,
-																message:
-																	'Max Weight (LBS) is required',
-															},
-															pattern,
-														]}>
-														<Input
-															type='number'
-															onKeyDown={
-																handlingFeeMarkup
-															}
-															step='0.01'
-															min={0}
-															placeholder='Max Weight'
 														/>
 													</Form.Item>
 												</Col>
@@ -476,6 +414,68 @@ function BoxSizesComponent(props) {
 															step='0.01'
 															min={0}
 															placeholder='Pallet Weight'
+														/>
+													</Form.Item>
+												</Col>
+												
+												<Col
+													className='gutter-row'
+													xs={24}
+													sm={24}
+													md={24}
+													lg={12}
+													xl={12}>
+													<Form.Item
+														className={'mb-2'}
+														label='Max Height (in)'
+														name='height'
+														rules={[
+															{
+																required: true,
+																message:
+																	'Max Height (in) is required',
+															},
+															pattern,
+														]}>
+														<Input
+															type='number'
+															onKeyDown={
+																handlingFeeMarkup
+															}
+															step='0.01'
+															min={0}
+															placeholder='Max Height (in)'
+														/>
+													</Form.Item>
+												</Col>
+
+												<Col
+													className='gutter-row'
+													xs={24}
+													sm={24}
+													md={24}
+													lg={12}
+													xl={12}>
+													<Form.Item
+														className={'mb-2'}
+														label='Max Weight (LBS)'
+														name='max_weight'
+														rules={[
+															{
+																required: true,
+																message:
+																	'Max Weight (LBS) is required',
+															},
+															pattern,
+														]}>
+														<Input
+															type='number'
+															onKeyDown={
+																handlingFeeMarkup
+															}
+															step='0.01'
+															min={0}
+															placeholder='Max Weight'
 														/>
 													</Form.Item>
 												</Col>
@@ -527,7 +527,7 @@ function BoxSizesComponent(props) {
 																	? true
 																	: false
 															}>
-															Available
+															Is Available
 														</Checkbox>
 													</Form.Item>
 												</Col>
