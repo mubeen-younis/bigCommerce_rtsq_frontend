@@ -21,6 +21,7 @@ import {
 import { getPlans } from './Actions/Plans'
 import { getRadPlans } from './Actions/RAD'
 import { getSbsPlans } from './Actions/SBS'
+import { getPalletsPlans } from './Actions/Pallets'
 import RendorCarrier from './components/RendorCarrier'
 import RendorAddon from './components/RenderAddon'
 import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent'
@@ -60,6 +61,7 @@ function App(props) {
     confirmModalAction,
     getRADPlans,
     getSbsPlans,
+    getPalletsPlans,
     currentPlan,
     getStorePlans,
     setStoreData,
@@ -79,6 +81,7 @@ function App(props) {
       currentPlan(token)
       getRADPlans(token)
       getSbsPlans(token)
+      getPalletsPlans(token)
       locations(token)
       getAllCarriers(token)
       getAllAddons(token)
@@ -257,6 +260,7 @@ const mapDispatchToProps = (dispatch) => {
     getInstalledAddons: (store) => dispatch(getInstalledAddons({ store })),
     getRADPlans: (token) => dispatch(getRadPlans(token)),
     getSbsPlans: (token) => dispatch(getSbsPlans(token)),
+    getPalletsPlans: (token) => dispatch(getPalletsPlans(token)),
     getStorePlans: () => dispatch(getPlans()),
     getShippingGroups: (token) => dispatch(getShippingGroups(token)),
     setToken: (token) => {

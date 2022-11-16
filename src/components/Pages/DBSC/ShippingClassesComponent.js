@@ -36,11 +36,6 @@ const App = () => {
 			key: 'class_name',
 		},
 		{
-			title: 'Slug',
-			dataIndex: 'slug',
-			key: 'slug',
-		},
-		{
 			title: 'Description',
 			dataIndex: 'description',
 			key: 'description',

@@ -349,8 +349,9 @@ function OrderSettingsComponent(props) {
 		},
 	]
 
-	const repeatItemAlone = (bin, showShipOwnTitle) => {
+	const repeatItemAlone = (bin, showShipOwnTitle, isPalletWidget = false) => {
 		let data = [<br />]
+		aloneItem = isPalletWidget && aloneItem === 0 ? 0 : aloneItem
 
 		for (let i = 0; i < bin?.quantity; i++) {
 			data.push(
@@ -363,7 +364,8 @@ function OrderSettingsComponent(props) {
 								width: '100%',
 							}}
 							className='alone-title'>
-							These items were quoted as shipping as their own package.
+							These items were quoted as shipping as their own{' '}
+							{isPalletWidget ? 'pallet' : 'package'}.
 						</h3>
 					)}
 					<Col
@@ -375,6 +377,7 @@ function OrderSettingsComponent(props) {
 							paddingLeft: '0px',
 							paddingRight: '0px',
 						}}>
+						<h4>{bin?.items[0]?.['product_name'] ?? ''}</h4>
 						<span style={{ width: '100%', float: 'left' }}>
 							{bin?.d}
 							{bin?.w}
@@ -388,11 +391,14 @@ function OrderSettingsComponent(props) {
 		}
 
 		aloneItem = 1
+
 		return (
-			<div style={{ clear: 'both' }}>
-				<div style={{ width: '100%' }}> </div>
-				{data}
-			</div>
+			<>
+				<div style={{ clear: 'both' }}>
+					<div style={{ width: '100%' }}> </div>
+					{data}
+				</div>
+			</>
 		)
 	}
 
@@ -441,29 +447,41 @@ function OrderSettingsComponent(props) {
 		)
 	}
 
-	const countBoxes = widget => {
+	const countBoxes = (widget, isPalletWidget = false) => {
 		let countBoxes = 0
-		widget?.sbs?.forEach(
-			bin =>
-				bin?.type !== 'item' && bin?.type !== 'weight_based' && ++countBoxes
-		)
+
+		if (isPalletWidget) {
+			widget?.pallet?.forEach(
+				pallet =>
+					pallet?.type !== 'item' &&
+					pallet?.type !== 'weight_based' &&
+					++countBoxes
+			)
+		} else {
+			widget?.sbs?.forEach(
+				bin =>
+					bin?.type !== 'item' &&
+					bin?.type !== 'weight_based' &&
+					++countBoxes
+			)
+		}
 
 		return countBoxes
 	}
 
-	const widgetData = widget => {
+	const widgetData = (widget, isPalletWidget = false) => {
 		let showShipOwnTitle = 0
-		let numBoxes = countBoxes(widget)
+		let numBoxes = countBoxes(widget, isPalletWidget)
 		const types = ['item', 'weight_based']
-		const sbs = widget?.sbs ?? []
+		const sbs = isPalletWidget ? widget?.pallet ?? [] : widget?.sbs ?? []
 
 		return sbs?.map((bin, count) => {
 			const type = bin?.type ?? ''
 			showShipOwnTitle = 0
 
 			if (type === types[0]) {
-				return repeatItemAlone(bin, ++showShipOwnTitle)
-			} else if (type === types[1]) {
+				return repeatItemAlone(bin, ++showShipOwnTitle, isPalletWidget)
+			} else if (type === types[1] && !isPalletWidget) {
 				return showWeightBasedItem(bin, ++showShipOwnTitle)
 			} else {
 				return (
@@ -472,7 +490,8 @@ function OrderSettingsComponent(props) {
 							<Row gutter={24} className={'mt-4'}>
 								<Col span={8} style={{ marginTop: '33px' }}>
 									<strong>
-										Box {count + 1} of {numBoxes}
+										{isPalletWidget ? 'Pallet' : 'Box'}{' '}
+										{count + 1} of {numBoxes}
 										<br /> Number of items:{' '}
 										{bin?.number_of_items} <br />
 										{bin?.nickname}
@@ -679,6 +698,9 @@ function OrderSettingsComponent(props) {
 											</div>
 										</Col>
 										<Col span={24}>{widgetData(widget)}</Col>
+										<Col span={24}>
+											{widgetData(widget, true)}
+										</Col>
 									</Fragment>
 								))
 							)}

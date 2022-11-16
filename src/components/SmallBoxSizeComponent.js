@@ -3,6 +3,7 @@ import { Row, Col, Checkbox, Typography, Card, Select, Skeleton, Modal } from 'a
 import { connect, useDispatch } from 'react-redux'
 // import { useParams } from 'react-router-dom'
 import { getSbsPlans, changePlan, changeAddonSuspendStatus } from '../Actions/SBS'
+import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
 
 const { Title } = Typography
 const { Option } = Select
@@ -113,7 +114,7 @@ function AutoDetectResidentialComponent(props) {
 			</Modal>
 
 			<Row gutter={24} justify='center' className={'mb-3'}>
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={12}>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={22}>
 					<Card style={{ width: '100%' }}>
 						<p>
 							The Box Sizes feature calculates the optimal packaging
@@ -297,6 +298,12 @@ function AutoDetectResidentialComponent(props) {
 							</Fragment>
 						)}
 					</Card>
+				</Col>
+			</Row>
+
+			<Row gutter={24} justify='center' className='mb-3'>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={22}>
+					<BoxSizesComponent />
 				</Col>
 			</Row>
 		</Fragment>

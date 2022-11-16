@@ -5,9 +5,9 @@ import { handlingFeeMarkup } from '../../../../../Utilities/numberValidation'
 const { Title } = Typography
 export const domestic_services = [
 	'Ground Home Delivery',
-	//'Date Certain Home Delivery',
-	//'Evening Home Delivery',
-	//'Appointment Home Delivery',
+	'Date Certain Home Delivery',
+	'Evening Home Delivery',
+	'Appointment Home Delivery',
 	'Ground',
 	'Express Saver',
 	'2 Day',
@@ -97,12 +97,12 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
 
-			{/*}<Row gutter={30} align='middle' className={'mb-2'}>
+			{}<Row gutter={30} align='middle' className={'mb-2'}>
 							<Col span={20}>
 								<label className={'text-gray'}>
 									Date Certain Home Delivery
@@ -144,7 +144,7 @@ const DomesticServices = ({
 								lg={24}
 								xl={24}>
 								<label className={'text-gray'}>
-									Markup (e.g Currency 1.0 or percentage 5%)
+									Markup (e.g Currency 1.00 or percentage 5%)
 								</label>
 							</Col>
 						</Row>
@@ -190,7 +190,7 @@ const DomesticServices = ({
 								lg={24}
 								xl={24}>
 								<label className={'text-gray'}>
-									Markup (e.g Currency 1.0 or percentage 5%)
+									Markup (e.g Currency 1.00 or percentage 5%)
 								</label>
 							</Col>
 						</Row>
@@ -237,10 +237,10 @@ const DomesticServices = ({
 								lg={24}
 								xl={24}>
 								<label className={'text-gray'}>
-									Markup (e.g Currency 1.0 or percentage 5%)
+									Markup (e.g Currency 1.00 or percentage 5%)
 								</label>
 							</Col>
-						</Row> {*/}
+						</Row> {}
 
 			<Row gutter={30} align='middle' className={'mb-2'}>
 				<Col span={20}>
@@ -274,7 +274,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -315,7 +315,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -353,7 +353,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -390,7 +390,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -429,7 +429,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -468,7 +468,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -506,7 +506,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -544,7 +544,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>

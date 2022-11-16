@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react'
 import { Form, Input, Button, Space, Skeleton, Select } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
+import types from '../../../Stores/types'
 
 function ConnectionSettingsComponent(props) {
 	const [testType, setTestType] = useState(false)
@@ -10,7 +11,14 @@ function ConnectionSettingsComponent(props) {
 
 	const handleTypeChange = type => setTestType(type)
 
-	useEffect(() => {}, [props.connectionSettings])
+	useEffect(() => {
+		if (connectionSettings) {
+			dispatch({
+				type: types.SET_DAYROSS_API_TYPE,
+				payload: connectionSettings?.api_type ?? 'general_freight',
+			})
+		}
+	}, [connectionSettings, dispatch])
 
 	const onFinish = values => {
 		values = {
@@ -60,8 +68,14 @@ function ConnectionSettingsComponent(props) {
 						defaultValue='general_freight'
 						options={[
 							{ label: 'General Freight', value: 'general_freight' },
-							// { label: 'Sameday', value: 'sameday' },
+							{ label: 'Sameday', value: 'sameday' },
 						]}
+						onChange={opt =>
+							dispatch({
+								type: types.SET_DAYROSS_API_TYPE,
+								payload: opt,
+							})
+						}
 					/>
 				</Form.Item>
 				<Form.Item
