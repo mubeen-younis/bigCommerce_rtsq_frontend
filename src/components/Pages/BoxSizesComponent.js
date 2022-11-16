@@ -482,13 +482,20 @@ function BoxSizesComponent(props) {
 			const isUspsSmallEnabled = installedCarriers?.filter(
 				insCarr => insCarr.slug === 'usps-small' && insCarr.is_enabled
 			)
+			const isUpsSmallEnabled = installedCarriers?.filter(
+				insCarr => insCarr.slug === 'ups-small' && insCarr.is_enabled
+			)
 
-			if (isFedexSmallEnabled?.length > 0 && isUspsSmallEnabled?.length > 0) {
-				boxTypes = [...fedexBoxTypes, ...uspsBoxTypes]
-			} else if (isFedexSmallEnabled?.length > 0) {
-				boxTypes = fedexBoxTypes
-			} else if (isUspsSmallEnabled?.length > 0) {
-				boxTypes = uspsBoxTypes
+			if (isFedexSmallEnabled?.length > 0) {
+				boxTypes = [...boxTypes, ...fedexBoxTypes]
+			}
+
+			if (isUspsSmallEnabled?.length > 0) {
+				boxTypes = [...boxTypes, ...uspsBoxTypes]
+			}
+
+			if (isUpsSmallEnabled?.length > 0) {
+				boxTypes = [...boxTypes, ...upsBoxTypes]
 			}
 		}
 
@@ -773,6 +780,12 @@ function BoxSizesComponent(props) {
 																	? populateBoxValues(
 																			val
 																	  )
+																	: val
+																			?.toLowerCase()
+																			?.includes(
+																				'ups'
+																			)
+																	? upsBoxInfo(val)
 																	: setUspsBoxFields(
 																			val,
 																			opt
@@ -812,6 +825,22 @@ function BoxSizesComponent(props) {
 														</Select>
 													</Form.Item>
 												</Col>
+
+												{discription?.dimensions &&
+													discription?.dimensions?.length >
+														0 && (
+														<Col
+															className='gutter-row note-bx'
+															xs={24}
+															sm={24}
+															md={24}
+															lg={24}
+															xl={24}>
+															<Form.Item>
+																{setDiscriptionText}
+															</Form.Item>
+														</Col>
+													)}
 
 												<Col
 													className='gutter-row'
