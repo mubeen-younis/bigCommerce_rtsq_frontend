@@ -53,6 +53,7 @@ const initialState = {
 		ups_ground_with_freight_pricing_markup: '',
 	},
 	delivery_estimate_options: 1,
+	saturday_delivery: false,
 	showDeliveryEstimate: false,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
@@ -485,6 +486,7 @@ function QuoteSettingsComponentWweSmall(props) {
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
+					saturdayDelivery={true}
 				/>	
 				<CutOffTime
 					quoteSettingsState={quoteSettingsState}

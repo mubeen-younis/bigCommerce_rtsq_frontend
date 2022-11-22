@@ -1,9 +1,13 @@
 import React from 'react'
-import { Row, Col, Form, Typography, Radio } from 'antd'
+import { Row, Col, Form, Typography, Radio, Checkbox } from 'antd'
 
 const { Title } = Typography
 
-const DeliveryEstimateOptions = ({ quoteSettingsState, setQuoteSettingsState }) => {
+const DeliveryEstimateOptions = ({
+	quoteSettingsState,
+	setQuoteSettingsState,
+	saturdayDelivery = false,
+}) => {
 	return (
 		<Row gutter={30} align='middle' className={'mb-4'}>
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -68,6 +72,42 @@ const DeliveryEstimateOptions = ({ quoteSettingsState, setQuoteSettingsState }) 
 					/>
 				</Form.Item>
 			</Col>
+
+			{saturdayDelivery && (
+				<>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={12}
+						md={12}
+						lg={12}
+						xl={6}>
+						<label className={'text-gray'}>
+							Display Saturday delivery
+						</label>
+					</Col>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={12}
+						md={12}
+						lg={12}
+						xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name='saturday_delivery'
+								checked={quoteSettingsState.saturday_delivery}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										saturday_delivery: e.target.checked,
+									})
+								}
+							/>
+						</Form.Item>
+					</Col>
+				</>
+			)}
 		</Row>
 	)
 }
