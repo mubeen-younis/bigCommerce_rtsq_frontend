@@ -98,7 +98,7 @@ const Settings = ({
 					</Col>
 				</Row>
 				<Row gutter={16} className='mb-0'>
-				<Title level={5} className='mt-3'>
+				<Title level={5}>
 					Default shipping method
 				</Title>
 					<Col span={24}>
@@ -628,7 +628,9 @@ const Settings = ({
 						<Title level={5} className='mt-3'>
 							Pallet Packing Properties
 						</Title>
-						These settings are only active when the Pallet feature is enabled.
+						<p>
+							These settings are only active when the Pallet feature is enabled.
+						</p>
 						<Col span={24} style={{ marginTop: '7px' }}>
 							<Checkbox
 								onChange={e => {
@@ -641,9 +643,7 @@ const Settings = ({
 								name='pallet_vertical_rotation'
 								id={'pallet_vertical_rotation' + index}
 								checked={product?.pallet_vertical_rotation}
-								disabled={
-									isPalletPkgSuspended || product?.parcel_enabled
-								}>
+								disabled={isPalletPkgSuspended}>
 								Allow vertical rotation on pallet
 							</Checkbox>
 						</Col>
@@ -659,9 +659,7 @@ const Settings = ({
 								name='own_pallet'
 								id={'own_pallet' + index}
 								checked={product?.own_pallet}
-								disabled={
-									isPalletPkgSuspended || product?.parcel_enabled
-								}>
+								disabled={isPalletPkgSuspended}>
 								Ship as own pallet
 							</Checkbox>
 						</Col>
