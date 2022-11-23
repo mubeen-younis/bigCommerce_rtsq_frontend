@@ -159,6 +159,8 @@ function BoxSizesComponent(props) {
 
 	const populateBoxValues = useCallback(
 		(box_id = '') => {
+			setDiscription({})
+
 			if (box_id === 'Merchant defined Box (default)') {
 				setBoxSize(prevState => ({
 					...initialState,
@@ -245,6 +247,8 @@ function BoxSizesComponent(props) {
 
 	const setUspsBoxFields = useCallback(
 		(val = '', opt) => {
+			setDiscription({})
+
 			boxSizeForm.setFieldsValue({
 				nickname: String(opt.children),
 				length: 0,
@@ -330,12 +334,26 @@ function BoxSizesComponent(props) {
 			if (isUspsSmallCarrier) {
 				values['box_name'] = values?.box_name?.replace(/[0-9]/, '')
 			}
-			const boxType =
+			let boxType =
 				values?.box_name === 'Merchant defined Box (default)'
 					? 1
 					: (isFedexSmallCarrier && 2) ||
 					  (isUspsSmallCarrier && 3) ||
 					  (isUpsSmallCarrier && 5)
+
+			const boxName = values?.box_name?.toLowerCase() ?? ''
+			if (boxName?.includes('fedex_')) {
+				boxType = 2
+			} else if (boxName?.includes('ups')) {
+				boxType = 5
+			} else if (
+				boxName?.includes('upmb') ||
+				boxName?.includes('umeb') ||
+				boxName?.includes('uflat')
+			) {
+				boxType = 3
+			}
+
 			if (!operation) {
 				props.addBoxSize(
 					props.token,
@@ -559,7 +577,17 @@ function BoxSizesComponent(props) {
 			title: 'Actions',
 			render: (text, record) => (
 				<Space size='middle'>
-					<a href='#!' onClick={() => editBoxSize(record)}>
+					<a
+						href='#!'
+						onClick={() => {
+							editBoxSize(record)
+
+							if (record?.box_name?.toLowerCase()?.includes('ups')) {
+								setDiscription(boxDiscription[record?.box_name])
+							} else {
+								setDiscription({})
+							}
+						}}>
 						Edit
 					</a>
 					<a
@@ -711,7 +739,10 @@ function BoxSizesComponent(props) {
 									centered
 									visible={visible}
 									onCancel={() => setVisibleAddBox(false)}
-									afterClose={() => setBoxSize(initialState)}
+									afterClose={() => {
+										setBoxSize(initialState)
+										setDiscription({})
+									}}
 									destroyOnClose={true}
 									footer={null}
 									width={800}
