@@ -98,6 +98,9 @@ const Settings = ({
 					</Col>
 				</Row>
 				<Row gutter={16} className='mb-0'>
+				<Title level={5}>
+					Default shipping method
+				</Title>
 					<Col span={24}>
 						<Form.Item style={{ marginBottom: '0px' }}>
 							<Checkbox
@@ -356,10 +359,189 @@ const Settings = ({
 						</Checkbox>
 					</Col>
 
-					{/** Box Size setting start */}
-					{addonCheck && isSmallCarrier && (
-						<>
-							<Col span={24} style={{ marginTop: '7px' }}>
+					<Col span={24} style={{ marginTop: '7px' }}>
+						<Checkbox
+							onChange={e => {
+								onChangeVariant(
+									index,
+									'showDropship',
+									e.target.checked
+								)
+								onChangeVariant(
+									index,
+									'dropship_enabled',
+									!product?.dropship_enabled
+								)
+								onChangeVariant(
+									index,
+									'shipping_group_enabled',
+									false
+								)
+								onChangeVariant(index, 'shipping_group', null)
+							}}
+							name='dropship_enabled'
+							id={'dropship_enabled' + index}
+							checked={product?.dropship_enabled}
+							disabled={product?.shipping_group_enabled}>
+							Dropship this product
+						</Checkbox>
+					</Col>
+
+					{product?.dropship_enabled ? (
+						<Col span={24} style={{ marginTop: '7px' }}>
+							<Form.Item label='Dropship Location'>
+								<Select
+									placeholder='Dropship Location'
+									size={'large'}
+									style={{ width: '100%' }}
+									name='dropship_location'
+									id={'dropship_location' + index}
+									defaultValue={product?.dropship_location ?? null}
+									value={product?.dropship_location ?? null}
+									onChange={location =>
+										onChangeVariant(
+											index,
+											'dropship_location',
+											location
+										)
+									}>
+									{dropships && (
+										<Option value={null}>Select Dropship</Option>
+									)}
+									{dropships
+										? dropships.map(value => (
+												<Option
+													value={value.id}
+													key={value.id}>{`${
+													value.city + ','
+												} ${value.state} ${
+													value.zip_code
+												}`}</Option>
+										  ))
+										: null}
+								</Select>
+							</Form.Item>
+						</Col>
+					) : null}
+
+					{/* Shipping Group Check */}
+					<Col span={24} style={{ marginTop: '7px' }}>
+						<Checkbox
+							onChange={e => {
+								onChangeVariant(
+									index,
+									'shipping_group_enabled',
+									e.target.checked
+								)
+								onChangeVariant(index, 'dropship_enabled', false)
+								onChangeVariant(index, 'dropship_location', null)
+							}}
+							name='shipping_group_enabled'
+							id={'shipping_group_enabled' + index}
+							checked={product?.shipping_group_enabled}
+							disabled={product?.dropship_enabled}>
+							Assign this product to a shipping group
+						</Checkbox>
+					</Col>
+
+					{product?.shipping_group_enabled ? (
+						<Col span={24} style={{ marginTop: '7px' }}>
+							<Form.Item label='Shipping Group'>
+								<Select
+									placeholder='Shipping Group'
+									size={'large'}
+									style={{ width: '100%' }}
+									name='shipping_group'
+									id={'shipping_group' + index}
+									defaultValue={product?.shipping_group ?? null}
+									value={product?.shipping_group ?? null}
+									onChange={location =>
+										onChangeVariant(
+											index,
+											'shipping_group',
+											location
+										)
+									}>
+									{shippingGroups && (
+										<Option value={null}>
+											Select Shipping Group
+										</Option>
+									)}
+									{shippingGroups &&
+										shippingGroups.map(value => (
+											<Option value={value.id} key={value.id}>
+												{value.nickname}
+											</Option>
+										))}
+								</Select>
+							</Form.Item>
+						</Col>
+					) : null}
+				</Row>
+
+				{/* Shipping Classes */}
+				<Title level={5} className='mt-3'>
+					Used by the Distance Based Shipping Rates integration
+				</Title>
+				<Col span={24} style={{ marginTop: '7px' }}>
+					<Checkbox
+						onChange={e => {
+							onChangeVariant(
+								index,
+								'shipping_class_enabled',
+								e.target.checked
+							)
+						}}
+						name='shipping_class_enabled'
+						id={'shipping_class_enabled' + index}
+						checked={product?.shipping_class_enabled}>
+						Assign this product to a shipping class
+					</Checkbox>
+				</Col>
+
+				{product?.shipping_class_enabled ? (
+					<Row gutter={16}>
+						<Col span={24} style={{ marginTop: '7px' }}>
+							<Form.Item label='Shipping Class'>
+								<Select
+									placeholder='Shipping Class'
+									size={'large'}
+									style={{ width: '100%' }}
+									name='shipping_class'
+									id={'shipping_class' + index}
+									defaultValue={product?.shipping_class ?? null}
+									value={product?.shipping_class ?? null}
+									onChange={location =>
+										onChangeVariant(
+											index,
+											'shipping_class',
+											location
+										)
+									}>
+									{shippingClasses && (
+										<Option value={null}>
+											Select Shipping Class
+										</Option>
+									)}
+									{shippingClasses &&
+										shippingClasses.map(value => (
+											<Option value={value.id} key={value.id}>
+												{value.class_name}
+											</Option>
+										))}
+								</Select>
+							</Form.Item>
+						</Col>
+					</Row>
+				) : null}
+
+				{/** Box Size setting start */}
+					<>
+						<Title level={5} className='mt-3'>
+							Boxing Properties
+						</Title>
+						These settings are only active when the Standard Box Sizes feature is enabled.
+							<Col span={24} style={{ marginTop: '10px' }}>
 								<Checkbox
 									onChange={e => {
 										onChangeVariant(
@@ -438,192 +620,17 @@ const Settings = ({
 									This item ships as multiple packages
 								</Checkbox>
 							</Col>
-						</>
-					)}
-					{/** Box Size setting End */}
+					</>
+					
+				{/** Box Size setting End */}
 
-					<Col span={24} style={{ marginTop: '7px' }}>
-						<Checkbox
-							onChange={e => {
-								onChangeVariant(
-									index,
-									'showDropship',
-									e.target.checked
-								)
-								onChangeVariant(
-									index,
-									'dropship_enabled',
-									!product?.dropship_enabled
-								)
-								onChangeVariant(
-									index,
-									'shipping_group_enabled',
-									false
-								)
-								onChangeVariant(index, 'shipping_group', null)
-							}}
-							name='dropship_enabled'
-							id={'dropship_enabled' + index}
-							checked={product?.dropship_enabled}
-							disabled={product?.shipping_group_enabled}>
-							Dropship this product
-						</Checkbox>
-					</Col>
-
-					{/* Shipping Group Check */}
-					<Col span={24} style={{ marginTop: '7px' }}>
-						<Checkbox
-							onChange={e => {
-								onChangeVariant(
-									index,
-									'shipping_group_enabled',
-									e.target.checked
-								)
-								onChangeVariant(index, 'dropship_enabled', false)
-								onChangeVariant(index, 'dropship_location', null)
-							}}
-							name='shipping_group_enabled'
-							id={'shipping_group_enabled' + index}
-							checked={product?.shipping_group_enabled}
-							disabled={product?.dropship_enabled}>
-							Assign this product to a shipping group
-						</Checkbox>
-					</Col>
-				</Row>
-
-				{product?.dropship_enabled ? (
-					<Row gutter={16}>
-						<Col span={24} style={{ marginTop: '7px' }}>
-							<Form.Item label='Dropship Location'>
-								<Select
-									placeholder='Dropship Location'
-									size={'large'}
-									style={{ width: '100%' }}
-									name='dropship_location'
-									id={'dropship_location' + index}
-									defaultValue={product?.dropship_location ?? null}
-									value={product?.dropship_location ?? null}
-									onChange={location =>
-										onChangeVariant(
-											index,
-											'dropship_location',
-											location
-										)
-									}>
-									{dropships && (
-										<Option value={null}>Select Dropship</Option>
-									)}
-									{dropships
-										? dropships.map(value => (
-												<Option
-													value={value.id}
-													key={value.id}>{`${
-													value.city + ','
-												} ${value.state} ${
-													value.zip_code
-												}`}</Option>
-										  ))
-										: null}
-								</Select>
-							</Form.Item>
-						</Col>
-					</Row>
-				) : null}
-
-				{product?.shipping_group_enabled ? (
-					<Row gutter={16}>
-						<Col span={24} style={{ marginTop: '7px' }}>
-							<Form.Item label='Shipping Group'>
-								<Select
-									placeholder='Shipping Group'
-									size={'large'}
-									style={{ width: '100%' }}
-									name='shipping_group'
-									id={'shipping_group' + index}
-									defaultValue={product?.shipping_group ?? null}
-									value={product?.shipping_group ?? null}
-									onChange={location =>
-										onChangeVariant(
-											index,
-											'shipping_group',
-											location
-										)
-									}>
-									{shippingGroups && (
-										<Option value={null}>
-											Select Shipping Group
-										</Option>
-									)}
-									{shippingGroups &&
-										shippingGroups.map(value => (
-											<Option value={value.id} key={value.id}>
-												{value.nickname}
-											</Option>
-										))}
-								</Select>
-							</Form.Item>
-						</Col>
-					</Row>
-				) : null}
-
-				{/* Shipping Classes */}
-				<Col span={24} style={{ marginTop: '7px' }}>
-					<Checkbox
-						onChange={e => {
-							onChangeVariant(
-								index,
-								'shipping_class_enabled',
-								e.target.checked
-							)
-						}}
-						name='shipping_class_enabled'
-						id={'shipping_class_enabled' + index}
-						checked={product?.shipping_class_enabled}>
-						Assign this product to a shipping class
-					</Checkbox>
-				</Col>
-
-				{product?.shipping_class_enabled ? (
-					<Row gutter={16}>
-						<Col span={24} style={{ marginTop: '7px' }}>
-							<Form.Item label='Shipping Class'>
-								<Select
-									placeholder='Shipping Class'
-									size={'large'}
-									style={{ width: '100%' }}
-									name='shipping_class'
-									id={'shipping_class' + index}
-									defaultValue={product?.shipping_class ?? null}
-									value={product?.shipping_class ?? null}
-									onChange={location =>
-										onChangeVariant(
-											index,
-											'shipping_class',
-											location
-										)
-									}>
-									{shippingClasses && (
-										<Option value={null}>
-											Select Shipping Class
-										</Option>
-									)}
-									{shippingClasses &&
-										shippingClasses.map(value => (
-											<Option value={value.id} key={value.id}>
-												{value.class_name}
-											</Option>
-										))}
-								</Select>
-							</Form.Item>
-						</Col>
-					</Row>
-				) : null}
-
-				{!isSmallCarrier && (
 					<>
 						<Title level={5} className='mt-3'>
-							LTL Pallet Packaging
+							Pallet Packing Properties
 						</Title>
+						<p>
+							These settings are only active when the Pallet feature is enabled.
+						</p>
 						<Col span={24} style={{ marginTop: '7px' }}>
 							<Checkbox
 								onChange={e => {
@@ -636,9 +643,7 @@ const Settings = ({
 								name='pallet_vertical_rotation'
 								id={'pallet_vertical_rotation' + index}
 								checked={product?.pallet_vertical_rotation}
-								disabled={
-									isPalletPkgSuspended || product?.parcel_enabled
-								}>
+								disabled={isPalletPkgSuspended}>
 								Allow vertical rotation on pallet
 							</Checkbox>
 						</Col>
@@ -654,14 +659,11 @@ const Settings = ({
 								name='own_pallet'
 								id={'own_pallet' + index}
 								checked={product?.own_pallet}
-								disabled={
-									isPalletPkgSuspended || product?.parcel_enabled
-								}>
+								disabled={isPalletPkgSuspended}>
 								Ship as own pallet
 							</Checkbox>
 						</Col>
 					</>
-				)}
 
 				{count > 1 && index === 0 && (
 					<Row gutter={24} style={{ marginTop: '20px' }}>
