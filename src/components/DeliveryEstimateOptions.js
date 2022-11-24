@@ -28,6 +28,7 @@ const DeliveryEstimateOptions = ({
 							setQuoteSettingsState({
 								...quoteSettingsState,
 								delivery_estimate_options: 1,
+								saturday_delivery: false,
 							})
 						}
 					/>
@@ -102,6 +103,10 @@ const DeliveryEstimateOptions = ({
 										...quoteSettingsState,
 										saturday_delivery: e.target.checked,
 									})
+								}
+								disabled={
+									+quoteSettingsState?.delivery_estimate_options ===
+									1
 								}
 							/>
 						</Form.Item>
