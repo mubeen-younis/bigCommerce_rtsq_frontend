@@ -67,6 +67,12 @@ const Settings = ({
 		? true
 		: false || (palletPlans && palletPlans?.currentPackage?.status === 3)
 
+	const isDbscEnabled = installedCarriers?.find(
+		ic => ic?.slug === 'dbsc' && ic?.is_enabled
+	)
+		? true
+		: false
+
 	useEffect(() => {
 		if (isSbsSuspended) {
 			onChangeVariant(index, 'allow_vertical', false)
@@ -98,6 +104,7 @@ const Settings = ({
 					</Col>
 				</Row>
 				<Row gutter={16} className='mb-0'>
+					<Title level={5}>Default shipping method</Title>
 					<Col span={24}>
 						<Form.Item style={{ marginBottom: '0px' }}>
 							<Checkbox
@@ -356,92 +363,6 @@ const Settings = ({
 						</Checkbox>
 					</Col>
 
-					{/** Box Size setting start */}
-					{addonCheck && isSmallCarrier && (
-						<>
-							<Col span={24} style={{ marginTop: '7px' }}>
-								<Checkbox
-									onChange={e => {
-										onChangeVariant(
-											index,
-											'allow_vertical',
-											e.target.checked
-										)
-										onChangeVariant(
-											index,
-											'ship_own_package',
-											false
-										)
-										onChangeVariant(
-											index,
-											'ship_multiple_package',
-											false
-										)
-									}}
-									name='allow_vertical'
-									id={'allow_vertical' + index}
-									checked={product?.allow_vertical}
-									disabled={isSbsSuspended}>
-									Allow item to be rotated vertically when placing
-									it in a box
-								</Checkbox>
-							</Col>
-							<Col span={24} style={{ marginTop: '7px' }}>
-								<Checkbox
-									onChange={e => {
-										onChangeVariant(
-											index,
-											'ship_own_package',
-											e.target.checked
-										)
-										onChangeVariant(
-											index,
-											'allow_vertical',
-											false
-										)
-										onChangeVariant(
-											index,
-											'ship_multiple_package',
-											false
-										)
-									}}
-									name='ship_own_package'
-									id={'ship_own_package' + index}
-									checked={product?.ship_own_package}
-									disabled={isSbsSuspended}>
-									This item ships as its own package
-								</Checkbox>
-							</Col>
-							<Col span={24} style={{ marginTop: '7px' }}>
-								<Checkbox
-									onChange={e => {
-										onChangeVariant(
-											index,
-											'ship_multiple_package',
-											e.target.checked
-										)
-										onChangeVariant(
-											index,
-											'allow_vertical',
-											false
-										)
-										onChangeVariant(
-											index,
-											'ship_own_package',
-											false
-										)
-									}}
-									name='ship_multiple_package'
-									id={'ship_multiple_package' + index}
-									checked={product?.ship_multiple_package}
-									disabled={isSbsSuspended}>
-									This item ships as multiple packages
-								</Checkbox>
-							</Col>
-						</>
-					)}
-					{/** Box Size setting End */}
-
 					<Col span={24} style={{ marginTop: '7px' }}>
 						<Checkbox
 							onChange={e => {
@@ -470,29 +391,7 @@ const Settings = ({
 						</Checkbox>
 					</Col>
 
-					{/* Shipping Group Check */}
-					<Col span={24} style={{ marginTop: '7px' }}>
-						<Checkbox
-							onChange={e => {
-								onChangeVariant(
-									index,
-									'shipping_group_enabled',
-									e.target.checked
-								)
-								onChangeVariant(index, 'dropship_enabled', false)
-								onChangeVariant(index, 'dropship_location', null)
-							}}
-							name='shipping_group_enabled'
-							id={'shipping_group_enabled' + index}
-							checked={product?.shipping_group_enabled}
-							disabled={product?.dropship_enabled}>
-							Assign this product to a shipping group
-						</Checkbox>
-					</Col>
-				</Row>
-
-				{product?.dropship_enabled ? (
-					<Row gutter={16}>
+					{product?.dropship_enabled ? (
 						<Col span={24} style={{ marginTop: '7px' }}>
 							<Form.Item label='Dropship Location'>
 								<Select
@@ -527,11 +426,29 @@ const Settings = ({
 								</Select>
 							</Form.Item>
 						</Col>
-					</Row>
-				) : null}
+					) : null}
 
-				{product?.shipping_group_enabled ? (
-					<Row gutter={16}>
+					{/* Shipping Group Check */}
+					<Col span={24} style={{ marginTop: '7px' }}>
+						<Checkbox
+							onChange={e => {
+								onChangeVariant(
+									index,
+									'shipping_group_enabled',
+									e.target.checked
+								)
+								onChangeVariant(index, 'dropship_enabled', false)
+								onChangeVariant(index, 'dropship_location', null)
+							}}
+							name='shipping_group_enabled'
+							id={'shipping_group_enabled' + index}
+							checked={product?.shipping_group_enabled}
+							disabled={product?.dropship_enabled}>
+							Assign this product to a shipping group
+						</Checkbox>
+					</Col>
+
+					{product?.shipping_group_enabled ? (
 						<Col span={24} style={{ marginTop: '7px' }}>
 							<Form.Item label='Shipping Group'>
 								<Select
@@ -563,25 +480,32 @@ const Settings = ({
 								</Select>
 							</Form.Item>
 						</Col>
-					</Row>
-				) : null}
+					) : null}
+				</Row>
 
 				{/* Shipping Classes */}
-				<Col span={24} style={{ marginTop: '7px' }}>
-					<Checkbox
-						onChange={e => {
-							onChangeVariant(
-								index,
-								'shipping_class_enabled',
-								e.target.checked
-							)
-						}}
-						name='shipping_class_enabled'
-						id={'shipping_class_enabled' + index}
-						checked={product?.shipping_class_enabled}>
-						Assign this product to a shipping class
-					</Checkbox>
-				</Col>
+				{isDbscEnabled && (
+					<>
+						<Title level={5} className='mt-3'>
+							Used by the Distance Based Shipping Rates integration
+						</Title>
+						<Col span={24} style={{ marginTop: '7px' }}>
+							<Checkbox
+								onChange={e => {
+									onChangeVariant(
+										index,
+										'shipping_class_enabled',
+										e.target.checked
+									)
+								}}
+								name='shipping_class_enabled'
+								id={'shipping_class_enabled' + index}
+								checked={product?.shipping_class_enabled}>
+								Assign this product to a shipping class
+							</Checkbox>
+						</Col>
+					</>
+				)}
 
 				{product?.shipping_class_enabled ? (
 					<Row gutter={16}>
@@ -619,49 +543,121 @@ const Settings = ({
 					</Row>
 				) : null}
 
-				{!isSmallCarrier && (
-					<>
-						<Title level={5} className='mt-3'>
-							LTL Pallet Packaging
-						</Title>
-						<Col span={24} style={{ marginTop: '7px' }}>
-							<Checkbox
-								onChange={e => {
-									onChangeVariant(
-										index,
-										'pallet_vertical_rotation',
-										e.target.checked
-									)
-								}}
-								name='pallet_vertical_rotation'
-								id={'pallet_vertical_rotation' + index}
-								checked={product?.pallet_vertical_rotation}
-								disabled={
-									isPalletPkgSuspended || product?.parcel_enabled
-								}>
-								Allow vertical rotation on pallet
-							</Checkbox>
-						</Col>
-						<Col span={24} style={{ marginTop: '7px' }}>
-							<Checkbox
-								onChange={e =>
-									onChangeVariant(
-										index,
-										'own_pallet',
-										e.target.checked
-									)
-								}
-								name='own_pallet'
-								id={'own_pallet' + index}
-								checked={product?.own_pallet}
-								disabled={
-									isPalletPkgSuspended || product?.parcel_enabled
-								}>
-								Ship as own pallet
-							</Checkbox>
-						</Col>
-					</>
-				)}
+				{/** Box Size setting start */}
+				<>
+					<Title level={5} className='mt-3'>
+						Boxing Properties
+					</Title>
+					These settings are only active when the Standard Box Sizes
+					feature is enabled.
+					<Col span={24} style={{ marginTop: '10px' }}>
+						<Checkbox
+							onChange={e => {
+								onChangeVariant(
+									index,
+									'allow_vertical',
+									e.target.checked
+								)
+								onChangeVariant(index, 'ship_own_package', false)
+								onChangeVariant(
+									index,
+									'ship_multiple_package',
+									false
+								)
+							}}
+							name='allow_vertical'
+							id={'allow_vertical' + index}
+							checked={product?.allow_vertical}
+							disabled={isSbsSuspended}>
+							Allow item to be rotated vertically when placing it in a
+							box
+						</Checkbox>
+					</Col>
+					<Col span={24} style={{ marginTop: '7px' }}>
+						<Checkbox
+							onChange={e => {
+								onChangeVariant(
+									index,
+									'ship_own_package',
+									e.target.checked
+								)
+								onChangeVariant(index, 'allow_vertical', false)
+								onChangeVariant(
+									index,
+									'ship_multiple_package',
+									false
+								)
+							}}
+							name='ship_own_package'
+							id={'ship_own_package' + index}
+							checked={product?.ship_own_package}
+							disabled={isSbsSuspended}>
+							This item ships as its own package
+						</Checkbox>
+					</Col>
+					<Col span={24} style={{ marginTop: '7px' }}>
+						<Checkbox
+							onChange={e => {
+								onChangeVariant(
+									index,
+									'ship_multiple_package',
+									e.target.checked
+								)
+								onChangeVariant(index, 'allow_vertical', false)
+								onChangeVariant(index, 'ship_own_package', false)
+							}}
+							name='ship_multiple_package'
+							id={'ship_multiple_package' + index}
+							checked={product?.ship_multiple_package}
+							disabled={isSbsSuspended}>
+							This item ships as multiple packages
+						</Checkbox>
+					</Col>
+				</>
+
+				{/** Box Size setting End */}
+
+				<>
+					<Title level={5} className='mt-3'>
+						Pallet Packing Properties
+					</Title>
+					<p>
+						These settings are only active when the Pallet feature is
+						enabled.
+					</p>
+					<Col span={24} style={{ marginTop: '7px' }}>
+						<Checkbox
+							onChange={e => {
+								onChangeVariant(
+									index,
+									'pallet_vertical_rotation',
+									e.target.checked
+								)
+							}}
+							name='pallet_vertical_rotation'
+							id={'pallet_vertical_rotation' + index}
+							checked={product?.pallet_vertical_rotation}
+							disabled={isPalletPkgSuspended}>
+							Allow vertical rotation on pallet
+						</Checkbox>
+					</Col>
+					<Col span={24} style={{ marginTop: '7px' }}>
+						<Checkbox
+							onChange={e =>
+								onChangeVariant(
+									index,
+									'own_pallet',
+									e.target.checked
+								)
+							}
+							name='own_pallet'
+							id={'own_pallet' + index}
+							checked={product?.own_pallet}
+							disabled={isPalletPkgSuspended}>
+							Ship as own pallet
+						</Checkbox>
+					</Col>
+				</>
 
 				{count > 1 && index === 0 && (
 					<Row gutter={24} style={{ marginTop: '20px' }}>
