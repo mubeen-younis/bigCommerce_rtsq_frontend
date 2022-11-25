@@ -6,9 +6,9 @@ const { Title } = Typography
 export const one_rate_services = [
 	{ label: '' },
 	{ label: '' },
-	/*{ label: '' },
 	{ label: '' },
-	{ label: '' },*/
+	{ label: '' },
+	{ label: '' },
 	{ label: 'Express Saver' },
 	{ label: '2 Day' },
 	{ label: '2 Day AM' },
