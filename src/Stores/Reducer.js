@@ -64,6 +64,7 @@ const initialState = {
 		type: '',
 	},
 	isUspsSmallCarrier: false,
+	isUpsSmallCarrier: false,
 	actionButtons: {
 		visible: false,
 		id: null,
@@ -623,6 +624,12 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				isUspsSmallCarrier: action.payload,
+			}
+		}
+		case types.SET_UPS_SMALL_CARRIER: {
+			return {
+				...state,
+				isUpsSmallCarrier: action.payload,
 			}
 		}
 		/* Shipping Groups */

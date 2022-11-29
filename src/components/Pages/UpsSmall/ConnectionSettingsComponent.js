@@ -76,7 +76,7 @@ function ConnectionSettingsComponent(props) {
 								target='_blank'
 								rel='noreferrer'>
 								register online
-							</a>{' '}
+							</a>
 							.
 						</span>
 					) : (

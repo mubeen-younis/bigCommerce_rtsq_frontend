@@ -1,5 +1,7 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
+import { upsBoxTypes, boxDiscription } from '../../Utilities/constants'
+import { Link } from 'react-router-dom'
 import {
 	Select,
 	Typography,
@@ -135,6 +137,7 @@ function BoxSizesComponent(props) {
 	const [productBoxVisible, setProductBoxVisible] = useState(false)
 	const [loadBoxSize, setLoadBoxSize] = useState(false)
 	const [boxType, setBoxType] = useState('')
+	const [discription, setDiscription] = useState({})
 	const [operation, setOperation] = useState(false)
 	const [recordId, setRecordId] = useState(0)
 	const [deleteBoxModal, setDeleteBoxModal] = useState(false)
@@ -143,6 +146,7 @@ function BoxSizesComponent(props) {
 		productBoxes,
 		isFedexSmallCarrier,
 		isUspsSmallCarrier,
+		isUpsSmallCarrier,
 		installedCarriers,
 	} = useSelector(state => state)
 	const [boxSizeForm] = Form.useForm()
@@ -155,6 +159,8 @@ function BoxSizesComponent(props) {
 
 	const populateBoxValues = useCallback(
 		(box_id = '') => {
+			setDiscription({})
+
 			if (box_id === 'Merchant defined Box (default)') {
 				setBoxSize(prevState => ({
 					...initialState,
@@ -199,8 +205,50 @@ function BoxSizesComponent(props) {
 		[boxSizeForm]
 	)
 
+	const upsBoxInfo = useCallback(
+		(box_id = '') => {
+			setDiscription(boxDiscription[box_id])
+
+			if (box_id === 'Merchant defined Box (default)') {
+				setBoxSize(prevState => ({
+					...initialState,
+					...prevState,
+				}))
+				boxSizeForm.setFieldsValue({
+					...initialState,
+				})
+			} else {
+				const { label } = upsBoxTypes.filter(bt => bt.id === box_id)[0]
+
+				const newValues = {
+					nickname: label,
+				}
+
+				setBoxSize(prevState => ({
+					...prevState,
+					...newValues,
+				}))
+
+				boxSizeForm.setFieldsValue(newValues)
+			}
+		},
+		[boxSizeForm]
+	)
+
+	const setDiscriptionText = (
+		<>
+			<span>Dimensions: {discription?.dimensions}</span>
+			<br />
+			<span>Common Box Dimensions: {discription?.cb_dimensions}</span>
+			<br />
+			<span>Size Samples: {discription?.size_samples}</span>
+		</>
+	)
+
 	const setUspsBoxFields = useCallback(
 		(val = '', opt) => {
+			setDiscription({})
+
 			boxSizeForm.setFieldsValue({
 				nickname: String(opt.children),
 				length: 0,
@@ -286,10 +334,26 @@ function BoxSizesComponent(props) {
 			if (isUspsSmallCarrier) {
 				values['box_name'] = values?.box_name?.replace(/[0-9]/, '')
 			}
-			const boxType =
+			let boxType =
 				values?.box_name === 'Merchant defined Box (default)'
 					? 1
-					: (isFedexSmallCarrier && 2) || (isUspsSmallCarrier && 3)
+					: (isFedexSmallCarrier && 2) ||
+					  (isUspsSmallCarrier && 3) ||
+					  (isUpsSmallCarrier && 5)
+
+			const boxName = values?.box_name?.toLowerCase() ?? ''
+			if (boxName?.includes('fedex_')) {
+				boxType = 2
+			} else if (boxName?.includes('ups')) {
+				boxType = 5
+			} else if (
+				boxName?.includes('upmb') ||
+				boxName?.includes('umeb') ||
+				boxName?.includes('uflat')
+			) {
+				boxType = 3
+			}
+
 			if (!operation) {
 				props.addBoxSize(
 					props.token,
@@ -436,13 +500,20 @@ function BoxSizesComponent(props) {
 			const isUspsSmallEnabled = installedCarriers?.filter(
 				insCarr => insCarr.slug === 'usps-small' && insCarr.is_enabled
 			)
+			const isUpsSmallEnabled = installedCarriers?.filter(
+				insCarr => insCarr.slug === 'ups-small' && insCarr.is_enabled
+			)
 
-			if (isFedexSmallEnabled?.length > 0 && isUspsSmallEnabled?.length > 0) {
-				boxTypes = [...fedexBoxTypes, ...uspsBoxTypes]
-			} else if (isFedexSmallEnabled?.length > 0) {
-				boxTypes = fedexBoxTypes
-			} else if (isUspsSmallEnabled?.length > 0) {
-				boxTypes = uspsBoxTypes
+			if (isFedexSmallEnabled?.length > 0) {
+				boxTypes = [...boxTypes, ...fedexBoxTypes]
+			}
+
+			if (isUspsSmallEnabled?.length > 0) {
+				boxTypes = [...boxTypes, ...uspsBoxTypes]
+			}
+
+			if (isUpsSmallEnabled?.length > 0) {
+				boxTypes = [...boxTypes, ...upsBoxTypes]
 			}
 		}
 
@@ -506,7 +577,17 @@ function BoxSizesComponent(props) {
 			title: 'Actions',
 			render: (text, record) => (
 				<Space size='middle'>
-					<a href='#!' onClick={() => editBoxSize(record)}>
+					<a
+						href='#!'
+						onClick={() => {
+							editBoxSize(record)
+
+							if (record?.box_name?.toLowerCase()?.includes('ups')) {
+								setDiscription(boxDiscription[record?.box_name])
+							} else {
+								setDiscription({})
+							}
+						}}>
 						Edit
 					</a>
 					<a
@@ -645,6 +726,7 @@ function BoxSizesComponent(props) {
 										setOperation(false)
 										setVisibleAddBox(true)
 										boxSizeForm.setFieldsValue(initialState)
+										setDiscription({})
 									}}>
 									Add Box
 								</Button>
@@ -657,7 +739,10 @@ function BoxSizesComponent(props) {
 									centered
 									visible={visible}
 									onCancel={() => setVisibleAddBox(false)}
-									afterClose={() => setBoxSize(initialState)}
+									afterClose={() => {
+										setBoxSize(initialState)
+										setDiscription({})
+									}}
 									destroyOnClose={true}
 									footer={null}
 									width={800}
@@ -726,6 +811,12 @@ function BoxSizesComponent(props) {
 																	? populateBoxValues(
 																			val
 																	  )
+																	: val
+																			?.toLowerCase()
+																			?.includes(
+																				'ups'
+																			)
+																	? upsBoxInfo(val)
 																	: setUspsBoxFields(
 																			val,
 																			opt
@@ -765,6 +856,22 @@ function BoxSizesComponent(props) {
 														</Select>
 													</Form.Item>
 												</Col>
+
+												{discription?.dimensions &&
+													discription?.dimensions?.length >
+														0 && (
+														<Col
+															className='gutter-row note-bx'
+															xs={24}
+															sm={24}
+															md={24}
+															lg={24}
+															xl={24}>
+															<Form.Item>
+																{setDiscriptionText}
+															</Form.Item>
+														</Col>
+													)}
 
 												<Col
 													className='gutter-row'
