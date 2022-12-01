@@ -27,17 +27,6 @@ const DomesticServices = ({
 						US Domestic Services
 					</Title>
 				</Col>
-				{/* <Col
-					className='gutter-row middle'
-					xs={12}
-					sm={12}
-					md={12}
-					lg={12}
-					xl={12}>
-					<Title level={5} style={{ textAlign: 'center' }}>
-						Simple Rate
-					</Title>
-				</Col> */}
 			</Row>
 
 			<Row gutter={24} align='middle' className={'mb-2'}>
@@ -53,15 +42,6 @@ const DomesticServices = ({
 							onChange={allCheckHandler}></Checkbox>
 					</Form.Item>
 				</Col>
-				{/* <Col span={6}>
-					<Form.Item className='mb-0'>
-						<Checkbox
-							name='simple_rate_all'
-							value={true}
-							checked={checkAllSimpleRate}
-							onChange={allCheckHandlerSimpleRate}></Checkbox>
-					</Form.Item>
-				</Col> */}
 			</Row>
 
 			<Row gutter={24} align='middle' className={'mb-2'}>
@@ -81,19 +61,7 @@ const DomesticServices = ({
 							onChange={onCheck}></Checkbox>
 					</Form.Item>
 				</Col>
-				{/* <Col span={6}>
-					<Form.Item className={'mb-0'}>
-						<Checkbox
-							name='simple_rate_ups_ground'
-							value={true}
-							checked={
-								quoteSettingsState?.carrier_services?.simple_rate_ups_ground
-									? true
-									: null
-							}
-							onChange={onCheck}></Checkbox>
-					</Form.Item>
-				</Col> */}
+
 				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
@@ -132,17 +100,7 @@ const DomesticServices = ({
 							onChange={onCheck}></Checkbox>
 					</Form.Item>
 				</Col>
-				{/* <Col span={6}>
-					<Form.Item className={'mb-0'}>
-						<Checkbox
-							name='simple_rate_ups_2nd_day_air'
-							value={true}
-							checked={
-								quoteSettingsState?.carrier_services?.simple_rate_ups_2nd_day_air
-							}
-							onChange={onCheck}></Checkbox>
-					</Form.Item>
-				</Col> */}
+
 				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
@@ -268,18 +226,7 @@ const DomesticServices = ({
 							onChange={onCheck}></Checkbox>
 					</Form.Item>
 				</Col>
-				{/* <Col span={6}>
-					<Form.Item className={'mb-0'}>
-						<Checkbox
-							name='simple_rate_ups_next_day_air_saver'
-							value={true}
-							checked={
-								quoteSettingsState?.carrier_services
-									?.simple_rate_ups_next_day_air_saver
-							}
-							onChange={onCheck}></Checkbox>
-					</Form.Item>
-				</Col> */}
+
 				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
@@ -401,18 +348,7 @@ const DomesticServices = ({
 							onChange={onCheck}></Checkbox>
 					</Form.Item>
 				</Col>
-				{/* <Col span={6}>
-					<Form.Item className={'mb-0'}>
-						<Checkbox
-							name='simple_rate_ups_3_day_select'
-							value={true}
-							checked={
-								quoteSettingsState?.carrier_services
-									?.simple_rate_ups_3_day_select
-							}
-							onChange={onCheck}></Checkbox>
-					</Form.Item>
-				</Col> */}
+
 				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
