@@ -172,7 +172,7 @@ const CarriersComponent = props => {
 				Not all carriers service all origin and destination points. If a
 				carrier doesn't service the ship to address, it is automatically
 				omitted from the quote response. Consider conferring with your{' '}
-				{title} representative if you'd like to narrow the number of carrier
+				{title === 'TQL' ? 'Total Quality Logistics (TQL)' : title} representative if you'd like to narrow the number of carrier
 				responses.
 			</p>
 			<Input

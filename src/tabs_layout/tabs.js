@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Tabs } from 'antd'
 import CarriersComponent from '../components/CarriersComponent'
 import ProductSettingsComponent from '../components/ProductSettingsComponent'
-import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
 import PlanStatusHeading from '../partials/PlanStatusHeading'
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent'
 import useLoadComponent from '../hooks/useLoadComponent'
@@ -12,15 +11,6 @@ import ShippingClassesComponent from '../components/Pages/DBSC/ShippingClassesCo
 import OtherSettings from '../components/Pages/DBSC/OtherSettings'
 
 const { TabPane } = Tabs
-
-const smallCarriersSlugs = [
-	'small-package',
-	'ups-small',
-	'fedex-small',
-	'unishippers-small',
-	'usps-small',
-	'purolator-small',
-]
 
 function TabsLayout() {
 	const { installedCarriers, carrierId } = useSelector(state => state)
@@ -69,14 +59,19 @@ function TabsLayout() {
 				if (+ic.id === +carrierId) {
 					const isFedexSmallCarrier = ic.slug === 'fedex-small'
 					const isUspsSmallCarrier = ic.slug === 'usps-small'
+					const isUpsSmallCarrier = ic.slug === 'ups-small'
 
 					dispatch({
 						type: 'SET_FEDEX_SMALL_CARRIER',
-						payload: isUspsSmallCarrier ? false : isFedexSmallCarrier,
+						payload: isUspsSmallCarrier || isUpsSmallCarrier ? false : isFedexSmallCarrier,
 					})
 					dispatch({
 						type: 'SET_USPS_SMALL_CARRIER',
-						payload: isFedexSmallCarrier ? false : isUspsSmallCarrier,
+						payload: isFedexSmallCarrier || isUpsSmallCarrier ? false : isUspsSmallCarrier,
+					})
+					dispatch({
+						type: 'SET_UPS_SMALL_CARRIER',
+						payload: isFedexSmallCarrier || isUspsSmallCarrier ? false : isUpsSmallCarrier,
 					})
 
 					setComponent(slugs.indexOf(ic.slug))
@@ -145,12 +140,6 @@ function TabsLayout() {
 				<TabPane tab='Product Settings' key='6'>
 					<ProductSettingsComponent />
 				</TabPane>
-				{/* Need to add small carriers index */}
-				{smallCarriersSlugs.includes(carrierSlug) && (
-					<TabPane tab='Box Sizes' key='8'>
-						<BoxSizesComponent />
-					</TabPane>
-				)}
 			</Tabs>
 		</Fragment>
 	)

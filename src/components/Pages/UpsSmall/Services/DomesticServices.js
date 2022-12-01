@@ -7,7 +7,9 @@ const { Title } = Typography
 const DomesticServices = ({
 	quoteSettingsState,
 	checkAll,
+	checkAllSimpleRate,
 	allCheckHandler,
+	allCheckHandlerSimpleRate,
 	onCheck,
 	onChange,
 }) => {
@@ -31,7 +33,7 @@ const DomesticServices = ({
 				<Col span={12}>
 					<label className={'text-gray'}>Select All Services</label>
 				</Col>
-				<Col span={12}>
+				<Col span={6}>
 					<Form.Item className='mb-0'>
 						<Checkbox
 							name='select_all'
@@ -46,7 +48,7 @@ const DomesticServices = ({
 				<Col span={12}>
 					<label className={'text-gray'}>UPS Ground</label>
 				</Col>
-				<Col span={12}>
+				<Col span={6}>
 					<Form.Item className={'mb-0'}>
 						<Checkbox
 							name='ups_ground'
@@ -59,6 +61,7 @@ const DomesticServices = ({
 							onChange={onCheck}></Checkbox>
 					</Form.Item>
 				</Col>
+
 				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
@@ -77,7 +80,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -86,7 +89,7 @@ const DomesticServices = ({
 				<Col span={12}>
 					<label className={'text-gray'}>UPS 2nd Day Air</label>
 				</Col>
-				<Col span={12}>
+				<Col span={6}>
 					<Form.Item className={'mb-0'}>
 						<Checkbox
 							name='ups_2nd_day_air'
@@ -97,6 +100,7 @@ const DomesticServices = ({
 							onChange={onCheck}></Checkbox>
 					</Form.Item>
 				</Col>
+
 				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
@@ -115,7 +119,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -154,7 +158,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -201,7 +205,7 @@ const DomesticServices = ({
           lg={24}
           xl={24}>
           <label className={'text-gray'}>
-              Markup (e.g Currency 1.0 or percentage 5%)
+              Markup (e.g Currency 1.00 or percentage 5%)
           </label>
       </Col>
   </Row> */}
@@ -210,7 +214,7 @@ const DomesticServices = ({
 				<Col span={12}>
 					<label className={'text-gray'}>UPS Next Day Air Saver</label>
 				</Col>
-				<Col span={12}>
+				<Col span={6}>
 					<Form.Item className={'mb-0'}>
 						<Checkbox
 							name='ups_next_day_air_saver'
@@ -222,6 +226,7 @@ const DomesticServices = ({
 							onChange={onCheck}></Checkbox>
 					</Form.Item>
 				</Col>
+
 				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
@@ -240,7 +245,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -281,7 +286,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -322,7 +327,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>
@@ -331,7 +336,7 @@ const DomesticServices = ({
 				<Col span={12}>
 					<label className={'text-gray'}>UPS 3 Day Select</label>
 				</Col>
-				<Col span={12}>
+				<Col span={6}>
 					<Form.Item className={'mb-0'}>
 						<Checkbox
 							name='ups_3_day_select'
@@ -343,6 +348,7 @@ const DomesticServices = ({
 							onChange={onCheck}></Checkbox>
 					</Form.Item>
 				</Col>
+
 				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
@@ -361,7 +367,7 @@ const DomesticServices = ({
 
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<label className={'text-gray'}>
-						Markup (e.g Currency 1.0 or percentage 5%)
+						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
 				</Col>
 			</Row>

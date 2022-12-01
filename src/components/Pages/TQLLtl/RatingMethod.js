@@ -91,7 +91,7 @@ const RatingMethod = ({
 					<div className={'text-gray'}>
 						{ratingMethod === 1 && 'Displays a least expensive option.'}
 						{ratingMethod === 2 &&
-							'Displays a list of specified number of least expensive options.'}
+							'Displays a list of a specified number of least expensive options.'}
 						{ratingMethod === 3 &&
 							'Displays a single rate based on an average of a specified number of least expensive options.'}
 						{ratingMethod === 4 &&
@@ -181,7 +181,7 @@ const RatingMethod = ({
 						<div className={'text-gray'}>
 							What the user sees during checkout, e.g. "Freight".{' '}
 							{ratingMethod === 4
-								? 'Leave blank to display the carrier name".'
+								? 'Leave blank to display the carrier name.'
 								: ' If left blank will default to "Freight Standard".'}
 						</div>
 					</Col>
@@ -221,7 +221,7 @@ const RatingMethod = ({
 						<div className={'text-gray'}>
 							What the user sees during checkout, e.g. "Freight".{' '}
 							{ratingMethod === 4
-								? 'Leave blank to display the carrier name".'
+								? 'Leave blank to display the carrier name.'
 								: ' If left blank will default to "Freight Guaranteed".'}
 						</div>
 					</Col>
