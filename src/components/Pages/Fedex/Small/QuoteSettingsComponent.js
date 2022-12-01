@@ -19,6 +19,7 @@ import { international_services } from './Services/InternationalServices'
 import GroundTransit from '../../../GroundTransit'
 import HazardousMaterial from '../../../HazardousMaterial'
 import SaveButton from '../../../SaveButton'
+import ReturnRates from '../../../ReturnRates'
 
 const { Title } = Typography
 const initialState = {
@@ -431,7 +432,7 @@ function QuoteSettingsComponentWweSmall(props) {
 				/>
 
 				{/* Other Settings */}
-				<Row gutter={24} className={'mb-4'}>
+				<Row gutter={24} className={'mb-2'}>
 					<Col
 						className='gutter-row'
 						xs={24}
@@ -441,25 +442,14 @@ function QuoteSettingsComponentWweSmall(props) {
 						xl={24}>
 						<Title level={4}>Other settings</Title>
 					</Col>
-					{/*}<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={6}
-						xl={6}>
-						<label className={'text-gray'}>
-							Do not return rates if the shipping address is a post office
-							box
-						</label>
-						</Col>
-					<Col className='gutter-row' xs={24} sm={24} md={24} lg={18} xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Checkbox />
-						</Form.Item>
-					</Col>{*/}
+				</Row>
 
+				<ReturnRates
+          			quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
+
+				<Row gutter={24} className={'mb-4'}>
 					<Col
 						className='gutter-row'
 						xs={24}

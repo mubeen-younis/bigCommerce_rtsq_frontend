@@ -429,7 +429,7 @@ function ShippingCarriersComponent(props) {
 				)}
 			</Row>
 
-			<Row gutter={25}>
+			<Row gutter={25} id='addons-section'>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<Title level={4}>Other Available Add-ons</Title>
 				</Col>
