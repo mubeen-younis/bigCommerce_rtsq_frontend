@@ -2,8 +2,6 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Form, Input, Button, Space, Skeleton, Row, Col } from 'antd'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
-import PromoCodeNote from '../../PromoCodeNote'
-import PromoCodeField from '../../PromoCodeField'
 import { getFDOCouponCarrierInfo } from '../../../Actions/FDOActions'
 
 function ConnectionSettingsComponent(props) {
@@ -53,14 +51,16 @@ function ConnectionSettingsComponent(props) {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have a Purolator account to
-				use this application. If you do not have one contact Purolator at 1-888-744-7123 or {' '}
+				<strong>Note!</strong> You must have a Purolator account to use this
+				application. If you do not have one contact Purolator at
+				1-888-744-7123 or{' '}
 				<a
 					href='https://www.purolator.com/en'
 					target='_blank'
 					rel='noreferrer'>
 					register online
-				</a>{' '}.
+				</a>
+				.
 			</div>
 
 			<Form
@@ -79,35 +79,37 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item
 					label='Registered Account Number'
 					name='registeredAccount'
-					rules={[{ required: true, message: 'Registered Account Number' }]}>
+					rules={[
+						{ required: true, message: 'Registered Account Number' },
+					]}>
 					<Input placeholder='Registered Account Number' />
 				</Form.Item>
 				<Row>
-				<Col span={24}>
-				<Form.Item
-				            label='Registered Address'
+					<Col span={24}>
+						<Form.Item
+							label='Registered Address'
 							name='senderCity'
 							rules={[{ required: true, message: 'City' }]}>
 							<Input type='text' placeholder='City' />
-				</Form.Item>
-				</Col>
+						</Form.Item>
+					</Col>
 				</Row>
 				<Row>
-				<Col span={12}>
-				<Form.Item
+					<Col span={12}>
+						<Form.Item
 							name='senderState'
 							rules={[{ required: true, message: 'State' }]}>
 							<Input type='text' placeholder='State' />
-				</Form.Item>
-				</Col>
-				<Col span={12}>
-				<Form.Item
+						</Form.Item>
+					</Col>
+					<Col span={12}>
+						<Form.Item
 							style={{ marginLeft: '2em' }}
 							name='senderZip'
 							rules={[{ required: true, message: 'Zip' }]}>
 							<Input type='text' placeholder='Zip' />
-				</Form.Item>
-				</Col>
+						</Form.Item>
+					</Col>
 				</Row>
 				<Form.Item
 					label='Production Key'
