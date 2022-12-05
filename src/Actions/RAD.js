@@ -1,14 +1,14 @@
-import axios from 'axios';
+import axios from 'axios'
 
 export const getRadPlans = token => {
 	const config = {
 		headers: {
 			authorization: `Bearer ${token}`,
 		},
-		params:{
-			addon_type:'RAD'
-		}
-	};
+		params: {
+			addon_type: 'RAD',
+		},
+	}
 	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
@@ -16,7 +16,7 @@ export const getRadPlans = token => {
 				showAlertMessage: false,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 
 		axios
 			.get(`${process.env.REACT_APP_ENITURE_API_URL}/get-all-pacakges`, config)
@@ -25,7 +25,7 @@ export const getRadPlans = token => {
 					dispatch({
 						type: 'RAD_PLANS',
 						payload: data.data,
-					});
+					})
 				}
 
 				dispatch({
@@ -35,11 +35,11 @@ export const getRadPlans = token => {
 						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : false,
 					},
-				});
+				})
 			})
-			.catch(error => {});
-	};
-};
+			.catch(error => {})
+	}
+}
 
 export const changeDefaultAddress = (addon_id, token, address_type) => {
 	return dispatch => {
@@ -49,7 +49,7 @@ export const changeDefaultAddress = (addon_id, token, address_type) => {
 				showAlertMessage: true,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 
 		axios
 			.post(
@@ -71,7 +71,7 @@ export const changeDefaultAddress = (addon_id, token, address_type) => {
 					dispatch({
 						type: 'CHANGE_DEFAULT_ADDRESS',
 						payload: JSON.parse(data.data.value),
-					});
+					})
 				}
 
 				dispatch({
@@ -81,10 +81,10 @@ export const changeDefaultAddress = (addon_id, token, address_type) => {
 						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
-				});
-			});
-	};
-};
+				})
+			})
+	}
+}
 
 export const changePlan = (token, plan_package, SetCancelSubsriptionVisible) => {
 	return dispatch => {
@@ -94,13 +94,13 @@ export const changePlan = (token, plan_package, SetCancelSubsriptionVisible) => 
 				showAlertMessage: true,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 		axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/subscribe-package`,
 				{
 					package: plan_package,
-					addon_type:'RAD'
+					addon_type: 'RAD',
 				},
 				{
 					headers: {
@@ -113,7 +113,7 @@ export const changePlan = (token, plan_package, SetCancelSubsriptionVisible) => 
 					dispatch({
 						type: 'RAD_PLANS',
 						payload: data.data,
-					});
+					})
 				}
 				SetCancelSubsriptionVisible(false)
 				dispatch({
@@ -123,10 +123,10 @@ export const changePlan = (token, plan_package, SetCancelSubsriptionVisible) => 
 						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
-				});
-			});
-	};
-};
+				})
+			})
+	}
+}
 
 export const changeAddonSuspendStatus = (addon_id, token, action) => {
 	return dispatch => {
@@ -136,15 +136,15 @@ export const changeAddonSuspendStatus = (addon_id, token, action) => {
 				showAlertMessage: true,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 
 		axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/suspend-use-addon`,
 				{
 					package: addon_id,
-					addon_type:'RAD',
-					suspend: action
+					addon_type: 'RAD',
+					suspend: action,
 				},
 				{
 					headers: {
@@ -156,7 +156,7 @@ export const changeAddonSuspendStatus = (addon_id, token, action) => {
 				dispatch({
 					type: 'RAD_PLANS',
 					payload: data.data,
-				});
+				})
 
 				dispatch({
 					type: 'ALERT_MESSAGE',
@@ -165,13 +165,13 @@ export const changeAddonSuspendStatus = (addon_id, token, action) => {
 						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : 'success',
 					},
-				});
+				})
 			})
 			.catch(err => {
-				console.log(err);
-			});
-	};
-};
+				console.log(err)
+			})
+	}
+}
 
 export const getAddonAddressSettings = (addon_id, token) => {
 	return dispatch => {
@@ -181,23 +181,26 @@ export const getAddonAddressSettings = (addon_id, token) => {
 				showAlertMessage: false,
 				alertMessageType: 'loading',
 			},
-		});
+		})
 
 		axios
-			.get(`${process.env.REACT_APP_ENITURE_API_URL}/rad/getAddonAdressSettings`, {
-				headers: {
-					authorization: `Bearer ${token}`,
-				},
-				params: {
-					addon_id,
-				},
-			})
+			.get(
+				`${process.env.REACT_APP_ENITURE_API_URL}/rad/getAddonAdressSettings`,
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+					params: {
+						addon_id,
+					},
+				}
+			)
 			.then(({ data }) => {
 				if (!data.error) {
 					dispatch({
 						type: 'GET_ADDON_ADDRESS_SETTING',
 						payload: JSON.parse(data.data.value),
-					});
+					})
 				}
 
 				dispatch({
@@ -207,8 +210,15 @@ export const getAddonAddressSettings = (addon_id, token) => {
 						showAlertMessage: true,
 						alertMessageType: data.error ? 'error' : false,
 					},
-				});
+				})
 			})
-			.catch(err => console.log(err));
-	};
-};
+			.catch(err => console.log(err))
+	}
+}
+
+export const submitRADSettings = (settings, token) => dispatch => {
+	try {
+	} catch (err) {
+		console.log(err)
+	}
+}
