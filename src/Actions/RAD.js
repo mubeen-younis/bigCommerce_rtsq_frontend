@@ -228,6 +228,41 @@ export const getAddonAddressSettings = (addon_id, token) => {
 	}
 }
 
+export const getRADSettings = token => async dispatch => {
+	dispatch({
+		type: 'ALERT_MESSAGE',
+		payload: {
+			showAlertMessage: false,
+			alertMessageType: 'loading',
+		},
+	})
+
+	axios
+		.get(`${process.env.REACT_APP_ENITURE_API_URL}/getResidentialSettings`, {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		})
+		.then(({ data }) => {
+			if (!data.error) {
+				dispatch({
+					type: types.GET_RAD_SETTINGS,
+					payload: data?.data,
+				})
+			}
+
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					alertMessage: data.message,
+					showAlertMessage: true,
+					alertMessageType: data.error ? 'error' : false,
+				},
+			})
+		})
+		.catch(err => console.log(err))
+}
+
 export const submitRADSettings = (settings, token) => async dispatch => {
 	try {
 		dispatch({
@@ -246,7 +281,7 @@ export const submitRADSettings = (settings, token) => async dispatch => {
 
 		if (!data.error) {
 			dispatch({
-				type: types.SET_DBSC_OTHER_SETTINGS,
+				type: types.SET_RAD_SETTINGS,
 				payload: data.data,
 			})
 		}

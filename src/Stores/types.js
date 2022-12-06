@@ -98,6 +98,10 @@ const types = {
 	SET_DAYROSS_API_TYPE: 'SET_DAYROSS_API_TYPE',
 	/* Pallets Packaging types */
 	PLT_PLANS: 'PLT_PLANS',
+
+	/* RAD Settings */
+	GET_RAD_SETTINGS: 'GET_RAD_SETTINGS',
+	SET_RAD_SETTINGS: 'SET_RAD_SETTINGS',
 }
 
 export default types

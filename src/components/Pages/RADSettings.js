@@ -9,29 +9,37 @@ import {
 	Skeleton,
 	Checkbox,
 	Card,
+	Radio,
 } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { getShippingGroups } from '../../Actions/ShippingGroupsActions'
-import { submitRADSettings } from '../../Actions/RAD'
+import { submitRADSettings, getRADSettings } from '../../Actions/RAD'
 
 const { Title } = Typography
 const initialState = {
-	alwaysResidentialDelivery: false,
-	autoDetectedResidentialAddresses: false,
-	retunRates: false,
-	unconfirmedAddressType: false,
+	always_quote_residential_delivery: false,
+	return_rates: false,
+	residential_delivery_auto_detect: false,
+	unconfirmed_address_type: 1,
 }
 
 function ShippingGroupsComponent() {
 	const [settings, setSettings] = useState(initialState)
 	const dispatch = useDispatch()
-	const { shippingGroups, token } = useSelector(state => state)
+	const { token, radSettings } = useSelector(state => state)
 
 	useEffect(() => {
-		if (!shippingGroups) {
-			dispatch(getShippingGroups(token))
+		if (!radSettings) {
+			dispatch(getRADSettings(token))
 		}
-	}, [dispatch, shippingGroups, token])
+
+		if (radSettings) {
+			const newSettings = JSON.parse(radSettings?.settings) ?? {}
+			setSettings(prevSettings => ({
+				...prevSettings,
+				...newSettings,
+			}))
+		}
+	}, [dispatch, radSettings, token])
 
 	const handleStateChange = useCallback(e => {
 		const { name, checked } = e.target
@@ -43,10 +51,18 @@ function ShippingGroupsComponent() {
 	}, [])
 
 	const onFinish = useCallback(() => {
-		dispatch(submitRADSettings(settings, token))
-	}, [dispatch, settings, token])
+		dispatch(
+			submitRADSettings(
+				{
+					...radSettings,
+					settings,
+				},
+				token
+			)
+		)
+	}, [dispatch, radSettings, settings, token])
 
-	if (!shippingGroups) return <Skeleton active />
+	if (!radSettings) return <Skeleton active />
 
 	return (
 		<Fragment>
@@ -68,14 +84,16 @@ function ShippingGroupsComponent() {
 						<Col
 							className='gutter-row'
 							xs={24}
-							sm={12}
-							md={12}
-							lg={12}
-							xl={18}>
+							sm={24}
+							md={24}
+							lg={24}
+							xl={24}>
 							<Form.Item className={'mb-0'}>
 								<Checkbox
-									name='alwaysResidentialDelivery'
-									checked={settings.alwaysResidentialDelivery}
+									name='always_quote_residential_delivery'
+									checked={
+										settings.always_quote_residential_delivery
+									}
 									onChange={e => handleStateChange(e)}>
 									Always quote residential delivery
 								</Checkbox>
@@ -85,14 +103,14 @@ function ShippingGroupsComponent() {
 						<Col
 							className='gutter-row'
 							xs={24}
-							sm={12}
-							md={12}
-							lg={12}
-							xl={18}>
+							sm={24}
+							md={24}
+							lg={24}
+							xl={24}>
 							<Form.Item className='mb-0'>
 								<Checkbox
-									name='retunRates'
-									checked={settings.retunRates}
+									name='return_rates'
+									checked={settings.return_rates}
 									onChange={e => handleStateChange(e)}>
 									Do not return rate if the shipping address
 									appears to be a post office box
@@ -103,15 +121,15 @@ function ShippingGroupsComponent() {
 						<Col
 							className='gutter-row'
 							xs={24}
-							sm={12}
-							md={12}
-							lg={12}
-							xl={18}>
+							sm={24}
+							md={24}
+							lg={24}
+							xl={24}>
 							<Form.Item className={'mb-0'}>
 								<Checkbox
-									name='autoDetectedResidentialAddresses'
+									name='residential_delivery_auto_detect'
 									checked={
-										settings.autoDetectedResidentialAddresses
+										settings.residential_delivery_auto_detect
 									}
 									onChange={e => handleStateChange(e)}>
 									Auto-detect residential addresses{' '}
@@ -119,21 +137,41 @@ function ShippingGroupsComponent() {
 							</Form.Item>
 						</Col>
 
-						<Col
-							className='gutter-row mt-1'
-							xs={24}
-							sm={12}
-							md={12}
-							lg={12}
-							xl={18}>
-							<label
-								className='text-gray ml-5'
-								style={{
-									marginLeft: '1.5em',
-								}}>
-								Default unconfirmed address types to:
-							</label>
-						</Col>
+						{settings.residential_delivery_auto_detect && (
+							<>
+								<Col
+									className='gutter-row mt-1'
+									xs={12}
+									sm={12}
+									md={12}
+									lg={12}
+									xl={6}>
+									<label
+										className='text-gray ml-5'
+										style={{
+											marginLeft: '1.5em',
+										}}>
+										Default unconfirmed address types to:
+									</label>
+								</Col>
+
+								<Radio.Group
+									className='mt-1'
+									onChange={e =>
+										setSettings(prevSettings => ({
+											...prevSettings,
+											unconfirmed_address_type:
+												+e.target.value,
+										}))
+									}
+									value={settings.unconfirmed_address_type}>
+									<Space direction='vertical'>
+										<Radio value={1}>Residential</Radio>
+										<Radio value={2}>Commercial</Radio>
+									</Space>
+								</Radio.Group>
+							</>
+						)}
 
 						<Col
 							className='gutter-row'
@@ -141,14 +179,14 @@ function ShippingGroupsComponent() {
 							sm={24}
 							md={24}
 							lg={24}
-							xl={18}>
+							xl={24}>
 							<Form.Item
 								style={{ textAlign: 'right', marginBottom: '0' }}>
 								<Space>
 									<Button
 										onClick={onFinish}
 										type='primary'
-										size={'medium'}
+										size='medium'
 										htmlType='submit'>
 										Save
 									</Button>

@@ -72,6 +72,7 @@ const initialState = {
 	dayRossApiType: 'general_freight',
 	/* Pallet packaging */
 	palletPlans: null,
+	radSettings: null,
 }
 
 const Reducer = (state = initialState, action) => {
@@ -950,6 +951,13 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				dayRossApiType: action.payload,
+			}
+
+		case types.GET_RAD_SETTINGS:
+		case types.SET_RAD_SETTINGS:
+			return {
+				...state,
+				radSettings: action.payload,
 			}
 
 		default:
