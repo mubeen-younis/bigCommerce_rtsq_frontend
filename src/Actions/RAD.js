@@ -1,4 +1,16 @@
 import axios from 'axios'
+import types from '../Stores/types'
+import { dispatchAlert } from '../Utilities/dispatchAlert'
+
+const reqConfig = token => {
+	const config = {
+		headers: {
+			authorization: `Bearer ${token}`,
+		},
+	}
+
+	return config
+}
 
 export const getRadPlans = token => {
 	const config = {
@@ -216,9 +228,44 @@ export const getAddonAddressSettings = (addon_id, token) => {
 	}
 }
 
-export const submitRADSettings = (settings, token) => dispatch => {
+export const submitRADSettings = (settings, token) => async dispatch => {
 	try {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		})
+
+		const { data } = await axios.post(
+			`${process.env.REACT_APP_ENITURE_API_URL}/saveResidentialSettings`,
+			settings,
+			reqConfig(token)
+		)
+
+		if (!data.error) {
+			dispatch({
+				type: types.SET_DBSC_OTHER_SETTINGS,
+				payload: data.data,
+			})
+		}
+
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessage: data.message,
+				alertMessageType: data.error ? 'error' : 'success',
+			},
+		})
 	} catch (err) {
-		console.log(err)
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: false,
+				alertMessageType: '',
+			},
+		})
 	}
 }

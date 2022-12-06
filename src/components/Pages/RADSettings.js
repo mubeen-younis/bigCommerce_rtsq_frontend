@@ -11,10 +11,8 @@ import {
 	Card,
 } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	getShippingGroups,
-	saveShippingGroup,
-} from '../../Actions/ShippingGroupsActions'
+import { getShippingGroups } from '../../Actions/ShippingGroupsActions'
+import { submitRADSettings } from '../../Actions/RAD'
 
 const { Title } = Typography
 const initialState = {
@@ -26,14 +24,8 @@ const initialState = {
 
 function ShippingGroupsComponent() {
 	const [settings, setSettings] = useState(initialState)
-	const [modal, setModal] = useState({
-		open: false,
-		type: '',
-	})
-	const [shippingGroupId, setShippingGroupId] = useState(null)
-	const [form] = Form.useForm()
 	const dispatch = useDispatch()
-	const { alertMessageType, shippingGroups, token } = useSelector(state => state)
+	const { shippingGroups, token } = useSelector(state => state)
 
 	useEffect(() => {
 		if (!shippingGroups) {
@@ -41,65 +33,18 @@ function ShippingGroupsComponent() {
 		}
 	}, [dispatch, shippingGroups, token])
 
-	useEffect(() => {
-		if (alertMessageType === 'success') {
-			setModal({
-				open: false,
-				type: '',
-			})
-		}
-	}, [alertMessageType])
-
 	const handleStateChange = useCallback(e => {
-		const { name, value } = e.target
+		const { name, checked } = e.target
 
 		setSettings(prevSettings => ({
 			...prevSettings,
-			[name]: value,
+			[name]: checked,
 		}))
 	}, [])
 
-	const onFinish = useCallback(
-		values => {
-			let error = false,
-				errormsg = '',
-				data = {}
-
-			if (modal.open && modal.type === 'edit') {
-				data = shippingGroups?.find(sg => sg.uuid === shippingGroupId) ?? {}
-			}
-
-			if (error) {
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						showAlertMessage: false,
-						alertMessageType: 'loading',
-					},
-				})
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						alertMessage: errormsg,
-						showAlertMessage: true,
-						alertMessageType: 'error',
-					},
-				})
-			} else {
-				dispatch(saveShippingGroup({ ...data, ...values }, token))
-				form.resetFields()
-			}
-		},
-		[
-			dispatch,
-			form,
-			modal.open,
-			modal.type,
-			shippingGroupId,
-			shippingGroups,
-			token,
-		]
-	)
+	const onFinish = useCallback(() => {
+		dispatch(submitRADSettings(settings, token))
+	}, [dispatch, settings, token])
 
 	if (!shippingGroups) return <Skeleton active />
 
