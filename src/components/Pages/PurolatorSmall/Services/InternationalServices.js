@@ -6,7 +6,7 @@ const { Title } = Typography
 
 const international_services = [
 	'Purolator Express International',
-	'Purolator Express International 12 AM',
+	'Purolator Express International 12:00',
 ]
 
 const InternationalServices = ({

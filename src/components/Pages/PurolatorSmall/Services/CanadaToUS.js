@@ -8,7 +8,7 @@ const CanadaToUS_services = [
 	'Purolator Ground US',
 	'Purolator Express US',
 	'Purolator Express US 9 AM',
-	'Purolator Express US 10 30AM',
+	'Purolator Express US 10 30 AM',
 ]
 
 const CanadaToUS = ({
