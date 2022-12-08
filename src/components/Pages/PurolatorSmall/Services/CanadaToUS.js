@@ -1,95 +1,107 @@
-import React from "react"
-import { Row, Col, Typography, Form, Checkbox, Input } from "antd"
-import { handlingFeeMarkup } from "../../../../Utilities/numberValidation"
+import React from 'react'
+import { Row, Col, Typography, Form, Checkbox, Input } from 'antd'
+import { handlingFeeMarkup } from '../../../../Utilities/numberValidation'
 
 const { Title } = Typography
 
 const CanadaToUS_services = [
-  "Purolator Ground US",
-  "Purolator Express US",
-  "Purolator Express US 9 AM",
-  "Purolator Express US 10 30AM",
+	'Purolator Ground US',
+	'Purolator Express US',
+	'Purolator Express US 9 AM',
+	'Purolator Express US 10 30 AM',
 ]
 
 const CanadaToUS = ({
-  quoteSettingsState,
-  CanadaToUSCheckAll,
-  CanadatoUSAllCheckHandler,
-  onChange,
-  onCheck,
+	quoteSettingsState,
+	CanadaToUSCheckAll,
+	CanadatoUSAllCheckHandler,
+	onChange,
+	onCheck,
 }) => {
-  return (
-    <Col span={12}>
-      <Row gutter={30} align="middle" className={"mb-2"}>
-        <Col className="gutter-row" xs={12} sm={12} md={12} lg={12} xl={12}>
-          <Title level={5} style={{ textAlign: "center" }}>
-            Canada To U.S.
-          </Title>
-        </Col>
-      </Row>
+	return (
+		<Col span={12}>
+			<Row gutter={30} align='middle' className={'mb-2'}>
+				<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={12}>
+					<Title level={5} style={{ textAlign: 'center' }}>
+						Canada To U.S.
+					</Title>
+				</Col>
+			</Row>
 
-      <Row gutter={24} align="middle" className={"mb-2"}>
-        <Col span={12}>
-          <label className={"text-gray"}>Select All Services</label>
-        </Col>
-        <Col span={12}>
-          <Form.Item className="mb-0">
-            <Checkbox
-              name="select_all"
-              value={true}
-              checked={CanadaToUSCheckAll}
-              onChange={e => CanadatoUSAllCheckHandler(e.target.checked)}
-            ></Checkbox>
-          </Form.Item>
-        </Col>
-      </Row>
-      {CanadaToUS_services.map(is => (
-        <Row gutter={24} align="middle" className={"mb-2"}>
-          <Col span={12}>
-            <label className={"text-gray"}>{is}</label>
-          </Col>
-          <Col span={12}>
-            <Form.Item className={"mb-0"}>
-              <Checkbox
-                name={is.toLowerCase().trim().replaceAll(" ", "_")}
-                value={true}
-                checked={
-                  quoteSettingsState?.carrier_services?.[
-                    is.toLowerCase().trim().replaceAll(" ", "_")
-                  ]
-                }
-                onChange={onCheck}
-              ></Checkbox>
-            </Form.Item>
-          </Col>
-          <Col span={14}>
-            <Form.Item className={"mb-0"}>
-              <Input
-                //maxLength='7'
-                value={
-                  quoteSettingsState?.carrier_services?.[
-                    is.toLowerCase().trim().replaceAll(" ", "_") + "_markup"
-                  ]
-                }
-                //pattern='[0-9.?(0-9){2}?]+%?$'
-                name={is.toLowerCase().trim().replaceAll(" ", "_") + "_markup"}
-                onChange={onChange}
-                onKeyDown={handlingFeeMarkup}
-                maxLength="7"
-                type="text"
-              />
-            </Form.Item>
-          </Col>
+			<Row gutter={24} align='middle' className={'mb-2'}>
+				<Col span={12}>
+					<label className={'text-gray'}>Select All</label>
+				</Col>
+				<Col span={12}>
+					<Form.Item className='mb-0'>
+						<Checkbox
+							name='select_all'
+							value={true}
+							checked={CanadaToUSCheckAll}
+							onChange={e =>
+								CanadatoUSAllCheckHandler(e.target.checked)
+							}></Checkbox>
+					</Form.Item>
+				</Col>
+			</Row>
+			{CanadaToUS_services.map(is => (
+				<Row gutter={24} align='middle' className={'mb-2'}>
+					<Col span={12}>
+						<label className={'text-gray'}>{is}</label>
+					</Col>
+					<Col span={12}>
+						<Form.Item className={'mb-0'}>
+							<Checkbox
+								name={is.toLowerCase().trim().replaceAll(' ', '_')}
+								value={true}
+								checked={
+									quoteSettingsState?.carrier_services?.[
+										is.toLowerCase().trim().replaceAll(' ', '_')
+									]
+								}
+								onChange={onCheck}></Checkbox>
+						</Form.Item>
+					</Col>
+					<Col span={14}>
+						<Form.Item className={'mb-0'}>
+							<Input
+								//maxLength='7'
+								value={
+									quoteSettingsState?.carrier_services?.[
+										is
+											.toLowerCase()
+											.trim()
+											.replaceAll(' ', '_') + '_markup'
+									]
+								}
+								//pattern='[0-9.?(0-9){2}?]+%?$'
+								name={
+									is.toLowerCase().trim().replaceAll(' ', '_') +
+									'_markup'
+								}
+								onChange={onChange}
+								onKeyDown={handlingFeeMarkup}
+								maxLength='7'
+								type='text'
+							/>
+						</Form.Item>
+					</Col>
 
-          <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-            <label className={"text-gray"}>
-              Markup (e.g Currency 1.0 or percentage 5%)
-            </label>
-          </Col>
-        </Row>
-      ))}
-    </Col>
-  )
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
+						<label className={'text-gray'}>
+							Markup (e.g Currency 1.00 or percentage 5%)
+						</label>
+					</Col>
+				</Row>
+			))}
+		</Col>
+	)
 }
 
 export default CanadaToUS

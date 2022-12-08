@@ -43,7 +43,9 @@ const InternationalServices = ({
 
 			<Row gutter={24} align='middle' className={'mb-2'}>
 				<Col span={12}>
-					<label className={'text-gray'}>Select All Services</label>
+					<label className={'text-gray'}>
+						All International Service Levels
+					</label>
 				</Col>
 				<Col span={12}>
 					<Form.Item className='mb-0'>
@@ -100,7 +102,7 @@ const InternationalServices = ({
 						lg={24}
 						xl={24}>
 						<label className={'text-gray'}>
-							Markup (e.g Currency 1.0 or percentage 5%)
+							Markup (e.g Currency 1.00 or percentage 5%)
 						</label>
 					</Col>
 				</Row>
