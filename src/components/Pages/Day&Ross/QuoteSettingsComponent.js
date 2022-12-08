@@ -15,7 +15,6 @@ import HoldAtTerminal from '../../HoldAtTerminal'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
-import ReturnRates from '../../ReturnRates'
 import DomesticServices from './Services/DomesticServices'
 import InternationalServices from './Services/InternationalServices'
 import TwoManDelivery from './DeliverySettings/TwoManDelivery'
@@ -305,11 +304,6 @@ function QuoteSettingsComponentWwe(props) {
 				<HandlingUnit
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
-				/>
-
-				<ReturnRates
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
 				/>
 
 				<SaveButton />

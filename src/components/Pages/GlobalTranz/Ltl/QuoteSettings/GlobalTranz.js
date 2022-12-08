@@ -3,7 +3,6 @@ import { Select, Typography, Row, Col, Form, Input, Checkbox } from 'antd'
 import { LableAsLimit } from '../../../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../../CutOffTime'
-import RAD from '../../../../RAD'
 import LiftGateDelivery from '../../../../LiftGateDelivery'
 const { Option } = Select
 const { Title } = Typography
@@ -309,12 +308,6 @@ const GlobalTranz = ({
 				quoteSettingsState={quoteSettingsState}
 				setQuoteSettingsState={setQuoteSettingsState}
 				handleChange={handleStateChange}
-			/>
-
-			<RAD
-				quoteSettingsState={quoteSettingsState}
-				setQuoteSettingsState={setQuoteSettingsState}
-				radStatus={radStatus}
 			/>
 
 			<LiftGateDelivery

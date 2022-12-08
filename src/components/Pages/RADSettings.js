@@ -20,16 +20,26 @@ const initialState = {
   return_rates: false,
   residential_delivery_auto_detect: false,
   unconfirmed_address_type: 1,
+  always_residential_pickup_delivery: false,
 }
 
 function ShippingGroupsComponent() {
   const [settings, setSettings] = useState(initialState)
   const dispatch = useDispatch()
-  const { token, radSettings } = useSelector(state => state)
+  const { token, radSettings, installedCarriers } = useSelector(state => state)
+  const [pickup, setPickup] = useState(true)
 
   useEffect(() => {
     if (!radSettings) {
       dispatch(getRADSettings(token))
+    }
+
+    if(installedCarriers){
+      for (const ic of installedCarriers) {
+        if (ic.slug === 'ltl-quotes' && ic.is_enabled) {
+          setPickup(false)
+        }
+      }
     }
 
     if (radSettings) {
@@ -75,6 +85,19 @@ function ShippingGroupsComponent() {
 
         <Card>
           <Row gutter={30}>
+          <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
+              <Form.Item className={"mb-0"}>
+                <Checkbox
+                  name="always_residential_pickup_delivery"
+                  checked={settings.always_residential_pickup_delivery}
+                  disabled={pickup}
+                  onChange={e => handleStateChange(e)}
+                >
+                  Always include residential pick up
+                </Checkbox>
+              </Form.Item>
+            </Col>
+
             <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item className={"mb-0"}>
                 <Checkbox

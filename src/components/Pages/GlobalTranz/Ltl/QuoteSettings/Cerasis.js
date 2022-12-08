@@ -3,7 +3,6 @@ import { Select, Typography, Row, Col, Form, Input, Radio } from 'antd'
 import { LableAsLimit } from '../../../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../../CutOffTime'
-import RAD from '../../../../RAD'
 import LiftGateDelivery from '../../../../LiftGateDelivery'
 import { useCallback } from 'react'
 const { Option } = Select
@@ -511,12 +510,6 @@ const Cerasis = ({
 						quoteSettingsState={quoteSettingsState}
 						setQuoteSettingsState={setQuoteSettingsState}
 						handleChange={handleStateChange}
-					/>
-
-					<RAD
-						quoteSettingsState={quoteSettingsState}
-						setQuoteSettingsState={setQuoteSettingsState}
-						radStatus={radStatus}
 					/>
 
 					<LiftGateDelivery

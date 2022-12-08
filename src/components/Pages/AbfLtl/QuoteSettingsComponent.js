@@ -7,13 +7,11 @@ import {
 	validateHandlingFeeMarkup,
 	LableAsLimit,
 } from '../../../Utilities/numberValidation'
-import RAD from '../../RAD'
 import LiftGateDelivery from '../../LiftGateDelivery'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
-import ReturnRates from '../../ReturnRates'
 import HoldAtTerminal from '../../HoldAtTerminal'
 
 const initialState = {
@@ -176,12 +174,6 @@ function QuoteSettingsComponent(props) {
 					handleChange={handleStateChange}
 				/>
 
-				<RAD
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					radStatus={radStatus}
-				/>
-
 				<LiftGateDelivery
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -201,11 +193,6 @@ function QuoteSettingsComponent(props) {
 				<HandlingUnit
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
-				/>
-
-				<ReturnRates
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
 				/>
 
 				<SaveButton />

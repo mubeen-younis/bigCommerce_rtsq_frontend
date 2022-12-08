@@ -12,10 +12,8 @@ import CutOffTime from '../../CutOffTime'
 import DomesticServices from './Services/DomesticServices'
 import InternationalServices from './Services/InternationalServices'
 import GroundTransit from '../../GroundTransit'
-import RAD from '../../RAD'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
-import ReturnRates from '../../ReturnRates'
 
 const { Title } = Typography
 const initialState = {
@@ -495,16 +493,6 @@ function QuoteSettingsComponentWweSmall(props) {
 					handleChange={handleStateChange}
 				/>
 				<GroundTransit
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-				/>
-				<RAD
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					radStatus={radStatus}
-				/>
-
-				<ReturnRates
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 				/>

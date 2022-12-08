@@ -9,7 +9,6 @@ import {
 } from '../../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../CutOffTime'
-import RAD from '../../../RAD'
 import InternationalServices from './Services/InternationalServices'
 import OneRateServices from './Services/OneRateServices'
 import DomesticServices from './Services/DomesticServices'
@@ -19,7 +18,6 @@ import { international_services } from './Services/InternationalServices'
 import GroundTransit from '../../../GroundTransit'
 import HazardousMaterial from '../../../HazardousMaterial'
 import SaveButton from '../../../SaveButton'
-import ReturnRates from '../../../ReturnRates'
 
 const { Title } = Typography
 const initialState = {
@@ -421,11 +419,6 @@ function QuoteSettingsComponentWweSmall(props) {
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 				/>
-				<RAD
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					radStatus={radStatus}
-				/>
 				<HazardousMaterial
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -443,11 +436,6 @@ function QuoteSettingsComponentWweSmall(props) {
 						<Title level={4}>Other settings</Title>
 					</Col>
 				</Row>
-
-				<ReturnRates
-          			quoteSettingsState={quoteSettingsState}
-          			setQuoteSettingsState={setQuoteSettingsState}
-        		/>
 
 				<Row gutter={24} className={'mb-4'}>
 					<Col

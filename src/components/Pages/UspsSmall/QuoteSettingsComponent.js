@@ -12,7 +12,6 @@ import CutOffTime from '../../CutOffTime'
 import DomesticServices from './Services/DomesticServices'
 import InternationalServices from './Services/InternationalServices'
 import GroundTransit from '../../GroundTransit'
-import RAD from '../../RAD'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 
@@ -424,11 +423,6 @@ function QuoteSettingsComponentWweSmall(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 				/>
 
-				<RAD
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					radStatus={radStatus}
-				/>
 				<HazardousMaterial
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}

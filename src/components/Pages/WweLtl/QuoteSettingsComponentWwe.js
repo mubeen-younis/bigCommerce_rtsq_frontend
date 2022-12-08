@@ -7,14 +7,12 @@ import { getQuoteSettings } from '../../../Actions/Settings'
 import { validateHandlingFeeMarkup } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import CutOffTime from '../../CutOffTime'
-import RAD from '../../RAD'
 import InsideDeliverySettings from '../../InsideDeliverySettings'
 import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
-import ReturnRates from '../../ReturnRates'
 
 const { Option } = Select
 const initialState = {
@@ -157,13 +155,6 @@ function QuoteSettingsComponentWwe(props) {
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
           handleChange={handleStateChange}
-        />
-
-        <RAD
-          quoteSettingsState={quoteSettingsState}
-          setQuoteSettingsState={setQuoteSettingsState}
-          radStatus={radStatus}
-          carrier='wwe-ltl'
         />
 
         <LiftGateDelivery
@@ -334,11 +325,6 @@ function QuoteSettingsComponentWwe(props) {
             </Col>
           </Row>
         )}
-
-        <ReturnRates
-          quoteSettingsState={quoteSettingsState}
-          setQuoteSettingsState={setQuoteSettingsState}
-        />
 
         <SaveButton />
       </Form>

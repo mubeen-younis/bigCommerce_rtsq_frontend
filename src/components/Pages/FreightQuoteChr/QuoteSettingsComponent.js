@@ -6,13 +6,11 @@ import { getQuoteSettings } from '../../../Actions/Settings'
 import { validateHandlingFeeMarkup } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import CutOffTime from '../../CutOffTime'
-import RAD from '../../RAD'
 import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from '../FreightQuoteLtl/RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
-import ReturnRates from '../../ReturnRates'
 import FqChrTruckloadSettings from '../../FqChrTruckloadSettings'
 import { getServices, getAddTabSettings } from '../../../Actions/Carriers'
 
@@ -165,13 +163,6 @@ function QuoteSettingsComponentWwe(props) {
 					handleChange={handleStateChange}
 				/>
 
-				<RAD
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					radStatus={radStatus}
-					// carrier='wwe-ltl'
-				/>
-
 				<LiftGateDelivery
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -187,11 +178,6 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-
-				<ReturnRates
-        			quoteSettingsState={quoteSettingsState}
-        			setQuoteSettingsState={setQuoteSettingsState}
-        		/>
 
 				<SaveButton />
 			</Form>

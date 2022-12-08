@@ -11,12 +11,10 @@ import {
 } from '../../../Utilities/numberValidation'
 import CutOffTime from '../../CutOffTime'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
-import RAD from '../../RAD'
 import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
-import ReturnRates from '../../ReturnRates'
 
 const { Option } = Select
 const initialState = {
@@ -209,11 +207,6 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-				<RAD
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					radStatus={radStatus}
-				/>
 				<LiftGateDelivery
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -229,11 +222,6 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
-
-				<ReturnRates
-        			quoteSettingsState={quoteSettingsState}
-        			setQuoteSettingsState={setQuoteSettingsState}
-        		/>
 
 				<SaveButton />
 				
