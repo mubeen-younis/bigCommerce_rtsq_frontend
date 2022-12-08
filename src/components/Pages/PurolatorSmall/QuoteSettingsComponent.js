@@ -79,7 +79,7 @@ function QuoteSettingsComponentWweSmall(props) {
       checks?.purolator_ground_us &&
       checks?.purolator_express_us &&
       checks?.purolator_express_us_9_am &&
-      checks?.purolator_express_us_10_30am
+      checks?.purolator_express_us_10_30_am
     ) {
       setCanadaToUSCheckAll(true)
     }
@@ -149,8 +149,8 @@ function QuoteSettingsComponentWweSmall(props) {
         quoteSettingsState?.carrier_services?.purolator_express_us,
       purolator_express_us_9_am:
         quoteSettingsState?.carrier_services?.purolator_express_us_9_am,
-      purolator_express_us_10_30am:
-        quoteSettingsState?.carrier_services?.purolator_express_us_10_30am,
+      purolator_express_us_10_30_am:
+        quoteSettingsState?.carrier_services?.purolator_express_us_10_30_am,
     }
 
     if (Object.keys(canadaToUSChecks).includes(e.target.name)) {
@@ -202,7 +202,7 @@ function QuoteSettingsComponentWweSmall(props) {
         purolator_ground_us: checked,
         purolator_express_us: checked,
         purolator_express_us_9_am: checked,
-        purolator_express_us_10_30am: checked,
+        purolator_express_us_10_30_am: checked,
       },
     })
   }
@@ -221,7 +221,7 @@ function QuoteSettingsComponentWweSmall(props) {
       CS?.purolator_ground_us ||
       CS?.purolator_express_us ||
       CS?.purolator_express_us_9_am ||
-      CS?.purolator_express_us_10_30am
+      CS?.purolator_express_us_10_30_am
 
     var errormsg = ""
     if (errormsg === "") {
