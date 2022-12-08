@@ -19,7 +19,7 @@ import {
   getAllAddons,
 } from './Actions/EnitureStore'
 import { getPlans } from './Actions/Plans'
-import { getRadPlans } from './Actions/RAD'
+import { getRadPlans, getRADSettings } from './Actions/RAD'
 import { getSbsPlans } from './Actions/SBS'
 import { getPalletsPlans } from './Actions/Pallets'
 import RendorCarrier from './components/RendorCarrier'
@@ -91,7 +91,8 @@ function App(props) {
       getStorePlans()
       getShippingGroups(token)
       dispatch(getFDOCouponInfo(token))
-		  dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES, token))
+      dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES, token))
+      dispatch(getRADSettings(token))
     }
  
       const devEnv = process?.env?.NODE_ENV === 'development'

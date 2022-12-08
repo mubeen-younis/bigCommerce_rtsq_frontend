@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,7 +16,18 @@ const LiftGateDelivery = ({
 	sameDayApi = false,
 }) => {
 	const dispatch = useDispatch()
-	const { installedAddons } = useSelector(state => state)
+	const { installedAddons, radSettings } = useSelector(state => state)
+	const [radAutoDetect, setRadAutoDetect] = useState(false)
+
+	useEffect(() => {
+		if (radSettings) {
+			const settings = JSON.parse(radSettings?.settings ?? '') ?? null
+
+			if (settings && settings.residential_delivery_auto_detect) {
+				setRadAutoDetect(settings.residential_delivery_auto_detect)
+			}
+		}
+	}, [radSettings])
 
 	const setActiveMenu = useCallback(
 		() =>
@@ -170,10 +181,7 @@ const LiftGateDelivery = ({
 										always_appointment_delivery: false,
 									})
 								}
-								disabled={
-									!radStatus ||
-									!quoteSettingsState.autoDetectedResidentialAddresses
-								}
+								disabled={!radStatus || !radAutoDetect}
 							/>
 							{!isRadInstalled && (
 								<label

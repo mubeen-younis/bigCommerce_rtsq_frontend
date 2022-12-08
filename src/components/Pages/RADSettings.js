@@ -128,8 +128,8 @@ function ShippingGroupsComponent() {
               <>
                 <Col
                   className="gutter-row mt-1"
-                  xs={12}
-                  sm={12}
+                  xs={16}
+                  sm={16}
                   md={12}
                   lg={12}
                   xl={6}
@@ -145,7 +145,7 @@ function ShippingGroupsComponent() {
                 </Col>
 
                 <Radio.Group
-                  className="mt-1"
+                  className="mt-1 mb-2"
                   onChange={e =>
                     setSettings(prevSettings => ({
                       ...prevSettings,
