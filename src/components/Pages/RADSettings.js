@@ -157,7 +157,7 @@ function ShippingGroupsComponent() {
                   sm={16}
                   md={12}
                   lg={12}
-                  xl={6}
+                  xl={7}
                 >
                   <label
                     className="text-gray ml-5"
