@@ -21,10 +21,12 @@ const LiftGateDelivery = ({
 
 	useEffect(() => {
 		if (radSettings) {
-			const settings = JSON.parse(radSettings?.settings ?? '') ?? null
+			if(radSettings?.settings){
+				const settings = JSON.parse(radSettings?.settings) ?? null
 
-			if (settings && settings.residential_delivery_auto_detect) {
-				setRadAutoDetect(settings.residential_delivery_auto_detect)
+				if (settings && settings.residential_delivery_auto_detect) {
+					setRadAutoDetect(settings.residential_delivery_auto_detect)
+				}
 			}
 		}
 	}, [radSettings])

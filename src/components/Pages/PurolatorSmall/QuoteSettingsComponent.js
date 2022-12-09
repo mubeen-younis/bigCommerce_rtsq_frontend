@@ -15,7 +15,6 @@ import CanadaToUS from "./Services/CanadaToUS"
 import GroundTransit from "../../GroundTransit"
 import HazardousMaterial from "../../HazardousMaterial"
 import SaveButton from "../../SaveButton"
-import ReturnRates from '../../ReturnRates'
 
 const { Title } = Typography
 const initialState = {
@@ -456,10 +455,6 @@ function QuoteSettingsComponentWweSmall(props) {
           handleChange={handleStateChange}
         />
         <GroundTransit
-          quoteSettingsState={quoteSettingsState}
-          setQuoteSettingsState={setQuoteSettingsState}
-        />
-        <ReturnRates
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
         />

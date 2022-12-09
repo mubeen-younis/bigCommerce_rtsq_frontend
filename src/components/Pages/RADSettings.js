@@ -43,11 +43,13 @@ function ShippingGroupsComponent() {
     }
 
     if (radSettings) {
-      const newSettings = JSON.parse(radSettings?.settings) ?? {}
-      setSettings(prevSettings => ({
+      if(radSettings?.settings){
+        const newSettings = JSON.parse(radSettings?.settings) ?? {}
+        setSettings(prevSettings => ({
         ...prevSettings,
         ...newSettings,
       }))
+      }
     }
   }, [dispatch, radSettings, token])
 

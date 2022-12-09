@@ -9,7 +9,6 @@ import {
 } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import CutOffTime from '../../CutOffTime'
-import RAD from '../../RAD'
 import LiftGateDelivery from '../../LiftGateDelivery'
 import HoldAtTerminal from '../../HoldAtTerminal'
 import HandlingUnit from '../../HandlingUnit'
@@ -256,13 +255,6 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					handleChange={handleStateChange}
-				/>
-
-				<RAD
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					radStatus={radStatus}
-					sameDayApi={dayRossApiType === API_TYPE}
 				/>
 
 				<LiftGateDelivery

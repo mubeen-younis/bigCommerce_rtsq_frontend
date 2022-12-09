@@ -334,39 +334,6 @@ function AutoDetectResidentialComponent(props) {
 												Suspend Use
 											</Checkbox>
 										</div>
-										<label>
-											<strong>
-												Default unconfirmed address types to
-											</strong>
-										</label>
-										<div
-											style={{
-												width: '100%',
-												marginBottom: '20px',
-											}}>
-											<Radio.Group
-												onChange={changeDefaultAddress}
-												value={address}>
-												<Radio
-													style={{
-														display: 'block',
-														marginTop: '8px',
-													}}
-													value={1}
-													onChange={onChange}>
-													Residential
-												</Radio>
-												<Radio
-													style={{
-														display: 'block',
-														marginTop: '8px',
-													}}
-													value={2}
-													onChange={onChange}>
-													Commercial
-												</Radio>
-											</Radio.Group>
-										</div>
 									</Fragment>
 								)}
 							</Fragment>
