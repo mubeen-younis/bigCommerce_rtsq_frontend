@@ -409,67 +409,6 @@ function QuoteSettingsComponentWweSmall(props) {
 				</Row>
 
 				<Row className={'mb-2'}></Row>
-				<DeliveryEstimateOptions
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-				/>
-				<CutOffTime
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					handleChange={handleStateChange}
-				/>
-				<GroundTransit
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-				/>
-
-				<HazardousMaterial
-					quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-				/>
-
-				<Row gutter={24} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						style={{ paddingTop: '11px' }}
-						xs={24}
-						sm={24}
-						md={24}
-						lg={6}
-						xl={6}>
-						<label className={'text-gray'}>Handling Fee / Markup</label>
-					</Col>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={18}
-						xl={18}>
-						<Form.Item className={'mb-0'}>
-							<Input
-								type='text'
-								name='handling_fee_markup'
-								maxLength='7'
-								//pattern='[0-9.?(0-9){2}?]+%?$'
-								//pattern="^[\-\+]\s*\d+\s*$"
-								//pattern='^[%$][-+]?\d+([,.]\d{1,2})?|^[-+]?\d+([,.]\d{1,2})?[%]?'
-								value={quoteSettingsState?.handling_fee_markup}
-								onChange={e =>
-									setQuoteSettingsState({
-										...quoteSettingsState,
-										handling_fee_markup: e.target.value,
-									})
-								}
-								onKeyDown={handlingFeeMarkup}
-							/>
-						</Form.Item>
-						<div className={'text-gray'}>
-							Amount excluding tax. Enter an amount, e.g 3.75, or a
-							percentage, e.g, 5%. Leave blank to disable.
-						</div>
-					</Col>
-				</Row>
 
 				<Row gutter={24} className={'mb-3'}>
 					<Col
@@ -516,6 +455,56 @@ function QuoteSettingsComponentWweSmall(props) {
 								}
 							/>
 						</Form.Item>
+					</Col>
+				</Row>
+
+				<Row gutter={24} className={'mb-3'}>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
+						<Title level={4}>Other settings</Title>
+					</Col>
+
+					<Col
+						className='gutter-row'
+						style={{ paddingTop: '11px' }}
+						xs={24}
+						sm={24}
+						md={24}
+						lg={6}
+						xl={6}>
+						<label className={'text-gray'}>Handling Fee / Markup</label>
+					</Col>
+					<Col
+						className='gutter-row'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={18}
+						xl={18}>
+						<Form.Item className={'mb-0'}>
+							<Input
+								type='text'
+								name='handling_fee_markup'
+								maxLength='7'
+								value={quoteSettingsState?.handling_fee_markup}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										handling_fee_markup: e.target.value,
+									})
+								}
+								onKeyDown={handlingFeeMarkup}
+							/>
+						</Form.Item>
+						<div className={'text-gray'}>
+							Amount excluding tax. Enter an amount, e.g 3.75, or a
+							percentage, e.g, 5%. Leave blank to disable.
+						</div>
 					</Col>
 				</Row>
 

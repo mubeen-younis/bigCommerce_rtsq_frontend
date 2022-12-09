@@ -15,6 +15,7 @@ import CanadaToUS from "./Services/CanadaToUS"
 import GroundTransit from "../../GroundTransit"
 import HazardousMaterial from "../../HazardousMaterial"
 import SaveButton from "../../SaveButton"
+import ReturnRates from '../../ReturnRates'
 
 const { Title } = Typography
 const initialState = {
@@ -68,7 +69,7 @@ function QuoteSettingsComponentWweSmall(props) {
 
     if (
       checks?.purolator_express_international &&
-      checks?.purolator_express_international_12_am
+      checks?.purolator_express_international_12_00
     ) {
       setInternationalCheckAll(true)
     }
@@ -77,7 +78,7 @@ function QuoteSettingsComponentWweSmall(props) {
       checks?.purolator_ground_us &&
       checks?.purolator_express_us &&
       checks?.purolator_express_us_9_am &&
-      checks?.purolator_express_us_10_30am
+      checks?.purolator_express_us_10_30_am
     ) {
       setCanadaToUSCheckAll(true)
     }
@@ -127,9 +128,9 @@ function QuoteSettingsComponentWweSmall(props) {
     const internationalChecks = {
       purolator_express_international:
         quoteSettingsState?.carrier_services?.purolator_express_international,
-      purolator_express_international_12_am:
+      purolator_express_international_12_00:
         quoteSettingsState?.carrier_services
-          ?.purolator_express_international_12_am,
+          ?.purolator_express_international_12_00,
     }
 
     if (Object.keys(internationalChecks).includes(e.target.name)) {
@@ -147,8 +148,8 @@ function QuoteSettingsComponentWweSmall(props) {
         quoteSettingsState?.carrier_services?.purolator_express_us,
       purolator_express_us_9_am:
         quoteSettingsState?.carrier_services?.purolator_express_us_9_am,
-      purolator_express_us_10_30am:
-        quoteSettingsState?.carrier_services?.purolator_express_us_10_30am,
+      purolator_express_us_10_30_am:
+        quoteSettingsState?.carrier_services?.purolator_express_us_10_30_am,
     }
 
     if (Object.keys(canadaToUSChecks).includes(e.target.name)) {
@@ -185,7 +186,7 @@ function QuoteSettingsComponentWweSmall(props) {
       carrier_services: {
         ...quoteSettingsState.carrier_services,
         purolator_express_international: checked,
-        purolator_express_international_12_am: checked,
+        purolator_express_international_12_00: checked,
       },
     })
   }
@@ -200,7 +201,7 @@ function QuoteSettingsComponentWweSmall(props) {
         purolator_ground_us: checked,
         purolator_express_us: checked,
         purolator_express_us_9_am: checked,
-        purolator_express_us_10_30am: checked,
+        purolator_express_us_10_30_am: checked,
       },
     })
   }
@@ -215,11 +216,11 @@ function QuoteSettingsComponentWweSmall(props) {
       CS?.purolator_ground_9AM ||
       CS?.purolator_ground_10__30AM ||
       CS?.purolator_express_international ||
-      CS?.purolator_express_international_12_am ||
+      CS?.purolator_express_international_12_00 ||
       CS?.purolator_ground_us ||
       CS?.purolator_express_us ||
       CS?.purolator_express_us_9_am ||
-      CS?.purolator_express_us_10_30am
+      CS?.purolator_express_us_10_30_am
 
     var errormsg = ""
     if (errormsg === "") {
@@ -327,8 +328,8 @@ function QuoteSettingsComponentWweSmall(props) {
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
         quoteSettingsState?.carrier_services
-          ?.purolator_express_international_12_am_markup,
-        "Purolator Express International 12 A.M.",
+          ?.purolator_express_international_12_00_markup,
+        "Purolator Express International 12:00",
         true
       )
     }
@@ -455,6 +456,10 @@ function QuoteSettingsComponentWweSmall(props) {
           handleChange={handleStateChange}
         />
         <GroundTransit
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
+        <ReturnRates
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
         />
