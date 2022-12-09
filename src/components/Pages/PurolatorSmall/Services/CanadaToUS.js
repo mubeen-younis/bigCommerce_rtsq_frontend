@@ -8,7 +8,7 @@ const CanadaToUS_services = [
 	'Purolator Ground US',
 	'Purolator Express US',
 	'Purolator Express US 9 AM',
-	'Purolator Express US 10 30 AM',
+	'Purolator Express US 10:30 AM',
 ]
 
 const CanadaToUS = ({
@@ -52,11 +52,11 @@ const CanadaToUS = ({
 					<Col span={12}>
 						<Form.Item className={'mb-0'}>
 							<Checkbox
-								name={is.toLowerCase().trim().replaceAll(' ', '_')}
+								name={is.toLowerCase().trim().replaceAll(' ', '_').replaceAll(':', '_')}
 								value={true}
 								checked={
 									quoteSettingsState?.carrier_services?.[
-										is.toLowerCase().trim().replaceAll(' ', '_')
+										is.toLowerCase().trim().replaceAll(' ', '_').replaceAll(':', '_')
 									]
 								}
 								onChange={onCheck}></Checkbox>
@@ -71,12 +71,13 @@ const CanadaToUS = ({
 										is
 											.toLowerCase()
 											.trim()
-											.replaceAll(' ', '_') + '_markup'
+											.replaceAll(' ', '_')
+											.replaceAll(':', '_') + '_markup'
 									]
 								}
 								//pattern='[0-9.?(0-9){2}?]+%?$'
 								name={
-									is.toLowerCase().trim().replaceAll(' ', '_') +
+									is.toLowerCase().trim().replaceAll(' ', '_').replaceAll(':', '_') +
 									'_markup'
 								}
 								onChange={onChange}

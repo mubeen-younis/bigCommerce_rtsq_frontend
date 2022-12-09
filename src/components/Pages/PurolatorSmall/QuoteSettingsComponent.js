@@ -70,7 +70,7 @@ function QuoteSettingsComponentWweSmall(props) {
 
     if (
       checks?.purolator_express_international &&
-      checks?.purolator_express_international_12_am
+      checks?.purolator_express_international_12_00
     ) {
       setInternationalCheckAll(true)
     }
@@ -129,9 +129,9 @@ function QuoteSettingsComponentWweSmall(props) {
     const internationalChecks = {
       purolator_express_international:
         quoteSettingsState?.carrier_services?.purolator_express_international,
-      purolator_express_international_12_am:
+      purolator_express_international_12_00:
         quoteSettingsState?.carrier_services
-          ?.purolator_express_international_12_am,
+          ?.purolator_express_international_12_00,
     }
 
     if (Object.keys(internationalChecks).includes(e.target.name)) {
@@ -187,7 +187,7 @@ function QuoteSettingsComponentWweSmall(props) {
       carrier_services: {
         ...quoteSettingsState.carrier_services,
         purolator_express_international: checked,
-        purolator_express_international_12_am: checked,
+        purolator_express_international_12_00: checked,
       },
     })
   }
@@ -217,7 +217,7 @@ function QuoteSettingsComponentWweSmall(props) {
       CS?.purolator_ground_9AM ||
       CS?.purolator_ground_10__30AM ||
       CS?.purolator_express_international ||
-      CS?.purolator_express_international_12_am ||
+      CS?.purolator_express_international_12_00 ||
       CS?.purolator_ground_us ||
       CS?.purolator_express_us ||
       CS?.purolator_express_us_9_am ||
@@ -329,8 +329,8 @@ function QuoteSettingsComponentWweSmall(props) {
     if (errormsg === "") {
       errormsg += validateHandlingFeeMarkup(
         quoteSettingsState?.carrier_services
-          ?.purolator_express_international_12_am_markup,
-        "Purolator Express International 12 A.M.",
+          ?.purolator_express_international_12_00_markup,
+        "Purolator Express International 12:00",
         true
       )
     }
