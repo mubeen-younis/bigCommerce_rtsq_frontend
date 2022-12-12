@@ -35,6 +35,15 @@ function SideMenu(props) {
   }, [setActiveMenu])
 
   return (
+     <> 
+      <h4
+        className={'app-logo'}
+        style={{ display: 'block', fontSize: 18, float: 'left' }}
+      >
+        Real-time Shipping Quotes
+      </h4>
+      <hr></hr>
+  
     <Sider
       breakpoint='lg'
       collapsedWidth='0'
@@ -46,7 +55,7 @@ function SideMenu(props) {
       width={240}
     >
       <h4
-        className={'app-logo'}
+        className={'header'}
         style={{ display: 'block', fontSize: 18, float: 'left' }}
       >
         Real-time Shipping Quotes
@@ -130,7 +139,7 @@ function SideMenu(props) {
             {props?.installedCarriers
               ?.filter((car) => car.carrier_type === 1)
               .every((carr) => carr.is_enabled === 0) ? (
-              <Menu.Item>No Carrier is Installed/Enabled</Menu.Item>
+              <Menu.Item>No Carrier is Enabled</Menu.Item>
             ) : null}
 
             {props?.installedCarriers?.map((carrier) =>
@@ -153,7 +162,7 @@ function SideMenu(props) {
             {props?.installedCarriers
               ?.filter((car) => car.carrier_type === 2)
               .every((carr) => carr.is_enabled === 0) ? (
-              <Menu.Item>No Carrier is Installed/Enabled</Menu.Item>
+              <Menu.Item>No Carrier is Enabled</Menu.Item>
             ) : null}
 
             {props?.installedCarriers?.map((carrier) =>
@@ -174,7 +183,7 @@ function SideMenu(props) {
             </Title>
 
             {props?.installedAddons?.every((add) => add.is_enabled === 0) ? (
-              <Menu.Item>No Add-on is Installed/Enabled</Menu.Item>
+              <Menu.Item>No Add-on is Enabled</Menu.Item>
             ) : null}
 
             {props?.installedAddons?.map((addon) =>
@@ -192,6 +201,7 @@ function SideMenu(props) {
         )}
       </Menu>
     </Sider>
+    </>
   )
 }
 

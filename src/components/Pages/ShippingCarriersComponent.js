@@ -378,7 +378,7 @@ function ShippingCarriersComponent(props) {
 						md={24}
 						lg={24}
 						xl={24}>
-						<span className={'no-data'}>No add-on installed</span>
+						<span className={'no-data'}>No Add-on installed</span>
 					</Col>
 				)}
 			</Row>
@@ -400,7 +400,7 @@ function ShippingCarriersComponent(props) {
 						md={24}
 						lg={24}
 						xl={24}>
-						<span className={'no-data'}>No carrier Found</span>
+						<span className={'no-data'}>No Carrier Found</span>
 					</Col>
 				)}
 			</Row>
@@ -424,7 +424,7 @@ function ShippingCarriersComponent(props) {
 						md={24}
 						lg={24}
 						xl={24}>
-						<span className={'no-data'}>No carrier Found</span>
+						<span className={'no-data'}>No Carrier Found</span>
 					</Col>
 				)}
 			</Row>

@@ -84,21 +84,36 @@ body {
 }
 .app-logo {
 	height: 63px;
-	margin: 0;
+	padding-left: 23px;
 	line-height: 63px;
 	text-align: left;
 	font-size: 24px;
 	font-weight: bold;
 	top: 0;
-	left: 23px;
+	right: 17px;
 	min-width: 200px;
-	width: 100%;
+	width: 97.8%;
 	position: absolute;
 	background-color: #fff;
+	z-index: 300;
+	border-bottom: 1px solid #ddd;
+}
+.header{
+	height: 63px;
+	line-height: 63px;
+	text-align: left;
+	font-size: 24px;
+	font-weight: bold;
+	top: 0;
+	padding-left: 23px;
+	min-width: 300px;
+	position: absolute;
+	background-color: #fff;
+	z-index: 100;
+	border-bottom: 1px solid #ddd;
 }
 .top-header {
 	background-color: #fff;
-	border-bottom: 1px solid #ddd;
 }
 .wrapper .ant-layout {
 	background-color: #fff;
@@ -170,7 +185,7 @@ body {
 }
 .sidemenu .ant-menu-inline {
 	border-right: none;
-	border-top: 1px solid #ddd;
+	border-top: none;
 }
 .sidemenu .ant-menu-sub.ant-menu-inline {
 	border-top: none;
