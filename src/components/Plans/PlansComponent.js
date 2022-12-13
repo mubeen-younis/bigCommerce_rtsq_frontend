@@ -804,7 +804,7 @@ function PlansComponent() {
               sm={24}
               md={12}
               lg={12}
-              xl={6}
+              xl={8}
               key={i}
             >
               <div className={'pricing-box'}>
