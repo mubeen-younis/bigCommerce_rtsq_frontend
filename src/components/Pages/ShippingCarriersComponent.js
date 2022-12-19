@@ -337,7 +337,7 @@ function ShippingCarriersComponent(props) {
 						lg={24}
 						xl={24}>
 						<span className={'no-data'}>
-							No ltl freight provider installed
+							No LTL Freight Provider Installed
 						</span>
 					</Col>
 				)}
@@ -359,7 +359,7 @@ function ShippingCarriersComponent(props) {
 						lg={24}
 						xl={24}>
 						<span className={'no-data'}>
-							No parcel & postal provider installed
+							No Parcel & Postal Provider Installed
 						</span>
 					</Col>
 				)}

@@ -36,6 +36,15 @@ function SideMenu(props) {
 	}, [setActiveMenu])
 
 	return (
+	<> 
+ 	    <h4
+	    	className={'app-logo'}
+        	style={{ display: 'block', fontSize: 18, float: 'left' }}
+     	>
+    	Real-time Shipping Quotes
+		</h4>
+  		<hr></hr>
+ 
 		<Sider
 			breakpoint='lg'
 			collapsedWidth='0'
@@ -44,7 +53,7 @@ function SideMenu(props) {
 			className={'sidemenu'}
 			width={240}>
 			<h4
-				className={'app-logo'}
+				className={'header'}
 				style={{ display: 'block', fontSize: 18, float: 'left' }}>
 				Real-time Shipping Quotes
 			</h4>
@@ -201,6 +210,7 @@ function SideMenu(props) {
 				)}
 			</Menu>
 		</Sider>
+	</>
 	)
 }
 
