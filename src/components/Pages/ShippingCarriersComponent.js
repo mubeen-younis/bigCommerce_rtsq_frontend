@@ -19,6 +19,8 @@ const { Title } = Typography
 function ShippingCarriersComponent(props) {
 	const dispatch = useDispatch()
 	// const { currentPlan } = useSelector(state => state)
+	const isLTL =  props.installedCarriers?.find(carr => carr.carrier_type === 1) ? true : false
+	const isSmall =  props.installedCarriers?.find(carr => carr.carrier_type === 2) ? true : false
 	const getInstalledCarriers = (carrier_type = 1) => {
 		return props.installedCarriers
 			.sort((carr1, carr2) => (carr1.name > carr2.name ? 1 : -1))
@@ -323,7 +325,7 @@ function ShippingCarriersComponent(props) {
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<Title level={4}>LTL Freight Providers</Title>
 				</Col>
-				{props.installedCarriers !== undefined &&
+				{props.installedCarriers !== undefined && isLTL &&
 				props.installedCarriers.length > 0 ? (
 					getInstalledCarriers(1)
 				) : (
@@ -345,7 +347,7 @@ function ShippingCarriersComponent(props) {
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<Title level={4}>Parcel & Postal Providers</Title>
 				</Col>
-				{props.installedCarriers !== undefined &&
+				{props.installedCarriers !== undefined && isSmall &&
 				props.installedCarriers.length > 0 ? (
 					getInstalledCarriers(2)
 				) : (
@@ -378,7 +380,7 @@ function ShippingCarriersComponent(props) {
 						md={24}
 						lg={24}
 						xl={24}>
-						<span className={'no-data'}>No add-on installed</span>
+						<span className={'no-data'}>No Add-on installed</span>
 					</Col>
 				)}
 			</Row>
@@ -400,7 +402,7 @@ function ShippingCarriersComponent(props) {
 						md={24}
 						lg={24}
 						xl={24}>
-						<span className={'no-data'}>No carrier Found</span>
+						<span className={'no-data'}>No Carrier Found</span>
 					</Col>
 				)}
 			</Row>
@@ -424,7 +426,7 @@ function ShippingCarriersComponent(props) {
 						md={24}
 						lg={24}
 						xl={24}>
-						<span className={'no-data'}>No carrier Found</span>
+						<span className={'no-data'}>No Carrier Found</span>
 					</Col>
 				)}
 			</Row>
