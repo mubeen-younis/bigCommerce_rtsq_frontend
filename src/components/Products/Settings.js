@@ -200,7 +200,7 @@ const Settings = ({
 					</Row>
 				)}
 				<Row gutter={16}>
-					<Col span={12}>
+					<Col span={8}>
 						<Form.Item
 							label='Freight Class'
 							rules={[
@@ -245,7 +245,7 @@ const Settings = ({
 							</Select>
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={8}>
 						<Form.Item
 							label={`Weight (${
 								store?.weight_units?.toLowerCase() ?? 'lbs'
@@ -266,6 +266,24 @@ const Settings = ({
 									validateNumber(e.target.value)
 								}}
 								min={1}
+								pattern='^[1-9]'
+								step='0.01'
+								stringMode
+							/>
+						</Form.Item>
+					</Col>
+					<Col span={8}>
+						<Form.Item label='NMFC'>
+							<Input
+								type='number'
+								id={'nmfc' + index}
+								name='nmfc'
+								placeholder='e.g 100 or 132-597'
+								value={product?.nmfc}
+								onChange={e =>
+									onChangeVariant(index, 'nmfc', e.target.value)
+								}
+								min='0'
 								pattern='^[1-9]'
 								step='0.01'
 								stringMode
