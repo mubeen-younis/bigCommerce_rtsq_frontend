@@ -22,6 +22,7 @@ import {
   checkDigitsAfterDecimal,
   handleKeyPhoneNumber,
   handleKeyAddress,
+  handlingFeeMarkup,
 } from './../../Utilities/numberValidation'
 
 import {
@@ -281,6 +282,11 @@ function WarehouseComponent(props) {
       key: 'Country',
       title: 'Country',
       dataIndex: 'country',
+    },
+    {
+      key: 'origin_markup',
+      title: 'Handling Fee / Markup',
+      dataIndex: 'origin_markup',
     },
     {
       key: 'zip',
@@ -624,6 +630,35 @@ function WarehouseComponent(props) {
                         value={locationDetail.country}
                         onChange={changeValue}
                         required
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col
+                    className='gutter-row'
+                    xs={24}
+                    sm={24}
+                    md={24}
+                    lg={24}
+                    xl={24}
+                  >
+                    <Form.Item
+                      className={'mb-2'}
+                      label='Handling Fee / Markup'
+                      rules={[
+                        {
+                          required: false,
+                          message: 'Handling Fee / Markup',
+                        },
+                      ]}
+                    >
+                      <Input
+                        name='origin_markup'
+                        placeholder='Enter an amount (e.g. 5.00) or a percentage (e.g. 5.0%).'
+                        value={locationDetail.origin_markup}
+                        onChange={changeValue}
+                        onKeyDown={handlingFeeMarkup}
+                        maxLength='7'
                       />
                     </Form.Item>
                   </Col>
