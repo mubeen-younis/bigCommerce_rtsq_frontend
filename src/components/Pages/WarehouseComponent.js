@@ -284,11 +284,6 @@ function WarehouseComponent(props) {
       dataIndex: 'country',
     },
     {
-      key: 'origin_markup',
-      title: 'Handling Fee / Markup',
-      dataIndex: 'origin_markup',
-    },
-    {
       key: 'zip',
       title: 'Action',
       render: (text, record) => (
