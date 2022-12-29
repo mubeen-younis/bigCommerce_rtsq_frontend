@@ -15,6 +15,7 @@ import HandlingUnit from '../../../HandlingUnit'
 import SaveButton from '../../../SaveButton'
 import QuoteServices from './QuoteServices'
 import WeightThreshold from '../../../WeightThreshold'
+import ErrorManagment from '../../../ErrorManagment'
 
 const initialState = {
   fedex_freight_economy_label: '',
@@ -299,6 +300,11 @@ function QuoteSettingsComponentWwe(props) {
         />
           
         <Discounts
+          quoteSettingsState={quoteSettingsState}
+          handleChange={handleStateChange}
+        />
+
+        <ErrorManagment
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
         />
