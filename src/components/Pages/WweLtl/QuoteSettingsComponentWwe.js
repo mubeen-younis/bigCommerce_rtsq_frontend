@@ -13,6 +13,7 @@ import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ErrorManagment from '../../ErrorManagment'
 
 const { Option } = Select
 const initialState = {
@@ -325,6 +326,11 @@ function QuoteSettingsComponentWwe(props) {
             </Col>
           </Row>
         )}
+
+        <ErrorManagment
+    			quoteSettingsState={quoteSettingsState}
+    			handleChange={handleStateChange}
+        />
 
         <SaveButton />
       </Form>

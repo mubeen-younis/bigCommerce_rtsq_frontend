@@ -15,6 +15,7 @@ import HandlingUnit from '../../../components/HandlingUnit'
 import SaveButton from '../../../components/SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import HoldAtTerminal from '../../HoldAtTerminal'
+import ErrorManagment from '../../ErrorManagment'
 
 const initialState = {
   label_as: '',
@@ -200,6 +201,11 @@ function QuoteSettingsComponentWwe(props) {
         <HandlingUnit
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
+        />
+
+        <ErrorManagment
+    			quoteSettingsState={quoteSettingsState}
+    			handleChange={handleStateChange}
         />
 
         <SaveButton />

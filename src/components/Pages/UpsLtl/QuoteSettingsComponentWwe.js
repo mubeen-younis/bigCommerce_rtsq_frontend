@@ -15,6 +15,7 @@ import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ErrorManagment from '../../ErrorManagment'
 
 const { Option } = Select
 const initialState = {
@@ -379,6 +380,11 @@ function QuoteSettingsComponentWwe(props) {
             </Row>
           </>
         ) : null}
+
+        <ErrorManagment
+      		quoteSettingsState={quoteSettingsState}
+    			handleChange={handleStateChange}
+        />
 
         <SaveButton />
       </Form>

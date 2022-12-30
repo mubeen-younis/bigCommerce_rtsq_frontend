@@ -18,6 +18,7 @@ import DomesticServices from './Services/DomesticServices'
 import InternationalServices from './Services/InternationalServices'
 import TwoManDelivery from './DeliverySettings/TwoManDelivery'
 import AppointmentDelivery from './DeliverySettings/AppointmentDelivery'
+import ErrorManagment from '../../ErrorManagment'
 import PremiumFreightServices, {
 	premiumFreightServices,
 } from './Services/PremiumFreightServices'
@@ -297,6 +298,11 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
+
+				<ErrorManagment
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<SaveButton />
 			</Form>

@@ -13,6 +13,7 @@ import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import TruckloadSettings from '../../TruckloadSettings'
 import { getServices, getAddTabSettings } from '../../../Actions/Carriers'
+import ErrorManagment from '../../ErrorManagment'
 
 const initialState = {
 	number_of_options: 1,
@@ -177,6 +178,11 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
+
+				<ErrorManagment
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<SaveButton />
 			</Form>

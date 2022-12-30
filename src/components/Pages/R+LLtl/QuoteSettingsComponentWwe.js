@@ -17,6 +17,7 @@ import SaveButton from '../../SaveButton'
 import QuoteServices from './QuoteServices'
 import WeightThreshold from '../../WeightThreshold'
 import InsideDeliverySettings from '../../InsideDeliverySettings'
+import ErrorManagment from '../../ErrorManagment'
 
 const initialState = {
   label_as: '',
@@ -303,6 +304,11 @@ function QuoteSettingsComponentWwe(props) {
             </div>
           </Col>
         </Row>
+
+        <ErrorManagment
+    			quoteSettingsState={quoteSettingsState}
+    			handleChange={handleStateChange}
+        />
           
         <SaveButton />
       </Form>
