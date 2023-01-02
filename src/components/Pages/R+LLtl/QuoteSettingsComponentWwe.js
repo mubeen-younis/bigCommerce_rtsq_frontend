@@ -22,6 +22,7 @@ import ErrorManagment from '../../ErrorManagment'
 const initialState = {
   label_as: '',
   select_all_services: false,
+  error_managment:1,
   standard_service: false,
   guaranteed_pm: false,
   guaranteed_am: false,

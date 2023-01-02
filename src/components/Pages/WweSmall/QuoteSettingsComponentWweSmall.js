@@ -43,6 +43,7 @@ const initialState = {
 	number_of_transit_days: null,
 	ground_metric: null,
 	alwaysResidentialDelivery: false,
+	error_managment:1,
 	autoDetectedResidentialAddresses: false,
 	returnRates: false,
 	ground_service_for_hazardous_material: false,

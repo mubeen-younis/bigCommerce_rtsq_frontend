@@ -19,6 +19,7 @@ const initialState = {
   all_week_days_select: true,
   week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
   residentialPickup: false,
+  error_managment:1,
   alwaysResidentialDelivery: false,
   autoDetectedResidentialAddresses: false,
   alwaysLiftGatePickup: false,

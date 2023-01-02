@@ -39,6 +39,7 @@ const initialState = {
 		usps_first_class_package_international_service_markup: '',
 	},
 	delivery_estimate_options: 1,
+	error_managment:1,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
 	select_all_week_days: false,

@@ -47,6 +47,7 @@ const initialState = {
 	quoting_currency: 'USD',
 	return_rates: false,
 	carrier_services: {},
+	error_managment:1,
 }
 
 export const API_TYPE = 'sameday'

@@ -21,6 +21,7 @@ const initialState = {
   label_as: '',
   showDeliveryEstimate: false,
   delivery_estimate_options: 1,
+  error_managment:1,
   order_cut_off_time: '',
   fulfillment_offset_days: '',
   all_week_days_select: true,

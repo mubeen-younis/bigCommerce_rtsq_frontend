@@ -54,6 +54,7 @@ const initialState = {
 	},
 	delivery_estimate_options: 1,
 	saturday_delivery: false,
+	error_managment:1,
 	showDeliveryEstimate: false,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',

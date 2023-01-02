@@ -33,6 +33,7 @@ const initialState = {
 	max_weight_per_handling_unit: '',
 	hold_at_terminal: false,
 	hold_at_terminal_price: '',
+	error_managment:1,
 }
 
 function QuoteSettingsComponent(props) {
