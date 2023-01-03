@@ -23,6 +23,7 @@ import {
   handleKeyPhoneNumber,
   handleKeyAddress,
   handlingFeeMarkup,
+  validateHandlingFeeMarkup,
 } from './../../Utilities/numberValidation'
 
 import {
@@ -99,6 +100,15 @@ function WarehouseComponent(props) {
       : { ...locationDetail, location_id: locationDetail['id'] }
     let error = false
     let errormsg = ''
+    if (errormsg === '') {      
+			errormsg = validateHandlingFeeMarkup(
+				data?.origin_markup,
+				'Handling fee'
+			)
+      if(errormsg != ''){
+        error = true  
+      }
+		}
     if (data?.enable_ld === true) {
       if (
         (data?.ld_miles === undefined || data?.ld_miles === '') &&

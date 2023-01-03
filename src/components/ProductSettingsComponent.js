@@ -23,6 +23,7 @@ import addKeysToList from '../Utilities/addKey'
 import Settings from './Products/Settings'
 import { isFireFox } from '../Utilities/browserName'
 import { getLocations } from './../Actions/Warehouse'
+import { validateHandlingFeeMarkup } from '../Utilities/numberValidation'
 
 const makeColumns = (sortProducts, showProductDetails) => {
 	const columns = [
@@ -471,6 +472,12 @@ function ProductSettingsComponent(props) {
 					error = true
 					msg = 'Shipping class is required'
 				}
+			} else if (validateHandlingFeeMarkup(
+				prd.product_markup,
+				'Product level markup'
+			) != '') {
+				error = true
+				msg = 'Invalid input! Product level markup should be like, e.g. 3.75, or a percentage, e.g. 5%, and only 2 digits are allowed after the decimal point.'
 			}
 		}
 
