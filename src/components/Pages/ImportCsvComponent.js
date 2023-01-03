@@ -53,6 +53,8 @@ function ImportCsvComponent() {
 		length: 0,
 		width: 0,
 		height: 0,
+		nmfc: 0,
+		product_markup: 0,
 		quote_method: false,
 		freight_class: '',
 		hazardous_enabled: false,
@@ -65,6 +67,8 @@ function ImportCsvComponent() {
 		drop_ship_country: '',
 		ship_alone: '',
 		vertical_rotation: '',
+		own_pallet: '',
+		pallet_vertical_rotation: '',
 	})
 	const [emailAddress, setEmailAddress] = useState(store.admin_email)
 	const [importEmailAddress, setImportEmailAddress] = useState(store.admin_email)
@@ -546,6 +550,46 @@ function ImportCsvComponent() {
 							</Select>
 						</Form.Item>
 
+						<Form.Item name='nmfc' label='NMFC'>
+							<Select
+								size={'large'}
+								name='nmfc'
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										nmfc: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
+						</Form.Item>
+
+						<Form.Item name='product_markup' label='Markup'>
+							<Select
+								size={'large'}
+								name='product_markup'
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										product_markup: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
+						</Form.Item>
+
 						<Form.Item label='Quote Method'>
 							<Select
 								size={'large'}
@@ -736,6 +780,42 @@ function ImportCsvComponent() {
 									setImportLocalIndex({
 										...importLocalIndex,
 										vertical_rotation: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
+						</Form.Item>
+						<Form.Item label='Ships Own Pallet '>
+							<Select
+								size={'large'}
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										own_pallet: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
+						</Form.Item>
+						<Form.Item label='Pallet Vertical Rotation'>
+							<Select
+								size={'large'}
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										pallet_vertical_rotation: value,
 									})
 								}}>
 								{importIndexes &&
