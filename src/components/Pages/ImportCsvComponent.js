@@ -67,6 +67,7 @@ function ImportCsvComponent() {
 		drop_ship_country: '',
 		ship_alone: '',
 		vertical_rotation: '',
+		ship_multiple_package: '',
 		own_pallet: '',
 		pallet_vertical_rotation: '',
 	})
@@ -780,6 +781,24 @@ function ImportCsvComponent() {
 									setImportLocalIndex({
 										...importLocalIndex,
 										vertical_rotation: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
+						</Form.Item>
+						<Form.Item label='Ships Multiple Package'>
+							<Select
+								size={'large'}
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										ship_multiple_package: value,
 									})
 								}}>
 								{importIndexes &&
