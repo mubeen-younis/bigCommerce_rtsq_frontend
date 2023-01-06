@@ -15,6 +15,7 @@ import CanadaToUS from "./Services/CanadaToUS"
 import GroundTransit from "../../GroundTransit"
 import HazardousMaterial from "../../HazardousMaterial"
 import SaveButton from "../../SaveButton"
+import ErrorManagment from '../../ErrorManagment'
 
 const { Title } = Typography
 const initialState = {
@@ -23,6 +24,7 @@ const initialState = {
   showDeliveryEstimate: false,
   order_cut_off_time: "",
   fulfillment_offset_days: "",
+  error_managment:1,
   select_all_week_days: false,
   all_week_days_select: true,
   week_days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
@@ -497,6 +499,11 @@ function QuoteSettingsComponentWweSmall(props) {
             </div>
           </Col>
         </Row>
+
+        <ErrorManagment
+        	quoteSettingsState={quoteSettingsState}
+    			handleChange={handleStateChange}
+        />
 
         <SaveButton />
       </Form>

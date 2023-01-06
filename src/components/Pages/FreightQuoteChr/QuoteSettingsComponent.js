@@ -13,11 +13,13 @@ import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import FqChrTruckloadSettings from '../../FqChrTruckloadSettings'
 import { getServices, getAddTabSettings } from '../../../Actions/Carriers'
+import ErrorManagment from '../../ErrorManagment'
 
 const initialState = {
 	number_of_options: 1,
 	showDeliveryEstimate: false,
 	delivery_estimate_options: 1,
+	error_managment:1,
 	tl_equipment_type: 1,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
@@ -178,6 +180,11 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
+
+				<ErrorManagment
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<SaveButton />
 			</Form>

@@ -18,6 +18,7 @@ import DomesticServices from './Services/DomesticServices'
 import InternationalServices from './Services/InternationalServices'
 import TwoManDelivery from './DeliverySettings/TwoManDelivery'
 import AppointmentDelivery from './DeliverySettings/AppointmentDelivery'
+import ErrorManagment from '../../ErrorManagment'
 import PremiumFreightServices, {
 	premiumFreightServices,
 } from './Services/PremiumFreightServices'
@@ -46,6 +47,7 @@ const initialState = {
 	quoting_currency: 'USD',
 	return_rates: false,
 	carrier_services: {},
+	error_managment:1,
 }
 
 export const API_TYPE = 'sameday'
@@ -297,6 +299,11 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
+
+				<ErrorManagment
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<SaveButton />
 			</Form>

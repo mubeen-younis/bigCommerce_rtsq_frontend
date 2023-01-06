@@ -18,6 +18,7 @@ import { international_services } from './Services/InternationalServices'
 import GroundTransit from '../../../GroundTransit'
 import HazardousMaterial from '../../../HazardousMaterial'
 import SaveButton from '../../../SaveButton'
+import ErrorManagment from '../../../ErrorManagment'
 
 const { Title } = Typography
 const initialState = {
@@ -541,6 +542,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</Form.Item>
 					</Col>
 				</Row>
+				
+				<ErrorManagment
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<SaveButton />
 			</Form>

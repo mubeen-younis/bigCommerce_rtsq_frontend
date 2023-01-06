@@ -13,6 +13,7 @@ import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 import Services from './Services'
+import ErrorManagment from '../../ErrorManagment'
 
 const initialState = {
 	carrier_services: {
@@ -42,6 +43,7 @@ const initialState = {
 	number_of_transit_days: null,
 	ground_metric: null,
 	alwaysResidentialDelivery: false,
+	error_managment:1,
 	autoDetectedResidentialAddresses: false,
 	returnRates: false,
 	ground_service_for_hazardous_material: false,
@@ -348,6 +350,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</div>
 					</Col>
 				</Row>
+
+				<ErrorManagment
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<SaveButton />
 			</Form>

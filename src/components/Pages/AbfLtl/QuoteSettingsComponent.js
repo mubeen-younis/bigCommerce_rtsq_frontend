@@ -13,6 +13,7 @@ import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import HoldAtTerminal from '../../HoldAtTerminal'
+import ErrorManagment from '../../ErrorManagment'
 
 const initialState = {
 	label_as: '',
@@ -32,6 +33,7 @@ const initialState = {
 	max_weight_per_handling_unit: '',
 	hold_at_terminal: false,
 	hold_at_terminal_price: '',
+	error_managment:1,
 }
 
 function QuoteSettingsComponent(props) {
@@ -194,6 +196,11 @@ function QuoteSettingsComponent(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
+
+				<ErrorManagment
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<SaveButton />
 			</Form>

@@ -12,12 +12,14 @@ import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ErrorManagment from '../../ErrorManagment'
 
 const initialState = {
   label_as: '',
   delivery_estimate_options: 1,
   order_cut_off_time: '',
   fulfillment_offset_days: '',
+  error_managment:1,
   all_week_days_select: true,
   week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
   residentialPickup: false,
@@ -183,6 +185,11 @@ function QuoteSettingsComponent(props) {
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
         />
+
+        <ErrorManagment
+    			quoteSettingsState={quoteSettingsState}
+    			handleChange={handleStateChange}
+    		/>
 
         <SaveButton />
       </Form>
