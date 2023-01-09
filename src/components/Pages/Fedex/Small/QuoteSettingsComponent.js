@@ -25,6 +25,7 @@ const initialState = {
 	carrier_services: {},
 	international_service_description: '',
 	delivery_estimate_options: 1,
+	error_managment:1,
 	showDeliveryEstimate: false,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',

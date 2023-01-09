@@ -448,9 +448,9 @@ function ProductSettingsComponent(props) {
 		let msg = ''
 
 		for (const prd of productVariants) {
-			if (prd.weight === null || prd.weight <= 0) {
+			if (prd.weight === null || prd.weight <= 0 && ((prd.length === null || prd.length <= 0) || (prd.width === null || prd.width <= 0) || (prd.height === null || prd.height <= 0))) {
 				error = true
-				msg = 'Weight must be greater than 0.'
+				msg = 'Error! Product Weight or Dimensions are required and must be greater than 0.'
 			} else if (prd.dropship_enabled === 1 || prd.dropship_enabled) {
 				if (!prd.dropship_location) {
 					error = true
