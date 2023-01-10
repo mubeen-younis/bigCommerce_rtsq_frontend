@@ -1,11 +1,11 @@
 import React from 'react'
-import { Row, Col, Form, Typography, Input } from 'antd'
+import { Row, Col, Form, Typography, Input, Radio } from 'antd'
 
 const { Title } = Typography
 
 const WeightThreshold = ({ quoteSettingsState, handleStateChange }) => {
 	return (
-		<Row gutter={30} align='middle' className={'mb-4'}>
+		<Row gutter={30} className={'mb-4'}>
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 				<Title level={4}>Other settings</Title>
 			</Col>
@@ -18,7 +18,7 @@ const WeightThreshold = ({ quoteSettingsState, handleStateChange }) => {
 				lg={24}
 				xl={6}>
 				<label className={'text-gray'}>
-					Weight threshold for LTL Freight Quotes
+					Weight threshold (lbs)
 				</label>
 			</Col>
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
@@ -40,8 +40,22 @@ const WeightThreshold = ({ quoteSettingsState, handleStateChange }) => {
 				<div className={'text-gray'}>
 					When the total weight of the products in the shopping cart meet
 					or exceed this value, LTL freight quotes will be included in the
-					shipping options.
+					shipping options. Default weight threshold is 150 lbs.
 				</div>
+				<Form.Item className={'mb-0'}>
+					<Radio
+						checked={quoteSettingsState.suppress_parcel_rates === 1}
+						onChange={e => handleStateChange('suppress_parcel_rates', 1)}>
+						Continue to display parcel rates when the weight threshold is met.
+					</Radio>
+				</Form.Item>
+				<Form.Item className={'mb-0'}>
+					<Radio
+						checked={quoteSettingsState.suppress_parcel_rates === 2}
+						onChange={e => handleStateChange('suppress_parcel_rates', 2)}>
+						Suppress parcel rates when the weight threshold is met.
+					</Radio>
+				</Form.Item>
 			</Col>
 		</Row>
 	)

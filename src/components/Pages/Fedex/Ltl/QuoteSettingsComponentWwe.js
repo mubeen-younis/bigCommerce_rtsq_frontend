@@ -45,6 +45,8 @@ const initialState = {
   return_rates: false,
   quote_details: 1,
   weight_threshold: '150',
+  error_managment:1,
+  suppress_parcel_rates: 1,
 }
 
 function QuoteSettingsComponentWwe(props) {

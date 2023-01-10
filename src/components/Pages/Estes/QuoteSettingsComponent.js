@@ -18,6 +18,8 @@ import HoldAtTerminal from '../../HoldAtTerminal'
 
 const initialState = {
   label_as: '',
+  error_managment:1,
+  suppress_parcel_rates: 1,
   showDeliveryEstimate: false,
   delivery_estimate_options: 1,
   order_cut_off_time: '',
