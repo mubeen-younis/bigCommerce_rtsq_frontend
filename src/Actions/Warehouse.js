@@ -84,6 +84,7 @@ export const getWarehouse = (
           state: data.state ?? '',
           country: data.country ?? '',
           xpo_account_number: data.xpo_account_number ?? '',
+          odfl_account_number: data.odfl_account_number ?? '',
           nickname: data.nickname ?? '',
           zip_code: data.zip_code ?? '',
           location_type: data.type ?? '',

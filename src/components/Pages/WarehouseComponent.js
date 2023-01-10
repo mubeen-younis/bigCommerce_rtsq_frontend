@@ -65,6 +65,7 @@ function WarehouseComponent(props) {
   const [, setAction] = useState('')
   const [locationId, setLocationId] = useState(null)
   const [xpoEnabled, setXpoEnabled] = useState(false)
+  const [odflEnabled, setOdflEnabled] = useState(false)
   const dispatch = useDispatch()
   const {
     postData,
@@ -88,6 +89,9 @@ function WarehouseComponent(props) {
     installedCarriers?.map((insCar) => {
       if (insCar.slug === 'xpo-ltl' && insCar.is_enabled) {
         setXpoEnabled(true)
+      } 
+      if (insCar.slug === 'odfl-ltl' && insCar.is_enabled) {
+        setOdflEnabled(true)
       }
     })
   }, [])
@@ -642,6 +646,25 @@ function WarehouseComponent(props) {
                           name='xpo_account_number'
                           placeholder='XPO Account Number'
                           value={locationDetail?.xpo_account_number}
+                          onChange={changeValue}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+                  {odflEnabled && (
+                    <Col
+                      className='gutter-row'
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                    >
+                      <Form.Item className={'mb-2'} label='ODFL Account Number'>
+                        <Input
+                          name='odfl_account_number'
+                          placeholder='ODFL Account Number'
+                          value={locationDetail?.odfl_account_number}
                           onChange={changeValue}
                         />
                       </Form.Item>
