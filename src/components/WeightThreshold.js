@@ -1,9 +1,11 @@
 import React from 'react'
 import { Row, Col, Form, Typography, Input, Radio } from 'antd'
-
+import { useSelector, useDispatch } from "react-redux"
 const { Title } = Typography
 
 const WeightThreshold = ({ quoteSettingsState, handleStateChange }) => {
+	const { thresholdSetting } = useSelector(state => state)
+	const dispatch = useDispatch()
 	return (
 		<Row gutter={30} className={'mb-4'}>
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -44,15 +46,21 @@ const WeightThreshold = ({ quoteSettingsState, handleStateChange }) => {
 				</div>
 				<Form.Item className={'mb-0'}>
 					<Radio
-						checked={quoteSettingsState.suppress_parcel_rates === 1}
-						onChange={e => handleStateChange('suppress_parcel_rates', 1)}>
+						checked={thresholdSetting.parcel_rates === 1}
+						onChange={e => dispatch({
+							type: 'TOGGLE_THRESHOLD_SETTINGS',
+							payload:1
+							})}>
 						Continue to display parcel rates when the weight threshold is met.
 					</Radio>
 				</Form.Item>
 				<Form.Item className={'mb-0'}>
 					<Radio
-						checked={quoteSettingsState.suppress_parcel_rates === 2}
-						onChange={e => handleStateChange('suppress_parcel_rates', 2)}>
+						checked={thresholdSetting.parcel_rates === 2}
+						onChange={e => dispatch({
+							type: 'TOGGLE_THRESHOLD_SETTINGS',
+							payload:2
+							})}>
 						Suppress parcel rates when the weight threshold is met.
 					</Radio>
 				</Form.Item>

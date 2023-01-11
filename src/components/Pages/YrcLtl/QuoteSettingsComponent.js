@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { Row, Col, Form, Input, Skeleton } from 'antd'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import CutOffTime from '../../CutOffTime'
 import { postData } from '../../../Actions/Action'
 import {
@@ -21,7 +21,6 @@ const initialState = {
   fulfillment_offset_days: '',
   all_week_days_select: true,
   error_managment:1,
-  suppress_parcel_rates: 1,
   week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
   residentialPickup: false,
   alwaysResidentialDelivery: false,
@@ -40,6 +39,7 @@ function QuoteSettingsComponent(props) {
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
   const dispatch = useDispatch()
+  const { thresholdSetting } = useSelector(state => state)
 
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -98,6 +98,14 @@ function QuoteSettingsComponent(props) {
           data,
           'GET_QUOTE_SETTINGS',
           'submit_quote_settings',
+          props.token
+        )
+      )
+      dispatch(
+        postData(
+          thresholdSetting,
+          'GET_THRESHOLD_SETTINGS',
+          'submit_threshold_settings',
           props.token
         )
       )

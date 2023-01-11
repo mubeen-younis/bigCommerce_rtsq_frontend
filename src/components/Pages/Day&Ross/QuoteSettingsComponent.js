@@ -47,7 +47,6 @@ const initialState = {
 	return_rates: false,
 	carrier_services: {},
 	error_managment:1,
-	suppress_parcel_rates: 1,
 }
 
 export const API_TYPE = 'sameday'
@@ -69,7 +68,7 @@ function QuoteSettingsComponentWwe(props) {
 	const [form] = Form.useForm()
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
-	const { dayRossApiType } = useSelector(state => state)
+	const { dayRossApiType, thresholdSetting } = useSelector(state => state)
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -132,6 +131,14 @@ function QuoteSettingsComponentWwe(props) {
 
 		if (errormsg === '') {
 			props.postData(data, props.token)
+			dispatch(
+				postData(
+					thresholdSetting,
+					'GET_THRESHOLD_SETTINGS',
+					'submit_threshold_settings',
+					props.token
+				)
+			)
 		} else {
 			dispatch({
 				type: 'ALERT_MESSAGE',

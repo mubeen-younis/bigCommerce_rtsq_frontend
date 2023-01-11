@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { Row, Col, Form, Input, Skeleton } from 'antd'
 import CutOffTime from '../../../CutOffTime'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
 import {
   validateHandlingFeeMarkup,
@@ -46,7 +46,6 @@ const initialState = {
   quote_details: 1,
   weight_threshold: '150',
   error_managment:1,
-  suppress_parcel_rates: 1,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -54,6 +53,7 @@ function QuoteSettingsComponentWwe(props) {
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
   const dispatch = useDispatch()
+  const { thresholdSetting } = useSelector(state => state)
 
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -136,6 +136,14 @@ function QuoteSettingsComponentWwe(props) {
           data,
           'GET_QUOTE_SETTINGS',
           'submit_quote_settings',
+          props.token
+        )
+      )
+      dispatch(
+        postData(
+          thresholdSetting,
+          'GET_THRESHOLD_SETTINGS',
+          'submit_threshold_settings',
           props.token
         )
       )

@@ -18,7 +18,6 @@ const initialState = {
 	delivery_estimate_options: 1,
 	order_cut_off_time: '',
 	error_managment:1,
-	suppress_parcel_rates: 1,
 	fulfillment_offset_days: '',
 	all_week_days_select: true,
 	week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -40,7 +39,7 @@ function QuoteSettingsComponentWwe(props) {
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const [ratingMethod, setRatingMethod] = useState(1)
-	const { quoteSettings, installedAddons, token, carrierId, radPlans } =
+	const { quoteSettings, installedAddons, token, carrierId, radPlans, thresholdSetting } =
 		useSelector(state => state)
 
 	useEffect(() => {
@@ -99,6 +98,14 @@ function QuoteSettingsComponentWwe(props) {
 		if (errormsg === '') {
 			dispatch(
 				postData(data, 'GET_QUOTE_SETTINGS', 'submit_quote_settings', token)
+			)
+			dispatch(
+				postData(
+					thresholdSetting,
+					'GET_THRESHOLD_SETTINGS',
+					'submit_threshold_settings',
+					token
+				)
 			)
 		} else {
 			dispatch({
