@@ -66,6 +66,11 @@ function WarehouseComponent(props) {
   const [locationId, setLocationId] = useState(null)
   const [xpoEnabled, setXpoEnabled] = useState(false)
   const [odflEnabled, setOdflEnabled] = useState(false)
+  const [upsEnabled, setUpsEnabled] = useState(false)
+  const [seflEnabled, setSeflEnabled] = useState(false)
+  const [saiaEnabled, setSaiaEnabled] = useState(false)
+  const [fedexEnabled, setFedexEnabled] = useState(false)
+  const [purolatorEnabled, setPurolatorEnabled] = useState(false)
   const dispatch = useDispatch()
   const {
     postData,
@@ -92,6 +97,21 @@ function WarehouseComponent(props) {
       } 
       if (insCar.slug === 'odfl-ltl' && insCar.is_enabled) {
         setOdflEnabled(true)
+      }
+      if (insCar.slug === 'fedex-ltl' && insCar.is_enabled) {
+        setFedexEnabled(true)
+      }
+      if (insCar.slug === 'ups-ltl' && insCar.is_enabled) {
+        setUpsEnabled(true)
+      }
+      if (insCar.slug === 'saia-ltl' && insCar.is_enabled) {
+        setSaiaEnabled(true)
+      }
+      if (insCar.slug === 'southeastern-ltl' && insCar.is_enabled) {
+        setSeflEnabled(true)
+      }
+      if (insCar.slug === 'purolator-small' && insCar.is_enabled) {
+        setPurolatorEnabled(true)
       }
     })
   }, [])
@@ -665,6 +685,101 @@ function WarehouseComponent(props) {
                           name='odfl_account_number'
                           placeholder='ODFL Account Number'
                           value={locationDetail?.odfl_account_number}
+                          onChange={changeValue}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+                  {upsEnabled && (
+                    <Col
+                      className='gutter-row'
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                    >
+                      <Form.Item className={'mb-2'} label='UPS Ltl Account Number'>
+                        <Input
+                          name='ups_account_number'
+                          placeholder='UPS Ltl Account Number'
+                          value={locationDetail?.ups_account_number}
+                          onChange={changeValue}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+                  {seflEnabled && (
+                    <Col
+                      className='gutter-row'
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                    >
+                      <Form.Item className={'mb-2'} label='SouthEastern Account Number'>
+                        <Input
+                          name='sefl_account_number'
+                          placeholder='SouthEastern Account Number'
+                          value={locationDetail?.sefl_account_number}
+                          onChange={changeValue}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+                  {saiaEnabled && (
+                    <Col
+                      className='gutter-row'
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                    >
+                      <Form.Item className={'mb-2'} label='SAIA Account Number'>
+                        <Input
+                          name='saia_account_number'
+                          placeholder='SAIA Account Number'
+                          value={locationDetail?.saia_account_number}
+                          onChange={changeValue}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+                  {fedexEnabled && (
+                    <Col
+                      className='gutter-row'
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                    >
+                      <Form.Item className={'mb-2'} label='Fedex Ltl Account Number'>
+                        <Input
+                          name='fedex_account_number'
+                          placeholder='Fedex Ltl Account Number'
+                          value={locationDetail?.fedex_account_number}
+                          onChange={changeValue}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+                  {purolatorEnabled && (
+                    <Col
+                      className='gutter-row'
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                    >
+                      <Form.Item className={'mb-2'} label='Purolator Small Account Number'>
+                        <Input
+                          name='purolator_account_number'
+                          placeholder='Purolator Small Account Number'
+                          value={locationDetail?.purolator_account_number}
                           onChange={changeValue}
                         />
                       </Form.Item>
