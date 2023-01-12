@@ -18,7 +18,7 @@ const ErrorManagment = ({ quoteSettingsState, handleChange }) => {
 					<Radio
 						checked={quoteSettingsState.error_managment === 1}
 						onChange={e => handleChange('error_managment', 1)}>
-						Quote shipping using known shipping parameters, even if other items <br></br> 
+						Quote shipping using known shipping parameters, even if other items 
 						are missing shipping parameters.
 					</Radio>
 				</Form.Item>
@@ -46,7 +46,7 @@ const ErrorManagment = ({ quoteSettingsState, handleChange }) => {
 					<Radio
 						checked={quoteSettingsState.error_managment === 2}
 						onChange={e => handleChange('error_managment', 2)}>
-						Don't quote shipping if one or more items are missing the required <br></br> 
+						Don't quote shipping if one or more items are missing the required
 						shipping parameters.
 					</Radio>
 				</Form.Item>
