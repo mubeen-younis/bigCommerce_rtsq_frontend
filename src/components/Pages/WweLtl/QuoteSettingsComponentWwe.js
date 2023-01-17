@@ -13,6 +13,7 @@ import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
 
 const { Option } = Select
 const initialState = {
@@ -37,7 +38,9 @@ const initialState = {
   own_arrangement_text: '',
   insurance_category: '84-General Merchandise',
   weight_threshold: '150',
-  return_rates: false
+  return_rates: false,
+  always_quote_notify: false,
+  offer_notify_as_option: false,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -164,6 +167,11 @@ function QuoteSettingsComponentWwe(props) {
           showLiftGatePickup={true}
         />
 
+        <NotifyBeforeDelivery
+				  quoteSettingsState={quoteSettingsState}
+				  setQuoteSettingsState={setQuoteSettingsState}
+			  />
+        
         <InsideDeliverySettings
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
