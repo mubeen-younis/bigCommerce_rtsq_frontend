@@ -89,7 +89,6 @@ export const getWarehouse = (
           fedex_account_number: data.fedex_account_number ?? '',
           saia_account_number: data.saia_account_number ?? '',
           sefl_account_number: data.sefl_account_number ?? '',
-          ups_account_number: data.ups_account_number ?? '',
           nickname: data.nickname ?? '',
           zip_code: data.zip_code ?? '',
           location_type: data.type ?? '',

@@ -66,7 +66,6 @@ function WarehouseComponent(props) {
   const [locationId, setLocationId] = useState(null)
   const [xpoEnabled, setXpoEnabled] = useState(false)
   const [odflEnabled, setOdflEnabled] = useState(false)
-  const [upsEnabled, setUpsEnabled] = useState(false)
   const [seflEnabled, setSeflEnabled] = useState(false)
   const [saiaEnabled, setSaiaEnabled] = useState(false)
   const [fedexEnabled, setFedexEnabled] = useState(false)
@@ -100,9 +99,6 @@ function WarehouseComponent(props) {
       }
       if (insCar.slug === 'fedex-ltl' && insCar.is_enabled) {
         setFedexEnabled(true)
-      }
-      if (insCar.slug === 'ups-ltl' && insCar.is_enabled) {
-        setUpsEnabled(true)
       }
       if (insCar.slug === 'saia-ltl' && insCar.is_enabled) {
         setSaiaEnabled(true)
@@ -685,25 +681,6 @@ function WarehouseComponent(props) {
                           name='odfl_account_number'
                           placeholder='ODFL Account Number'
                           value={locationDetail?.odfl_account_number}
-                          onChange={changeValue}
-                        />
-                      </Form.Item>
-                    </Col>
-                  )}
-                  {upsEnabled && (
-                    <Col
-                      className='gutter-row'
-                      xs={24}
-                      sm={24}
-                      md={24}
-                      lg={24}
-                      xl={24}
-                    >
-                      <Form.Item className={'mb-2'} label='UPS Ltl Account Number'>
-                        <Input
-                          name='ups_account_number'
-                          placeholder='UPS Ltl Account Number'
-                          value={locationDetail?.ups_account_number}
                           onChange={changeValue}
                         />
                       </Form.Item>
