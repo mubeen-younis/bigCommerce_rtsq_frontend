@@ -26,7 +26,6 @@ const ErrorManagment = ({ quoteSettingsState, handleChange }) => {
 
 			<Col
 				className='gutter-row'
-				// style={{ paddingTop: '11px' }}
 				xs={24}
 				sm={24}
 				md={24}
