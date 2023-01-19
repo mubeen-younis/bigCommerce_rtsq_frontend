@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { Row, Col, Form, Input, Skeleton } from 'antd'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import CutOffTime from '../../CutOffTime'
 import { postData } from '../../../Actions/Action'
 import {
@@ -41,6 +41,7 @@ function QuoteSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
+	const { thresholdSetting } = useSelector(state => state)
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -93,6 +94,14 @@ function QuoteSettingsComponent(props) {
 					data,
 					'GET_QUOTE_SETTINGS',
 					'submit_quote_settings',
+					props.token
+				)
+			)
+			dispatch(
+				postData(
+					thresholdSetting,
+					'GET_THRESHOLD_SETTINGS',
+					'submit_threshold_settings',
 					props.token
 				)
 			)
