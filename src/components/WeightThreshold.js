@@ -46,7 +46,7 @@ const WeightThreshold = ({ quoteSettingsState, handleStateChange }) => {
 				</div>
 				<Form.Item className={'mb-0'}>
 					<Radio
-						checked={thresholdSetting.parcel_rates === 1}
+						checked={thresholdSetting?.parcel_rates === 1}
 						onChange={e => dispatch({
 							type: 'TOGGLE_THRESHOLD_SETTINGS',
 							payload:1
@@ -56,7 +56,7 @@ const WeightThreshold = ({ quoteSettingsState, handleStateChange }) => {
 				</Form.Item>
 				<Form.Item className={'mb-0'}>
 					<Radio
-						checked={thresholdSetting.parcel_rates === 2}
+						checked={thresholdSetting?.parcel_rates === 2}
 						onChange={e => dispatch({
 							type: 'TOGGLE_THRESHOLD_SETTINGS',
 							payload:2

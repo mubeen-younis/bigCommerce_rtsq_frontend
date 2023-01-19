@@ -96,7 +96,7 @@ export const getThresholdSettings = (token) => {
 				config
 			)
 			.then(({ data }) => {
-				if (data.data && data.data.parcel_rates) {
+				if (data.data) {
 					dispatch({
 						type: 'GET_THRESHOLD_SETTINGS',
 						payload: data.data,
