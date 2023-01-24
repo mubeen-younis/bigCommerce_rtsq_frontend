@@ -72,6 +72,7 @@ function WarehouseComponent(props) {
   const [saiaEnabled, setSaiaEnabled] = useState(false)
   const [fedexEnabled, setFedexEnabled] = useState(false)
   const [purolatorEnabled, setPurolatorEnabled] = useState(false)
+  const [carrIds, setCarrIds] = useState({xpo_id:'',odfl_id:'',sefl_id:'',fedex_id:'', saia_id:'',purolator_id:''})
   const dispatch = useDispatch()
   const {
     postData,
@@ -93,24 +94,35 @@ function WarehouseComponent(props) {
 
   useEffect(() => {
     installedCarriers?.map((insCar) => {
+      let ids = {}
       if (insCar.slug === 'xpo-ltl' && insCar.is_enabled) {
         setXpoEnabled(true)
+        ids['xpo_id'] = insCar.carrier_id
       } 
       if (insCar.slug === 'odfl-ltl' && insCar.is_enabled) {
         setOdflEnabled(true)
+        ids['odfl_id'] = insCar.carrier_id
       }
       if (insCar.slug === 'fedex-ltl' && insCar.is_enabled) {
         setFedexEnabled(true)
+        ids['fedex_id'] = insCar.carrier_id
       }
       if (insCar.slug === 'saia-ltl' && insCar.is_enabled) {
         setSaiaEnabled(true)
+        ids['saia_id'] = insCar.carrier_id
       }
       if (insCar.slug === 'southeastern-ltl' && insCar.is_enabled) {
         setSeflEnabled(true)
+        ids['sefl_id'] = insCar.carrier_id
       }
       if (insCar.slug === 'purolator-small' && insCar.is_enabled) {
         setPurolatorEnabled(true)
+        ids['purolator_id'] = insCar.carrier_id
       }
+      setCarrIds(prevIds => ({
+        ...prevIds,
+        ...ids,
+      }))
     })
   }, [])
 
@@ -168,6 +180,12 @@ function WarehouseComponent(props) {
       errormsg =
         'Local delivery fees only 2 digits are allowed after decimal point.'
     }
+
+    data = {
+      ...data,
+      ids: carrIds,
+    }
+
     if (error === true) {
       dispatch({
         type: 'ALERT_MESSAGE',
