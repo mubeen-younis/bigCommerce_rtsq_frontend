@@ -94,6 +94,7 @@ export const getWarehouse = (
           location_type: data.type ?? '',
           address: data.address ?? '',
           phone: data.phone ?? '',
+          origin_markup: data.origin_markup ?? '',
 
           enable_instore: additional.instore_pickup ?? false,
           instore_miles: additional.instore_pickup_data.miles ?? null,

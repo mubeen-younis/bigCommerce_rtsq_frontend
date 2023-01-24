@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button, Col, Row, Select, Checkbox, Input, Typography } from 'antd'
 import { getLocations } from '../../Actions/Warehouse'
+import { handlingFeeMarkup } from '../../Utilities/numberValidation'
 
 const { Option } = Select
 const smallCarriers = [
@@ -200,7 +201,7 @@ const Settings = ({
 					</Row>
 				)}
 				<Row gutter={16}>
-					<Col span={12}>
+					<Col span={8}>
 						<Form.Item
 							label='Freight Class'
 							rules={[
@@ -245,7 +246,7 @@ const Settings = ({
 							</Select>
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={8}>
 						<Form.Item
 							label={`Weight (${
 								store?.weight_units?.toLowerCase() ?? 'lbs'
@@ -266,6 +267,24 @@ const Settings = ({
 									validateNumber(e.target.value)
 								}}
 								min={1}
+								pattern='^[1-9]'
+								step='0.01'
+								stringMode
+							/>
+						</Form.Item>
+					</Col>
+					<Col span={8}>
+						<Form.Item label='NMFC'>
+							<Input
+								type='number'
+								id={'nmfc' + index}
+								name='nmfc'
+								placeholder='e.g 100 or 132-597'
+								value={product?.nmfc}
+								onChange={e =>
+									onChangeVariant(index, 'nmfc', e.target.value)
+								}
+								min='0'
 								pattern='^[1-9]'
 								step='0.01'
 								stringMode
@@ -325,6 +344,23 @@ const Settings = ({
 								pattern='^[1-9.0-9]'
 								step='0.01'
 								stringMode
+							/>
+						</Form.Item>
+					</Col>
+				</Row>
+				<Row gutter={16}>
+					<Col span={24}>
+						<Form.Item label='Markup' >
+							<Input
+								maxLength='7'
+								id={'product_markup' + index}
+								name='product_markup'
+								onKeyDown={handlingFeeMarkup}
+								placeholder='e.g Currency 1.00 or percentage 5%'
+								value={product?.product_markup}
+								onChange={e =>
+									onChangeVariant(index, 'product_markup', e.target.value)
+								}
 							/>
 						</Form.Item>
 					</Col>

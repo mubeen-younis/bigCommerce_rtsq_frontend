@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, Form, Typography, Checkbox, Input } from 'antd'
-
+import {handlingFeeMarkup,} from './../Utilities/numberValidation'
 const { Title } = Typography
 
 const HoldAtTerminal = ({ quoteSettingsState, handleChange }) => {
@@ -50,6 +50,7 @@ const HoldAtTerminal = ({ quoteSettingsState, handleChange }) => {
 						onChange={e =>
 							handleChange('hold_at_terminal_price', e.target.value)
 						}
+						onKeyDown={handlingFeeMarkup}
 						maxLength={7}
 						disabled={!quoteSettingsState.hold_at_terminal}
 					/>

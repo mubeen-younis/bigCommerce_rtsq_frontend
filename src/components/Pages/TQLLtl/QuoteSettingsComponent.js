@@ -11,12 +11,14 @@ import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ErrorManagment from '../../ErrorManagment'
 
 const initialState = {
 	number_of_options: 1,
 	showDeliveryEstimate: false,
 	delivery_estimate_options: 1,
 	order_cut_off_time: '',
+	error_managment:1,
 	fulfillment_offset_days: '',
 	all_week_days_select: true,
 	week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -169,6 +171,11 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
+
+				<ErrorManagment
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<SaveButton />
 			</Form>

@@ -23,6 +23,7 @@ import addKeysToList from '../Utilities/addKey'
 import Settings from './Products/Settings'
 import { isFireFox } from '../Utilities/browserName'
 import { getLocations } from './../Actions/Warehouse'
+import { validateHandlingFeeMarkup } from '../Utilities/numberValidation'
 
 const makeColumns = (sortProducts, showProductDetails) => {
 	const columns = [
@@ -447,9 +448,9 @@ function ProductSettingsComponent(props) {
 		let msg = ''
 
 		for (const prd of productVariants) {
-			if (prd.weight === null || prd.weight <= 0) {
+			if (prd.weight === null || prd.weight <= 0 && ((prd.length === null || prd.length <= 0) || (prd.width === null || prd.width <= 0) || (prd.height === null || prd.height <= 0))) {
 				error = true
-				msg = 'Weight must be greater than 0.'
+				msg = 'Error! Product Weight or Dimensions are required and must be greater than 0.'
 			} else if (prd.dropship_enabled === 1 || prd.dropship_enabled) {
 				if (!prd.dropship_location) {
 					error = true
@@ -471,6 +472,12 @@ function ProductSettingsComponent(props) {
 					error = true
 					msg = 'Shipping class is required'
 				}
+			} else if (validateHandlingFeeMarkup(
+				prd.product_markup,
+				'Product level markup'
+			) != '') {
+				error = true
+				msg = 'Invalid input! Product level markup should be like, e.g. 3.75, or a percentage, e.g. 5%, and only 2 digits are allowed after the decimal point.'
 			}
 		}
 

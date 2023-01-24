@@ -18,12 +18,14 @@ import { international_services } from './Services/InternationalServices'
 import GroundTransit from '../../../GroundTransit'
 import HazardousMaterial from '../../../HazardousMaterial'
 import SaveButton from '../../../SaveButton'
+import ErrorManagment from '../../../ErrorManagment'
 
 const { Title } = Typography
 const initialState = {
 	carrier_services: {},
 	international_service_description: '',
 	delivery_estimate_options: 1,
+	error_managment:1,
 	showDeliveryEstimate: false,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
@@ -541,6 +543,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</Form.Item>
 					</Col>
 				</Row>
+				
+				<ErrorManagment
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<SaveButton />
 			</Form>

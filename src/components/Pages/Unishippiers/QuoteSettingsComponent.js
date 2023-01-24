@@ -14,11 +14,13 @@ import InternationalServices from './Services/InternationalServices'
 import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
+import ErrorManagment from '../../ErrorManagment'
 
 const { Title } = Typography
 const initialState = {
 	carrier_services: {
 		ups_next_day_air: false,
+		error_managment:1,
 		ups_next_day_air_saver: false,
 		ups_next_day_air_early_am: false,
 		ups_2nd_day_air: false,
@@ -544,6 +546,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</div>
 					</Col>
 				</Row>
+
+				<ErrorManagment
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<SaveButton />
 			</Form>

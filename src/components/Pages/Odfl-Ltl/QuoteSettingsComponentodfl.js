@@ -15,6 +15,7 @@ import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import ErrorManagment from '../../ErrorManagment'
 
 const { Option } = Select
 const initialState = {
@@ -22,6 +23,7 @@ const initialState = {
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
 	all_week_days_select: true,
+	error_managment:1,
 	week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
 	showDeliveryEstimate: false,
 	residentialPickup: false,
@@ -222,6 +224,11 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
 				/>
+
+				<ErrorManagment
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<SaveButton />
 				

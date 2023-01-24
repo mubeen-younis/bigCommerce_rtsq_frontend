@@ -14,6 +14,7 @@ import InternationalServices from './Services/InternationalServices'
 import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
+import ErrorManagment from '../../ErrorManagment'
 
 const { Title } = Typography
 const initialState = {
@@ -38,6 +39,7 @@ const initialState = {
 		usps_first_class_package_international_service_markup: '',
 	},
 	delivery_estimate_options: 1,
+	error_managment:1,
 	order_cut_off_time: '',
 	fulfillment_offset_days: '',
 	select_all_week_days: false,
@@ -507,6 +509,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</div>
 					</Col>
 				</Row>
+
+				<ErrorManagment
+          			quoteSettingsState={quoteSettingsState}
+          			handleChange={handleStateChange}
+        		/>
 
 				<SaveButton />
 			</Form>

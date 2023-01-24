@@ -23,7 +23,7 @@ function ShippingCarriersComponent(props) {
 	const isSmall =  props.installedCarriers?.find(carr => carr.carrier_type === 2) ? true : false
 	const getInstalledCarriers = (carrier_type = 1) => {
 		return props.installedCarriers
-			.sort((carr1, carr2) => (carr1.name > carr2.name ? 1 : -1))
+			.sort((carr1, carr2) => carr1.name.localeCompare(carr2.name))
 			.map((value, key) => {
 				return (
 					carrier_type === value.carrier_type && (
