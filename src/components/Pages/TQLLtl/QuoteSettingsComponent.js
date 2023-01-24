@@ -11,6 +11,7 @@ import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
 
 const initialState = {
 	number_of_options: 1,
@@ -31,6 +32,8 @@ const initialState = {
 	standard_check: true,
 	guaranteed_check: false,
 	return_rates: false,
+	always_quote_notify: false,
+  	offer_notify_as_option: false,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -159,6 +162,11 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
+
+				<NotifyBeforeDelivery
+					quoteSettingsState={quoteSettingsState}
+				  	setQuoteSettingsState={setQuoteSettingsState}
+			  	/>
 
 				<WeightThreshold
 					quoteSettingsState={quoteSettingsState}

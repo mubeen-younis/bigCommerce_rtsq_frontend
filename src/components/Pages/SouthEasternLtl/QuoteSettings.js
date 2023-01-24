@@ -12,6 +12,7 @@ import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
 
 const initialState = {
   label_as: '',
@@ -30,6 +31,8 @@ const initialState = {
   weight_of_handling_unit: '',
   max_weight_per_handling_unit: '',
   weight_threshold: '150',
+  always_quote_notify: false,
+  offer_notify_as_option: false,
 }
 
 function QuoteSettingsComponent(props) {
@@ -173,6 +176,11 @@ function QuoteSettingsComponent(props) {
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
         />
+
+        <NotifyBeforeDelivery
+					quoteSettingsState={quoteSettingsState}
+			  	setQuoteSettingsState={setQuoteSettingsState}
+		  	/>
 
         <WeightThreshold
           quoteSettingsState={quoteSettingsState}

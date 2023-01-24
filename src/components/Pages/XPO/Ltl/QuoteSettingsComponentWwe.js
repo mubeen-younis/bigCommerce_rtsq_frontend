@@ -15,6 +15,7 @@ import HoldAtTerminal from '../../../HoldAtTerminal'
 import HandlingUnit from '../../../HandlingUnit'
 import SaveButton from '../../../SaveButton'
 import WeightThreshold from '../../../WeightThreshold'
+import NotifyBeforeDelivery from '../../../NotifyBeforeDelivery'
 
 const initialState = {
   label_as: '',
@@ -36,6 +37,8 @@ const initialState = {
   weight_of_handling_unit: '',
   max_weight_per_handling_unit: '',
   weight_threshold: '150',
+  always_quote_notify: false,
+  offer_notify_as_option: false,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -192,6 +195,11 @@ function QuoteSettingsComponentWwe(props) {
           radStatus={radStatus}
         />
         
+        <NotifyBeforeDelivery
+					quoteSettingsState={quoteSettingsState}
+			  	setQuoteSettingsState={setQuoteSettingsState}
+		  	/>
+
         <HoldAtTerminal
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}

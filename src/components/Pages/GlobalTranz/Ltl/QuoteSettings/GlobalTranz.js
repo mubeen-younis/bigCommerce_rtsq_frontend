@@ -4,6 +4,7 @@ import { LableAsLimit } from '../../../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../../CutOffTime'
 import LiftGateDelivery from '../../../../LiftGateDelivery'
+import NotifyBeforeDelivery from '../../../../NotifyBeforeDelivery'
 const { Option } = Select
 const { Title } = Typography
 
@@ -18,6 +19,8 @@ const initialSettings = {
 	always_quote_notify: false,
 	offer_notify_as_option: false,
 	offer_limited_access_delivery: false,
+	always_quote_notify: false,
+  	offer_notify_as_option: false,
 }
 
 const GlobalTranz = ({
@@ -315,6 +318,12 @@ const GlobalTranz = ({
 				setQuoteSettingsState={setQuoteSettingsState}
 				radStatus={radStatus}
 			/>
+
+			<NotifyBeforeDelivery
+				quoteSettingsState={quoteSettingsState}
+			  	setQuoteSettingsState={setQuoteSettingsState}
+		  	/>
+
 			{/*}
 			<Row gutter={30} align='middle' className={'mb-4'}>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>

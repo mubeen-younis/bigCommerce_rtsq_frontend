@@ -15,6 +15,7 @@ import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
 
 const { Option } = Select
 const initialState = {
@@ -37,6 +38,8 @@ const initialState = {
   third_party_city: null,
   third_party_state: null,
   weight_threshold: '150',
+  always_quote_notify: false,
+  offer_notify_as_option: false,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -205,6 +208,11 @@ function QuoteSettingsComponentWwe(props) {
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
         />
+
+        <NotifyBeforeDelivery
+					quoteSettingsState={quoteSettingsState}
+			  	setQuoteSettingsState={setQuoteSettingsState}
+		  	/>
 
         <WeightThreshold
           quoteSettingsState={quoteSettingsState}

@@ -12,6 +12,7 @@ import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
 
 const initialState = {
 	label_as: '',
@@ -29,6 +30,8 @@ const initialState = {
 	autoDetectedResidentialAddressesLfg: false,
 	weight_of_handling_unit: '',
 	max_weight_per_handling_unit: '',
+	always_quote_notify: false,
+  	offer_notify_as_option: false,
 }
 
 function QuoteSettingsComponent(props) {
@@ -36,6 +39,7 @@ function QuoteSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
+	const [notifyDelivery, setNotifyDelivery] = useState(true)
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -43,6 +47,12 @@ function QuoteSettingsComponent(props) {
 		}
 		// eslint-disable-next-line
 	}, [props.quoteSettings])
+
+	useEffect(() => {
+		if (props.carr === 'daylight-ltl') {
+			setNotifyDelivery(false)
+		}
+	  }, [setNotifyDelivery])
 
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
@@ -181,7 +191,14 @@ function QuoteSettingsComponent(props) {
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
-					/>
+				/>
+				{notifyDelivery && (
+					<NotifyBeforeDelivery
+						quoteSettingsState={quoteSettingsState}
+				  		setQuoteSettingsState={setQuoteSettingsState}
+			  		/>
+				)}
+				
 					
 				<WeightThreshold
 					quoteSettingsState={quoteSettingsState}

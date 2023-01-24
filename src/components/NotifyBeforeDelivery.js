@@ -30,7 +30,7 @@ const NotifyBeforeDelivery = ({ quoteSettingsState, setQuoteSettingsState }) => 
 
 				<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 					<label className={'text-gray'}>
-						Offer notify before delivery as an option.
+						Offer notify before delivery as an option
 					</label>
 				</Col>
 				<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>

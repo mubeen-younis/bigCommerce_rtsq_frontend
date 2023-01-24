@@ -4,6 +4,7 @@ import { Select, Row, Col, Form, Input, Skeleton } from 'antd'
 import { connect, useDispatch } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
+import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
 import {
 	validateHandlingFeeMarkup,
 	blockInvalidChar,
@@ -36,6 +37,8 @@ const initialState = {
 	third_party_country: 'US',
 	third_party_city: null,
 	third_party_state: null,
+	always_quote_notify: false,
+  	offer_notify_as_option: false,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -212,6 +215,11 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
+
+				<NotifyBeforeDelivery
+					quoteSettingsState={quoteSettingsState}
+				  	setQuoteSettingsState={setQuoteSettingsState}
+			  	/>
 				
 				<WeightThreshold
 					quoteSettingsState={quoteSettingsState}
