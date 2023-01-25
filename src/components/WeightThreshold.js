@@ -40,9 +40,8 @@ const WeightThreshold = ({ quoteSettingsState, handleStateChange }) => {
 				</Form.Item>
 
 				<div className={'text-gray'}>
-					When the total weight of the products in the shopping cart meet
-					or exceed this value, LTL freight quotes will be included in the
-					shipping options. Default weight threshold is 150 lbs.
+					When the total weight of the products in the shopping cart in the shipment exceed this value,
+				 	LTL freight quotes will be included in the shipping options. Default weight threshold is 150 lbs.
 				</div>
 				<Form.Item className={'mb-0'}>
 					<Radio
