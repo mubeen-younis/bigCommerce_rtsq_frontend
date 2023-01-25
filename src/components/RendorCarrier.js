@@ -4,8 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import TabsLayout from '../tabs_layout/tabs'
 import { getConnectionSettings } from '../Actions/Connection'
-import { getQuoteSettings } from '../Actions/Settings'
-// import { getInstalledCarrierPlanInfo } from '../Actions/Carriers';
+import { getQuoteSettings, getThresholdSettings } from '../Actions/Settings'
 import { getInsuraceStatus } from '../Actions/ProductSettings'
 
 function RendorCarrier(props) {
@@ -29,8 +28,9 @@ function RendorCarrier(props) {
 			getInsuraceStatus(token, carrier_id)
 			dispatch({ type: 'GET_SERVICES', payload: null })
 			dispatch({ type: 'GET_ADD_TAB_SETTING', payload: null })
+			dispatch(getThresholdSettings(token))
 		}
-		// eslint-disable-next-line
+
 	}, [
 		carrierId,
 		carrier_id,

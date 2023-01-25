@@ -53,14 +53,16 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 					}
 				}
 
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						alertMessage: data.message,
-						showAlertMessage: true,
-						alertMessageType: data.error ? 'error' : 'success',
-					},
-				})
+				if(url !== 'submit_threshold_settings'){
+					dispatch({
+						type: 'ALERT_MESSAGE',
+						payload: {
+							alertMessage: data.message,
+							showAlertMessage: true,
+							alertMessageType: data.error ? 'error' : 'success',
+						},
+					})
+				}
 			})
 			.catch(error => {})
 	}

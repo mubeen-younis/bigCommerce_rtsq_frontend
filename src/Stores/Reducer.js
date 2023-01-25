@@ -73,6 +73,8 @@ const initialState = {
 	/* Pallet packaging */
 	palletPlans: null,
 	radSettings: null,
+	/* Weight Threshold */
+	thresholdSetting: null,
 }
 
 const Reducer = (state = initialState, action) => {
@@ -959,7 +961,17 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				radSettings: action.payload,
 			}
-
+		case types.GET_THRESHOLD_SETTINGS:
+		case types.SET_THRESHOLD_SETTINGS:
+			return {
+				...state,
+				thresholdSetting: action.payload,
+			}
+		case types.TOGGLE_THRESHOLD_SETTINGS:
+			return {
+				...state,
+				thresholdSetting: {...state.thresholdSetting, parcel_rates:action.payload},
+			}		
 		default:
 			return state
 	}

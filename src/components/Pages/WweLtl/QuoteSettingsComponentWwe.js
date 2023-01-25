@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { Select, Row, Col, Form, Input, Skeleton } from 'antd'
 
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
 import { validateHandlingFeeMarkup } from '../../../Utilities/numberValidation'
@@ -47,6 +47,7 @@ function QuoteSettingsComponentWwe(props) {
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
   const [ratingMethod, setRatingMethod] = useState(1)
+  const { thresholdSetting } = useSelector(state => state)
 
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -101,6 +102,14 @@ function QuoteSettingsComponentWwe(props) {
 
     if (errormsg === '') {
       props.postData(data, props.token)
+      dispatch(
+        postData(
+          thresholdSetting,
+          'GET_THRESHOLD_SETTINGS',
+          'submit_threshold_settings',
+          props.token
+        )
+      )
     } else {
       dispatch({
         type: 'ALERT_MESSAGE',
