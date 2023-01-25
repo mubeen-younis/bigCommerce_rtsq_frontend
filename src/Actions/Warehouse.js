@@ -77,18 +77,19 @@ export const getWarehouse = (
         const { data } = res.data
 
         let additional = JSON.parse(data.additionals)
+        let locAssociatedAccNo = JSON.parse(data?.loc_associated_acc_no)
 
         setLocationDetail({
           id: data.id ?? '',
           city: data.city ?? '',
           state: data.state ?? '',
           country: data.country ?? '',
-          xpo_account_number: data.xpo_account_number ?? '',
-          odfl_account_number: data.odfl_account_number ?? '',
-          purolator_account_number: data.purolator_account_number ?? '',
-          fedex_account_number: data.fedex_account_number ?? '',
-          saia_account_number: data.saia_account_number ?? '',
-          sefl_account_number: data.sefl_account_number ?? '',
+          xpo_account_number: locAssociatedAccNo['xpo-ltl'] ?? '',
+          odfl_account_number: locAssociatedAccNo['odfl-ltl'] ?? '',
+          purolator_account_number: locAssociatedAccNo['purolator-small'] ?? '',
+          fedex_account_number: locAssociatedAccNo['fedex-ltl'] ?? '',
+          saia_account_number: locAssociatedAccNo['saia-ltl'] ?? '',
+          sefl_account_number: locAssociatedAccNo['southeastern-ltl'] ?? '',
           nickname: data.nickname ?? '',
           zip_code: data.zip_code ?? '',
           location_type: data.type ?? '',
