@@ -63,6 +63,8 @@ function WarehouseComponent(props) {
   })
   const [locationDetail, setLocationDetail] = useState(initialState)
   const [city, setCity] = useState('')
+  const [zipCode, setZipCode] = useState('')
+  const [isZipAdded, setZipAdded] = useState(false)
   const [originRatesCity, setOriginRatesCity] = useState([])
   const [, setAction] = useState('')
   const [locationId, setLocationId] = useState(null)
@@ -93,38 +95,102 @@ function WarehouseComponent(props) {
   const [form] = Form.useForm()
 
   useEffect(() => {
+    let insCarrIds = {}
     installedCarriers?.map((insCar) => {
       let ids = {}
       if (insCar.slug === 'xpo-ltl' && insCar.is_enabled) {
-        setXpoEnabled(true)
+        if(isZipAdded){
+          setXpoEnabled(true)
+        }
+
         ids['xpo_id'] = insCar.carrier_id
+        insCarrIds[insCar.slug] = insCar.id
       } 
       if (insCar.slug === 'odfl-ltl' && insCar.is_enabled) {
-        setOdflEnabled(true)
+        if(isZipAdded){
+          setOdflEnabled(true)
+        }
+
         ids['odfl_id'] = insCar.carrier_id
+        insCarrIds[insCar.slug] = insCar.id
       }
       if (insCar.slug === 'fedex-ltl' && insCar.is_enabled) {
-        setFedexEnabled(true)
+        if(isZipAdded){
+          setFedexEnabled(true)
+        }
+        
         ids['fedex_id'] = insCar.carrier_id
+        insCarrIds[insCar.slug] = insCar.id
       }
       if (insCar.slug === 'saia-ltl' && insCar.is_enabled) {
-        setSaiaEnabled(true)
+        if(isZipAdded){
+          setSaiaEnabled(true)
+        }
+
         ids['saia_id'] = insCar.carrier_id
+        insCarrIds[insCar.slug] = insCar.id
       }
       if (insCar.slug === 'southeastern-ltl' && insCar.is_enabled) {
-        setSeflEnabled(true)
+        if(isZipAdded){
+          setSeflEnabled(true)
+        }
+
         ids['sefl_id'] = insCar.carrier_id
+        insCarrIds[insCar.slug] = insCar.id
       }
       if (insCar.slug === 'purolator-small' && insCar.is_enabled) {
-        setPurolatorEnabled(true)
+        if(isZipAdded){
+          setPurolatorEnabled(true)
+        }
+
         ids['purolator_id'] = insCar.carrier_id
+        insCarrIds[insCar.slug] = insCar.id
       }
       setCarrIds(prevIds => ({
         ...prevIds,
         ...ids,
       }))
     })
-  }, [])
+
+    getConnectionSettings(insCarrIds)
+    
+  }, [zipCode, locationDetail])
+
+  const getConnectionSettings = async(carriersIds) => {
+    try {
+      const {data} = await axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_carrs_conn_settings`, {
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
+				params: {
+					carriersIds,
+				},
+			})
+      
+      if(data.data['xpo-ltl'] == zipCode){
+        setXpoEnabled(false)
+      }
+      if(data.data['odfl-ltl'] == zipCode){
+        setOdflEnabled(false)
+      }
+      if(data.data['sefl-ltl'] == zipCode){
+        setSeflEnabled(false)
+      }
+      if(data.data['fedex-ltl'] == zipCode){
+        setFedexEnabled(false)
+      }
+      if(data.data['saia-ltl'] == zipCode){
+        setSaiaEnabled(false)
+      }
+      if(data.data['purolator-small'] == zipCode){
+        setPurolatorEnabled(false)
+      }
+
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const onFinish = (values) => {
     let data = city.length
@@ -259,6 +325,8 @@ function WarehouseComponent(props) {
   const getGoogleLocation = (zip_code) => {
     if (zip_code.length > 4) {
       getGoogleResponse(zip_code, token, setGetLocationOn)
+      setZipAdded(true)
+      setZipCode(zip_code)
     }
 
     setGetLocationOn(false)
@@ -282,6 +350,8 @@ function WarehouseComponent(props) {
   const editLocation = (data) => {
     setLocationDetail({})
     setVisibleWarehouse(true)
+    setZipAdded(true)
+    setZipCode(data.zip_code)
 
     getWarehouse(data.id, setLocationDetail, setVisibleWarehouse, props.token)
   }
