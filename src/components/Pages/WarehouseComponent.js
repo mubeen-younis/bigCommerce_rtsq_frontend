@@ -116,6 +116,8 @@ useEffect(() => {
     if (carrier) {
       if (isZipAdded) {
         carrSlug[carrier](true)
+      }else{
+        carrSlug[carrier](false)
       }
 
       const index = carrier.split("-")[0] + "_id"
