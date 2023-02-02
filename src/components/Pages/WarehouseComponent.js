@@ -32,6 +32,7 @@ import {
   deleteLocation,
 } from '../../Actions/Warehouse'
 import axios from 'axios'
+import AccountNumber from '../AccountNumber'
 
 const { Title } = Typography
 const initialState = {
@@ -93,100 +94,67 @@ function WarehouseComponent(props) {
   } = props
 
   const [form] = Form.useForm()
+  let carrSlug = {
+    "xpo-ltl": value => setXpoEnabled(value),
+    "odfl-ltl": value => setOdflEnabled(value),
+    "saia-ltl": value => setSaiaEnabled(value),
+    "fedex-ltl": value => setFedexEnabled(value),
+    "purolator-small": value => setPurolatorEnabled(value),
+    "southeastern-ltl": value => setSeflEnabled(value),
+  }
+  
+useEffect(() => {
+  let insCarrIds = {}
+  let ids = {}
+  const slugs = Object.keys(carrSlug)
 
-  useEffect(() => {
-    let insCarrIds = {}
-    installedCarriers?.map((insCar) => {
-      let ids = {}
-      if (insCar.slug === 'xpo-ltl' && insCar.is_enabled) {
-        if(isZipAdded){
-          setXpoEnabled(true)
-        }
+  installedCarriers?.map(insCar => {
+    const carrier = slugs.find(
+      slug => slug === insCar.slug && insCar.is_enabled
+    )
 
-        ids['xpo_id'] = insCar.carrier_id
-        insCarrIds[insCar.slug] = insCar.id
-      } 
-      if (insCar.slug === 'odfl-ltl' && insCar.is_enabled) {
-        if(isZipAdded){
-          setOdflEnabled(true)
-        }
-
-        ids['odfl_id'] = insCar.carrier_id
-        insCarrIds[insCar.slug] = insCar.id
+    if (carrier) {
+      if (isZipAdded) {
+        carrSlug[carrier](true)
       }
-      if (insCar.slug === 'fedex-ltl' && insCar.is_enabled) {
-        if(isZipAdded){
-          setFedexEnabled(true)
-        }
-        
-        ids['fedex_id'] = insCar.carrier_id
-        insCarrIds[insCar.slug] = insCar.id
-      }
-      if (insCar.slug === 'saia-ltl' && insCar.is_enabled) {
-        if(isZipAdded){
-          setSaiaEnabled(true)
-        }
 
-        ids['saia_id'] = insCar.carrier_id
-        insCarrIds[insCar.slug] = insCar.id
-      }
-      if (insCar.slug === 'southeastern-ltl' && insCar.is_enabled) {
-        if(isZipAdded){
-          setSeflEnabled(true)
-        }
+      const index = carrier.split("-")[0] + "_id"
 
-        ids['sefl_id'] = insCar.carrier_id
-        insCarrIds[insCar.slug] = insCar.id
-      }
-      if (insCar.slug === 'purolator-small' && insCar.is_enabled) {
-        if(isZipAdded){
-          setPurolatorEnabled(true)
-        }
+      ids[index] = insCar.carrier_id
+      insCarrIds[insCar.slug] = insCar.id
+    }
+  })
 
-        ids['purolator_id'] = insCar.carrier_id
-        insCarrIds[insCar.slug] = insCar.id
-      }
-      setCarrIds(prevIds => ({
-        ...prevIds,
-        ...ids,
-      }))
-    })
+  setCarrIds(prevIds => ({
+    ...prevIds,
+    ...ids,
+  }))
 
-    getConnectionSettings(insCarrIds)
-    
-  }, [zipCode, locationDetail])
+  getConnectionSettings(insCarrIds)
+}, [zipCode, isZipAdded])
 
-  const getConnectionSettings = async(carriersIds) => {
+  const getConnectionSettings = async carriersIds => {
     try {
-      const {data} = await axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_carrs_conn_settings`, {
-				headers: {
-					authorization: `Bearer ${token}`,
-				},
-				params: {
-					carriersIds,
-				},
-			})
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_ENITURE_API_URL}/get_carrs_conn_settings`,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+          params: {
+            carriersIds,
+          },
+        }
+      )
+
+      const slugs = Object.keys(data.data)
+
+      slugs.map(slug => {
+        if (data.data[slug] == zipCode) {
+          carrSlug[slug](false)
+        }
+      })
       
-      if(data.data['xpo-ltl'] == zipCode){
-        setXpoEnabled(false)
-      }
-      if(data.data['odfl-ltl'] == zipCode){
-        setOdflEnabled(false)
-      }
-      if(data.data['sefl-ltl'] == zipCode){
-        setSeflEnabled(false)
-      }
-      if(data.data['fedex-ltl'] == zipCode){
-        setFedexEnabled(false)
-      }
-      if(data.data['saia-ltl'] == zipCode){
-        setSaiaEnabled(false)
-      }
-      if(data.data['purolator-small'] == zipCode){
-        setPurolatorEnabled(false)
-      }
-
-
     } catch (error) {
       console.log(error)
     }
@@ -777,118 +745,52 @@ function WarehouseComponent(props) {
                   </Col>
 
                   {xpoEnabled && (
-                    <Col
-                      className='gutter-row'
-                      xs={24}
-                      sm={24}
-                      md={24}
-                      lg={24}
-                      xl={24}
-                    >
-                      <Form.Item className={'mb-2'} label='XPO Account Number'>
-                        <Input
-                          name='xpo_account_number'
-                          placeholder='XPO Account Number'
-                          value={locationDetail?.xpo_account_number}
-                          onChange={changeValue}
-                        />
-                      </Form.Item>
-                    </Col>
+                    <AccountNumber 
+                      label='XPO Account Number'
+                      name='xpo_account_number' 
+                      locationDetail={locationDetail} 
+                      changeValue={changeValue}
+                    />
                   )}
                   {odflEnabled && (
-                    <Col
-                      className='gutter-row'
-                      xs={24}
-                      sm={24}
-                      md={24}
-                      lg={24}
-                      xl={24}
-                    >
-                      <Form.Item className={'mb-2'} label='ODFL Account Number'>
-                        <Input
-                          name='odfl_account_number'
-                          placeholder='ODFL Account Number'
-                          value={locationDetail?.odfl_account_number}
-                          onChange={changeValue}
-                        />
-                      </Form.Item>
-                    </Col>
+                    <AccountNumber 
+                      label='ODFL Account Number'
+                      name='odfl_account_number' 
+                      locationDetail={locationDetail} 
+                      changeValue={changeValue}
+                    />
                   )}
                   {seflEnabled && (
-                    <Col
-                      className='gutter-row'
-                      xs={24}
-                      sm={24}
-                      md={24}
-                      lg={24}
-                      xl={24}
-                    >
-                      <Form.Item className={'mb-2'} label='SouthEastern Account Number'>
-                        <Input
-                          name='sefl_account_number'
-                          placeholder='SouthEastern Account Number'
-                          value={locationDetail?.sefl_account_number}
-                          onChange={changeValue}
-                        />
-                      </Form.Item>
-                    </Col>
+                    <AccountNumber 
+                      label='SouthEastern Account Number'
+                      name='sefl_account_number' 
+                      locationDetail={locationDetail} 
+                      changeValue={changeValue}
+                    />
                   )}
                   {saiaEnabled && (
-                    <Col
-                      className='gutter-row'
-                      xs={24}
-                      sm={24}
-                      md={24}
-                      lg={24}
-                      xl={24}
-                    >
-                      <Form.Item className={'mb-2'} label='SAIA Account Number'>
-                        <Input
-                          name='saia_account_number'
-                          placeholder='SAIA Account Number'
-                          value={locationDetail?.saia_account_number}
-                          onChange={changeValue}
-                        />
-                      </Form.Item>
-                    </Col>
+                    <AccountNumber 
+                      label='SAIA Account Number'
+                      name='saia_account_number' 
+                      locationDetail={locationDetail} 
+                      changeValue={changeValue}
+                    />
                   )}
                   {fedexEnabled && (
-                    <Col
-                      className='gutter-row'
-                      xs={24}
-                      sm={24}
-                      md={24}
-                      lg={24}
-                      xl={24}
-                    >
-                      <Form.Item className={'mb-2'} label='Fedex Ltl Account Number'>
-                        <Input
-                          name='fedex_account_number'
-                          placeholder='Fedex Ltl Account Number'
-                          value={locationDetail?.fedex_account_number}
-                          onChange={changeValue}
-                        />
-                      </Form.Item>
-                    </Col>
+                    <AccountNumber 
+                      label='Fedex Ltl Account Number'
+                      name='fedex_account_number' 
+                      locationDetail={locationDetail} 
+                      changeValue={changeValue}
+                    />
                   )}
                   {purolatorEnabled && (
-                    <Col
-                      className='gutter-row'
-                      xs={24}
-                      sm={24}
-                      md={24}
-                      lg={24}
-                      xl={24}
-                    >
-                      <Form.Item className={'mb-2'} label='Purolator Small Account Number'>
-                        <Input
-                          name='purolator_account_number'
-                          placeholder='Purolator Small Account Number'
-                          value={locationDetail?.purolator_account_number}
-                          onChange={changeValue}
-                        />
-                      </Form.Item>
-                    </Col>
+                    <AccountNumber 
+                      label='Purolator Small Account Number'
+                      name='purolator_account_number' 
+                      locationDetail={locationDetail} 
+                      changeValue={changeValue}
+                    />
                   )}
                 </Row>
                 <Row gutter={30}>
@@ -1686,6 +1588,7 @@ function WarehouseComponent(props) {
                 type='primary'
                 onClick={() => {
                   setAction('add')
+                  setZipAdded(false)
                   setLocationId(null)
                   setLocationDetail(initialState)
                   openLocationModal(1)
@@ -1718,6 +1621,7 @@ function WarehouseComponent(props) {
                 type='primary'
                 onClick={() => {
                   setAction('add')
+                  setZipAdded(false)
                   setLocationId(null)
                   setLocationDetail(initialState)
                   openLocationModal(2)
