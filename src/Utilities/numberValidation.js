@@ -284,7 +284,7 @@ export const LableAsLimit = e => {
 	let value = e.target.value
 	let condition =
 		!['Backspace', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.key) &&
-		value.length >= 50
+		value.length >= 30
 	if (condition) {
 		e.preventDefault()
 		return true

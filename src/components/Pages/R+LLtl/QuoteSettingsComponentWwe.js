@@ -18,6 +18,7 @@ import QuoteServices from './QuoteServices'
 import WeightThreshold from '../../WeightThreshold'
 import InsideDeliverySettings from '../../InsideDeliverySettings'
 import ErrorManagment from '../../ErrorManagment'
+import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
 
 const initialState = {
   label_as: '',
@@ -49,6 +50,8 @@ const initialState = {
   returnRates: false,
   quote_details: 1,
   weight_threshold: '150',
+  always_quote_notify: false,
+  offer_notify_as_option: false,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -260,6 +263,11 @@ function QuoteSettingsComponentWwe(props) {
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
         />
+
+        <NotifyBeforeDelivery
+					quoteSettingsState={quoteSettingsState}
+			  	setQuoteSettingsState={setQuoteSettingsState}
+		  	/>
 
         <InsideDeliverySettings
           quoteSettingsState={quoteSettingsState}

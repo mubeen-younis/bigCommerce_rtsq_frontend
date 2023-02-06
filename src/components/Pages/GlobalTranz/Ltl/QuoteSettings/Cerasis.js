@@ -5,6 +5,7 @@ import DeliveryEstimateOptions from '../../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../../CutOffTime'
 import LiftGateDelivery from '../../../../LiftGateDelivery'
 import { useCallback } from 'react'
+import NotifyBeforeDelivery from '../../../../NotifyBeforeDelivery'
 const { Option } = Select
 const { Title } = Typography
 
@@ -19,6 +20,8 @@ const initialSettings = {
 	threshold_label: '',
 	room_of_choice_label: '',
 	premium_label: '',
+	always_quote_notify: false,
+  	offer_notify_as_option: false,
 }
 
 const Cerasis = ({
@@ -517,6 +520,12 @@ const Cerasis = ({
 						setQuoteSettingsState={setQuoteSettingsState}
 						radStatus={radStatus}
 					/>
+
+					<NotifyBeforeDelivery
+						quoteSettingsState={quoteSettingsState}
+				  		setQuoteSettingsState={setQuoteSettingsState}
+			  		/>
+
 				</Fragment>
 			)}
 		</>
