@@ -40,6 +40,7 @@ const initialState = {
   offerLiftGateDelivery: false,
   autoDetectedResidentialAddressesLfg: false,
   offer_inside_delivery: false,
+  always_inside_delivery: false,
   hold_at_terminal: false,
   hold_at_terminal_price: '',
   weight_of_handling_unit: '',

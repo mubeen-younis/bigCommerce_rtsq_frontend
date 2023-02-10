@@ -14,18 +14,40 @@ const InsideDeliverySettings = ({ quoteSettingsState, setQuoteSettingsState }) =
 
 			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
 				<label className={'text-gray'}>
+					Always quote inside delivery
+				</label>
+			</Col>
+			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+				<Form.Item className={'mb-0'}>
+					<Checkbox
+						name='always_inside_delivery'
+						checked={quoteSettingsState.always_inside_delivery}
+						onChange={e =>
+							setQuoteSettingsState({
+								...quoteSettingsState,
+								always_inside_delivery: e.target.checked,
+								offer_inside_delivery: false,
+							})
+						}
+					/>
+				</Form.Item>
+			</Col>
+
+			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+				<label className={'text-gray'}>
                     Offer inside delivery as an option
 				</label>
 			</Col>
 			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
 				<Form.Item className={'mb-0'}>
 					<Checkbox
-						name='insideDelivery'
-						checked={quoteSettingsState.insideDelivery}
+						name='offer_inside_delivery'
+						checked={quoteSettingsState.offer_inside_delivery}
 						onChange={e =>
 							setQuoteSettingsState({
 								...quoteSettingsState,
-								insideDelivery: e.target.checked,
+								offer_inside_delivery: e.target.checked,
+								always_inside_delivery: false,
 							})
 						}
 					/>
