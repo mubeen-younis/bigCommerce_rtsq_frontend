@@ -212,6 +212,7 @@ function QuoteSettingsComponentWwe(props) {
         <NotifyBeforeDelivery
 					quoteSettingsState={quoteSettingsState}
 			  	setQuoteSettingsState={setQuoteSettingsState}
+          isUPS={true}
 		  	/>
 
         <WeightThreshold
