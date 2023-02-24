@@ -22,7 +22,6 @@ import ErrorManagment from '../../ErrorManagment'
 import PremiumFreightServices, {
 	premiumFreightServices,
 } from './Services/PremiumFreightServices'
-import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
 
 const { Title } = Typography
 
@@ -49,8 +48,6 @@ const initialState = {
 	return_rates: false,
 	carrier_services: {},
 	error_managment:1,
-	always_quote_notify: false,
-  	offer_notify_as_option: false,
 }
 
 export const API_TYPE = 'sameday'
@@ -276,11 +273,6 @@ function QuoteSettingsComponentWwe(props) {
 					radStatus={radStatus}
 					sameDayApi={dayRossApiType === API_TYPE}
 				/>
-
-				<NotifyBeforeDelivery
-				  	quoteSettingsState={quoteSettingsState}
-				  	setQuoteSettingsState={setQuoteSettingsState}
-			  	/>
 
 				{dayRossApiType === API_TYPE && (
 					<>

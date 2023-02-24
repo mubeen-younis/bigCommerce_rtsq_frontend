@@ -14,7 +14,6 @@ import WeightThreshold from '../../WeightThreshold'
 import FqChrTruckloadSettings from '../../FqChrTruckloadSettings'
 import { getServices, getAddTabSettings } from '../../../Actions/Carriers'
 import ErrorManagment from '../../ErrorManagment'
-import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
 
 const initialState = {
 	number_of_options: 1,
@@ -34,8 +33,6 @@ const initialState = {
 	offerLiftGateDelivery: false,
 	autoDetectedResidentialAddressesLfg: false,
 	handling_free_markup: '',
-	always_quote_notify: false,
-  	offer_notify_as_option: false,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -181,12 +178,6 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
-
-				<NotifyBeforeDelivery
-					quoteSettingsState={quoteSettingsState}
-				  	setQuoteSettingsState={setQuoteSettingsState}
-			  	/>
-
 
 				<WeightThreshold
 					quoteSettingsState={quoteSettingsState}
