@@ -294,12 +294,18 @@ const Settings = ({
 				</Row>
 				<Row gutter={16}>
 					<Col span={8}>
-						<Form.Item label='Length (inches)'>
+						<Form.Item 
+							label={`Length (${
+								store?.dimension_units === 'Centimeters' ? 'cm' : store?.dimension_units?.toLowerCase() ?? 'inches'
+							})`}
+						>
 							<Input
 								type='number'
 								id={'length' + index}
 								name='length'
-								placeholder='Length (inches)'
+								placeholder={`Length (${
+								store?.dimension_units === 'Centimeters' ? 'cm' : store?.dimension_units?.toLowerCase() ?? 'inches'
+								})`}
 								value={product?.length}
 								onChange={e =>
 									onChangeVariant(index, 'length', e.target.value)
@@ -312,12 +318,18 @@ const Settings = ({
 						</Form.Item>
 					</Col>
 					<Col span={8}>
-						<Form.Item label='Width (inches)'>
+						<Form.Item 
+							label={`Width (${
+								store?.dimension_units === 'Centimeters' ? 'cm' : store?.dimension_units?.toLowerCase() ?? 'inches'
+							})`}
+						>
 							<Input
 								type='number'
 								name='width'
 								id={'width' + index}
-								placeholder='Width (inches)'
+								placeholder={`Width (${
+								store?.dimension_units === 'Centimeters' ? 'cm' : store?.dimension_units?.toLowerCase() ?? 'inches'
+								})`}
 								value={product?.width}
 								onChange={e =>
 									onChangeVariant(index, 'width', e.target.value)
@@ -330,12 +342,18 @@ const Settings = ({
 						</Form.Item>
 					</Col>
 					<Col span={8}>
-						<Form.Item label='Height (inches)'>
+						<Form.Item 
+							label={`Height (${
+								store?.dimension_units === 'Centimeters' ? 'cm' : store?.dimension_units?.toLowerCase() ?? 'inches'
+							})`}
+						>
 							<Input
 								type='number'
 								id={'height' + index}
 								name='height'
-								placeholder='Height (inches)'
+								placeholder={`Height (${
+								store?.dimension_units === 'Centimeters' ? 'cm' : store?.dimension_units?.toLowerCase() ?? 'inches'
+								})`}
 								value={product?.height}
 								onChange={e =>
 									onChangeVariant(index, 'height', e.target.value)
