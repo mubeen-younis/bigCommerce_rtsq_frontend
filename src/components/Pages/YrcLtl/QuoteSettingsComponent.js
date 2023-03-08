@@ -203,7 +203,6 @@ function QuoteSettingsComponent(props) {
         <LimitedAccessSettings
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
-          isYRC = {true}
         />
 
         <WeightThreshold

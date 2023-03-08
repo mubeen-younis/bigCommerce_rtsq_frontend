@@ -5,33 +5,7 @@ import { useSelector } from 'react-redux'
 
 const { Title } = Typography
 
-const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState , isYRC}) => {
-	const { radSettings, installedCarriers } = useSelector(state => state)
-	const [radActive, setRadActive] = useState(false)
-	const [carrierActive, setCarrierActive] = useState(false)
-
-	useEffect(() => {
-		if(isYRC){
-			if(installedCarriers){
-				for (const ic of installedCarriers) {
-				  if (ic.slug === 'yrc-ltl' && ic.is_enabled) {
-					setCarrierActive(true)
-				  }
-				}
-			}
-	
-			if (radSettings) {
-				if(radSettings?.settings){
-					const settings = JSON.parse(radSettings?.settings) ?? null
-	
-					if (settings && (settings.residential_delivery_auto_detect || settings.always_quote_residential_delivery) ) {
-						setRadActive(true)
-					}
-				}
-			}	
-		}
-		
-	}, [radSettings, radActive])
+const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState}) => {
 
 	return (
 		<Row gutter={30} align='middle' className={'mb-4'}>
@@ -49,14 +23,12 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState , isY
 				<Form.Item className='mb-0'>
 					<Checkbox
 						name='always_limited_access_delivery'
-						disabled={ radActive && carrierActive}
 						checked={quoteSettingsState?.always_limited_access_delivery}
 						onChange={e =>
 							setQuoteSettingsState(prevSettings => ({
 								...prevSettings,
 								always_limited_access_delivery: e.target.checked,
 								offer_limited_access_delivery: false,
-								alwaysResidentialDelivery: false,
 							}))
 						}
 					/>
@@ -73,14 +45,12 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState , isY
 				<Form.Item className='mb-0'>
 					<Checkbox
 						name='offer_limited_access_delivery'
-						disabled={ radActive && carrierActive}
 						checked={quoteSettingsState?.offer_limited_access_delivery}
 						onChange={e =>
 							setQuoteSettingsState(prevSettings => ({
 								...prevSettings,
 								offer_limited_access_delivery: e.target.checked,
 								always_limited_access_delivery: false,
-								alwaysResidentialDelivery: false,
 							}))
 						}
 					/>
