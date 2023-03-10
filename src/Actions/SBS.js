@@ -127,3 +127,42 @@ export const changeAddonSuspendStatus = (addon_id, token, action) => {
 			});
 	};
 };
+
+export const changeBinsPackagingMode = (token, action) => {
+	return dispatch => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		});
+
+		axios
+			.post(
+				`${process.env.REACT_APP_ENITURE_API_URL}/bins-package-mode`,
+				{
+					addon_type:'SBS',
+					bin_pack_mode: action
+				},
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.then(({ data }) => {
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: data.message,
+						showAlertMessage: true,
+						alertMessageType: data.error ? 'error' : 'success',
+					},
+				});
+			})
+			.catch(err => {
+				
+			});
+	};
+};

@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { Row, Col, Checkbox, Typography, Card, Select, Skeleton, Modal } from 'antd'
+import { Row, Col, Checkbox, Typography, Card, Select, Skeleton, Modal, Form, Radio } from 'antd'
 import { connect, useDispatch } from 'react-redux'
 // import { useParams } from 'react-router-dom'
-import { getSbsPlans, changePlan, changeAddonSuspendStatus } from '../Actions/SBS'
+import { getSbsPlans, changePlan, changeAddonSuspendStatus, changeBinsPackagingMode } from '../Actions/SBS'
 import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
 
 const { Title } = Typography
@@ -80,6 +80,20 @@ function AutoDetectResidentialComponent(props) {
 			)
 		)
 	}
+
+	const binsPackagingMode = value => {
+		dispatch(
+			changeBinsPackagingMode(
+				props.token,
+				value
+			)
+		)
+		dispatch({
+			type: 'SBS_PLANS',
+			payload: {...sbsPlans, binPackMode : value},
+		});
+	}
+	
 	return (
 		<Fragment>
 			<Row gutter={24}>
@@ -293,6 +307,37 @@ function AutoDetectResidentialComponent(props) {
 												Suspend Use
 											</Checkbox>
 										</div>
+										<label>
+											<strong>Boxing Mode</strong>
+										</label>
+										<Form.Item className={'mb-0'}>
+											<Radio
+												onChange={e => {
+													binsPackagingMode(
+														e.target.value = 0
+													)
+												}}
+												checked={
+													props?.sbsPlans?.binPackMode === 0
+												}
+											>
+												Bins Utilization
+											</Radio>
+										</Form.Item>
+										<Form.Item className={'mb-0'}>
+											<Radio
+												onChange={e => {
+													binsPackagingMode(
+														e.target.value = 1
+													)
+												}}
+												checked={
+													props?.sbsPlans?.binPackMode === 1
+												}
+											>
+												Bins Numbers
+											</Radio>
+										</Form.Item>
 									</Fragment>
 								)}
 							</Fragment>
