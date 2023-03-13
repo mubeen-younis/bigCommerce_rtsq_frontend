@@ -308,7 +308,7 @@ function AutoDetectResidentialComponent(props) {
 											</Checkbox>
 										</div>
 										<label>
-											<strong>Boxing Mode</strong>
+											<strong>Optimize your packaging</strong>
 										</label>
 										<Form.Item className={'mb-0'}>
 											<Radio
@@ -321,7 +321,7 @@ function AutoDetectResidentialComponent(props) {
 													props?.sbsPlans?.binPackMode === 0
 												}
 											>
-												Bins Utilization
+												Space utilization in the package 
 											</Radio>
 										</Form.Item>
 										<Form.Item className={'mb-0'}>
@@ -335,7 +335,7 @@ function AutoDetectResidentialComponent(props) {
 													props?.sbsPlans?.binPackMode === 1
 												}
 											>
-												Bins Numbers
+												By number of packages
 											</Radio>
 										</Form.Item>
 									</Fragment>
