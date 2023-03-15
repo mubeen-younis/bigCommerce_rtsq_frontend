@@ -12,7 +12,7 @@ const PromoCodeNote = ({ carrierName }) => {
 	return (
 		<div className={'note-bx'}>
 			{fdoCouponCarrierInfo &&
-			fdoCouponCarrierInfo?.is_enabled &&
+			fdoCouponCarrierInfo?.is_enabled === 1 &&
 			fdoCouponInfo ? (
 				<span>
 					<strong>Congratulations! </strong>You have activated your Promo
@@ -22,6 +22,12 @@ const PromoCodeNote = ({ carrierName }) => {
 					Now you can enjoy free shipments with FreightDesk Online for one
 					year.
 				</span>
+			) : fdoCouponCarrierInfo &&
+			    fdoCouponCarrierInfo?.is_enabled === 2 &&
+			    fdoCouponInfo ? (
+					<span>
+						<strong>Note! </strong>Your Promo Code <strong>[{fdoCouponInfo?.code ?? ''}] </strong> has expired.
+					</span>
 			) : (
 				<>
 					<h3
