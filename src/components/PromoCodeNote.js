@@ -31,7 +31,7 @@ const PromoCodeNote = ({ carrierName }) => {
 						<strong>Free Offer!</strong>
 					</h3>
 					<p>
-						Process your {carrierName} shipments free for one year by
+						Process your {carrierName} shipments free for two months by
 						using promo code{' '}
 						<strong>
 							{' '}
