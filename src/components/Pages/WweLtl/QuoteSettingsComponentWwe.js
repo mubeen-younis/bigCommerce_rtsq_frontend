@@ -14,6 +14,7 @@ import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import ErrorManagment from '../../ErrorManagment'
+import RadPickup from '../../RadPickup'
 
 const { Option } = Select
 const initialState = {
@@ -167,6 +168,12 @@ function QuoteSettingsComponentWwe(props) {
           setQuoteSettingsState={setQuoteSettingsState}
           handleChange={handleStateChange}
         />
+
+        <RadPickup
+				  quoteSettingsState={quoteSettingsState}
+					setQuoteSettingsState={setQuoteSettingsState}
+					radStatus={radStatus}
+				/>
 
         <LiftGateDelivery
           quoteSettingsState={quoteSettingsState}

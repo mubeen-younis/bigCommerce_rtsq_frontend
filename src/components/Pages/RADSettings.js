@@ -87,19 +87,6 @@ function ShippingGroupsComponent() {
 
         <Card>
           <Row gutter={30}>
-          <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-              <Form.Item className={"mb-0"}>
-                <Checkbox
-                  name="always_residential_pickup_delivery"
-                  checked={settings.always_residential_pickup_delivery}
-                  disabled={pickup}
-                  onChange={e => handleStateChange(e)}
-                >
-                  Always include residential pick up
-                </Checkbox>
-              </Form.Item>
-            </Col>
-
             <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item className={"mb-0"}>
                 <Checkbox
