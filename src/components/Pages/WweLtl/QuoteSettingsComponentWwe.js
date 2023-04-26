@@ -13,6 +13,7 @@ import HandlingUnit from '../../HandlingUnit'
 import RatingMethod from './RatingMethod'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
+import LimitedAccessSettings from '../../LimitedAccessSettings'
 import ErrorManagment from '../../ErrorManagment'
 
 const { Option } = Select
@@ -173,6 +174,12 @@ function QuoteSettingsComponentWwe(props) {
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
           showLiftGatePickup={true}
+        />
+
+        <LimitedAccessSettings
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+          islimitedAccessFee = {true}
         />
 
         <InsideDeliverySettings
