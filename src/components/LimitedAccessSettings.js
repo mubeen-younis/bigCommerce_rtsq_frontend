@@ -63,7 +63,7 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 					<Form.Item className={'mb-0'} name='limited_access_fee'>
 						<Input
-							maxLength='7'
+							maxLength={7}
 							onKeyDown={handlingFeeMarkup}
 							value={quoteSettingsState.limited_access_fee}
 							onChange={e =>
@@ -72,6 +72,8 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 								limited_access_fee: e.target.value,
 							}))
 							}
+							type='number'
+							required	
 							disabled={!quoteSettingsState.always_limited_access_delivery && !quoteSettingsState.offer_limited_access_delivery}
 						/>
 					</Form.Item>
