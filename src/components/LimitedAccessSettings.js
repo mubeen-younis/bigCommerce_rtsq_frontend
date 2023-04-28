@@ -73,7 +73,6 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 							}))
 							}
 							type='number'
-							required	
 							disabled={!quoteSettingsState.always_limited_access_delivery && !quoteSettingsState.offer_limited_access_delivery}
 						/>
 					</Form.Item>
