@@ -9,25 +9,13 @@ const PromoCodeNote = ({ carrierName }) => {
 	const FDO_LEARN_MORE_URL = 'https://freightdesk.online/'
 	const { fdoCouponInfo, fdoCouponCarrierInfo } = useSelector(state => state)
 
-	const isOtherCarrsAppliedPromoCode = () => {
-		let count = 0
-		const fdoCarriers = fdoCouponCarrierInfo && fdoCouponCarrierInfo['promoCarriers'] ? fdoCouponCarrierInfo['promoCarriers'] : [] 
-		
-		fdoCarriers?.map((carr) => {
-			if(carr.is_enabled === 2){
-				count++
-			}
-		})
-		
-		if(count < fdoCarriers?.length && count !== 0){
-			return true
-		}
-
-		return false
+	const isCarrPromoExpire = () => {
+		return fdoCouponCarrierInfo && fdoCouponCarrierInfo['isCarrPromoExpire'] ? fdoCouponCarrierInfo['isCarrPromoExpire'] : false 
 	}
 	
 	return (
-		<div className={isOtherCarrsAppliedPromoCode() && fdoCouponCarrierInfo?.is_enabled != 2 ? '' : 'note-bx'}>
+		<div className={isCarrPromoExpire() && fdoCouponCarrierInfo &&
+			!(fdoCouponCarrierInfo?.is_enabled === 1 || fdoCouponCarrierInfo?.is_enabled === 2) ? '' : 'note-bx'}>
 			{fdoCouponCarrierInfo &&
 			fdoCouponCarrierInfo?.is_enabled === 1 &&
 			fdoCouponInfo ? (
@@ -45,7 +33,7 @@ const PromoCodeNote = ({ carrierName }) => {
 					<span>
 						<strong>Note! </strong>Your Promo Code <strong>[{fdoCouponInfo?.code ?? ''}] </strong> has expired.
 					</span>
-			) : isOtherCarrsAppliedPromoCode() ? (null) : (
+			) : isCarrPromoExpire() ? (null) : (
 				<>
 					<h3
 						style={{
