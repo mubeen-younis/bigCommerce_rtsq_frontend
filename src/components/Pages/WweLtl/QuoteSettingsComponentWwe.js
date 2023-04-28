@@ -101,18 +101,18 @@ function QuoteSettingsComponentWwe(props) {
       'Handling fee'
     )
 
-    if (checkDigitsAfterDecimal(data?.limited_access_fee, 2)) {
+    if (data?.offer_limited_access_delivery === true || data?.always_limited_access_delivery === true) {
+      if (data?.limited_access_fee === '' || data?.limited_access_fee === undefined) {
+        errormsg =
+          'Limited access delivery is enabled you must enter limited access delivery fee.'
+      } else if (checkDigitsAfterDecimal(data?.limited_access_fee, 2)) {
         errormsg =
           'Limited access delivery fee only 2 digits are allowed after decimal point.'
-    } else if (checkValueLimit(data?.limited_access_fee, 7)) {
+      } else if (checkValueLimit(data?.limited_access_fee, 7)) {
         errormsg =
           'Limited access delivery fee only 7 digits are allowed.'
-    } else if (data?.offer_limited_access_delivery === true || data?.always_limited_access_delivery === true) {
-        if (data?.limited_access_fee === '' || data?.limited_access_fee === undefined) {
-          errormsg =
-            'Limited access delivery is enabled you must enter limited access delivery fee.'
-        }
       }
+    }
 
     if (errormsg === '') {
       props.postData(data, props.token)
