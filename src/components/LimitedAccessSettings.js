@@ -5,8 +5,8 @@ import { handlingFeeMarkup } from '../Utilities/numberValidation'
 const { Title } = Typography
 
 const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, islimitedAccessFee = false }) => {
-	return (
-		<Row gutter={30} align='middle' className={'mb-4'}>
+	return (<>
+		<Row gutter={30} align='middle' className={'mb-1'}>
             <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 				<Title level={4}>Limited access settings</Title>
 			</Col>
@@ -51,14 +51,16 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 					/>
 				</Form.Item>
 			</Col>
+		</Row>
 		{islimitedAccessFee && ( 
 			<>
-				<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6} style={{ paddingBottom: '18px' }}>
+			<Row gutter={30} className={'mb-4'}>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={6} style={{ paddingTop: '11px' }}>
 					<label className={'text-gray'}>
 						Limited access delivery fee
 					</label>
 				</Col>
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18} style={{ paddingTop: '15px' }}>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 					<Form.Item className={'mb-0'} name='limited_access_fee'>
 						<Input
 							maxLength='7'
@@ -78,9 +80,10 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 						The plugin cannot prompt for the type of facility, so enter the amount you'd like to collect regardless of the facility type.
 					</div>
 				</Col>
+			</Row>
 			</> 
 		)}
-		</Row>
+		</>
 	)
 }
 
