@@ -83,6 +83,16 @@ export const checkDigitsAfterDecimal = (value, allowed) => {
 	return !response
 }
 
+export const checkValueLimit = (value, allowed) => {
+	value = '' + value
+	if (value === undefined) {
+		return false
+	}
+	let countDigit = value.toString()?.length
+	let response = countDigit === undefined || countDigit <= allowed
+	return !response
+}
+
 export const handlingFeeMarkup = e => {
 	let allowed = [
 		9, 173, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 8, 110, 37, 39, 190, 189,
