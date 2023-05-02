@@ -14,8 +14,7 @@ const PromoCodeNote = ({ carrierName }) => {
 	}
 	
 	return (
-		<div className={isCarrPromoExpire() && fdoCouponCarrierInfo &&
-			!(fdoCouponCarrierInfo?.is_enabled === 1 || fdoCouponCarrierInfo?.is_enabled === 2) ? '' : 'note-bx'}>
+		<div className={'note-bx'}>
 			{fdoCouponCarrierInfo &&
 			fdoCouponCarrierInfo?.is_enabled === 1 &&
 			fdoCouponInfo ? (
@@ -29,11 +28,11 @@ const PromoCodeNote = ({ carrierName }) => {
 				</span>
 			) : fdoCouponCarrierInfo &&
 			    fdoCouponCarrierInfo?.is_enabled === 2 &&
-			    fdoCouponInfo ? (
+			    fdoCouponInfo  || isCarrPromoExpire() ? (
 					<span>
 						<strong>Note! </strong>Your Promo Code <strong>[{fdoCouponInfo?.code ?? ''}] </strong> has expired.
 					</span>
-			) : isCarrPromoExpire() ? (null) : (
+			)  : (
 				<>
 					<h3
 						style={{
