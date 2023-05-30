@@ -197,6 +197,7 @@ function ImportCsvComponent() {
 				)
 				setEmailImportTemplateModal(false)
 				setAfterUpload(false)
+				setHeader(false)
 			} else {
 				dispatch({
 					type: 'ALERT_MESSAGE',
@@ -397,10 +398,9 @@ function ImportCsvComponent() {
 							Use the dropdown fields to identify which columns in your
 							CSV file correspond to the fields on the top.
 						</p>
-						<Form.Item required name='productid' label='Product Id'>
+						<Form.Item required label='Product Id'>
 							<Select
 								size={'large'}
-								name='productid'
 								onChange={value => {
 									setImportLocalIndex({
 										...importLocalIndex,
@@ -416,10 +416,9 @@ function ImportCsvComponent() {
 									))}
 							</Select>
 						</Form.Item>
-						<Form.Item required name='variantid' label='Variant Id'>
+						<Form.Item required label='Variant Id'>
 							<Select
 								size={'large'}
-								name='variantid'
 								onChange={value => {
 									setImportLocalIndex({
 										...importLocalIndex,
@@ -454,10 +453,9 @@ function ImportCsvComponent() {
 									))}
 							</Select>
 						</Form.Item>
-						<Form.Item name='productsku' label='Product SKU'>
+						<Form.Item label='Product SKU'>
 							<Select
 								size={'large'}
-								name='productsku'
 								onChange={value => {
 									setImportLocalIndex({
 										...importLocalIndex,
@@ -473,10 +471,9 @@ function ImportCsvComponent() {
 									))}
 							</Select>
 						</Form.Item>
-						<Form.Item name='weight' label='Weight'>
+						<Form.Item label='Weight'>
 							<Select
 								size={'large'}
-								name='weight'
 								onChange={value => {
 									setImportLocalIndex({
 										...importLocalIndex,
@@ -492,10 +489,9 @@ function ImportCsvComponent() {
 									))}
 							</Select>
 						</Form.Item>
-						<Form.Item name='length' label='Length'>
+						<Form.Item label='Length'>
 							<Select
 								size={'large'}
-								name='length'
 								onChange={value => {
 									setImportLocalIndex({
 										...importLocalIndex,
@@ -511,10 +507,9 @@ function ImportCsvComponent() {
 									))}
 							</Select>
 						</Form.Item>
-						<Form.Item name='width' label='Width'>
+						<Form.Item label='Width'>
 							<Select
 								size={'large'}
-								name='width'
 								onChange={value => {
 									setImportLocalIndex({
 										...importLocalIndex,
@@ -531,10 +526,9 @@ function ImportCsvComponent() {
 							</Select>
 						</Form.Item>
 
-						<Form.Item name='height' label='Height'>
+						<Form.Item label='Height'>
 							<Select
 								size={'large'}
-								name='height'
 								onChange={value => {
 									setImportLocalIndex({
 										...importLocalIndex,
@@ -551,10 +545,9 @@ function ImportCsvComponent() {
 							</Select>
 						</Form.Item>
 
-						<Form.Item name='nmfc' label='NMFC'>
+						<Form.Item label='NMFC'>
 							<Select
 								size={'large'}
-								name='nmfc'
 								onChange={value => {
 									setImportLocalIndex({
 										...importLocalIndex,
@@ -571,10 +564,9 @@ function ImportCsvComponent() {
 							</Select>
 						</Form.Item>
 
-						<Form.Item name='product_markup' label='Markup'>
+						<Form.Item label='Markup'>
 							<Select
 								size={'large'}
-								name='product_markup'
 								onChange={value => {
 									setImportLocalIndex({
 										...importLocalIndex,
