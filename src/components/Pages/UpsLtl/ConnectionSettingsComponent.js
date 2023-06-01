@@ -27,6 +27,7 @@ function ConnectionSettingsComponent(props) {
 	};
 
 	const onFinish = values => {
+		values = { ... props.connectionSettings, ...values, api_type: UpsLtlApiType}
 		values.testType = connectionState.testType;
 		values.installed_carrier_id = props.carrierId;
 		values.carrierId = props.carrierId;
@@ -77,14 +78,6 @@ function ConnectionSettingsComponent(props) {
 					/>
 				</Form.Item>
 
-				<Form.Item
-					label='Account Number'
-					name='account_number'
-					rules={[{ required: UpsLtlApiType == 'legacy_api' ?? false, message: 'Account Number' }]}
-				>
-					<Input placeholder='Account Number' maxLength={16}/>
-				</Form.Item>
-
 				{ UpsLtlApiType == 'new_api' ? (
 					<>
 					<Form.Item
@@ -102,9 +95,25 @@ function ConnectionSettingsComponent(props) {
 					>
 						<Input placeholder='Client Secret' maxLength={100}/>
 					</Form.Item>
+
+					<Form.Item
+					label='Account Number'
+					name='new_api_account_number'
+					rules={[{ required:false, message: 'Account Number' }]}
+				>
+					<Input placeholder='Account Number' maxLength={16}/>
+				</Form.Item>
 					</>
 				) : (
 					<>
+				<Form.Item
+					label='Account Number'
+					name='account_number'
+					rules={[{ required:true, message: 'Account Number' }]}
+				>
+					<Input placeholder='Account Number' />
+				</Form.Item>
+
 				<Form.Item
 					label='Username'
 					name='username'
