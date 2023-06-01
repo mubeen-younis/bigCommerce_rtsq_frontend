@@ -1,14 +1,26 @@
-import React, { Fragment, useState } from 'react';
-import { Form, Input, Button, Space, Skeleton, Radio } from 'antd';
-import { connect } from 'react-redux';
+import React, { Fragment, useState, useEffect } from 'react';
+import { Form, Input, Button, Space, Skeleton, Radio, Select } from 'antd';
+import { connect, useDispatch, useSelector } from 'react-redux';
 
 import { postData } from '../../../Actions/Action';
+import types from '../../../Stores/types';
 
 function ConnectionSettingsComponent(props) {
 	const [connectionState, setConnectionState] = useState({
 		testType: false,
 		skeleton_loading: true,
 	});
+	const dispatch = useDispatch()
+	const { connectionSettings, token, UpsLtlApiType } = useSelector(state => state)
+
+	useEffect(() => {
+		if (connectionSettings) {
+			dispatch({
+				type: types.SET_UPS_LTL_API_TYPE,
+				payload: connectionSettings?.api_type ?? 'legacy_api',
+			})
+		}
+	}, [connectionSettings, dispatch])
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type });
@@ -49,14 +61,50 @@ function ConnectionSettingsComponent(props) {
 				}}
 				onFinish={onFinish}
 			>
+				<Form.Item label='Which API Will You Connect To?' name='api_type'>
+					<Select
+						defaultValue='legacy_api'
+						options={[
+							{ label: 'Legacy API', value: 'legacy_api' },
+							{ label: 'New API', value: 'new_api' },
+						]}
+						onChange={opt =>
+							dispatch({
+								type: types.SET_UPS_LTL_API_TYPE,
+								payload: opt,
+							})
+						}
+					/>
+				</Form.Item>
+
 				<Form.Item
 					label='Account Number'
 					name='account_number'
-					rules={[{ required: true, message: 'Account Number' }]}
+					rules={[{ required: UpsLtlApiType == 'legacy_api' ?? false, message: 'Account Number' }]}
 				>
-					<Input placeholder='Account Number' />
+					<Input placeholder='Account Number' maxLength={16}/>
 				</Form.Item>
 
+				{ UpsLtlApiType == 'new_api' ? (
+					<>
+					<Form.Item
+						label='Client ID'
+						name='clientId'
+						rules={[{ required: true, message: 'Client ID' }]}
+					>
+						<Input placeholder='Client ID' maxLength={100}/>
+					</Form.Item>
+
+					<Form.Item
+						label='Client Secret'
+						name='clientSecret'
+						rules={[{ required: true, message: 'Client Secret' }]}
+					>
+						<Input placeholder='Client Secret' maxLength={100}/>
+					</Form.Item>
+					</>
+				) : (
+					<>
 				<Form.Item
 					label='Username'
 					name='username'
@@ -102,6 +150,7 @@ function ConnectionSettingsComponent(props) {
 						<Radio value={1}>Dimensions</Radio>
 					</Radio.Group>
 				</Form.Item>
+				</>)}
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
