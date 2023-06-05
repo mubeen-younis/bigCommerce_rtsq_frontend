@@ -21,27 +21,15 @@ import {
 
 const { Option } = Select
 const { Title } = Typography
-// const props = {
-//     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-//     onChange({ file, fileList }) {
-//       if (file.status !== 'uploading') {
-//           //console.log(fileListState)
-//         //console.log(file, fileList);
-//       }
-//     }
-//   };
 
 function ImportCsvComponent() {
 	const dispatch = useDispatch()
 	const { token, importIndexes, store } = useSelector(state => state)
 	const [emailTemplateModal, setEmailTemplateModal] = useState(false)
 	const [emailImportTemplateModal, setEmailImportTemplateModal] = useState(false)
-
-	// const [fileListState, setfileListState] = useState('');
 	const [fileName, setFileName] = useState(false)
 	const [afterUpload, setAfterUpload] = useState(false)
 	const [headers, setHeader] = useState(false)
-	// const [getIndexes, setGetIndexes] = useState({});
 	const [, /* selectFile */ setSelectFile] = useState('')
 
 	const [importLocalIndex, setImportLocalIndex] = useState({
@@ -65,19 +53,15 @@ function ImportCsvComponent() {
 		drop_ship_state: '',
 		drop_ship_zip: '',
 		drop_ship_country: '',
-		ship_alone: '',
-		vertical_rotation: '',
-		ship_multiple_package: '',
+		boxing_property: '',
 		own_pallet: '',
 		pallet_vertical_rotation: '',
 	})
 	const [emailAddress, setEmailAddress] = useState(store.admin_email)
 	const [importEmailAddress, setImportEmailAddress] = useState(store.admin_email)
-	// const [getHeadersRequest,setGetHeadersRequest] = useState(true);
 
 	const onFinish = values => {
 		if (fileName) {
-			//setAfterUpload(true)
 			getHeaders(fileName, setAfterUpload)
 		} else {
 			dispatch({
@@ -99,11 +83,7 @@ function ImportCsvComponent() {
 	function onChange(e) {
 		setHeader(!headers)
 	}
-	// const config = {
-	// 	headers: {
-	// 		authorization: `Bearer ${token}`,
-	// 	},
-	// };
+
 	function sendEmailTemplate() {
 		if (
 			new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(emailAddress)
@@ -140,7 +120,6 @@ function ImportCsvComponent() {
 		let extension = event.target.files[0]?.name.split('.').pop().toLowerCase()
 		if (extension === 'csv') {
 			setSelectFile({ selectFile: event.target.files[0] })
-			//setFileName(event?.target?.files[0]?.name);
 			const formData = new FormData()
 			formData.append(
 				'file',
@@ -248,8 +227,6 @@ function ImportCsvComponent() {
 				name='export_csv'
 				className='form-wrp important-csv'
 				size={'large'}
-				// onChange={handleChange}
-				//onFinish={onFinish}
 			>
 				<Row gutter={30} justify='center' className={'mb-3'}>
 					<Col
@@ -386,8 +363,6 @@ function ImportCsvComponent() {
 				name='import_csv'
 				className='form-wrp important-csv'
 				size={'large'}
-				// onChange={handleChange}
-				//onFinish={onFinish}
 			>
 				<Row gutter={30} justify='center' className={'mb-3'}>
 					<Col span={12}>
@@ -748,49 +723,13 @@ function ImportCsvComponent() {
 							</Select>
 						</Form.Item>
 
-						<Form.Item label='Ships Alone'>
+						<Form.Item label='Boxing Properties'>
 							<Select
 								size={'large'}
 								onChange={value => {
 									setImportLocalIndex({
 										...importLocalIndex,
-										ship_alone: value,
-									})
-								}}>
-								{importIndexes &&
-									importIndexes.map(value => (
-										<Option value={value} key={value}>
-											{' '}
-											{`${value}`}
-										</Option>
-									))}
-							</Select>
-						</Form.Item>
-						<Form.Item label='Vertical Rotation'>
-							<Select
-								size={'large'}
-								onChange={value => {
-									setImportLocalIndex({
-										...importLocalIndex,
-										vertical_rotation: value,
-									})
-								}}>
-								{importIndexes &&
-									importIndexes.map(value => (
-										<Option value={value} key={value}>
-											{' '}
-											{`${value}`}
-										</Option>
-									))}
-							</Select>
-						</Form.Item>
-						<Form.Item label='Ships Multiple Package'>
-							<Select
-								size={'large'}
-								onChange={value => {
-									setImportLocalIndex({
-										...importLocalIndex,
-										ship_multiple_package: value,
+										boxing_property: value,
 									})
 								}}>
 								{importIndexes &&
@@ -865,11 +804,9 @@ function ImportCsvComponent() {
 				visible={emailImportTemplateModal}
 				onOk={
 					() => importData()
-					//sendEmailTemplate()
 				}
 				onCancel={() => {
 					setEmailImportTemplateModal(false)
-					//setImportEmailAddress('')
 				}}
 				okText='Send'
 				cancelButtonProps={{ style: { display: 'none' } }}>
