@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import {
 	Form,
 	Input,
@@ -10,10 +10,9 @@ import {
 	Col,
 	Typography,
 } from 'antd'
-import { connect, useDispatch, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { postData } from '../../../Actions/Action'
-import types from '../../../Stores/types'
 const { Option } = Select
 const { Title } = Typography
 
@@ -23,24 +22,22 @@ function ConnectionSettingsComponent(props) {
 		skeleton_loading: true,
 	})
 	const [component /* setComponent */] = useState(1)
-	const dispatch = useDispatch()
-	const { connectionSettings, token, UpsSmallApiType } = useSelector(state => state)
-
-	useEffect(() => {
-		if (connectionSettings) {
-			dispatch({
-				type: types.SET_UPS_SMALL_API_TYPE,
-				payload: connectionSettings?.api_type ?? 'legacy_api',
-			})
-		}
-	}, [connectionSettings, dispatch])
+	// const [srevices, setsrevices] = useState({
+	// 	domestic: {
+	// 		next_day_air_discount: '',
+	// 		next_day_air_saver_discount: '',
+	// 		second_day_air_discount: '',
+	// 		three_day_select_discount: '',
+	// 		three_day_select_minimum: '',
+	// 	},
+	// 	international: {},
+	// })
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
 	}
 
 	const onFinish = values => {
-		values = { ... props.connectionSettings, ...values, api_type: UpsSmallApiType}
 		values.testType = connectionState.testType
 		values.installed_carrier_id = props.carrierId
 		values.carrierId = props.carrierId
@@ -90,81 +87,46 @@ function ConnectionSettingsComponent(props) {
 					)}
 				</div>
 
+				{/* <Form.Item label='Source of UPS Rates' name='ups_rates_source'>
+					<Select
+						defaultValue='1'
+						onChange={value => {
+							setComponent(value)
+						}}>
+						<Option value='1'>Use my UPS account</Option>
+						<Option value='2'>Use my Shopify Shipping</Option>
+					</Select>
+				</Form.Item> */}
+
 				{+component === 1 ? (
 					<>
-						<Form.Item label='Which API Will You Connect To?' name='api_type'>
-							<Select
-								defaultValue='legacy_api'
-								options={[
-									{ label: 'Legacy API', value: 'legacy_api' },
-									{ label: 'New API', value: 'new_api' },
-								]}
-								onChange={opt =>
-									dispatch({
-										type: types.SET_UPS_SMALL_API_TYPE,
-										payload: opt,
-									})
-								}
-							/>
+						<Form.Item
+							label='Account Number'
+							name='account_number'
+							rules={[{ required: true, message: 'Account Number' }]}>
+							<Input placeholder='Account Number' />
 						</Form.Item>
 
-						{ UpsSmallApiType == 'new_api' ? (
-						<>
-							<Form.Item
-								label='Client ID'
-								name='clientId'
-								rules={[{ required: true, message: 'Client ID' }]}
-							>
-								<Input placeholder='Client ID' maxLength={100}/>
-							</Form.Item>
+						<Form.Item
+							label='Username'
+							name='username'
+							rules={[{ required: true, message: 'Username' }]}>
+							<Input placeholder='Username' />
+						</Form.Item>
 
-							<Form.Item
-								label='Client Secret'
-								name='clientSecret'
-								rules={[{ required: true, message: 'Client Secret' }]}
-							>
-								<Input placeholder='Client Secret' maxLength={100}/>
-							</Form.Item>
+						<Form.Item
+							label='Password'
+							name='password'
+							rules={[{ required: true, message: 'Password' }]}>
+							<Input type='text' placeholder='Password' />
+						</Form.Item>
 
-							<Form.Item
-								label='Account Number'
-								name='new_api_account_number'
-								rules={[{ required:true, message: 'Account Number' }]}
-							>
-								<Input placeholder='Account Number' maxLength={8}/>
-							</Form.Item>
-						</>
-						) : (
-						<>
-							<Form.Item
-								label='Account Number'
-								name='account_number'
-								rules={[{ required: true, message: 'Account Number' }]}>
-								<Input placeholder='Account Number' />
-							</Form.Item>
-
-							<Form.Item
-								label='Username'
-								name='username'
-								rules={[{ required: true, message: 'Username' }]}>
-								<Input placeholder='Username' />
-							</Form.Item>
-
-							<Form.Item
-								label='Password'
-								name='password'
-								rules={[{ required: true, message: 'Password' }]}>
-								<Input type='text' placeholder='Password' />
-							</Form.Item>
-
-							<Form.Item
-								label='API Access Key '
-								name='ups_api_access_key'
-								rules={[{ required: true, message: 'API Access Key' }]}>
-								<Input placeholder='API Access Key' />
-							</Form.Item>
-						</>
-						)}
+						<Form.Item
+							label='API Access Key '
+							name='ups_api_access_key'
+							rules={[{ required: true, message: 'API Access Key' }]}>
+							<Input placeholder='API Access Key' />
+						</Form.Item>
 					</>
 				) : (
 					<>

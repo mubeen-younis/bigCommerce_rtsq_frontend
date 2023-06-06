@@ -71,7 +71,6 @@ const initialState = {
 	},
 	dayRossApiType: 'general_freight',
 	UpsLtlApiType: 'legacy_api',
-	UpsSmallApiType: 'legacy_api',
 	/* Pallet packaging */
 	palletPlans: null,
 	radSettings: null,
@@ -961,12 +960,6 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				UpsLtlApiType: action.payload,
-			}
-
-		case types.SET_UPS_SMALL_API_TYPE:
-			return {
-				...state,
-				UpsSmallApiType: action.payload,
 			}
 
 		case types.GET_RAD_SETTINGS:
