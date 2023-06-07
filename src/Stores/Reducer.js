@@ -70,8 +70,8 @@ const initialState = {
 		id: null,
 	},
 	dayRossApiType: 'general_freight',
-	UpsSmallApiType: 'legacy_api',
-	UpsLtlApiType: 'legacy_api',
+	UpsSmallApiType: 'new_api',
+	UpsLtlApiType: 'new_api',
 	/* Pallet packaging */
 	palletPlans: null,
 	radSettings: null,
