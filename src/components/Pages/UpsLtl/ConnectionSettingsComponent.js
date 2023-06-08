@@ -114,7 +114,7 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item
 					label='Account Number'
 					name='account_number'
-					rules={[{ required:true, message: 'Account Number' }]}
+					rules={[{ required:false, message: 'Account Number' }]}
 				>
 					<Input placeholder='Account Number' />
 				</Form.Item>
