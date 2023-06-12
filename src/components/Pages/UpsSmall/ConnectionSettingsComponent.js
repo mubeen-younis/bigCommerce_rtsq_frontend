@@ -28,6 +28,10 @@ function ConnectionSettingsComponent(props) {
 
 	useEffect(() => {
 		if (connectionSettings) {
+			if(!(connectionSettings?.api_type) && (connectionSettings?.carrierId)){
+				connectionSettings['api_type'] = 'legacy_api'
+			}
+
 			dispatch({
 				type: types.SET_UPS_SMALL_API_TYPE,
 				payload: connectionSettings?.api_type ?? 'new_api',
@@ -94,7 +98,7 @@ function ConnectionSettingsComponent(props) {
 					<>
 						<Form.Item label='Which API Will You Connect To?' name='api_type'>
 							<Select
-								defaultValue='new_api'
+								defaultValue={!connectionSettings?.api_type && connectionSettings?.carrierId ? 'legacy_api' : 'new_api'}
 								options={[
 									{ label: 'Legacy API', value: 'legacy_api' },
 									{ label: 'New API', value: 'new_api' },
