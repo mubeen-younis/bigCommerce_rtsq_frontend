@@ -104,15 +104,7 @@ export const importProducts = (email, token) => {
 				},
 			})
 			.then(({ data }) => {
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						alertMessage: data.message,
-						showAlertMessage: true,
-						alertMessageType: data.error ? 'error' : 'success',
-					},
-				})
-				if (!data?.error && data?.data.length > 0) {
+				if (!data?.error && data?.data?.length > 0) {
 					dispatch({
 						type: 'GET_ALL_PRODUCTS',
 						payload: data.data,
