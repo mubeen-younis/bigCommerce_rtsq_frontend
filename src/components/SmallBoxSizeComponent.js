@@ -308,9 +308,9 @@ function AutoDetectResidentialComponent(props) {
 											</Checkbox>
 										</div>
 										<label>
-											<strong>Optimize your packaging</strong>
+											<strong>Optimization mode</strong>
 										</label>
-										<Form.Item className={'mb-0'}>
+										<Form.Item className={'mb-1 mt-1'}>
 											<Radio
 												onChange={e => {
 													binsPackagingMode(
@@ -321,7 +321,10 @@ function AutoDetectResidentialComponent(props) {
 													props?.sbsPlans?.binPackMode === 0
 												}
 											>
-												Space utilization in the package 
+												Maximize space utilization
+												<div className={'text-gray'}>
+													Will utilize maximum space from the box during packaging.
+        										</div> 
 											</Radio>
 										</Form.Item>
 										<Form.Item className={'mb-0'}>
@@ -335,7 +338,10 @@ function AutoDetectResidentialComponent(props) {
 													props?.sbsPlans?.binPackMode === 1
 												}
 											>
-												By number of packages
+												Minimize the number of packages.
+												<div className={'text-gray'}>
+													Minimize the number of packages made during packaging.
+        										</div>
 											</Radio>
 										</Form.Item>
 									</Fragment>
