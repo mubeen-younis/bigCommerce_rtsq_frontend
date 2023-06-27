@@ -23,7 +23,7 @@ const DomesticServices = ({
           xl={12}
         >
           <Title level={5} style={{ textAlign: 'center' }}>
-            US Domestic Services
+            Domestic Services
           </Title>
         </Col>
       </Row>

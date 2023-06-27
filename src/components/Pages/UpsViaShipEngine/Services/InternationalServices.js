@@ -5,12 +5,12 @@ import { handlingFeeMarkup } from '../../../../Utilities/numberValidation';
 const { Title } = Typography;
 
 const international_services = [
-  'UPS Ground International',
+  'UPS Worldwide Express',
   'UPS Worldwide Expedited',
   'UPS Worldwide Saver',
-  'UPS Worldwide Express',
-  'UPS Worldwide Express Plus',
   'UPS Standard International',
+  'UPS Ground International',
+  'UPS Worldwide Express Plus',
 ];
 
 const InternationalServices = ({
