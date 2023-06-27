@@ -120,42 +120,6 @@ const DomesticServices = ({
 
       <Row gutter={24} align='middle' className={'mb-2'}>
         <Col span={12}>
-          <label className={'text-gray'}>UPS 2nd Day Air A.M.</label>
-        </Col>
-        <Col span={12}>
-          <Form.Item className={'mb-0'}>
-            <Checkbox
-              name='ups_2nd_day_air_am'
-              value={true}
-              checked={quoteSettingsState?.carrier_services?.ups_2nd_day_air_am}
-              onChange={onCheck}
-            ></Checkbox>
-          </Form.Item>
-        </Col>
-        <Col span={14}>
-          <Form.Item className={'mb-0'}>
-            <Input
-              value={
-                quoteSettingsState?.carrier_services?.ups_2nd_day_air_am_markup
-              }
-              name={'ups_2nd_day_air_am_markup'}
-              onChange={onChange}
-              onKeyDown={handlingFeeMarkup}
-              maxLength='7'
-              type='text'
-            />
-          </Form.Item>
-        </Col>
-
-        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-          <label className={'text-gray'}>
-            Markup (e.g Currency 1.00 or percentage 5%)
-          </label>
-        </Col>
-      </Row>
-
-      <Row gutter={24} align='middle' className={'mb-2'}>
-        <Col span={12}>
           <label className={'text-gray'}>UPS Next Day Air Saver</label>
         </Col>
         <Col span={6}>
@@ -234,6 +198,77 @@ const DomesticServices = ({
 
       <Row gutter={24} align='middle' className={'mb-2'}>
         <Col span={12}>
+          <label className={'text-gray'}>UPS Standard </label>
+        </Col>
+        <Col span={6}>
+          <Form.Item className={'mb-0'}>
+            <Checkbox
+              name='ups_standard'
+              value={true}
+              checked={quoteSettingsState?.carrier_services?.ups_standard}
+              onChange={onCheck}
+            ></Checkbox>
+          </Form.Item>
+        </Col>
+
+        <Col span={14}>
+          <Form.Item className={'mb-0'}>
+            <Input
+              value={quoteSettingsState?.carrier_services?.ups_standard_markup}
+              name={'ups_standard_markup'}
+              onChange={onChange}
+              onKeyDown={handlingFeeMarkup}
+              maxLength='7'
+              type='text'
+            />
+          </Form.Item>
+        </Col>
+
+        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+          <label className={'text-gray'}>
+            Markup (e.g Currency 1.00 or percentage 5%)
+          </label>
+        </Col>
+      </Row>
+
+      <Row gutter={24} align='middle' className={'mb-2'}>
+        <Col span={12}>
+          <label className={'text-gray'}>UPS 2nd Day Air A.M.</label>
+        </Col>
+        <Col span={12}>
+          <Form.Item className={'mb-0'}>
+            <Checkbox
+              name='ups_2nd_day_air_am'
+              value={true}
+              checked={quoteSettingsState?.carrier_services?.ups_2nd_day_air_am}
+              onChange={onCheck}
+            ></Checkbox>
+          </Form.Item>
+        </Col>
+        <Col span={14}>
+          <Form.Item className={'mb-0'}>
+            <Input
+              value={
+                quoteSettingsState?.carrier_services?.ups_2nd_day_air_am_markup
+              }
+              name={'ups_2nd_day_air_am_markup'}
+              onChange={onChange}
+              onKeyDown={handlingFeeMarkup}
+              maxLength='7'
+              type='text'
+            />
+          </Form.Item>
+        </Col>
+
+        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+          <label className={'text-gray'}>
+            Markup (e.g Currency 1.00 or percentage 5%)
+          </label>
+        </Col>
+      </Row>
+
+      <Row gutter={24} align='middle' className={'mb-2'}>
+        <Col span={12}>
           <label className={'text-gray'}>UPS Next Day Air Early</label>
         </Col>
         <Col span={12}>
@@ -295,41 +330,6 @@ const DomesticServices = ({
                 quoteSettingsState?.carrier_services?.ups_3_day_select_markup
               }
               name={'ups_3_day_select_markup'}
-              onChange={onChange}
-              onKeyDown={handlingFeeMarkup}
-              maxLength='7'
-              type='text'
-            />
-          </Form.Item>
-        </Col>
-
-        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-          <label className={'text-gray'}>
-            Markup (e.g Currency 1.00 or percentage 5%)
-          </label>
-        </Col>
-      </Row>
-
-      <Row gutter={24} align='middle' className={'mb-2'}>
-        <Col span={12}>
-          <label className={'text-gray'}>UPS Standard </label>
-        </Col>
-        <Col span={6}>
-          <Form.Item className={'mb-0'}>
-            <Checkbox
-              name='ups_standard'
-              value={true}
-              checked={quoteSettingsState?.carrier_services?.ups_standard}
-              onChange={onCheck}
-            ></Checkbox>
-          </Form.Item>
-        </Col>
-
-        <Col span={14}>
-          <Form.Item className={'mb-0'}>
-            <Input
-              value={quoteSettingsState?.carrier_services?.ups_standard_markup}
-              name={'ups_standard_markup'}
               onChange={onChange}
               onKeyDown={handlingFeeMarkup}
               maxLength='7'
