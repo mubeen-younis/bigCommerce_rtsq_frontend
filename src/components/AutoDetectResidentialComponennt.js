@@ -42,9 +42,6 @@ function AutoDetectResidentialComponent(props) {
     if (props.addonSettings) {
       setAddress(props.addonSettings.unconfirmed_default);
     }
-    /*props.installedAddons.forEach(ia =>
-			ia.id === +addon_id ? setSuspend(ia.is_suspend) : null
-		);*/
 
     // eslint-disable-next-line
   }, [props.addonSettings]);
@@ -68,20 +65,6 @@ function AutoDetectResidentialComponent(props) {
     return <Skeleton active />;
   }
 
-  // let value = 'disable';
-
-  // if (
-  // 	+props?.radPlans?.current_plan?.status?.nextSubcribedPackage
-  // 		?.nextToBeChargedStatus === 1
-  // ) {
-  // 	value = props.radPlans.current_plan.status.nextSubcribedPackage.nextSubscriptionSCAC;
-  // } else if (
-  // 	+props?.radPlans?.status?.nextSubcribedPackage?.nextToBeChargedStatus === 1
-  // ) {
-  // 	value = props.radPlans.status.nextSubcribedPackage.nextSubscriptionSCAC;
-  // }
-
-  // const plan = props?.radPlans?.current_plan?.status ?? props?.radPlans?.status ?? null;
   if (
     props?.radPlans?.currentPackage?.status === null ||
     props?.radPlans?.currentPackage?.status === 3
@@ -335,8 +318,6 @@ const mapDispatchToProps = (dispatch) => {
     getRadPlans: (token) => dispatch(getRadPlans(token)),
     changePlan: (token, plan_package, SetCancelSubsriptionVisible) =>
       dispatch(changePlan(token, plan_package, SetCancelSubsriptionVisible)),
-    /*changeAddonSuspendStatus: (addon_id, token,SetCancelSubsriptionVisible ) =>
-			dispatch(changeAddonSuspendStatus(addon_id, token, SetCancelSubsriptionVisible)),*/
   };
 };
 
