@@ -108,9 +108,6 @@ const useLoadComponent = (index) => {
     <QSUpsShipEngineSmall />,
   ];
 
-  console.log('quoteSettingsList[+index]', quoteSettingsList[+index]);
-  console.log('index', index);
-
   return [connectionSettigsList[+index], quoteSettingsList[+index]];
 };
 
