@@ -20,6 +20,7 @@ const initialState = {
   return_rates: false,
   residential_delivery_auto_detect: false,
   unconfirmed_address_type: 1,
+  suppress_rad_notation: 1,
   always_residential_pickup_delivery: false,
 }
 
@@ -34,21 +35,21 @@ function ShippingGroupsComponent() {
       dispatch(getRADSettings(token))
     }
 
-    if(installedCarriers){
+    if (installedCarriers) {
       for (const ic of installedCarriers) {
-        if (ic.slug === 'ltl-quotes' && ic.is_enabled) {
+        if (ic.slug === "ltl-quotes" && ic.is_enabled) {
           setPickup(false)
         }
       }
     }
 
     if (radSettings) {
-      if(radSettings?.settings){
+      if (radSettings?.settings) {
         const newSettings = JSON.parse(radSettings?.settings) ?? {}
         setSettings(prevSettings => ({
-        ...prevSettings,
-        ...newSettings,
-      }))
+          ...prevSettings,
+          ...newSettings,
+        }))
       }
     }
   }, [dispatch, radSettings, token])
@@ -173,6 +174,37 @@ function ShippingGroupsComponent() {
                 </Radio.Group>
               </>
             )}
+          </Row>
+
+          <Row gutter={30}>
+            <Col
+              className="gutter-row mt-1"
+              xs={16}
+              sm={16}
+              md={12}
+              lg={12}
+              xl={8}
+            >
+              <label>
+                <b>Address Type Disclosure</b>
+              </label>
+            </Col>
+
+            <Radio.Group
+              className="mt-1 mb-2 float-right"
+              onChange={e =>
+                setSettings(prevSettings => ({
+                  ...prevSettings,
+                  suppress_rad_notation: +e.target.value,
+                }))
+              }
+              value={settings?.suppress_rad_notation}
+            >
+              <Space direction="vertical">
+                <Radio value={1}>Inform the shopper when ship-to address is identified as a residential address</Radio>
+                <Radio value={0}>Don't disclose the address type determination to the shopper</Radio>
+              </Space>
+            </Radio.Group>
 
             <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item style={{ textAlign: "right", marginBottom: "0" }}>
