@@ -12,6 +12,7 @@ import {
 	Select,
 	Skeleton,
 	Input,
+	Card,
 } from 'antd'
 import { blockInvalidChar } from '../Utilities/numberValidation'
 import { isFireFox } from '../Utilities/browserName'
@@ -704,6 +705,31 @@ function OrderSettingsComponent(props) {
 									</Fragment>
 								))
 							)}
+						</Row>
+						<Row gutter={24} className='mb-3 float-left'>
+							{props?.orderwidget?.fdoShipments && props?.orderwidget?.fdoShipments?.length > 0 ? (
+								<Fragment>
+									<Button
+										type='primary'
+										className={'mt-2 mb-2'}
+										block>
+										{' '}
+										Shipment Details in Freightdesk.Online
+									</Button>
+									{props?.orderwidget?.fdoShipments?.map((shipment, key) => (
+										<Col span={12} className='float-left'>
+											<Card 
+												className='mb-1' 
+												style={{ backgroundColor: 'hsl(0deg 12.87% 88.25%)', borderRadius: "10px" }} 
+												bodyStyle={{padding: "10px"}}
+											>
+												<span> <b> {props?.orderwidget?.fdoShipments?.length == 1 ? ('Shipment')  : ('Partial Shipment ' + (key + 1)) }</b> <br/> {(shipment?.line_items?.length)} items @ {(shipment?.shipment_date)} <br/> Tracking # {shipment?.tracking_number}</span>
+												
+											</Card>
+										</Col>
+									))}
+								</Fragment>
+							) : null }
 						</Row>
 					</Form>
 				)}
