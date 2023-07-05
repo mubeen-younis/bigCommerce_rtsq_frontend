@@ -141,8 +141,8 @@ function ShippingGroupsComponent() {
               <>
                 <Col
                   className="gutter-row mt-1"
-                  xs={16}
-                  sm={16}
+                  xs={14}
+                  sm={12}
                   md={12}
                   lg={12}
                   xl={8}
@@ -167,7 +167,10 @@ function ShippingGroupsComponent() {
                   }
                   value={settings.unconfirmed_address_type}
                 >
-                  <Space direction="vertical">
+                  <Space direction="vertical"
+                   style={{
+                      marginLeft: "1rem",
+                    }}>
                     <Radio value={1}>Residential</Radio>
                     <Radio value={2}>Commercial</Radio>
                   </Space>
@@ -179,8 +182,8 @@ function ShippingGroupsComponent() {
           <Row gutter={30}>
             <Col
               className="gutter-row mt-1"
-              xs={16}
-              sm={16}
+              xs={14}
+              sm={12}
               md={12}
               lg={12}
               xl={8}
@@ -189,9 +192,15 @@ function ShippingGroupsComponent() {
                 <b>Address Type Disclosure</b>
               </label>
             </Col>
-
+            <Col 
+              xs={10}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={16}
+            >
             <Radio.Group
-              className="mt-1 mb-2 float-right"
+              className="mt-1 mb-2"
               onChange={e =>
                 setSettings(prevSettings => ({
                   ...prevSettings,
@@ -205,7 +214,7 @@ function ShippingGroupsComponent() {
                 <Radio value={0}>Don't disclose the address type determination to the shopper</Radio>
               </Space>
             </Radio.Group>
-
+            </Col>
             <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item style={{ textAlign: "right", marginBottom: "0" }}>
                 <Space>
