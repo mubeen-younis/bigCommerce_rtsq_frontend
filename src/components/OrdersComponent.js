@@ -448,6 +448,14 @@ function OrderSettingsComponent(props) {
 		)
 	}
 
+	const countItems = (shipment) => {
+		let totalItems = 0
+		{shipment?.line_items.map(item => (
+			totalItems +=item.quantity
+		))}
+		return totalItems
+	}
+
 	const countBoxes = (widget, isPalletWidget = false) => {
 		let countBoxes = 0
 
@@ -717,13 +725,17 @@ function OrderSettingsComponent(props) {
 										Shipment Details in Freightdesk.Online
 									</Button>
 									{props?.orderwidget?.fdoShipments?.map((shipment, key) => (
-										<Col span={12} className='float-left'>
+										<Col span={12} className='float-left mb-1'>
 											<Card 
-												className='mb-1' 
-												style={{ backgroundColor: 'hsl(0deg 12.87% 88.25%)', borderRadius: "10px" }} 
+												className='mb-0' 
+												style={{ backgroundColor: 'hsl(0deg 12.87% 88.25%)', borderRadius: "10px", height: '100%' }} 
 												bodyStyle={{padding: "10px"}}
 											>
-												<span> <b> {props?.orderwidget?.fdoShipments?.length == 1 ? ('Shipment')  : ('Partial Shipment ' + (key + 1)) }</b> <br/> {(shipment?.line_items?.length)} items @ {(shipment?.shipment_date)} <br/> Tracking # {shipment?.tracking_number}</span>
+												<span> <b> {('Shipment #' + (key + 1)) }</b> <br/>{(countItems(shipment))} items @ {(shipment?.shipment_date)} </span> <br/> 
+												{shipment?.line_items.map(item => (
+														<>{item.quantity} X {item.product_name} <br/> </>
+													))}
+												<span> Tracking # {shipment?.tracking_number}</span>
 												
 											</Card>
 										</Col>
