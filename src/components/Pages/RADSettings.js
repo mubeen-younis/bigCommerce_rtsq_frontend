@@ -210,8 +210,8 @@ function ShippingGroupsComponent() {
               value={settings?.suppress_rad_notation}
             >
               <Space direction="vertical">
-                <Radio value={1}>Inform the shopper when ship-to address is identified as a residential address</Radio>
-                <Radio value={0}>Don't disclose the address type determination to the shopper</Radio>
+                <Radio disabled={!settings?.residential_delivery_auto_detect} value={1}>Inform the shopper when ship-to address is identified as a residential address</Radio>
+                <Radio disabled={!settings?.residential_delivery_auto_detect} value={0}>Don't disclose the address type determination to the shopper</Radio>
               </Space>
             </Radio.Group>
             </Col>
