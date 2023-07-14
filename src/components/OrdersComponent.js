@@ -735,6 +735,7 @@ function OrderSettingsComponent(props) {
 												{shipment?.line_items.map(item => (
 														<>{item.quantity} X {item.product_name} <br/> </>
 													))}
+												<span> Shipping method: {shipment?.shipping_method}</span> <br/>
 												<span> Tracking # {shipment?.tracking_number}</span>
 												
 											</Card>
