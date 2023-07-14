@@ -73,6 +73,7 @@ const initialState = {
 	UpsSmallApiType: 'legacy_api',
 	UpsLtlApiType: 'legacy_api',
 	WweSmallApiType: 'legacy_api',
+	WweLtlApiType: 'legacy_api',
 	/* Pallet packaging */
 	palletPlans: null,
 	radSettings: null,
@@ -968,6 +969,12 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				WweSmallApiType: action.payload,
+			}
+
+		case types.SET_WWE_LTL_API_TYPE:
+			return {
+				...state,
+				WweLtlApiType: action.payload,
 			}
 			
 		case types.SET_UPS_LTL_API_TYPE:
