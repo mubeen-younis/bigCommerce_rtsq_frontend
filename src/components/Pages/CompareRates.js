@@ -357,6 +357,7 @@ function ShippingGroupsComponent() {
                     <Form.Item
                       label="Origin State"
                       name="origin_state"
+                      value={locationDetail?.origin_state}
                       rules={[{ required: true, message: "Origin State" }]}
                     >
                       <Input placeholder="Origin State" value={locationDetail?.origin_state}/>
