@@ -181,15 +181,17 @@ function ShippingGroupsComponent() {
               origin_state: data?.data?.state ?? "",
               origin_country: data?.data?.country ?? "",
             }
+            form.setFieldsValue(updatedLocationDetail)
           } else {
             updatedLocationDetail = {
               destination_city: data?.data?.city[0] ?? "",
               destination_state: data?.data?.state ?? "",
               destination_country: data?.data?.country ?? "",
             }
+            form.setFieldsValue(updatedLocationDetail)
           }
 
-          form.setFieldsValue(updatedLocationDetail)
+          
           setOrigin(updatedLocationDetail)
           setOriginRatesCity(data?.data?.city)
           setLocationDetail({
