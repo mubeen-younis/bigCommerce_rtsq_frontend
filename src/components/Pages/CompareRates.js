@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback, useEffect } from "react"
+import React, { Fragment, useState, useCallback } from "react"
 import {
   Typography,
   Row,
@@ -41,12 +41,14 @@ const carrName = [
 function ShippingGroupsComponent() {
   const [locationDetail, setLocationDetail] = useState(initialState)
   const [originRatesCity, setOriginRatesCity] = useState([])
+  const [origin, setOrigin] = useState([])
   const [carriers, setCarriers] = useState([])
   const [carrSlugs, setCarrSlugs] = useState("")
   const [isResidentail, setResi] = useState(false)
   const dispatch = useDispatch()
   const { token, compareRates, installedCarriers } = useSelector(state => state)
   console.log(54, compareRates)
+  console.log(64, locationDetail)
   const [form] = Form.useForm()
   const handleStateChange = useCallback(e => {
     const { name, checked } = e.target
@@ -141,10 +143,18 @@ function ShippingGroupsComponent() {
     }
   }
 
+  const changeValue = e => {
+    setLocationDetail({
+      ...locationDetail,
+      [e.target.name]: e.target.value,
+    })
+  }
+
   const populateOriginRatesLocation = useCallback(
-    async (zip_code = "", is_origin = false) => {
+    async (zip_code = "") => {
       try {
-        const url = `${process.env.REACT_APP_ENITURE_API_URL}/get_loc_from_zip/${zip_code}`
+        const zipCode = zip_code ?? locationDetail?.origin_zip
+        const url = `${process.env.REACT_APP_ENITURE_API_URL}/get_loc_from_zip/${zipCode}`
         const config = {
           headers: {
             authorization: `Bearer ${token}`,
@@ -160,24 +170,19 @@ function ShippingGroupsComponent() {
         })
 
         const { data } = await axios.get(url, config)
-        const updatedLocationDetail = {}
         if (!data.error) {
-          if (is_origin) {
-            updatedLocationDetail = {
-              origin_city: data?.data?.city[0] ?? "",
-              origin_state: data?.data?.state ?? "",
-              origin_country: data?.data?.country ?? "",
-            }
-          } else {
-            updatedLocationDetail = {
-              destination_city: data?.data?.city[0] ?? "",
-              destination_state: data?.data?.state ?? "",
-              destination_country: data?.data?.country ?? "",
-            }
+          const updatedLocationDetail = {
+            origin_city: data?.data?.city[0] ?? "",
+            origin_state: data?.data?.state ?? "",
+            origin_country: data?.data?.country ?? "",
           }
-
           form.setFieldsValue(updatedLocationDetail)
+          setOrigin(updatedLocationDetail)
           setOriginRatesCity(data?.data?.city)
+          setLocationDetail({
+            ...locationDetail,
+            ...updatedLocationDetail,
+          })
         }
 
         dispatch({
@@ -199,7 +204,7 @@ function ShippingGroupsComponent() {
         })
       }
     },
-    [dispatch, token]
+    [dispatch, locationDetail, token]
   )
 
   //if (!compareRates) return <Skeleton active />
@@ -216,6 +221,7 @@ function ShippingGroupsComponent() {
               size="large"
               onFinish={onFinish}
               form={form}
+              initialValues={locationDetail}
             >
               <Row>
                 <Col
@@ -292,15 +298,23 @@ function ShippingGroupsComponent() {
                     >
                       <Input
                         placeholder="Origin Zip/Postal Code"
+                        value={locationDetail.origin_zip}
                         onChange={e => {
                           e.target.value.length > 4 &&
-                            populateOriginRatesLocation(e.target.value, true)
+                            populateOriginRatesLocation(e.target.value)
                         }}
                         required
                         maxLength="6"
                       />
                     </Form.Item>
-
+                    {/* <Form.Item
+                      label="Origin City"
+                      name="origin_city"
+                      rules={[{ required: true, message: "Origin City" }]}
+                    >
+                      <Input placeholder="Origin City" />
+                    </Form.Item> */}
+                    {console.log(34, locationDetail)}
                     {originRatesCity?.length > 1 ? (
                       <Form.Item name="origin_city" label="Origin City">
                         <Select
@@ -310,14 +324,16 @@ function ShippingGroupsComponent() {
                             width: "100%",
                           }}
                           defaultValue={originRatesCity[0]}
-                          // onChange={city =>
-                          //   setLocationDetail(prevState => ({
-                          //     ...prevState,
-                          //     origin_city: city,
-                          //   }))
-                          // }
+                          value={locationDetail?.origin_city}
+                          onChange={city =>
+                            setLocationDetail(prevState => ({
+                              ...prevState,
+                              origin_city: city,
+                            }))
+                          }
                         >
                           {console.log(454, originRatesCity)}
+                          {console.log(464, origin)}
                           {originRatesCity?.map(city => (
                             <Select.Option value={city} key={city}>
                               {city}
@@ -336,10 +352,24 @@ function ShippingGroupsComponent() {
                           },
                         ]}
                       >
-                        <Input placeholder="Origin City" required />
+                        <Input
+                          //name="origin_city"
+                          placeholder="Origin City"
+                          // value={origin?.origin_city}
+                          // onChange={e => changeValue(e)}
+                          required
+                        />
                       </Form.Item>
                     )}
 
+                    {/* <Form.Item
+                      label="Origin State"
+                      name="origin_state"
+                      value={origin?.origin_state}
+                      rules={[{ required: true, message: "Origin State" }]}
+                    >
+                      <Input placeholder="Origin State" value={locationDetail?.origin_state}/>
+                    </Form.Item> */}
                     <Form.Item
                       label="Origin State"
                       name="origin_state"
@@ -350,9 +380,21 @@ function ShippingGroupsComponent() {
                         },
                       ]}
                     >
-                      <Input placeholder="Origin State" required />
+                      <Input
+                        //name="origin_state"
+                        placeholder="Origin State"
+                        // value={origin?.state}
+                        // onChange={e => changeValue(e)}
+                        required
+                      />
                     </Form.Item>
-
+                    {/* <Form.Item
+                      label="Origin Country"
+                      name="origin_country"
+                      rules={[{ required: true, message: "Origin Country" }]}
+                    >
+                      <Input placeholder="Origin Country" />
+                    </Form.Item> */}
                     <Form.Item
                       label="Origin Country"
                       name="origin_country"
@@ -363,7 +405,13 @@ function ShippingGroupsComponent() {
                         },
                       ]}
                     >
-                      <Input placeholder="Origin Country" required />
+                      <Input
+                        placeholder="Origin Country"
+                        // name="origin_country"
+                        // value={origin?.country}
+                        // onChange={e => changeValue(e)}
+                        required
+                      />
                     </Form.Item>
                   </Col>
                   <Col
@@ -386,79 +434,31 @@ function ShippingGroupsComponent() {
                     >
                       <Input
                         placeholder="Destination Zip/Postal Code"
-                        onChange={e => {
-                          e.target.value.length > 4 &&
-                            populateOriginRatesLocation(e.target.value, false)
-                        }}
                         maxLength="6"
                       />
                     </Form.Item>
-
-                    {originRatesCity?.length > 1 ? (
-                      <Form.Item
-                        name="destination_city"
-                        label="Destination City"
-                      >
-                        <Select
-                          name="destination_city"
-                          placeholder="Destination City"
-                          style={{
-                            width: "100%",
-                          }}
-                          defaultValue={originRatesCity[0]}
-                          // onChange={city =>
-                          //   setLocationDetail(prevState => ({
-                          //     ...prevState,
-                          //     destination_city: city,
-                          //   }))
-                          // }
-                        >
-                          {originRatesCity?.map(city => (
-                            <Select.Option value={city} key={city}>
-                              {city}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                    ) : (
-                      <Form.Item
-                        label="Destination City"
-                        name="destination_city"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Destination City",
-                          },
-                        ]}
-                      >
-                        <Input placeholder="Destination City" required />
-                      </Form.Item>
-                    )}
-
+                    <Form.Item
+                      label="Destination City"
+                      name="destination_city"
+                      rules={[{ required: true, message: "Destination City" }]}
+                    >
+                      <Input placeholder="Destination City" />
+                    </Form.Item>
                     <Form.Item
                       label="Destination State"
                       name="destination_state"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Destination State",
-                        },
-                      ]}
+                      rules={[{ required: true, message: "Destination State" }]}
                     >
-                      <Input placeholder="Destination State" required />
+                      <Input placeholder="Destination State" />
                     </Form.Item>
-
                     <Form.Item
                       label="Destination Country"
                       name="destination_country"
                       rules={[
-                        {
-                          required: true,
-                          message: "Destination Country",
-                        },
+                        { required: true, message: "Destination Country" },
                       ]}
                     >
-                      <Input placeholder="Destination Country" required />
+                      <Input placeholder="Destination Country" />
                     </Form.Item>
                   </Col>
                   <Col
