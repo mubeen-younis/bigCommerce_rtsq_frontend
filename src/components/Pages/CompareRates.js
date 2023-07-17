@@ -19,7 +19,7 @@ import {
   checkValueLimit,
 } from "../../Utilities/numberValidation"
 import axios from "axios"
-const [form] = Form.useForm()
+
 const { Title } = Typography
 const initialState = {
   enable_instore: false,
@@ -49,6 +49,7 @@ function ShippingGroupsComponent() {
   const { token, compareRates, installedCarriers } = useSelector(state => state)
   console.log(54, compareRates)
   console.log(64, locationDetail)
+  const [form] = Form.useForm()
   const handleStateChange = useCallback(e => {
     const { name, checked } = e.target
     setCarrSlugs(name)
