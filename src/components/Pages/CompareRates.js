@@ -47,6 +47,7 @@ function ShippingGroupsComponent() {
   const dispatch = useDispatch()
   const { token, compareRates, installedCarriers } = useSelector(state => state)
   console.log(54, compareRates)
+  console.log(64, locationDetail)
   const handleStateChange = useCallback(e => {
     const { name, checked } = e.target
     setCarrSlugs(name)
@@ -307,7 +308,7 @@ function ShippingGroupsComponent() {
                       rules={[{ required: true, message: "Origin City" }]}
                     >
                       <Input placeholder="Origin City" />
-                    </Form.Item> */}
+                    </Form.Item> */}{console.log(34,locationDetail)}
                     {originRatesCity?.length > 1 ? (
                       <Form.Item name="origin_city" label="Origin City">
                         <Select
