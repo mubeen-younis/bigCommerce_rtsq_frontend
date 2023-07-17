@@ -41,6 +41,7 @@ const carrName = [
 function ShippingGroupsComponent() {
   const [locationDetail, setLocationDetail] = useState(initialState)
   const [originRatesCity, setOriginRatesCity] = useState([])
+  const [origin, setOrigin] = useState([])
   const [carriers, setCarriers] = useState([])
   const [carrSlugs, setCarrSlugs] = useState("")
   const [isResidentail, setResi] = useState(false)
@@ -174,7 +175,7 @@ function ShippingGroupsComponent() {
             origin_state: data?.data?.state ?? "",
             origin_country: data?.data?.country ?? "",
           }
-
+          setOrigin(updatedLocationDetail)
           setOriginRatesCity(data?.data?.city)
           setLocationDetail({
             ...locationDetail,
@@ -347,7 +348,7 @@ function ShippingGroupsComponent() {
                         <Input
                           name="origin_city"
                           placeholder="Origin City"
-                          value={locationDetail?.origin_city}
+                          value={origin?.origin_city}
                           onChange={e => changeValue(e)}
                           required
                         />
@@ -357,7 +358,7 @@ function ShippingGroupsComponent() {
                     <Form.Item
                       label="Origin State"
                       name="origin_state"
-                      value={locationDetail?.origin_state}
+                      value={origin?.origin_state}
                       rules={[{ required: true, message: "Origin State" }]}
                     >
                       <Input placeholder="Origin State" value={locationDetail?.origin_state}/>
@@ -375,7 +376,7 @@ function ShippingGroupsComponent() {
                       <Input
                         name="origin_state"
                         placeholder="Origin State"
-                        value={locationDetail?.state}
+                        value={origin?.state}
                         onChange={e => changeValue(e)}
                         required
                       />
@@ -400,7 +401,7 @@ function ShippingGroupsComponent() {
                       <Input
                         placeholder="Origin Country"
                         name="origin_country"
-                        value={locationDetail?.country}
+                        value={origin?.country}
                         onChange={e => changeValue(e)}
                         required
                       />
