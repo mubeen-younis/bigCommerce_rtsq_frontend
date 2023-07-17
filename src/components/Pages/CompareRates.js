@@ -24,7 +24,7 @@ const { Title } = Typography
 const initialState = {
   enable_instore: false,
   enable_ld: false,
-  origin_zip_code: [],
+  origin_zip: [],
   ld_zipcodes: [],
   default_location_id: "default",
   location_type: 0,
@@ -150,7 +150,7 @@ function ShippingGroupsComponent() {
   const populateOriginRatesLocation = useCallback(
     async (zip_code = "") => {
       try {
-        const zipCode = zip_code ?? locationDetail?.origin_zip_code
+        const zipCode = zip_code ?? locationDetail?.origin_zip
         const url = `${process.env.REACT_APP_ENITURE_API_URL}/get_loc_from_zip/${zipCode}`
         const config = {
           headers: {
@@ -292,7 +292,7 @@ function ShippingGroupsComponent() {
                     >
                       <Input
                         placeholder="Origin Zip/Postal Code"
-                        value={locationDetail.zip_code}
+                        value={locationDetail.origin_zip}
                         onChange={e => {
                           e.target.value.length > 4 &&
                             populateOriginRatesLocation(e.target.value)
@@ -373,7 +373,7 @@ function ShippingGroupsComponent() {
                       <Input
                         name="origin_state"
                         placeholder="Origin State"
-                        value={locationDetail?.origin_state}
+                        value={locationDetail?.state}
                         onChange={e => changeValue(e)}
                         required
                       />
@@ -398,7 +398,7 @@ function ShippingGroupsComponent() {
                       <Input
                         placeholder="Origin Country"
                         name="origin_country"
-                        value={locationDetail?.origin_country}
+                        value={locationDetail?.country}
                         onChange={e => changeValue(e)}
                         required
                       />
