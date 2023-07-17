@@ -19,7 +19,7 @@ import {
   checkValueLimit,
 } from "../../Utilities/numberValidation"
 import axios from "axios"
-
+const [form] = Form.useForm()
 const { Title } = Typography
 const initialState = {
   enable_instore: false,
@@ -175,6 +175,7 @@ function ShippingGroupsComponent() {
             origin_state: data?.data?.state ?? "",
             origin_country: data?.data?.country ?? "",
           }
+          form.setFieldsValue(updatedLocationDetail)
           setOrigin(updatedLocationDetail)
           setOriginRatesCity(data?.data?.city)
           setLocationDetail({
@@ -218,6 +219,8 @@ function ShippingGroupsComponent() {
               className="connection-settings"
               size="large"
               onFinish={onFinish}
+              form={form}
+              initialValues={locationDetail}
             >
               <Row>
                 <Col
@@ -338,7 +341,7 @@ function ShippingGroupsComponent() {
                     ) : (
                       <Form.Item
                         label="Origin City"
-                        //name="origin_city"
+                        name="origin_city"
                         rules={[
                           {
                             required: true,
@@ -349,21 +352,21 @@ function ShippingGroupsComponent() {
                         <Input
                           //name="origin_city"
                           placeholder="Origin City"
-                          value={origin?.origin_city}
-                          onChange={e => changeValue(e)}
+                          // value={origin?.origin_city}
+                          // onChange={e => changeValue(e)}
                           required
                         />
                       </Form.Item>
                     )}
 
-                    <Form.Item
+                    {/* <Form.Item
                       label="Origin State"
                       name="origin_state"
                       value={origin?.origin_state}
                       rules={[{ required: true, message: "Origin State" }]}
                     >
                       <Input placeholder="Origin State" value={locationDetail?.origin_state}/>
-                    </Form.Item>
+                    </Form.Item> */}
                     <Form.Item
                       label="Origin State"
                       name="origin_state"
@@ -375,10 +378,10 @@ function ShippingGroupsComponent() {
                       ]}
                     >
                       <Input
-                        name="origin_state"
+                        //name="origin_state"
                         placeholder="Origin State"
-                        value={origin?.state}
-                        onChange={e => changeValue(e)}
+                        // value={origin?.state}
+                        // onChange={e => changeValue(e)}
                         required
                       />
                     </Form.Item>
@@ -401,9 +404,9 @@ function ShippingGroupsComponent() {
                     >
                       <Input
                         placeholder="Origin Country"
-                        name="origin_country"
-                        value={origin?.country}
-                        onChange={e => changeValue(e)}
+                        // name="origin_country"
+                        // value={origin?.country}
+                        // onChange={e => changeValue(e)}
                         required
                       />
                     </Form.Item>
