@@ -172,25 +172,35 @@ function ShippingGroupsComponent() {
             alertMessageType: "loading",
           },
         })
-       
+
         const { data } = await axios.get(url, config)
         if (!data.error) {
-          
-           const updatedLocationDetail = {
-              origin_city: data?.data?.city[0] ?? "",
-              origin_state: data?.data?.state ?? "",
-              origin_country: data?.data?.country ?? "",
-            }
-            form.setFieldsValue(updatedLocationDetail)
-         
+          const updatedOrigin = {
+            origin_city: data?.data?.city[0] ?? "",
+            origin_state: data?.data?.state ?? "",
+            origin_country: data?.data?.country ?? "",
+          }
+          const updatedDestination = {
+            destination_city: data?.data?.city[0] ?? "",
+            destination_state: data?.data?.state ?? "",
+            destination_country: data?.data?.country ?? "",
+          }
 
-          
-          setOrigin(updatedLocationDetail)
-          setOriginRatesCity(data?.data?.city)
-          setLocationDetail({
-            ...locationDetail,
-            ...updatedLocationDetail,
-          })
+          if (is_origin) {
+            form.setFieldsValue(updatedOrigin)
+            setOriginRatesCity(data?.data?.city)
+            setLocationDetail({
+              ...locationDetail,
+              ...updatedOrigin,
+            })
+          } else {
+            form.setFieldsValue(updatedDestination)
+            setOriginRatesCity(data?.data?.city)
+            setLocationDetail({
+              ...locationDetail,
+              ...updatedDestination,
+            })
+          }
         }
 
         dispatch({
