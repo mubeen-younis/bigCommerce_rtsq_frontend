@@ -172,11 +172,11 @@ function ShippingGroupsComponent() {
             alertMessageType: "loading",
           },
         })
-        const updatedLocationDetail = {}
+       
         const { data } = await axios.get(url, config)
         if (!data.error) {
           
-            updatedLocationDetail = {
+           const updatedLocationDetail = {
               origin_city: data?.data?.city[0] ?? "",
               origin_state: data?.data?.state ?? "",
               origin_country: data?.data?.country ?? "",
