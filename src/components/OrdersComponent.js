@@ -731,7 +731,7 @@ function OrderSettingsComponent(props) {
 												style={{ backgroundColor: 'hsl(0deg 12.87% 88.25%)', borderRadius: "10px", height: '100%' }} 
 												bodyStyle={{padding: "10px"}}
 											>
-												<span> <b> {('Shipment #' + (key + 1)) }</b> <br/>{(countItems(shipment))} items @ {(shipment?.shipment_date)} </span> <br/> 
+												<span> <b> {('Shipment #' + (key + 1)) }</b> <br/>{countItems(shipment) == 1 ? (countItems(shipment) + ' item @') : (countItems(shipment) + ' items @')} {(shipment?.shipment_date)} </span> <br/> 
 												{shipment?.line_items.map(item => (
 														<>{item.quantity} X {item.product_name} <br/> </>
 													))}
