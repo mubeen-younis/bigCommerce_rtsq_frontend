@@ -175,21 +175,14 @@ function ShippingGroupsComponent() {
         const updatedLocationDetail = {}
         const { data } = await axios.get(url, config)
         if (!data.error) {
-          if (is_origin) {
+          
             updatedLocationDetail = {
               origin_city: data?.data?.city[0] ?? "",
               origin_state: data?.data?.state ?? "",
               origin_country: data?.data?.country ?? "",
             }
             form.setFieldsValue(updatedLocationDetail)
-          } else {
-            updatedLocationDetail = {
-              destination_city: data?.data?.city[0] ?? "",
-              destination_state: data?.data?.state ?? "",
-              destination_country: data?.data?.country ?? "",
-            }
-            form.setFieldsValue(updatedLocationDetail)
-          }
+         
 
           
           setOrigin(updatedLocationDetail)
