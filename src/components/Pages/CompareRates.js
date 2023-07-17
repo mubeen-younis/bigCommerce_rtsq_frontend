@@ -22,13 +22,8 @@ import axios from "axios"
 
 const { Title } = Typography
 const initialState = {
-  enable_instore: false,
-  enable_ld: false,
   origin_zip: [],
   destination_zip: [],
-  ld_zipcodes: [],
-  default_location_id: "default",
-  location_type: 0,
 }
 
 const carrName = [
@@ -42,14 +37,11 @@ const carrName = [
 function ShippingGroupsComponent() {
   const [locationDetail, setLocationDetail] = useState(initialState)
   const [originRatesCity, setOriginRatesCity] = useState([])
-  const [origin, setOrigin] = useState([])
   const [carriers, setCarriers] = useState([])
   const [carrSlugs, setCarrSlugs] = useState("")
   const [isResidentail, setResi] = useState(false)
   const dispatch = useDispatch()
   const { token, compareRates, installedCarriers } = useSelector(state => state)
-  console.log(54, compareRates)
-  console.log(64, locationDetail)
   const [form] = Form.useForm()
   const handleStateChange = useCallback(e => {
     const { name, checked } = e.target
@@ -142,13 +134,6 @@ function ShippingGroupsComponent() {
     } else {
       dispatch(submitCompareRates(data, token))
     }
-  }
-
-  const changeValue = e => {
-    setLocationDetail({
-      ...locationDetail,
-      [e.target.name]: e.target.value,
-    })
   }
 
   const populateOriginRatesLocation = useCallback(
@@ -325,14 +310,7 @@ function ShippingGroupsComponent() {
                         maxLength="6"
                       />
                     </Form.Item>
-                    {/* <Form.Item
-                      label="Origin City"
-                      name="origin_city"
-                      rules={[{ required: true, message: "Origin City" }]}
-                    >
-                      <Input placeholder="Origin City" />
-                    </Form.Item> */}
-                    {console.log(34, locationDetail)}
+
                     {originRatesCity?.length > 1 ? (
                       <Form.Item name="origin_city" label="Origin City">
                         <Select
@@ -350,8 +328,6 @@ function ShippingGroupsComponent() {
                             }))
                           }
                         >
-                          {console.log(454, originRatesCity)}
-                          {console.log(464, origin)}
                           {originRatesCity?.map(city => (
                             <Select.Option value={city} key={city}>
                               {city}
@@ -370,24 +346,10 @@ function ShippingGroupsComponent() {
                           },
                         ]}
                       >
-                        <Input
-                          //name="origin_city"
-                          placeholder="Origin City"
-                          // value={origin?.origin_city}
-                          // onChange={e => changeValue(e)}
-                          required
-                        />
+                        <Input placeholder="Origin City" required />
                       </Form.Item>
                     )}
 
-                    {/* <Form.Item
-                      label="Origin State"
-                      name="origin_state"
-                      value={origin?.origin_state}
-                      rules={[{ required: true, message: "Origin State" }]}
-                    >
-                      <Input placeholder="Origin State" value={locationDetail?.origin_state}/>
-                    </Form.Item> */}
                     <Form.Item
                       label="Origin State"
                       name="origin_state"
@@ -398,21 +360,9 @@ function ShippingGroupsComponent() {
                         },
                       ]}
                     >
-                      <Input
-                        //name="origin_state"
-                        placeholder="Origin State"
-                        // value={origin?.state}
-                        // onChange={e => changeValue(e)}
-                        required
-                      />
+                      <Input placeholder="Origin State" required />
                     </Form.Item>
-                    {/* <Form.Item
-                      label="Origin Country"
-                      name="origin_country"
-                      rules={[{ required: true, message: "Origin Country" }]}
-                    >
-                      <Input placeholder="Origin Country" />
-                    </Form.Item> */}
+
                     <Form.Item
                       label="Origin Country"
                       name="origin_country"
@@ -423,13 +373,7 @@ function ShippingGroupsComponent() {
                         },
                       ]}
                     >
-                      <Input
-                        placeholder="Origin Country"
-                        // name="origin_country"
-                        // value={origin?.country}
-                        // onChange={e => changeValue(e)}
-                        required
-                      />
+                      <Input placeholder="Origin Country" required />
                     </Form.Item>
                   </Col>
                   <Col
@@ -482,8 +426,6 @@ function ShippingGroupsComponent() {
                             }))
                           }
                         >
-                          {console.log(454, originRatesCity)}
-                          {console.log(464, origin)}
                           {originRatesCity?.map(city => (
                             <Select.Option value={city} key={city}>
                               {city}
@@ -502,13 +444,7 @@ function ShippingGroupsComponent() {
                           },
                         ]}
                       >
-                        <Input
-                          //name="origin_city"
-                          placeholder="Destination City"
-                          // value={origin?.origin_city}
-                          // onChange={e => changeValue(e)}
-                          required
-                        />
+                        <Input placeholder="Destination City" required />
                       </Form.Item>
                     )}
                     <Form.Item
@@ -521,13 +457,7 @@ function ShippingGroupsComponent() {
                         },
                       ]}
                     >
-                      <Input
-                        //name="origin_state"
-                        placeholder="Destination State"
-                        // value={origin?.state}
-                        // onChange={e => changeValue(e)}
-                        required
-                      />
+                      <Input placeholder="Destination State" required />
                     </Form.Item>
                     <Form.Item
                       label="Destination Country"
@@ -539,13 +469,7 @@ function ShippingGroupsComponent() {
                         },
                       ]}
                     >
-                      <Input
-                        placeholder="Destination Country"
-                        // name="origin_country"
-                        // value={origin?.country}
-                        // onChange={e => changeValue(e)}
-                        required
-                      />
+                      <Input placeholder="Destination Country" required />
                     </Form.Item>
                   </Col>
                   <Col
