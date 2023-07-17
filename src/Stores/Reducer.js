@@ -992,7 +992,12 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				thresholdSetting: {...state.thresholdSetting, parcel_rates:action.payload},
-			}		
+			}
+		case types.SET_COMPARE_RATES:
+				return {
+					...state,
+				compareRates: action.payload,
+				}		
 		default:
 			return state
 	}
