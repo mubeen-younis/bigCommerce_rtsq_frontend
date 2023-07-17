@@ -338,7 +338,7 @@ function ShippingGroupsComponent() {
                     ) : (
                       <Form.Item
                         label="Origin City"
-                        name="origin_city"
+                        //name="origin_city"
                         rules={[
                           {
                             required: true,
@@ -347,7 +347,7 @@ function ShippingGroupsComponent() {
                         ]}
                       >
                         <Input
-                          name="origin_city"
+                          //name="origin_city"
                           placeholder="Origin City"
                           value={origin?.origin_city}
                           onChange={e => changeValue(e)}
