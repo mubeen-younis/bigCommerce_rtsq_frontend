@@ -327,6 +327,7 @@ function ShippingGroupsComponent() {
                             }))
                           }
                         >{console.log(454,originRatesCity)}
+                        {console.log(464,origin)}
                           {originRatesCity?.map(city => (
                             <Select.Option value={city} key={city}>
                               {city}
