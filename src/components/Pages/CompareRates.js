@@ -325,7 +325,7 @@ function ShippingGroupsComponent() {
                               origin_city: city,
                             }))
                           }
-                        >
+                        >{console.log(454,originRatesCity)}
                           {originRatesCity?.map(city => (
                             <Select.Option value={city} key={city}>
                               {city}
@@ -354,13 +354,13 @@ function ShippingGroupsComponent() {
                       </Form.Item>
                     )}
 
-                    {/* <Form.Item
+                    <Form.Item
                       label="Origin State"
                       name="origin_state"
                       rules={[{ required: true, message: "Origin State" }]}
                     >
-                      <Input placeholder="Origin State" />
-                    </Form.Item> */}
+                      <Input placeholder="Origin State" value={locationDetail?.origin_state}/>
+                    </Form.Item>
                     <Form.Item
                       label="Origin State"
                       name="origin_state"
