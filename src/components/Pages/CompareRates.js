@@ -90,34 +90,59 @@ function ShippingGroupsComponent() {
     }
 
     let error = false
+    let count = 0
     let errormsg = ""
 
-    if (data?.carriers === []) {
+    Object.keys(carriers).map(key => {
+      if (carriers[key]) {
+        count = count + 1
+      }
+    })
+
+    if (count === 0) {
       error = true
       errormsg = "Please Select Providers."
     }
 
     if (
-      data?.weight !== undefined &&
-      checkDigitsAfterDecimal(data?.weight, 2)
+      (data?.weight !== undefined &&
+        checkDigitsAfterDecimal(data?.weight, 2)) ||
+      data?.weight?.toString()?.length > 6
     ) {
-      error = true
-      errormsg = getErrMessage("Weight")
+      if (errormsg === "") {
+        error = true
+        errormsg = getErrMessage("Weight")
+      }
     }
 
-    if (checkDigitsAfterDecimal(data?.length, 2)) {
-      error = true
-      errormsg = getErrMessage("Length")
+    if (
+      checkDigitsAfterDecimal(data?.length, 2) ||
+      data?.length?.toString()?.length > 6
+    ) {
+      if (errormsg === "") {
+        error = true
+        errormsg = getErrMessage("Length")
+      }
     }
 
-    if (checkDigitsAfterDecimal(data?.width, 2)) {
-      error = true
-      errormsg = getErrMessage("Width")
+    if (
+      checkDigitsAfterDecimal(data?.width, 2) ||
+      data?.width?.toString()?.length > 6
+    ) {
+      if (errormsg === "") {
+        error = true
+        errormsg = getErrMessage("Width")
+      }
     }
 
-    if (checkDigitsAfterDecimal(data?.height, 2)) {
-      error = true
-      errormsg = getErrMessage("Height")
+    if (
+      checkDigitsAfterDecimal(data?.height, 2) ||
+      data?.height?.toString()?.length > 6
+    ) {
+      if (errormsg === "") {
+        error = true
+        errormsg = getErrMessage("Height")
+      }
     }
 
     if (error === true) {
@@ -232,9 +257,10 @@ function ShippingGroupsComponent() {
             xs={24}
             sm={24}
             md={24}
-            lg={14}
-            xl={13}
+            lg={loading ? 12 : 24}
+            xl={loading ? 13 : 24}
           >
+            {}
             <Card className="mb-2">
               <Form
                 layout="vertical"
@@ -278,7 +304,7 @@ function ShippingGroupsComponent() {
                       xs={24}
                       sm={24}
                       md={12}
-                      lg={24}
+                      lg={12}
                       xl={12}
                     >
                       <Form.Item className="mb-0">
@@ -300,7 +326,7 @@ function ShippingGroupsComponent() {
                           xs={24}
                           sm={24}
                           md={12}
-                          lg={24}
+                          lg={12}
                           xl={12}
                         >
                           <Form.Item className="mb-0">
@@ -323,7 +349,7 @@ function ShippingGroupsComponent() {
                       xs={24}
                       sm={24}
                       md={24}
-                      lg={24}
+                      lg={loading ? 24 : 12}
                       xl={12}
                     >
                       <Form.Item
@@ -419,7 +445,7 @@ function ShippingGroupsComponent() {
                       xs={24}
                       sm={24}
                       md={24}
-                      lg={24}
+                      lg={loading ? 24 : 12}
                       xl={12}
                     >
                       <Form.Item
@@ -650,7 +676,7 @@ function ShippingGroupsComponent() {
             xs={24}
             sm={24}
             md={24}
-            lg={8}
+            lg={10}
             xl={10}
           >
             {loading ? (
