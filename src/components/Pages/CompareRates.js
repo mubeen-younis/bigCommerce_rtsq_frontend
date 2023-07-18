@@ -260,7 +260,6 @@ function ShippingGroupsComponent() {
             lg={loading ? 12 : 24}
             xl={loading ? 13 : 24}
           >
-            {}
             <Card className="mb-2">
               <Form
                 layout="vertical"
@@ -281,6 +280,15 @@ function ShippingGroupsComponent() {
                     xl={24}
                   >
                     <Title level={4}>Compare Rates</Title>
+                    <div className="mb-2">
+                      Compare the UPS rates you receive from Worldwide Express
+                      to the UPS rates that you can receive from ShipEngine.
+                      Afterward, click this{" "}
+                      <a href="#" target="_blank" rel="noreferrer">
+                        link
+                      </a>{" "}
+                      to learn how to move forward with ShipEngine.
+                    </div>
                   </Col>
                 </Row>
                 <Card>
@@ -624,7 +632,7 @@ function ShippingGroupsComponent() {
                         />
                       </Form.Item>
                     </Col>
-                    <Col
+                    {/* <Col
                       className="gutter-row"
                       xs={24}
                       sm={24}
@@ -640,7 +648,7 @@ function ShippingGroupsComponent() {
                           <b>Residential Delivery</b>
                         </Checkbox>
                       </Form.Item>
-                    </Col>
+                    </Col> */}
                     <Col
                       className="gutter-row"
                       xs={24}
