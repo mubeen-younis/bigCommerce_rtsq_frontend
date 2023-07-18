@@ -170,7 +170,7 @@ export const getCurrentPlanInfo = store => {
 	}
 }
 
-export const submitCompareRates = (values, token) => async dispatch => {
+export const submitCompareRates = (values, token, setLoading = false) => async dispatch => {
 	try {
 		dispatch({
 			type: 'ALERT_MESSAGE',
@@ -204,6 +204,7 @@ export const submitCompareRates = (values, token) => async dispatch => {
 				type: types.SET_COMPARE_RATES,
 				payload: carrdata,
 			})
+			setLoading(true)
 		}
 
 		dispatch({
