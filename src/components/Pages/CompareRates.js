@@ -38,6 +38,7 @@ const carrName = [
 function ShippingGroupsComponent() {
   const [locationDetail, setLocationDetail] = useState(initialState)
   const [originRatesCity, setOriginRatesCity] = useState([])
+  const [destinationCities, setDestinationCities] = useState([])
   const [carriers, setCarriers] = useState([])
   const [carrSlugs, setCarrSlugs] = useState("")
   const [isResidentail, setResi] = useState(false)
@@ -215,7 +216,7 @@ function ShippingGroupsComponent() {
             })
           } else {
             form.setFieldsValue(updatedDestination)
-            setOriginRatesCity(data?.data?.city)
+            setDestinationCities(data?.data?.city)
             setLocationDetail({
               ...locationDetail,
               ...updatedDestination,
@@ -367,12 +368,12 @@ function ShippingGroupsComponent() {
                         rules={[
                           {
                             required: true,
-                            message: "Origin Zip/Postal Code",
+                            message: "Enter Origin Zip/Postal Code",
                           },
                         ]}
                       >
                         <Input
-                          placeholder="Origin Zip/Postal Code"
+                          placeholder="Enter Origin Zip/Postal Code"
                           value={locationDetail.origin_zip}
                           onChange={e => {
                             e.target.value.length > 4 &&
@@ -387,7 +388,7 @@ function ShippingGroupsComponent() {
                         <Form.Item name="origin_city" label="Origin City">
                           <Select
                             name="origin_city"
-                            placeholder="Origin City"
+                            placeholder="Enter Origin City"
                             style={{
                               width: "100%",
                             }}
@@ -414,11 +415,11 @@ function ShippingGroupsComponent() {
                           rules={[
                             {
                               required: true,
-                              message: "Origin City",
+                              message: "Enter Origin City",
                             },
                           ]}
                         >
-                          <Input placeholder="Origin City" required />
+                          <Input placeholder="Enter Origin City" required />
                         </Form.Item>
                       )}
 
@@ -428,11 +429,11 @@ function ShippingGroupsComponent() {
                         rules={[
                           {
                             required: true,
-                            message: "Origin State",
+                            message: "Enter Origin State",
                           },
                         ]}
                       >
-                        <Input placeholder="Origin State" required />
+                        <Input placeholder="Enter Origin State" required />
                       </Form.Item>
 
                       <Form.Item
@@ -441,11 +442,11 @@ function ShippingGroupsComponent() {
                         rules={[
                           {
                             required: true,
-                            message: "Origin Country",
+                            message: "Enter Origin Country",
                           },
                         ]}
                       >
-                        <Input placeholder="Origin Country" required />
+                        <Input placeholder="Enter Origin Country" required />
                       </Form.Item>
                     </Col>
                     <Col
@@ -463,12 +464,12 @@ function ShippingGroupsComponent() {
                         rules={[
                           {
                             required: true,
-                            message: "Destination Zip/Postal Code",
+                            message: "Enter Destination Zip/Postal Code",
                           },
                         ]}
                       >
                         <Input
-                          placeholder="Destination Zip/Postal Code"
+                          placeholder="Enter Destination Zip/Postal Code"
                           value={locationDetail.destination_zip}
                           onChange={e => {
                             e.target.value.length > 4 &&
@@ -478,18 +479,18 @@ function ShippingGroupsComponent() {
                           maxLength="6"
                         />
                       </Form.Item>
-                      {originRatesCity?.length > 1 ? (
+                      {destinationCities?.length > 1 ? (
                         <Form.Item
                           name="destination_city"
                           label="Destination City"
                         >
                           <Select
                             name="destination_city"
-                            placeholder="Destination City"
+                            placeholder="Enter Destination City"
                             style={{
                               width: "100%",
                             }}
-                            defaultValue={originRatesCity[0]}
+                            defaultValue={destinationCities[0]}
                             value={locationDetail?.destination_city}
                             onChange={city =>
                               setLocationDetail(prevState => ({
@@ -498,7 +499,7 @@ function ShippingGroupsComponent() {
                               }))
                             }
                           >
-                            {originRatesCity?.map(city => (
+                            {destinationCities?.map(city => (
                               <Select.Option value={city} key={city}>
                                 {city}
                               </Select.Option>
@@ -512,11 +513,11 @@ function ShippingGroupsComponent() {
                           rules={[
                             {
                               required: true,
-                              message: "Destination City",
+                              message: "Enter Destination City",
                             },
                           ]}
                         >
-                          <Input placeholder="Destination City" required />
+                          <Input placeholder="Enter Destination City" required />
                         </Form.Item>
                       )}
                       <Form.Item
@@ -525,11 +526,11 @@ function ShippingGroupsComponent() {
                         rules={[
                           {
                             required: true,
-                            message: "Destination State",
+                            message: "Enter Destination State",
                           },
                         ]}
                       >
-                        <Input placeholder="Destination State" required />
+                        <Input placeholder="Enter Destination State" required />
                       </Form.Item>
                       <Form.Item
                         label="Destination Country"
@@ -537,11 +538,11 @@ function ShippingGroupsComponent() {
                         rules={[
                           {
                             required: true,
-                            message: "Destination Country",
+                            message: "Enter Destination Country",
                           },
                         ]}
                       >
-                        <Input placeholder="Destination Country" required />
+                        <Input placeholder="Enter Destination Country" required />
                       </Form.Item>
                     </Col>
                     <Col
@@ -555,10 +556,10 @@ function ShippingGroupsComponent() {
                       <Form.Item
                         label="Weight (lbs)"
                         name="weight"
-                        rules={[{ required: true, message: "Weight" }]}
+                        rules={[{ required: true, message: "Enter Weight" }]}
                       >
                         <Input
-                          placeholder="Weight"
+                          placeholder="Enter Weight"
                           maxLength="6"
                           min="0"
                           step="0.01"
@@ -577,10 +578,10 @@ function ShippingGroupsComponent() {
                       <Form.Item
                         label="Length (inches)"
                         name="length"
-                        rules={[{ required: false, message: "Length" }]}
+                        rules={[{ required: false, message: "Enter Length" }]}
                       >
                         <Input
-                          placeholder="Length"
+                          placeholder="Enter Length"
                           maxLength="6"
                           min="0"
                           step="0.01"
@@ -599,10 +600,10 @@ function ShippingGroupsComponent() {
                       <Form.Item
                         label="Width (inches)"
                         name="width"
-                        rules={[{ required: false, message: "Width" }]}
+                        rules={[{ required: false, message: "Enter Width" }]}
                       >
                         <Input
-                          placeholder="Width"
+                          placeholder="Enter Width"
                           maxLength="6"
                           min="0"
                           step="0.01"
@@ -621,10 +622,10 @@ function ShippingGroupsComponent() {
                       <Form.Item
                         label="Height (inches)"
                         name="height"
-                        rules={[{ required: false, message: "Height" }]}
+                        rules={[{ required: false, message: "Enter Height" }]}
                       >
                         <Input
-                          placeholder="Height"
+                          placeholder="Enter Height"
                           maxLength="6"
                           min="0"
                           step="0.01"
