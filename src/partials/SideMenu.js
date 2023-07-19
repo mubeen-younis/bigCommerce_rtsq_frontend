@@ -128,12 +128,17 @@ function SideMenu(props) {
 							<Link to={`/orders`}>Orders</Link>
 						</Menu.Item>
 
-						<Menu.Item
-							key='109'
-							warnkey={109}
-							onClick={() => setActiveMenu('109')}>
-							<Link to={`/compare_rates`}>Compare Rates</Link>
-						</Menu.Item>
+						
+						{props?.installedCarriers?.map(carrier =>
+							carrier.slug === 'small-package' && carrier.is_enabled && carrier.carrier_type === 2 ? (
+								<Menu.Item
+									key='109'
+									warnkey={109}
+									onClick={() => setActiveMenu('109')}>
+									<Link to={`/compare_rates`}>Compare Rates</Link>
+								</Menu.Item>
+							) : null
+						)}
 
 						<Menu.Item
 							key='105'

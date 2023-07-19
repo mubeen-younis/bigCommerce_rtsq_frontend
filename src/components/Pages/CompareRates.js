@@ -35,12 +35,11 @@ const carrName = [
   { index: "ups_ship_engine", value: "UPS (ShipEngine_UPS)" },
 ]
 
-function ShippingGroupsComponent() {
+function CompareRates() {
   const [locationDetail, setLocationDetail] = useState(initialState)
   const [originRatesCity, setOriginRatesCity] = useState([])
   const [destinationCities, setDestinationCities] = useState([])
   const [carriers, setCarriers] = useState([])
-  const [carrSlugs, setCarrSlugs] = useState("")
   const [isResidentail, setResi] = useState(false)
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
@@ -49,7 +48,6 @@ function ShippingGroupsComponent() {
 
   const handleStateChange = useCallback(e => {
     const { name, checked } = e.target
-    setCarrSlugs(name)
     setCarriers(prevSettings => ({
       ...prevSettings,
       [name]: checked,
@@ -84,9 +82,13 @@ function ShippingGroupsComponent() {
     })
     setLoading(false)
 
+    data["carriers"] = {
+      "ups-ship-engine": true,
+      "small-package": true,
+    }
+
     data = {
       ...data,
-      carriers,
       isResidentail,
     }
 
@@ -100,10 +102,10 @@ function ShippingGroupsComponent() {
       }
     })
 
-    if (count === 0) {
-      error = true
-      errormsg = "Please Select Providers."
-    }
+    // if (count === 0) {
+    //   error = true
+    //   errormsg = "Please Select Providers."
+    // }
 
     if (
       (data?.weight !== undefined &&
@@ -281,7 +283,7 @@ function ShippingGroupsComponent() {
                     xl={24}
                   >
                     <Title level={4}>Compare Rates</Title>
-                    <div className="mb-2">
+                    <div className="mb-0">
                       Compare the UPS rates you receive from Worldwide Express
                       to the UPS rates that you can receive from ShipEngine.
                       Afterward, click this{" "}
@@ -292,7 +294,8 @@ function ShippingGroupsComponent() {
                     </div>
                   </Col>
                 </Row>
-                <Card>
+                {/* Providers feature will use in future */}
+                {/* <Card>
                   <Row>
                     <Col
                       className="gutter-row"
@@ -350,7 +353,7 @@ function ShippingGroupsComponent() {
                       ) : null
                     )}
                   </Row>
-                </Card>
+                </Card> */}
                 <Card className="mt-2">
                   <Row gutter={30}>
                     <Col
@@ -517,7 +520,10 @@ function ShippingGroupsComponent() {
                             },
                           ]}
                         >
-                          <Input placeholder="Enter Destination City" required />
+                          <Input
+                            placeholder="Enter Destination City"
+                            required
+                          />
                         </Form.Item>
                       )}
                       <Form.Item
@@ -542,7 +548,10 @@ function ShippingGroupsComponent() {
                           },
                         ]}
                       >
-                        <Input placeholder="Enter Destination Country" required />
+                        <Input
+                          placeholder="Enter Destination Country"
+                          required
+                        />
                       </Form.Item>
                     </Col>
                     <Col
@@ -744,4 +753,4 @@ function ShippingGroupsComponent() {
   )
 }
 
-export default ShippingGroupsComponent
+export default CompareRates
