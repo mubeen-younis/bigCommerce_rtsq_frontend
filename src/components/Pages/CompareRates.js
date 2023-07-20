@@ -677,6 +677,7 @@ function CompareRates() {
                       md={24}
                       lg={24}
                       xl={24}
+                      ref={ref}
                     >
                       <Form.Item
                         style={{ textAlign: "right", marginBottom: "0" }}
@@ -707,7 +708,6 @@ function CompareRates() {
             md={24}
             lg={24}
             xl={24}
-            ref={ref}
           >
             {loading ? (
               <Card>
