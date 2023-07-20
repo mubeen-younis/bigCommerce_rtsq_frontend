@@ -1,4 +1,10 @@
-import React, { Fragment, useState, useCallback, useEffect } from "react"
+import React, {
+  Fragment,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react"
 import {
   Typography,
   Row,
@@ -30,7 +36,7 @@ const initialState = {
 const carrName = [
   {
     index: "small_package",
-    value: "Worldwide Express (WWEX (Small Package & LTL))",
+    value: "Worldwide Express (Parcel)",
   },
   { index: "ups_ship_engine", value: "UPS (ShipEngine_UPS)" },
 ]
@@ -45,6 +51,7 @@ function CompareRates() {
   const dispatch = useDispatch()
   const { token, compareRates, installedCarriers } = useSelector(state => state)
   const [form] = Form.useForm()
+  const ref = useRef(null)
 
   const handleStateChange = useCallback(e => {
     const { name, checked } = e.target
@@ -67,6 +74,10 @@ function CompareRates() {
 
     setResi(checked)
   }, [])
+
+  const handleClick = () => {
+    ref.current?.scrollIntoView({ behavior: "smooth" })
+  }
 
   const getErrMessage = input => {
     return (
@@ -165,7 +176,7 @@ function CompareRates() {
         },
       })
     } else {
-      dispatch(submitCompareRates(data, token, setLoading))
+      dispatch(submitCompareRates(data, token, setLoading, handleClick))
     }
   }
 
@@ -195,7 +206,7 @@ function CompareRates() {
             alertMessageType: "loading",
           },
         })
-
+        setLoading(false)
         const { data } = await axios.get(url, config)
         if (!data.error) {
           const updatedOrigin = {
@@ -260,8 +271,8 @@ function CompareRates() {
             xs={24}
             sm={24}
             md={24}
-            lg={loading ? 12 : 24}
-            xl={loading ? 13 : 24}
+            lg={24}
+            xl={24}
           >
             <Card className="mb-2">
               <Form
@@ -359,9 +370,9 @@ function CompareRates() {
                     <Col
                       className="gutter-row "
                       xs={24}
-                      sm={24}
-                      md={24}
-                      lg={loading ? 24 : 12}
+                      sm={12}
+                      md={12}
+                      lg={12}
                       xl={12}
                     >
                       <Form.Item
@@ -455,9 +466,9 @@ function CompareRates() {
                     <Col
                       className="gutter-row"
                       xs={24}
-                      sm={24}
-                      md={24}
-                      lg={loading ? 24 : 12}
+                      sm={12}
+                      md={12}
+                      lg={12}
                       xl={12}
                     >
                       <Form.Item
@@ -557,10 +568,10 @@ function CompareRates() {
                     <Col
                       className="gutter-row"
                       xs={24}
-                      sm={24}
-                      md={12}
-                      lg={12}
-                      xl={12}
+                      sm={12}
+                      md={6}
+                      lg={6}
+                      xl={6}
                     >
                       <Form.Item
                         label="Weight (lbs)"
@@ -579,10 +590,10 @@ function CompareRates() {
                     <Col
                       className="gutter-row"
                       xs={24}
-                      sm={24}
-                      md={12}
-                      lg={12}
-                      xl={12}
+                      sm={12}
+                      md={6}
+                      lg={6}
+                      xl={6}
                     >
                       <Form.Item
                         label="Length (inches)"
@@ -601,10 +612,10 @@ function CompareRates() {
                     <Col
                       className="gutter-row"
                       xs={24}
-                      sm={24}
-                      md={12}
-                      lg={12}
-                      xl={12}
+                      sm={12}
+                      md={6}
+                      lg={6}
+                      xl={6}
                     >
                       <Form.Item
                         label="Width (inches)"
@@ -623,10 +634,10 @@ function CompareRates() {
                     <Col
                       className="gutter-row"
                       xs={24}
-                      sm={24}
-                      md={12}
-                      lg={12}
-                      xl={12}
+                      sm={12}
+                      md={6}
+                      lg={6}
+                      xl={6}
                     >
                       <Form.Item
                         label="Height (inches)"
@@ -694,8 +705,9 @@ function CompareRates() {
             xs={24}
             sm={24}
             md={24}
-            lg={10}
-            xl={10}
+            lg={24}
+            xl={24}
+            ref={ref}
           >
             {loading ? (
               <Card>
@@ -710,40 +722,49 @@ function CompareRates() {
                   >
                     <Title level={4}>Shipping Services</Title>
                   </Col>
-                </Row>
 
-                {carrName.map(carr =>
-                  compareRates[carr?.index]?.length > 0 ? (
-                    <Card
-                      type="inner"
-                      title={carr.value}
-                      headStyle={{
-                        backgroundColor: "hsl(0deg 12.87% 88.25%)",
-                      }}
-                      className="mb-2"
+                  {carrName.map(carr => (
+                    <Col
+                      className="gutter-row"
+                      xs={24}
+                      sm={24}
+                      md={12}
+                      lg={12}
+                      xl={12}
                     >
-                      <Col
-                        className="gutter-row mb-1"
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                      >
-                        {compareRates[carr?.index]?.map((rate, key) => (
-                          <>
-                            <span>
-                              {rate.title} {" $" + rate.rate}
-                            </span>
-                            <br />
-                            <span>{rate.date}</span>
-                            <hr></hr>
-                          </>
-                        ))}
-                      </Col>
-                    </Card>
-                  ) : null
-                )}
+                      {compareRates[carr?.index]?.length > 0 ? (
+                        <Card
+                          type="inner"
+                          title={carr.value}
+                          headStyle={{
+                            backgroundColor: "hsl(0deg 12.87% 88.25%)",
+                          }}
+                        >
+                          <Col
+                            className="gutter-row"
+                            xs={24}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                          >
+                            {compareRates[carr?.index]?.map((rate, key) => (
+                              <>
+                                <span>
+                                  {rate.title} {" $" + rate.rate}
+                                </span>
+                                <br />
+                                <span>{rate.date}</span>
+                                <br />
+                                <br />
+                              </>
+                            ))}
+                          </Col>
+                        </Card>
+                      ) : null}
+                    </Col>
+                  ))}
+                </Row>
               </Card>
             ) : null}
           </Col>
