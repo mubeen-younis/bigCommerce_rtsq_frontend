@@ -22,7 +22,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { submitCompareRates } from "../../Actions/Action"
 import {
   checkDigitsAfterDecimal,
-  checkValueLimit,
+  handleKeyCharOnly,
+  numberFieldLimit,
 } from "../../Utilities/numberValidation"
 import axios from "axios"
 import types from "../../Stores/types"
@@ -393,13 +394,21 @@ function CompareRates() {
                             e.target.value.length > 4 &&
                               populateOriginRatesLocation(e.target.value, true)
                           }}
-                          required
                           maxLength="6"
                         />
                       </Form.Item>
 
                       {originRatesCity?.length > 1 ? (
-                        <Form.Item name="origin_city" label="Origin City">
+                        <Form.Item
+                          name="origin_city"
+                          label="Origin City"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Enter Origin City",
+                            },
+                          ]}
+                        >
                           <Select
                             name="origin_city"
                             placeholder="Enter Origin City"
@@ -433,7 +442,11 @@ function CompareRates() {
                             },
                           ]}
                         >
-                          <Input placeholder="Enter Origin City" required />
+                          <Input
+                            type="text"
+                            placeholder="Enter Origin City"
+                            onKeyDown={e => handleKeyCharOnly(e)}
+                          />
                         </Form.Item>
                       )}
 
@@ -447,7 +460,11 @@ function CompareRates() {
                           },
                         ]}
                       >
-                        <Input placeholder="Enter Origin State" required />
+                        <Input
+                          placeholder="Enter Origin State"
+                          onKeyDown={e => handleKeyCharOnly(e)}
+                          maxLength="2"
+                        />
                       </Form.Item>
 
                       <Form.Item
@@ -460,7 +477,11 @@ function CompareRates() {
                           },
                         ]}
                       >
-                        <Input placeholder="Enter Origin Country" required />
+                        <Input
+                          placeholder="Enter Origin Country"
+                          maxLength="2"
+                          onKeyDown={e => handleKeyCharOnly(e)}
+                        />
                       </Form.Item>
                     </Col>
                     <Col
@@ -473,7 +494,6 @@ function CompareRates() {
                     >
                       <Form.Item
                         label="Destination Zip/Postal Code"
-                        required
                         name="destination_zip"
                         rules={[
                           {
@@ -489,7 +509,6 @@ function CompareRates() {
                             e.target.value.length > 4 &&
                               populateOriginRatesLocation(e.target.value)
                           }}
-                          required
                           maxLength="6"
                         />
                       </Form.Item>
@@ -497,6 +516,12 @@ function CompareRates() {
                         <Form.Item
                           name="destination_city"
                           label="Destination City"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Enter Destination City",
+                            },
+                          ]}
                         >
                           <Select
                             name="destination_city"
@@ -533,7 +558,7 @@ function CompareRates() {
                         >
                           <Input
                             placeholder="Enter Destination City"
-                            required
+                            onKeyDown={e => handleKeyCharOnly(e)}
                           />
                         </Form.Item>
                       )}
@@ -547,7 +572,11 @@ function CompareRates() {
                           },
                         ]}
                       >
-                        <Input placeholder="Enter Destination State" required />
+                        <Input
+                          placeholder="Enter Destination State"
+                          maxLength="2"
+                          onKeyDown={e => handleKeyCharOnly(e)}
+                        />
                       </Form.Item>
                       <Form.Item
                         label="Destination Country"
@@ -561,7 +590,8 @@ function CompareRates() {
                       >
                         <Input
                           placeholder="Enter Destination Country"
-                          required
+                          maxLength="2"
+                          onKeyDown={e => handleKeyCharOnly(e)}
                         />
                       </Form.Item>
                     </Col>
@@ -581,9 +611,10 @@ function CompareRates() {
                         <Input
                           placeholder="Enter Weight"
                           maxLength="6"
-                          min="0"
+                          min="0.01"
                           step="0.01"
                           type="number"
+                          onKeyDown={numberFieldLimit}
                         />
                       </Form.Item>
                     </Col>
@@ -603,9 +634,10 @@ function CompareRates() {
                         <Input
                           placeholder="Enter Length"
                           maxLength="6"
-                          min="0"
+                          min="0.01"
                           step="0.01"
                           type="number"
+                          onKeyDown={numberFieldLimit}
                         />
                       </Form.Item>
                     </Col>
@@ -625,9 +657,10 @@ function CompareRates() {
                         <Input
                           placeholder="Enter Width"
                           maxLength="6"
-                          min="0"
+                          min="0.01"
                           step="0.01"
                           type="number"
+                          onKeyDown={numberFieldLimit}
                         />
                       </Form.Item>
                     </Col>
@@ -646,10 +679,10 @@ function CompareRates() {
                       >
                         <Input
                           placeholder="Enter Height"
-                          maxLength="6"
-                          min="0"
+                          min="0.01"
                           step="0.01"
                           type="number"
+                          onKeyDown={numberFieldLimit}
                         />
                       </Form.Item>
                     </Col>
