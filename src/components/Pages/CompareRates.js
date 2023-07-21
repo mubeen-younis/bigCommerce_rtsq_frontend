@@ -23,6 +23,7 @@ import { submitCompareRates } from "../../Actions/Action"
 import {
   checkDigitsAfterDecimal,
   handleKeyCharOnly,
+  handleNumbersOnly,
   numberFieldLimit,
 } from "../../Utilities/numberValidation"
 import axios from "axios"
@@ -296,13 +297,14 @@ function CompareRates() {
                   >
                     <Title level={4}>Compare Rates</Title>
                     <div className="mb-0">
-                      Compare the UPS rates you receive from Worldwide Express
-                      to the UPS rates that you can receive from ShipEngine.
-                      Afterward, click this{" "}
-                      <a href="#" target="_blank" rel="noreferrer">
-                        link
-                      </a>{" "}
-                      to learn how to move forward with ShipEngine.
+                      Eniture Technology has a partnership with ShipEngine
+                      Carriers that provides subscribers access to the best UPS
+                      rates available anywhere.  Merchants that take advantage
+                      of the partnership save up to 62% off UPS 2nd Day Air and
+                      48% on UPS Ground.  No minimum shipping volume is
+                      required. Use the utility below to compare the rates you
+                      receive from your parcel provider to those offered by
+                      ShipEngine Carriers.
                     </div>
                   </Col>
                 </Row>
@@ -390,6 +392,7 @@ function CompareRates() {
                         <Input
                           placeholder="Enter Origin Zip/Postal Code"
                           value={locationDetail.origin_zip}
+                          onKeyDown={handleNumbersOnly}
                           onChange={e => {
                             e.target.value.length > 4 &&
                               populateOriginRatesLocation(e.target.value, true)
@@ -464,6 +467,11 @@ function CompareRates() {
                           placeholder="Enter Origin State"
                           onKeyDown={e => handleKeyCharOnly(e)}
                           maxLength="2"
+                          onInput={e =>
+                            (e.target.value = (
+                              "" + e.target.value
+                            ).toUpperCase())
+                          }
                         />
                       </Form.Item>
 
@@ -481,6 +489,11 @@ function CompareRates() {
                           placeholder="Enter Origin Country"
                           maxLength="2"
                           onKeyDown={e => handleKeyCharOnly(e)}
+                          onInput={e =>
+                            (e.target.value = (
+                              "" + e.target.value
+                            ).toUpperCase())
+                          }
                         />
                       </Form.Item>
                     </Col>
@@ -576,6 +589,11 @@ function CompareRates() {
                           placeholder="Enter Destination State"
                           maxLength="2"
                           onKeyDown={e => handleKeyCharOnly(e)}
+                          onInput={e =>
+                            (e.target.value = (
+                              "" + e.target.value
+                            ).toUpperCase())
+                          }
                         />
                       </Form.Item>
                       <Form.Item
@@ -592,6 +610,11 @@ function CompareRates() {
                           placeholder="Enter Destination Country"
                           maxLength="2"
                           onKeyDown={e => handleKeyCharOnly(e)}
+                          onInput={e =>
+                            (e.target.value = (
+                              "" + e.target.value
+                            ).toUpperCase())
+                          }
                         />
                       </Form.Item>
                     </Col>
@@ -606,7 +629,18 @@ function CompareRates() {
                       <Form.Item
                         label="Weight (lbs)"
                         name="weight"
-                        rules={[{ required: true, message: "Enter Weight" }]}
+                        rules={[
+                          { required: true, message: "Enter Weight" },
+                          {
+                            pattern:
+                              /^(\+|-)?(([1-9]|0(?=0*[1-9]))[0-9]{0,13}(\.[0-9]{1,4})?|0{1,14}\.(?=0*[1-9])[0-9]{1,4})$/,
+                            message: "Weight must be greater then zero",
+                          },
+                          {
+                            pattern: /^\d*\.?\d{0,2}$/,
+                            message: "Only two decimal places are allowed",
+                          },
+                        ]}
                       >
                         <Input
                           placeholder="Enter Weight"
@@ -629,7 +663,18 @@ function CompareRates() {
                       <Form.Item
                         label="Length (inches)"
                         name="length"
-                        rules={[{ required: false, message: "Enter Length" }]}
+                        rules={[
+                          { required: false, message: "Enter Length" },
+                          {
+                            pattern:
+                              /^(\+|-)?(([1-9]|0(?=0*[1-9]))[0-9]{0,13}(\.[0-9]{1,4})?|0{1,14}\.(?=0*[1-9])[0-9]{1,4})$/,
+                            message: "Length must be greater then zero",
+                          },
+                          {
+                            pattern: /^\d*\.?\d{0,2}$/,
+                            message: "Only two decimal places are allowed",
+                          },
+                        ]}
                       >
                         <Input
                           placeholder="Enter Length"
@@ -652,7 +697,18 @@ function CompareRates() {
                       <Form.Item
                         label="Width (inches)"
                         name="width"
-                        rules={[{ required: false, message: "Enter Width" }]}
+                        rules={[
+                          { required: false, message: "Enter Width" },
+                          {
+                            pattern:
+                              /^(\+|-)?(([1-9]|0(?=0*[1-9]))[0-9]{0,13}(\.[0-9]{1,4})?|0{1,14}\.(?=0*[1-9])[0-9]{1,4})$/,
+                            message: "Width must be greater then zero",
+                          },
+                          {
+                            pattern: /^\d*\.?\d{0,2}$/,
+                            message: "Only two decimal places are allowed",
+                          },
+                        ]}
                       >
                         <Input
                           placeholder="Enter Width"
@@ -675,7 +731,18 @@ function CompareRates() {
                       <Form.Item
                         label="Height (inches)"
                         name="height"
-                        rules={[{ required: false, message: "Enter Height" }]}
+                        rules={[
+                          { required: false, message: "Enter Height" },
+                          {
+                            pattern:
+                              /^(\+|-)?(([1-9]|0(?=0*[1-9]))[0-9]{0,13}(\.[0-9]{1,4})?|0{1,14}\.(?=0*[1-9])[0-9]{1,4})$/,
+                            message: "Height must be greater then zero",
+                          },
+                          {
+                            pattern: /^\d*\.?\d{0,2}$/,
+                            message: "Only two decimal places are allowed",
+                          },
+                        ]}
                       >
                         <Input
                           placeholder="Enter Height"
@@ -686,7 +753,7 @@ function CompareRates() {
                         />
                       </Form.Item>
                     </Col>
-                    {/* <Col
+                    <Col
                       className="gutter-row"
                       xs={24}
                       sm={24}
@@ -702,7 +769,7 @@ function CompareRates() {
                           <b>Residential Delivery</b>
                         </Checkbox>
                       </Form.Item>
-                    </Col> */}
+                    </Col>
                     <Col
                       className="gutter-row"
                       xs={24}
@@ -743,7 +810,7 @@ function CompareRates() {
             xl={24}
           >
             {loading ? (
-              <Card>
+              <Card className="mb-2">
                 <Row>
                   <Col
                     className="gutter-row"
@@ -800,6 +867,24 @@ function CompareRates() {
                 </Row>
               </Card>
             ) : null}
+            <ul style={{ listStyle: "none" , marginLeft: "0.7rem"}}>
+              <li>
+                <a
+                  href="https://eniture.com/woocommerce-shipengine-shipping-rates"
+                  target="_blank"
+                >
+                  Install the ShipEngine Shipping Rates plugin
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://support.eniture.com/how-to-create-a-shipengine-carriers-account"
+                  target="_blank"
+                >
+                  How to Create a ShipEngine Carriers Account
+                </a>
+              </li>
+            </ul>
           </Col>
         </Row>
       </Space>

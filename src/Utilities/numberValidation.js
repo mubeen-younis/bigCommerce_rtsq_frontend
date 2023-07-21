@@ -212,6 +212,16 @@ export const handleKeyPhoneNumber = e => {
 	}
 }
 
+export const handleNumbersOnly = e => {
+	let condition =
+		!['Backspace', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.key) &&
+		!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)
+	if (condition) {
+		e.preventDefault()
+		return true
+	}
+}
+
 export const handleKeyCharOnly = e => {
 	let condition =
 		!['Backspace', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.key) &&
