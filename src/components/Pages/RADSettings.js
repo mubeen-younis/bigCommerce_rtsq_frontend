@@ -136,85 +136,100 @@ function ShippingGroupsComponent() {
                 </Checkbox>
               </Form.Item>
             </Col>
-
-            {settings.residential_delivery_auto_detect && (
-              <>
-                <Col
-                  className="gutter-row mt-1"
-                  xs={14}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={8}
-                >
-                  <label
-                    className="text-gray ml-5"
-                    style={{
-                      marginLeft: "1.5em",
-                    }}
-                  >
-                    Default unconfirmed address types to:
-                  </label>
-                </Col>
-
-                <Radio.Group
-                  className="mt-1 mb-2"
-                  onChange={e =>
-                    setSettings(prevSettings => ({
-                      ...prevSettings,
-                      unconfirmed_address_type: +e.target.value,
-                    }))
-                  }
-                  value={settings.unconfirmed_address_type}
-                >
-                  <Space direction="vertical"
-                   style={{
-                      marginLeft: "1rem",
-                    }}>
-                    <Radio value={1}>Residential</Radio>
-                    <Radio value={2}>Commercial</Radio>
-                  </Space>
-                </Radio.Group>
-              </>
-            )}
-          </Row>
-
-          <Row gutter={30}>
             <Col
               className="gutter-row mt-1"
-              xs={14}
-              sm={12}
+              xs={24}
+              sm={14}
               md={12}
               lg={12}
               xl={8}
             >
-              <label>
-                <b>Address Type Disclosure</b>
+              <label
+                className="text-gray ml-5"
+                style={{
+                  marginLeft: "1.5em",
+                }}
+              >
+                Default unconfirmed address types to:
               </label>
             </Col>
-            <Col 
-              xs={10}
-              sm={12}
-              md={12}
-              lg={12}
-              xl={16}
-            >
-            <Radio.Group
-              className="mt-1 mb-2"
-              onChange={e =>
-                setSettings(prevSettings => ({
-                  ...prevSettings,
-                  suppress_rad_notation: +e.target.value,
-                }))
-              }
-              value={settings?.suppress_rad_notation}
-            >
-              <Space direction="vertical">
-                <Radio disabled={!settings?.residential_delivery_auto_detect} value={1}>Inform the shopper when ship-to address is identified as a residential address</Radio>
-                <Radio disabled={!settings?.residential_delivery_auto_detect} value={0}>Don't disclose the address type determination to the shopper</Radio>
-              </Space>
-            </Radio.Group>
+            <Col xs={24} sm={10} md={12} lg={12} xl={16}>
+              <Radio.Group
+                className="mt-1 mb-2"
+                onChange={e =>
+                  setSettings(prevSettings => ({
+                    ...prevSettings,
+                    unconfirmed_address_type: +e.target.value,
+                  }))
+                }
+                value={settings.unconfirmed_address_type}
+              >
+                <Space
+                  direction="vertical"
+                  style={{
+                    marginLeft: "1rem",
+                  }}
+                >
+                  <Radio
+                    disabled={!settings?.residential_delivery_auto_detect}
+                    value={1}
+                  >
+                    Residential
+                  </Radio>
+                  <Radio
+                    disabled={!settings?.residential_delivery_auto_detect}
+                    value={2}
+                  >
+                    Commercial
+                  </Radio>
+                </Space>
+              </Radio.Group>
             </Col>
+            <Col className="gutter-row" xs={14} sm={14} md={12} lg={12} xl={8}>
+              <label
+                className="text-gray ml-5"
+                style={{
+                  marginLeft: "1.5em",
+                }}
+              >
+                Address type disclosure:
+              </label>
+            </Col>
+            <Col xs={24} sm={10} md={12} lg={12} xl={16}>
+              <Radio.Group
+                className="mb-2"
+                onChange={e =>
+                  setSettings(prevSettings => ({
+                    ...prevSettings,
+                    suppress_rad_notation: +e.target.value,
+                  }))
+                }
+                value={settings?.suppress_rad_notation}
+              >
+                <Space
+                  direction="vertical"
+                  style={{
+                    marginLeft: "1rem",
+                  }}
+                >
+                  <Radio
+                    disabled={!settings?.residential_delivery_auto_detect}
+                    value={1}
+                  >
+                    Inform the shopper when the ship-to address is identified as
+                    residential address
+                  </Radio>
+                  <Radio
+                    disabled={!settings?.residential_delivery_auto_detect}
+                    value={0}
+                  >
+                    Don't disclose the address type to the shopper
+                  </Radio>
+                </Space>
+              </Radio.Group>
+            </Col>
+          </Row>
+          <Row gutter={30}>
             <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item style={{ textAlign: "right", marginBottom: "0" }}>
                 <Space>
