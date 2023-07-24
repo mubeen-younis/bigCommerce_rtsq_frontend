@@ -12,6 +12,7 @@ import {
 	Select,
 	Skeleton,
 	Input,
+	Card,
 } from 'antd'
 import { blockInvalidChar } from '../Utilities/numberValidation'
 import { isFireFox } from '../Utilities/browserName'
@@ -447,6 +448,14 @@ function OrderSettingsComponent(props) {
 		)
 	}
 
+	const countItems = (shipment) => {
+		let totalItems = 0
+		{shipment?.line_items.map(item => (
+			totalItems +=item.quantity
+		))}
+		return totalItems
+	}
+
 	const countBoxes = (widget, isPalletWidget = false) => {
 		let countBoxes = 0
 
@@ -704,6 +713,36 @@ function OrderSettingsComponent(props) {
 									</Fragment>
 								))
 							)}
+						</Row>
+						<Row gutter={24} className='mb-3 float-left'>
+							{props?.orderwidget?.fdoShipments && props?.orderwidget?.fdoShipments?.length > 0 ? (
+								<Fragment>
+									<Button
+										type='primary'
+										className={'mt-2 mb-2'}
+										block>
+										{' '}
+										Shipment Details in Freightdesk.Online
+									</Button>
+									{props?.orderwidget?.fdoShipments?.map((shipment, key) => (
+										<Col span={12} className='float-left mb-1'>
+											<Card 
+												className='mb-0' 
+												style={{ backgroundColor: 'hsl(0deg 12.87% 88.25%)', borderRadius: "10px", height: '100%' }} 
+												bodyStyle={{padding: "10px"}}
+											>
+												<span> <b> {('Shipment #' + (key + 1)) }</b> <br/>{countItems(shipment) == 1 ? (countItems(shipment) + ' item @') : (countItems(shipment) + ' items @')} {(shipment?.shipment_date)} </span> <br/> 
+												{shipment?.line_items.map(item => (
+														<>{item.quantity} X {item.product_name} <br/> </>
+													))}
+												<span> Shipping method: {shipment?.shipping_method}</span> <br/>
+												<span> Tracking # {shipment?.tracking_number}</span>
+												
+											</Card>
+										</Col>
+									))}
+								</Fragment>
+							) : null }
 						</Row>
 					</Form>
 				)}
