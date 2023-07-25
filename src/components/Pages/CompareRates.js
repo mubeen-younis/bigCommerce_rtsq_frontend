@@ -820,7 +820,7 @@ function CompareRates() {
                     lg={24}
                     xl={24}
                   >
-                    <Title level={4}>Shipping Services</Title>
+                    <Title level={4}>Shipping Quotes</Title>
                   </Col>
 
                   {carrName.map(carr => (
