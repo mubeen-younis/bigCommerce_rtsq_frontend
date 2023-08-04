@@ -159,7 +159,8 @@ function ShippingCarriersComponent(props) {
       ?.sort((carr1, carr2) => (carr1.name > carr2.name ? 1 : -1))
       .map((value, key) => {
         return (
-          carrier_type === value.carrier_type && (
+          carrier_type === value.carrier_type &&
+          value.status == 1 && (
             <Col
               className='gutter-row mb-3'
               xs={24}
@@ -385,9 +386,8 @@ function ShippingCarriersComponent(props) {
         </Col>
 
         {props?.carriers?.length > 0 &&
-        props.carriers.filter(
-          (carr) => +carr.carrier_type === 1 && carr.status == 1
-        )?.length > 0 ? (
+        props.carriers.filter((carr) => +carr.carrier_type === 1)?.length >
+          0 ? (
           getEnitureCarriers(1)
         ) : (
           <Col
@@ -409,9 +409,8 @@ function ShippingCarriersComponent(props) {
         </Col>
 
         {props?.carriers?.length > 0 &&
-        props.carriers.filter(
-          (carr) => +carr.carrier_type === 2 && carr.status == 1
-        )?.length > 0 ? (
+        props.carriers.filter((carr) => +carr.carrier_type === 2)?.length >
+          0 ? (
           getEnitureCarriers(2)
         ) : (
           <Col
