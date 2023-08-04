@@ -693,8 +693,8 @@ function OrderSettingsComponent(props) {
 															<li>{access}</li>
 														)
 													)}
-													{widget?.qouteId && (
-														<li>{'Quote Id: ' + widget?.qouteId}</li>
+													{widget?.quoteId && (
+														<li>{'Quote Id: ' + widget?.quoteId}</li>
 													)}
 												</ul>
 											</div>
