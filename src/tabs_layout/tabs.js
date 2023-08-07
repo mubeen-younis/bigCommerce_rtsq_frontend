@@ -9,11 +9,12 @@ import useLoadComponent from '../hooks/useLoadComponent';
 import ShippingRatesComponent from '../components/Pages/DBSC/ShippingRatesComponent';
 import ShippingClassesComponent from '../components/Pages/DBSC/ShippingClassesComponent';
 import OtherSettings from '../components/Pages/DBSC/OtherSettings';
+import DisplayLogsPage from '../components/DisplayLogsPage';
 
 const { TabPane } = Tabs;
 
 function TabsLayout() {
-  const { installedCarriers, carrierId } = useSelector((state) => state);
+  const { installedCarriers, carrierId, quoteSettings } = useSelector(state => state);
   const [component, setComponent] = useState(0);
   const [tab, setTab] = useState('1');
   const [carrierSlug, setCarrierSlug] = useState('');
@@ -144,17 +145,23 @@ function TabsLayout() {
           </>
         )}
 
-        {!['dbsc'].includes(carrierSlug) && (
-          <TabPane tab='Quote Settings' key='5'>
-            {quoteSettingsComponent}
-          </TabPane>
-        )}
-        <TabPane tab='Product Settings' key='6'>
-          <ProductSettingsComponent />
-        </TabPane>
-      </Tabs>
-    </Fragment>
-  );
+				{!['dbsc'].includes(carrierSlug) && (
+					<TabPane tab='Quote Settings' key='5'>
+						{quoteSettingsComponent}
+					</TabPane>
+				)}
+				<TabPane tab='Product Settings' key='6'>
+					<ProductSettingsComponent />
+				</TabPane>
+				
+				{quoteSettings?.isEnableLogs && (
+					<TabPane tab='Logs' key='7'>
+						<DisplayLogsPage />
+					</TabPane>
+				)}
+			</Tabs>
+		</Fragment>
+	)
 }
 
 export default TabsLayout;
