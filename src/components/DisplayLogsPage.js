@@ -22,22 +22,22 @@ const makeColumns = (
       dataIndex: "dateTime",
       key: "dateTime",
       sorter: sortLogs,
-      width: 190,
+      ellipsis: true,
       sortOrder: false,
-      render: item => <span> {item} </span>,
+      render: item => <p> {item} </p>,
     },
     {
       title: "Items",
       dataIndex: "Items",
       key: "Items",
-      width: 130,
+      ellipsis: true,
       render: items => (
         <>
           {items?.map((key, item) => {
             return (
               <>
-                <span> {key} </span>
-                <br />
+                <p> {key} </p>
+               
               </>
             )
           })}
@@ -48,14 +48,14 @@ const makeColumns = (
       title: "DIMs (L x W x H)",
       dataIndex: "dimension",
       key: "dimension",
-      width: 190,
+      ellipsis: true,
       render: dim => (
         <>
           {dim?.map((key, item) => {
             return (
               <>
-                <span> {key} </span>
-                <br />
+                <p> {key} </p>
+                
               </>
             )
           })}
@@ -71,8 +71,8 @@ const makeColumns = (
           {quantity?.map((key, item) => {
             return (
               <>
-                <span> {key} </span>
-                <br />
+                <p> {key} </p>
+               
               </>
             )
           })}
