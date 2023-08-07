@@ -240,6 +240,7 @@ function QuoteSettingsComponentWwe(props) {
 				<HandlingUnit
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
+					setQuoteSettingsState={setQuoteSettingsState}
 				/>
 
 				<ErrorManagment

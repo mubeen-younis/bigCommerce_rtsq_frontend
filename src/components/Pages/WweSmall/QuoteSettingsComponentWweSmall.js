@@ -14,6 +14,7 @@ import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 import Services from './Services'
 import ErrorManagment from '../../ErrorManagment'
+import EnableLogs from '../../EnableLogs'
 
 const initialState = {
 	carrier_services: {
@@ -350,6 +351,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</div>
 					</Col>
 				</Row>
+
+				<EnableLogs 
+					quoteSettingsState={quoteSettingsState} 
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
 
 				<ErrorManagment
           			quoteSettingsState={quoteSettingsState}

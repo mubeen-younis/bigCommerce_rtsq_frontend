@@ -19,6 +19,7 @@ import GroundTransit from '../../../GroundTransit'
 import HazardousMaterial from '../../../HazardousMaterial'
 import SaveButton from '../../../SaveButton'
 import ErrorManagment from '../../../ErrorManagment'
+import EnableLogs from '../../../EnableLogs'
 
 const { Title } = Typography
 const initialState = {
@@ -439,7 +440,7 @@ function QuoteSettingsComponentWweSmall(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={24} className={'mb-4'}>
+				<Row gutter={30} className={'mb-3'}>
 					<Col
 						className='gutter-row'
 						xs={24}
@@ -477,7 +478,14 @@ function QuoteSettingsComponentWweSmall(props) {
 							percentage, e.g, 5%. Leave blank to disable.
 						</div>
 					</Col>
+				</Row>
 
+				<EnableLogs 
+				quoteSettingsState={quoteSettingsState} 
+				setQuoteSettingsState={setQuoteSettingsState}
+				/>
+
+				<Row gutter={30} className={'mb-3'}>
 					<Col
 						className='gutter-row'
 						xs={24}
