@@ -14,7 +14,8 @@ const makeColumns = (
   showPackagingDetails,
   packaging,
   isSmallCarr,
-  showMoreItems
+  showMoreItems,
+  recordId,
 ) => {
   const columns = [
     {
@@ -31,16 +32,30 @@ const makeColumns = (
       dataIndex: "Items",
       key: "Items",
       ellipsis: true,
-      render: items => (
+      render: (items, record) => (
+        
         <>
-          {items?.map((key, item) => {
-            return (
-              <>
-                <p> {key} </p>
-               
-              </>
-            )
-          })}
+          {record.key == recordId ?  (
+            <>
+              {items?.map((key) => {
+              return (
+                <>
+                  <p> {key} </p>
+                </>
+              )})}
+            </>
+          ): (
+            <>
+              {items?.map((key, item) => {
+              if(item < 4){
+                return (
+                <>
+                  <p> {key} </p>
+                </>
+              )}})}
+              {items?.length > 5 ? <a className="btn mt-2" onClick={() => showMoreItems(record.key)}>show more</a> : null}
+            </>
+          )}
         </>
       ),
     },
@@ -49,16 +64,30 @@ const makeColumns = (
       dataIndex: "dimension",
       key: "dimension",
       ellipsis: true,
-      render: dim => (
+      render: (dim, record) => (
+
         <>
-          {dim?.map((key, item) => {
-            return (
-              <>
-                <p> {key} </p>
-                
-              </>
-            )
-          })}
+          {record.key == recordId ?  (
+            <>
+              {dim?.map((key) => {
+                return (
+                  <>
+                    <p> {key} </p>
+                  </>
+                )})}
+            </>
+          ): (
+            <>
+              {dim?.map((key, item) => {
+                if(item < 4){
+                  return (
+                    <>
+                      <p> {key} </p>
+                    </>
+              )}})}
+              <br/>
+            </>
+          )}
         </>
       ),
     },
@@ -66,16 +95,30 @@ const makeColumns = (
       title: "Qty",
       dataIndex: "quantity",
       key: "quantity",
-      render: quantity => (
+      render: (quantity, record) => (
+
         <>
-          {quantity?.map((key, item) => {
-            return (
-              <>
-                <p> {key} </p>
-               
-              </>
-            )
-          })}
+          {record.key == recordId ?  (
+            <>
+              {quantity?.map((key) => {
+                return (
+                  <>
+                    <p> {key} </p>
+                  </>
+              )})}
+            </>
+          ): (
+            <>
+              {quantity?.map((key, item) => {
+                if(item < 4){
+                  return (
+                    <>
+                      <p> {key} </p>
+                    </>
+              )}})}
+             <br/>
+            </>
+          )}
         </>
       ),
     },
@@ -148,6 +191,7 @@ function DisplayLogsPage(props) {
   const [sortProd, setSortProd] = useState(false)
   const [logDetail, setLogDetail] = useState("")
   const dispatch = useDispatch()
+  const [recordId, setRecordId] = useState(null);
   const {
     logsPagination,
     carrierId,
@@ -220,17 +264,8 @@ function DisplayLogsPage(props) {
     // eslint-disable-next-line
   }, [sortProd, dispatch, props.token])
 
-  const showMoreItems = items => {
-    {
-      items?.map((key, item) => {
-        return (
-          <>
-            <span> {key} </span>
-            <br />
-          </>
-        )
-      })
-    }
+  const showMoreItems = key => {
+    setRecordId(key)
   }
 
   const showLogDetails = (id, log) => {
@@ -566,7 +601,8 @@ function DisplayLogsPage(props) {
           showPackagingDetails,
           packaging,
           isSmallCarr,
-          showMoreItems
+          showMoreItems,
+          recordId
         )}
         dataSource={addKeysToList(allLogs)}
         onChange={handleChange}
