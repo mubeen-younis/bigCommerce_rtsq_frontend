@@ -47,7 +47,7 @@ const makeColumns = (
           ): (
             <>
               {items?.map((key, item) => {
-              if(item < 4){
+              if(item < 5){
                 return (
                 <>
                   <p> {key} </p>
@@ -79,7 +79,7 @@ const makeColumns = (
           ): (
             <>
               {dim?.map((key, item) => {
-                if(item < 4){
+                if(item < 5){
                   return (
                     <>
                       <p> {key} </p>
@@ -110,7 +110,7 @@ const makeColumns = (
           ): (
             <>
               {quantity?.map((key, item) => {
-                if(item < 4){
+                if(item < 5){
                   return (
                     <>
                       <p> {key} </p>
