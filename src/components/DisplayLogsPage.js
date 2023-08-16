@@ -25,7 +25,7 @@ const makeColumns = (
       sorter: sortLogs,
       ellipsis: true,
       sortOrder: false,
-      render: item => <p> {item} </p>,
+      render: item => <span> {item} </span>,
     },
     {
       title: "Items",
@@ -40,7 +40,8 @@ const makeColumns = (
               {items?.map((key) => {
               return (
                 <>
-                  <p> {key} </p>
+                  <span> {key} </span>
+                  <br/>
                 </>
               )})}
             </>
@@ -50,7 +51,8 @@ const makeColumns = (
               if(item < 5){
                 return (
                 <>
-                  <p> {key} </p>
+                  <span> {key} </span>
+                  <br/>
                 </>
               )}})}
               {items?.length > 5 ? <a className="btn mt-2" onClick={() => showMoreItems(record.key)}>show more</a> : null}
@@ -72,7 +74,8 @@ const makeColumns = (
               {dim?.map((key) => {
                 return (
                   <>
-                    <p> {key} </p>
+                    <span> {key} </span>
+                    <br/>
                   </>
                 )})}
             </>
@@ -82,10 +85,11 @@ const makeColumns = (
                 if(item < 5){
                   return (
                     <>
-                      <p> {key} </p>
+                      <span> {key} </span>
+                      <br/>
                     </>
               )}})}
-              <br/>
+              {dim?.length > 5 ? <br/> : null}
             </>
           )}
         </>
@@ -103,7 +107,8 @@ const makeColumns = (
               {quantity?.map((key) => {
                 return (
                   <>
-                    <p> {key} </p>
+                    <span> {key} </span>
+                    <br/>
                   </>
               )})}
             </>
@@ -113,10 +118,11 @@ const makeColumns = (
                 if(item < 5){
                   return (
                     <>
-                      <p> {key} </p>
+                      <span> {key} </span>
+                      <br/>
                     </>
               )}})}
-             <br/>
+             {quantity?.length > 5 ? <br/> : null}
             </>
           )}
         </>
