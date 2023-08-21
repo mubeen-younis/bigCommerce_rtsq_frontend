@@ -13,6 +13,8 @@ const initialValues = {
 	user_name: '',
 	password: '',
 	access_key: '',
+	clientId: '',
+	clientSecret: '',
 }
 
 function ConnectionSettingsComponent(props) {
@@ -24,6 +26,7 @@ function ConnectionSettingsComponent(props) {
 	const [state, setState] = useState({
 		global_tranz: initialValues,
 		cerasis: initialValues,
+		gtz_new_api: initialValues,
 		promo_code: '',
 	})
 	const dispatch = useDispatch()
@@ -40,13 +43,15 @@ function ConnectionSettingsComponent(props) {
 			typeof props.connectionSettings === 'object' &&
 			Object.keys(props.connectionSettings).length > 1
 		) {
-			setApiType(props.connectionSettings?.api_type || 'GTZ')
+
+			props.connectionSettings?.api_type == 'GTZ' ? setApiType('GTZ') :  props.connectionSettings?.api_type == 'CRS' ? setApiType('CRS') : setApiType('NEWAPI')
 			setState({
 				global_tranz: {
 					...initialValues,
 					...props.connectionSettings?.global_tranz,
 				},
 				cerasis: { ...initialValues, ...props.connectionSettings?.cerasis },
+				gtz_new_api: { ...initialValues, ...props.connectionSettings?.gtz_new_api },
 				promo_code: props?.connectionSettings?.promo_code || '',
 			})
 			setConnectionState(prevState => ({
@@ -110,13 +115,16 @@ function ConnectionSettingsComponent(props) {
 			const data =
 				apiType === 'GTZ'
 					? props?.connectionSettings?.global_tranz ?? {}
-					: props?.connectionSettings?.cerasis ?? {}
+					: apiType === 'CRS' ? props?.connectionSettings?.cerasis ?? {}
+					: props?.connectionSettings?.gtz_new_api ?? {}
 
 			form.setFieldsValue({
 				customer_id: data?.customer_id || '',
 				user_name: data?.user_name || '',
 				password: data?.password || '',
 				access_key: data?.access_key || '',
+				clientId: data?.clientId || '',
+				clientSecret: data?.clientSecret || '',
 			})
 		},
 		[
@@ -130,7 +138,8 @@ function ConnectionSettingsComponent(props) {
 		() =>
 			apiType === 'GTZ'
 				? { ...state.global_tranz, promo_code: state.promo_code }
-				: { ...state.cerasis, promo_code: state.promo_code },
+				: apiType === 'CRS' ? { ...state.cerasis, promo_code: state.promo_code }
+				: { ...state.gtz_new_api, promo_code: state.promo_code },
 		[apiType, state.cerasis, state.global_tranz, state.promo_code]
 	)
 
@@ -189,6 +198,7 @@ function ConnectionSettingsComponent(props) {
 							}}>
 							<Option value='GTZ'>GlobalTranz</Option>
 							<Option value='CRS'>Cerasis</Option>
+							<Option value='NEWAPI'>New API</Option>
 						</Select>
 					</Form.Item>
 
@@ -259,7 +269,7 @@ function ConnectionSettingsComponent(props) {
 								/>
 							</Form.Item>
 						</>
-					) : (
+					) : apiType === 'CRS' ? (
 						<>
 							<Form.Item
 								label='Shipper ID'
@@ -317,6 +327,57 @@ function ConnectionSettingsComponent(props) {
 									onChange={e => handleStateChange(e, 'cerasis')}
 								/>
 							</Form.Item>
+						</>
+					) : (
+						<>
+						<Form.Item
+							label='Client ID'
+							name='clientId'
+							rules={[{ required: true, message: 'Client ID' }]}
+						>
+							<Input 
+								placeholder='Client ID' 
+								maxLength={100}
+								name='clientId'
+								onChange={e => handleStateChange(e, 'gtz_new_api')}
+
+							/>
+						</Form.Item>
+						<Form.Item
+							label='Client Secret'
+							name='clientSecret'
+							rules={[{ required: true, message: 'Client Secret' }]}
+						>
+							<Input 
+								placeholder='Client Secret' 
+								maxLength={100} 
+								name='clientSecret'
+								onChange={e => handleStateChange(e, 'gtz_new_api')}
+
+							/>
+						</Form.Item>
+						<Form.Item
+							label='Username'
+							name='user_name'
+							rules={[{ required: false, message: 'Username' }]}>
+							<Input 
+								placeholder='Username' 
+								name='user_name'
+								onChange={e => handleStateChange(e, 'gtz_new_api')}
+
+							/>
+						</Form.Item>
+						<Form.Item
+							label='Password'
+							name='password'
+							rules={[{ required: false, message: 'Password' }]}>
+							<Input 
+								type='text' 
+								placeholder='Password' 
+								name='password'
+								onChange={e => handleStateChange(e, 'gtz_new_api')}
+							/>
+						</Form.Item>
 						</>
 					)}
 					<PromoCodeField />
