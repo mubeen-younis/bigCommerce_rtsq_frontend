@@ -1,14 +1,21 @@
-import { useCallback, useState } from 'react'
-import { Select, Row, Col, Form } from 'antd'
+import { useCallback, useEffect, useState } from 'react'
+import { Select, Row, Col, Form, Input } from 'antd'
 import DeliveryEstimateOptions from '../../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../../CutOffTime'
 import LiftGateDelivery from '../../../../LiftGateDelivery'
 import NotifyBeforeDelivery from '../../../../NotifyBeforeDelivery'
-import RatingMethod from '../../../WweLtl/RatingMethod'
 import LimitedAccessSettings from '../../../../LimitedAccessSettings'
 import InsideDeliverySettings from '../../../../InsideDeliverySettings'
 import RadPickup from '../../../../RadPickup'
+import { LableAsLimit } from '../../../../../Utilities/numberValidation'
 const { Option } = Select
+
+const initialSettings = {
+	new_api_method: '1',
+	new_api_number_of_options: '1',
+	new_api_label_as: '',
+	new_api_average_rate_label: '',
+}
 
 const GtzNewApi = ({
     props,
@@ -17,6 +24,13 @@ const GtzNewApi = ({
 	radStatus,
 }) => {
     const [ratingMethod, setRatingMethod] = useState(1)
+
+    useEffect(() => {
+      setQuoteSettingsState((prevState) => ({
+        ...initialSettings,
+        ...prevState,
+      }))
+    }, [setQuoteSettingsState])
 
 	const handleStateChange = useCallback(
 		(name, value) => {
@@ -30,13 +44,175 @@ const GtzNewApi = ({
 
 	return (
 		<>
-            <RatingMethod
-                props={props}
-                quoteSettingsState={quoteSettingsState}
-                handleChange={handleStateChange}
-                ratingMethod={ratingMethod}
-                setRatingMethod={setRatingMethod}
-            />
+        <Row gutter={30} className={'mb-3'}>
+						<Col
+							className='gutter-row'
+							style={{ paddingTop: '11px' }}
+							xs={24}
+							sm={24}
+							md={24}
+							lg={24}
+							xl={6}>
+							<label className={'text-gray'}>Rating Method</label>
+						</Col>
+
+						<Col
+							className='gutter-row'
+							xs={24}
+							sm={24}
+							md={24}
+							lg={24}
+							xl={18}>
+							<Form.Item className={'mb-0'} name='new_api_method'>
+								<Select
+									defaultValue='1'
+									onChange={(opt) =>
+										setQuoteSettingsState((prevState) => ({
+											...prevState,
+											new_api_method: opt,
+										}))
+									}>
+									<Option value='1'>Cheapest</Option>
+									<Option value='2'>Cheapest Options</Option>
+									<Option value='3'>Average Rate</Option>
+								</Select>
+							</Form.Item>
+							<div className={'text-gray'}>
+								{quoteSettingsState?.new_api_method === '1' &&
+									'Displays a least expensive option.'}
+								{quoteSettingsState?.new_api_method === '2' &&
+									'Displays a list of a specified number of least expensive options.'}
+								{quoteSettingsState?.new_api_method === '3' &&
+									'Displays a single rate based on an average of a specified number of least expensive options.'}
+							</div>
+						</Col>
+					</Row>
+
+          {['2', '3'].includes(quoteSettingsState?.new_api_method) && (
+						<Row gutter={30} className={'mb-3'}>
+							<Col
+								className='gutter-row'
+								style={{ paddingTop: '11px' }}
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={6}>
+								<label className={'text-gray'}>
+									Number Of Options
+								</label>
+							</Col>
+
+							<Col
+								className='gutter-row'
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={18}>
+								<Form.Item
+									className={'mb-0'}
+									name='new_api_number_of_options'>
+									<Select
+										defaultValue='1'
+										value={quoteSettingsState?.new_api_number_of_options}
+										onChange={(opt) =>
+											setQuoteSettingsState((prevState) => ({
+												...prevState,
+												new_api_number_of_options: opt,
+											}))
+										}>
+										{Array.from({ length: 10 }, (_, i) => (
+											<Option
+												value={(i + 1).toString()}
+												key={i}>
+												{(i + 1).toString()}
+											</Option>
+										))}
+									</Select>
+								</Form.Item>
+								<div className={'text-gray'}>
+									{quoteSettingsState?.new_api_method === '2' &&
+										'Number of options to display in the shopping cart.'}
+									{quoteSettingsState?.new_api_method === '3' &&
+										'Number of options to include in the calculation of the average.'}
+								</div>
+							</Col>
+						</Row>
+					)}
+
+					{['1', '3'].includes(quoteSettingsState?.new_api_method) && (
+						<Row gutter={30} className={'mb-3'}>
+							<Col
+								className='gutter-row'
+								style={{ paddingTop: '11px' }}
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={6}>
+								<label className={'text-gray'}>Label As</label>
+							</Col>
+							<Col
+								className='gutter-row'
+								xs={24}
+								sm={24}
+								md={24}
+								lg={24}
+								xl={18}>
+								{+quoteSettingsState?.new_api_method === 1 && (
+									<Form.Item
+										className={'mb-0'}
+										name='new_api_label_as'>
+										<Input
+											value={
+												quoteSettingsState?.new_api_label_as ||
+												''
+											}
+											onKeyDown={LableAsLimit}
+											onChange={(e) =>
+												setQuoteSettingsState(
+													(prevState) => ({
+														...prevState,
+														new_api_label_as:
+															e.target.value,
+													})
+												)
+											}
+										/>
+									</Form.Item>
+								)}
+								{+quoteSettingsState?.new_api_method === 3 && (
+									<Form.Item
+										className={'mb-0'}
+										name='new_api_average_rate_label'>
+										<Input
+											value={
+												quoteSettingsState?.new_api_average_rate_label ||
+												''
+											}
+											onKeyDown={LableAsLimit}
+											onChange={(e) =>
+												setQuoteSettingsState(
+													(prevState) => ({
+														...prevState,
+														new_api_average_rate_label:
+															e.target.value,
+													})
+												)
+											}
+										/>
+									</Form.Item>
+								)}
+								<div className={'text-gray'}>
+									{quoteSettingsState?.new_api_method === '1' &&
+										'What the user sees during checkout, e.g. "Freight". Leave blank to display the carrier name.'}
+									{quoteSettingsState?.new_api_method === '3' &&
+										'What the user sees during checkout, e.g. "Freight". If left blank will default to "Freight".'}
+								</div>
+							</Col>
+						</Row>
+					)}
 
 			<DeliveryEstimateOptions
 				quoteSettingsState={quoteSettingsState}
