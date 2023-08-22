@@ -11,10 +11,9 @@ import { LableAsLimit } from '../../../../../Utilities/numberValidation'
 const { Option } = Select
 
 const initialSettings = {
-	new_api_method: '1',
-	new_api_number_of_options: '1',
-	new_api_label_as: '',
-	new_api_average_rate_label: '',
+	method: '1',
+	number_of_options: '1',
+	label_as: '',
 }
 
 const GtzNewApi = ({
@@ -23,7 +22,6 @@ const GtzNewApi = ({
 	setQuoteSettingsState,
 	radStatus,
 }) => {
-    const [ratingMethod, setRatingMethod] = useState(1)
 
     useEffect(() => {
       setQuoteSettingsState((prevState) => ({
@@ -63,13 +61,13 @@ const GtzNewApi = ({
 							md={24}
 							lg={24}
 							xl={18}>
-							<Form.Item className={'mb-0'} name='new_api_method'>
+							<Form.Item className={'mb-0'} name='method'>
 								<Select
 									defaultValue='1'
 									onChange={(opt) =>
 										setQuoteSettingsState((prevState) => ({
 											...prevState,
-											new_api_method: opt,
+											method: opt,
 										}))
 									}>
 									<Option value='1'>Cheapest</Option>
@@ -78,17 +76,17 @@ const GtzNewApi = ({
 								</Select>
 							</Form.Item>
 							<div className={'text-gray'}>
-								{quoteSettingsState?.new_api_method === '1' &&
+								{quoteSettingsState?.method === '1' &&
 									'Displays a least expensive option.'}
-								{quoteSettingsState?.new_api_method === '2' &&
+								{quoteSettingsState?.method === '2' &&
 									'Displays a list of a specified number of least expensive options.'}
-								{quoteSettingsState?.new_api_method === '3' &&
+								{quoteSettingsState?.method === '3' &&
 									'Displays a single rate based on an average of a specified number of least expensive options.'}
 							</div>
 						</Col>
 					</Row>
 
-          {['2', '3'].includes(quoteSettingsState?.new_api_method) && (
+          {['2', '3'].includes(quoteSettingsState?.method) && (
 						<Row gutter={30} className={'mb-3'}>
 							<Col
 								className='gutter-row'
@@ -112,14 +110,14 @@ const GtzNewApi = ({
 								xl={18}>
 								<Form.Item
 									className={'mb-0'}
-									name='new_api_number_of_options'>
+									name='number_of_options'>
 									<Select
 										defaultValue='1'
-										value={quoteSettingsState?.new_api_number_of_options}
+										value={quoteSettingsState?.number_of_options}
 										onChange={(opt) =>
 											setQuoteSettingsState((prevState) => ({
 												...prevState,
-												new_api_number_of_options: opt,
+												number_of_options: opt,
 											}))
 										}>
 										{Array.from({ length: 10 }, (_, i) => (
@@ -132,16 +130,16 @@ const GtzNewApi = ({
 									</Select>
 								</Form.Item>
 								<div className={'text-gray'}>
-									{quoteSettingsState?.new_api_method === '2' &&
+									{quoteSettingsState?.method === '2' &&
 										'Number of options to display in the shopping cart.'}
-									{quoteSettingsState?.new_api_method === '3' &&
+									{quoteSettingsState?.method === '3' &&
 										'Number of options to include in the calculation of the average.'}
 								</div>
 							</Col>
 						</Row>
 					)}
 
-					{['1', '3'].includes(quoteSettingsState?.new_api_method) && (
+					{['1', '3'].includes(quoteSettingsState?.method) && (
 						<Row gutter={30} className={'mb-3'}>
 							<Col
 								className='gutter-row'
@@ -160,13 +158,13 @@ const GtzNewApi = ({
 								md={24}
 								lg={24}
 								xl={18}>
-								{+quoteSettingsState?.new_api_method === 1 && (
+								{(+quoteSettingsState?.method === 1 || +quoteSettingsState?.method === 3) && (
 									<Form.Item
 										className={'mb-0'}
-										name='new_api_label_as'>
+										name='label_as'>
 										<Input
 											value={
-												quoteSettingsState?.new_api_label_as ||
+												quoteSettingsState?.label_as ||
 												''
 											}
 											onKeyDown={LableAsLimit}
@@ -174,29 +172,7 @@ const GtzNewApi = ({
 												setQuoteSettingsState(
 													(prevState) => ({
 														...prevState,
-														new_api_label_as:
-															e.target.value,
-													})
-												)
-											}
-										/>
-									</Form.Item>
-								)}
-								{+quoteSettingsState?.new_api_method === 3 && (
-									<Form.Item
-										className={'mb-0'}
-										name='new_api_average_rate_label'>
-										<Input
-											value={
-												quoteSettingsState?.new_api_average_rate_label ||
-												''
-											}
-											onKeyDown={LableAsLimit}
-											onChange={(e) =>
-												setQuoteSettingsState(
-													(prevState) => ({
-														...prevState,
-														new_api_average_rate_label:
+														label_as:
 															e.target.value,
 													})
 												)
@@ -205,9 +181,9 @@ const GtzNewApi = ({
 									</Form.Item>
 								)}
 								<div className={'text-gray'}>
-									{quoteSettingsState?.new_api_method === '1' &&
+									{quoteSettingsState?.method === '1' &&
 										'What the user sees during checkout, e.g. "Freight". Leave blank to display the carrier name.'}
-									{quoteSettingsState?.new_api_method === '3' &&
+									{quoteSettingsState?.method === '3' &&
 										'What the user sees during checkout, e.g. "Freight". If left blank will default to "Freight".'}
 								</div>
 							</Col>
