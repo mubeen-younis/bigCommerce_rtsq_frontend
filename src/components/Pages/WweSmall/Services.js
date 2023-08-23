@@ -10,23 +10,26 @@ const Services = ({
 	allCheckHandler,
 	onChange,
 	onCheck,
+	uniShipperSmallApiType,
 }) => {
 	return (
-		<>
-			<Row gutter={24} align='middle' className={'mb-4'}>
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<Title level={4}>WWE Services</Title>
-				</Col>
+		<>	
+			{uniShipperSmallApiType == 'new_api' ? (null) : (
+				<Row gutter={24} align='middle' className={'mb-4'}>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+						<Title level={4}>WWE Services</Title>
+					</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<label className={'text-black'}>
-						The services selected will display in the cart if they are
-						available for the origin and destination addresses, and if
-						the WWE Small Package Quotes API has been enabled for the
-						corresponding shipping zone.
-					</label>
-				</Col>
-			</Row>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+						<label className={'text-black'}>
+							The services selected will display in the cart if they are
+							available for the origin and destination addresses, and if
+							the WWE Small Package Quotes API has been enabled for the
+							corresponding shipping zone.
+						</label>
+					</Col>
+				</Row>
+			)}
 
 			<Row gutter={24} className='mb-2'>
 				<Col

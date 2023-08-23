@@ -983,6 +983,12 @@ const Reducer = (state = initialState, action) => {
 				UpsLtlApiType: action.payload,
 			}
 
+		case types.SET_UNISHIPPER_API_TYPE:
+			return {
+				...state,
+				uniShipperSmallApiType: action.payload,
+			}
+
 		case types.GET_RAD_SETTINGS:
 		case types.SET_RAD_SETTINGS:
 			return {

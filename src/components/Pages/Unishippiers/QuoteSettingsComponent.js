@@ -15,6 +15,8 @@ import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 import ErrorManagment from '../../ErrorManagment'
+import { useSelector } from 'react-redux'
+import Services from '../WweSmall/Services'
 
 const { Title } = Typography
 const initialState = {
@@ -27,6 +29,8 @@ const initialState = {
 		ups_2nd_day_air_am: false,
 		ups_3_day_select: false,
 		ups_ground: false,
+		ups_2nd_day_air_saver: false,
+		ups_next_day_air_early: false,
 		ups_ground_residential_delivery: false,
 		ups_next_day_air_saturday: false,
 		ups_next_day_air_early_am_saturday: false,
@@ -75,6 +79,7 @@ function QuoteSettingsComponentWweSmall(props) {
 	const [internationalcheckAll, setInternationalCheckAll] = useState(false)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
+	const {uniShipperSmallApiType} = useSelector(state => state)
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -90,6 +95,8 @@ function QuoteSettingsComponentWweSmall(props) {
 			checks?.ups_next_day_air_saver &&
 			checks?.ups_next_day_air_early_am &&
 			checks?.ups_2nd_day_air &&
+			checks?.ups_2nd_day_air_saver &&
+			checks?.ups_next_day_air_early &&
 			checks?.ups_2nd_day_air_am &&
 			checks?.ups_3_day_select &&
 			checks?.ups_ground &&
@@ -140,6 +147,8 @@ function QuoteSettingsComponentWweSmall(props) {
 			ups_next_day_air_early_am:
 				quoteSettingsState?.carrier_services?.ups_next_day_air_early_am,
 			ups_2nd_day_air: quoteSettingsState?.carrier_services?.ups_2nd_day_air,
+			ups_2nd_day_air_saver: quoteSettingsState?.carrier_services?.ups_2nd_day_air_saver,
+			ups_next_day_air_early: quoteSettingsState?.carrier_services?.ups_next_day_air_early,
 			ups_2nd_day_air_am:
 				quoteSettingsState?.carrier_services?.ups_2nd_day_air_am,
 			ups_3_day_select: quoteSettingsState?.carrier_services?.ups_3_day_select,
@@ -191,6 +200,8 @@ function QuoteSettingsComponentWweSmall(props) {
 				ups_next_day_air_saver: !checkAll,
 				ups_next_day_air_early_am: !checkAll,
 				ups_2nd_day_air: !checkAll,
+				ups_2nd_day_air_saver: !checkAll,
+				ups_next_day_air_early: !checkAll,
 				ups_2nd_day_air_am: !checkAll,
 				ups_3_day_select: !checkAll,
 				ups_ground: !checkAll,
@@ -221,6 +232,7 @@ function QuoteSettingsComponentWweSmall(props) {
 		let CS = quoteSettingsState?.carrier_services ?? {}
 		let checkCS =
 			CS?.ups_2nd_day_air ||
+			CS?.ups_2nd_day_air_saver ||
 			CS?.ups_2nd_day_air_am ||
 			CS?.ups_3_day_select ||
 			CS?.ups_ground ||
@@ -466,7 +478,19 @@ function QuoteSettingsComponentWweSmall(props) {
 						</label>
 					</Col>
 				</Row>
-
+				{uniShipperSmallApiType == 'new_api' ? (
+					<>
+						{/* UNISHIPPERS NEW API SERVICES */}
+						<Services
+							quoteSettingsState={quoteSettingsState}
+							checkAll={checkAll}
+							allCheckHandler={allCheckHandler}
+							onChange={onChange}
+							onCheck={onCheck}
+							uniShipperSmallApiType={uniShipperSmallApiType}
+						/>
+					</>
+				) : (
 				<Row className={'mb-2'}>
 					<DomesticServices
 						quoteSettingsState={quoteSettingsState}
@@ -483,6 +507,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						onCheck={onCheck}
 					/>
 				</Row>
+				)}
 
 				<Row className={'mb-2'}></Row>
 				<DeliveryEstimateOptions
