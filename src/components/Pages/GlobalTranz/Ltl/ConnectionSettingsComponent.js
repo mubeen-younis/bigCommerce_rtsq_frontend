@@ -61,7 +61,7 @@ function ConnectionSettingsComponent(props) {
 
 			dispatch({
 				type: 'SET_CARRIER_TYPE',
-				payload: props.connectionSettings?.api_type || 'GTZ',
+				payload: props.connectionSettings?.api_type || 'NEWAPI',
 			})
 		}
 

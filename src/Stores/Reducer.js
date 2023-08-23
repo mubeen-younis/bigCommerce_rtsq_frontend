@@ -33,10 +33,11 @@ const initialState = {
 	importIndexes: null,
 	plans: null,
 	store: null,
-	carrier_type: 'GTZ',
+	carrier_type: 'NEWAPI',
 	gtzCarriers: {
 		GTZ: [],
 		CRS: [],
+		NEWAPI: [],
 	},
 	insuranceStatus: false,
 	productBoxes: null,
