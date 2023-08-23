@@ -18,10 +18,14 @@ function ConnectionSettingsComponent(props) {
 			if(!(connectionSettings?.api_type) && (connectionSettings?.carrierId)){
 				connectionSettings['api_type'] = 'legacy_api'
 			}
-
+			// TODO: Remove below condition to enable new api on UI
+			if((connectionSettings?.api_type === 'new_api') && (connectionSettings?.carrierId)){
+				connectionSettings['api_type'] = 'legacy_api'
+			}
+			// TODO: In case of new api pass 'new_api' instead of 'legacy_api' in dispatch()
 			dispatch({
 				type: types.SET_UPS_LTL_API_TYPE,
-				payload: connectionSettings?.api_type ?? 'new_api',
+				payload: connectionSettings?.api_type ?? 'legacy_api',
 			})
 		}
 	}, [connectionSettings, dispatch])
@@ -66,6 +70,7 @@ function ConnectionSettingsComponent(props) {
 				}}
 				onFinish={onFinish}
 			>
+				{/* TODO: Uncommit this code to select new api from dropdown
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>
 					<Select
 						defaultValue={!connectionSettings?.api_type && connectionSettings?.carrierId ? 'legacy_api' : 'new_api'}
@@ -80,7 +85,7 @@ function ConnectionSettingsComponent(props) {
 							})
 						}
 					/>
-				</Form.Item>
+				</Form.Item> */}
 
 				{ UpsLtlApiType == 'new_api' ? (
 					<>
@@ -136,13 +141,14 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 
 				<Form.Item
-					label='UPS API Access Key'
+					label='API Access Key'
 					name='ups_api_access_key'
-					rules={[{ required: true, message: 'UPS API Access Key' }]}
+					rules={[{ required: true, message: 'API Access Key' }]}
 				>
-					<Input placeholder='UPS API Access Key' />
+					<Input placeholder='API Access Key' />
 				</Form.Item>
 
+				{/* Remove the "Access Level" setting mentioned in Ticket#1846800919
 				<Form.Item
 					name='access_level'
 					label='Access Level'
@@ -152,7 +158,7 @@ function ConnectionSettingsComponent(props) {
 						<Radio value='test'>Testing</Radio>
 						<Radio value='pro'>Production</Radio>
 					</Radio.Group>
-				</Form.Item>
+				</Form.Item> */}
 
 				<Form.Item
 					name='rates_my_freight_based'
