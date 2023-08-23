@@ -11,9 +11,11 @@ import { LableAsLimit } from '../../../../../Utilities/numberValidation'
 const { Option } = Select
 
 const initialSettings = {
-	method: '1',
+	new_api_rating_method: '1',
 	number_of_options: '1',
 	label_as: '',
+	own_arrangement: 0,
+  	own_arrangement_text: '',
 }
 
 const GtzNewApi = ({
@@ -61,13 +63,13 @@ const GtzNewApi = ({
 							md={24}
 							lg={24}
 							xl={18}>
-							<Form.Item className={'mb-0'} name='method'>
+							<Form.Item className={'mb-0'} name='new_api_rating_method'>
 								<Select
 									defaultValue='1'
 									onChange={(opt) =>
 										setQuoteSettingsState((prevState) => ({
 											...prevState,
-											method: opt,
+											new_api_rating_method: opt,
 										}))
 									}>
 									<Option value='1'>Cheapest</Option>
@@ -76,17 +78,17 @@ const GtzNewApi = ({
 								</Select>
 							</Form.Item>
 							<div className={'text-gray'}>
-								{quoteSettingsState?.method === '1' &&
+								{quoteSettingsState?.new_api_rating_method === '1' &&
 									'Displays a least expensive option.'}
-								{quoteSettingsState?.method === '2' &&
+								{quoteSettingsState?.new_api_rating_method === '2' &&
 									'Displays a list of a specified number of least expensive options.'}
-								{quoteSettingsState?.method === '3' &&
+								{quoteSettingsState?.new_api_rating_method === '3' &&
 									'Displays a single rate based on an average of a specified number of least expensive options.'}
 							</div>
 						</Col>
 					</Row>
 
-          {['2', '3'].includes(quoteSettingsState?.method) && (
+          {['2', '3'].includes(quoteSettingsState?.new_api_rating_method) && (
 						<Row gutter={30} className={'mb-3'}>
 							<Col
 								className='gutter-row'
@@ -130,16 +132,16 @@ const GtzNewApi = ({
 									</Select>
 								</Form.Item>
 								<div className={'text-gray'}>
-									{quoteSettingsState?.method === '2' &&
+									{quoteSettingsState?.new_api_rating_method === '2' &&
 										'Number of options to display in the shopping cart.'}
-									{quoteSettingsState?.method === '3' &&
+									{quoteSettingsState?.new_api_rating_method === '3' &&
 										'Number of options to include in the calculation of the average.'}
 								</div>
 							</Col>
 						</Row>
 					)}
 
-					{['1', '3'].includes(quoteSettingsState?.method) && (
+					{['1', '3'].includes(quoteSettingsState?.new_api_rating_method) && (
 						<Row gutter={30} className={'mb-3'}>
 							<Col
 								className='gutter-row'
@@ -158,7 +160,7 @@ const GtzNewApi = ({
 								md={24}
 								lg={24}
 								xl={18}>
-								{(+quoteSettingsState?.method === 1 || +quoteSettingsState?.method === 3) && (
+								{(+quoteSettingsState?.new_api_rating_method === 1 || +quoteSettingsState?.new_api_rating_method === 3) && (
 									<Form.Item
 										className={'mb-0'}
 										name='label_as'>
@@ -181,9 +183,9 @@ const GtzNewApi = ({
 									</Form.Item>
 								)}
 								<div className={'text-gray'}>
-									{quoteSettingsState?.method === '1' &&
+									{quoteSettingsState?.new_api_rating_method === '1' &&
 										'What the user sees during checkout, e.g. "Freight". Leave blank to display the carrier name.'}
-									{quoteSettingsState?.method === '3' &&
+									{quoteSettingsState?.new_api_rating_method === '3' &&
 										'What the user sees during checkout, e.g. "Freight". If left blank will default to "Freight".'}
 								</div>
 							</Col>
