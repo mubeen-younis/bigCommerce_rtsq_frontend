@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { Row, Col, Form, Input, Skeleton } from 'antd'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
 import {
@@ -12,8 +12,10 @@ import CutOffTime from '../../CutOffTime'
 import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
-import Services from './Services'
 import ErrorManagment from '../../ErrorManagment'
+import InternationalServices from './Services/InternationalServices'
+import DomesticServices from './Services/DomesticServices'
+import Title from 'antd/lib/typography/Title'
 
 const initialState = {
 	carrier_services: {
@@ -25,6 +27,11 @@ const initialState = {
 		ups_next_day_air_saver: false,
 		ups_next_day_air: false,
 		ups_next_day_air_early: false,
+		ups_standard: false,
+		ups_worldwide_expedited: false,
+		ups_worldwide_saver: false,
+		ups_worldwide_express: false,
+    	ups_worldwide_express_plus: false,
 		ups_ground_markup: '',
 		ups_3_day_select_markup: '',
 		ups_2nd_day_air_markup: '',
@@ -33,6 +40,11 @@ const initialState = {
 		ups_next_day_air_saver_markup: '',
 		ups_next_day_air_markup: '',
 		ups_next_day_air_early_markup: '',
+		ups_standard_markup: '',
+		ups_worldwide_expedited_markup: '',
+		ups_worldwide_saver_markup: '',
+		ups_worldwide_express_markup: '',
+    	ups_worldwide_express_plus_markup: '',
 	},
 	showDeliveryEstimate: false,
 	delivery_estimate_options: 1,
@@ -56,8 +68,10 @@ const initialState = {
 function QuoteSettingsComponentWweSmall(props) {
 	const [loading, setLoading] = useState(true)
 	const [checkAll, setCheckAll] = useState(false)
+	const [internationalcheckAll, setInternationalCheckAll] = useState(false);
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
+	const {uniShipperSmallApiType, WweSmallApiType} = useSelector(state => state)
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -79,6 +93,16 @@ function QuoteSettingsComponentWweSmall(props) {
 			checks?.ups_next_day_air_early
 		) {
 			setCheckAll(true)
+		}
+
+		if (
+			checks?.ups_standard &&
+			checks?.ups_worldwide_expedited &&
+			checks?.ups_worldwide_saver &&
+			checks?.ups_worldwide_express &&
+			checks?.ups_worldwide_express_plus
+		  ) {
+			setInternationalCheckAll(true);
 		}
 
 		setQuoteSettingsState({ ...quoteSettingsState, ...props.quoteSettings })
@@ -128,6 +152,27 @@ function QuoteSettingsComponentWweSmall(props) {
 
 		const isCheckedAll = Object.values(checks).every(ck => ck)
 		setCheckAll(isCheckedAll)
+
+		const internationalChecks = {
+			ups_standard:
+			  quoteSettingsState?.carrier_services?.ups_standard,
+			ups_worldwide_expedited:
+			  quoteSettingsState?.carrier_services?.ups_worldwide_expedited,
+			ups_worldwide_saver:
+			  quoteSettingsState?.carrier_services?.ups_worldwide_saver,
+			ups_worldwide_express:
+			  quoteSettingsState?.carrier_services?.ups_worldwide_express,
+			ups_worldwide_express_plus:
+			  quoteSettingsState?.carrier_services?.ups_worldwide_express_plus,
+		  };
+	  
+		  if (Object.keys(internationalChecks).includes(e.target.name)) {
+			internationalChecks[e.target.name] = e.target.checked;
+			const internationalIsCheckAll = Object.values(internationalChecks).every(
+			  (ck) => ck
+			);
+			setInternationalCheckAll(internationalIsCheckAll);
+		  }
 	}
 
 	const allCheckHandler = () => {
@@ -149,6 +194,22 @@ function QuoteSettingsComponentWweSmall(props) {
 		})
 	}
 
+	const internationalAllCheckHandler = (checked) => {
+		setInternationalCheckAll(checked);
+	
+		setQuoteSettingsState({
+		  ...quoteSettingsState,
+		  carrier_services: {
+			...quoteSettingsState.carrier_services,
+			ups_standard: checked,
+			ups_worldwide_expedited: checked,
+			ups_worldwide_saver: checked,
+			ups_worldwide_express: checked,
+			ups_worldwide_express_plus: checked,
+		  },
+		});
+	  };
+
 	const onFinish = data => {
 		let CS = quoteSettingsState?.carrier_services ?? {}
 		let checkCS =
@@ -160,6 +221,23 @@ function QuoteSettingsComponentWweSmall(props) {
 			CS?.ups_next_day_air ||
 			CS?.ups_next_day_air_early ||
 			CS?.ups_next_day_air_saver
+
+		if(WweSmallApiType === 'new_api'){
+			checkCS =
+			CS?.ups_2nd_day_air ||
+			CS?.ups_2nd_day_air_am ||
+			CS?.ups_2nd_day_air_saver ||
+			CS?.ups_3_day_select ||
+			CS?.ups_ground ||
+			CS?.ups_next_day_air ||
+			CS?.ups_next_day_air_early ||
+			CS?.ups_next_day_air_saver ||
+			CS?.ups_standard ||
+      		CS?.ups_worldwide_expedited ||
+      		CS?.ups_worldwide_saver ||
+      		CS?.ups_worldwide_express ||
+      		CS?.ups_worldwide_express_plus;
+		}
 
 		let errormsg = validateHandlingFeeMarkup(
 			quoteSettingsState?.carrier_services?.ups_ground_markup,
@@ -199,6 +277,31 @@ function QuoteSettingsComponentWweSmall(props) {
 		errormsg += validateHandlingFeeMarkup(
 			quoteSettingsState?.carrier_services?.ups_next_day_air_early_markup,
 			'UPS Next Day Air Early markup',
+			true
+		)
+		errormsg += validateHandlingFeeMarkup(
+			quoteSettingsState?.carrier_services?.ups_standard_markup,
+			'UPS Standard markup',
+			true
+		)
+		errormsg += validateHandlingFeeMarkup(
+			quoteSettingsState?.carrier_services?.ups_worldwide_expedited_markup,
+			'UPS Worldwide Expedited markup',
+			true
+		)
+		errormsg += validateHandlingFeeMarkup(
+			quoteSettingsState?.carrier_services?.ups_worldwide_saver_markup,
+			'UPS Worldwide Saver markup',
+			true
+		)
+		errormsg += validateHandlingFeeMarkup(
+			quoteSettingsState?.carrier_services?.ups_worldwide_express_markup,
+			'UPS Worldwide Express markup',
+			true
+		)
+		errormsg += validateHandlingFeeMarkup(
+			quoteSettingsState?.carrier_services?.ups_worldwide_express_plus_markup,
+			'UPS Worldwide Express Plus markup',
 			true
 		)
 		errormsg += validateHandlingFeeMarkup(
@@ -277,14 +380,41 @@ function QuoteSettingsComponentWweSmall(props) {
 				size={'large'}
 				onFinish={onFinish}
 				initialValues={props.quoteSettings}>
+				{uniShipperSmallApiType == 'new_api' ? (null) : (
+				<Row gutter={24} align='middle' className={'mb-4'}>
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+						<Title level={4}>WWE Services</Title>
+					</Col>
+
+					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+						<label className={'text-black'}>
+							The services selected will display in the cart if they are
+							available for the origin and destination addresses, and if
+							the WWE Small Package Quotes API has been enabled for the
+							corresponding shipping zone.
+						</label>
+					</Col>
+				</Row>
+			)}
 				{/* WWE SERVICES */}
-				<Services
-					quoteSettingsState={quoteSettingsState}
-					checkAll={checkAll}
-					allCheckHandler={allCheckHandler}
-					onChange={onChange}
-					onCheck={onCheck}
-				/>
+				<Row className={'mb-2'}>
+          			<DomesticServices
+            			quoteSettingsState={quoteSettingsState}
+            			checkAll={checkAll}
+            			allCheckHandler={allCheckHandler}
+            			onCheck={onCheck}
+            			onChange={onChange}
+          			/>
+		  			{WweSmallApiType === 'new_api' && (
+					<InternationalServices
+            			quoteSettingsState={quoteSettingsState}	
+            			internationalcheckAll={internationalcheckAll}
+            			internationalAllCheckHandler={internationalAllCheckHandler}
+            			onChange={onChange}
+            			onCheck={onCheck}
+					/>)}
+          
+        		</Row>
 
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
