@@ -23,6 +23,7 @@ function ConnectionSettingsComponent(props) {
 		skeleton_loading: true,
 	})
 	const [apiType, setApiType] = useState('GTZ')
+	const [isNewApi, setIsNewApi] = useState(false)
 	const [state, setState] = useState({
 		global_tranz: initialValues,
 		cerasis: initialValues,
@@ -31,7 +32,7 @@ function ConnectionSettingsComponent(props) {
 	})
 	const dispatch = useDispatch()
 	const [form] = Form.useForm()
-	const { fdoCouponInfo, fdoCouponCarrierInfo, token, carrier_type } = useSelector(
+	const { fdoCouponInfo, fdoCouponCarrierInfo, token, carrier_type, carrierId } = useSelector(
 		state => state
 	)
 	const [mounted, setMounted] = useState(false)
@@ -44,7 +45,12 @@ function ConnectionSettingsComponent(props) {
 			Object.keys(props.connectionSettings).length > 1
 		) {
 
-			props.connectionSettings?.api_type == 'GTZ' ? setApiType('GTZ') :  props.connectionSettings?.api_type == 'CRS' ? setApiType('CRS') : setApiType('NEWAPI')
+			if(props.connectionSettings?.carrierId !== carrierId){
+				props.connectionSettings.api_type = 'NEWAPI'
+				setIsNewApi(true)
+			}
+
+			props.connectionSettings?.api_type == 'NEWAPI' ? setApiType('NEWAPI') :  props.connectionSettings?.api_type == 'CRS' ? setApiType('CRS') : setApiType('GTZ')
 			setState({
 				global_tranz: {
 					...initialValues,
@@ -54,14 +60,14 @@ function ConnectionSettingsComponent(props) {
 				gtz_new_api: { ...initialValues, ...props.connectionSettings?.gtz_new_api },
 				promo_code: props?.connectionSettings?.promo_code || '',
 			})
-			setConnectionState(prevState => ({
+			setConnectionState(prevState => ({	
 				...prevState,
 				skeleton_loading: false,
 			}))
 
 			dispatch({
 				type: 'SET_CARRIER_TYPE',
-				payload: props.connectionSettings?.api_type || 'NEWAPI',
+				payload: props.connectionSettings?.api_type || 'GTZ',
 			})
 		}
 
@@ -103,6 +109,7 @@ function ConnectionSettingsComponent(props) {
 			...state,
 			...values,
 		}
+		values['api_type'] = isNewApi ? 'NEWAPI' : apiType
 
 		if (fdoCouponCarrierInfo)
 			values.is_enabled = fdoCouponCarrierInfo.is_enabled ?? false
@@ -140,7 +147,7 @@ function ConnectionSettingsComponent(props) {
 				? { ...state.global_tranz, promo_code: state.promo_code }
 				: apiType === 'CRS' ? { ...state.cerasis, promo_code: state.promo_code }
 				: { ...state.gtz_new_api, promo_code: state.promo_code },
-		[apiType, state.cerasis, state.global_tranz, state.promo_code]
+		[apiType, state.cerasis, state.global_tranz, state.gtz_new_api, state.promo_code]
 	)
 
 	if (
@@ -196,6 +203,7 @@ function ConnectionSettingsComponent(props) {
 						name='api_type'>
 						<Select
 							defaultValue={apiType}
+							name='api_type'
 							value={apiType}
 							onChange={type => {
 								setApiType(type)
