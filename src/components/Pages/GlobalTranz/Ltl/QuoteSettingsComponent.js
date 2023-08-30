@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
-import { Form, Skeleton } from 'antd'
+import { Col, Form, Input, Row, Select, Skeleton } from 'antd'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
 import { getQuoteSettings } from '../../../../Actions/Settings'
@@ -10,6 +10,8 @@ import HandlingUnit from '../../../HandlingUnit'
 import SaveButton from '../../../SaveButton'
 import WeightThreshold from '../../../WeightThreshold'
 import ErrorManagment from '../../../ErrorManagment'
+import GtzNewApi from './QuoteSettings/GtzNewApi'
+import { Option } from 'rc-select'
 
 const initialState = {
   showDeliveryEstimate: false,
@@ -31,6 +33,10 @@ const initialState = {
   handling_free_markup: '',
   returnRates: false,
   weight_threshold: '150',
+  insurance_category: '84-General Merchandise',
+  number_of_options: 1,
+  own_arrangement: 0,
+  own_arrangement_text: '',
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -173,6 +179,15 @@ function QuoteSettingsComponentWwe(props) {
           />
         )}
 
+        {carrier_type === 'NEWAPI' && (
+          <GtzNewApi
+            props={props}
+            quoteSettingsState={quoteSettingsState}
+            setQuoteSettingsState={setQuoteSettingsState}
+            radStatus={radStatus}
+          />
+        )}
+
         <WeightThreshold
           quoteSettingsState={quoteSettingsState}
           handleStateChange={handleStateChange}
@@ -182,6 +197,79 @@ function QuoteSettingsComponentWwe(props) {
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
         />
+
+        {carrier_type === 'NEWAPI' && (
+          <>
+          <Row gutter={30} className={'mb-3'}>
+          <Col
+            className='gutter-row'
+            style={{ paddingTop: '11px' }}
+            xs={24}
+            sm={24}
+            md={24}
+            lg={24}
+            xl={6}
+          >
+            <label className={'text-gray'}>Allow For Own Arrangement</label>
+          </Col>
+          <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
+            <Form.Item className={'mb-0'} name='own_arrangement'>
+              <Select
+                defaultValue={
+                  quoteSettingsState.own_arrangement
+                    ? quoteSettingsState.own_arrangement
+                    : 'No'
+                }
+                size={'large'}
+                style={{ width: '100%' }}
+                onChange={(value) => {
+                  setQuoteSettingsState({
+                    ...quoteSettingsState,
+                    own_arrangement: value,
+                  })
+                }}
+              >
+                <Option value='0'>No</Option>
+                <Option value='1'>Yes</Option>
+              </Select>
+            </Form.Item>
+            <div className={'text-gray'}>
+              Adds an option in the shipping cart for users to indicate that
+              they will make and pay for their own LTL shipping arrangements.
+            </div>
+          </Col>
+        </Row>
+
+        {quoteSettingsState.own_arrangement === '1' && (
+          <Row gutter={30} className={'mb-3'}>
+            <Col
+              className='gutter-row'
+              style={{ paddingTop: '11px' }}
+              xs={24}
+              sm={24}
+              md={24}
+              lg={24}
+              xl={6}
+            >
+              <label className={'text-gray'}>Text for Own Arrangement</label>
+            </Col>
+            <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
+              <Form.Item className={'mb-0'} name='own_arrangement_text'>
+                <Input
+                  onChange={(e) =>
+                    setQuoteSettingsState({
+                      ...quoteSettingsState,
+                      own_arrangement_text: e.target.value,
+                    })
+                  }
+                  value={quoteSettingsState.own_arrangement_text}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
+        </>
+        )}
 
         <ErrorManagment
     			quoteSettingsState={quoteSettingsState}
