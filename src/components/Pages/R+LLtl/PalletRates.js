@@ -90,6 +90,7 @@ const PalletRates = ({
 								handleChange('pallet_weight', e.target.value)
 							}
 							type='number'
+							min={0}
 							onKeyDown={handlingFeeMarkup}
 						/>
 					</Form.Item>
