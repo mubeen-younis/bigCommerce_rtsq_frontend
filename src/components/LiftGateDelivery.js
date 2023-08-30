@@ -48,7 +48,7 @@ const LiftGateDelivery = ({
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 				<Title level={4}>Lift gate settings</Title>
 			</Col>
-			{(showLiftGatePickup || carrier_type === "NEWAPI") && (
+			{(showLiftGatePickup) && (
 				<>
 					<Col
 						className='gutter-row'

@@ -213,6 +213,7 @@ const GtzNewApi = ({
 				quoteSettingsState={quoteSettingsState}
 				setQuoteSettingsState={setQuoteSettingsState}
 				radStatus={radStatus}
+				showLiftGatePickup={true}
 			/>
 
 			<NotifyBeforeDelivery
