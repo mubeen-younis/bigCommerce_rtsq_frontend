@@ -53,12 +53,11 @@ function ConnectionSettingsComponent(props) {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have an LTL freight enabled UPS account to use
+				<strong>Note!</strong> You must have an LTL freight enabled TForce account to use
 				this application. If you do not have one, call 800-333-7400, or{' '}
 				<a href='https://www.ups.com/lasso/login' target='_blank' rel='noreferrer'>
-					register online
-				</a>{' '}
-				.
+					register 
+				</a> online.
 			</div>
 			<Form
 				layout='vertical'
