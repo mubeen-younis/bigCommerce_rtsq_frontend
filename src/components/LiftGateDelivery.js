@@ -16,7 +16,7 @@ const LiftGateDelivery = ({
 	sameDayApi = false,
 }) => {
 	const dispatch = useDispatch()
-	const { installedAddons, radSettings } = useSelector(state => state)
+	const { installedAddons, radSettings, carrier_type } = useSelector(state => state)
 	const [radAutoDetect, setRadAutoDetect] = useState(false)
 
 	useEffect(() => {
@@ -48,7 +48,7 @@ const LiftGateDelivery = ({
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 				<Title level={4}>Lift gate settings</Title>
 			</Col>
-			{showLiftGatePickup && (
+			{(showLiftGatePickup || carrier_type === "NEWAPI") && (
 				<>
 					<Col
 						className='gutter-row'

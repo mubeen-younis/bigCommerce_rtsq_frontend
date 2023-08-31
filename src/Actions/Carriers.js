@@ -105,6 +105,7 @@ export const getAddTabSettings = (token, carrierId, carrier_type = '') => {
 					payload: JSON.parse(data.data[0].value) ?? {
 						GTZ: [],
 						CRS: [],
+						NEWAPI: [],
 					},
 				})
 
