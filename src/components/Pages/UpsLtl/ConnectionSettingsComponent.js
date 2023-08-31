@@ -162,8 +162,8 @@ function ConnectionSettingsComponent(props) {
 
 				<Form.Item
 					name='rates_my_freight_based'
-					label='TForce rates my freight based on weight and '
-					rules={[{ required: true, message: 'TForce rates my freight based on weight' }]}
+					label='TForce rates my freight based on weight and... '
+					rules={[{ required: false, message: 'TForce rates my freight based on weight' }]}
 				>
 					<Radio.Group>
 						<Radio value={0}>Freight class</Radio>
