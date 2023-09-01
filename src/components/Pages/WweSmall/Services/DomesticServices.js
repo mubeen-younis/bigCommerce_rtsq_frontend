@@ -157,7 +157,7 @@ const DomesticServices = ({
 
       <Row gutter={24} align='middle' className={'mb-2'}>
         <Col span={12}>
-          <label className={'text-gray'}>UPS 2nd Day Air A.M.</label>
+          <label className={'text-gray'}>UPS 2nd Day Air Early</label>
         </Col>
         <Col span={12}>
           <Form.Item className={'mb-0'}>
