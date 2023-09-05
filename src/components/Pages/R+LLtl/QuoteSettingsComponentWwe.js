@@ -54,6 +54,8 @@ const initialState = {
   weight_threshold: '150',
   always_quote_notify: false,
   offer_notify_as_option: false,
+  pallet_code: 'No Pallet Selected',
+  pallet_weight: '',
 }
 
 function QuoteSettingsComponentWwe(props) {
