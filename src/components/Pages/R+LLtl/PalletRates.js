@@ -31,8 +31,8 @@ const PalletRates = ({
 						<Select
 							defaultValue={
 								quoteSettingsState &&
-								quoteSettingsState.pallet_code !== undefined
-								? quoteSettingsState.pallet_code
+								quoteSettingsState?.pallet_code !== undefined
+								? quoteSettingsState?.pallet_code
 								: 'No Pallet Selected'
 							}
 							size={'large'}
@@ -46,7 +46,7 @@ const PalletRates = ({
 								handleChange('pallet_code', value)
 							}>
 							{connectionSettings?.pallets
-								? connectionSettings.pallets.map(value => (
+								? connectionSettings?.pallets?.map(value => (
 									<Option
 										value={value.Code}
 										key={value.Code}
