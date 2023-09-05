@@ -72,20 +72,39 @@ function ConnectionSettingsComponent(props) {
 
 	return (
 		<Fragment>
-			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have a Unishippers (unishippers.com)
-				account to use this application. If you don’t have one, contact
-				Unishippers at 1-800-999-8721 and ask to be contacted by a sales
-				person from the office serving your area or{' '}
-				<a
-					href='https://www.unishippers.com/request-new-account/'
-					target='_blank'
-					rel='noreferrer'>
-					click here
-				</a>{' '}
-				to access the online new account request form.
-			</div>
-			<PromoCodeNote carrierName='Unishippers Small' />
+			{uniShipperSmallApiType === 'new_api' ? (
+				<>
+					<div className={'note-bx'}>
+						<strong>Note!</strong> You must have a Worldwide Express account to
+						use this application. If you do not have one, click{' '}
+						<a 
+						href='https://eniture.com/request-worldwide-express-account-number/'
+						target='_blank'
+						rel='noreferrer'>
+						here
+						</a>{' '}
+						to access the new account request form.
+					</div>
+					<PromoCodeNote carrierName='Worldwide Express Small' />
+				</>
+			) : (
+				<>
+					<div className={'note-bx'}>
+						<strong>Note!</strong> You must have a Unishippers (unishippers.com)
+						account to use this application. If you don’t have one, contact
+						Unishippers at 1-800-999-8721 and ask to be contacted by a sales
+						person from the office serving your area or{' '}
+						<a 
+						href='https://www.unishippers.com/request-new-account/'
+						target='_blank'
+						rel='noreferrer'>
+						click here
+						</a>{' '}
+						to access the online new account request form.
+					</div>
+					<PromoCodeNote carrierName='Unishippers Small' />
+				</>
+			)}	
 
 			<Form
 				layout='vertical'
@@ -124,6 +143,18 @@ function ConnectionSettingsComponent(props) {
 							rules={[{ required: true, message: 'Client Secret' }]}
 						>
 							<Input placeholder='Client Secret' maxLength={100}/>
+						</Form.Item>
+						<Form.Item
+							label='Username'
+							name='new_api_username'
+							rules={[{ required: false, message: 'Username' }]}>
+							<Input placeholder='Username' />
+						</Form.Item>
+						<Form.Item
+							label='Password'
+							name='new_api_password'
+							rules={[{ required: false, message: 'Password' }]}>
+							<Input type='text' placeholder='Password' />
 						</Form.Item>
 					</>
 				) : (
