@@ -205,6 +205,7 @@ function DisplayLogsPage(props) {
     carrier_type,
     packaging,
     allLogs,
+    uniShipperSmallApiType,
   } = useSelector(state => state)
   const [pagination, setPagination] = useState({
     current: 1,
@@ -227,8 +228,14 @@ function DisplayLogsPage(props) {
         const isSmall = carr?.carrier_type === 2 ? true : false
         setIsSmallCarr(isSmall)
 
-        if (carrier_type === "CRS") {
+        if (slug === 'gtz-ltl' && carrier_type === "CRS") {
           slug = "cltl"
+        }
+        if (slug === 'gtz-ltl' && carrier_type === "NEWAPI") {
+          slug = "gtz-new"
+        }
+        if (slug === 'unishippers-small' && uniShipperSmallApiType === "new_api") {
+          slug = "unishippers-small-new"
         }
       }
     })
@@ -297,7 +304,6 @@ function DisplayLogsPage(props) {
 
     const packaging_id = log["packaging_id"]
     const location_id = log["location_id"]
-    console.log(12,log)
 
     try {
       const url = `${process.env.REACT_APP_ENITURE_API_URL}/get_packaging`,
@@ -583,7 +589,7 @@ function DisplayLogsPage(props) {
 
   const sortLogs = useCallback(
     (a, b) => {
-      let lastProduct = allLogs[allLogs.length - 1]
+      let lastProduct = allLogs[allLogs?.length - 1]
       let checkId = isFireFox() ? b?.id : a?.id
       if (lastProduct?.id === checkId) {
         setCountSorting(countSorting + 1)
