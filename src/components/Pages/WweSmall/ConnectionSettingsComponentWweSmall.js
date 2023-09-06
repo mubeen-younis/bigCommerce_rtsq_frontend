@@ -119,6 +119,18 @@ function ConnectionSettingsComponent(props) {
 						>
 							<Input placeholder='Client Secret' maxLength={100}/>
 						</Form.Item>
+						<Form.Item
+							label='Username'
+							name='new_api_username'
+							rules={[{ required: false, message: 'Username' }]}>
+							<Input placeholder='Username' />
+						</Form.Item>
+						<Form.Item
+							label='Password'
+							name='new_api_password'
+							rules={[{ required: false, message: 'Password' }]}>
+							<Input type='text' placeholder='Password' />
+						</Form.Item>
 					</>
 				) : (
 					<>
