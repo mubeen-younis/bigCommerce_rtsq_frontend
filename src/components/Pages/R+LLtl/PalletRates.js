@@ -27,7 +27,7 @@ const PalletRates = ({
 					<label className={'text-gray'}>I have pallet rates for the following pallet size</label>
 				</Col>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-					<Form.Item className={'mb-0'}>{console.log(quoteSettingsState, connectionSettings)}
+					<Form.Item className={'mb-0'}>
 						<Select
 							defaultValue={
 								quoteSettingsState &&
