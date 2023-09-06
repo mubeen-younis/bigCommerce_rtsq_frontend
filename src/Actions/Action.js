@@ -1,4 +1,5 @@
 import axios from 'axios'
+import types from '../Stores/types'
 
 export const postData = (data, type, url, token, setVisibleWarehouse = null) => {
 	const config = {
@@ -166,5 +167,62 @@ export const getCurrentPlanInfo = store => {
 				}
 			})
 			.catch(error => {})
+	}
+}
+
+export const submitCompareRates = (values, token, setLoading = false, handleClick) => async dispatch => {
+	try {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		})
+
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		}
+
+		const { data } = await axios.post(
+			`${process.env.REACT_APP_ENITURE_API_URL}/get_compare_rates`,
+			values,
+			config
+		)
+
+		if (!data.error) {
+			const carrdata = []
+			if(data.data.small_package !== []){
+				carrdata['small_package'] = data.data.small_package
+			}
+			if(data.data.ups_ship_engine !== []){
+				carrdata['ups_ship_engine'] = data.data.ups_ship_engine
+			}
+			dispatch({
+				type: types.SET_COMPARE_RATES,
+				payload: carrdata,
+			})
+			setLoading(true)
+			handleClick()
+		}
+
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessage: data.message,
+				alertMessageType: data.error ? 'error' : 'success',
+			},
+		})
+	} catch (err) {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: false,
+				alertMessageType: '',
+			},
+		})
 	}
 }

@@ -33,10 +33,11 @@ const initialState = {
 	importIndexes: null,
 	plans: null,
 	store: null,
-	carrier_type: 'GTZ',
+	carrier_type: 'NEWAPI',
 	gtzCarriers: {
 		GTZ: [],
 		CRS: [],
+		NEWAPI: [],
 	},
 	insuranceStatus: false,
 	productBoxes: null,
@@ -983,6 +984,12 @@ const Reducer = (state = initialState, action) => {
 				UpsLtlApiType: action.payload,
 			}
 
+		case types.SET_UNISHIPPER_API_TYPE:
+			return {
+				...state,
+				uniShipperSmallApiType: action.payload,
+			}
+
 		case types.GET_RAD_SETTINGS:
 		case types.SET_RAD_SETTINGS:
 			return {
@@ -999,7 +1006,12 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				thresholdSetting: {...state.thresholdSetting, parcel_rates:action.payload},
-			}		
+			}
+		case types.SET_COMPARE_RATES:
+				return {
+					...state,
+				compareRates: action.payload,
+				}		
 		default:
 			return state
 	}

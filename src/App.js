@@ -40,6 +40,7 @@ import types from './Stores/types'
 import OrdersComponent from './components/OrdersComponent'
 import ShippingGroupsComponent from './components/Pages/ShippingGroup'
 import RADSettings from './components/Pages/RADSettings'
+import CompareRates from './components/Pages/CompareRates'
 
 const { Header, Content } = Layout
 
@@ -213,6 +214,7 @@ function App(props) {
               <Route path='/shipping_groups' component={ShippingGroupsComponent} />
               <Route path='/rad_settings' component={RADSettings} />
               <Route path='/orders' component={OrdersComponent} />
+              <Route path='/compare_rates' component={CompareRates} />
               <Route path='/user_guide' component={UserGuideComponent} />
               <Route path='/av' component={AVComponent} />
               <Route path='/warehouses' component={WarehouseComponent} />
