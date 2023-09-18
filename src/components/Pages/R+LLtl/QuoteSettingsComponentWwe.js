@@ -19,6 +19,7 @@ import WeightThreshold from '../../WeightThreshold'
 import InsideDeliverySettings from '../../InsideDeliverySettings'
 import ErrorManagment from '../../ErrorManagment'
 import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
+import PalletRates from './PalletRates'
 
 const initialState = {
   label_as: '',
@@ -53,6 +54,8 @@ const initialState = {
   weight_threshold: '150',
   always_quote_notify: false,
   offer_notify_as_option: false,
+  pallet_code: 'No Pallet Selected',
+  pallet_weight: '',
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -61,7 +64,7 @@ function QuoteSettingsComponentWwe(props) {
   const [holdTeminalStatus, SetHoldTeminalStatus] = useState(false)
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
-  const { thresholdSetting } = useSelector(state => state)
+  const { thresholdSetting, connectionSettings } = useSelector(state => state)
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
       getQuoteSettings()
@@ -250,6 +253,11 @@ function QuoteSettingsComponentWwe(props) {
           handleChange={handleStateChange}
           toggleOptions={toggleOptions}
         />
+        <PalletRates
+					connectionSettings={connectionSettings}
+          quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
+				/>
         <DeliveryEstimateOptions
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
