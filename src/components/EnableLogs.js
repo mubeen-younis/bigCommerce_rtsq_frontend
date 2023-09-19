@@ -6,7 +6,7 @@ const EnableLogs = ({ quoteSettingsState, setQuoteSettingsState }) => {
 		<>
 			<Row gutter={30} className={'mb-3'}>
 				<Col
-					className='gutter-row'
+					className='gutter-row mt-1'
 					xs={24}
 					sm={24}
 					md={24}
