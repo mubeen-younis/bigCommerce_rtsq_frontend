@@ -19,17 +19,32 @@ const makeColumns = (
 ) => {
   const columns = [
     {
-      title: "Date and Time",
-      dataIndex: "dateTime",
-      key: "dateTime",
+      title: "Request Time",
+      dataIndex: "requestTime",
+      key: "requestTime",
       sorter: sortLogs,
+      align: "center",
       ellipsis: true,
       sortOrder: false,
-      render: item => <span> {item} </span>,
+    },
+    {
+      title: "Response Time",
+      dataIndex: "responseTime",
+      key: "responseTime",
+      align: "center",
+      ellipsis: true,
+    },
+    {
+      title: "Latency",
+      dataIndex: "latency",
+      key: "latency",
+      ellipsis: true,
+      align: "center",
     },
     {
       title: "Items",
       dataIndex: "Items",
+      align: "center",
       key: "Items",
       ellipsis: true,
       render: (items, record) => (
@@ -65,6 +80,7 @@ const makeColumns = (
       title: "DIMs (L x W x H)",
       dataIndex: "dimension",
       key: "dimension",
+      align: "center",
       ellipsis: true,
       render: (dim, record) => (
 
@@ -99,6 +115,8 @@ const makeColumns = (
       title: "Qty",
       dataIndex: "quantity",
       key: "quantity",
+      ellipsis: true,
+      align: "center",
       render: (quantity, record) => (
 
         <>
@@ -132,18 +150,21 @@ const makeColumns = (
       title: "Sender Address",
       dataIndex: "sender",
       key: "sender",
-      width: 170,
+      align: "center",
+      ellipsis: true,
     },
     {
       title: "Receiver Address",
       dataIndex: "receiver",
+      align: "center",
       key: "receiver",
-      width: 170,
+      ellipsis: true,
     },
     {
       title: "Response",
       dataIndex: "response",
       key: "response",
+      ellipsis: true,
       render: (response, record) => (
         <Space size="small">
           <a href="#!" onClick={() => showLogDetails(response, record)}>
