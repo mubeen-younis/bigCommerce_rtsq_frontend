@@ -30,6 +30,7 @@ function SideMenu(props) {
 		else if (name.includes('importcsv')) setActiveMenu('104')
 		else if (name.includes('orders')) setActiveMenu('107')
 		else if (name.includes('compare_rates')) setActiveMenu('109')
+		else if (name.includes('shipping_rules')) setActiveMenu('110')
 		else if (name.includes('user_guide')) setActiveMenu('105')
 		else if (name.includes('addon'))
 			setActiveMenu('addon-' + name.substring(name.lastIndexOf('/') + 1))
@@ -139,6 +140,13 @@ function SideMenu(props) {
 								</Menu.Item>
 							) : null
 						)}
+
+						<Menu.Item
+							key='110'
+							warnkey={110}
+							onClick={() => setActiveMenu('110')}>
+							<Link to={`/shipping_rules`}>Shipping Rules</Link>
+						</Menu.Item>
 
 						<Menu.Item
 							key='105'
