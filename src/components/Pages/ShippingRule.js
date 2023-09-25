@@ -50,10 +50,13 @@ function ShippingRulesComponent() {
 	const [available, setAvailable] = useState(true);
 	const [applyTo, setApplyTo] = useState(1);
 	const [form] = Form.useForm()
-	const options = [];
 	const dispatch = useDispatch()
 	const { alertMessageType, shippingRules, token , allProducts} = useSelector(state => state)
+	const [selectedOptions, setSelectedOptions] = useState([]);
 
+	const handleChange = (selectedValues) => {
+	  setSelectedOptions(selectedValues);
+	};
 	useEffect(() => {
 		if (!shippingRules) {
 			dispatch(getShippingRules(token))
@@ -94,12 +97,18 @@ function ShippingRulesComponent() {
 			}),
 		[]
 	)
-	allProducts?.map((item) => {
-		options[item.id] = item.name
-	})
 
-	const filteredOptions = options.filter((o) => !selectedItems.includes(o));
-	
+	const options = allProducts?.map((item) => ({
+		key: item.id.toString(), value: item.name 
+	}))
+
+	const filterOptions = (input, option) => {
+		return (
+		  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
+		  !selectedOptions.includes(option.key)
+		);
+	};
+
 	const editLocation = useCallback(
 		record => {
 			hanldeModalToggling(true, 'edit')
@@ -116,18 +125,6 @@ function ShippingRulesComponent() {
 		},
 		[hanldeModalToggling]
 	)
-
-	const handleChange = (value) => {
-		const selectItems = []
-		allProducts?.map((item) => {
-			if(value.includes(item.name)){
-				selectItems[item.id] = item.name
-				setItems(selectItems)
-			}
-		})
-
-		setSelectedItems(value)
-	};
 
 	const onFinish = useCallback(
 		values => {
@@ -414,19 +411,19 @@ function ShippingRulesComponent() {
 										},
 									]}>
 									<Select
-      									mode="multiple"
-      									placeholder="Product Which You Want To Add"
-      									value={selectedItems}
-      									onChange={handleChange}
-      									style={{
-        									width: '100%',
-      									}}
-      									options={filteredOptions.map((item) => ({
-        									value: item,
-        									label: item,
-      									}))}
-    								/>
-									
+        								mode="multiple"
+        								style={{ width: '100%' }}
+        								placeholder="Select Products"
+        								value={selectedOptions}
+        								onChange={handleChange}
+        								filterOption={filterOptions}
+      								>
+        								{options?.map((option) => (
+          									<Option key={option.key} value={option.key}>
+            									{option.value}
+          									</Option>
+        								))}
+      								</Select>
 								</Form.Item>
 							</Col>
 						</Row>
