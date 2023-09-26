@@ -22,6 +22,9 @@ import {
 } from '../../Actions/ShippingRulesActions'
 import addKeysToList from './../../Utilities/addKey'
 import { getAllProducts } from '../../Actions/ProductSettings'
+import types from '../../Stores/types'
+import axios from '../../Utilities/authToken'
+import { dispatchAlert } from '../../Utilities/dispatchAlert'
 
 const { Title } = Typography
 const { Option } = Select
@@ -99,7 +102,7 @@ function ShippingRulesComponent() {
 	)
 
 	const options = allProducts?.map((item) => ({
-		key: item.id.toString(), value: item.name 
+		key: item.source_product_id.toString(), value: item.name 
 	}))
 
 	const filterOptions = (input, option) => {
@@ -125,6 +128,34 @@ function ShippingRulesComponent() {
 		},
 		[hanldeModalToggling]
 	)
+
+	const isAvailable = async (uuid, available) => {
+	
+	try {
+		dispatch(dispatchAlert(true, 'loading'))
+		const url = `${process.env.REACT_APP_ENITURE_API_URL}/updateAvaiableStatus`,
+		
+		  config = {
+			headers: {
+			  authorization: `Bearer ${token}`,
+			},
+		  }
+		const reqData = {'uuid' : uuid, 'available' : available}
+		const {
+			data: { error, data, message },
+		}  = await axios.post(url, reqData, config)
+
+		if (!data.error) {
+			dispatch({
+				type: types.UPDATE_SHIPPING_RULE,
+				payload: data.shippingRule,
+			})
+		}
+		dispatch(dispatchAlert(true, error ? 'error' : 'success', message))
+	  } catch (err) {
+		dispatch(dispatchAlert(false, null))
+	  }
+	}
 
 	const onFinish = useCallback(
 		values => {
@@ -191,11 +222,14 @@ function ShippingRulesComponent() {
 			key: 'available',
 			title: 'Available',
 			dataIndex: 'available',
-			render: (available) => (
-				<>
-				  {available == 1 ? "Yes" : "No"}
-				</>
-			),
+			render: (available, record) => (
+				<Space size="small">
+				  <a href="#!" onClick={() => isAvailable(record.uuid, record.available)}>
+					{available ? "Yes" : "No"}
+					
+				  </a>
+				</Space>
+			  ),
 		},
 		{
 			key: 'action',
