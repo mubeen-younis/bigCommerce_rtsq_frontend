@@ -1,4 +1,4 @@
-= 1.1.0 2023-09-19 =
+= 1.1.0 2023-09-26 =
 
 * Update - Enable Logs = The logs tab that show recent logs . (Ticket:1568548488)[#245](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/245)
 
