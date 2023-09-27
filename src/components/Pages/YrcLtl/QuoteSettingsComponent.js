@@ -213,6 +213,7 @@ function QuoteSettingsComponent(props) {
         <HandlingUnit
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
+          setQuoteSettingsState={setQuoteSettingsState}
         />
         
         <ErrorManagment

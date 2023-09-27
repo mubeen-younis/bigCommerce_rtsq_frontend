@@ -13,6 +13,7 @@ import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 import ErrorManagment from '../../ErrorManagment'
+import EnableLogs from '../../EnableLogs'
 
 const { Title } = Typography
 const initialState = {
@@ -579,6 +580,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</div>
 					</Col>
 				</Row>
+
+				<EnableLogs 
+					quoteSettingsState={quoteSettingsState} 
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
 
 				<Row gutter={24} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>

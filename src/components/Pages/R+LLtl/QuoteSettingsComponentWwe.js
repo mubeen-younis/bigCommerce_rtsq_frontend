@@ -295,6 +295,7 @@ function QuoteSettingsComponentWwe(props) {
         <HandlingUnit
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
+          setQuoteSettingsState={setQuoteSettingsState}
         />
 
         <Row gutter={30} className={'mb-3'}>

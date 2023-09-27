@@ -1,8 +1,9 @@
 import React from 'react'
 import { Row, Col, Form, Input } from 'antd'
 import { handlingFeeMarkup } from '../Utilities/numberValidation'
+import EnableLogs from './EnableLogs'
 
-const HandlingUnit = ({ quoteSettingsState, handleChange }) => {
+const HandlingUnit = ({ quoteSettingsState, handleChange, setQuoteSettingsState }) => {
 	return (
 		<>
 			<Row gutter={30} className={'mb-3'}>
@@ -114,6 +115,10 @@ const HandlingUnit = ({ quoteSettingsState, handleChange }) => {
 					</div>
 				</Col>
 			</Row>
+			<EnableLogs 
+				quoteSettingsState={quoteSettingsState} 
+				setQuoteSettingsState={setQuoteSettingsState}
+			/>
 		</>
 	)
 }
