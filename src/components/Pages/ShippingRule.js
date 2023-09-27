@@ -207,21 +207,25 @@ function ShippingRulesComponent() {
 			key: 'rule_name',
 			title: 'Rule Name',
 			dataIndex: 'rule_name',
+			align: "center",
 		},
 		{
 			key: 'rule_type',
 			title: 'Type',
 			dataIndex: 'rule_type',
+			align: "center",
 		},
 		{
 			key: 'filter_name',
 			title: 'Filters',
 			dataIndex: 'filter_name',
+			align: "center",
 		},
 		{
 			key: 'available',
 			title: 'Available',
 			dataIndex: 'available',
+			align: "center",
 			render: (available, record) => (
 				<Space size="small">
 				  <a href="#!" onClick={() => isAvailable(record.uuid, record.available)}>
@@ -234,6 +238,7 @@ function ShippingRulesComponent() {
 		{
 			key: 'action',
 			title: 'Action',
+			align: "center",
 			render: text => (
 				<>
 				<Space size='middle'>
