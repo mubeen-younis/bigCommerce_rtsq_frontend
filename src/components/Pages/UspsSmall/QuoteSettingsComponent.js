@@ -15,6 +15,7 @@ import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 import ErrorManagment from '../../ErrorManagment'
+import EnableLogs from '../../EnableLogs'
 
 const { Title } = Typography
 const initialState = {
@@ -509,6 +510,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</div>
 					</Col>
 				</Row>
+
+				<EnableLogs 
+					quoteSettingsState={quoteSettingsState} 
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
 
 				<ErrorManagment
           			quoteSettingsState={quoteSettingsState}

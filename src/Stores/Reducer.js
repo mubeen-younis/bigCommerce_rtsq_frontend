@@ -366,6 +366,21 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				allProducts: action.payload,
 			}
+		case types.GET_ALL_LOGS:
+			return {
+				...state,
+				allLogs: action.payload,
+			}
+		case types.GET_LOG_DETAIL:
+			return {
+				...state,
+				logDetail: action.payload,
+			}
+		case types.LOGS_PAGINATION:
+			return {
+				...state,
+				logsPagination: action.payload,
+			}
 		case types.GET_PRODUCT_DETAIL:
 			return {
 				...state,
@@ -567,6 +582,12 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				orderwidget: action.payload,
+			}
+
+		case types.GET_PACKAGE_DETAIL:
+			return {
+				...state,
+				packaging: action.payload,
 			}
 
 		case types.UPDATE_ORDER_SETTINGS:

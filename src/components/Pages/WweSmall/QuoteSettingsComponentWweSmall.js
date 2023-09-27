@@ -13,6 +13,7 @@ import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 import ErrorManagment from '../../ErrorManagment'
+import EnableLogs from '../../EnableLogs'
 import InternationalServices from './Services/InternationalServices'
 import DomesticServices from './Services/DomesticServices'
 import Title from 'antd/lib/typography/Title'
@@ -480,6 +481,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</div>
 					</Col>
 				</Row>
+
+				<EnableLogs 
+					quoteSettingsState={quoteSettingsState} 
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
 
 				<ErrorManagment
           			quoteSettingsState={quoteSettingsState}
