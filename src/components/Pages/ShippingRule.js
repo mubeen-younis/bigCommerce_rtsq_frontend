@@ -288,11 +288,7 @@ function ShippingRulesComponent() {
 							</Button>
 						</Title>
 						<p>
-							Create a "Shipping Group" to define a custom shipping
-							rate. Once a "Shipping Group" is defined, you can assign
-							it to a product by editing the product's shipping
-							parameters. A "Shipping Group" can be assigned to more
-							than one product.
+							The Shipping Rules gives you an opportunity to customize the behavior of the app.
 						</p>
 						<Table
 							className={'custom-table'}
