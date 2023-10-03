@@ -16,7 +16,6 @@ import WeightThreshold from '../../WeightThreshold'
 import LimitedAccessSettings from '../../LimitedAccessSettings'
 import ErrorManagment from '../../ErrorManagment'
 import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
-import RadPickup from '../../RadPickup'
 
 const { Option } = Select
 const initialState = {
@@ -28,24 +27,16 @@ const initialState = {
   fulfillment_offset_days: '',
   all_week_days_select: true,
   week_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-  // residentialPickup: false,
   alwaysResidentialDelivery: false,
   autoDetectedResidentialAddresses: false,
-  // liftGatePickup: false,
-  // offer_inside_delivery: false,
-  // always_inside_delivery: false,
-  // alwaysLiftGatePickup: false,
   alwaysLiftGateDelivery: false,
   offerLiftGateDelivery: false,
   autoDetectedResidentialAddressesLfg: false,
   returnRates: false,
-  // own_arrangement: 0,
-  // own_arrangement_text: '',
-  // insurance_category: '84-General Merchandise',
   weight_threshold: '150',
   return_rates: false,
-  // always_quote_notify: false,
-  // offer_notify_as_option: false,
+  always_quote_notify: false,
+  offer_notify_as_option: false,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -94,11 +85,6 @@ function QuoteSettingsComponentWwe(props) {
       ...quoteSettingsState,
       ...data,
       carrierId: +props.carrierId,
-      // own_arrangement_text: quoteSettingsState.own_arrangement_text,
-      // insurance_category:
-      //   quoteSettingsState.insurance_category === undefined
-      //     ? '84-General Merchandise'
-      //     : quoteSettingsState.insurance_category,
     }
 
     let errormsg = validateHandlingFeeMarkup(
@@ -187,12 +173,6 @@ function QuoteSettingsComponentWwe(props) {
           handleChange={handleStateChange}
         />
 
-        {/* <RadPickup
-				  quoteSettingsState={quoteSettingsState}
-					setQuoteSettingsState={setQuoteSettingsState}
-					radStatus={radStatus}
-				/> */}
-
         <LiftGateDelivery
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
@@ -200,12 +180,12 @@ function QuoteSettingsComponentWwe(props) {
           showLiftGatePickup={false}
         />
 
-        {/* <NotifyBeforeDelivery
+        <NotifyBeforeDelivery
 				  quoteSettingsState={quoteSettingsState}
 				  setQuoteSettingsState={setQuoteSettingsState}
 			  />
-        
-        <LimitedAccessSettings
+        {/* Below committed code will use for future use */}
+        {/* <LimitedAccessSettings
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
           islimitedAccessFee = {true}
