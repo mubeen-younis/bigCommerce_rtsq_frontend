@@ -42,6 +42,7 @@ import ShippingGroupsComponent from './components/Pages/ShippingGroup'
 import ShippingRulesComponent from './components/Pages/ShippingRule'
 import RADSettings from './components/Pages/RADSettings'
 import CompareRates from './components/Pages/CompareRates'
+import ProductSettingsComponent from './components/ProductSettingsComponent'
 
 const { Header, Content } = Layout
 
@@ -215,6 +216,7 @@ function App(props) {
               <Route path='/shipping_groups' component={ShippingGroupsComponent} />
               <Route path='/shipping_rules' component={ShippingRulesComponent} />
               <Route path='/rad_settings' component={RADSettings} />
+              <Route path='/product_settings' component={ProductSettingsComponent} />
               <Route path='/orders' component={OrdersComponent} />
               <Route path='/compare_rates' component={CompareRates} />
               <Route path='/user_guide' component={UserGuideComponent} />
