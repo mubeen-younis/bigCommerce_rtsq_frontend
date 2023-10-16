@@ -52,7 +52,15 @@ const Settings = ({
 	const isSmallCarrier =
 		installedCarriers &&
 		installedCarriers?.find(
-			c => c.id === +carrierId && smallCarriers.includes(c.slug)
+			c => c.carrier_type === 2 && c.is_enabled === 1
+		)
+			? true
+			: false
+
+	const isLtlCarrier =
+		installedCarriers &&
+		installedCarriers?.find(
+			c => c.carrier_type === 1 && c.is_enabled === 1
 		)
 			? true
 			: false
@@ -111,6 +119,7 @@ const Settings = ({
 							<Checkbox
 								name='freight_enabled'
 								id={'freight_enabled' + index}
+								disabled={!isLtlCarrier}
 								onChange={e => {
 									onChangeVariant(
 										index,
@@ -131,6 +140,7 @@ const Settings = ({
 							<Checkbox
 								name='parcel_enabled'
 								id={'parcel_enabled' + index}
+								disabled={!isSmallCarrier}
 								onChange={e => {
 									onChangeVariant(
 										index,
