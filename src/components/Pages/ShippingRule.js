@@ -236,6 +236,7 @@ function ShippingRulesComponent() {
 			key: 'rule_type',
 			title: 'Type',
 			dataIndex: 'rule_type',
+			align:"center",
 			render: (rule_type) => (
 				<Space size="small">
 				  {rule_type == 1 ? 'Restrict By Country' : rule_type == 2 ? 'Hide Methods' : null}
@@ -247,6 +248,14 @@ function ShippingRulesComponent() {
 			title: 'Filters',
 			dataIndex: 'filter_name',
 			align: "center",
+			render: (filter_name) => (
+				<Space size="small">
+				  {installedCarriers?.map(carrier =>
+					carrier.slug == filter_name ? (
+						carrier.carrier_type == 1 ? carrier.name + ' (LTL Freight Providers)' : carrier.carrier_type == 2 ? carrier.name + ' (Parcel & Postal Providers)' : null
+					) : null)}
+				</Space>
+			)
 		},
 		{
 			key: 'available',
@@ -521,9 +530,7 @@ function ShippingRulesComponent() {
 										<Select placeholder='Select Provider'  value={this?.filter_provider || undefined}>
 											{installedCarriers?.map(carrier =>
 												carrier.is_enabled ? (
-												<Option 
-												value={carrier.carrier_type == 1 ? carrier.name + ' (LTL Freight Providers)' : carrier.carrier_type == 2 ? carrier.name + ' (Parcel & Postal Providers)' : null}
-												>
+												<Option value={carrier?.slug}>
 													{carrier.carrier_type == 1 ? carrier.name + ' (LTL Freight Providers)' : carrier.carrier_type == 2 ? carrier.name + ' (Parcel & Postal Providers)' : null}
 												</Option>
 											) : null
