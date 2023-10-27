@@ -25,6 +25,7 @@ import { getAllProducts } from '../../Actions/ProductSettings'
 import types from '../../Stores/types'
 import axios from '../../Utilities/authToken'
 import { dispatchAlert } from '../../Utilities/dispatchAlert'
+import { blockInvalidChar } from '../../Utilities/numberValidation'
 
 const { Title } = Typography
 const { Option } = Select
@@ -578,8 +579,12 @@ function ShippingRulesComponent() {
 												required: isFilterWeight,
 												message: 'Enter weight from',
 											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
 										]}>
-										<Input placeholder='Enter weight from' />
+										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter weight from' />
 									</Form.Item>
 								</Col>
 								<Col
@@ -597,8 +602,12 @@ function ShippingRulesComponent() {
 												required: isFilterWeight,
 												message: 'Enter weight to',
 											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
 										]}>
-										<Input placeholder='Enter weight to' />
+										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter weight to' />
 									</Form.Item>
 								</Col>
 							</Row>
@@ -641,8 +650,12 @@ function ShippingRulesComponent() {
 												required: isFilterPrice,
 												message: 'Enter price from',
 											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
 										]}>
-										<Input placeholder='Enter price from' />
+										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter price from' />
 									</Form.Item>
 								</Col>
 								<Col
@@ -660,8 +673,12 @@ function ShippingRulesComponent() {
 												required: isFilterPrice,
 												message: 'Enter price to',
 											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
 										]}>
-										<Input placeholder='Enter price to' />
+										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter price to' />
 									</Form.Item>
 								</Col>
 							</Row>
@@ -704,8 +721,12 @@ function ShippingRulesComponent() {
 												required: isFilterQuantity,
 												message: 'Enter quantity from',
 											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
 										]}>
-										<Input placeholder='Enter quantity from' />
+										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter quantity from' />
 									</Form.Item>
 								</Col>
 								<Col
@@ -723,8 +744,12 @@ function ShippingRulesComponent() {
 												required: isFilterQuantity,
 												message: 'Enter quantity to',
 											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
 										]}>
-										<Input placeholder='Enter quantity to' />
+										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter quantity to' />
 									</Form.Item>
 								</Col>
 							</Row>
