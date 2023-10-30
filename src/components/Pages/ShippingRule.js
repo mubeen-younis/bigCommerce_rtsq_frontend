@@ -26,6 +26,7 @@ import types from '../../Stores/types'
 import axios from '../../Utilities/authToken'
 import { dispatchAlert } from '../../Utilities/dispatchAlert'
 import { blockInvalidChar } from '../../Utilities/numberValidation'
+import { countryStates } from '../../Utilities/constants'
 
 const { Title } = Typography
 const { Option } = Select
@@ -52,6 +53,7 @@ function ShippingRulesComponent() {
 	})
 	const [shippingRuleId, setShippingRuleId] = useState(null)
 	const [available, setAvailable] = useState(true);
+	const [countryCode, setCountryCode] = useState('US');
 	const [isFilterWeight, setIsFilterWeight] = useState(false);
 	const [isFilterPrice, setIsFilterPrice] = useState(false);
 	const [isFilterQuantity, setIsFilterQuantity] = useState(false);
@@ -415,6 +417,7 @@ function ShippingRulesComponent() {
 										}
 									>
 										<Option value={'1'}>Restrict By Country</Option>
+										<Option value={'3'}>Restrict By State</Option>
 										<Option value={'2'}>Hide Methods</Option>
 									</Select>
 								</Form.Item>
@@ -443,7 +446,7 @@ function ShippingRulesComponent() {
 								</Form.Item>
 							</Col>
 						</Row>
-						{(ruleType == 1) && (
+						{(ruleType == 1 || ruleType == 3) && (
 							<>
 							<Row gutter={30}>
 								<Col
@@ -455,21 +458,28 @@ function ShippingRulesComponent() {
 									xl={24}>
 									<Form.Item
 										className={'mb-2'}
-										label='Restrict By Country'
+										label='Countries'
 										name='filter_country'
 										rules={[
 											{
 												required: true,
-												message: 'Select Country',
+												message: 'Select Countries',
 											},
 										]}>
-										<Select placeholder='Select Country' value={this?.filter_country || undefined}>
+										<Select 
+											placeholder='Select Countries' 
+											value={this?.filter_country || undefined}
+											onChange={value =>
+												setCountryCode(value)
+											}
+										>
 											<Option value={'US'}>US</Option>
 											<Option value={'CA'}>CA</Option>
 										</Select>
 									</Form.Item>
 								</Col>
 							</Row>
+							{(ruleType == 3)  && (
 							<Row gutter={30}>
 								<Col
 									className='gutter-row'
@@ -480,7 +490,39 @@ function ShippingRulesComponent() {
 									xl={24}>
 									<Form.Item
 										className={'mb-2'}
-										label='Product Which You Want To Add'
+										label='States/Provinces'
+										name='filter_state_province'
+										rules={[
+											{
+												required: true,
+												message: 'Select States/Provinces',
+											},
+										]}>
+										<Select 
+											placeholder='Select States/Provinces' 
+											value={this?.filter_state_province || undefined}
+										>
+											{countryStates[countryCode]?.map((option) => (
+          										<Option key={option?.code} value={option?.code}>
+	            									{option?.name}
+    	      									</Option>
+        									))}
+										</Select>
+									</Form.Item>
+								</Col>
+							</Row>
+							)}
+							<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}>
+									<Form.Item
+										className={'mb-2'}
+										label='Apply the rule to these products'
 										name='filter_products'
 										rules={[
 											{
