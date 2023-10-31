@@ -169,6 +169,7 @@ function ShippingRulesComponent() {
 
 	const updateFormFields = async (text) => 
 	{
+		setCountryCode(text?.filter_country)
 		setAvailable(text?.available)
 		setRuleType(text?.rule_type)
 		setSelectedItems(text?.filter_products)
@@ -319,6 +320,7 @@ function ShippingRulesComponent() {
 									form.setFieldsValue(initialState)
 									setAvailable(true)
 									setRuleType(1)
+									setCountryCode('US')
 									setIsFilterWeight(false)
 									setIsFilterPrice(false)
 									setIsFilterQuantity(false)
