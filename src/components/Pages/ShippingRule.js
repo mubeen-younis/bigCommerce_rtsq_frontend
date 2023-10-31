@@ -19,6 +19,7 @@ import {
 	getShippingRules,
 	saveShippingRule,
 	deleteShippingRule,
+	getStatesProvinces,
 } from '../../Actions/ShippingRulesActions'
 import addKeysToList from './../../Utilities/addKey'
 import { getAllProducts } from '../../Actions/ProductSettings'
@@ -26,7 +27,7 @@ import types from '../../Stores/types'
 import axios from '../../Utilities/authToken'
 import { dispatchAlert } from '../../Utilities/dispatchAlert'
 import { blockInvalidChar } from '../../Utilities/numberValidation'
-import { countryStates } from '../../Utilities/constants'
+import { shippingRuleTypes } from '../../Utilities/constants'
 
 const { Title } = Typography
 const { Option } = Select
@@ -61,7 +62,7 @@ function ShippingRulesComponent() {
 	const [applyTo, setApplyTo] = useState(1);
 	const [form] = Form.useForm()
 	const dispatch = useDispatch()
-	const { alertMessageType, shippingRules, token , allProducts, installedCarriers} = useSelector(state => state)
+	const { alertMessageType, shippingRules, token , allProducts, installedCarriers, statesProvinces} = useSelector(state => state)
 	const [selectedOptions, setSelectedOptions] = useState([]);
 
 	const handleChange = (selectedValues) => {
@@ -72,7 +73,9 @@ function ShippingRulesComponent() {
 			dispatch(getShippingRules(token))
 		}
 		
-	}, [dispatch, shippingRules, token])
+		dispatch(getStatesProvinces(countryCode, token))
+
+	}, [dispatch, shippingRules, token, countryCode])
 
 	useEffect(() => {
 		dispatch(
@@ -242,7 +245,7 @@ function ShippingRulesComponent() {
 			align:"center",
 			render: (rule_type) => (
 				<Space size="small">
-				  {rule_type == 1 ? 'Restrict By Country' : rule_type == 2 ? 'Hide Methods' : null}
+				  {shippingRuleTypes[rule_type]}
 				</Space>
 			  ),
 		},
@@ -251,12 +254,12 @@ function ShippingRulesComponent() {
 			title: 'Filters',
 			dataIndex: 'filter_name',
 			align: "center",
-			render: (filter_name) => (
+			render: (filter_name, record) => (
 				<Space size="small">
-				  {installedCarriers?.map(carrier =>
-					carrier.slug == filter_name ? (
+				  { record?.rule_type == 2 ? installedCarriers?.map(carrier =>
+					carrier.slug == filter_name && (
 						carrier.carrier_type == 1 ? carrier.name + ' (LTL Freight Providers)' : carrier.carrier_type == 2 ? carrier.name + ' (Parcel & Postal Providers)' : null
-					) : null)}
+					)) : record?.rule_type == 3 ? record?.filter_state_province : filter_name}
 				</Space>
 			)
 		},
@@ -502,8 +505,8 @@ function ShippingRulesComponent() {
 											placeholder='Select States/Provinces' 
 											value={this?.filter_state_province || undefined}
 										>
-											{countryStates[countryCode]?.map((option) => (
-          										<Option key={option?.code} value={option?.code}>
+											{statesProvinces?.map((option) => (
+          										<Option  value={option?.name}>
 	            									{option?.name}
     	      									</Option>
         									))}

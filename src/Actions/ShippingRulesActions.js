@@ -48,6 +48,36 @@ export const getShippingRules = token => async dispatch => {
 	}
 }
 
+
+export const getStatesProvinces = (countryCode,token) => async dispatch => {
+	
+	try {
+		const url = `${process.env.REACT_APP_ENITURE_API_URL}/get_country_states`,
+		
+		  config = {
+			headers: {
+			  authorization: `Bearer ${token}`,
+			},
+		  }
+		const reqData = {'countryCode' : countryCode}
+
+		const {
+			data: { error, data, message },
+		}  = await axios.post(url, reqData, config)
+
+		if (!error) {
+			dispatch({
+				type: types.GET_STATES_PROVINCES,
+				payload: data,
+			})
+		}
+		dispatch(dispatchAlert(error, error ? 'error' : 'success', message))
+	  } catch (err) {
+		dispatch(dispatchAlert(false, null))
+	  }
+	}
+
+
 export const saveShippingRule = (shipping_rule, token) => async dispatch => {
 	try {
 		dispatch(dispatchAlert(true, 'loading'))

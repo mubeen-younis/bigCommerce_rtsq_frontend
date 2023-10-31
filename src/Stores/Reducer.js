@@ -687,6 +687,13 @@ const Reducer = (state = initialState, action) => {
 				),
 			}
 
+		/* Get States and Provices */
+		case types.GET_STATES_PROVINCES:
+			return {
+				...state,
+				statesProvinces: action.payload,
+			}
+
 		/* Shipping Rules */
 		case types.GET_SHIPPING_RULES:
 			return {
