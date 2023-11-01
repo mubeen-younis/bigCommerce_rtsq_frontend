@@ -26,8 +26,8 @@ import { getAllProducts } from '../../Actions/ProductSettings'
 import types from '../../Stores/types'
 import axios from '../../Utilities/authToken'
 import { dispatchAlert } from '../../Utilities/dispatchAlert'
-import { blockInvalidChar } from '../../Utilities/numberValidation'
 import { shippingRuleTypes } from '../../Utilities/constants'
+import { blockInvalidChar, handleNumbersOnly } from '../../Utilities/numberValidation'
 
 const { Title } = Typography
 const { Option } = Select
@@ -193,6 +193,17 @@ function ShippingRulesComponent() {
 
 			if (modal.open && modal.type === 'edit') {
 				data = shippingRules?.find(sg => sg.uuid === shippingRuleId) ?? {}
+			}
+
+			if (values['isFilterWeight'] && parseFloat(values['weight_to']) <= parseFloat(values['weight_from'])){
+				error = true;
+				errormsg = 'From weight cannot be greater than or equal to To weight.'
+			} else if(values['isFilterPrice'] && parseFloat(values['price_to']) <= parseFloat(values['price_from'])){
+				error = true;
+				errormsg = 'From Price cannot be greater than or equal to To Price.'
+			} else if(values['isFilterQuantity'] && parseFloat(values['quantity_to']) <= parseFloat(values['quantity_from'])){
+				error = true;
+				errormsg = 'From Quantity cannot be greater than or equal to To Quantity.'
 			}
 
 			if (error) {
@@ -773,7 +784,7 @@ function ShippingRulesComponent() {
 												message: "Only two decimal places are allowed",
 											},
 										]}>
-										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter quantity from' />
+										<Input type='number' onKeyDown={handleNumbersOnly} min="1" step="1" placeholder='Enter quantity from' />
 									</Form.Item>
 								</Col>
 								<Col
@@ -796,7 +807,7 @@ function ShippingRulesComponent() {
 												message: "Only two decimal places are allowed",
 											},
 										]}>
-										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter quantity to' />
+										<Input type='number' onKeyDown={handleNumbersOnly} min="1" step="1" placeholder='Enter quantity to' />
 									</Form.Item>
 								</Col>
 							</Row>
