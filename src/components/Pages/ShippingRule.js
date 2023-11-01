@@ -27,7 +27,7 @@ import types from '../../Stores/types'
 import axios from '../../Utilities/authToken'
 import { dispatchAlert } from '../../Utilities/dispatchAlert'
 import { shippingRuleTypes } from '../../Utilities/constants'
-import { blockInvalidChar, handleNumbersOnly } from '../../Utilities/numberValidation'
+import { blockInvalidChar, handleKeyCharNumbersOnly, handleNumbersOnly } from '../../Utilities/numberValidation'
 
 const { Title } = Typography
 const { Option } = Select
@@ -271,7 +271,7 @@ function ShippingRulesComponent() {
 				  { record?.rule_type == 2 ? installedCarriers?.map(carrier =>
 					carrier.slug == filter_name && (
 						carrier.carrier_type == 1 ? carrier.name + ' (LTL Freight Providers)' : carrier.carrier_type == 2 ? carrier.name + ' (Parcel & Postal Providers)' : null
-					)) : record?.rule_type == 3 ? record?.filter_state_province : filter_name}
+					)) : record?.rule_type == 3 ? record?.filter_state_province : record?.rule_type == 4 ? record?.filter_postal_code : filter_name}
 				</Space>
 			)
 		},
@@ -434,6 +434,7 @@ function ShippingRulesComponent() {
 									>
 										<Option value={'1'}>Restrict By Country</Option>
 										<Option value={'3'}>Restrict By State</Option>
+										<Option value={'4'}>Restrict By Postal Codes</Option>
 										<Option value={'2'}>Hide Methods</Option>
 									</Select>
 								</Form.Item>
@@ -462,7 +463,7 @@ function ShippingRulesComponent() {
 								</Form.Item>
 							</Col>
 						</Row>
-						{(ruleType == 1 || ruleType == 3) && (
+						{(ruleType == 1 || ruleType == 3 || ruleType == 4) && (
 							<>
 							<Row gutter={30}>
 								<Col
@@ -478,7 +479,7 @@ function ShippingRulesComponent() {
 										name='filter_country'
 										rules={[
 											{
-												required: true,
+												required: false,
 												message: 'Select Countries',
 											},
 										]}>
@@ -495,7 +496,7 @@ function ShippingRulesComponent() {
 									</Form.Item>
 								</Col>
 							</Row>
-							{(ruleType == 3)  && (
+							{(ruleType == 3 || ruleType == 4)  && (
 							<Row gutter={30}>
 								<Col
 									className='gutter-row'
@@ -527,6 +528,39 @@ function ShippingRulesComponent() {
 									</Form.Item>
 								</Col>
 							</Row>
+							)}
+							{(ruleType == 4) && (
+							<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}>
+									<Form.Item
+                        				label="Postal Codes"
+				                        name="filter_postal_code"
+                				        rules={[
+				                        	{
+                				            	required: true,
+				                            	message: "Enter Postal Codes",
+                				          	},
+                        				]}
+                      				>
+				                        <Input
+                				          	placeholder="Postal Codes"									
+                          					maxLength="6"
+											onKeyDown={handleKeyCharNumbersOnly}
+											onInput={e =>
+												(e.target.value = (
+												  "" + e.target.value
+												).toUpperCase())
+											}
+                        				/>
+                      				</Form.Item>
+								</Col>
+							</Row>	
 							)}
 							<Row gutter={30}>
 								<Col

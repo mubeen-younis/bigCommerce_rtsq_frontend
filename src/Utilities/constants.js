@@ -39,4 +39,5 @@ export const shippingRuleTypes = {
 	1: 'Restrict By Country',
     2: 'Hide Methods',
     3: 'Restrict By State',
+    4: 'Restrict By Postal Codes',
 }
