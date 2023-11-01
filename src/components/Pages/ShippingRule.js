@@ -260,12 +260,12 @@ function ShippingRulesComponent() {
 			title: 'Filters',
 			dataIndex: 'filter_name',
 			align: "center",
-			render: (filter_name) => (
+			render: (filter_name, record) => (
 				<Space size="small">
-				  {installedCarriers?.map(carrier =>
-					carrier.slug == filter_name ? (
+				  { record?.rule_type == 2 ? installedCarriers?.map(carrier =>
+					carrier.slug == filter_name && (
 						carrier.carrier_type == 1 ? carrier.name + ' (LTL Freight Providers)' : carrier.carrier_type == 2 ? carrier.name + ' (Parcel & Postal Providers)' : null
-					) : null)}
+					)) : filter_name}
 				</Space>
 			)
 		},
