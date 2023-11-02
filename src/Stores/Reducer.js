@@ -687,6 +687,32 @@ const Reducer = (state = initialState, action) => {
 				),
 			}
 
+		/* Shipping Rules */
+		case types.GET_SHIPPING_RULES:
+			return {
+				...state,
+				shippingRules: action.payload,
+			}
+		case types.ADD_SHIPPING_RULE:
+			return {
+				...state,
+				shippingRules: [...state.shippingRules, action.payload],
+			}
+		case types.DELETE_SHIPPING_RULE:
+			return {
+				...state,
+				shippingRules: state.shippingRules.filter(
+					sg => sg.uuid !== action.payload
+				),
+			}
+		case types.UPDATE_SHIPPING_RULE:
+			return {
+				...state,
+				shippingRules: state.shippingRules.map(sg =>
+					sg.uuid === action.payload.uuid ? action.payload : sg
+				),
+			}
+
 		case types.GET_FDO_COUPON_INFO:
 			return {
 				...state,

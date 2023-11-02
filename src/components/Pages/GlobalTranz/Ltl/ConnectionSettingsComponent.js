@@ -23,7 +23,7 @@ function ConnectionSettingsComponent(props) {
 		skeleton_loading: true,
 	})
 	const [apiType, setApiType] = useState('GTZ')
-	const [isNewApi, setIsNewApi] = useState(false)
+	const [isNewApi, setIsNewApi] = useState('')
 	const [state, setState] = useState({
 		global_tranz: initialValues,
 		cerasis: initialValues,
@@ -109,7 +109,7 @@ function ConnectionSettingsComponent(props) {
 			...state,
 			...values,
 		}
-		values['api_type'] = isNewApi ? 'NEWAPI' : apiType
+		values['api_type'] = isNewApi === 'NEWAPI' ? 'NEWAPI' : apiType
 
 		if (fdoCouponCarrierInfo)
 			values.is_enabled = fdoCouponCarrierInfo.is_enabled ?? false
@@ -207,6 +207,7 @@ function ConnectionSettingsComponent(props) {
 							value={apiType}
 							onChange={type => {
 								setApiType(type)
+								setIsNewApi(type)
 								dispatch({
 									type: 'SET_CARRIER_TYPE',
 									payload: type,
