@@ -13,6 +13,7 @@ import {
 	Skeleton,
 	Radio,
 	Checkbox,
+	Tooltip,
 } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -652,8 +653,13 @@ function ShippingRulesComponent() {
 											setIsFilterWeight(e.target.checked)	
 										}
                 					>	
-                  						Filter by weight
+                  						Filter by weight (lbs)
                 					</Checkbox>
+									<Tooltip title='Weight is the total weight of cart items.'>
+										<a href='#!'>
+											[ i ]
+										</a>
+									</Tooltip>
 									</Form.Item>
 								</Col>
 								<Col
@@ -725,6 +731,11 @@ function ShippingRulesComponent() {
                 					>	
                   						Filter by price
                 					</Checkbox>
+									<Tooltip title='Price is the total price of cart items.'>
+										<a href='#!'>
+											[ i ]
+										</a>
+									</Tooltip>
 									</Form.Item>
 								</Col>
 								<Col
@@ -796,6 +807,11 @@ function ShippingRulesComponent() {
                 					>	
                   						Filter by quantity
                 					</Checkbox>
+									<Tooltip title='Quantity is the total quantity of cart items.'>
+										<a href='#!'>
+											[ i ]
+										</a>
+									</Tooltip>
 									</Form.Item>
 								</Col>
 								<Col
