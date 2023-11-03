@@ -117,27 +117,6 @@ const Settings = ({
 					<Col span={24}>
 						<Form.Item style={{ marginBottom: '0px' }}>
 							<Checkbox
-								name='freight_enabled'
-								id={'freight_enabled' + index}
-								disabled={!isLtlCarrier}
-								onChange={e => {
-									onChangeVariant(
-										index,
-										'freight_enabled',
-										e.target.checked
-									)
-									onChangeVariant(index, 'parcel_enabled', false)
-									onChangeVariant(index, 'quote_as_instore', false)
-									onChangeVariant(index, 'quote_as_local', false)
-								}}
-								checked={product?.freight_enabled}>
-								Quote as an LTL shipment
-							</Checkbox>
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item>
-							<Checkbox
 								name='parcel_enabled'
 								id={'parcel_enabled' + index}
 								disabled={!isSmallCarrier}
@@ -153,6 +132,27 @@ const Settings = ({
 								}}
 								checked={product?.parcel_enabled}>
 								Quote as a parcel shipment
+							</Checkbox>
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item>
+							<Checkbox
+								name='freight_enabled'
+								id={'freight_enabled' + index}
+								disabled={!isLtlCarrier}
+								onChange={e => {
+									onChangeVariant(
+										index,
+										'freight_enabled',
+										e.target.checked
+									)
+									onChangeVariant(index, 'parcel_enabled', false)
+									onChangeVariant(index, 'quote_as_instore', false)
+									onChangeVariant(index, 'quote_as_local', false)
+								}}
+								checked={product?.freight_enabled}>
+								Quote as an LTL shipment
 							</Checkbox>
 						</Form.Item>
 					</Col>
