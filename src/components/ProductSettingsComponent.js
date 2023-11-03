@@ -85,7 +85,7 @@ const makeColumns = (sortProducts, showProductDetails) => {
       key: 'settings',
       render: (settings) => (
         <>
-          <span>{JSON.parse(settings)?.freightParcelEnabled ? 'Both' : JSON.parse(settings)?.freight_enabled ? 'LTL' : JSON.parse(settings)?.parcel_enabled ? 'Parcel' : ''}</span>
+          <span>{JSON.parse(settings)?.freightParcelEnabled || (JSON.parse(settings)?.freight_enabled && JSON.parse(settings)?.parcel_enabled) ? 'Both' : JSON.parse(settings)?.freight_enabled ? 'LTL' : JSON.parse(settings)?.parcel_enabled ? 'Parcel' : ''}</span>
         </>
       )
     },
