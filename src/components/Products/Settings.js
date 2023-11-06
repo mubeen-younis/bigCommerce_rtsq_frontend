@@ -65,16 +65,16 @@ const Settings = ({
 			? true
 			: false
 	const isSbsSuspended = installedAddons?.find(
-		add => add.short_code === 'SBS' && add.is_enabled === 0
-	)
-		? true
-		: false || (sbsPlans && sbsPlans?.currentPackage?.status === 3)
+		add => add.short_code === 'SBS' && add.is_enabled === 1
+	) && !(sbsPlans && sbsPlans?.currentPackage?.status === 3)
+		? false
+		: true
 
 	const isPalletPkgSuspended = installedAddons?.find(
-		add => add.short_code === 'PLT' && add.is_enabled === 0
-	)
-		? true
-		: false || (palletPlans && palletPlans?.currentPackage?.status === 3)
+		add => add.short_code === 'PLT' && add.is_enabled === 1
+	) && !(palletPlans && palletPlans?.currentPackage?.status === 3)
+		? false
+		: true
 
 	const isDbscEnabled = installedCarriers?.find(
 		ic => ic?.slug === 'dbsc' && ic?.is_enabled
