@@ -84,7 +84,7 @@ const makeColumns = (sortProducts, showProductDetails) => {
       dataIndex: 'settings',
       key: 'settings',
       render: (settings) => (
-        <>{console.log(settings)}
+        <>
           <span>{JSON.parse(settings)?.freightParcelEnabled ? 'Both' : JSON.parse(settings)?.freight_enabled ? 'LTL' : JSON.parse(settings)?.parcel_enabled ? 'Parcel' : ''}</span>
         </>
       )
