@@ -147,11 +147,14 @@ function ShippingGroupsComponent() {
                 >
                   Auto-detect residential addresses{" "}
                 </Checkbox>
-                <Tooltip title='To utilize this feature, you need the Residential Address Detection add-on. Navigate to the Dashboard and go to add-ons to activate/install this extension.'>
-										<a href='#!'>
-											[ i ]
-										</a>
-									</Tooltip>
+                {!isRadInstalled && (
+                  <span
+								    style={{
+									    'font-size': '10px',
+								    }}>
+								    <i>(To utilize this feature, you need the Residential Address Detection add-on. Navigate to the Dashboard and go to add-ons to activate/install this extension.)</i>
+						      </span>
+                )}
               </Form.Item>
             </Col>
             <Col
