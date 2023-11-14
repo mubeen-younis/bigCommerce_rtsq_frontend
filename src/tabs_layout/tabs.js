@@ -2,7 +2,6 @@ import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tabs } from 'antd';
 import CarriersComponent from '../components/CarriersComponent';
-import ProductSettingsComponent from '../components/ProductSettingsComponent';
 import PlanStatusHeading from '../partials/PlanStatusHeading';
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent';
 import useLoadComponent from '../hooks/useLoadComponent';
@@ -54,6 +53,7 @@ function TabsLayout() {
         'purolator-small',
         'freightquote-chr-ltl',
         'ups-ship-engine',
+        'priority-one-ltl',
         'dbsc',
       ];
 
@@ -121,6 +121,7 @@ function TabsLayout() {
           'tql-ltl',
           'echo-ltl',
           'freightquote-chr-ltl',
+          'priority-one-ltl'
         ].includes(carrierSlug) && (
           <TabPane tab='Carriers' key='2'>
             <CarriersComponent />
@@ -150,9 +151,6 @@ function TabsLayout() {
 						{quoteSettingsComponent}
 					</TabPane>
 				)}
-				<TabPane tab='Product Settings' key='6'>
-					<ProductSettingsComponent />
-				</TabPane>
 				
 				{quoteSettings?.isEnableLogs && (
 					<TabPane tab='Logs' key='7'>
