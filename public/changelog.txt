@@ -1,3 +1,7 @@
+= 1.2.2 2023-11-09 =
+
+* Update - changes in Products Settings Page in BC. (Ticket:1939778691)[#249](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/249)
+
 = 1.2.1 2023-11-02 =
 
 * Update - introduce new shipping rule "Hide Methods" in BC. (Ticket:2002103171)[#248](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/248)
