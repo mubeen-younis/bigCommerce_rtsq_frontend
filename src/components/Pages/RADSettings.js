@@ -10,6 +10,7 @@ import {
   Checkbox,
   Card,
   Radio,
+  Tooltip,
 } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { submitRADSettings, getRADSettings } from "../../Actions/RAD"
@@ -27,8 +28,9 @@ const initialState = {
 function ShippingGroupsComponent() {
   const [settings, setSettings] = useState(initialState)
   const dispatch = useDispatch()
-  const { token, radSettings, installedCarriers } = useSelector(state => state)
+  const { token, radSettings, installedCarriers, installedAddons, radPlans} = useSelector(state => state)
   const [pickup, setPickup] = useState(true)
+  const RAD_ADDON = 'RAD'
 
   useEffect(() => {
     if (!radSettings) {
@@ -54,6 +56,12 @@ function ShippingGroupsComponent() {
     }
   }, [dispatch, radSettings, token])
 
+  const isRadSuspend = radPlans?.currentPackage?.status === null || radPlans?.currentPackage?.status === 3 || radPlans?.currentPackage?.status === 0
+
+  const isRadInstalled = installedAddons?.find(add => add.short_code === RAD_ADDON && add.is_enabled == 1) && !isRadSuspend
+		? true
+		: false
+
   const handleStateChange = useCallback(e => {
     const { name, checked } = e.target
 
@@ -64,6 +72,10 @@ function ShippingGroupsComponent() {
   }, [])
 
   const onFinish = useCallback(() => {
+
+    if(settings.residential_delivery_auto_detect){
+      settings.residential_delivery_auto_detect = isRadInstalled
+    }
     dispatch(
       submitRADSettings(
         {
@@ -123,7 +135,8 @@ function ShippingGroupsComponent() {
               <Form.Item className={"mb-0"}>
                 <Checkbox
                   name="residential_delivery_auto_detect"
-                  checked={settings.residential_delivery_auto_detect}
+                  checked={settings.residential_delivery_auto_detect && isRadInstalled}
+                  disabled={!isRadInstalled}
                   onChange={e => {
                     handleStateChange(e)
                     setSettings(prevSettings => ({
@@ -134,6 +147,14 @@ function ShippingGroupsComponent() {
                 >
                   Auto-detect residential addresses{" "}
                 </Checkbox>
+                {!isRadInstalled && (
+                  <span
+								    style={{
+									    'font-size': '10px',
+								    }}>
+								    <i>(To utilize this feature, you need the Residential Address Detection add-on. Navigate to the Dashboard and go to add-ons to activate/install this extension.)</i>
+						      </span>
+                )}
               </Form.Item>
             </Col>
             <Col
@@ -171,13 +192,13 @@ function ShippingGroupsComponent() {
                   }}
                 >
                   <Radio
-                    disabled={!settings?.residential_delivery_auto_detect}
+                    disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled}
                     value={1}
                   >
                     Residential
                   </Radio>
                   <Radio
-                    disabled={!settings?.residential_delivery_auto_detect}
+                    disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled}
                     value={2}
                   >
                     Commercial
@@ -213,14 +234,14 @@ function ShippingGroupsComponent() {
                   }}
                 >
                   <Radio
-                    disabled={!settings?.residential_delivery_auto_detect}
+                    disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled}
                     value={1}
                   >
                     Inform the shopper when the ship-to address is identified as
                     residential address
                   </Radio>
                   <Radio
-                    disabled={!settings?.residential_delivery_auto_detect}
+                    disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled}
                     value={0}
                   >
                     Don't disclose the address type to the shopper
