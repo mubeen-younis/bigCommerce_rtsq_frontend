@@ -65,10 +65,9 @@ function ShippingRulesComponent() {
 	const dispatch = useDispatch()
 	const { alertMessageType, shippingRules, token , allProducts, installedCarriers, statesProvinces} = useSelector(state => state)
 	const [selectedOptions, setSelectedOptions] = useState([]);
+	const [selectedProvinces, setSelectedProvinces] = useState([]);
+	const [recordId, setRecordId] = useState(null);
 
-	const handleChange = (selectedValues) => {
-	  setSelectedOptions(selectedValues);
-	};
 	useEffect(() => {
 		if (!shippingRules) {
 			dispatch(getShippingRules(token))
@@ -91,8 +90,6 @@ function ShippingRulesComponent() {
 		  );
 		  
 	}, [dispatch, token])
-
-	
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
@@ -120,6 +117,29 @@ function ShippingRulesComponent() {
 		return (
 		  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
 		  !selectedOptions.includes(option.key)
+		);
+	};
+
+	const handleChange = (selectedValues) => {
+		setSelectedOptions(selectedValues);
+	};
+  
+	const handleChangeProvinces = (selectedValues) => {
+		setSelectedProvinces(selectedValues);
+	};
+	  
+	const showMoreItems = key => {
+		setRecordId(key)
+	}
+
+	const statesProvince = statesProvinces?.map((item) => ({
+		key: item.code, value: item.name 
+	}))
+
+	const filterOptionsProvinces = (input, option) => {
+		return (
+		  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
+		  !selectedProvinces.includes(option.key)
 		);
 	};
 
@@ -268,12 +288,36 @@ function ShippingRulesComponent() {
 			dataIndex: 'filter_name',
 			align: "center",
 			render: (filter_name, record) => (
-				<Space size="small">
+				<>
 				  { record?.rule_type == 2 ? installedCarriers?.map(carrier =>
 					carrier.slug == filter_name && (
 						carrier.carrier_type == 1 ? carrier.name + ' (LTL Freight Providers)' : carrier.carrier_type == 2 ? carrier.name + ' (Parcel & Postal Providers)' : null
-					)) : record?.rule_type == 3 ? record?.filter_state_province : record?.rule_type == 4 ? record?.filter_postal_code : filter_name}
-				</Space>
+					)) : record?.rule_type == 3 ? <>
+					{record.id == recordId ?  (
+					  <>
+						{record?.filter_state_province?.map((key) => {
+						return (
+						  <>
+							<span> {key} </span>
+							<br/>
+						  </>
+						)})}
+					  </>
+					): (
+					  <>
+						{record?.filter_state_province?.map((key, item) => {
+						if(item < 5){
+						  return (
+						  <>
+							<span> {key} </span>
+							<br/>
+						  </>
+						)}})}
+						{record?.filter_state_province?.length > 5 ? <a className="btn mt-2" onClick={() => showMoreItems(record.id)}>show more</a> : null}
+					  </>
+					)}
+				  </> : record?.rule_type == 4 ? record?.filter_postal_code : filter_name}
+				</>
 			)
 		},
 		{
@@ -516,16 +560,20 @@ function ShippingRulesComponent() {
 												message: 'Select States/Provinces',
 											},
 										]}>
-										<Select 
-											placeholder='Select States/Provinces' 
-											value={this?.filter_state_province || undefined}
-										>
-											{statesProvinces?.map((option) => (
-          										<Option  value={option?.name}>
-	            									{option?.name}
+										<Select
+        									mode="multiple"
+        									style={{ width: '100%' }}
+        									placeholder="Select States/Provinces"
+        									value={selectedProvinces}
+        									onChange={handleChangeProvinces}
+        									filterOption={filterOptionsProvinces}
+      									>
+        									{statesProvince?.map((option) => (
+          										<Option key={option.key} value={option.value}>
+	            									{option.value}
     	      									</Option>
         									))}
-										</Select>
+      									</Select>
 									</Form.Item>
 								</Col>
 							</Row>
