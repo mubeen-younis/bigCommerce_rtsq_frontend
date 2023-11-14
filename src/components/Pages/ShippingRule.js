@@ -25,13 +25,14 @@ import { getAllProducts } from '../../Actions/ProductSettings'
 import types from '../../Stores/types'
 import axios from '../../Utilities/authToken'
 import { dispatchAlert } from '../../Utilities/dispatchAlert'
+import { blockInvalidChar, handleNumbersOnly } from '../../Utilities/numberValidation'
 
 const { Title } = Typography
 const { Option } = Select
 const initialState = {
 	rule_name: '',
-	filter_name: 'US',
-	rule_type: 'Restrict By Country',
+	filter_country: 'US',
+	rule_type: '1',
 	filter_settings: [],
 }
 
@@ -51,10 +52,14 @@ function ShippingRulesComponent() {
 	})
 	const [shippingRuleId, setShippingRuleId] = useState(null)
 	const [available, setAvailable] = useState(true);
+	const [isFilterWeight, setIsFilterWeight] = useState(false);
+	const [isFilterPrice, setIsFilterPrice] = useState(false);
+	const [isFilterQuantity, setIsFilterQuantity] = useState(false);
+	const [ruleType, setRuleType] = useState(1);
 	const [applyTo, setApplyTo] = useState(1);
 	const [form] = Form.useForm()
 	const dispatch = useDispatch()
-	const { alertMessageType, shippingRules, token , allProducts} = useSelector(state => state)
+	const { alertMessageType, shippingRules, token , allProducts, installedCarriers} = useSelector(state => state)
 	const [selectedOptions, setSelectedOptions] = useState([]);
 
 	const handleChange = (selectedValues) => {
@@ -157,15 +162,42 @@ function ShippingRulesComponent() {
 	  }
 	}
 
+	const updateFormFields = async (text) => 
+	{
+		setAvailable(text?.available)
+		setRuleType(text?.rule_type)
+		setSelectedItems(text?.filter_products)
+		setIsFilterWeight(text?.isFilterWeight)
+		setIsFilterPrice(text?.isFilterPrice)
+		setIsFilterQuantity(text?.isFilterQuantity)
+
+		editLocation(text)
+	}
+
 	const onFinish = useCallback(
 		values => {
 			values = {...values, apply_to : applyTo, available: available }
+			if(values['rule_type'] == 2){
+				values = {...values, isFilterWeight: isFilterWeight, isFilterPrice: isFilterPrice, isFilterQuantity: isFilterQuantity }
+			}
+			
 			let error = false,
 				errormsg = '',
 				data = {}
 
 			if (modal.open && modal.type === 'edit') {
 				data = shippingRules?.find(sg => sg.uuid === shippingRuleId) ?? {}
+			}
+
+			if (values['isFilterWeight'] && parseFloat(values['weight_to']) <= parseFloat(values['weight_from'])){
+				error = true;
+				errormsg = 'From weight cannot be greater than or equal to To weight.'
+			} else if(values['isFilterPrice'] && parseFloat(values['price_to']) <= parseFloat(values['price_from'])){
+				error = true;
+				errormsg = 'From Price cannot be greater than or equal to To Price.'
+			} else if(values['isFilterQuantity'] && parseFloat(values['quantity_to']) <= parseFloat(values['quantity_from'])){
+				error = true;
+				errormsg = 'From Quantity cannot be greater than or equal to To Quantity.'
 			}
 
 			if (error) {
@@ -198,6 +230,9 @@ function ShippingRulesComponent() {
 			shippingRules,
 			token,
 			available,
+			isFilterWeight,
+			isFilterPrice,
+			isFilterQuantity,
 			applyTo
 		]
 	)
@@ -213,13 +248,26 @@ function ShippingRulesComponent() {
 			key: 'rule_type',
 			title: 'Type',
 			dataIndex: 'rule_type',
-			align: "center",
+			align:"center",
+			render: (rule_type) => (
+				<Space size="small">
+				  {rule_type == 1 ? 'Restrict By Country' : rule_type == 2 ? 'Hide Methods' : null}
+				</Space>
+			  ),
 		},
 		{
 			key: 'filter_name',
 			title: 'Filters',
 			dataIndex: 'filter_name',
 			align: "center",
+			render: (filter_name, record) => (
+				<Space size="small">
+				  { record?.rule_type == 2 ? installedCarriers?.map(carrier =>
+					carrier.slug == filter_name && (
+						carrier.carrier_type == 1 ? carrier.name + ' (LTL Freight Providers)' : carrier.carrier_type == 2 ? carrier.name + ' (Parcel & Postal Providers)' : null
+					)) : filter_name}
+				</Space>
+			)
 		},
 		{
 			key: 'available',
@@ -242,12 +290,7 @@ function ShippingRulesComponent() {
 			render: text => (
 				<>
 				<Space size='middle'>
-					<Button onClick={() => {
-						text.filter_settings = JSON.parse(text?.filter_settings)
-						setAvailable(text?.available)
-						setSelectedItems(text.filter_settings)
-						editLocation(text)
-					}}>
+					<Button onClick={() => updateFormFields(text)}>
 						Edit
 					</Button>
 					<Button
@@ -281,6 +324,10 @@ function ShippingRulesComponent() {
 								onClick={() => {
 									form.setFieldsValue(initialState)
 									setAvailable(true)
+									setRuleType(1)
+									setIsFilterWeight(false)
+									setIsFilterPrice(false)
+									setIsFilterQuantity(false)
 									setSelectedItems([])
 									hanldeModalToggling(true, 'add')
 								}}>
@@ -372,8 +419,14 @@ function ShippingRulesComponent() {
 											message: 'Type',
 										},
 									]}>
-									<Select placeholder='Type'>
-										<Option value={'Restrict By Country'}>Restrict By Country</Option>
+									<Select 
+										placeholder='Type'
+										onChange={value =>
+											setRuleType(value)
+										}
+									>
+										<Option value={'1'}>Restrict By Country</Option>
+										<Option value={'2'}>Hide Methods</Option>
 									</Select>
 								</Form.Item>
 							</Col>
@@ -401,67 +454,319 @@ function ShippingRulesComponent() {
 								</Form.Item>
 							</Col>
 						</Row>
-						<Row gutter={30}>
-							<Col
-								className='gutter-row'
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={24}>
-								<Form.Item
-									className={'mb-2'}
-									label='Restrict By Country'
-									name='filter_name'
-									placeholder='Restrict By Country'
-									rules={[
-										{
-											required: false,
-											message: 'Restrict By Country',
-										},
-									]}>
-									<Select placeholder='Restrict By Country'>
-										<Option value={'US'}>US</Option>
-										<Option value={'CA'}>CA</Option>
-									</Select>
-								</Form.Item>
-							</Col>
-						</Row>
-						<Row gutter={30}>
-							<Col
-								className='gutter-row'
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={24}>
-								<Form.Item
-									className={'mb-2'}
-									label='Product Which You Want To Add'
-									name='filter_settings'
-									rules={[
-										{
-											required: true,
-											message: 'Product Which You Want To Add',
-										},
-									]}>
-									<Select
-        								mode="multiple"
-        								style={{ width: '100%' }}
-        								placeholder="Select Products"
-        								value={selectedOptions}
-        								onChange={handleChange}
-        								filterOption={filterOptions}
-      								>
-        								{options?.map((option) => (
-          									<Option key={option.key} value={option.key}>
-            									{option.value}
-          									</Option>
-        								))}
-      								</Select>
-								</Form.Item>
-							</Col>
-						</Row>
+						{(ruleType == 1) && (
+							<>
+							<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}>
+									<Form.Item
+										className={'mb-2'}
+										label='Restrict By Country'
+										name='filter_country'
+										rules={[
+											{
+												required: true,
+												message: 'Select Country',
+											},
+										]}>
+										<Select placeholder='Select Country' value={this?.filter_country || undefined}>
+											<Option value={'US'}>US</Option>
+											<Option value={'CA'}>CA</Option>
+										</Select>
+									</Form.Item>
+								</Col>
+							</Row>
+							<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}>
+									<Form.Item
+										className={'mb-2'}
+										label='Product Which You Want To Add'
+										name='filter_products'
+										rules={[
+											{
+												required: true,
+												message: 'Select Products',
+											},
+										]}>
+										<Select
+        									mode="multiple"
+        									style={{ width: '100%' }}
+        									placeholder="Select Products"
+        									value={selectedOptions}
+        									onChange={handleChange}
+        									filterOption={filterOptions}
+      									>
+        									{options?.map((option) => (
+          										<Option key={option.key} value={option.key}>
+	            									{option.value}
+    	      									</Option>
+        									))}
+      									</Select>
+									</Form.Item>
+								</Col>
+							</Row>
+							</>
+						)}
+
+						{(ruleType == 2) && (
+							<>
+							<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}>
+									<Form.Item
+										className={'mb-2'}
+										label='Provider'
+										name='filter_provider'
+										rules={[
+											{
+												required: true,
+												message: 'Select Provider',
+											},
+										]}>
+										<Select placeholder='Select Provider'  value={this?.filter_provider || undefined}>
+											{installedCarriers?.map(carrier =>
+												carrier.is_enabled ? (
+												<Option value={carrier?.slug}>
+													{carrier.carrier_type == 1 ? carrier.name + ' (LTL Freight Providers)' : carrier.carrier_type == 2 ? carrier.name + ' (Parcel & Postal Providers)' : null}
+												</Option>
+											) : null
+											)}
+										</Select>
+									</Form.Item>
+								</Col>
+							</Row>
+							<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}
+								>
+									<Form.Item
+										className={'mb-0'}
+										name='is_filter_weight'
+									>
+									<Checkbox
+                  						name="is_filter_weight"
+                  						checked={isFilterWeight}
+                  						onChange={e => 
+											setIsFilterWeight(e.target.checked)	
+										}
+                					>	
+                  						Filter by weight
+                					</Checkbox>
+									</Form.Item>
+								</Col>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={12}
+									lg={12}
+									xl={12}>
+									<Form.Item
+										label='From'
+										name='weight_from'
+										rules={[
+											{
+												required: isFilterWeight,
+												message: 'Enter weight from',
+											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
+										]}>
+										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter weight from' />
+									</Form.Item>
+								</Col>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={12}
+									lg={12}
+									xl={12}>
+									<Form.Item
+										label='To'
+										name='weight_to'
+										rules={[
+											{
+												required: isFilterWeight,
+												message: 'Enter weight to',
+											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
+										]}>
+										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter weight to' />
+									</Form.Item>
+								</Col>
+							</Row>
+							<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}
+								>
+									<Form.Item
+										className={'mb-0'}
+										name='is_filter_price'
+									>
+									<Checkbox
+                  						name="is_filter_price"
+                  						checked={isFilterPrice}
+                  						onChange={e => 
+											setIsFilterPrice(e.target.checked)	
+										}
+                					>	
+                  						Filter by price
+                					</Checkbox>
+									</Form.Item>
+								</Col>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={12}
+									lg={12}
+									xl={12}>
+									<Form.Item
+										label='From'
+										name='price_from'
+										rules={[
+											{
+												required: isFilterPrice,
+												message: 'Enter price from',
+											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
+										]}>
+										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter price from' />
+									</Form.Item>
+								</Col>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={12}
+									lg={12}
+									xl={12}>
+									<Form.Item
+										label='To'
+										name='price_to'
+										rules={[
+											{
+												required: isFilterPrice,
+												message: 'Enter price to',
+											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
+										]}>
+										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter price to' />
+									</Form.Item>
+								</Col>
+							</Row>
+							<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}
+								>
+									<Form.Item
+										className={'mb-0'}
+										name='is_filter_quantity'
+									>
+									<Checkbox
+                  						name="is_filter_quantity"
+                  						checked={isFilterQuantity}
+                  						onChange={e => 
+											setIsFilterQuantity(e.target.checked)	
+										}
+                					>	
+                  						Filter by quantity
+                					</Checkbox>
+									</Form.Item>
+								</Col>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={12}
+									lg={12}
+									xl={12}>
+									<Form.Item
+										label='From'
+										name='quantity_from'
+										rules={[
+											{
+												required: isFilterQuantity,
+												message: 'Enter quantity from',
+											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
+										]}>
+										<Input type='number' onKeyDown={handleNumbersOnly} min="1" step="1" placeholder='Enter quantity from' />
+									</Form.Item>
+								</Col>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={12}
+									lg={12}
+									xl={12}>
+									<Form.Item
+										label='To'
+										name='quantity_to'
+										rules={[
+											{
+												required: isFilterQuantity,
+												message: 'Enter quantity to',
+											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
+										]}>
+										<Input type='number' onKeyDown={handleNumbersOnly} min="1" step="1" placeholder='Enter quantity to' />
+									</Form.Item>
+								</Col>
+							</Row>
+							</>
+						)}
+						
 						<Row gutter={30}>
 							<Col
 								className='gutter-row'

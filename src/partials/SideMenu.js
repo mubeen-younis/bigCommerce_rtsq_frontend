@@ -24,7 +24,8 @@ function SideMenu(props) {
 		else if (name.includes('plans')) setActiveMenu('100')
 		else if (name.includes('warehouses')) setActiveMenu('101')
 		else if (name.includes('shipping_groups')) setActiveMenu('106')
-		else if (name.includes('rad_settings')) setActiveMenu('108')
+		else if (name.includes('rad_settings')) setActiveMenu('111')
+		else if (name.includes('product_settings')) setActiveMenu('108')
 		else if (name.includes('fdo')) setActiveMenu('102')
 		else if (name.includes('av')) setActiveMenu('103')
 		else if (name.includes('importcsv')) setActiveMenu('104')
@@ -113,6 +114,13 @@ function SideMenu(props) {
 							warnkey={103}
 							onClick={() => setActiveMenu('103')}>
 							<Link to={`/av`}>Address Validation</Link>
+						</Menu.Item>
+
+						<Menu.Item
+							key='111'
+							warnkey={111}
+							onClick={() => setActiveMenu('111')}>
+							<Link to={`/product_settings`}>Product Settings</Link>
 						</Menu.Item>
 
 						<Menu.Item
