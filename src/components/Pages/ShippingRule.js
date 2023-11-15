@@ -207,20 +207,6 @@ function ShippingRulesComponent() {
 		editLocation(text)
 	}
 
-  const handleValidateRange = (selectedValues) => {
-    // Implement your logic to handle and validate the wild card range
-    // For simplicity, let's just log the range for now
-    console.log(`Entered range: ${selectedPostalCodes}`);
-
-    // Example validation logic: Check if the rangeInput matches the pattern
-    const rangePattern = /^(\d+-\d+|\d+\*|\*)$/;
-    if (rangePattern.test(selectedValues)) {
-		message.success('Range is valid!');
-	  
-    } else {
-      message.error('Invalid range format. Please enter a valid range.');
-    }
-  };
 	const onFinish = useCallback(
 		values => {
 			values = {...values, apply_to : applyTo, available: available }
@@ -641,18 +627,6 @@ function ShippingRulesComponent() {
                 				          	},
                         				]}
                       				>
-				                        {/* <Input
-                				          	placeholder="Postal Codes"									
-                          					//maxLength="6"
-											mode="multiple"
-											//onKeyDown={handleKeyCharNumbersOnly}
-											onInput={e =>
-												(e.target.value = (
-												  "" + e.target.value
-												).toUpperCase())
-											}
-                        				/> */}
-
 										<Select
       										mode="tags"
       										style={{ width: '100%' }}
@@ -660,7 +634,6 @@ function ShippingRulesComponent() {
       										value={selectedPostalCodes}
       										onChange={handleSelectChange}
       										dropdownStyle={{ display: 'none' }}
-											onSelect={handleValidateRange}
 	  										onInput={e =>
 												(e.target.value = (
 		  										"" + e.target.value
