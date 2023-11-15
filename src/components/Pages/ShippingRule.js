@@ -14,6 +14,7 @@ import {
 	Radio,
 	Checkbox,
 	Tooltip,
+	message,
 } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -66,6 +67,7 @@ function ShippingRulesComponent() {
 	const { alertMessageType, shippingRules, token , allProducts, installedCarriers, statesProvinces} = useSelector(state => state)
 	const [selectedOptions, setSelectedOptions] = useState([]);
 	const [selectedProvinces, setSelectedProvinces] = useState([]);
+	const [selectedPostalCodes, setSelectedPostalCodes] = useState([]);
 	const [recordId, setRecordId] = useState(null);
 
 	useEffect(() => {
@@ -126,6 +128,10 @@ function ShippingRulesComponent() {
   
 	const handleChangeProvinces = (selectedValues) => {
 		setSelectedProvinces(selectedValues);
+	};
+
+	const handleSelectChange = (selectedValues) => {
+		setSelectedPostalCodes(selectedValues);
 	};
 	  
 	const showMoreItems = key => {
@@ -201,6 +207,20 @@ function ShippingRulesComponent() {
 		editLocation(text)
 	}
 
+  const handleValidateRange = (selectedValues) => {
+    // Implement your logic to handle and validate the wild card range
+    // For simplicity, let's just log the range for now
+    console.log(`Entered range: ${selectedPostalCodes}`);
+
+    // Example validation logic: Check if the rangeInput matches the pattern
+    const rangePattern = /^(\d+-\d+|\d+\*|\*)$/;
+    if (rangePattern.test(selectedValues)) {
+		message.success('Range is valid!');
+	  
+    } else {
+      message.error('Invalid range format. Please enter a valid range.');
+    }
+  };
 	const onFinish = useCallback(
 		values => {
 			values = {...values, apply_to : applyTo, available: available }
@@ -316,7 +336,31 @@ function ShippingRulesComponent() {
 						{record?.filter_state_province?.length > 5 ? <a className="btn mt-2" onClick={() => showMoreItems(record.id)}>show more</a> : null}
 					  </>
 					)}
-				  </> : record?.rule_type == 4 ? record?.filter_postal_code : filter_name}
+				  </> : record?.rule_type == 4 ? <>
+					{record.id == recordId ?  (
+					  <>
+						{record?.filter_postal_code?.map((key) => {
+						return (
+						  <>
+							<span> {key} </span>
+							<br/>
+						  </>
+						)})}
+					  </>
+					): (
+					  <>
+						{record?.filter_postal_code?.map((key, item) => {
+						if(item < 5){
+						  return (
+						  <>
+							<span> {key} </span>
+							<br/>
+						  </>
+						)}})}
+						{record?.filter_postal_code?.length > 5 ? <a className="btn mt-2" onClick={() => showMoreItems(record.id)}>show more</a> : null}
+					  </>
+					)}
+				  </> : filter_name}
 				</>
 			)
 		},
@@ -597,16 +641,38 @@ function ShippingRulesComponent() {
                 				          	},
                         				]}
                       				>
-				                        <Input
+				                        {/* <Input
                 				          	placeholder="Postal Codes"									
-                          					maxLength="6"
-											onKeyDown={handleKeyCharNumbersOnly}
+                          					//maxLength="6"
+											mode="multiple"
+											//onKeyDown={handleKeyCharNumbersOnly}
 											onInput={e =>
 												(e.target.value = (
 												  "" + e.target.value
 												).toUpperCase())
 											}
-                        				/>
+                        				/> */}
+
+										<Select
+      										mode="tags"
+      										style={{ width: '100%' }}
+      										placeholder="Postal Codes"
+      										value={selectedPostalCodes}
+      										onChange={handleSelectChange}
+      										dropdownStyle={{ display: 'none' }}
+											onSelect={handleValidateRange}
+	  										onInput={e =>
+												(e.target.value = (
+		  										"" + e.target.value
+												).toUpperCase())
+											} 
+    										>
+      										{selectedPostalCodes.map((item) => (
+        										<Option key={item} value={item}>
+          										{item}
+        										</Option>
+      										))}
+    									</Select>
                       				</Form.Item>
 								</Col>
 							</Row>	
