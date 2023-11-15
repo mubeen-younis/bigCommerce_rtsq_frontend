@@ -24,6 +24,7 @@ export { default as CSPurolatorSmall } from './PurolatorSmall/ConnectionSettings
 export { default as DaylightLtl } from './DaylightLtl/ConnectionSettingsComponent';
 export { default as CSFreightQuoteChrLtl } from './FreightQuoteChr/ConnectionSettingsComponent';
 export { default as CSUpsShipEngineSmall } from './UpsViaShipEngine/ConnectionSettingsComponent';
+export { default as CSPriorityOneLtl } from './PriorityOneLtl/ConnectionSettingsComponent';
 
 // Quote Settings Component
 export { default as QSWweltl } from './WweLtl/QuoteSettingsComponentWwe';
@@ -51,3 +52,4 @@ export { default as QSPurolatorSmall } from './PurolatorSmall/QuoteSettingsCompo
 export { default as QSDayLightLtl } from './DaylightLtl/QuoteSettingsComponent';
 export { default as QSFreightQuoteChrLtl } from './FreightQuoteChr/QuoteSettingsComponent';
 export { default as QSUpsShipEngineSmall } from './UpsViaShipEngine/QuoteSettingsComponent';
+export { default as QSPriorityOneLtl } from './PriorityOneLtl/QuoteSettingsComponent';

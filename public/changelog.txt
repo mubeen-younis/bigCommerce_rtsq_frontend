@@ -1,3 +1,7 @@
+= 2.0.0 2023-11-14 =
+
+* Update - Add Priority one carrier in BC. (Ticket:1920692032)[#251](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/251)
+
 = 1.2.3 2023-11-14 =
 
 * Update - changes in Address Type Setting page in BC. (Ticket:2068260477)[#250](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/250)
