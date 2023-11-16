@@ -558,6 +558,7 @@ function ShippingRulesComponent() {
         									style={{ width: '100%' }}
         									placeholder="Select States/Provinces"
         									value={selectedProvinces}
+											allowClear
         									onChange={handleChangeProvinces}
         									filterOption={filterOptionsProvinces}
       									>
