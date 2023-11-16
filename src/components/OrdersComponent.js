@@ -693,6 +693,9 @@ function OrderSettingsComponent(props) {
 															<li>{access}</li>
 														)
 													)}
+													{widget?.quoteId && (
+														<li>{'Quote Id: ' + widget?.quoteId}</li>
+													)}
 												</ul>
 											</div>
 										</Col>

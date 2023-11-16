@@ -227,6 +227,8 @@ function DisplayLogsPage(props) {
     packaging,
     allLogs,
     uniShipperSmallApiType,
+    WweSmallApiType,
+    WweLtlApiType,
   } = useSelector(state => state)
   const [pagination, setPagination] = useState({
     current: 1,
@@ -249,6 +251,12 @@ function DisplayLogsPage(props) {
         const isSmall = carr?.carrier_type === 2 ? true : false
         setIsSmallCarr(isSmall)
 
+        if (slug === 'ltl-quotes' && WweLtlApiType === "new_api") {
+          slug = "ltl-quotes-new"
+        }
+        if (slug === 'small-package' && WweSmallApiType === "new_api") {
+          slug = "small-package-new"
+        }
         if (slug === 'gtz-ltl' && carrier_type === "CRS") {
           slug = "cltl"
         }
