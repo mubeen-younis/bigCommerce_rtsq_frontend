@@ -268,13 +268,11 @@ function ShippingRulesComponent() {
 			key: 'rule_name',
 			title: 'Rule Name',
 			dataIndex: 'rule_name',
-			align: "center",
 		},
 		{
 			key: 'rule_type',
 			title: 'Type',
 			dataIndex: 'rule_type',
-			align:"center",
 			render: (rule_type) => (
 				<Space size="small">
 				  {shippingRuleTypes[rule_type]}
@@ -285,7 +283,6 @@ function ShippingRulesComponent() {
 			key: 'filter_name',
 			title: 'Filters',
 			dataIndex: 'filter_name',
-			align: "center",
 			render: (filter_name, record) => (
 				<>
 				  { record?.rule_type == 2 ? installedCarriers?.map(carrier =>
@@ -323,7 +320,6 @@ function ShippingRulesComponent() {
 			key: 'available',
 			title: 'Available',
 			dataIndex: 'available',
-			align: "center",
 			render: (available, record) => (
 				<Space size="small">
 				  <a href="#!" onClick={() => isAvailable(record.uuid, record.available)}>
@@ -336,7 +332,6 @@ function ShippingRulesComponent() {
 		{
 			key: 'action',
 			title: 'Action',
-			align: "center",
 			render: text => (
 				<>
 				<Space size='middle'>
