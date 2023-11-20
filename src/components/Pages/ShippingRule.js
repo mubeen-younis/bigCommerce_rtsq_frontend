@@ -642,6 +642,11 @@ function ShippingRulesComponent() {
         										</Option>
       										))}
     									</Select>
+										<div className={'text-gray'}>
+											Postal codes can be entered with exact values (e.g., 90210), 
+											containing wildcards (e.g., 902*), or as fully numeric ranges (e.g., 90210...99000).
+											Use enter to add the next value.
+										</div>
                       				</Form.Item>
 								</Col>
 							</Row>	
