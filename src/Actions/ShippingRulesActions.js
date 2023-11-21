@@ -77,6 +77,33 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 	  }
 	}
 
+	export const getCarrServices = (carrierId, token) => async dispatch => {
+	
+		try {
+			const url = `${process.env.REACT_APP_ENITURE_API_URL}/getCarrierServices/${carrierId}`,
+			
+			  config = {
+				headers: {
+				  authorization: `Bearer ${token}`,
+				},
+			  }
+	
+			const {
+				data: { error, data, message },
+			}  = await axios.get(url, config)
+	
+			if (!error) {
+				dispatch({
+					type: types.GET_CARRIER_SERVICES,
+					payload: data,
+				})
+			}
+			dispatch(dispatchAlert(error, error ? 'error' : 'success', message))
+		  } catch (err) {
+			dispatch(dispatchAlert(false, null))
+		  }
+		}
+
 
 export const saveShippingRule = (shipping_rule, token) => async dispatch => {
 	try {

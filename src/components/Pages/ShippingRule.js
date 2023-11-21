@@ -22,6 +22,7 @@ import {
 	saveShippingRule,
 	deleteShippingRule,
 	getStatesProvinces,
+	getCarrServices,
 } from '../../Actions/ShippingRulesActions'
 import addKeysToList from './../../Utilities/addKey'
 import { getAllProducts } from '../../Actions/ProductSettings'
@@ -64,7 +65,7 @@ function ShippingRulesComponent() {
 	const [applyTo, setApplyTo] = useState(1);
 	const [form] = Form.useForm()
 	const dispatch = useDispatch()
-	const { alertMessageType, shippingRules, token , allProducts, installedCarriers, statesProvinces} = useSelector(state => state)
+	const { alertMessageType, shippingRules, token , allProducts, installedCarriers, statesProvinces, carrierServices} = useSelector(state => state)
 	const [selectedOptions, setSelectedOptions] = useState([]);
 	const [selectedProvinces, setSelectedProvinces] = useState([]);
 	const [selectedPostalCodes, setSelectedPostalCodes] = useState([]);
@@ -130,6 +131,16 @@ function ShippingRulesComponent() {
 		setSelectedProvinces(selectedValues);
 	};
 
+	const handleProviderServices = (slug) => {
+		installedCarriers?.map(carrier =>
+			carrier?.slug == slug ? dispatch(getCarrServices(carrier?.id, token)) : null
+		)
+	};
+	// Filter out options with false values
+	const optionKeys = carrierServices ? Object.entries(carrierServices)
+    	.filter(([key, value]) => value === true) 
+    	.map(([key, value]) => ({ label: key, value: key })) : [];
+	
 	const handleSelectChange = (selectedValues) => {
 		setSelectedPostalCodes(selectedValues);
 	};
@@ -148,6 +159,10 @@ function ShippingRulesComponent() {
 		  !selectedProvinces.includes(option.key)
 		);
 	};
+
+	const convertFirstLetter = (str) => {
+		return str.replace(/\b\w/g, (match) => match.toUpperCase());
+	  };
 
 	const editLocation = useCallback(
 		record => {
@@ -506,6 +521,7 @@ function ShippingRulesComponent() {
 										<Option value={'3'}>Restrict By State</Option>
 										<Option value={'4'}>Restrict By Postal Codes</Option>
 										<Option value={'2'}>Hide Methods</Option>
+										<Option value={'5'}>Override Rates</Option>
 									</Select>
 								</Form.Item>
 							</Col>
@@ -689,7 +705,7 @@ function ShippingRulesComponent() {
 							</>
 						)}
 
-						{(ruleType == 2) && (
+						{(ruleType == 2 || ruleType == 5) && (
 							<>
 							<Row gutter={30}>
 								<Col
@@ -709,7 +725,11 @@ function ShippingRulesComponent() {
 												message: 'Select Provider',
 											},
 										]}>
-										<Select placeholder='Select Provider'  value={this?.filter_provider || undefined}>
+										<Select 
+											placeholder='Select Provider'  
+											value={this?.filter_provider || undefined}
+											onChange={handleProviderServices}
+										>
 											{installedCarriers?.map(carrier =>
 												carrier.is_enabled ? (
 												<Option value={carrier?.slug}>
@@ -721,6 +741,63 @@ function ShippingRulesComponent() {
 									</Form.Item>
 								</Col>
 							</Row>
+							{(ruleType == 5) && (
+							<>
+							<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}>
+									<Form.Item
+										className={'mb-2'}
+										label='Services'
+										name='filter_services'
+										rules={[
+											{
+												required: true,
+												message: 'Select Services',
+											},
+										]}>
+										<Select placeholder='Select Services'  value={this?.filter_services || undefined}>
+										{optionKeys?.map((option, index) => (
+          									<option key={option?.value} value={option?.value}>
+            									{convertFirstLetter(option?.label?.replace(/_/g, ' '))}
+          									</option>
+        								))}
+										</Select>
+									</Form.Item>
+								</Col>
+							</Row>
+							<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}>
+									<Form.Item
+										label='Rates(e.g. 5.25)'
+										name='service_rates'
+										rules={[
+											{
+												required: true,
+												message: 'Enter Rates',
+											},
+											{
+												pattern: /^\d*\.?\d{0,2}$/,
+												message: "Only two decimal places are allowed",
+											},
+										]}>
+										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter Rates' />
+									</Form.Item>
+								</Col>
+							</Row>
+							</>
+							)}
 							<Row gutter={30}>
 								<Col
 									className='gutter-row'
