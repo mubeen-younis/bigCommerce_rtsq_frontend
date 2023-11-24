@@ -67,18 +67,26 @@ function ShippingRulesComponent() {
 	const dispatch = useDispatch()
 	const { alertMessageType, shippingRules, token , allProducts, installedCarriers, statesProvinces, carrierServices} = useSelector(state => state)
 	const [selectedOptions, setSelectedOptions] = useState([]);
+	const [selectedServices, setSelectedServices] = useState([]);
+	const [carrierId, setCarrierId] = useState();
 	const [selectedProvinces, setSelectedProvinces] = useState([]);
 	const [selectedPostalCodes, setSelectedPostalCodes] = useState([]);
 	const [recordId, setRecordId] = useState(null);
+	const [isLTL, setIsLTL] = useState(1);
 
 	useEffect(() => {
 		if (!shippingRules) {
 			dispatch(getShippingRules(token))
 		}
-		
+
 		dispatch(getStatesProvinces(countryCode, token))
 
 	}, [dispatch, shippingRules, token, countryCode])
+
+	useEffect(() => {
+		dispatch(getCarrServices(carrierId, token, isLTL))
+
+	}, [dispatch, token, carrierId])
 
 	useEffect(() => {
 		dispatch(
@@ -126,20 +134,37 @@ function ShippingRulesComponent() {
 	const handleChange = (selectedValues) => {
 		setSelectedOptions(selectedValues);
 	};
+
+	const filterServices = (input, option) => {
+		return (
+		  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
+		  !selectedServices.includes(option.key)
+		);
+	};
+
+	const handleChangeServices = (selectedValues) => {
+		setSelectedServices(selectedValues);
+	};
   
 	const handleChangeProvinces = (selectedValues) => {
 		setSelectedProvinces(selectedValues);
 	};
 
 	const handleProviderServices = (slug) => {
+		dispatch({
+			type: 'GET_CARRIER_SERVICES',
+			payload: [],
+		})
 		installedCarriers?.map(carrier =>
-			carrier?.slug == slug ? dispatch(getCarrServices(carrier?.id, token)) : null
+			carrier?.slug == slug ? [setCarrierId(carrier?.id), setIsLTL(carrier?.carrier_type)] : null
 		)
 	};
 	// Filter out options with false values
-	const optionKeys = carrierServices ? Object.entries(carrierServices)
-    	.filter(([key, value]) => value === true) 
-    	.map(([key, value]) => ({ label: key, value: key })) : [];
+	const optionKeys = isLTL == 1 && carrierServices ? carrierServices?.map((item) => ({
+		value: item.speed_freight_carrierSCAC, label: item.speed_freight_carrierName 
+		})) : carrierServices ? Object?.entries(carrierServices)
+    	?.filter(([key, value]) => value === true) 
+    	?.map(([key, value]) => ({ label: key, value: key })) : [];
 	
 	const handleSelectChange = (selectedValues) => {
 		setSelectedPostalCodes(selectedValues);
@@ -212,6 +237,7 @@ function ShippingRulesComponent() {
 	const updateFormFields = async (text) => 
 	{
 		setCountryCode(text?.filter_country)
+		handleProviderServices(text?.filter_provider)
 		setAvailable(text?.available)
 		setRuleType(text?.rule_type)
 		setSelectedItems(text?.filter_products)
@@ -225,7 +251,7 @@ function ShippingRulesComponent() {
 	const onFinish = useCallback(
 		values => {
 			values = {...values, apply_to : applyTo, available: available }
-			if(values['rule_type'] == 2){
+			if(values['rule_type'] == 2 || values['rule_type'] == 5){
 				values = {...values, isFilterWeight: isFilterWeight, isFilterPrice: isFilterPrice, isFilterQuantity: isFilterQuantity }
 			}
 			
@@ -356,6 +382,30 @@ function ShippingRulesComponent() {
 						  </>
 						)}})}
 						{record?.filter_postal_code?.length > 5 ? <a className="btn mt-2" onClick={() => showMoreItems(record.id)}>show more</a> : null}
+					  </>
+					)}
+				  </> : record?.rule_type == 5 ? <>
+					{record.id == recordId ?  (
+					  <>
+						{record?.filter_services?.map((key) => {
+						return (
+						  <>
+							<span> {convertFirstLetter(key?.replace(/_/g, ' '))} </span>
+							<br/>
+						  </>
+						)})}
+					  </>
+					): (
+					  <>
+						{record?.filter_services?.map((key, item) => {
+						if(item < 5){
+						  return (
+						  <>
+							<span> {convertFirstLetter(key?.replace(/_/g, ' '))} </span>
+							<br/>
+						  </>
+						)}})}
+						{record?.filter_services?.length > 5 ? <a className="btn mt-2" onClick={() => showMoreItems(record.id)}>show more</a> : null}
 					  </>
 					)}
 				  </> : filter_name}
@@ -761,13 +811,20 @@ function ShippingRulesComponent() {
 												message: 'Select Services',
 											},
 										]}>
-										<Select placeholder='Select Services'  value={this?.filter_services || undefined}>
-										{optionKeys?.map((option, index) => (
-          									<option key={option?.value} value={option?.value}>
-            									{convertFirstLetter(option?.label?.replace(/_/g, ' '))}
-          									</option>
-        								))}
-										</Select>
+										<Select
+        									mode="multiple"
+        									style={{ width: '100%' }}
+        									placeholder="Select Services"
+        									value={selectedServices}
+        									onChange={handleChangeServices}
+        									filterOption={filterServices}
+      									>
+											{optionKeys?.map((option, index) => (
+          										<option key={option?.value} value={convertFirstLetter(option?.label?.replace(/_/g, ' '))}>
+            										{convertFirstLetter(option?.label?.replace(/_/g, ' '))}
+          										</option>
+        									))}
+      									</Select>
 									</Form.Item>
 								</Col>
 							</Row>
