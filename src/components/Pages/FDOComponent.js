@@ -185,7 +185,7 @@ const FDOComponent = () => {
 					</Col>
 				</Row>
 			) : (
-				<Row gutter={30} className={'mb-3'}>
+				<Row gutter={30} className={'mb-0'}>
 					<Col
 						className='gutter-row'
 						style={{ paddingTop: '11px' }}
@@ -231,7 +231,7 @@ const FDOComponent = () => {
 						<label className={'text-gray'}> </label>
 					</Col>
 					<Col
-						className='gutter-row mb-3'
+						className='gutter-row mb-2'
 						xs={24}
 						sm={24}
 						md={20}
