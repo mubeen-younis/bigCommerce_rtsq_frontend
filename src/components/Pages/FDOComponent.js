@@ -185,7 +185,7 @@ const FDOComponent = () => {
 					</Col>
 				</Row>
 			) : (
-				<Row gutter={30} className={'mb-3'}>
+				<Row gutter={30} className={'mb-0'}>
 					<Col
 						className='gutter-row'
 						style={{ paddingTop: '11px' }}
@@ -231,7 +231,7 @@ const FDOComponent = () => {
 						<label className={'text-gray'}> </label>
 					</Col>
 					<Col
-						className='gutter-row mb-3'
+						className='gutter-row mb-2'
 						xs={24}
 						sm={24}
 						md={20}
@@ -245,6 +245,52 @@ const FDOComponent = () => {
 					</Col>
 				</Row>
 			)}
+			<hr style={{ borderColor: 'light-gray' }} />
+			<Row gutter={30}>
+				<Col className='gutter-row' span={24}>
+					<Title level={4}>How to connect your BigCommerce store to FreightDesk Online</Title>
+					<p>
+						First, if you don’t already have one, register for a FreightDesk Online account{' '}
+						<a
+							href='https://freightdesk.online/register'
+							target='_blank'
+							rel='noreferrer'>
+							(https://freightdesk.online/register)
+						</a>.{' '} 
+						You can connect multiple online stores to FreightDesk Online, so you don’t
+						have to create separate accounts for each one.
+						<br/><br/>
+						The pricing for FreightDesk Online is á la carte. You’ll be able to pick a separate plan for parcel (and postal) shipments,
+						and for LTL freight shipments based on the anticipated volume for each type of shipping. 
+						Your monthly subscription rate will be comprised of these two selections. 
+						You can begin a 30-day trial of both types of shipping by selecting <b>Trial</b> in the corresponding dropdown fields on the registration form.
+						<br/><br/>
+						After you complete the registration process, log into 
+						{' '}
+						<a
+							href='https://freightdesk.online/login'
+							target='_blank'
+							rel='noreferrer'>
+							FreightDesk Online
+						</a>.{' '} 
+						Click on your avatar located in the top right-hand corner of the browser window. 
+						Copy your FreightDesk Online ID which will be located below your company name.
+						<br/><br/>
+						<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      						<img src={"images/freightdesk-online-id.jpg"} alt="freightdesk-online-id" />
+    					</div>
+						<br/><br/>
+						Return to the BigCommerce ADMIN area. Click <b>Apps</b> and then <b>Real-time Shipping Quotes by Eniture Technology</b>. 
+						In the app’s navigation menu, select <b>FreightDesk Online</b>. 
+						Enter your FreightDesk Online ID and then click the <b>Connect</b> button.
+						<br/><br/>
+						Now that you’ve connected FreightDesk Online, unfulfilled orders will automatically appear in FreightDesk Online. 
+						To view them, log into FreightDesk Online and click on <b>Orders</b> in the navigation menu. 
+						You’ll need to connect your shipping providers before you can start shipping. 
+						You can find a quick start guide in FreightDesk Online by navigating to <b>Help {'>'} Getting Started</b>.
+					</p>
+				</Col>
+			</Row>
 
 			<Modal
 				title='Disconnect Account'

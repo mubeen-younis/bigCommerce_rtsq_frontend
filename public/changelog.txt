@@ -2,6 +2,10 @@
 
 * Update - fixes change payment method button issue. (Ticket:2113610536)[#256](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/256)
 
+= 2.1.2 2023-11-29 =
+
+* Update - add the instructions in the FDO Connection in RTSQ App. (Ticket:2097113866)[#255](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/255)
+
 = 2.1.1 2023-11-20 =
 
 * Update - introduce Shipping Restrictions by State/Zipcode in BC. (Ticket:1955948122)[#253](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/253)
