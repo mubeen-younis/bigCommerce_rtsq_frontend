@@ -76,7 +76,7 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 	  }
 	}
 
-	export const getCarrServices = (carrierId, token, isLTL) => async dispatch => {
+	export const getCarrServices = (carrierId, token, isLTL, carrierSlug) => async dispatch => {
 	
 		try {
 			const url = `${process.env.REACT_APP_ENITURE_API_URL}/getCarrierServices`,
@@ -87,7 +87,7 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 				},
 			  }
 
-			const reqData = {'isLTL' : isLTL, 'carrierId' : carrierId}
+			const reqData = {'isLTL' : isLTL, 'carrierId' : carrierId, 'carrierSlug' : carrierSlug}
 	
 			const {
 				data: { error, data, message },

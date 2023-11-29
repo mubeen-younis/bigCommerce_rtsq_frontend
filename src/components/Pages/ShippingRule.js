@@ -69,10 +69,11 @@ function ShippingRulesComponent() {
 	const [selectedOptions, setSelectedOptions] = useState([]);
 	const [selectedServices, setSelectedServices] = useState([]);
 	const [carrierId, setCarrierId] = useState();
+	const [carrierSlug, setCarrierSlug] = useState();
 	const [selectedProvinces, setSelectedProvinces] = useState([]);
 	const [selectedPostalCodes, setSelectedPostalCodes] = useState([]);
 	const [recordId, setRecordId] = useState(null);
-	const [isLTL, setIsLTL] = useState(1);
+	const [isLTL, setIsLTL] = useState();
 
 	useEffect(() => {
 		if (!shippingRules) {
@@ -84,8 +85,8 @@ function ShippingRulesComponent() {
 	}, [dispatch, shippingRules, token, countryCode])
 
 	useEffect(() => {
-		dispatch(getCarrServices(carrierId, token, isLTL))
-
+		dispatch(getCarrServices(carrierId, token, isLTL, carrierSlug))
+		
 	}, [dispatch, token, carrierId])
 
 	useEffect(() => {
@@ -151,21 +152,15 @@ function ShippingRulesComponent() {
 	};
 
 	const handleProviderServices = (slug) => {
-		dispatch({
-			type: 'GET_CARRIER_SERVICES',
-			payload: [],
-		})
 		installedCarriers?.map(carrier =>
-			carrier?.slug == slug ? [setCarrierId(carrier?.id), setIsLTL(carrier?.carrier_type)] : null
+			carrier?.slug == slug ? [setCarrierId(carrier?.id), setIsLTL(carrier?.carrier_type), setCarrierSlug(slug)] : null
 		)
 	};
 	// Filter out options with false values
-	const optionKeys = isLTL == 1 && carrierServices ? carrierServices?.map((item) => ({
-		value: item.speed_freight_carrierSCAC, label: item.speed_freight_carrierName 
-		})) : carrierServices ? Object?.entries(carrierServices)
-    	?.filter(([key, value]) => value === true) 
-    	?.map(([key, value]) => ({ label: key, value: key })) : [];
-	
+	const optionKeys = carrierServices?.map((item) => ({
+		key: item.key, value: item.value 
+	}))
+
 	const handleSelectChange = (selectedValues) => {
 		setSelectedPostalCodes(selectedValues);
 	};
@@ -390,7 +385,7 @@ function ShippingRulesComponent() {
 						{record?.filter_services?.map((key) => {
 						return (
 						  <>
-							<span> {convertFirstLetter(key?.replace(/_/g, ' '))} </span>
+							<span> {key} </span>
 							<br/>
 						  </>
 						)})}
@@ -401,7 +396,7 @@ function ShippingRulesComponent() {
 						if(item < 5){
 						  return (
 						  <>
-							<span> {convertFirstLetter(key?.replace(/_/g, ' '))} </span>
+							<span> {key} </span>
 							<br/>
 						  </>
 						)}})}
@@ -471,6 +466,8 @@ function ShippingRulesComponent() {
 									setIsFilterPrice(false)
 									setIsFilterQuantity(false)
 									setSelectedItems([])
+									setCarrierSlug()
+									setCarrierId()
 									hanldeModalToggling(true, 'add')
 								}}>
 								Add
@@ -506,6 +503,10 @@ function ShippingRulesComponent() {
 				onCancel={() => {
 					hanldeModalToggling(false, '')
 					form.resetFields()
+					dispatch({
+						type: 'GET_CARRIER_SERVICES',
+						payload: [],
+					})
 				}}
 				destroyOnClose={true}
 				footer={null}
@@ -741,6 +742,7 @@ function ShippingRulesComponent() {
         									placeholder="Select Products"
         									value={selectedOptions}
         									onChange={handleChange}
+											allowClear
         									filterOption={filterOptions}
       									>
         									{options?.map((option) => (
@@ -818,10 +820,11 @@ function ShippingRulesComponent() {
         									value={selectedServices}
         									onChange={handleChangeServices}
         									filterOption={filterServices}
+											allowClear
       									>
-											{optionKeys?.map((option, index) => (
-          										<option key={option?.value} value={convertFirstLetter(option?.label?.replace(/_/g, ' '))}>
-            										{convertFirstLetter(option?.label?.replace(/_/g, ' '))}
+											{optionKeys?.map((option) => (
+          										<option key={option?.value} value={option?.value}>
+            										{option?.value}
           										</option>
         									))}
       									</Select>
