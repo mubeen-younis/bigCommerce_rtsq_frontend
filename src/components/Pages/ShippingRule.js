@@ -155,6 +155,7 @@ function ShippingRulesComponent() {
 		installedCarriers?.map(carrier =>
 			carrier?.slug == slug ? [setCarrierId(carrier?.id), setIsLTL(carrier?.carrier_type), setCarrierSlug(slug)] : null
 		)
+		dispatch(getCarrServices(carrierId, token, isLTL, carrierSlug))
 	};
 	// Filter out options with false values
 	const optionKeys = carrierServices?.map((item) => ({
