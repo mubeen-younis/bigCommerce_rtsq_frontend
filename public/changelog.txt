@@ -1,3 +1,7 @@
+= 2.1.4 2023-12-01 =
+
+* Update - fixes display products on shipping rule bug. (Ticket:1955948122)[#257](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/257)
+
 = 2.1.3 2023-11-29 =
 
 * Update - fixes change payment method button issue. (Ticket:2113610536)[#256](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/256)
