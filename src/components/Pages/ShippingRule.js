@@ -44,8 +44,8 @@ function ShippingRulesComponent() {
 	const [loading, setLoading] = useState(true);
 	const [items, setItems] = useState([]);
 	const [pagination, setPagination] = useState({
-		current: 1,
-		pageSize: 50,
+		current: null,
+		pageSize: null,
 		search: null,
 	  });
 	  const [selectedItems, setSelectedItems] = useState([]);
@@ -87,7 +87,8 @@ function ShippingRulesComponent() {
 			  pagination.pageSize,
 			  false,
 			  setLoading,
-			  pagination.search
+			  pagination.search,
+			  true
 			)
 		  );
 		  
