@@ -8,6 +8,7 @@ import {
 	validateHandlingFeeMarkup,
 } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
+import PackageRatingMethod from "../../PackageRatingMethod"
 import CutOffTime from '../../CutOffTime'
 import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
@@ -64,6 +65,7 @@ const initialState = {
 	air_hazardous_material_fee: null,
 	handling_fee_markup: null,
 	quote_details: null,
+	packageRatingMethod: 1,
 }
 
 function QuoteSettingsComponentWweSmall(props) {
@@ -416,6 +418,11 @@ function QuoteSettingsComponentWweSmall(props) {
 					/>)}
           
         		</Row>
+				
+				<PackageRatingMethod
+          			quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
 
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
