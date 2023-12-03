@@ -784,11 +784,9 @@ function ShippingRulesComponent() {
 											onChange={handleProviderServices}
 										>
 											{installedCarriers?.map(carrier =>
-												carrier.is_enabled ? (
 												<Option value={carrier?.slug}>
 													{carrier.carrier_type == 1 ? carrier.name + ' (LTL Freight Providers)' : carrier.carrier_type == 2 ? carrier.name + ' (Parcel & Postal Providers)' : null}
 												</Option>
-											) : null
 											)}
 										</Select>
 									</Form.Item>
