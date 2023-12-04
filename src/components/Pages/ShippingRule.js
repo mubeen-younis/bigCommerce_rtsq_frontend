@@ -45,8 +45,8 @@ function ShippingRulesComponent() {
 	const [loading, setLoading] = useState(true);
 	const [items, setItems] = useState([]);
 	const [pagination, setPagination] = useState({
-		current: 1,
-		pageSize: 50,
+		current: null,
+		pageSize: 10000000,
 		search: null,
 	  });
 	  const [selectedItems, setSelectedItems] = useState([]);
@@ -97,7 +97,8 @@ function ShippingRulesComponent() {
 			  pagination.pageSize,
 			  false,
 			  setLoading,
-			  pagination.search
+			  pagination.search,
+			  true
 			)
 		  );
 		  
@@ -682,6 +683,7 @@ function ShippingRulesComponent() {
 									lg={24}
 									xl={24}>
 									<Form.Item
+										className={'mb-0'}
                         				label="Postal Codes"
 				                        name="filter_postal_code"
                 				        rules={[
@@ -710,12 +712,12 @@ function ShippingRulesComponent() {
         										</Option>
       										))}
     									</Select>
-										<div className={'text-gray'}>
-											Postal codes can be entered with exact values (e.g., 90210), 
-											containing wildcards (e.g., 902*), or as fully numeric ranges (e.g., 90210...99000).
-											Use enter to add the next value.
-										</div>
                       				</Form.Item>
+									<div className={'text-gray mb-1'} >
+										Postal codes can be entered with exact values (e.g., 90210), 
+										containing wildcards (e.g., 902*), or as fully numeric ranges (e.g., 90210...99000).
+										Use enter to add the next value.
+									</div>
 								</Col>
 							</Row>	
 							)}
