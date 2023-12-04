@@ -8,7 +8,7 @@ options:
   max-time: 60
 pipelines:
   branches:
-    fixes-restrict-by-state:
+    override-rates:
     - step:
         caches:
           - composer
