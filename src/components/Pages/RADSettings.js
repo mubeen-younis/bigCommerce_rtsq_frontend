@@ -100,6 +100,19 @@ function ShippingGroupsComponent() {
 
         <Card>
           <Row gutter={30}>
+          <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
+              <Form.Item className="mb-0">
+                <Checkbox
+                  name="return_rates"
+                  checked={settings.return_rates}
+                  onChange={e => handleStateChange(e)}
+                >
+                  Do not return rate if the shipping address appears to be a
+                  post office box
+                </Checkbox>
+              </Form.Item>
+            </Col>
+            
             <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item className={"mb-0"}>
                 <Checkbox
@@ -114,19 +127,6 @@ function ShippingGroupsComponent() {
                   }}
                 >
                   Always quote residential delivery
-                </Checkbox>
-              </Form.Item>
-            </Col>
-
-            <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-              <Form.Item className="mb-0">
-                <Checkbox
-                  name="return_rates"
-                  checked={settings.return_rates}
-                  onChange={e => handleStateChange(e)}
-                >
-                  Do not return rate if the shipping address appears to be a
-                  post office box
                 </Checkbox>
               </Form.Item>
             </Col>
