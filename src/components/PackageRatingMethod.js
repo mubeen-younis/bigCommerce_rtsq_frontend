@@ -10,7 +10,7 @@ const PackageRatingMethod = ({
 	return (
 		<Row align='middle' className={'mb-4'}>
 			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={8}>
-				<Title level={4}>Package rating method when Standard Box Sizes aren't in use</Title>
+				<Title level={4}>Package rating method when Standard Box Sizes isn't in use</Title>
 			</Col>
 			<Row gutter={30} align='middle'>
 			<Col className='gutter-row mb-1'  xs={24} sm={12} md={12} lg={12} xl={6}>
