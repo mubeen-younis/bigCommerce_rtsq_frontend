@@ -77,6 +77,59 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 	  }
 	}
 
+	export const getCategories = (token) => async dispatch => {
+	
+		try {
+			const url = `${process.env.REACT_APP_ENITURE_API_URL}/get_store_categories`,
+			
+			  config = {
+				headers: {
+				  authorization: `Bearer ${token}`,
+				},
+			  }
+	
+			const {
+				data: { error, data, message },
+			}  = await axios.post(url, config)
+	
+			if (!error) {
+				dispatch({
+					type: types.GET_STORE_CATEGORIES,
+					payload: data,
+				})
+			}
+			dispatch(dispatchAlert(error, error ? 'error' : 'success', message))
+		  } catch (err) {
+			dispatch(dispatchAlert(false, null))
+		  }
+		}
+
+	export const getBrands = (token) => async dispatch => {
+	
+		try {
+			const url = `${process.env.REACT_APP_ENITURE_API_URL}/get_store_brands`,
+			
+			  config = {
+				headers: {
+				  authorization: `Bearer ${token}`,
+				},
+			  }
+	
+			const {
+				data: { error, data, message },
+			}  = await axios.post(url, config)
+	
+			if (!error) {
+				dispatch({
+					type: types.GET_STORE_BRANDS,
+					payload: data,
+				})
+			}
+			dispatch(dispatchAlert(error, error ? 'error' : 'success', message))
+		  } catch (err) {
+			dispatch(dispatchAlert(false, null))
+		  }
+		}
 
 export const saveShippingRule = (shipping_rule, token) => async dispatch => {
 	try {
