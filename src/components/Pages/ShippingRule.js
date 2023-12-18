@@ -51,7 +51,6 @@ function ShippingRulesComponent() {
 		pageSize: 10000000,
 		search: null,
 	  });
-	  const [selectedItems, setSelectedItems] = useState([]);
 	
 	const [modal, setModal] = useState({
 		open: false,
@@ -123,13 +122,9 @@ function ShippingRulesComponent() {
 			key: item.source_product_id.toString(), value: item.name 
 		}))
 	} else if(applyRuleTo == 2){
-		options = storeBrands?.map((brand) => ({
-			key: brand?.id.toString(), value: brand?.name 
-		}))
+		options = storeBrands
 	} else if(applyRuleTo == 1){
-		options = storeCategories?.map((category) => ({
-			key: category?.id.toString(), value: category?.name 
-		}))
+		options = storeCategories
 	}
 
 	const filterOptions = (input, option) => {
@@ -142,7 +137,7 @@ function ShippingRulesComponent() {
 	const handleChange = (selectedValues) => {
 		setSelectedOptions(selectedValues);
 	};
-  
+
 	const handleChangeProvinces = (selectedValues) => {
 		setSelectedProvinces(selectedValues);
 	};
@@ -218,10 +213,11 @@ function ShippingRulesComponent() {
 		setCountryCode(text?.filter_country)
 		setAvailable(text?.available)
 		setRuleType(text?.rule_type)
-		setSelectedItems(text?.filter_products)
+		setSelectedOptions(text?.filter_products)
 		setIsFilterWeight(text?.isFilterWeight)
 		setIsFilterPrice(text?.isFilterPrice)
 		setIsFilterQuantity(text?.isFilterQuantity)
+		setApplyRuleTo(text?.apply_rule_to)	
 
 		editLocation(text)
 	}
@@ -377,7 +373,7 @@ function ShippingRulesComponent() {
 					
 				  </a>
 				</Space>
-			  ),
+			), 
 		},
 		{
 			key: 'action',
@@ -424,7 +420,7 @@ function ShippingRulesComponent() {
 									setIsFilterWeight(false)
 									setIsFilterPrice(false)
 									setIsFilterQuantity(false)
-									setSelectedItems([])
+									setSelectedOptions([])
 									hanldeModalToggling(true, 'add')
 									setApplyRuleTo(1)
 								}}>
@@ -449,7 +445,7 @@ function ShippingRulesComponent() {
 			<Modal
 				title={
 					<Title className={'mb-0'} level={4}>
-						{alertMessageType === 'loading'
+						{alertMessageType === 'loading' || !(storeBrands && storeCategories && allProducts)
 							? 'Loading. Please wait...'
 							: 'Shipping Rules'}
 					</Title>
@@ -465,7 +461,7 @@ function ShippingRulesComponent() {
 				destroyOnClose={true}
 				footer={null}
 				width={800}>
-				{alertMessageType === 'loading' ? (
+				{alertMessageType === 'loading' || !(storeBrands && storeCategories && allProducts) ? (
 					<Skeleton active />
 				) : (
 					<Form
@@ -774,6 +770,7 @@ function ShippingRulesComponent() {
         									style={{ width: '100%' }}
         									placeholder={"Select " + (applyRuleTo == 2 ? 'Brands' : applyRuleTo == 3 ? 'Products' : 'Categories')}
         									value={selectedOptions}
+											allowClear
         									onChange={handleChange}
         									filterOption={filterOptions}
       									>
