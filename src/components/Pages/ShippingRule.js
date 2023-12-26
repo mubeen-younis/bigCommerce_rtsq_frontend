@@ -187,8 +187,6 @@ function ShippingRulesComponent() {
 		key: item.code, value: item.name 
 	}))
 
-	const originLocations = [...warehouse, ...dropships]
-
 	const filterOptionsProvinces = (input, option) => {
 		return (
 		  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
@@ -417,7 +415,7 @@ function ShippingRulesComponent() {
 						return (
 						  <>
 							<span> 
-								{originLocations ? originLocations?.map(value => (
+								{warehouse ? warehouse?.map(value => (
 										value?.zip_code == key && (
 											`${value?.city + ','} ${value?.state} ${value?.zip_code}`
 										)
@@ -435,7 +433,7 @@ function ShippingRulesComponent() {
 						  return (
 							<>
 							<span> 
-								{originLocations ? originLocations?.map(value => (
+								{warehouse ? warehouse?.map(value => (
 										value?.zip_code == key && (
 											`${value?.city + ','} ${value?.state} ${value?.zip_code}`
 										)
@@ -792,8 +790,8 @@ function ShippingRulesComponent() {
         									filterOption={filterOptionsWarehouses}
       									>
         									
-									{originLocations
-										? originLocations?.map(value => (
+									{warehouse
+										? warehouse?.map(value => (
 												<Option
 													value={value?.zip_code}
 													key={value?.zip_code}>{`${
