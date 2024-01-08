@@ -5,6 +5,7 @@ import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
 import { handlingFeeMarkup, validateHandlingFeeMarkup } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
+import PackageRatingMethod from "../../PackageRatingMethod"
 import CutOffTime from '../../CutOffTime';
 import DomesticServices from './Services/DomesticServices'
 import InternationalServices from './Services/InternationalServices'
@@ -73,6 +74,7 @@ const initialState = {
 	handling_fee_markup: null,
 	quote_details: null,
 	rate_source: 1,
+	packageRatingMethod: 1,
 }
 
 function QuoteSettingsComponentWweSmall(props) {
@@ -524,6 +526,10 @@ function QuoteSettingsComponentWweSmall(props) {
 					onCheck={onCheck}
 				/>
 				<Row className={'mb-2'}></Row>
+				<PackageRatingMethod
+          			quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}

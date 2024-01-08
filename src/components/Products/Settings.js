@@ -394,23 +394,21 @@ const Settings = ({
 					</Col>
 				</Row>
 				<Row gutter={16}>
-					{insuranceStatus && (
-						<Col span={24}>
-							<Checkbox
-								onChange={e =>
-									onChangeVariant(
-										index,
-										'insurance',
-										e.target.checked
-									)
-								}
-								name='insurance'
-								id={'insurance' + index}
-								checked={product?.insurance}>
-								Insurance
-							</Checkbox>
-						</Col>
-					)}
+					<Col span={24}>
+						<Checkbox
+							onChange={e =>
+								onChangeVariant(
+									index,
+									'insurance',
+									e.target.checked
+								)
+							}
+							name='insurance'
+							id={'insurance' + index}
+							checked={product?.insurance}>
+							Insurance
+						</Checkbox>
+					</Col>
 					<Col span={24} style={{ marginTop: '7px' }}>
 						<Checkbox
 							onChange={e =>

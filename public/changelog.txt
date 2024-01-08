@@ -1,3 +1,11 @@
+= 2.1.6 2023-12-26 =
+
+* Update - add Packaging Rating Methods in BC. (Ticket:2086152515)[#259](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/259)
+
+= 2.1.5 2023-12-21 =
+
+* Update - add insurance in saia ltl carrier. (Ticket:2126870659)[#258](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/258)
+
 = 2.1.4 2023-12-01 =
 
 * Update - fixes display products on shipping rule bug. (Ticket:1955948122)[#257](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/257)
