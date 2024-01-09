@@ -63,7 +63,7 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 
 		const {
 			data: { error, data, message },
-			
+
 		}  = await axios.post(url, reqData, config)
 
 		if (!error) {
@@ -91,7 +91,7 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 	
 			const {
 				data: { error, data, message },
-			}  = await axios.post(url, config)
+			}  = await axios.post(url, {}, config)
 	
 			if (!error) {
 				dispatch({
@@ -118,7 +118,7 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 	
 			const {
 				data: { error, data, message },
-			}  = await axios.post(url, config)
+			}  = await axios.post(url, {}, config)
 	
 			if (!error) {
 				dispatch({
