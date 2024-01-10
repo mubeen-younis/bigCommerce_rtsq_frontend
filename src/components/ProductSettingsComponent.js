@@ -25,7 +25,7 @@ import { isFireFox } from '../Utilities/browserName';
 import { getLocations } from './../Actions/Warehouse';
 import { validateHandlingFeeMarkup } from '../Utilities/numberValidation';
 
-const makeColumns = (sortProducts, showProductDetails) => {
+const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId) => {
   const columns = [
     {
       title: 'Product Name',
@@ -46,6 +46,49 @@ const makeColumns = (sortProducts, showProductDetails) => {
         ) : (
           text
         ),
+    },
+    {
+      title: "Category Id",
+      dataIndex: "categories_id",
+      align: "center",
+      key: "categories_id",
+      ellipsis: true,
+      render: (categories, record) => (
+        
+        <>
+          {record.key == recordId ?  (
+            <>
+              {JSON.parse(categories)?.map((key) => {
+              return (
+                <>
+                  <span> {key} </span>
+                  <br/>
+                </>
+              )})}
+            </>
+          ): (
+            <>
+              {JSON.parse(categories)?.map((key, item) => {
+              if(item < 3){
+                return (
+                <>
+                  <span> {key} </span>
+                  <br/>
+                </>
+              )}})}
+              {JSON.parse(categories)?.length > 3 ? <a className="btn mt-2" onClick={() => showMoreItems(record.key)}>show more</a> : null}
+            </>
+          )}
+        </>
+      ),
+    },
+    {
+      title: 'Brand Id',
+      dataIndex: 'brand_id',
+      key: 'brand_id',
+      /*sorter: (a, b) => a.sku - b.sku,
+			sortOrder: sortedInfo.columnKey === 'sku' && sortedInfo.order,
+			ellipsis: true,*/
     },
     {
       title: 'Product Id',
@@ -138,6 +181,7 @@ function ProductSettingsComponent(props) {
   const [formError /* setFormError */] = useState('');
   const dispatch = useDispatch();
   const { productsPagination } = useSelector((state) => state);
+  const [recordId, setRecordId] = useState(null);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 50,
@@ -147,6 +191,10 @@ function ProductSettingsComponent(props) {
   const addonCheck = props.installedAddons.find(
     (add) => add.short_code === 'SBS'
   );
+
+  const showMoreItems = key => {
+    setRecordId(key)
+  }
 
   useEffect(() => {
     if (props.allProducts === null) {
@@ -603,7 +651,7 @@ function ProductSettingsComponent(props) {
       </Row>
       <Table
         className='custom-table'
-        columns={makeColumns(sortProducts, showProductDetails)}
+        columns={makeColumns(sortProducts, showProductDetails, showMoreItems, recordId)}
         dataSource={addKeysToList(props.filteredProducts ?? props.allProducts)}
         onChange={handleChange}
         pagination={pagination}
