@@ -48,10 +48,10 @@ const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId) 
         ),
     },
     {
-      title: "Category Id",
-      dataIndex: "categories_id",
+      title: "Category",
+      dataIndex: "category_name",
       align: "center",
-      key: "categories_id",
+      key: "category_name",
       ellipsis: true,
       render: (categories, record) => (
         
@@ -83,9 +83,9 @@ const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId) 
       ),
     },
     {
-      title: 'Brand Id',
-      dataIndex: 'brand_id',
-      key: 'brand_id',
+      title: 'Brand',
+      dataIndex: 'brand_name',
+      key: 'brand_name',
       /*sorter: (a, b) => a.sku - b.sku,
 			sortOrder: sortedInfo.columnKey === 'sku' && sortedInfo.order,
 			ellipsis: true,*/
