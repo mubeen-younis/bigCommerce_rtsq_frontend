@@ -47,41 +47,41 @@ const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId) 
           text
         ),
     },
-    {
-      title: "Category",
-      dataIndex: "category_name",
-      align: "center",
-      key: "category_name",
-      ellipsis: true,
-      render: (categories, record) => (
+    // {
+    //   title: "Category",
+    //   dataIndex: "category_name",
+    //   align: "center",
+    //   key: "category_name",
+    //   ellipsis: true,
+    //   render: (categories, record) => (
         
-        <>
-          {record.key == recordId ?  (
-            <>
-              {JSON.parse(categories)?.map((key) => {
-              return (
-                <>
-                  <span> {key} </span>
-                  <br/>
-                </>
-              )})}
-            </>
-          ): (
-            <>
-              {JSON.parse(categories)?.map((key, item) => {
-              if(item < 3){
-                return (
-                <>
-                  <span> {key} </span>
-                  <br/>
-                </>
-              )}})}
-              {JSON.parse(categories)?.length > 3 ? <a className="btn mt-2" onClick={() => showMoreItems(record.key)}>show more</a> : null}
-            </>
-          )}
-        </>
-      ),
-    },
+    //     <>
+    //       {record.key == recordId ?  (
+    //         <>
+    //           {JSON.parse(categories)?.map((key) => {
+    //           return (
+    //             <>
+    //               <span> {key} </span>
+    //               <br/>
+    //             </>
+    //           )})}
+    //         </>
+    //       ): (
+    //         <>
+    //           {JSON.parse(categories)?.map((key, item) => {
+    //           if(item < 3){
+    //             return (
+    //             <>
+    //               <span> {key} </span>
+    //               <br/>
+    //             </>
+    //           )}})}
+    //           {JSON.parse(categories)?.length > 3 ? <a className="btn mt-2" onClick={() => showMoreItems(record.key)}>show more</a> : null}
+    //         </>
+    //       )}
+    //     </>
+    //   ),
+    // },
     {
       title: 'Brand',
       dataIndex: 'brand_name',
