@@ -41,6 +41,12 @@ const initialState = {
 	rule_type: '1',
 	apply_rule_to: 1,
 	filter_settings: [],
+	filter_products: [],
+	filter_categories: [],
+	filter_brands: [],
+	warehouses: [],
+	filter_state_province: [],
+	filter_postal_code: [],
 }
 
 function ShippingRulesComponent() {
@@ -316,7 +322,9 @@ function ShippingRulesComponent() {
 				})
 			} else {
 				dispatch(saveShippingRule({ ...data, ...values }, token))
-				form.resetFields()
+				setSelectedCategories([])
+				setSelectedProducts([])
+				setSelectedBrands([])
 			}
 		},
 		[
