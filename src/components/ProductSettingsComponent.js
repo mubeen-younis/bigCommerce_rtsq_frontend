@@ -50,7 +50,6 @@ const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId) 
     {
       title: "Category",
       dataIndex: "category_name",
-      align: "center",
       key: "category_name",
       ellipsis: true,
       render: (categories, record) => (
