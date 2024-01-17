@@ -838,8 +838,8 @@ function ShippingRulesComponent() {
 												setApplyRuleTo(value)
 											}
 										>
-											<Option value={1}>Categories</Option>
 											<Option value={2}>Brands</Option>
+											<Option value={1}>Categories</Option>
 											<Option value={3}>Individual Products</Option>
 										</Select>
 									</Form.Item>
