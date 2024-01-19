@@ -58,6 +58,8 @@ function QuoteSettingsComponentWwe(props) {
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
   const dispatch = useDispatch()
   const { thresholdSetting } = useSelector(state => state)
+  const [inputEconomy, setInputEconomy] = useState(props?.quoteSettings?.fedex_freight_economy_label);
+  const [inputPriority, setInputPriority] = useState(props?.quoteSettings?.fedex_freight_priority_label);
 
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -238,6 +240,8 @@ function QuoteSettingsComponentWwe(props) {
                 placeholder='LTL Freight Economy'
                 value={props?.quoteSettings?.fedex_freight_economy_label ?? ''}
                 onKeyDown={LableAsLimit}
+                onChange={(e) => setInputEconomy(e.target.value)}
+                addonAfter={inputEconomy ? <span>{`${inputEconomy?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
               />
             </Form.Item>
             <div className={'text-gray'}>
@@ -265,6 +269,8 @@ function QuoteSettingsComponentWwe(props) {
                 placeholder='LTL Freight Priority'
                 value={props?.quoteSettings?.fedex_freight_priority_label ?? ''}
                 onKeyDown={LableAsLimit}
+                onChange={(e) => setInputPriority(e.target.value)}
+                addonAfter={inputPriority ? <span>{`${inputPriority?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
               />
             </Form.Item>
             <div className={'text-gray'}>
