@@ -255,7 +255,7 @@ function ShippingRulesComponent() {
 	const updateFormFields = async (text) => 
 	{
 		setCountryCode(text?.filter_country)
-		if(text?.filter_country == ''){
+		if(text?.filter_country == undefined || text?.filter_country == ''){
 			setCountryCode('US')
 			text.filter_country = 'US'
 			text.filter_state_province = []
@@ -838,8 +838,8 @@ function ShippingRulesComponent() {
 												setApplyRuleTo(value)
 											}
 										>
-											<Option value={2}>Brands</Option>
 											<Option value={1}>Categories</Option>
+											<Option value={2}>Brands</Option>
 											<Option value={3}>Individual Products</Option>
 										</Select>
 									</Form.Item>
