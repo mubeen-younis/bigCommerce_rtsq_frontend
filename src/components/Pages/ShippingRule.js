@@ -545,9 +545,10 @@ function ShippingRulesComponent() {
 									lg={24}
 									xl={24}>
 									<Form.Item
-										className={'mb-2'}
+										className={'mb-1'}
 										label='Countries'
 										name='filter_country'
+										extra='The app will show shipping rates to ONLY these countries.'
 										rules={[
 											{
 												required: false,
@@ -577,9 +578,10 @@ function ShippingRulesComponent() {
 									lg={24}
 									xl={24}>
 									<Form.Item
-										className={'mb-2'}
+										className={'mb-1'}
 										label='States/Provinces'
 										name='filter_state_province'
+										extra='The app will show shipping rates to ONLY these states/provinces.'
 										rules={[
 											{
 												required: true,
@@ -615,9 +617,12 @@ function ShippingRulesComponent() {
 									lg={24}
 									xl={24}>
 									<Form.Item
-										className={'mb-0'}
+										className={'mb-1'}
                         				label="Postal Codes"
 				                        name="filter_postal_code"
+										extra='Postal codes can be entered with exact values (e.g., 90210), 
+										containing wildcards (e.g., 902*), or as fully numeric ranges (e.g., 90210...99000).
+										Use enter to add the next value.'
                 				        rules={[
 				                        	{
                 				            	required: true,
@@ -645,11 +650,6 @@ function ShippingRulesComponent() {
       										))}
     									</Select>
                       				</Form.Item>
-									<div className={'text-gray mb-1'} >
-										Postal codes can be entered with exact values (e.g., 90210), 
-										containing wildcards (e.g., 902*), or as fully numeric ranges (e.g., 90210...99000).
-										Use enter to add the next value.
-									</div>
 								</Col>
 							</Row>	
 							)}
