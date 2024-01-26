@@ -22,6 +22,8 @@ import {
 	saveShippingRule,
 	deleteShippingRule,
 	getStatesProvinces,
+	getCategories,
+	getBrands,
 } from '../../Actions/ShippingRulesActions'
 import addKeysToList from './../../Utilities/addKey'
 import { getAllProducts } from '../../Actions/ProductSettings'
@@ -37,7 +39,14 @@ const initialState = {
 	rule_name: '',
 	filter_country: 'US',
 	rule_type: '1',
+	apply_rule_to: 1,
 	filter_settings: [],
+	filter_products: [],
+	filter_categories: [],
+	filter_brands: [],
+	warehouses: [],
+	filter_state_province: [],
+	filter_postal_code: [],
 }
 
 function ShippingRulesComponent() {
@@ -48,7 +57,6 @@ function ShippingRulesComponent() {
 		pageSize: 10000000,
 		search: null,
 	  });
-	  const [selectedItems, setSelectedItems] = useState([]);
 	
 	const [modal, setModal] = useState({
 		open: false,
@@ -61,12 +69,16 @@ function ShippingRulesComponent() {
 	const [isFilterPrice, setIsFilterPrice] = useState(false);
 	const [isFilterQuantity, setIsFilterQuantity] = useState(false);
 	const [ruleType, setRuleType] = useState(1);
+	const [applyRuleTo, setApplyRuleTo] = useState(1);
 	const [applyTo, setApplyTo] = useState(1);
 	const [form] = Form.useForm()
 	const dispatch = useDispatch()
-	const { alertMessageType, shippingRules, token , allProducts, installedCarriers, statesProvinces} = useSelector(state => state)
-	const [selectedOptions, setSelectedOptions] = useState([]);
+	const { alertMessageType, shippingRules, token , allProducts, installedCarriers, statesProvinces, dropships, warehouse, storeCategories, storeBrands} = useSelector(state => state)
+	const [selectedCategories, setSelectedCategories] = useState([]);
+	const [selectedBrands, setSelectedBrands] = useState([]);
+	const [selectedProducts, setSelectedProducts] = useState([]);
 	const [selectedProvinces, setSelectedProvinces] = useState([]);
+	const [selectedWarehouses, setSelectedWarehouses] = useState([]);
 	const [selectedPostalCodes, setSelectedPostalCodes] = useState([]);
 	const [recordId, setRecordId] = useState(null);
 
@@ -74,10 +86,20 @@ function ShippingRulesComponent() {
 		if (!shippingRules) {
 			dispatch(getShippingRules(token))
 		}
-		
-		dispatch(getStatesProvinces(countryCode, token))
 
-	}, [dispatch, shippingRules, token, countryCode])
+		if(ruleType == 3 || ruleType == 4){
+			dispatch(getStatesProvinces(countryCode, token))
+		}
+
+		if(!storeCategories){
+			dispatch(getCategories(token))
+		}
+		
+		if(!storeBrands){
+			dispatch(getBrands(token))
+		}
+
+	}, [dispatch, shippingRules, token, countryCode, ruleType])
 
 	useEffect(() => {
 		dispatch(
@@ -111,24 +133,52 @@ function ShippingRulesComponent() {
 			}),
 		[]
 	)
+	let options = []
+	if (applyRuleTo == 3){
+		options = allProducts?.map((item) => ({
+			key: item.source_product_id.toString(), value: item.name 
+		}))
+	} 
 
-	const options = allProducts?.map((item) => ({
-		key: item.source_product_id.toString(), value: item.name 
-	}))
-
-	const filterOptions = (input, option) => {
+	const filterOptionsBrands = (input, option) => {
 		return (
 		  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
-		  !selectedOptions.includes(option.key)
+		  !selectedBrands.includes(option.key)
 		);
 	};
 
-	const handleChange = (selectedValues) => {
-		setSelectedOptions(selectedValues);
+	const filterOptionsProducts = (input, option) => {
+		return (
+		  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
+		  !selectedProducts.includes(option.key)
+		);
 	};
-  
+
+	const filterOptionsCategories = (input, option) => {
+		return (
+		  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
+		  !selectedCategories.includes(option.key)
+		);
+	};
+
+	const handleChangeBrands = (selectedValues) => {
+		setSelectedBrands(selectedValues);
+	};
+
+	const handleChangeProducts = (selectedValues) => {
+		setSelectedProducts(selectedValues);
+	};
+
+	const handleChangeCategories = (selectedValues) => {
+		setSelectedCategories(selectedValues);
+	};
+
 	const handleChangeProvinces = (selectedValues) => {
 		setSelectedProvinces(selectedValues);
+	};
+
+	const handleChangeWarehouses = (selectedValues) => {
+		setSelectedWarehouses(selectedValues);
 	};
 
 	const handleSelectChange = (selectedValues) => {
@@ -147,6 +197,13 @@ function ShippingRulesComponent() {
 		return (
 		  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
 		  !selectedProvinces.includes(option.key)
+		);
+	};
+
+	const filterOptionsWarehouses = (input, option) => {
+		return (
+		  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
+		  !selectedWarehouses.includes(option.key)
 		);
 	};
 
@@ -198,12 +255,25 @@ function ShippingRulesComponent() {
 	const updateFormFields = async (text) => 
 	{
 		setCountryCode(text?.filter_country)
+		if(text?.filter_country == undefined || text?.filter_country == ''){
+			setCountryCode('US')
+			text.filter_country = 'US'
+			text.filter_state_province = []
+			text.filter_postal_code = []
+		}
 		setAvailable(text?.available)
 		setRuleType(text?.rule_type)
-		setSelectedItems(text?.filter_products)
+		if(text?.apply_rule_to == 1) {
+			text.filter_categories = text?.categories 
+		} else if(text?.apply_rule_to == 2){
+			text.filter_brands = text?.brands
+		} else if(text?.apply_rule_to == 3) {
+			text.filter_products = text?.products
+		}
 		setIsFilterWeight(text?.isFilterWeight)
 		setIsFilterPrice(text?.isFilterPrice)
 		setIsFilterQuantity(text?.isFilterQuantity)
+		setApplyRuleTo(text?.apply_rule_to)	
 
 		editLocation(text)
 	}
@@ -252,7 +322,9 @@ function ShippingRulesComponent() {
 				})
 			} else {
 				dispatch(saveShippingRule({ ...data, ...values }, token))
-				form.resetFields()
+				setSelectedCategories([])
+				setSelectedProducts([])
+				setSelectedBrands([])
 			}
 		},
 		[
@@ -344,6 +416,44 @@ function ShippingRulesComponent() {
 						{record?.filter_postal_code?.length > 5 ? <a className="btn mt-2" onClick={() => showMoreItems(record.id)}>show more</a> : null}
 					  </>
 					)}
+				  </> : record?.rule_type == 5 ? <>
+					{record.id == recordId ?  (
+					  <>
+						{record?.warehouses?.map((key) => {
+						return (
+						  <>
+							<span> 
+								{warehouse ? warehouse?.map(value => (
+										value?.zip_code == key && (
+											`${value?.city + ','} ${value?.state} ${value?.zip_code}`
+										)
+									))
+								: null} 
+							</span>
+							<br/>
+						  </>
+						)})}
+					  </>
+					): (
+					  <>
+						{record?.warehouses?.map((key, item) => {
+						if(item < 5){
+						  return (
+							<>
+							<span> 
+								{warehouse ? warehouse?.map(value => (
+										value?.zip_code == key && (
+											`${value?.city + ','} ${value?.state} ${value?.zip_code}`
+										)
+									))
+								: null} 
+							</span>
+							<br/>
+						  </>
+						)}})}
+						{record?.warehouses?.length > 5 ? <a className="btn mt-2" onClick={() => showMoreItems(record.id)}>show more</a> : null}
+					  </>
+					)}
 				  </> : filter_name}
 				</>
 			)
@@ -359,7 +469,7 @@ function ShippingRulesComponent() {
 					
 				  </a>
 				</Space>
-			  ),
+			), 
 		},
 		{
 			key: 'action',
@@ -406,8 +516,11 @@ function ShippingRulesComponent() {
 									setIsFilterWeight(false)
 									setIsFilterPrice(false)
 									setIsFilterQuantity(false)
-									setSelectedItems([])
+									setSelectedBrands([])
+									setSelectedProducts([])
+									setSelectedCategories([])
 									hanldeModalToggling(true, 'add')
+									setApplyRuleTo(1)
 								}}>
 								Add
 							</Button>
@@ -430,7 +543,7 @@ function ShippingRulesComponent() {
 			<Modal
 				title={
 					<Title className={'mb-0'} level={4}>
-						{alertMessageType === 'loading'
+						{alertMessageType === 'loading' || !(storeBrands && storeCategories && allProducts)
 							? 'Loading. Please wait...'
 							: 'Shipping Rules'}
 					</Title>
@@ -446,7 +559,7 @@ function ShippingRulesComponent() {
 				destroyOnClose={true}
 				footer={null}
 				width={800}>
-				{alertMessageType === 'loading' ? (
+				{alertMessageType === 'loading' || !(storeBrands && storeCategories && allProducts) ? (
 					<Skeleton active />
 				) : (
 					<Form
@@ -506,6 +619,7 @@ function ShippingRulesComponent() {
 										<Option value={'1'}>Restrict By Country</Option>
 										<Option value={'3'}>Restrict By State</Option>
 										<Option value={'4'}>Restrict By Postal Codes</Option>
+										<Option value={'5'}>Restrict To Origin Locations</Option>
 										<Option value={'2'}>Hide Methods</Option>
 									</Select>
 								</Form.Item>
@@ -534,8 +648,9 @@ function ShippingRulesComponent() {
 								</Form.Item>
 							</Col>
 						</Row>
-						{(ruleType == 1 || ruleType == 3 || ruleType == 4) && (
+						{(ruleType == 1 || ruleType == 3 || ruleType == 4 || ruleType == 5) && (
 							<>
+							{(ruleType != 5) && (
 							<Row gutter={30}>
 								<Col
 									className='gutter-row'
@@ -567,6 +682,7 @@ function ShippingRulesComponent() {
 									</Form.Item>
 								</Col>
 							</Row>
+							)}
 							{(ruleType == 3 || ruleType == 4)  && (
 							<Row gutter={30}>
 								<Col
@@ -653,6 +769,7 @@ function ShippingRulesComponent() {
 								</Col>
 							</Row>	
 							)}
+							{(ruleType == 5) && (
 							<Row gutter={30}>
 								<Col
 									className='gutter-row'
@@ -663,21 +780,172 @@ function ShippingRulesComponent() {
 									xl={24}>
 									<Form.Item
 										className={'mb-2'}
-										label='Apply the rule to these products'
-										name='filter_products'
+										label='Warehouses'
+										name='warehouses'
 										rules={[
 											{
 												required: true,
-												message: 'Select Products',
+												message: 'Select Warehouses',
 											},
 										]}>
 										<Select
         									mode="multiple"
         									style={{ width: '100%' }}
-        									placeholder="Select Products"
-        									value={selectedOptions}
-        									onChange={handleChange}
-        									filterOption={filterOptions}
+        									placeholder="Select Warehouses"
+        									value={selectedWarehouses}
+											allowClear
+        									onChange={handleChangeWarehouses}
+        									filterOption={filterOptionsWarehouses}
+      									>
+        									
+									{warehouse
+										? warehouse?.map(value => (
+												<Option
+													value={value?.zip_code}
+													key={value?.zip_code}>{`${
+													value?.city + ','
+												} ${value?.state} ${
+													value?.zip_code
+												}`}</Option>
+										  ))
+										: null}
+      									</Select>
+									</Form.Item>
+								</Col>
+							</Row>
+							)}
+							<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}>
+									<Form.Item
+										className={'mb-2'}
+										label='Apply rule to'
+										name='apply_rule_to'
+										rules={[
+											{
+												required: false,
+												message: 'Apply rule to',
+											},
+										]}>
+										<Select 
+											placeholder='Apply rule to'
+											onChange={value =>
+												setApplyRuleTo(value)
+											}
+										>
+											<Option value={1}>Categories</Option>
+											<Option value={2}>Brands</Option>
+											<Option value={3}>Individual Products</Option>
+										</Select>
+									</Form.Item>
+								</Col>
+							</Row>
+							{applyRuleTo == 1 ? (
+								<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}>
+									<Form.Item
+										className={'mb-2'}
+										label={'Apply the rule to these categories'}
+										name='filter_categories'
+										rules={[
+											{
+												required: true,
+												message: "Select Categories",
+											},
+										]}>
+										<Select
+        									mode="multiple"
+        									style={{ width: '100%' }}
+        									placeholder={"Select Categories"}
+        									value={selectedCategories}
+											allowClear
+        									onChange={handleChangeCategories}
+        									filterOption={filterOptionsCategories}
+      									>
+        									{storeCategories?.map((option) => (
+          										<Option key={option.key} value={option.key}>
+	            									{option.value}
+    	      									</Option>
+        									))}
+      									</Select>
+									</Form.Item>
+								</Col>
+							</Row>
+							) : applyRuleTo == 2 ? (
+								<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}>
+									<Form.Item
+										className={'mb-2'}
+										label={'Apply the rule to these brands'}
+										name='filter_brands'
+										rules={[
+											{
+												required: true,
+												message: "Select Brands",
+											},
+										]}>
+										<Select
+        									mode="multiple"
+        									style={{ width: '100%' }}
+        									placeholder={"Select Brands"}
+        									value={selectedBrands}
+											allowClear
+        									onChange={handleChangeBrands}
+        									filterOption={filterOptionsBrands}
+      									>
+        									{storeBrands?.map((option) => (
+          										<Option key={option.key} value={option.key}>
+	            									{option.value}
+    	      									</Option>
+        									))}
+      									</Select>
+									</Form.Item>
+								</Col>
+							</Row>
+							) : applyRuleTo == 3 ? (
+								<Row gutter={30}>
+								<Col
+									className='gutter-row'
+									xs={24}
+									sm={24}
+									md={24}
+									lg={24}
+									xl={24}>
+									<Form.Item
+										className={'mb-2'}
+										label={'Apply the rule to these products'}
+										name='filter_products'
+										rules={[
+											{
+												required: true,
+												message: "Select Products",
+											},
+										]}>
+										<Select
+        									mode="multiple"
+        									style={{ width: '100%' }}
+        									placeholder={"Select Products"}
+        									value={selectedProducts}
+											allowClear
+        									onChange={handleChangeProducts}
+        									filterOption={filterOptionsProducts}
       									>
         									{options?.map((option) => (
           										<Option key={option.key} value={option.key}>
@@ -688,6 +956,7 @@ function ShippingRulesComponent() {
 									</Form.Item>
 								</Col>
 							</Row>
+							) : null}
 							</>
 						)}
 
