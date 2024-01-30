@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import { Row, Col, Form, Typography, Input, Checkbox } from "antd"
 import { LableAsLimit } from "../Utilities/numberValidation"
 import { useSelector } from "react-redux"
@@ -13,6 +13,9 @@ const TruckloadSettings = ({
   ratingMethod,
 }) => {
   const { carriersSettings } = useSelector(state => state)
+  const [inputFlatbed, setInputFlatbed] = useState(quoteSettingsState?.flatbed);
+  const [inputRefrigerated, setInputRefrigerated] = useState(quoteSettingsState?.refrigerated);
+  const [inputVan, setInputVan] = useState(quoteSettingsState?.van);
 
   const checkServiceEnabled = service => {
     return carriersSettings && carriersSettings.includes(service) && +ratingMethod !== 3
@@ -53,6 +56,8 @@ const TruckloadSettings = ({
                   name="flatbed"
                   value={props.quoteSettings ? props.quoteSettings.flatbed : ""}
                   onKeyDown={LableAsLimit}
+                  onChange={(e) => setInputFlatbed(e.target.value)}
+                  addonAfter={inputFlatbed ? <span>{`${inputFlatbed?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
                 />
               </Form.Item>
               <div className={"text-gray"}>
@@ -85,6 +90,8 @@ const TruckloadSettings = ({
                   props.quoteSettings ? props.quoteSettings.refrigerated : ""
                 }
                 onKeyDown={LableAsLimit}
+                onChange={(e) => setInputRefrigerated(e.target.value)}
+                addonAfter={inputRefrigerated ? <span>{`${inputRefrigerated?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
               />
             </Form.Item>
             <div className={"text-gray"}>
@@ -114,6 +121,8 @@ const TruckloadSettings = ({
                 name="van"
                 value={props.quoteSettings ? props.quoteSettings.van : ""}
                 onKeyDown={LableAsLimit}
+                onChange={(e) => setInputVan(e.target.value)}
+                addonAfter={inputVan ? <span>{`${inputVan?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
               />
             </Form.Item>
             <div className={"text-gray"}>

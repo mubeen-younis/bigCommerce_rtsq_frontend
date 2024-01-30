@@ -30,6 +30,8 @@ const GlobalTranz = ({
 	quoteSettings,
 }) => {
 	const [cheapestCheck, setCheapestCheck] = useState(false)
+	const [inputQuickest, setInputQuickest] = useState(quoteSettingsState?.quickest_service_label);
+	const [inputCheapest, setInputCheapest] = useState(quoteSettingsState?.label_as);
 
 	useEffect(() => {
 		setQuoteSettingsState(prevState => ({
@@ -87,7 +89,7 @@ const GlobalTranz = ({
 								checked={
 									quoteSettingsState?.quickest_service || false
 								}
-								onChange={e =>
+								onChange={e => 
 									setQuoteSettingsState(prevState => ({
 										...prevState,
 										quickest_service: e.target.checked,
@@ -99,12 +101,14 @@ const GlobalTranz = ({
 								value={
 									quoteSettingsState?.quickest_service_label || ''
 								}
-								onChange={e =>
+								onChange={e => {
 									setQuoteSettingsState(prevState => ({
 										...prevState,
 										quickest_service_label: e.target.value,
 									}))
-								}
+									setInputQuickest(e.target.value)				
+								}}
+								addonAfter={inputQuickest ? <span>{`${inputQuickest?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
 								placeholder='Label As (Quickest)'
 								disabled={
 									!quoteSettingsState?.quickest_service ||
@@ -155,18 +159,20 @@ const GlobalTranz = ({
 							/>
 							<Input
 								value={quoteSettingsState?.label_as || ''}
-								onChange={e =>
+								onChange={e => {
 									setQuoteSettingsState(prevState => ({
 										...prevState,
 										label_as: e.target.value,
 									}))
-								}
+									setInputCheapest(e.target.value)
+								}}
 								placeholder='Label As (Cheapest)'
 								disabled={
 									quoteSettingsState?.method === 2 ||
 									!cheapestCheck
 								}
 								onKeyDown={LableAsLimit}
+								addonAfter={inputCheapest ? <span>{`${inputCheapest?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
 							/>
 						</div>
 					</Form.Item>
