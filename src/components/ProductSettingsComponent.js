@@ -261,7 +261,7 @@ function ProductSettingsComponent(props) {
       visible: true,
     });
     dispatch(
-      getProduct(id, setselectedProductDetail, setLoadProduct, props.token)
+      getProduct(id, setselectedProductDetail, setLoadProduct, props.token, product?.variant_id)
     );
     setLoadProduct(true);
 
