@@ -486,7 +486,31 @@ function ShippingRulesComponent() {
 						{record?.warehouses?.length > 5 ? <a className="btn mt-2" onClick={() => showMoreItems(record.id)}>show more</a> : null}
 					  </>
 					)}
-				  </> : filter_name}
+				  </> : record?.rule_type == 6 ? <>
+					{record.id == recordId ?  (
+					  <>
+						{record?.filter_services?.map((key) => {
+							return (
+						  	<>
+								<span> {key} </span>
+								<br/>
+						  	</>
+						)})}
+					  </>
+					): (
+					  <>
+						{record?.filter_services?.map((key, item) => {
+						if(item < 5){
+							return (
+						  	<>
+								<span> {key} </span>
+								<br/>
+						  	</>
+						)}})}
+						{record?.filter_services?.length > 5 ? <a className="btn mt-2" onClick={() => showMoreItems(record.id)}>show more</a> : null}
+					  </>
+					)}
+					</> : filter_name}
 				</>
 			)
 		},
