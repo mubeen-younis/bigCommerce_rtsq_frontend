@@ -64,11 +64,13 @@ function QuoteSettingsComponentWwe(props) {
   const [holdTeminalStatus, SetHoldTeminalStatus] = useState(false)
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
-  const { thresholdSetting, connectionSettings } = useSelector(state => state)
+  const { thresholdSetting, connectionSettings, quoteSettings  } = useSelector(state => state)
+  const [inputValue, setInputValue] = useState('');
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
       getQuoteSettings()
     }
+    setInputValue(quoteSettings?.label_as)
     // eslint-disable-next-line
   }, [props.quoteSettings])
 
@@ -238,6 +240,8 @@ function QuoteSettingsComponentWwe(props) {
                 name='label_as'
                 value={props.quoteSettings ? props.quoteSettings.label_as : ''}
                 onKeyDown={LableAsLimit}
+                onChange={(e) => setInputValue(e.target.value)}
+								addonAfter={inputValue ? <span>{`${inputValue?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
               />
             </Form.Item>
             <div className={'text-gray'}>

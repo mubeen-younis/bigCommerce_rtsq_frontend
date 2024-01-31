@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Select, Typography, Row, Col, Form, Input, Radio } from 'antd'
 import { LableAsLimit } from '../../../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../../../DeliveryEstimateOptions'
@@ -30,6 +30,11 @@ const Cerasis = ({
 	radStatus,
 	quoteSettings,
 }) => {
+	const [inputCheapest, setInputCheapest] = useState(quoteSettingsState?.cheapest_label);
+	const [inputAverage, setInputAverage] = useState(quoteSettingsState?.average_rate_label);
+	const [inputThreshold, setInputThreshold] = useState(quoteSettingsState?.threshold_label);
+	const [inputRoomOfChoice, setInputRoomOfChoice] = useState(quoteSettingsState?.room_of_choice_label);
+	const [inputPremium, setInputPremium] = useState(quoteSettingsState?.premium_label);
 	useEffect(() => {
 		setQuoteSettingsState((prevState) => ({
 			...initialSettings,
@@ -210,7 +215,8 @@ const Cerasis = ({
 												''
 											}
 											onKeyDown={LableAsLimit}
-											onChange={(e) =>
+											addonAfter={inputCheapest ? <span>{`${inputCheapest?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
+											onChange={(e) => {
 												setQuoteSettingsState(
 													(prevState) => ({
 														...prevState,
@@ -218,7 +224,8 @@ const Cerasis = ({
 															e.target.value,
 													})
 												)
-											}
+												setInputCheapest(e.target.value)
+											}}
 										/>
 									</Form.Item>
 								)}
@@ -232,7 +239,8 @@ const Cerasis = ({
 												''
 											}
 											onKeyDown={LableAsLimit}
-											onChange={(e) =>
+											addonAfter={inputAverage ? <span>{`${inputAverage?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
+											onChange={(e) => {
 												setQuoteSettingsState(
 													(prevState) => ({
 														...prevState,
@@ -240,7 +248,8 @@ const Cerasis = ({
 															e.target.value,
 													})
 												)
-											}
+												setInputAverage(e.target.value)
+											}}
 										/>
 									</Form.Item>
 								)}
@@ -312,13 +321,15 @@ const Cerasis = ({
 										value={
 											quoteSettingsState?.threshold_label || ''
 										}
-										onChange={(e) =>
+										onChange={(e) => {
 											setQuoteSettingsState((prevState) => ({
 												...prevState,
 												threshold_label: e.target.value,
 											}))
-										}
+											setInputThreshold(e.target.value)
+										}}
 										onKeyDown={LableAsLimit}
+										addonAfter={inputThreshold ? <span>{`${inputThreshold?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
 									/>
 								</div>
 							</Form.Item>
@@ -377,13 +388,15 @@ const Cerasis = ({
 											quoteSettingsState?.room_of_choice_label ||
 											''
 										}
-										onChange={(e) =>
+										onChange={(e) => {
 											setQuoteSettingsState((prevState) => ({
 												...prevState,
 												room_of_choice_label: e.target.value,
 											}))
-										}
+											setInputRoomOfChoice(e.target.value)
+										}}
 										onKeyDown={LableAsLimit}
+										addonAfter={inputRoomOfChoice ? <span>{`${inputRoomOfChoice?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
 									/>
 								</div>
 							</Form.Item>
@@ -440,13 +453,15 @@ const Cerasis = ({
 										value={
 											quoteSettingsState?.premium_label || ''
 										}
-										onChange={(e) =>
+										onChange={(e) => {
 											setQuoteSettingsState((prevState) => ({
 												...prevState,
 												premium_label: e.target.value,
 											}))
-										}
+											setInputPremium(e.target.value)
+										}}
 										onKeyDown={LableAsLimit}
+										addonAfter={inputPremium ? <span>{`${inputPremium?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
 									/>
 								</div>
 							</Form.Item>
