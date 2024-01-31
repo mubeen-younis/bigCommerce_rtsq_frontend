@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCSVDownloadLink } from '../Actions/ImportCsv'
-import { CloseCircleOutlined } from '@ant-design/icons';
+import { CloseOutlined } from '@ant-design/icons';
 
 function ExportCSVDownloadStatus() {
 	const { exportCSVDownloadLink, token } = useSelector(state => state)
@@ -29,8 +29,8 @@ function ExportCSVDownloadStatus() {
               	>
                 {' '}Click here to download it.
  				</a>{' '}
-				<CloseCircleOutlined
-    				style={{ fontSize: '20px', cursor: 'pointer', float: 'right' , marginTop: '2px' }}
+				<CloseOutlined
+    				style={{ fontSize: '16px', cursor: 'pointer', float: 'right' , marginTop: '4px' }}
     				onClick={onClick}
   				/>
 				</div>
