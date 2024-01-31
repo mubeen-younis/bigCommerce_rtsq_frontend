@@ -30,7 +30,7 @@ function ExportCSVDownloadStatus() {
                 {' '}Click here to download it.
  				</a>{' '}
 				<CloseCircleOutlined
-    				style={{ fontSize: '20px', color: 'red', cursor: 'pointer', float: 'right' , marginTop: '2px' }}
+    				style={{ fontSize: '20px', cursor: 'pointer', float: 'right' , marginTop: '2px' }}
     				onClick={onClick}
   				/>
 				</div>
