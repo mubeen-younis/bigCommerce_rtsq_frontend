@@ -24,7 +24,7 @@ const GtzNewApi = ({
 	setQuoteSettingsState,
 	radStatus,
 }) => {
-
+	const [inputValue, setInputValue] = useState(props?.quoteSettings?.label_as);
     useEffect(() => {
       setQuoteSettingsState((prevState) => ({
         ...initialSettings,
@@ -170,7 +170,8 @@ const GtzNewApi = ({
 												''
 											}
 											onKeyDown={LableAsLimit}
-											onChange={(e) =>
+											addonAfter={inputValue ? <span>{`${inputValue?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
+											onChange={(e) => {
 												setQuoteSettingsState(
 													(prevState) => ({
 														...prevState,
@@ -178,7 +179,8 @@ const GtzNewApi = ({
 															e.target.value,
 													})
 												)
-											}
+												setInputValue(e.target.value)
+											}}
 										/>
 									</Form.Item>
 								)}

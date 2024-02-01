@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Row, Col, Form, Select, Input, Checkbox } from 'antd'
 import { LableAsLimit } from '../../../Utilities/numberValidation'
 
@@ -12,6 +12,9 @@ const RatingMethod = ({
 	setRatingMethod,
 	setQuoteSettingsState,
 }) => {
+	const [inputValue, setInputValue] = useState(quoteSettingsState?.label_as);
+	const [inputValueStandard, setInputValueStandard] = useState(quoteSettingsState?.standard);
+	const [inputValueGuaranteed, setInputValueguaranteed] = useState(quoteSettingsState?.guaranteed);
 	return (
 		<>
 		    <Row gutter={30} className={'mb-3'}>
@@ -176,6 +179,8 @@ const RatingMethod = ({
 										: ''
 								}
 								onKeyDown={LableAsLimit}
+								onChange={(e) => setInputValueStandard(e.target.value)}
+								addonAfter={inputValueStandard ? <span>{`${inputValueStandard?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
@@ -216,6 +221,8 @@ const RatingMethod = ({
 										: ''
 								}
 								onKeyDown={LableAsLimit}
+								onChange={(e) => setInputValueguaranteed(e.target.value)}
+								addonAfter={inputValueGuaranteed ? <span>{`${inputValueGuaranteed?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
@@ -256,6 +263,8 @@ const RatingMethod = ({
 										: ''
 								}
 								onKeyDown={LableAsLimit}
+								onChange={(e) => setInputValue(e.target.value)}
+								addonAfter={inputValue ? <span>{`${inputValue?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
