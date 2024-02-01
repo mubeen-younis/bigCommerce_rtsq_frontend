@@ -966,7 +966,7 @@ function ShippingRulesComponent() {
 											<Select
 												mode="multiple"
 												style={{ width: '100%' }}
-												placeholder={"Search products by name, sku"}
+												placeholder={"Search products by name, SKU"}
 												labelInValue
 												notFoundContent={loading ? <span><Spin size="small" /></span> : (searchQuery?.length > 2 && data?.length == 0 ? <span>Product not found!</span> : <span>Please input a minimum of three characters.</span>)}
 												value={selectedProducts}
