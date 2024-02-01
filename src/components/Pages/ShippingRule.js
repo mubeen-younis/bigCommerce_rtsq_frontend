@@ -567,7 +567,7 @@ function ShippingRulesComponent() {
 			<Modal
 				title={
 					<Title className={'mb-0'} level={4}>
-						{alertMessageType === 'loading' || !(storeBrands && storeCategories)
+						{alertMessageType === 'loading'
 							? 'Loading. Please wait...'
 							: 'Shipping Rules'}
 					</Title>
@@ -583,7 +583,7 @@ function ShippingRulesComponent() {
 				destroyOnClose={true}
 				footer={null}
 				width={800}>
-				{alertMessageType === 'loading' || !(storeBrands && storeCategories) ? (
+				{alertMessageType === 'loading' ? (
 					<Skeleton active />
 				) : (
 					<Form
