@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Row, Col, Form, Typography, Input, Checkbox, Radio } from "antd"
 import { LableAsLimit } from "../Utilities/numberValidation"
 import { useSelector } from "react-redux"
@@ -12,6 +12,7 @@ const FqChrTruckloadSettings = ({
   props,
 }) => {
   const { carriersSettings } = useSelector(state => state)
+  const [inputValue, setInputValue] = useState(quoteSettingsState?.truck_label_as);
 
   const checkServiceEnabled = service => {
     return carriersSettings && carriersSettings.includes(service)
@@ -119,6 +120,8 @@ const FqChrTruckloadSettings = ({
                 props.quoteSettings ? props.quoteSettings.truck_label_as : ""
               }
               onKeyDown={LableAsLimit}
+              onChange={(e) => setInputValue(e.target.value)}
+              addonAfter={inputValue ? <span>{`${inputValue?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
             />
           </Form.Item>
           <div className={"text-gray"}>
