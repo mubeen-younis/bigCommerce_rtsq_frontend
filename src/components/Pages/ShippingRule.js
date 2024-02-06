@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback, useEffect } from 'react'
+import React, { Fragment, useState, useCallback, useEffect, useRef } from 'react'
 import {
 	Select,
 	Typography,
@@ -15,6 +15,7 @@ import {
 	Checkbox,
 	Tooltip,
 	message,
+	Spin,
 } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -27,12 +28,11 @@ import {
 	getBrands,
 } from '../../Actions/ShippingRulesActions'
 import addKeysToList from './../../Utilities/addKey'
-import { getAllProducts } from '../../Actions/ProductSettings'
 import types from '../../Stores/types'
 import axios from '../../Utilities/authToken'
 import { dispatchAlert } from '../../Utilities/dispatchAlert'
 import { shippingRuleTypes } from '../../Utilities/constants'
-import { blockInvalidChar, handleKeyCharNumbersOnly, handleNumbersOnly } from '../../Utilities/numberValidation'
+import { blockInvalidChar, handleNumbersOnly } from '../../Utilities/numberValidation'
 
 const { Title } = Typography
 const { Option } = Select
@@ -51,13 +51,6 @@ const initialState = {
 }
 
 function ShippingRulesComponent() {
-	const [loading, setLoading] = useState(true);
-	const [pagination, setPagination] = useState({
-		current: null,
-		pageSize: 10000000,
-		search: null,
-	  });
-	
 	const [modal, setModal] = useState({
 		open: false,
 		type: '',
@@ -73,7 +66,7 @@ function ShippingRulesComponent() {
 	const [applyTo, setApplyTo] = useState(1);
 	const [form] = Form.useForm()
 	const dispatch = useDispatch()
-	const { alertMessageType, shippingRules, token , allProducts, installedCarriers, statesProvinces, carrierServices, warehouse, storeCategories, storeBrands} = useSelector(state => state)
+	const { alertMessageType, shippingRules, token, installedCarriers, statesProvinces, carrierServices, warehouse, storeCategories, storeBrands} = useSelector(state => state)
 	const [selectedServices, setSelectedServices] = useState([]);
 	const [carrierId, setCarrierId] = useState();
 	const [carrierSlug, setCarrierSlug] = useState();
@@ -85,6 +78,10 @@ function ShippingRulesComponent() {
 	const [selectedPostalCodes, setSelectedPostalCodes] = useState([]);
 	const [recordId, setRecordId] = useState(null);
 	const [isLTL, setIsLTL] = useState();
+	const [data, setData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [loading, setLoading] = useState(false);
+	const dropdownRef = useRef();
 
 	useEffect(() => {
 		if (!shippingRules) {
@@ -111,21 +108,6 @@ function ShippingRulesComponent() {
 	}, [dispatch, token, carrierId])
 
 	useEffect(() => {
-		dispatch(
-			getAllProducts(
-			  token,
-			  pagination.current,
-			  pagination.pageSize,
-			  false,
-			  setLoading,
-			  pagination.search,
-			  true
-			)
-		  );
-		  
-	}, [dispatch, token])
-
-	useEffect(() => {
 		if (alertMessageType === 'success') {
 			setModal({
 				open: false,
@@ -133,6 +115,45 @@ function ShippingRulesComponent() {
 			})
 		}
 	}, [alertMessageType])
+
+	// Fetch products data call when charcters length > 2
+	useEffect(() => {
+		if (searchQuery.length > 2) {
+			fetchData();
+		}
+    }, [searchQuery]);
+
+	useEffect(() => {
+		  // Attach event listener for body click
+		  document.body.addEventListener('click', handleBodyClick);
+
+		  // Cleanup event listener on component unmount
+		  return () => {
+			document.body.removeEventListener('click', handleBodyClick);
+		  };
+    }, []);
+	
+	// Fetch products on search by name from DB
+	const fetchData = async () => {
+        setLoading(true);
+        try {
+			const config = {
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
+				params: {
+					search: searchQuery,
+				},
+			}
+            const response = await axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_shipping_rule_products`, config);
+
+            setData((prevData) => [...response.data.data]);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
 	const hanldeModalToggling = useCallback(
 		(open = false, type = '') =>
@@ -142,24 +163,11 @@ function ShippingRulesComponent() {
 			}),
 		[]
 	)
-	let options = []
-	if (applyRuleTo == 3){
-		options = allProducts?.map((item) => ({
-			key: item.source_product_id.toString(), value: item.name 
-		}))
-	} 
 
 	const filterOptionsBrands = (input, option) => {
 		return (
 		  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
 		  !selectedBrands.includes(option.key)
-		);
-	};
-
-	const filterOptionsProducts = (input, option) => {
-		return (
-		  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
-		  !selectedProducts.includes(option.key)
 		);
 	};
 
@@ -186,8 +194,23 @@ function ShippingRulesComponent() {
 	};
 
 	const handleChangeProducts = (selectedValues) => {
+		setData([]);
+		setSearchQuery('');
 		setSelectedProducts(selectedValues);
 	};
+
+	const handleSearch = (value) => {
+        setData([]);
+        setSearchQuery(value);
+    };
+	
+	// Click outside the dropdown, clear data
+	const handleBodyClick = (event) => {
+		if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+		  setData([]);
+		  setSearchQuery('')
+		}
+	  };
 
 	const handleChangeCategories = (selectedValues) => {
 		setSelectedCategories(selectedValues);
@@ -579,6 +602,8 @@ function ShippingRulesComponent() {
 									setSelectedCategories([])
 									hanldeModalToggling(true, 'add')
 									setApplyRuleTo(1)
+									setData([])
+									setSearchQuery('')
 								}}>
 								Add
 							</Button>
@@ -601,7 +626,7 @@ function ShippingRulesComponent() {
 			<Modal
 				title={
 					<Title className={'mb-0'} level={4}>
-						{alertMessageType === 'loading' || !(storeBrands && storeCategories && allProducts)
+						{alertMessageType === 'loading'
 							? 'Loading. Please wait...'
 							: 'Shipping Rules'}
 					</Title>
@@ -621,7 +646,7 @@ function ShippingRulesComponent() {
 				destroyOnClose={true}
 				footer={null}
 				width={800}>
-				{alertMessageType === 'loading' || !(storeBrands && storeCategories && allProducts) ? (
+				{alertMessageType === 'loading' ? (
 					<Skeleton active />
 				) : (
 					<Form
@@ -647,7 +672,7 @@ function ShippingRulesComponent() {
 									rules={[
 										{
 											required: true,
-											message: 'Rule Name',
+											message: 'Rule Name is required',
 										},
 									]}>
 									<Input placeholder='Rule Name' />
@@ -762,7 +787,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: 'Select States/Provinces',
+												message: 'States/Provinces are required',
 											},
 										]}>
 										<Select
@@ -800,7 +825,7 @@ function ShippingRulesComponent() {
                 				        rules={[
 				                        	{
                 				            	required: true,
-				                            	message: "Enter Postal Codes",
+				                            	message: "Postal Codes are required",
                 				          	},
                         				]}
                       				>
@@ -848,7 +873,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: 'Select Warehouses',
+												message: 'Warehouses are required',
 											},
 										]}>
 										<Select
@@ -924,7 +949,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: "Select Categories",
+												message: "Categories are required",
 											},
 										]}>
 										<Select
@@ -961,7 +986,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: "Select Brands",
+												message: "Brands are required",
 											},
 										]}>
 										<Select
@@ -983,7 +1008,7 @@ function ShippingRulesComponent() {
 								</Col>
 							</Row>
 							) : applyRuleTo == 3 ? (
-								<Row gutter={30}>
+							<Row gutter={30}>
 								<Col
 									className='gutter-row'
 									xs={24}
@@ -991,6 +1016,7 @@ function ShippingRulesComponent() {
 									md={24}
 									lg={24}
 									xl={24}>
+									<div ref={dropdownRef}>
 									<Form.Item
 										className={'mb-2'}
 										label={'Apply the rule to these products'}
@@ -998,25 +1024,29 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: "Select Products",
+												message: "Products are required",
 											},
-										]}>
-										<Select
-        									mode="multiple"
-        									style={{ width: '100%' }}
-        									placeholder={"Select Products"}
-        									value={selectedProducts}
-											allowClear
-        									onChange={handleChangeProducts}
-        									filterOption={filterOptionsProducts}
-      									>
-        									{options?.map((option) => (
-          										<Option key={option.key} value={option.key}>
-	            									{option.value}
-    	      									</Option>
-        									))}
-      									</Select>
+										]}> 
+											<Select
+												mode="multiple"
+												style={{ width: '100%' }}
+												placeholder={"Search products by name, SKU"}
+												labelInValue
+												notFoundContent={loading ? <span><Spin size="small" /></span> : (searchQuery?.length > 2 && data?.length == 0 ? <span>Product not found!</span> : <span>Please enter a minimum of three characters.</span>)}
+												value={selectedProducts}
+												allowClear
+												onSearch={handleSearch}
+												onChange={handleChangeProducts}
+												filterOption={false}
+							  				>
+												{data?.map((option) => (
+									  				<Option key={option?.source_product_id} value={option?.source_product_id}>
+														{option?.name}
+									  				</Option>
+												))}
+							  				</Select>
 									</Form.Item>
+									</div>
 								</Col>
 							</Row>
 							) : null}
@@ -1040,7 +1070,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: 'Select Provider',
+												message: 'Provider is required',
 											},
 										]}>
 										<Select 
