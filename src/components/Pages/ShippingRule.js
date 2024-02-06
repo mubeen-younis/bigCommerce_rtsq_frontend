@@ -66,7 +66,7 @@ function ShippingRulesComponent() {
 	const [applyTo, setApplyTo] = useState(1);
 	const [form] = Form.useForm()
 	const dispatch = useDispatch()
-	const { alertMessageType, shippingRules, token, installedCarriers, statesProvinces, carrierServices, warehouse, storeCategories, storeBrands} = useSelector(state => state)
+	const { alertMessageType, shippingRules, token , installedCarriers, statesProvinces, carrierServices, warehouse, storeCategories, storeBrands} = useSelector(state => state)
 	const [selectedServices, setSelectedServices] = useState([]);
 	const [carrierId, setCarrierId] = useState();
 	const [carrierSlug, setCarrierSlug] = useState();
