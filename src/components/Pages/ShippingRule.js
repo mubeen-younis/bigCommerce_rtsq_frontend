@@ -1179,7 +1179,7 @@ function ShippingRulesComponent() {
                 					>	
                   						Filter by weight (lbs)
                 					</Checkbox>
-									<Tooltip title='Weight is the total weight of cart items.'>
+									<Tooltip title='The total weight of the Cart in pounds.'>
 										<a href='#!'>
 											[ i ]
 										</a>
@@ -1255,7 +1255,7 @@ function ShippingRulesComponent() {
                 					>	
                   						Filter by price
                 					</Checkbox>
-									<Tooltip title='Price is the total price of cart items.'>
+									<Tooltip title='The total value of the items in the Cart.'>
 										<a href='#!'>
 											[ i ]
 										</a>
@@ -1331,7 +1331,7 @@ function ShippingRulesComponent() {
                 					>	
                   						Filter by quantity
                 					</Checkbox>
-									<Tooltip title='Quantity is the total quantity of cart items.'>
+									<Tooltip title='The total number of items in the Cart.'>
 										<a href='#!'>
 											[ i ]
 										</a>
