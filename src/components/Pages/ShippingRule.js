@@ -1109,7 +1109,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: 'Select Services',
+												message: 'Services are required',
 											},
 										]}>
 										<Select
@@ -1144,14 +1144,14 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: 'Enter Rates',
+												message: 'Rate is required',
 											},
 											{
 												pattern: /^\d*\.?\d{0,2}$/,
 												message: "Only two decimal places are allowed",
 											},
 										]}>
-										<Input type='number' onKeyDown={blockInvalidChar} min="0.01" step="0.01" placeholder='Enter Rates' />
+										<Input type='number' onKeyDown={blockInvalidChar} min="0" step="0.01" placeholder='Enter Rate' />
 									</Form.Item>
 								</Col>
 							</Row>
@@ -1199,7 +1199,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: isFilterWeight,
-												message: 'Enter weight from',
+												message: 'Weight from is required',
 											},
 											{
 												pattern: /^\d*\.?\d{0,2}$/,
@@ -1222,7 +1222,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: isFilterWeight,
-												message: 'Enter weight to',
+												message: 'Weight to is required',
 											},
 											{
 												pattern: /^\d*\.?\d{0,2}$/,
@@ -1275,7 +1275,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: isFilterPrice,
-												message: 'Enter price from',
+												message: 'Price from is required',
 											},
 											{
 												pattern: /^\d*\.?\d{0,2}$/,
@@ -1298,7 +1298,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: isFilterPrice,
-												message: 'Enter price to',
+												message: 'Price to is required',
 											},
 											{
 												pattern: /^\d*\.?\d{0,2}$/,
@@ -1351,7 +1351,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: isFilterQuantity,
-												message: 'Enter quantity from',
+												message: 'Quantity from is required',
 											},
 											{
 												pattern: /^\d*\.?\d{0,2}$/,
@@ -1374,7 +1374,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: isFilterQuantity,
-												message: 'Enter quantity to',
+												message: 'Quantity to is required',
 											},
 											{
 												pattern: /^\d*\.?\d{0,2}$/,
