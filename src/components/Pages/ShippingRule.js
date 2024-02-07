@@ -1221,7 +1221,7 @@ function ShippingRulesComponent() {
 										name='weight_to'
 										rules={[
 											{
-												required: isFilterWeight,
+												required: false,
 												message: 'Weight to is required',
 											},
 											{
@@ -1297,7 +1297,7 @@ function ShippingRulesComponent() {
 										name='price_to'
 										rules={[
 											{
-												required: isFilterPrice,
+												required: false,
 												message: 'Price to is required',
 											},
 											{
@@ -1373,7 +1373,7 @@ function ShippingRulesComponent() {
 										name='quantity_to'
 										rules={[
 											{
-												required: isFilterQuantity,
+												required: false,
 												message: 'Quantity to is required',
 											},
 											{
