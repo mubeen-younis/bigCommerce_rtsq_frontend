@@ -328,7 +328,7 @@ function ShippingRulesComponent() {
 		setIsFilterWeight(text?.isFilterWeight)
 		setIsFilterPrice(text?.isFilterPrice)
 		setIsFilterQuantity(text?.isFilterQuantity)
-		setApplyRuleTo(text?.apply_rule_to)	
+		setApplyRuleTo(text?.apply_rule_to ?? 1)	
 
 		editLocation(text)
 	}
@@ -730,9 +730,14 @@ function ShippingRulesComponent() {
 											message: 'Apply to',
 										},
 									]}>
-									<Radio checked={applyTo == 1}>
-										Cart
-									</Radio>			
+									{ruleType == 6 ? 
+										<Radio checked={applyTo == 1}>
+											Shipment
+										</Radio> : 
+										<Radio checked={applyTo == 1}>
+											Cart
+										</Radio>
+									}
 								</Form.Item>
 							</Col>
 						</Row>
@@ -1134,7 +1139,7 @@ function ShippingRulesComponent() {
 									lg={24}
 									xl={24}>
 									<Form.Item
-										label='Rates(e.g. 5.25)'
+										label='Rate (e.g. 5.25)'
 										name='service_rates'
 										rules={[
 											{
