@@ -183,9 +183,10 @@ function ProductSettingsComponent(props) {
   const [recordId, setRecordId] = useState(null);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 50,
+    pageSize: 10,
     total: productsPagination?.total,
     search: null,
+    pageSizeOptions: ["10", "20", "30"],
   });
   const addonCheck = props.installedAddons.find(
     (add) => add.short_code === 'SBS'
