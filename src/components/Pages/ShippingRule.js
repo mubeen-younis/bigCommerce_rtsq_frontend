@@ -609,7 +609,7 @@ function ShippingRulesComponent() {
 									rules={[
 										{
 											required: true,
-											message: 'Rule Name',
+											message: 'Rule Name is required',
 										},
 									]}>
 									<Input placeholder='Rule Name' />
@@ -725,7 +725,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: 'Select States/Provinces',
+												message: 'States/Provinces are required',
 											},
 										]}>
 										<Select
@@ -766,7 +766,7 @@ function ShippingRulesComponent() {
                 				        rules={[
 				                        	{
                 				            	required: true,
-				                            	message: "Enter Postal Codes",
+				                            	message: "Postal Codes are required",
                 				          	},
                         				]}
                       				>
@@ -809,7 +809,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: 'Select Warehouses',
+												message: 'Warehouses are required',
 											},
 										]}>
 										<Select
@@ -885,7 +885,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: "Select Categories",
+												message: "Categories are required",
 											},
 										]}>
 										<Select
@@ -922,7 +922,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: "Select Brands",
+												message: "Brands are required",
 											},
 										]}>
 										<Select
@@ -960,7 +960,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: "Select Products",
+												message: "Products are required",
 											},
 										]}> 
 											<Select
@@ -968,7 +968,7 @@ function ShippingRulesComponent() {
 												style={{ width: '100%' }}
 												placeholder={"Search products by name, SKU"}
 												labelInValue
-												notFoundContent={loading ? <span><Spin size="small" /></span> : (searchQuery?.length > 2 && data?.length == 0 ? <span>Product not found!</span> : <span>Please input a minimum of three characters.</span>)}
+												notFoundContent={loading ? <span><Spin size="small" /></span> : (searchQuery?.length > 2 && data?.length == 0 ? <span>Product not found!</span> : <span>Please enter a minimum of three characters.</span>)}
 												value={selectedProducts}
 												allowClear
 												onSearch={handleSearch}
@@ -1006,7 +1006,7 @@ function ShippingRulesComponent() {
 										rules={[
 											{
 												required: true,
-												message: 'Select Provider',
+												message: 'Provider is required',
 											},
 										]}>
 										<Select placeholder='Select Provider'  value={this?.filter_provider || undefined}>
