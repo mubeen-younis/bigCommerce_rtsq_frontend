@@ -334,6 +334,8 @@ function ShippingRulesComponent() {
 		editLocation(text)
 	}
 
+	const helptext = ruleType == 6 ? 'Shipment' : 'Cart';
+
 	const onFinish = useCallback(
 		values => {
 			values = {...values, apply_to : applyTo, available: available }
@@ -1220,7 +1222,7 @@ function ShippingRulesComponent() {
                 					>	
                   						Filter by weight (lbs)
                 					</Checkbox>
-									<Tooltip title='The total weight of the Cart in pounds.'>
+									<Tooltip title={'The total weight of the ' + helptext + ' in pounds.'}>
 										<a href='#!'>
 											[ i ]
 										</a>
@@ -1296,7 +1298,7 @@ function ShippingRulesComponent() {
                 					>	
                   						Filter by price
                 					</Checkbox>
-									<Tooltip title='The total value of the items in the Cart.'>
+									<Tooltip title={'The total value of the items in the ' + helptext + '.'}>
 										<a href='#!'>
 											[ i ]
 										</a>
@@ -1372,7 +1374,7 @@ function ShippingRulesComponent() {
                 					>	
                   						Filter by quantity
                 					</Checkbox>
-									<Tooltip title='The total number of items in the Cart.'>
+									<Tooltip title={'The total number of items in the ' + helptext + '.'}>
 										<a href='#!'>
 											[ i ]
 										</a>
