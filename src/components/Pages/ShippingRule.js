@@ -69,7 +69,7 @@ function ShippingRulesComponent() {
 	const { alertMessageType, shippingRules, token , installedCarriers, statesProvinces, carrierServices, warehouse, storeCategories, storeBrands} = useSelector(state => state)
 	const [selectedServices, setSelectedServices] = useState([]);
 	const [carrierId, setCarrierId] = useState();
-	const [carrierSlug, setCarrierSlug] = useState();
+	const [carrierSlug, setCarrierSlug] = useState(null);
 	const [selectedCategories, setSelectedCategories] = useState([]);
 	const [selectedBrands, setSelectedBrands] = useState([]);
 	const [selectedProducts, setSelectedProducts] = useState([]);
@@ -101,11 +101,6 @@ function ShippingRulesComponent() {
 		}
 
 	}, [dispatch, shippingRules, token, countryCode, ruleType])
-
-	useEffect(() => {
-		dispatch(getCarrServices(carrierId, token, isLTL, carrierSlug))
-		
-	}, [dispatch, token, carrierId])
 
 	useEffect(() => {
 		if (alertMessageType === 'success') {
@@ -221,15 +216,18 @@ function ShippingRulesComponent() {
 	};
 
 	const handleProviderServices = (slug) => {
-		installedCarriers?.map(carrier =>
-			carrier?.slug == slug ? [setCarrierId(carrier?.id), setIsLTL(carrier?.carrier_type), setCarrierSlug(slug)] : null
-		)
-		dispatch(getCarrServices(carrierId, token, isLTL, carrierSlug))
+		setCarrierSlug(slug);
+    	setSelectedServices([])
+		form.resetFields(['filter_services']);
 	};
-	// Filter out options with false values
-	const optionKeys = carrierServices?.map((item) => ({
-		key: item.key, value: item.value 
-	}))
+
+  useEffect(() => {
+	installedCarriers?.map(carrier =>
+		carrier?.slug == carrierSlug ? [setCarrierId(carrier?.id), setIsLTL(carrier?.carrier_type), setCarrierSlug(carrierSlug)] : null
+	)
+
+	dispatch(getCarrServices(carrierId, token, isLTL, carrierSlug))
+}, [carrierId, carrierSlug]);
 
 	const handleChangeWarehouses = (selectedValues) => {
 		setSelectedWarehouses(selectedValues);
@@ -309,7 +307,7 @@ function ShippingRulesComponent() {
 	const updateFormFields = async (text) => 
 	{
 		setCountryCode(text?.filter_country)
-		handleProviderServices(text?.filter_provider)
+		setCarrierSlug(text?.filter_provider)
 		if(text?.filter_country == undefined || text?.filter_country == ''){
 			setCountryCode('US')
 			text.filter_country = 'US'
@@ -1123,11 +1121,10 @@ function ShippingRulesComponent() {
         									onChange={handleChangeServices}
         									filterOption={filterServices}
 											allowClear
+											disabled={!carrierSlug} // Disable carrier services dropdown if no carrier is selected
       									>
-											{optionKeys?.map((option) => (
-          										<option key={option?.value} value={option?.value}>
-            										{option?.value}
-          										</option>
+											{carrierSlug && carrierServices?.map(service => (
+          										<Option key={service?.value} value={service?.value}>{service?.value}</Option>
         									))}
       									</Select>
 									</Form.Item>
