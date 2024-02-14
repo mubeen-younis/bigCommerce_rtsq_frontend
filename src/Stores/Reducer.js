@@ -49,6 +49,7 @@ const initialState = {
 	boxSizeStatus: false,
 	isFedexSmallCarrier: false,
 	shippingGroups: null,
+	getPayments: null,
 	fdoCouponInfo: null,
 	fdoCouponCarrierInfo: null,
 	/* Dbsc states */
@@ -686,7 +687,12 @@ const Reducer = (state = initialState, action) => {
 					sg.uuid === action.payload.uuid ? action.payload : sg
 				),
 			}
-
+		/* Get Payments Invoice */	
+		case types.GET_PAYMENTS:
+		return {
+			...state,
+			getPayments: action.payload
+		}
 		/* Get States and Provices */
 		case types.GET_STATES_PROVINCES:
 			return {

@@ -43,6 +43,7 @@ import ShippingRulesComponent from './components/Pages/ShippingRule'
 import RADSettings from './components/Pages/RADSettings'
 import CompareRates from './components/Pages/CompareRates'
 import ProductSettingsComponent from './components/ProductSettingsComponent'
+import PaymentsTabComponent from './components/Pages/PaymentTabComponent'
 
 const { Header, Content } = Layout
 
@@ -222,6 +223,7 @@ function App(props) {
               <Route path='/user_guide' component={UserGuideComponent} />
               <Route path='/av' component={AVComponent} />
               <Route path='/warehouses' component={WarehouseComponent} />
+              <Route path='/payments' component={PaymentsTabComponent} />
               <Route path='/addon/:addon_id' component={RendorAddon} />
               <Route path='/:carrier_id' component={RendorCarrier} />
             </Switch>
