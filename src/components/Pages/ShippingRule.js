@@ -789,6 +789,7 @@ function ShippingRulesComponent() {
                 lg={24}
                 xl={24}
               >
+				<div id='type_dropdown'>
                 <Form.Item
                   className={'mb-2'}
                   label='Type'
@@ -800,7 +801,6 @@ function ShippingRulesComponent() {
                     },
                   ]}
                 >
-                  <div id='type_dropdown'>
                     <Select
                       placeholder='Type'
                       onChange={(value) => setRuleType(value)}
@@ -815,8 +815,8 @@ function ShippingRulesComponent() {
                       <Option value={'2'}>Hide Methods</Option>
                       <Option value={'6'}>Override Rates</Option>
                     </Select>
-                  </div>
                 </Form.Item>
+				</div>
               </Col>
             </Row>
             <Row gutter={30}>
@@ -861,6 +861,7 @@ function ShippingRulesComponent() {
                       lg={24}
                       xl={24}
                     >
+					<div id='country_dropdown'>
                       <Form.Item
                         className={'mb-2'}
                         label='Countries'
@@ -872,7 +873,6 @@ function ShippingRulesComponent() {
                           },
                         ]}
                       >
-                        <div id='country_dropdown'>
                           <Select
                             placeholder='Select Countries'
                             value={this?.filter_country || undefined}
@@ -884,8 +884,8 @@ function ShippingRulesComponent() {
                             <Option value={'US'}>US</Option>
                             <Option value={'CA'}>CA</Option>
                           </Select>
-                        </div>
                       </Form.Item>
+					  </div>
                     </Col>
                   </Row>
                 )}
@@ -899,6 +899,7 @@ function ShippingRulesComponent() {
                       lg={24}
                       xl={24}
                     >
+					<div id='state_dropdown'>
                       <Form.Item
                         className={'mb-2'}
                         label='States/Provinces'
@@ -910,7 +911,6 @@ function ShippingRulesComponent() {
                           },
                         ]}
                       >
-                        <div id='state_dropdown'>
                           <Select
                             mode='multiple'
                             style={{ width: '100%' }}
@@ -929,8 +929,8 @@ function ShippingRulesComponent() {
                               </Option>
                             ))}
                           </Select>
-                        </div>
                       </Form.Item>
+					  </div>
                     </Col>
                   </Row>
                 )}
@@ -994,6 +994,7 @@ function ShippingRulesComponent() {
                       lg={24}
                       xl={24}
                     >
+					<div id='country_dropdown'>
                       <Form.Item
                         className={'mb-2'}
                         label='Warehouses'
@@ -1010,6 +1011,9 @@ function ShippingRulesComponent() {
                           style={{ width: '100%' }}
                           placeholder='Select Warehouses'
                           value={selectedWarehouses}
+						  getPopupContainer={() =>
+							document.getElementById('country_dropdown')
+						  }
                           allowClear
                           onChange={handleChangeWarehouses}
                           filterOption={filterOptionsWarehouses}
@@ -1026,6 +1030,7 @@ function ShippingRulesComponent() {
                             : null}
                         </Select>
                       </Form.Item>
+					  </div>
                     </Col>
                   </Row>
                 )}
@@ -1038,6 +1043,7 @@ function ShippingRulesComponent() {
                     lg={24}
                     xl={24}
                   >
+					<div id='country_dropdown'>
                     <Form.Item
                       className={'mb-2'}
                       label='Apply rule to'
@@ -1052,12 +1058,16 @@ function ShippingRulesComponent() {
                       <Select
                         placeholder='Apply rule to'
                         onChange={(value) => setApplyRuleTo(value)}
+						getPopupContainer={() =>
+							document.getElementById('country_dropdown')
+						  }
                       >
                         <Option value={1}>Categories</Option>
                         <Option value={2}>Brands</Option>
                         <Option value={3}>Individual Products</Option>
                       </Select>
                     </Form.Item>
+					</div>
                   </Col>
                 </Row>
                 {applyRuleTo == 1 ? (
@@ -1070,6 +1080,7 @@ function ShippingRulesComponent() {
                       lg={24}
                       xl={24}
                     >
+					<div id='country_dropdown'>
                       <Form.Item
                         className={'mb-2'}
                         label={'Apply the rule to these categories'}
@@ -1086,6 +1097,9 @@ function ShippingRulesComponent() {
                           style={{ width: '100%' }}
                           placeholder={'Select Categories'}
                           value={selectedCategories}
+						  getPopupContainer={() =>
+							document.getElementById('country_dropdown')
+						  }
                           allowClear
                           onChange={handleChangeCategories}
                           filterOption={filterOptionsCategories}
@@ -1097,6 +1111,7 @@ function ShippingRulesComponent() {
                           ))}
                         </Select>
                       </Form.Item>
+					  </div>
                     </Col>
                   </Row>
                 ) : applyRuleTo == 2 ? (
@@ -1109,6 +1124,7 @@ function ShippingRulesComponent() {
                       lg={24}
                       xl={24}
                     >
+					<div id='country_dropdown'>
                       <Form.Item
                         className={'mb-2'}
                         label={'Apply the rule to these brands'}
@@ -1125,6 +1141,9 @@ function ShippingRulesComponent() {
                           style={{ width: '100%' }}
                           placeholder={'Select Brands'}
                           value={selectedBrands}
+						  getPopupContainer={() =>
+							document.getElementById('country_dropdown')
+						  }
                           allowClear
                           onChange={handleChangeBrands}
                           filterOption={filterOptionsBrands}
@@ -1136,6 +1155,7 @@ function ShippingRulesComponent() {
                           ))}
                         </Select>
                       </Form.Item>
+					  </div>
                     </Col>
                   </Row>
                 ) : applyRuleTo == 3 ? (
@@ -1148,6 +1168,7 @@ function ShippingRulesComponent() {
                       lg={24}
                       xl={24}
                     >
+					<div id='country_dropdown'>
                       <div ref={dropdownRef}>
                         <Form.Item
                           className={'mb-2'}
@@ -1165,6 +1186,9 @@ function ShippingRulesComponent() {
                             style={{ width: '100%' }}
                             placeholder={'Search products by name, SKU'}
                             labelInValue
+							getPopupContainer={() =>
+								document.getElementById('country_dropdown')
+							  }
                             notFoundContent={
                               loading ? (
                                 <span>
@@ -1195,6 +1219,7 @@ function ShippingRulesComponent() {
                             ))}
                           </Select>
                         </Form.Item>
+						</div>
                       </div>
                     </Col>
                   </Row>
@@ -1215,6 +1240,7 @@ function ShippingRulesComponent() {
                         lg={24}
                         xl={24}
                       >
+						<div id='country_dropdown'>
                         <Form.Item
                           className={'mb-2'}
                           label='Provider'
@@ -1230,6 +1256,9 @@ function ShippingRulesComponent() {
                             placeholder='Select Provider'
                             value={this?.filter_provider || undefined}
                             onChange={handleProviderServices}
+							getPopupContainer={() =>
+								document.getElementById('country_dropdown')
+							  }
                           >
                             {installedCarriers?.map((carrier) => (
                               <Option value={carrier?.slug}>
@@ -1243,6 +1272,7 @@ function ShippingRulesComponent() {
                             ))}
                           </Select>
                         </Form.Item>
+						</div>
                       </Col>
                     </Row>
                   </>
@@ -1258,6 +1288,7 @@ function ShippingRulesComponent() {
                         lg={24}
                         xl={24}
                       >
+						<div id='country_dropdown'>
                         <Form.Item
                           className={'mb-2'}
                           label='Provider'
@@ -1273,6 +1304,9 @@ function ShippingRulesComponent() {
                             placeholder='Select Provider'
                             value={this?.filter_provider || undefined}
                             onChange={handleProviderServices}
+							getPopupContainer={() =>
+								document.getElementById('country_dropdown')
+							  }
                           >
                             {installedCarriers?.map((carrier) =>
                               carrier?.slug == 'estes-ltl' ||
@@ -1293,6 +1327,7 @@ function ShippingRulesComponent() {
                             )}
                           </Select>
                         </Form.Item>
+						</div>
                       </Col>
                     </Row>
                     <Row gutter={30}>
@@ -1304,6 +1339,7 @@ function ShippingRulesComponent() {
                         lg={24}
                         xl={24}
                       >
+						<div id='country_dropdown'>
                         <Form.Item
                           className={'mb-2'}
                           label='Services'
@@ -1322,6 +1358,9 @@ function ShippingRulesComponent() {
                             value={selectedServices}
                             onChange={handleChangeServices}
                             filterOption={filterServices}
+							getPopupContainer={() =>
+								document.getElementById('country_dropdown')
+							  }
                             allowClear
                             disabled={!carrierSlug} // Disable carrier services dropdown if no carrier is selected
                           >
@@ -1336,6 +1375,7 @@ function ShippingRulesComponent() {
                               ))}
                           </Select>
                         </Form.Item>
+						</div>
                       </Col>
                     </Row>
                     <Row gutter={30}>
