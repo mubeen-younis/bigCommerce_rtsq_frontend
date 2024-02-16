@@ -11,6 +11,14 @@ const Markup = () => (
 		</label>
 	</Col>
 )
+const LabelAs = () => (
+	<Col className='gutter-row' xs={16} sm={16} md={16} lg={16} xl={16}>
+		<label className={'text-gray'}>
+		  Service name displays by default.
+		  Enter an alternative if you prefer something different.
+		</label>
+	</Col>
+)
 
 const DomesticServices = ({
 	quoteSettingsState,
@@ -70,6 +78,20 @@ const DomesticServices = ({
 				</Col>
 				<Col span={14}>
 					<Form.Item className='mb-0'>
+						<Input
+							name='usps_label_as'
+							value={
+								quoteSettingsState?.carrier_services
+									?.usps_label_as
+							}
+							onChange={onChange}
+							type='text'
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+				<Col span={14}>
+					<Form.Item className='mb-0 mt-2'>
 						<Input
 							name='usps_first_class_mail_markup'
 							value={

@@ -26,6 +26,7 @@ const initialState = {
 		usps_priority_mail_flat_rate: false,
 		usps_retail_ground: false,
 		usps_first_class_mail_markup: '',
+		usps_label_as: "",
 		usps_priority_mail_express_markup: '',
 		usps_priority_mail_markup: '',
 		usps_priority_mail_flat_rate_markup: '',
@@ -200,45 +201,45 @@ function QuoteSettingsComponentWweSmall(props) {
 			CS?.usps_priority_mail_international_flat_rate_box ||
 			CS?.usps_first_class_package_international_service
 
-		let errormsg = ''
-		// Domestic services check
-		if (errormsg === '') {
-			errormsg = validateHandlingFeeMarkup(
-				quoteSettingsState?.carrier_services?.usps_first_class_mail_markup,
-				'USPS First Class Mail markup ',
-				true
-			)
-		}
-		if (errormsg === '') {
-			errormsg += validateHandlingFeeMarkup(
-				quoteSettingsState?.carrier_services
-					?.usps_priority_mail_express_markup,
-				'USPS Priority Mail Express markup',
-				true
-			)
-		}
-		if (errormsg === '') {
-			errormsg += validateHandlingFeeMarkup(
-				quoteSettingsState?.carrier_services?.usps_priority_mail_markup,
-				'USPS Priority Mail markup',
-				true
-			)
-		}
-		if (errormsg === '') {
-			errormsg += validateHandlingFeeMarkup(
-				quoteSettingsState?.carrier_services
-					?.usps_priority_mail_flat_rate_markup,
-				'USPS Priority Mail Flat Rate* markup',
-				true
-			)
-		}
-		if (errormsg === '') {
-			errormsg += validateHandlingFeeMarkup(
-				quoteSettingsState?.carrier_services?.usps_retail_ground_markup,
-				'USPS Retail Ground markup',
-				true
-			)
-		}
+    let errormsg = "";
+    // Domestic services check
+    if (errormsg === "") {
+      errormsg = validateHandlingFeeMarkup(
+        quoteSettingsState?.carrier_services?.usps_first_class_mail_markup,
+        "USPS First Class Mail markup ",
+        true
+      );
+    }
+
+    if (errormsg === "") {
+      errormsg += validateHandlingFeeMarkup(
+        quoteSettingsState?.carrier_services?.usps_priority_mail_express_markup,
+        "USPS Priority Mail Express markup",
+        true
+      );
+    }
+    if (errormsg === "") {
+      errormsg += validateHandlingFeeMarkup(
+        quoteSettingsState?.carrier_services?.usps_priority_mail_markup,
+        "USPS Priority Mail markup",
+        true
+      );
+    }
+    if (errormsg === "") {
+      errormsg += validateHandlingFeeMarkup(
+        quoteSettingsState?.carrier_services
+          ?.usps_priority_mail_flat_rate_markup,
+        "USPS Priority Mail Flat Rate* markup",
+        true
+      );
+    }
+    if (errormsg === "") {
+      errormsg += validateHandlingFeeMarkup(
+        quoteSettingsState?.carrier_services?.usps_retail_ground_markup,
+        "USPS Retail Ground markup",
+        true
+      );
+    }
 
 		// International services check
 		if (errormsg === '') {
@@ -461,16 +462,19 @@ function QuoteSettingsComponentWweSmall(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={24} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}>
-						<Title level={4}>Other settings</Title>
-					</Col>
+        <DeliveryEstimateOptions
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
+        <EstimateDate
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+          handleChange={handleStateChange}
+        />
+        <Row gutter={24} className={"mb-3"}>
+          <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Title level={4}>Other settings</Title>
+          </Col>
 
 					<Col
 						className='gutter-row'
