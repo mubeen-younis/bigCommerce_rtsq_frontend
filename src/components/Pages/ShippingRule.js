@@ -1318,6 +1318,7 @@ function ShippingRulesComponent() {
                               carrier?.slug == 'daylight-ltl' ||
                               carrier?.slug == 'ltl-quotes' ||
                               carrier?.slug == 'rl-ltl' ||
+                              carrier?.slug == 'ups-small' ||
                               carrier?.slug == 'southeastern-ltl' ||
                               carrier?.slug == 'saia-ltl' ? (
                                 <Option value={carrier?.slug}>
