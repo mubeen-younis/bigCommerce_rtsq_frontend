@@ -60,6 +60,12 @@ const initialState = {
   filter_provider: [],
   filter_services: [],
   service_rates: null,
+  weight_from: '',
+  weight_to: '',
+  price_from: '',
+  price_to: '',
+  quantity_from: '',
+  quantity_to: '',
 };
 
 function ShippingRulesComponent() {
@@ -243,21 +249,15 @@ function ShippingRulesComponent() {
     setCarrierSlug(slug);
     setSelectedServices([]);
     form.resetFields(['filter_services']);
+    getCarrierServices(slug)
   };
 
-  useEffect(() => {
+  const getCarrierServices = (slug) => {
     installedCarriers?.map((carrier) =>
-      carrier?.slug == carrierSlug
-        ? [
-            setCarrierId(carrier?.id),
-            setIsLTL(carrier?.carrier_type),
-            setCarrierSlug(carrierSlug),
-          ]
-        : null
-    );
-
-    dispatch(getCarrServices(carrierId, token, isLTL, carrierSlug));
-  }, [carrierId, carrierSlug]);
+    carrier?.slug == slug
+       ? dispatch(getCarrServices(carrier?.id, token, carrier?.carrier_type, slug))
+      : null
+  )}
 
   const handleChangeWarehouses = (selectedValues) => {
     setSelectedWarehouses(selectedValues);
@@ -335,7 +335,7 @@ function ShippingRulesComponent() {
 
   const updateFormFields = async (text) => {
     setCountryCode(text?.filter_country);
-    setCarrierSlug(text?.filter_provider);
+    handleProviderServices(text?.filter_provider)
     if (text?.filter_country == undefined || text?.filter_country == '') {
       setCountryCode('US');
       text.filter_country = 'US';
@@ -1357,6 +1357,11 @@ function ShippingRulesComponent() {
                             placeholder='Select Services'
                             value={selectedServices}
                             onChange={handleChangeServices}
+                            notFoundContent={
+                              <span>
+                                  <Spin size='small' />
+                                </span>
+                            }
                             filterOption={filterServices}
 							getPopupContainer={() =>
 								document.getElementById('country_dropdown')
