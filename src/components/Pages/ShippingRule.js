@@ -60,6 +60,12 @@ const initialState = {
   filter_provider: [],
   filter_services: [],
   service_rates: null,
+  weight_from: '',
+  weight_to: '',
+  price_from: '',
+  price_to: '',
+  quantity_from: '',
+  quantity_to: '',
 };
 
 function ShippingRulesComponent() {
@@ -1310,6 +1316,8 @@ function ShippingRulesComponent() {
                               carrier?.slug == 'ups-ltl' ||
                               carrier?.slug == 'odfl-ltl' ||
                               carrier?.slug == 'daylight-ltl' ||
+                              carrier?.slug == 'ltl-quotes' ||
+                              carrier?.slug == 'rl-ltl' ||
                               carrier?.slug == 'southeastern-ltl' ||
                               carrier?.slug == 'saia-ltl' ? (
                                 <Option value={carrier?.slug}>
