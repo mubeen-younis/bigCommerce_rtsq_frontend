@@ -21,20 +21,28 @@ const { Title } = Typography
 const initialState = {
 	carrier_services: {
 		usps_first_class_mail: false,
+		usps_first_class_mail_label: "",
 		usps_priority_mail_express: false,
-		usps_priority_mail: false,
+		usps_priority_mail_express_label: "",
+		usps_priority_mail: false,	
+		usps_priority_mail_label: "",
 		usps_priority_mail_flat_rate: false,
+		usps_priority_mail_flat_rate__As: "",
 		usps_retail_ground: false,
+		usps_retail_ground_label: "",
 		usps_first_class_mail_markup: '',
-		usps_label_as: "",
 		usps_priority_mail_express_markup: '',
 		usps_priority_mail_markup: '',
 		usps_priority_mail_flat_rate_markup: '',
 		usps_retail_ground_markup: '',
 		usps_priority_mail_international_express: false,
+		usps_priority_mail_international_express_label: '',
 		usps_priority_mail_international: false,
+		usps_priority_mail_international_label: '',
 		usps_priority_mail_international_flat_rate_box: false,
+		usps_priority_mail_international_flat_rate_box_label: '',
 		usps_first_class_package_international_service: false,
+		usps_first_class_package_international_service_label: '',
 		usps_priority_mail_international_express_markup: '',
 		usps_priority_mail_internationalmarkup: '',
 		usps_priority_mail_international_flat_rate_box_markup: '',
@@ -55,8 +63,40 @@ const initialState = {
 	ground_hazardous_material_fee: null,
 	air_hazardous_material_fee: null,
 	handling_fee_markup: null,
+	estimate_date: null,
 	rate_tier: 'retail',
 }
+const EstimateDate = ({ quoteSettingsState, setQuoteSettingsState }) => (
+<Row gutter={30} align='middle' className={'mb-4'}>
+<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+				<label className={'text-gray'}>
+				Retail Gorund/Advantage Ground delivery estimate
+				</label>
+			</Col>
+			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+				<Form.Item className={'mb-0'}>
+					<Input
+						type='number'
+						name='estimate_date'
+						min={1}
+						step={1}
+						disabled={
+							quoteSettingsState?.delivery_estimate_options ==
+							1
+						}
+						value={quoteSettingsState?.estimate_date}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										estimate_date: e.target.value,
+						})}
+					/>
+				</Form.Item>
+				
+			</Col>
+</Row>
+)
+
 
 function QuoteSettingsComponentWweSmall(props) {
 	const [loading, setLoading] = useState(true)
@@ -461,7 +501,7 @@ function QuoteSettingsComponentWweSmall(props) {
 						</Form.Item>
 					</Col>
 				</Row>
-
+		<Row className={'mb-2'}></Row>
         <DeliveryEstimateOptions
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
