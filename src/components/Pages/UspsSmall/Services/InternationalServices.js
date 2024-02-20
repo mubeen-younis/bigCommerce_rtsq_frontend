@@ -25,7 +25,7 @@ const InternationalServices = ({
 	onChange,
 	onCheck,
 }) => {
-	const makeServiceIndex = useCallback((srvc_name = '', markup = false, label = false) => {
+	const makeServiceIndex = useCallback((srvc_name = '', markup = false) => {
 		let name = srvc_name ?? ''
 		name =
 			name
@@ -34,6 +34,17 @@ const InternationalServices = ({
 				.replaceAll(' ', '_')
 				.replace('-', '_')
 				.replace('*', '') + (markup ? '_markup' : '')
+
+		return name
+	}, [])
+	const makeLabelIndex = useCallback((srvc_name = '', label = false) => {
+		let name = srvc_name ?? ''
+		name =
+			name
+				.trim()
+				.toLowerCase()
+				.replaceAll(' ', '_')
+				.replace('-', '_')
 				.replace('*', '') + (label ? '_label' : '')
 
 		return name
@@ -88,7 +99,12 @@ const InternationalServices = ({
 					<Col span={14}>
 					<Form.Item className='mb-0'>
 						<Input
-							name={makeServiceIndex(is)}
+						value={
+							quoteSettingsState?.carrier_services?.[
+								makeLabelIndex(is, true)
+							]
+						}
+						name={makeLabelIndex(is, true)}
 							onChange={onChange}
 							type='text'
 						/>

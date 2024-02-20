@@ -27,7 +27,7 @@ const initialState = {
 		usps_priority_mail: false,	
 		usps_priority_mail_label: "",
 		usps_priority_mail_flat_rate: false,
-		usps_priority_mail_flat_rate__As: "",
+		usps_priority_mail_flat_rate_label: "",
 		usps_retail_ground: false,
 		usps_retail_ground_label: "",
 		usps_first_class_mail_markup: '',
@@ -68,7 +68,7 @@ const initialState = {
 }
 const EstimateDate = ({ quoteSettingsState, setQuoteSettingsState }) => (
 <Row gutter={30} align='middle' className={'mb-4'}>
-<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
+<Col className='gutter-row mb-3' xs={24} sm={12} md={12} lg={12} xl={6}>
 				<label className={'text-gray'}>
 				Retail Gorund/Advantage Ground delivery estimate
 				</label>
@@ -77,12 +77,12 @@ const EstimateDate = ({ quoteSettingsState, setQuoteSettingsState }) => (
 				<Form.Item className={'mb-0'}>
 					<Input
 						type='number'
-						name='estimate_date'
+						name='estimate_days'
 						min={1}
 						step={1}
 						disabled={
 							quoteSettingsState?.delivery_estimate_options ==
-							1
+							1 || quoteSettingsState?.delivery_estimate_options == 3
 						}
 						value={quoteSettingsState?.estimate_date}
 								onChange={e =>
@@ -92,7 +92,7 @@ const EstimateDate = ({ quoteSettingsState, setQuoteSettingsState }) => (
 						})}
 					/>
 				</Form.Item>
-				
+				<p className='text-gray'>The USPS API does not provide delivery estimates for Retail Ground/Advantage Ground service. Kindly input the delivery time for this service to display on the checkout page. </p>
 			</Col>
 </Row>
 )
