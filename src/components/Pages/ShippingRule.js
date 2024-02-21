@@ -1320,6 +1320,8 @@ function ShippingRulesComponent() {
                               carrier?.slug == 'rl-ltl' ||
                               carrier?.slug == 'ups-small' ||
                               carrier?.slug == 'southeastern-ltl' ||
+                              carrier?.slug == 'freightquote-ltl' ||
+                              carrier?.slug == 'freightquote-chr-ltl' ||
                               carrier?.slug == 'saia-ltl' ? (
                                 <Option value={carrier?.slug}>
                                   {carrier.carrier_type == 1
