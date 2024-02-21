@@ -114,6 +114,7 @@ function OrderSettingsComponent(props) {
 					},
 				}
 			setLoadOrder(true)
+			// console.log('Order Widget Data:', data);
 
 			const { data } = await axios.get(url, config)
 			if (!data.error) {
@@ -310,7 +311,7 @@ function OrderSettingsComponent(props) {
 			key: 'date_created',
 		},
 		{
-			title: 'Items',
+			title: 'Items nono',
 			dataIndex: 'items_total',
 			key: 'items_total',
 			/*sorter: (a, b) => a.items_total - b.items_total,
@@ -503,6 +504,9 @@ function OrderSettingsComponent(props) {
 										{count + 1} of {numBoxes}
 										<br /> Number of items:{' '}
 										{bin?.number_of_items} <br />
+
+										Box weight:{' '}
+										{bin?.weight} lbs<br />
 										{bin?.nickname}
 									</strong>
 								</Col>
@@ -529,23 +533,22 @@ function OrderSettingsComponent(props) {
 								{widget?.sbs?.type !== 'item'
 									? bin?.items.map(box => (
 											<>
-												<Col
-													span={6}
-													style={{ textAlign: 'center' }}>
-													<img
-														src={box?.image_sbs}
-														style={{ margin: '5px' }}
-														alt={box?.image_sbs}
-													/>
-													<br />
-													<span>
-														{box?.product_name} <br />{' '}
-														{box?.d + ' x '}
-														{box?.w + ' x '}
-														{box?.h}
-													</span>
-													<br />
-												</Col>
+											<Col span={6} style={{ textAlign: 'center' }}>
+												
+												<img
+													src={box?.image_sbs}
+													style={{ margin: '5px' }}
+													alt={box?.image_sbs}
+												/>
+												<br />
+												<span>
+													{box?.product_name} <br /> {box?.wg}
+													{box?.d + ' x '}
+													{box?.w + ' x '}
+													{box?.h}
+												</span>
+												<br />
+											</Col>
 											</>
 									  ))
 									: ''}
