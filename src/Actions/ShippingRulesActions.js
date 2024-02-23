@@ -76,8 +76,8 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 	  }
 	}
 
-	export const getCarrServices = (carrierId, token, isLTL, carrierSlug) => async dispatch => {
-	
+	export const getCarrServices = (carrierId, token, isLTL, carrierSlug, setAccessorials) => async dispatch => {
+		dispatch(dispatchAlert(false, 'loading'))
 		try {
 			const url = `${process.env.REACT_APP_ENITURE_API_URL}/getCarrierServices`,
 
@@ -90,7 +90,7 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 			const reqData = {'isLTL' : isLTL, 'carrierId' : carrierId, 'carrierSlug' : carrierSlug}
 	
 			const {
-				data: { error, data, message },
+				data: { error, data, carrierAccessorials },
 			}  = await axios.post(url, reqData, config)
 	
 			if (!error) {
@@ -98,6 +98,9 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 					type: types.GET_CARRIER_SERVICES,
 					payload: data,
 				})
+
+				setAccessorials(carrierAccessorials)
+				dispatch(dispatchAlert(false, null))
 			}
 		} catch (err) {
 			dispatch(dispatchAlert(false, null))
