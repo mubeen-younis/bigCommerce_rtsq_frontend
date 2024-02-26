@@ -127,8 +127,6 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 						payload: data,
 					})
 				}
-				dispatch(dispatchAlert(error, error ? 'error' : 'success', message))
-
 			} catch (err) {
 				dispatch(dispatchAlert(false, null))
 			}
@@ -155,7 +153,6 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 					payload: data,
 				})
 			}
-			dispatch(dispatchAlert(error, error ? 'error' : 'success', message))
 		  } catch (err) {
 			dispatch(dispatchAlert(false, null))
 		  }
