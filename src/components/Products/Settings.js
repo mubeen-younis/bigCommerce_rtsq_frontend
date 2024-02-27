@@ -484,9 +484,7 @@ const Settings = ({
 												} ${value.state} ${
 													value.zip_code
 												}`} */
-												value.nickname == value.zip_code + '_' + value.city + '_' + value.state ? 
-												value.city + ', ' + value.state + ' ' + value.zip_code :
-												value.nickname + ' - ' + value.city + ', ' + value.state + ' ' + value.zip_code 
+												value.nickname == value.city + ', ' + value.state + ' ' + value.zip_code ? value.nickname : value.nickname + ' - ' + value.city + ', ' + value.state + ' ' + value.zip_code
 												}
 												</Option>
 										  ))
