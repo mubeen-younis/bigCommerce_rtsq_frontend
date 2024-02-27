@@ -1319,7 +1319,7 @@ function ShippingRulesComponent() {
                                   carrier?.slug == 'xpo-ltl' ||
                                   carrier?.slug == 'fedex-ltl' ||
                                   carrier?.slug == 'ups-ltl' ||
-                                  //carrier?.slug == 'ups-small' ||
+                                  carrier?.slug == 'ups-small' ||
                                   carrier?.slug == 'echo-ltl' ||
                                   carrier?.slug == 'saia-ltl' ? (
                                   <Option value={carrier?.slug}>
@@ -1396,13 +1396,6 @@ function ShippingRulesComponent() {
                       placeholder='Enter transportation rate'
                       required={true}
                       message='Transportation rate is required'
-                    />
-                    <ServiceRate
-                      label='Residential delivery (e.g. 5.25)'
-                      name='service_residential_fee'
-                      placeholder='Enter residential delivery rate'
-                      required={false}
-                      message=''
                     />
                     {accessorials && accessorials?.map((accessorial) => (
                       accessorial?.accessorial_service_sac == 'lgd' && accessorial?.status ? (
