@@ -205,7 +205,7 @@ function QuoteSettingsComponentWweSmall(props) {
 		if (errormsg === '') {
 			errormsg = validateHandlingFeeMarkup(
 				quoteSettingsState?.carrier_services?.usps_first_class_mail_markup,
-				'USPS First Class Mail markup ',
+				'USPS First-Class Mail markup ',
 				true
 			)
 		}
