@@ -1,3 +1,7 @@
+= 2.1.12 2024-02-29 =
+
+* Fix - Update Dropship nickname (Ticket:2302999298)https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/266
+
 = 2.1.10 2024-02-12 =
 
 * Update - show CSV export download link in the App (Ticket:2257786184)[#264](https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/264)
