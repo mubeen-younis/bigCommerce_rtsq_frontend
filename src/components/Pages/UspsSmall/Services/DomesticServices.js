@@ -86,6 +86,7 @@ const DomesticServices = ({
 							}
 							onChange={onChange}
 							type='text'
+							maxLength={30}
 						/>
 					</Form.Item>
 				</Col>
@@ -135,6 +136,8 @@ const DomesticServices = ({
 							}
 							onChange={onChange}
 							type='text'
+							maxLength={30}
+
 						/>
 					</Form.Item>
 				</Col>
@@ -184,6 +187,8 @@ const DomesticServices = ({
 							}
 							onChange={onChange}
 							type='text'
+							maxLength={30}
+
 						/>
 					</Form.Item>
 				</Col>
@@ -235,6 +240,7 @@ const DomesticServices = ({
 							}
 							onChange={onChange}
 							type='text'
+							maxLength={30}
 						/>
 					</Form.Item>
 				</Col>
@@ -284,6 +290,7 @@ const DomesticServices = ({
 							}
 							onChange={onChange}
 							type='text'
+							maxLength={30}
 						/>
 					</Form.Item>
 				</Col>

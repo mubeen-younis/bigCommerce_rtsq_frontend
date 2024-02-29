@@ -25,30 +25,18 @@ const InternationalServices = ({
 	onChange,
 	onCheck,
 }) => {
-	const makeServiceIndex = useCallback((srvc_name = '', markup = false) => {
-		let name = srvc_name ?? ''
-		name =
-			name
-				.trim()
-				.toLowerCase()
-				.replaceAll(' ', '_')
-				.replace('-', '_')
-				.replace('*', '') + (markup ? '_markup' : '')
+    const makeServiceIndex = useCallback((srvc_name = '', markup = false, label = false) => {
+        let name = srvc_name ?? '';
+        name =
+            name
+                .trim()
+                .toLowerCase()
+                .replaceAll(' ', '_')
+                .replace('-', '_')
+                .replace('*', '') + (markup ? '_markup' : label ? '_label' : '');
 
-		return name
-	}, [])
-	const makeLabelIndex = useCallback((srvc_name = '', label = false) => {
-		let name = srvc_name ?? ''
-		name =
-			name
-				.trim()
-				.toLowerCase()
-				.replaceAll(' ', '_')
-				.replace('-', '_')
-				.replace('*', '') + (label ? '_label' : '')
-
-		return name
-	}, [])
+        return name;
+    }, []);
 
 	return (
 		<Col span={12}>
@@ -101,12 +89,13 @@ const InternationalServices = ({
 						<Input
 						value={
 							quoteSettingsState?.carrier_services?.[
-								makeLabelIndex(is, true)
+								makeServiceIndex(is, false, true)
 							]
 						}
-						name={makeLabelIndex(is, true)}
+						name={ makeServiceIndex(is, false, true)}
 							onChange={onChange}
 							type='text'
+							maxLength={30}
 						/>
 					</Form.Item>
 				</Col>
