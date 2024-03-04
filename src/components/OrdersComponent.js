@@ -633,8 +633,9 @@ function OrderSettingsComponent(props) {
 
 			{/* ================ */}
 			<Drawer
-				title={`Additional Order Details ${!loadOrder ? ' (' + selectedOrderDetail?.id + ')' : ''
-					}`}
+				title={`Additional Order Details ${
+					!loadOrder ? ' (' + selectedOrderDetail?.id + ')' : ''
+				}`}
 				width={720}
 				onClose={onClose}
 				visible={state.visible}
