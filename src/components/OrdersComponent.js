@@ -114,7 +114,6 @@ function OrderSettingsComponent(props) {
 					},
 				}
 			setLoadOrder(true)
-			// console.log('Order Widget Data:', data);
 
 			const { data } = await axios.get(url, config)
 			if (!data.error) {
@@ -311,7 +310,7 @@ function OrderSettingsComponent(props) {
 			key: 'date_created',
 		},
 		{
-			title: 'Items nono',
+			title: 'Items',
 			dataIndex: 'items_total',
 			key: 'items_total',
 			/*sorter: (a, b) => a.items_total - b.items_total,
@@ -451,9 +450,11 @@ function OrderSettingsComponent(props) {
 
 	const countItems = (shipment) => {
 		let totalItems = 0
-		{shipment?.line_items.map(item => (
-			totalItems +=item.quantity
-		))}
+		{
+			shipment?.line_items.map(item => (
+				totalItems += item.quantity
+			))
+		}
 		return totalItems
 	}
 
@@ -532,9 +533,9 @@ function OrderSettingsComponent(props) {
 								</Col>
 								{widget?.sbs?.type !== 'item'
 									? bin?.items.map(box => (
-											<>
+										<>
 											<Col span={6} style={{ textAlign: 'center' }}>
-												
+
 												<img
 													src={box?.image_sbs}
 													style={{ margin: '5px' }}
@@ -549,8 +550,8 @@ function OrderSettingsComponent(props) {
 												</span>
 												<br />
 											</Col>
-											</>
-									  ))
+										</>
+									))
 									: ''}
 							</Row>
 						</Col>
@@ -632,9 +633,8 @@ function OrderSettingsComponent(props) {
 
 			{/* ================ */}
 			<Drawer
-				title={`Additional Order Details ${
-					!loadOrder ? ' (' + selectedOrderDetail?.id + ')' : ''
-				}`}
+				title={`Additional Order Details ${!loadOrder ? ' (' + selectedOrderDetail?.id + ')' : ''
+					}`}
 				width={720}
 				onClose={onClose}
 				visible={state.visible}
@@ -732,23 +732,23 @@ function OrderSettingsComponent(props) {
 									</Button>
 									{props?.orderwidget?.fdoShipments?.map((shipment, key) => (
 										<Col span={12} className='float-left mb-1'>
-											<Card 
-												className='mb-0' 
-												style={{ backgroundColor: 'hsl(0deg 12.87% 88.25%)', borderRadius: "10px", height: '100%' }} 
-												bodyStyle={{padding: "10px"}}
+											<Card
+												className='mb-0'
+												style={{ backgroundColor: 'hsl(0deg 12.87% 88.25%)', borderRadius: "10px", height: '100%' }}
+												bodyStyle={{ padding: "10px" }}
 											>
-												<span> <b> {('Shipment #' + (key + 1)) }</b> <br/>{countItems(shipment) == 1 ? (countItems(shipment) + ' item @') : (countItems(shipment) + ' items @')} {(shipment?.shipment_date)} </span> <br/> 
+												<span> <b> {('Shipment #' + (key + 1))}</b> <br />{countItems(shipment) == 1 ? (countItems(shipment) + ' item @') : (countItems(shipment) + ' items @')} {(shipment?.shipment_date)} </span> <br />
 												{shipment?.line_items.map(item => (
-														<>{item.quantity} X {item.product_name} <br/> </>
-													))}
-												<span> Shipping method: {shipment?.shipping_method}</span> <br/>
+													<>{item.quantity} X {item.product_name} <br /> </>
+												))}
+												<span> Shipping method: {shipment?.shipping_method}</span> <br />
 												<span> Tracking # {shipment?.tracking_number}</span>
-												
+
 											</Card>
 										</Col>
 									))}
 								</Fragment>
-							) : null }
+							) : null}
 						</Row>
 					</Form>
 				)}
