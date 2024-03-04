@@ -531,7 +531,7 @@ function OrderSettingsComponent(props) {
 								</Col>
 								{widget?.sbs?.type !== 'item'
 									? bin?.items.map(box => (
-										<>
+											<>
 												<Col
 													span={6}
 													style={{ textAlign: 'center' }}>
@@ -732,23 +732,23 @@ function OrderSettingsComponent(props) {
 									</Button>
 									{props?.orderwidget?.fdoShipments?.map((shipment, key) => (
 										<Col span={12} className='float-left mb-1'>
-											<Card
-												className='mb-0'
-												style={{ backgroundColor: 'hsl(0deg 12.87% 88.25%)', borderRadius: "10px", height: '100%' }}
-												bodyStyle={{ padding: "10px" }}
+											<Card 
+												className='mb-0' 
+												style={{ backgroundColor: 'hsl(0deg 12.87% 88.25%)', borderRadius: "10px", height: '100%' }} 
+												bodyStyle={{padding: "10px"}}
 											>
-												<span> <b> {('Shipment #' + (key + 1))}</b> <br />{countItems(shipment) == 1 ? (countItems(shipment) + ' item @') : (countItems(shipment) + ' items @')} {(shipment?.shipment_date)} </span> <br />
+												<span> <b> {('Shipment #' + (key + 1)) }</b> <br/>{countItems(shipment) == 1 ? (countItems(shipment) + ' item @') : (countItems(shipment) + ' items @')} {(shipment?.shipment_date)} </span> <br/> 
 												{shipment?.line_items.map(item => (
-													<>{item.quantity} X {item.product_name} <br /> </>
-												))}
-												<span> Shipping method: {shipment?.shipping_method}</span> <br />
+													<>{item.quantity} X {item.product_name} <br/> </>
+													))}
+												<span> Shipping method: {shipment?.shipping_method}</span> <br/>
 												<span> Tracking # {shipment?.tracking_number}</span>
 
 											</Card>
 										</Col>
 									))}
 								</Fragment>
-							) : null}
+							) : null }
 						</Row>
 					</Form>
 				)}
