@@ -37,7 +37,7 @@ import addKeysToList from './../../Utilities/addKey';
 import types from '../../Stores/types';
 import axios from '../../Utilities/authToken';
 import { dispatchAlert } from '../../Utilities/dispatchAlert';
-import { shippingRuleTypes } from '../../Utilities/constants';
+import { accessorialServices, shippingRuleTypes } from '../../Utilities/constants';
 import {
   blockInvalidChar,
   handleNumbersOnly,
@@ -251,6 +251,11 @@ function ShippingRulesComponent() {
   };
 
   const handleProviderServices = (slug) => {
+    if (slug.includes('ltl')) {
+      setIsLTL(true)
+    } else {
+      setIsLTL(false)
+    }
     setCarrierSlug(slug);
     setSelectedServices([]);
     form.resetFields(['filter_services']);
@@ -478,7 +483,7 @@ function ShippingRulesComponent() {
                   : null
                 )
               )
-            ) : record?.rule_type == 3 ? (
+          ) : record?.rule_type == 3 ? (
             <>
               {record.id == recordId ? (
                 <>
@@ -605,42 +610,17 @@ function ShippingRulesComponent() {
               )}
             </>
           ) : record?.rule_type == 6 ? (
-            <>
-              {record.id == recordId ? (
-                <>
-                  {record?.filter_services?.map((key) => {
-                    return (
-                      <>
-                        <span> {key} </span>
-                        <br />
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                <>
-                  {record?.filter_services?.map((key, item) => {
-                    if (item < 5) {
-                      return (
-                        <>
-                          <span> {key} </span>
-                          <br />
-                        </>
-                      );
-                    }
-                  })}
-                  {record?.filter_services?.length > 5 ? (
-                    <a
-                      className='btn mt-2'
-                      onClick={() => showMoreItems(record.id)}
-                    >
-                      show more
-                    </a>
-                  ) : null}
-                </>
-              )}
-            </>
-          ) : (
+            installedCarriers?.map(
+              (carrier) =>
+                carrier.slug == filter_name &&
+                (carrier.carrier_type == 1
+                  ? <span> {carrier.name} (LTL Freight Providers) <br/> {accessorialServices[record?.filter_services]} </span>
+                  : carrier.carrier_type == 2
+                  ? record?.filter_services
+                  : null
+                )
+            )
+           ) : (
             filter_name
           )}
         </>
@@ -709,6 +689,7 @@ function ShippingRulesComponent() {
                   setData([]);
                   setSearchQuery('');
                   setAccessorials([])
+                  setIsLTL(false)
                 }}
               >
                 Add
@@ -1337,104 +1318,129 @@ function ShippingRulesComponent() {
                         </div>
                       </Col>
                     </Row>
-                    <Row gutter={30}>
-                      <Col
-                        className='gutter-row'
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                      >
-                        <div id='country_dropdown'>
-                          <Form.Item
-                            className={'mb-2'}
-                            label='Services'
-                            name='filter_services'
-                            rules={[
-                              {
-                                required: true,
-                                message: 'Services are required',
-                              },
-                            ]}
+                    {isLTL ? (
+                      <>
+                        <Row gutter={30}>
+                          <Col
+                            className='gutter-row'
+                            xs={24}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
                           >
-                            <Select
-                              mode='multiple'
-                              style={{ width: '100%' }}
-                              placeholder='Select services'
-                              value={selectedServices}
-                              onChange={handleChangeServices}
-                              notFoundContent={
-                                <span>
-                                  <Spin size='small' />
-                                </span>
-                              }
-                              filterOption={filterServices}
-                              getPopupContainer={() =>
-                                document.getElementById('country_dropdown')
-                              }
-                              allowClear
-                              disabled={!carrierSlug} // Disable carrier services dropdown if no carrier is selected
-                            >
-                              {carrierSlug &&
-                                carrierServices?.map((service) => (
-                                  <Option
-                                    key={service?.value}
-                                    value={service?.value}
-                                  >
-                                    {service?.value}
-                                  </Option>
-                                ))}
-                            </Select>
-                          </Form.Item>
-                        </div>
-                      </Col>
-                    </Row>
-                    <ServiceRate
-                      label='Transportation rate (e.g. 5.25)'
-                      name='service_rates'
-                      placeholder='Enter transportation rate'
-                      required={true}
-                      message='Transportation rate is required'
-                    />
-                    {accessorials && accessorials?.map((accessorial) => (
-                      accessorial?.accessorial_service_sac == 'lgd' && accessorial?.status ? (
+                            <div id='country_dropdown'>
+                              <Form.Item
+                                className={'mb-2'}
+                                label='Service'
+                                name='filter_services'
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: 'Service is required',
+                                  },
+                                ]}
+                              >
+                                <Select
+                                  placeholder='Select service'
+                                  value={selectedServices}
+                                  onChange={handleChangeServices}
+                                  getPopupContainer={() =>
+                                    document.getElementById('country_dropdown')
+                                  }
+                                >
+                                  <Option value={'transportation'}>Transportation service</Option>
+                                  <Option value={'residential'}>Residential delivery service</Option>
+                                  {accessorials && accessorials?.map((accessorial) => (
+                                    accessorial?.accessorial_service_sac == 'lgd' && accessorial?.status ? (
+                                      <Option value={'liftgate'}>Lift gate delivery service</Option>
+                                    ) :
+                                    accessorial?.accessorial_service_sac == 'nbd' && accessorial?.status ? (
+                                      <Option value={'notify'}>Notify before delivery service</Option>
+                                    ) :
+                                    accessorial?.accessorial_service_sac == 'lad' && accessorial?.status ? (
+                                      <Option value={'limitedAccess'}>Limited access delivery service</Option>
+                                    ) :
+                                    accessorial?.accessorial_service_sac == 'ind' && accessorial?.status ? (
+                                      <Option value={'insideDelivery'}>Inside delivery service</Option>
+                                    ) : null
+                                  ))}
+                                </Select>
+                              </Form.Item>
+                            </div>
+                          </Col>
+                        </Row>
                         <ServiceRate
-                          label='Lift gate delivery (e.g. 5.25)'
-                          name='service_liftgate_fee'
-                          placeholder='Enter lift gate delivery rate'
-                          required={false}
-                          message=''
+                          label='Service rate (e.g. 5.25)'
+                          name='service_rates'
+                          placeholder='Enter service rate'
+                          required={true}
+                          message='Service rate is required'
                         />
-                      ) : 
-                      accessorial?.accessorial_service_sac == 'nbd' && accessorial?.status ? (
+                      </>
+                    ) : (
+                      <>
+                        <Row gutter={30}>
+                          <Col
+                            className='gutter-row'
+                            xs={24}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                          >
+                            <div id='country_dropdown'>
+                              <Form.Item
+                                className={'mb-2'}
+                                label='Service'
+                                name='filter_services'
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: 'Service is required',
+                                  },
+                                ]}
+                              >
+                                <Select
+                                  style={{ width: '100%' }}
+                                  placeholder='Select service'
+                                  value={selectedServices}
+                                  onChange={handleChangeServices}
+                                  notFoundContent={
+                                    <span>
+                                      <Spin size='small' />
+                                    </span>
+                                  }
+                                  filterOption={filterServices}
+                                  getPopupContainer={() =>
+                                    document.getElementById('country_dropdown')
+                                  }
+                                  allowClear
+                                  disabled={!carrierSlug} // Disable carrier services dropdown if no carrier is selected
+                                >
+                                  {carrierSlug &&
+                                    carrierServices?.map((service) => (
+                                      <Option
+                                        key={service?.value}
+                                        value={service?.value}
+                                      >
+                                        {service?.value}
+                                      </Option>
+                                    ))}
+                                </Select>
+                              </Form.Item>
+                            </div>
+                          </Col>
+                        </Row>
                         <ServiceRate
-                          label='Notify before delivery (e.g. 5.25)'
-                          name='service_notify_fee'
-                          placeholder='Enter notify before delivery rate'
-                          required={false}
-                          message=''
+                          label='Service rate (e.g. 5.25)'
+                          name='service_rates'
+                          placeholder='Enter service rate'
+                          required={true}
+                          message='Service rate is required'
                         />
-                      ) :
-                      accessorial?.accessorial_service_sac == 'lad' && accessorial?.status ? (
-                        <ServiceRate
-                          label='Limited access delivery (e.g. 5.25)'
-                          name='service_limited_fee'
-                          placeholder='Enter limited access delivery rate'
-                          required={false}
-                          message=''
-                        />
-                      ) : 
-                      accessorial?.accessorial_service_sac == 'ind' && accessorial?.status ? (
-                        <ServiceRate
-                          label='Inside delivery (e.g. 5.25)'
-                          name='service_inside_fee'
-                          placeholder='Enter inside delivery rate'
-                          required={false}
-                          message=''
-                        />
-                      ) : null
-                    ))}
+                      </>
+                    )}
                   </>
                 )}
                 <Row gutter={30}>
