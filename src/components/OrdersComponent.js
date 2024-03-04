@@ -743,7 +743,6 @@ function OrderSettingsComponent(props) {
 													))}
 												<span> Shipping method: {shipment?.shipping_method}</span> <br/>
 												<span> Tracking # {shipment?.tracking_number}</span>
-                                                
 											</Card>
 										</Col>
 									))}
