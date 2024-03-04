@@ -12,7 +12,7 @@ const Markup = () => (
 	</Col>
 )
 const LabelAs = () => (
-	<Col className='gutter-row' xs={16} sm={16} md={16} lg={16} xl={16}>
+	<Col className='gutter-row' xs={14} sm={12} md={14} lg={14} xl={14}>
 		<label className={'text-gray'}>
 		  Service name displays by default.
 		  Enter an alternative if you prefer something different.
@@ -86,6 +86,7 @@ const DomesticServices = ({
 							}
 							onChange={onChange}
 							type='text'
+							placeholder='USPS First Class Mail'
 							maxLength={30}
 						/>
 					</Form.Item>
@@ -136,6 +137,7 @@ const DomesticServices = ({
 							}
 							onChange={onChange}
 							type='text'
+							placeholder='USPS Priority Mail Express'
 							maxLength={30}
 
 						/>
@@ -187,6 +189,7 @@ const DomesticServices = ({
 							}
 							onChange={onChange}
 							type='text'
+							placeholder='USPS Priority Mail'
 							maxLength={30}
 
 						/>
@@ -240,6 +243,7 @@ const DomesticServices = ({
 							}
 							onChange={onChange}
 							type='text'
+							placeholder='USPS Priority Mail Flat Rate'
 							maxLength={30}
 						/>
 					</Form.Item>
@@ -290,6 +294,7 @@ const DomesticServices = ({
 							}
 							onChange={onChange}
 							type='text'
+							placeholder='USPS Retail Ground'
 							maxLength={30}
 						/>
 					</Form.Item>

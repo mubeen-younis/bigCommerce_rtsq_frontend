@@ -11,7 +11,7 @@ const international_services = [
 	'USPS First-Class Package International Service',
 ]
 const LabelAs = () => (
-	<Col className='gutter-row' xs={16} sm={16} md={16} lg={16} xl={16}>
+	<Col className='gutter-row' xs={14} sm={12} md={14} lg={14} xl={14}>
 		<label className={'text-gray'}>
 		  Service name displays by default.
 		  Enter an alternative if you prefer something different.
@@ -93,9 +93,10 @@ const InternationalServices = ({
 							]
 						}
 						name={ makeServiceIndex(is, false, true)}
-							onChange={onChange}
-							type='text'
-							maxLength={30}
+						placeholder={is.replace(/\*$/, '')}
+						onChange={onChange}
+						type='text'
+						maxLength={30}
 						/>
 					</Form.Item>
 				</Col>

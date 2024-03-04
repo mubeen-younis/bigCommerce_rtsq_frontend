@@ -70,7 +70,7 @@ const EstimateDate = ({ quoteSettingsState, setQuoteSettingsState }) => (
 <Row gutter={30} align='middle' className={'mb-4'}>
 <Col className='gutter-row mb-3' xs={24} sm={12} md={12} lg={12} xl={6}>
 				<label className={'text-gray'}>
-				Retail Gorund/Advantage Ground delivery estimate
+				Retail Ground/Advantage Ground delivery estimate
 				</label>
 			</Col>
 			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
@@ -79,7 +79,9 @@ const EstimateDate = ({ quoteSettingsState, setQuoteSettingsState }) => (
 						type='number'
 						name='estimate_days'
 						min={1}
-						step={1}
+						max={8}
+						maxLength={1}
+						pattern='/^[0-8]*$/'
 						disabled={
 							quoteSettingsState?.delivery_estimate_options ==
 							1 || quoteSettingsState?.delivery_estimate_options == 3
