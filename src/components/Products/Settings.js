@@ -478,11 +478,11 @@ const Settings = ({
 										? dropships.map(value => (
 												<Option
 													value={value.id}
-													key={value.id}>{`${
-													value.city + ','
-												} ${value.state} ${
-													value.zip_code
-												}`}</Option>
+													key={value.id}>
+														{
+												value.nickname == value.city + ', ' + value.state + ' ' + value.zip_code ? value.nickname : value.nickname + ' - ' + value.city + ', ' + value.state + ' ' + value.zip_code
+												}
+												</Option>
 										  ))
 										: null}
 								</Select>
