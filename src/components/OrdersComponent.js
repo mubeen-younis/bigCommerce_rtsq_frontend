@@ -739,11 +739,11 @@ function OrderSettingsComponent(props) {
 											>
 												<span> <b> {('Shipment #' + (key + 1)) }</b> <br/>{countItems(shipment) == 1 ? (countItems(shipment) + ' item @') : (countItems(shipment) + ' items @')} {(shipment?.shipment_date)} </span> <br/> 
 												{shipment?.line_items.map(item => (
-													<>{item.quantity} X {item.product_name} <br/> </>
+														<>{item.quantity} X {item.product_name} <br/> </>
 													))}
 												<span> Shipping method: {shipment?.shipping_method}</span> <br/>
 												<span> Tracking # {shipment?.tracking_number}</span>
-
+                                                
 											</Card>
 										</Col>
 									))}
