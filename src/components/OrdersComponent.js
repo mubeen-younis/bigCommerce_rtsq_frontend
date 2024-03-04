@@ -450,11 +450,9 @@ function OrderSettingsComponent(props) {
 
 	const countItems = (shipment) => {
 		let totalItems = 0
-		{
-			shipment?.line_items.map(item => (
-				totalItems += item.quantity
-			))
-		}
+		{shipment?.line_items.map(item => (
+			totalItems +=item.quantity
+		))}
 		return totalItems
 	}
 
@@ -534,24 +532,25 @@ function OrderSettingsComponent(props) {
 								{widget?.sbs?.type !== 'item'
 									? bin?.items.map(box => (
 										<>
-											<Col span={6} style={{ textAlign: 'center' }}>
-
-												<img
-													src={box?.image_sbs}
-													style={{ margin: '5px' }}
-													alt={box?.image_sbs}
-												/>
-												<br />
-												<span>
-													{box?.product_name} <br /> {box?.wg}
-													{box?.d + ' x '}
-													{box?.w + ' x '}
-													{box?.h}
-												</span>
-												<br />
-											</Col>
-										</>
-									))
+												<Col
+													span={6}
+													style={{ textAlign: 'center' }}>
+													<img
+														src={box?.image_sbs}
+														style={{ margin: '5px' }}
+														alt={box?.image_sbs}
+													/>
+													<br />
+													<span>
+														{box?.product_name} <br /> {box?.wg}
+														{box?.d + ' x '}
+														{box?.w + ' x '}
+														{box?.h}
+													</span>
+													<br />
+												</Col>
+											</>
+									  ))
 									: ''}
 							</Row>
 						</Col>
