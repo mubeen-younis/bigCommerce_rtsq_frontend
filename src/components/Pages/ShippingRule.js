@@ -1489,7 +1489,7 @@ function ShippingRulesComponent() {
                         },
                         {
                           pattern: /^(\d{0,10}(\.\d{0,2})?)?$/,
-                          message: 'Please enter up to 10 numbers with or without two decimal places.',
+                          message: 'Please enter up to 10 numbers with 2 decimal places.',
                         },
                       ]}
                     >
@@ -1519,7 +1519,7 @@ function ShippingRulesComponent() {
                         },
                         {
                           pattern: /^(\d{0,10}(\.\d{0,2})?)?$/,
-                          message: 'Please enter up to 10 numbers with or without two decimal places.',
+                          message: 'Please enter up to 10 numbers with 2 decimal places.',
                         },
                       ]}
                     >
@@ -1578,7 +1578,7 @@ function ShippingRulesComponent() {
                         },
                         {
                           pattern: /^(\d{0,15}(\.\d{0,2})?)?$/,
-                          message: 'Please enter up to 15 numbers with or without two decimal places.',
+                          message: 'Please enter up to 15 numbers with 2 decimal places.',
                         },
                       ]}
                     >
@@ -1608,7 +1608,7 @@ function ShippingRulesComponent() {
                         },
                         {
                           pattern: /^(\d{0,15}(\.\d{0,2})?)?$/,
-                          message: 'Please enter up to 15 numbers with or without two decimal places.',
+                          message: 'Please enter up to 15 numbers with 2 decimal places.',
                         },
                       ]}
                     >
