@@ -604,6 +604,12 @@ const Reducer = (state = initialState, action) => {
 				importIndexes: action.payload,
 			}
 
+		case types.DOWNLOAD_LINK:
+			return {
+				...state,
+				exportCSVDownloadLink: action.payload,
+			}
+
 		case types.SET_CARRIER_TYPE: {
 			return {
 				...state,
