@@ -542,7 +542,7 @@ function OrderSettingsComponent(props) {
 													/>
 													<br />
 													<span>
-														{box?.product_name} <br /> {box?.wg}
+														{box?.product_name} <br />
 														{box?.d + ' x '}
 														{box?.w + ' x '}
 														{box?.h}
