@@ -1309,7 +1309,10 @@ function ShippingRulesComponent() {
                                   carrier?.slug == 'ltl-quotes' ||
                                   carrier?.slug == 'rl-ltl' ||
                                   carrier?.slug == 'southeastern-ltl' ||
-                                  carrier?.slug == 'saia-ltl' ? (
+                                  carrier?.slug == 'saia-ltl' ||
+                                  carrier?.slug == 'freightquote-chr-ltl' ||
+                                  carrier?.slug == 'freightquote-ltl' ||
+                                  carrier?.slug == 'priority-one-ltl'? (
                                   <Option value={carrier?.slug}>
                                     {carrier.carrier_type == 1
                                       ? carrier.name + ' (LTL Freight Providers)'
