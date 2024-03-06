@@ -346,7 +346,9 @@ function ShippingRulesComponent() {
 
   const updateFormFields = async (text) => {
     setCountryCode(text?.filter_country);
-    handleProviderServices(text?.filter_provider)
+    if(text?.rule_type == 6){
+      handleProviderServices(text?.filter_provider)
+    }
     if (text?.filter_country == undefined || text?.filter_country == '') {
       setCountryCode('US');
       text.filter_country = 'US';
@@ -1029,7 +1031,7 @@ function ShippingRulesComponent() {
                       lg={24}
                       xl={24}
                     >
-                      <div id='country_dropdown'>
+                      <div id='apply_rule_to'>
                         <Form.Item
                           className={'mb-2'}
                           label='Apply rule to'
@@ -1045,7 +1047,7 @@ function ShippingRulesComponent() {
                             placeholder='Apply rule to'
                             onChange={(value) => setApplyRuleTo(value)}
                             getPopupContainer={() =>
-                              document.getElementById('country_dropdown')
+                              document.getElementById('apply_rule_to')
                             }
                           >
                             <Option value={1}>Categories</Option>
@@ -1486,15 +1488,14 @@ function ShippingRulesComponent() {
                           message: 'Weight from is required',
                         },
                         {
-                          pattern: /^\d*\.?\d{0,2}$/,
-                          message: 'Only two decimal places are allowed',
+                          pattern: /^(\d{0,10}(\.\d{0,2})?)?$/,
+                          message: 'Please enter up to 10 numbers with or without two decimal places.',
                         },
                       ]}
                     >
                       <Input
                         type='number'
                         onKeyDown={blockInvalidChar}
-                        min='0.01'
                         step='0.01'
                         placeholder='Enter weight from'
                       />
@@ -1517,15 +1518,14 @@ function ShippingRulesComponent() {
                           message: 'Weight to is required',
                         },
                         {
-                          pattern: /^\d*\.?\d{0,2}$/,
-                          message: 'Only two decimal places are allowed',
+                          pattern: /^(\d{0,10}(\.\d{0,2})?)?$/,
+                          message: 'Please enter up to 10 numbers with or without two decimal places.',
                         },
                       ]}
                     >
                       <Input
                         type='number'
                         onKeyDown={blockInvalidChar}
-                        min='0.01'
                         step='0.01'
                         placeholder='Enter weight to'
                       />
@@ -1577,15 +1577,14 @@ function ShippingRulesComponent() {
                           message: 'Price from is required',
                         },
                         {
-                          pattern: /^\d*\.?\d{0,2}$/,
-                          message: 'Only two decimal places are allowed',
+                          pattern: /^(\d{0,15}(\.\d{0,2})?)?$/,
+                          message: 'Please enter up to 15 numbers with or without two decimal places.',
                         },
                       ]}
                     >
                       <Input
                         type='number'
                         onKeyDown={blockInvalidChar}
-                        min='0.01'
                         step='0.01'
                         placeholder='Enter price from'
                       />
@@ -1608,15 +1607,14 @@ function ShippingRulesComponent() {
                           message: 'Price to is required',
                         },
                         {
-                          pattern: /^\d*\.?\d{0,2}$/,
-                          message: 'Only two decimal places are allowed',
+                          pattern: /^(\d{0,15}(\.\d{0,2})?)?$/,
+                          message: 'Please enter up to 15 numbers with or without two decimal places.',
                         },
                       ]}
                     >
                       <Input
                         type='number'
                         onKeyDown={blockInvalidChar}
-                        min='0.01'
                         step='0.01'
                         placeholder='Enter price to'
                       />
@@ -1666,15 +1664,14 @@ function ShippingRulesComponent() {
                           message: 'Quantity from is required',
                         },
                         {
-                          pattern: /^\d*\.?\d{0,2}$/,
-                          message: 'Only two decimal places are allowed',
+                          pattern: /^(\d{0,7}(\.\d{0,2})?)?$/,
+                          message: 'Please enter up to 7 numbers.',
                         },
                       ]}
                     >
                       <Input
                         type='number'
                         onKeyDown={handleNumbersOnly}
-                        min='1'
                         step='1'
                         placeholder='Enter quantity from'
                       />
@@ -1697,15 +1694,14 @@ function ShippingRulesComponent() {
                           message: 'Quantity to is required',
                         },
                         {
-                          pattern: /^\d*\.?\d{0,2}$/,
-                          message: 'Only two decimal places are allowed',
+                          pattern: /^(\d{0,7}(\.\d{0,2})?)?$/,
+                          message: 'Please enter up to 7 numbers.',
                         },
                       ]}
                     >
                       <Input
                         type='number'
                         onKeyDown={handleNumbersOnly}
-                        min='1'
                         step='1'
                         placeholder='Enter quantity to'
                       />
