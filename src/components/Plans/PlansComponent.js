@@ -20,7 +20,6 @@ import {
   changePaymentMethod,
 } from '../../Actions/Plans'
 import PlanStatusHeading from '../../partials/PlanStatusHeading'
-import PaymentsTabComponent from '../Pages/PaymentTabComponent'
 
 const { Option } = Select
 
@@ -62,8 +61,7 @@ function PlansComponent() {
     useState(false)
   const [trialVisible, SetTrialVisible] = useState(false)
   const dispatch = useDispatch()
-  const [payments, SetPaymentTabVisible] = useState(false);
-    console.log(payments);
+
   useEffect(() => {
     if (!plans) {
       dispatch(getPlans())
@@ -256,10 +254,6 @@ function PlansComponent() {
     SetUpdatePaymentMethodCheck(true)
   }, [clearForm])
 
-  const togglePayment = useCallback(() => {
-    payments ? SetPaymentTabVisible(false) : SetPaymentTabVisible(true)
-  })
-
   return plans ? (
     <Fragment>
       <PlanStatusHeading />
@@ -281,10 +275,6 @@ function PlansComponent() {
           <Button type='primary' onClick={updatePaymentMethod}>
             Change Payment Method
           </Button>
-
-            <Button type='primary' onClick={() => togglePayment(true)}>
-              Payments
-            </Button>
 
           <Modal
             title='Cancel Subscription'
@@ -802,10 +792,8 @@ function PlansComponent() {
           </Row>
         )}
       </Space>
-      <Row gutter={24} style={{ display: payments ? '' : 'none'}}>
-        <PaymentsTabComponent />   
-      </Row>
-      <Row gutter={24} style={{ display: payments? 'none' : ''}}>
+
+      <Row gutter={24} >
         {plans.map((plan, i) =>
           (plan.id === 1 && currentPlan?.plan_id > 1) ||
           ((plan.id === 1 || (plan.name + '').toLowerCase() === 'trial') &&
