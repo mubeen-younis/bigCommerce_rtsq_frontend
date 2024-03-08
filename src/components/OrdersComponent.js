@@ -379,6 +379,7 @@ function OrderSettingsComponent(props) {
 							paddingRight: '0px',
 						}}>
 						<h4>{bin?.items[0]?.['product_name'] ?? ''}</h4>
+						<h4>Box weight:{' '}{bin?.weight ?? 0} lbs</h4>
 						<span style={{ width: '100%', float: 'left' }}>
 							{bin?.d}
 							{bin?.w}
