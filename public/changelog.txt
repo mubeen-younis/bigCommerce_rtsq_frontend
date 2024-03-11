@@ -1,3 +1,7 @@
+= 2.1.13 2024-03-11 =
+
+* Fix - Update override rates feature (1st chunk) (Ticket:2007189654) [#267] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/267)
+
 = 2.1.12 2024-02-29 =
 
 * Fix - Update Dropship nickname (Ticket:2302999298) [#266] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/266)
