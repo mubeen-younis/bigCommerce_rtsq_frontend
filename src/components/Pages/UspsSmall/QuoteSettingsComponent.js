@@ -94,7 +94,7 @@ const EstimateDate = ({ quoteSettingsState, setQuoteSettingsState }) => (
 						})}
 					/>
 				</Form.Item>
-				<p className='text-gray'>The USPS API does not provide delivery estimates for Retail Ground/Advantage Ground service. Kindly input the delivery time for this service to display on the checkout page. </p>
+				<p className='text-gray'>Sometimes, the USPS API may not give delivery estimates for Retail Ground/Advantage Ground service. In those cases, please give the estimated delivery days for this service to show on the checkout page. </p>
 			</Col>
 </Row>
 )
