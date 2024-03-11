@@ -70,7 +70,7 @@ const EstimateDate = ({ quoteSettingsState, setQuoteSettingsState }) => (
 <Row gutter={30} align='middle' className={'mb-4'}>
 <Col className='gutter-row mb-3' xs={24} sm={12} md={12} lg={12} xl={6}>
 				<label className={'text-gray'}>
-				Retail Ground/Advantage Ground delivery estimate
+				Retail Ground/Ground Advantage delivery estimate
 				</label>
 			</Col>
 			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
@@ -94,7 +94,7 @@ const EstimateDate = ({ quoteSettingsState, setQuoteSettingsState }) => (
 						})}
 					/>
 				</Form.Item>
-				<p className='text-gray'>Sometimes, the USPS API may not give delivery estimates for Retail Ground/Advantage Ground service. In those cases, please give the estimated delivery days for this service to show on the checkout page. </p>
+				<p className='text-gray'>Sometimes, the USPS API may not give delivery estimates for Retail Ground/Ground Advantage service. In those cases, please give the estimated delivery days for this service to show on the checkout page. </p>
 			</Col>
 </Row>
 )
