@@ -87,7 +87,7 @@ const DomesticServices = ({
 							onChange={onChange}
 							type='text'
 							placeholder='USPS First Class Mail'
-							maxLength={30}
+							maxLength={50}
 						/>
 					</Form.Item>
 				</Col>
@@ -138,7 +138,7 @@ const DomesticServices = ({
 							onChange={onChange}
 							type='text'
 							placeholder='USPS Priority Mail Express'
-							maxLength={30}
+							maxLength={50}
 
 						/>
 					</Form.Item>
@@ -190,7 +190,7 @@ const DomesticServices = ({
 							onChange={onChange}
 							type='text'
 							placeholder='USPS Priority Mail'
-							maxLength={30}
+							maxLength={50}
 
 						/>
 					</Form.Item>
@@ -244,7 +244,7 @@ const DomesticServices = ({
 							onChange={onChange}
 							type='text'
 							placeholder='USPS Priority Mail Flat Rate'
-							maxLength={30}
+							maxLength={50}
 						/>
 					</Form.Item>
 				</Col>
@@ -295,7 +295,7 @@ const DomesticServices = ({
 							onChange={onChange}
 							type='text'
 							placeholder='USPS Retail Ground'
-							maxLength={30}
+							maxLength={50}
 						/>
 					</Form.Item>
 				</Col>

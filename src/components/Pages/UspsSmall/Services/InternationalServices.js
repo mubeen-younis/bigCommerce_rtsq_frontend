@@ -96,7 +96,7 @@ const InternationalServices = ({
 						placeholder={is.replace(/\*$/, '')}
 						onChange={onChange}
 						type='text'
-						maxLength={30}
+						maxLength={50}
 						/>
 					</Form.Item>
 				</Col>
