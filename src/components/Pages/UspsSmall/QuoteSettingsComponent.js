@@ -243,45 +243,45 @@ function QuoteSettingsComponentWweSmall(props) {
 			CS?.usps_priority_mail_international_flat_rate_box ||
 			CS?.usps_first_class_package_international_service
 
-    let errormsg = "";
-    // Domestic services check
-    if (errormsg === "") {
-      errormsg = validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.usps_first_class_mail_markup,
-        "USPS First Class Mail markup ",
-        true
-      );
-    }
-
-    if (errormsg === "") {
-      errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.usps_priority_mail_express_markup,
-        "USPS Priority Mail Express markup",
-        true
-      );
-    }
-    if (errormsg === "") {
-      errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.usps_priority_mail_markup,
-        "USPS Priority Mail markup",
-        true
-      );
-    }
-    if (errormsg === "") {
-      errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services
-          ?.usps_priority_mail_flat_rate_markup,
-        "USPS Priority Mail Flat Rate* markup",
-        true
-      );
-    }
-    if (errormsg === "") {
-      errormsg += validateHandlingFeeMarkup(
-        quoteSettingsState?.carrier_services?.usps_retail_ground_markup,
-        "USPS Retail Ground markup",
-        true
-      );
-    }
+		let errormsg = ''
+		// Domestic services check
+		if (errormsg === '') {
+			errormsg = validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services?.usps_first_class_mail_markup,
+				'USPS First-Class Mail markup ',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services
+					?.usps_priority_mail_express_markup,
+				'USPS Priority Mail Express markup',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services?.usps_priority_mail_markup,
+				'USPS Priority Mail markup',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services
+					?.usps_priority_mail_flat_rate_markup,
+				'USPS Priority Mail Flat Rate* markup',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services?.usps_retail_ground_markup,
+				'USPS Retail Ground markup',
+				true
+			)
+		}
 
 		// International services check
 		if (errormsg === '') {

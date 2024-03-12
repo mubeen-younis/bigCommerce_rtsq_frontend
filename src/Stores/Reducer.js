@@ -700,6 +700,12 @@ const Reducer = (state = initialState, action) => {
 				statesProvinces: action.payload,
 			}
 
+		/* Get Carrier Services */
+		case types.GET_CARRIER_SERVICES:
+			return {
+				...state,
+				carrierServices: action.payload,
+			}
 		/* Get Store Categories */
 		case types.GET_STORE_CATEGORIES:
 			return {

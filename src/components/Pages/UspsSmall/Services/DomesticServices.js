@@ -62,7 +62,7 @@ const DomesticServices = ({
 
 			<Row gutter={24} align='middle' className={'mb-2'}>
 				<Col span={12}>
-					<label className={'text-gray'}>USPS First Class Mail</label>
+					<label className={'text-gray'}>USPS First-Class Mail</label>
 				</Col>
 				<Col span={12}>
 					<Form.Item className='mb-0'>
