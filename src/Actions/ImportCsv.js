@@ -45,10 +45,47 @@ export const sendProductsTemplateEmail = (email, token) => {
 							},
 						}
 					)
+					.then(({ data }) => {
+						if(!data?.error){
+							dispatch({
+								type: 'DOWNLOAD_LINK',
+								payload: data?.data,
+							});
+						}
+					})
 			})
 			.catch(error => {});
 	};
 };
+
+export const getCSVDownloadLink = (token, is_link_invisible) => async dispatch => {
+	try {
+		const config = {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+			params: {
+				is_link_invisible,
+			},
+		}
+		const { data } = await axios.get(
+			`${process.env.REACT_APP_ENITURE_API_URL}/get_csv_download_link`,
+			config
+		)
+
+		if (!data.error) {
+			dispatch({
+				type: 'DOWNLOAD_LINK',
+				payload: data?.data,
+			})
+		}
+	} catch (err) {
+		dispatch({
+			type: 'DOWNLOAD_LINK',
+			payload: null,
+		})
+	}
+}
 
 export const getHeaderRowFile = (filename, hasheaders, token, setAfterUpload) => {
 	return dispatch => {
