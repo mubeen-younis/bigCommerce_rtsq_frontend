@@ -10,7 +10,14 @@ const international_services = [
 	'USPS Priority Mail International Flat Rate Box*',
 	'USPS First-Class Package International Service',
 ]
-
+const LabelAs = () => (
+	<Col className='gutter-row' xs={14} sm={12} md={14} lg={14} xl={14}>
+		<label className={'text-gray'}>
+		  Service name displays by default.
+		  Enter an alternative if you prefer something different.
+		</label>
+	</Col>
+)
 const InternationalServices = ({
 	quoteSettingsState,
 	internationalcheckAll,
@@ -18,18 +25,18 @@ const InternationalServices = ({
 	onChange,
 	onCheck,
 }) => {
-	const makeServiceIndex = useCallback((srvc_name = '', markup = false) => {
-		let name = srvc_name ?? ''
-		name =
-			name
-				.trim()
-				.toLowerCase()
-				.replaceAll(' ', '_')
-				.replace('-', '_')
-				.replace('*', '') + (markup ? '_markup' : '')
+    const makeServiceIndex = useCallback((srvc_name = '', markup = false, label = false) => {
+        let name = srvc_name ?? '';
+        name =
+            name
+                .trim()
+                .toLowerCase()
+                .replaceAll(' ', '_')
+                .replace('-', '_')
+                .replace('*', '') + (markup ? '_markup' : label ? '_label' : '');
 
-		return name
-	}, [])
+        return name;
+    }, []);
 
 	return (
 		<Col span={12}>
@@ -78,6 +85,23 @@ const InternationalServices = ({
 						</Form.Item>
 					</Col>
 					<Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+						value={
+							quoteSettingsState?.carrier_services?.[
+								makeServiceIndex(is, false, true)
+							]
+						}
+						name={ makeServiceIndex(is, false, true)}
+						placeholder={is.replace(/\*$/, '')}
+						onChange={onChange}
+						type='text'
+						maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+					<Col className='mt-2'  span={14}>
 						<Form.Item className={'mb-0'}>
 							<Input
 								value={
