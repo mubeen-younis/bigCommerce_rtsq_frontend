@@ -618,7 +618,7 @@ function ShippingRulesComponent() {
                 (carrier.carrier_type == 1
                   ? <span> {carrier.name} (LTL Freight Providers) <br/> {accessorialServices[record?.filter_services]} </span>
                   : carrier.carrier_type == 2
-                  ? <span> {carrier.name} (Parcel & Postal Providers) <br/> {record?.filter_services} </span>
+                  ? record?.filter_services
                   : null
                 )
             )
@@ -1304,18 +1304,7 @@ function ShippingRulesComponent() {
                                   carrier?.slug == 'ups-ltl' ||
                                   carrier?.slug == 'ups-small' ||
                                   carrier?.slug == 'echo-ltl' ||
-                                  carrier?.slug == 'odfl-ltl' ||
-                                  carrier?.slug == 'daylight-ltl' ||
-                                  carrier?.slug == 'ltl-quotes' ||
-                                  carrier?.slug == 'rl-ltl' ||
-                                  carrier?.slug == 'southeastern-ltl' ||
-                                  carrier?.slug == 'saia-ltl' ||
-                                  carrier?.slug == 'freightquote-chr-ltl' ||
-                                  carrier?.slug == 'freightquote-ltl' ||
-                                  carrier?.slug == 'ups-ship-engine' ||
-                                  carrier?.slug == 'small-package' ||
-                                  carrier?.slug == 'fedex-small' ||
-                                  carrier?.slug == 'priority-one-ltl'? (
+                                  carrier?.slug == 'saia-ltl' ? (
                                   <Option value={carrier?.slug}>
                                     {carrier.carrier_type == 1
                                       ? carrier.name + ' (LTL Freight Providers)'
