@@ -63,7 +63,6 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 
 		const {
 			data: { error, data, message },
-
 		}  = await axios.post(url, reqData, config)
 
 		if (!error) {
@@ -72,37 +71,65 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 				payload: data,
 			})
 		}
-		dispatch(dispatchAlert(error, error ? 'error' : 'success', message))
 	  } catch (err) {
 		dispatch(dispatchAlert(false, null))
 	  }
+	}
+
+	export const getCarrServices = (carrierId, token, isLTL, carrierSlug, setAccessorials) => async dispatch => {
+		dispatch(dispatchAlert(false, 'loading'))
+		try {
+			const url = `${process.env.REACT_APP_ENITURE_API_URL}/getCarrierServices`,
+
+			config = {
+				headers: {
+				  authorization: `Bearer ${token}`,
+				},
+			  }
+			
+			const reqData = {'isLTL' : isLTL, 'carrierId' : carrierId, 'carrierSlug' : carrierSlug}
+	
+			const {
+				data: { error, data, carrierAccessorials },
+			}  = await axios.post(url, reqData, config)
+	
+			if (!error) {
+				dispatch({
+					type: types.GET_CARRIER_SERVICES,
+					payload: data,
+				})
+
+				setAccessorials(carrierAccessorials)
+				dispatch(dispatchAlert(false, null))
+			}
+		} catch (err) {
+			dispatch(dispatchAlert(false, null))
+		  }
 	}
 
 	export const getCategories = (token) => async dispatch => {
 	
 		try {
 			const url = `${process.env.REACT_APP_ENITURE_API_URL}/get_store_categories`,
-			
-			  config = {
-				headers: {
-				  authorization: `Bearer ${token}`,
-				},
-			  }
+				config = {
+					headers: {
+				  	authorization: `Bearer ${token}`,
+					},
+			  	}
+
+				const {
+					data: { error, data, message },
+				}  = await axios.post(url, {}, config)
 	
-			const {
-				data: { error, data, message },
-			}  = await axios.post(url, {}, config)
-	
-			if (!error) {
-				dispatch({
-					type: types.GET_STORE_CATEGORIES,
-					payload: data,
-				})
+				if (!error) {
+					dispatch({
+						type: types.GET_STORE_CATEGORIES,
+						payload: data,
+					})
+				}
+			} catch (err) {
+				dispatch(dispatchAlert(false, null))
 			}
-			dispatch(dispatchAlert(error, error ? 'error' : 'success', message))
-		  } catch (err) {
-			dispatch(dispatchAlert(false, null))
-		  }
 		}
 
 	export const getBrands = (token) => async dispatch => {
@@ -126,7 +153,6 @@ export const getStatesProvinces = (countryCode,token) => async dispatch => {
 					payload: data,
 				})
 			}
-			dispatch(dispatchAlert(error, error ? 'error' : 'success', message))
 		  } catch (err) {
 			dispatch(dispatchAlert(false, null))
 		  }

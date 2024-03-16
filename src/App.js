@@ -43,6 +43,7 @@ import ShippingRulesComponent from './components/Pages/ShippingRule'
 import RADSettings from './components/Pages/RADSettings'
 import CompareRates from './components/Pages/CompareRates'
 import ProductSettingsComponent from './components/ProductSettingsComponent'
+import { getCSVDownloadLink } from './Actions/ImportCsv'
 
 const { Header, Content } = Layout
 
@@ -96,6 +97,7 @@ function App(props) {
       dispatch(getFDOCouponInfo(token))
       dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES, token))
       dispatch(getRADSettings(token))
+      dispatch(getCSVDownloadLink(token, false))
     }
  
       const devEnv = process?.env?.NODE_ENV === 'development'

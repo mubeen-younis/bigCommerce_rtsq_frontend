@@ -11,6 +11,14 @@ const Markup = () => (
 		</label>
 	</Col>
 )
+const LabelAs = () => (
+	<Col className='gutter-row' xs={14} sm={12} md={14} lg={14} xl={14}>
+		<label className={'text-gray'}>
+		  Service name displays by default.
+		  Enter an alternative if you prefer something different.
+		</label>
+	</Col>
+)
 
 const DomesticServices = ({
 	quoteSettingsState,
@@ -54,7 +62,7 @@ const DomesticServices = ({
 
 			<Row gutter={24} align='middle' className={'mb-2'}>
 				<Col span={12}>
-					<label className={'text-gray'}>USPS First Class Mail</label>
+					<label className={'text-gray'}>USPS First-Class Mail</label>
 				</Col>
 				<Col span={12}>
 					<Form.Item className='mb-0'>
@@ -70,6 +78,22 @@ const DomesticServices = ({
 				</Col>
 				<Col span={14}>
 					<Form.Item className='mb-0'>
+						<Input
+							name='usps_first_class_mail_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.usps_first_class_mail_label
+							}
+							onChange={onChange}
+							type='text'
+							placeholder='USPS First Class Mail'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+				<Col span={14}>
+					<Form.Item className='mb-0 mt-2'>
 						<Input
 							name='usps_first_class_mail_markup'
 							value={
@@ -106,6 +130,23 @@ const DomesticServices = ({
 				<Col span={14}>
 					<Form.Item className='mb-0'>
 						<Input
+							name='usps_priority_mail_express_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.usps_priority_mail_express_label
+							}
+							onChange={onChange}
+							type='text'
+							placeholder='USPS Priority Mail Express'
+							maxLength={50}
+
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+				<Col span={14}>
+					<Form.Item className='mb-0 mt-2'>
+						<Input
 							value={
 								quoteSettingsState?.carrier_services
 									?.usps_priority_mail_express_markup
@@ -122,7 +163,7 @@ const DomesticServices = ({
 				<Markup />
 			</Row>
 
-			<Row gutter={24} align='middle' className={'mb-2'}>
+			<Row gutter={24} align='middle' className={'mb-2 mt-2'}>
 				<Col span={12}>
 					<label className={'text-gray'}>USPS Priority Mail</label>
 				</Col>
@@ -140,6 +181,23 @@ const DomesticServices = ({
 				</Col>
 				<Col span={14}>
 					<Form.Item className='mb-0'>
+						<Input
+							name='usps_priority_mail_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.usps_priority_mail_label
+							}
+							onChange={onChange}
+							type='text'
+							placeholder='USPS Priority Mail'
+							maxLength={50}
+
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+				<Col span={14} >
+					<Form.Item className='mb-0 mt-2'>
 						<Input
 							value={
 								quoteSettingsState?.carrier_services
@@ -178,6 +236,22 @@ const DomesticServices = ({
 				<Col span={14}>
 					<Form.Item className='mb-0'>
 						<Input
+							name='usps_priority_mail_flat_rate_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.usps_priority_mail_flat_rate_label
+							}
+							onChange={onChange}
+							type='text'
+							placeholder='USPS Priority Mail Flat Rate'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+				<Col span={14}>
+					<Form.Item className='mb-0 mt-2'>
+						<Input
 							value={
 								quoteSettingsState?.carrier_services
 									?.usps_priority_mail_flat_rate_markup
@@ -212,6 +286,22 @@ const DomesticServices = ({
 				</Col>
 				<Col span={14}>
 					<Form.Item className='mb-0'>
+						<Input
+							name='usps_retail_ground_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.usps_retail_ground_label
+							}
+							onChange={onChange}
+							type='text'
+							placeholder='USPS Retail Ground'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+				<Col span={14}>
+					<Form.Item className='mb-0 mt-2'>
 						<Input
 							value={
 								quoteSettingsState?.carrier_services

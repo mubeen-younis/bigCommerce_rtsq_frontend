@@ -13,6 +13,7 @@ import {
 } from '../../Actions/EnitureStore';
 import Meta from 'antd/lib/card/Meta';
 import PlanStatusHeading from '../../partials/PlanStatusHeading';
+import ExportCSVDownloadStatus from '../../partials/ExportCSVDownloadStatus';
 const { Title } = Typography;
 // const { Meta } = Card;
 
@@ -238,6 +239,7 @@ function ShippingCarriersComponent(props) {
   return (
     <Fragment>
       <PlanStatusHeading />
+      <ExportCSVDownloadStatus />
       <Row gutter={25}>
         <Col
           className='gutter-row mb-3'
