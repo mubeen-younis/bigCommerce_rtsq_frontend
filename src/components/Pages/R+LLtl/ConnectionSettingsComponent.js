@@ -72,7 +72,7 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item
 					label='API Key'
 					name='api_key'
-					rules={[{ required: true, message: 'API Key Is Required* ' }]}>
+					rules={[{ required: true, message: 'API Key Is Required ' }]}>
 					<Input placeholder='API Key' />
 				</Form.Item>
 
