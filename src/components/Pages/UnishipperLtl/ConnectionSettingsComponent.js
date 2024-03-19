@@ -54,7 +54,7 @@ function ConnectionSettingsComponent(props) {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have a Unishipper Ltl account to
+				<strong>Note!</strong> You must have a Unishippers account to
 				use this application. If you do not have one, click{' '}
 				<a
 					href='https://eniture.com/request-worldwide-express-account-number/'
@@ -76,14 +76,14 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='Client ID'
 							name='clientId'
-							rules={[{ required: true, message: 'Client ID Is Required*' }]}
+							rules={[{ required: true, message: 'Client ID Is Required' }]}
 						>
 							<Input placeholder='Client ID' maxLength={100}/>
 						</Form.Item>
 						<Form.Item
 							label='Client Secret'
 							name='clientSecret'
-							rules={[{ required: true, message: 'Client Secret Is Required*' }]}
+							rules={[{ required: true, message: 'Client Secret Is Required' }]}
 						>
 							<Input placeholder='Client Secret' maxLength={256}/>
 						</Form.Item>
