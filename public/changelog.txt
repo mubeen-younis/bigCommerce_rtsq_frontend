@@ -1,3 +1,7 @@
+= 2.1.16 2024-03-21 =
+
+* Fix - Update override rates feature (2nd chunk) (Ticket:2007189654) [#270] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/270)
+
 = 2.1.15 2024-03-12 =
 
 * Update - Add staff note and show box weight.  (Ticket:2329677373) [#269] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/269)
