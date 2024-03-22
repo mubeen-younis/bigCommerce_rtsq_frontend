@@ -109,8 +109,7 @@ function TabsLayout() {
 
       <Tabs className={'tabs-wrp'} onChange={handleActiveTab} type='card'>
         {carrierSlug !== 'usps-small' &&
-          carrierSlug !== 'dbsc' &&
-          carrierSlug !== 'ups-ship-engine' && (
+          carrierSlug !== 'dbsc' && (
             <TabPane tab='Connection Settings' key='1'>
               {connSettingsComponent}
             </TabPane>
