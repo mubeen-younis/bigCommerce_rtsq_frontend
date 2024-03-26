@@ -43,3 +43,12 @@ export const shippingRuleTypes = {
     5: 'Restrict To Origin Locations',
     6: 'Override Rates',
 }
+
+export const accessorialServices = {
+	transportation: 'Transportation service',
+    residential: 'Residential delivery service',
+    liftgate: 'Lift gate delivery service',
+    notify: 'Notify before delivery service',
+    limitedAccess: 'Limited access delivery service',
+    insideDelivery: 'Inside delivery service',
+}
