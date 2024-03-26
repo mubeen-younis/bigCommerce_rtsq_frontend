@@ -54,7 +54,7 @@ function ConnectionSettingsComponent(props) {
 				size={'large'}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-			    {/*For RANDL New API  */}
+					
 				<Form.Item
 					label='Username'
 					name='username'
