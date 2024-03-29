@@ -274,6 +274,10 @@ function ShippingRulesComponent() {
     setSelectedWarehouses(selectedValues);
   };
 
+  const handleChangeRule = (selectedRule) => {
+    setApplyTo(selectedRule.target.value);
+  };
+
   const handleSelectChange = (selectedValues) => {
     setSelectedPostalCodes(selectedValues);
   };
@@ -368,16 +372,15 @@ function ShippingRulesComponent() {
     setIsFilterPrice(text?.isFilterPrice);
     setIsFilterQuantity(text?.isFilterQuantity);
     setApplyRuleTo(text?.apply_rule_to ?? 1);
-
+    setApplyTo(text?.apply_to ?? 1)
     editLocation(text);
   };
-
   const helptext = ruleType == 6 ? 'Shipment' : 'Cart';
 
   const onFinish = useCallback(
     (values) => {
       values = { ...values, apply_to: applyTo, available: available };
-      if (values['rule_type'] == 2 || values['rule_type'] == 6) {
+      if (values['rule_type'] == 2 || values['rule_type'] == 6 || values['rule_type'] == 8 ) {
         values = {
           ...values,
           isFilterWeight: isFilterWeight,
@@ -677,6 +680,7 @@ function ShippingRulesComponent() {
                   form.setFieldsValue(initialState);
                   setAvailable(true);
                   setRuleType(1);
+                  setApplyTo(1);
                   setCountryCode('US');
                   setIsFilterWeight(false);
                   setIsFilterPrice(false);
@@ -803,6 +807,7 @@ function ShippingRulesComponent() {
                       <Option value={'5'}>Restrict To Origin Locations</Option>
                       <Option value={'2'}>Hide Methods</Option>
                       <Option value={'6'}>Override Rates</Option>
+                      <Option value={'8'}>Surcharge</Option>
                     </Select>
                   </Form.Item>
                 </div>
@@ -827,20 +832,36 @@ function ShippingRulesComponent() {
                     },
                   ]}
                 >
-                  {ruleType == 6 ? (
-                    <Radio checked={applyTo == 1}>Shipment</Radio>
-                  ) : (
-                    <Radio checked={applyTo == 1}>Cart</Radio>
-                  )}
+                {ruleType == 6 ? (
+                  <Radio checked={applyTo == 1}>Shipment</Radio>
+                ) : (
+                  <Radio checked={applyTo == 1} value={1} onChange={handleChangeRule}>Cart</Radio>
+                )}
+
+                {ruleType == 8 && (
+                  <>
+                    <Radio 
+                    checked={applyTo == 0} 
+                    value='0'  
+                    onChange= {(value) => handleChangeRule(value)}
+                    >Shipment</Radio>
+                    <Radio 
+                     checked={applyTo == 2}
+                     value='2'  
+                     onChange= {(value) => handleChangeRule(value)}
+                    >Product/Category/Brand</Radio>
+                  </>
+                )}
+
                 </Form.Item>
               </Col>
             </Row>
             {(ruleType == 1 ||
               ruleType == 3 ||
               ruleType == 4 ||
-              ruleType == 5) && (
+              ruleType == 5 || ( applyTo == 2 && ruleType == 8)) && (
                 <>
-                  {ruleType != 5 && ruleType != 6 && (
+                  {ruleType != 5 && ruleType != 6 && ruleType !=8 && (
                     <Row gutter={30}>
                       <Col
                         className='gutter-row'
@@ -1215,7 +1236,7 @@ function ShippingRulesComponent() {
                 </>
               )}
 
-            {(ruleType == 2 || ruleType == 6) && (
+            {(ruleType == 2 || ruleType == 6 || ruleType == 8) && (
               <>
                 {ruleType == 2 && (
                   <>
@@ -1444,6 +1465,15 @@ function ShippingRulesComponent() {
                       </>
                     )}
                   </>
+                )}
+                {ruleType == 8 && (
+               <ServiceRate
+                  label='Service rate (e.g. 5.25)'
+                  name='service_rates'
+                  placeholder='Enter service rate'
+                  required={true}
+                  message='Service rate is required'
+                />
                 )}
                 <Row gutter={30}>
                   <Col
@@ -1710,7 +1740,7 @@ function ShippingRulesComponent() {
                 </Row>
               </>
             )}
-
+             
             <Row gutter={30}>
               <Col
                 className='gutter-row'
