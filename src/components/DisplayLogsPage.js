@@ -44,7 +44,7 @@ const makeColumns = (
     {
       title: "Items",
       dataIndex: "Items",
-      align: "center",
+      align: "left",
       key: "Items",
       ellipsis: true,
       render: (items, record) => (
@@ -80,7 +80,7 @@ const makeColumns = (
       title: "DIMs (L x W x H)",
       dataIndex: "dimension",
       key: "dimension",
-      align: "center",
+      align: "left",
       ellipsis: true,
       render: (dim, record) => (
 
