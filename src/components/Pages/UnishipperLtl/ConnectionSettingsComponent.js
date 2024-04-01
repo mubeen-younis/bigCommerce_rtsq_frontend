@@ -76,14 +76,14 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='Client ID'
 							name='clientId'
-							rules={[{ required: true, message: 'Client ID Is Required' }]}
+							rules={[{ required: true, message: 'Client ID is required.' }]}
 						>
 							<Input placeholder='Client ID' maxLength={100}/>
 						</Form.Item>
 						<Form.Item
 							label='Client Secret'
 							name='clientSecret'
-							rules={[{ required: true, message: 'Client Secret Is Required' }]}
+							rules={[{ required: true, message: 'Client Secret is required.' }]}
 						>
 							<Input placeholder='Client Secret' maxLength={256}/>
 						</Form.Item>
