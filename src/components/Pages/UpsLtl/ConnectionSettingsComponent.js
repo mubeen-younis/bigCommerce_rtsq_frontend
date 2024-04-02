@@ -18,14 +18,9 @@ function ConnectionSettingsComponent(props) {
 			if(!(connectionSettings?.api_type) && (connectionSettings?.carrierId)){
 				connectionSettings['api_type'] = 'legacy_api'
 			}
-			// TODO: Remove below condition to enable new api on UI
-			if((connectionSettings?.api_type === 'new_api') && (connectionSettings?.carrierId)){
-				connectionSettings['api_type'] = 'legacy_api'
-			}
-			// TODO: In case of new api pass 'new_api' instead of 'legacy_api' in dispatch()
 			dispatch({
 				type: types.SET_UPS_LTL_API_TYPE,
-				payload: connectionSettings?.api_type ?? 'legacy_api',
+				payload: connectionSettings?.api_type ?? 'new_api',
 			})
 		}
 	}, [connectionSettings, dispatch])
@@ -69,7 +64,6 @@ function ConnectionSettingsComponent(props) {
 				}}
 				onFinish={onFinish}
 			>
-				{/* TODO: Uncommit this code to select new api from dropdown
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>
 					<Select
 						defaultValue={!connectionSettings?.api_type && connectionSettings?.carrierId ? 'legacy_api' : 'new_api'}
@@ -84,7 +78,7 @@ function ConnectionSettingsComponent(props) {
 							})
 						}
 					/>
-				</Form.Item> */}
+				</Form.Item>
 
 				{ UpsLtlApiType == 'new_api' ? (
 					<>
