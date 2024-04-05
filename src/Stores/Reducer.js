@@ -366,6 +366,21 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				allProducts: action.payload,
 			}
+		case types.GET_ALL_LOGS:
+			return {
+				...state,
+				allLogs: action.payload,
+			}
+		case types.GET_LOG_DETAIL:
+			return {
+				...state,
+				logDetail: action.payload,
+			}
+		case types.LOGS_PAGINATION:
+			return {
+				...state,
+				logsPagination: action.payload,
+			}
 		case types.GET_PRODUCT_DETAIL:
 			return {
 				...state,
@@ -569,6 +584,12 @@ const Reducer = (state = initialState, action) => {
 				orderwidget: action.payload,
 			}
 
+		case types.GET_PACKAGE_DETAIL:
+			return {
+				...state,
+				packaging: action.payload,
+			}
+
 		case types.UPDATE_ORDER_SETTINGS:
 			return {
 				...state,
@@ -581,6 +602,12 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				importIndexes: action.payload,
+			}
+
+		case types.DOWNLOAD_LINK:
+			return {
+				...state,
+				exportCSVDownloadLink: action.payload,
 			}
 
 		case types.SET_CARRIER_TYPE: {
@@ -662,6 +689,59 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				shippingGroups: state.shippingGroups.map(sg =>
+					sg.uuid === action.payload.uuid ? action.payload : sg
+				),
+			}
+
+		/* Get States and Provices */
+		case types.GET_STATES_PROVINCES:
+			return {
+				...state,
+				statesProvinces: action.payload,
+			}
+
+		/* Get Carrier Services */
+		case types.GET_CARRIER_SERVICES:
+			return {
+				...state,
+				carrierServices: action.payload,
+			}
+		/* Get Store Categories */
+		case types.GET_STORE_CATEGORIES:
+			return {
+				...state,
+				storeCategories: action.payload,
+			}
+
+		/* Get Store Brands */
+		case types.GET_STORE_BRANDS:
+			return {
+				...state,
+				storeBrands: action.payload,
+			}
+
+		/* Shipping Rules */
+		case types.GET_SHIPPING_RULES:
+			return {
+				...state,
+				shippingRules: action.payload,
+			}
+		case types.ADD_SHIPPING_RULE:
+			return {
+				...state,
+				shippingRules: [...state.shippingRules, action.payload],
+			}
+		case types.DELETE_SHIPPING_RULE:
+			return {
+				...state,
+				shippingRules: state.shippingRules.filter(
+					sg => sg.uuid !== action.payload
+				),
+			}
+		case types.UPDATE_SHIPPING_RULE:
+			return {
+				...state,
+				shippingRules: state.shippingRules.map(sg =>
 					sg.uuid === action.payload.uuid ? action.payload : sg
 				),
 			}

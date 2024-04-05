@@ -5,6 +5,7 @@ import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
 import { handlingFeeMarkup, validateHandlingFeeMarkup } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
+import PackageRatingMethod from "../../PackageRatingMethod"
 import CutOffTime from '../../CutOffTime';
 import DomesticServices from './Services/DomesticServices'
 import InternationalServices from './Services/InternationalServices'
@@ -13,6 +14,7 @@ import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 import ErrorManagment from '../../ErrorManagment'
+import EnableLogs from '../../EnableLogs'
 
 const { Title } = Typography
 const initialState = {
@@ -72,6 +74,7 @@ const initialState = {
 	handling_fee_markup: null,
 	quote_details: null,
 	rate_source: 1,
+	packageRatingMethod: 1,
 }
 
 function QuoteSettingsComponentWweSmall(props) {
@@ -523,6 +526,10 @@ function QuoteSettingsComponentWweSmall(props) {
 					onCheck={onCheck}
 				/>
 				<Row className={'mb-2'}></Row>
+				<PackageRatingMethod
+          			quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -579,6 +586,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</div>
 					</Col>
 				</Row>
+
+				<EnableLogs 
+					quoteSettingsState={quoteSettingsState} 
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
 
 				<Row gutter={24} align='middle' className={'mb-4'}>
 					<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>

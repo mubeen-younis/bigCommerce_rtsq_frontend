@@ -41,13 +41,15 @@ function QuoteSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
-	const { thresholdSetting } = useSelector(state => state)
+	const { thresholdSetting, quoteSettings } = useSelector(state => state)
 	const [notifyDelivery, setNotifyDelivery] = useState(true)
+	const [inputValue, setInputValue] = useState('');
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
 			getQuoteSettings()
 		}
+		setInputValue(quoteSettings?.label_as)
 		// eslint-disable-next-line
 	}, [props.quoteSettings])
 
@@ -178,6 +180,8 @@ function QuoteSettingsComponent(props) {
 								name='label_as'
 								value={props?.quoteSettings?.label_as ?? ''}
 								onKeyDown={LableAsLimit}
+								onChange={(e) => setInputValue(e.target.value)}
+								addonAfter={inputValue ? <span>{`${inputValue?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
@@ -219,6 +223,7 @@ function QuoteSettingsComponent(props) {
 				<HandlingUnit
 					quoteSettingsState={quoteSettingsState}
 					handleChange={handleStateChange}
+					setQuoteSettingsState={setQuoteSettingsState}
 				/>
 
 				<ErrorManagment

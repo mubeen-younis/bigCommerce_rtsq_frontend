@@ -8,21 +8,23 @@ import {
 	validateHandlingFeeMarkup,
 } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
+import PackageRatingMethod from "../../PackageRatingMethod"
 import CutOffTime from '../../CutOffTime'
 import DomesticServices from './Services/DomesticServices'
 import InternationalServices from './Services/InternationalServices'
+import NewDomesticServices from './NewApiServices/NewDomesticServices'
+import NewInternationalServices from './NewApiServices/NewInternationalServices'
 import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 import ErrorManagment from '../../ErrorManagment'
+import EnableLogs from '../../EnableLogs'
 import { useSelector } from 'react-redux'
-import Services from '../WweSmall/Services'
 
 const { Title } = Typography
 const initialState = {
 	carrier_services: {
 		ups_next_day_air: false,
-		error_managment:1,
 		ups_next_day_air_saver: false,
 		ups_next_day_air_early_am: false,
 		ups_2nd_day_air: false,
@@ -50,10 +52,12 @@ const initialState = {
 		ups_worldwide_expedited: false,
 		ups_worldwide_saver: false,
 		ups_worldwide_express: false,
+		ups_worldwide_express_plus: false,
 		ups_standard_markup: '',
 		ups_worldwide_expedited_markup: '',
 		ups_worldwide_saver_markup: '',
 		ups_worldwide_express_markup: '',
+		ups_worldwide_express_plus_markup: '',
 	},
 	delivery_estimate_options: 1,
 	showDeliveryEstimate: false,
@@ -71,6 +75,8 @@ const initialState = {
 	air_hazardous_material_fee: null,
 	handling_fee_markup: null,
 	quote_details: null,
+	error_managment: 1,
+	packageRatingMethod: 1,
 }
 
 function QuoteSettingsComponentWweSmall(props) {
@@ -112,7 +118,8 @@ function QuoteSettingsComponentWweSmall(props) {
 			checks?.ups_standard &&
 			checks?.ups_worldwide_expedited &&
 			checks?.ups_worldwide_saver &&
-			checks?.ups_worldwide_express
+			checks?.ups_worldwide_express &&
+			checks?.ups_worldwide_express_plus
 		) {
 			setInternationalCheckAll(true)
 		}
@@ -178,6 +185,7 @@ function QuoteSettingsComponentWweSmall(props) {
 			ups_worldwide_saver:
 				quoteSettingsState?.carrier_services?.ups_worldwide_saver,
 			ups_standard: quoteSettingsState?.carrier_services?.ups_standard,
+			ups_worldwide_express_plus: quoteSettingsState?.carrier_services?.ups_worldwide_express_plus,
 		}
 
 		if (Object.keys(internationalChecks).includes(e.target.name)) {
@@ -224,13 +232,17 @@ function QuoteSettingsComponentWweSmall(props) {
 				ups_worldwide_expedited: checked,
 				ups_worldwide_saver: checked,
 				ups_standard: checked,
+				ups_worldwide_express_plus: checked,
 			},
 		})
 	}
 
 	const onFinish = data => {
 		let CS = quoteSettingsState?.carrier_services ?? {}
-		let checkCS =
+		let checkCS = false
+
+		if (uniShipperSmallApiType === 'new_api'){
+			checkCS =
 			CS?.ups_2nd_day_air ||
 			CS?.ups_2nd_day_air_saver ||
 			CS?.ups_2nd_day_air_am ||
@@ -238,6 +250,20 @@ function QuoteSettingsComponentWweSmall(props) {
 			CS?.ups_ground ||
 			CS?.ups_next_day_air ||
 			CS?.ups_next_day_air_early ||
+			CS?.ups_next_day_air_saver ||
+			CS?.ups_standard ||
+			CS?.ups_worldwide_expedited ||
+			CS?.ups_worldwide_saver ||
+			CS?.ups_worldwide_express || 
+			CS?.ups_worldwide_express_plus
+		} else {
+			checkCS =
+			CS?.ups_2nd_day_air ||
+			CS?.ups_2nd_day_air_am ||
+			CS?.ups_3_day_select ||
+			CS?.ups_ground ||
+			CS?.ups_next_day_air ||
+			CS?.ups_next_day_air_early_am ||
 			CS?.ups_next_day_air_saver ||
 			CS?.ups_ground_residential_delivery ||
 			CS?.ups_next_day_air_saturday ||
@@ -247,6 +273,7 @@ function QuoteSettingsComponentWweSmall(props) {
 			CS?.ups_worldwide_expedited ||
 			CS?.ups_worldwide_saver ||
 			CS?.ups_worldwide_express
+		}
 
 		let errormsg = ''
 		errormsg += validateHandlingFeeMarkup(
@@ -356,6 +383,13 @@ function QuoteSettingsComponentWweSmall(props) {
 		if (errormsg === '') {
 			errormsg += validateHandlingFeeMarkup(
 				quoteSettingsState?.carrier_services?.ups_standard_markup,
+				'UPS Standard (Canada)',
+				true
+			)
+		}
+		if (errormsg === '') {
+			errormsg += validateHandlingFeeMarkup(
+				quoteSettingsState?.carrier_services?.ups_worldwide_express_plus_markup,
 				'UPS Standard (Canada)',
 				true
 			)
@@ -481,14 +515,24 @@ function QuoteSettingsComponentWweSmall(props) {
 				{uniShipperSmallApiType == 'new_api' ? (
 					<>
 						{/* UNISHIPPERS NEW API SERVICES */}
-						<Services
-							quoteSettingsState={quoteSettingsState}
-							checkAll={checkAll}
-							allCheckHandler={allCheckHandler}
-							onChange={onChange}
-							onCheck={onCheck}
-							uniShipperSmallApiType={uniShipperSmallApiType}
-						/>
+				<Row className={'mb-2'}>
+          			<NewDomesticServices
+            			quoteSettingsState={quoteSettingsState}
+            			checkAll={checkAll}
+            			allCheckHandler={allCheckHandler}
+            			onCheck={onCheck}
+            			onChange={onChange}
+          			/>
+		  			
+					<NewInternationalServices
+            			quoteSettingsState={quoteSettingsState}	
+            			internationalcheckAll={internationalcheckAll}
+            			internationalAllCheckHandler={internationalAllCheckHandler}
+            			onChange={onChange}
+            			onCheck={onCheck}
+					/>
+          
+        		</Row>
 					</>
 				) : (
 				<Row className={'mb-2'}>
@@ -510,6 +554,10 @@ function QuoteSettingsComponentWweSmall(props) {
 				)}
 
 				<Row className={'mb-2'}></Row>
+				<PackageRatingMethod
+          			quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -571,6 +619,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</div>
 					</Col>
 				</Row>
+
+				<EnableLogs 
+					quoteSettingsState={quoteSettingsState} 
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
 
 				<ErrorManagment
           			quoteSettingsState={quoteSettingsState}

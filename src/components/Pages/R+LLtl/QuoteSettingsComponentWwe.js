@@ -19,6 +19,7 @@ import WeightThreshold from '../../WeightThreshold'
 import InsideDeliverySettings from '../../InsideDeliverySettings'
 import ErrorManagment from '../../ErrorManagment'
 import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
+import PalletRates from './PalletRates'
 
 const initialState = {
   label_as: '',
@@ -53,6 +54,8 @@ const initialState = {
   weight_threshold: '150',
   always_quote_notify: false,
   offer_notify_as_option: false,
+  pallet_code: 'No Pallet Selected',
+  pallet_weight: '',
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -61,11 +64,13 @@ function QuoteSettingsComponentWwe(props) {
   const [holdTeminalStatus, SetHoldTeminalStatus] = useState(false)
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
-  const { thresholdSetting } = useSelector(state => state)
+  const { thresholdSetting, connectionSettings, quoteSettings  } = useSelector(state => state)
+  const [inputValue, setInputValue] = useState('');
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
       getQuoteSettings()
     }
+    setInputValue(quoteSettings?.label_as)
     // eslint-disable-next-line
   }, [props.quoteSettings])
 
@@ -235,6 +240,9 @@ function QuoteSettingsComponentWwe(props) {
                 name='label_as'
                 value={props.quoteSettings ? props.quoteSettings.label_as : ''}
                 onKeyDown={LableAsLimit}
+                maxLength={20}
+                onChange={(e) => setInputValue(e.target.value)}
+								addonAfter={inputValue ? <span>{`${inputValue?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
               />
             </Form.Item>
             <div className={'text-gray'}>
@@ -250,6 +258,11 @@ function QuoteSettingsComponentWwe(props) {
           handleChange={handleStateChange}
           toggleOptions={toggleOptions}
         />
+        <PalletRates
+					connectionSettings={connectionSettings}
+          quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
+				/>
         <DeliveryEstimateOptions
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
@@ -287,6 +300,7 @@ function QuoteSettingsComponentWwe(props) {
         <HandlingUnit
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
+          setQuoteSettingsState={setQuoteSettingsState}
         />
 
         <Row gutter={30} className={'mb-3'}>

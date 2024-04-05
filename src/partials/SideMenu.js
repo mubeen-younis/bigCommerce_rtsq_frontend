@@ -24,12 +24,14 @@ function SideMenu(props) {
 		else if (name.includes('plans')) setActiveMenu('100')
 		else if (name.includes('warehouses')) setActiveMenu('101')
 		else if (name.includes('shipping_groups')) setActiveMenu('106')
-		else if (name.includes('rad_settings')) setActiveMenu('108')
+		else if (name.includes('rad_settings')) setActiveMenu('111')
+		else if (name.includes('product_settings')) setActiveMenu('108')
 		else if (name.includes('fdo')) setActiveMenu('102')
 		else if (name.includes('av')) setActiveMenu('103')
 		else if (name.includes('importcsv')) setActiveMenu('104')
 		else if (name.includes('orders')) setActiveMenu('107')
 		else if (name.includes('compare_rates')) setActiveMenu('109')
+		else if (name.includes('shipping_rules')) setActiveMenu('110')
 		else if (name.includes('user_guide')) setActiveMenu('105')
 		else if (name.includes('addon'))
 			setActiveMenu('addon-' + name.substring(name.lastIndexOf('/') + 1))
@@ -115,6 +117,13 @@ function SideMenu(props) {
 						</Menu.Item>
 
 						<Menu.Item
+							key='111'
+							warnkey={111}
+							onClick={() => setActiveMenu('111')}>
+							<Link to={`/product_settings`}>Product Settings</Link>
+						</Menu.Item>
+
+						<Menu.Item
 							key='104'
 							warnkey={104}
 							onClick={() => setActiveMenu('104')}>
@@ -139,6 +148,13 @@ function SideMenu(props) {
 								</Menu.Item>
 							) : null
 						)}
+
+						<Menu.Item
+							key='110'
+							warnkey={110}
+							onClick={() => setActiveMenu('110')}>
+							<Link to={`/shipping_rules`}>Shipping Rules</Link>
+						</Menu.Item>
 
 						<Menu.Item
 							key='105'

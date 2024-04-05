@@ -120,7 +120,8 @@ export const getAllProducts = (
 	perpage,
 	sortProd,
 	setLoading,
-	search = null
+	search = null,
+	noPagination = false
 ) => {
 	const config = {
 		headers: {
@@ -141,10 +142,13 @@ export const getAllProducts = (
 					type: 'GET_ALL_PRODUCTS',
 					payload: data.data,
 				})
-				dispatch({
-					type: 'PRODUCTS_PAGINATION',
-					payload: data.meta,
-				})
+				if(!noPagination){
+					dispatch({
+						type: 'PRODUCTS_PAGINATION',
+						payload: data.meta,
+					})
+				}
+				
 				dispatch({
 					type: 'SEARCHED_PRODUCT',
 					payload: search,

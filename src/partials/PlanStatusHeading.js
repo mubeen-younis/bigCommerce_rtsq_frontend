@@ -16,10 +16,10 @@ function PlanStatusHeading() {
 		<Fragment>
 			{currentPlan?.is_expired ? (
 				<div className='note-bx'>
-				Your current plan has been expired. Please renew your Plan.
+				Your current {currentPlan?.name} plan has expired. Please renew your plan.
 				</div>
 			) : currentPlan?.status === 3 ? (
-				<div className='note-bx'>Your plan has been expired</div>
+				<div className='note-bx'>Your current {currentPlan?.name} plan has expired. Please renew your plan.</div>
 			) : currentPlan?.plan_id === 0 ? (
 				<div className='note-bx'>
 					You don't have an active plan. On the Plans page, choose the

@@ -8,6 +8,7 @@ import {
 	validateHandlingFeeMarkup,
 } from '../../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
+import PackageRatingMethod from "../../../PackageRatingMethod"
 import CutOffTime from '../../../CutOffTime'
 import InternationalServices from './Services/InternationalServices'
 import OneRateServices from './Services/OneRateServices'
@@ -19,6 +20,7 @@ import GroundTransit from '../../../GroundTransit'
 import HazardousMaterial from '../../../HazardousMaterial'
 import SaveButton from '../../../SaveButton'
 import ErrorManagment from '../../../ErrorManagment'
+import EnableLogs from '../../../EnableLogs'
 
 const { Title } = Typography
 const initialState = {
@@ -42,6 +44,7 @@ const initialState = {
 	handling_fee_markup: null,
 	quote_details: null,
 	negotiated_rates: 1,
+	packageRatingMethod: 1,
 }
 
 function QuoteSettingsComponentWweSmall(props) {
@@ -408,6 +411,10 @@ function QuoteSettingsComponentWweSmall(props) {
 				</Row>
 
 				<Row className={'mb-2'}></Row>
+				<PackageRatingMethod
+          			quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}
@@ -439,7 +446,7 @@ function QuoteSettingsComponentWweSmall(props) {
 					</Col>
 				</Row>
 
-				<Row gutter={24} className={'mb-4'}>
+				<Row gutter={30} className={'mb-3'}>
 					<Col
 						className='gutter-row'
 						xs={24}
@@ -477,7 +484,14 @@ function QuoteSettingsComponentWweSmall(props) {
 							percentage, e.g, 5%. Leave blank to disable.
 						</div>
 					</Col>
+				</Row>
 
+				<EnableLogs 
+				quoteSettingsState={quoteSettingsState} 
+				setQuoteSettingsState={setQuoteSettingsState}
+				/>
+
+				<Row gutter={30} className={'mb-3'}>
 					<Col
 						className='gutter-row'
 						xs={24}

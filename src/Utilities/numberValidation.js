@@ -222,6 +222,20 @@ export const handleNumbersOnly = e => {
 	}
 }
 
+export const handleKeyCharNumbersOnly = e => {
+	let condition =
+		!['Backspace', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.key) &&
+		!['a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F', 'g', 'G', 'H', 
+			'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 
+			'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+		].includes(e.key) &&
+		handleNumbersOnly(e)
+	if (condition) {
+		e.preventDefault()
+		return true
+	}
+}
+
 export const handleKeyCharOnly = e => {
 	let condition =
 		!['Backspace', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.key) &&
@@ -381,7 +395,7 @@ export const LableAsLimit = e => {
 	let value = e.target.value
 	let condition =
 		!['Backspace', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.key) &&
-		value.length >= 30
+		value.length >= 20
 	if (condition) {
 		e.preventDefault()
 		return true

@@ -39,8 +39,11 @@ import { getDbscData}from './Actions/DbscActions'
 import types from './Stores/types'
 import OrdersComponent from './components/OrdersComponent'
 import ShippingGroupsComponent from './components/Pages/ShippingGroup'
+import ShippingRulesComponent from './components/Pages/ShippingRule'
 import RADSettings from './components/Pages/RADSettings'
 import CompareRates from './components/Pages/CompareRates'
+import ProductSettingsComponent from './components/ProductSettingsComponent'
+import { getCSVDownloadLink } from './Actions/ImportCsv'
 
 const { Header, Content } = Layout
 
@@ -94,6 +97,7 @@ function App(props) {
       dispatch(getFDOCouponInfo(token))
       dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES, token))
       dispatch(getRADSettings(token))
+      dispatch(getCSVDownloadLink(token, false))
     }
  
       const devEnv = process?.env?.NODE_ENV === 'development'
@@ -212,7 +216,9 @@ function App(props) {
               <Route path='/fdo' component={FDOComponent} />
               <Route path='/importcsv' component={ImportCsvComponent} />
               <Route path='/shipping_groups' component={ShippingGroupsComponent} />
+              <Route path='/shipping_rules' component={ShippingRulesComponent} />
               <Route path='/rad_settings' component={RADSettings} />
+              <Route path='/product_settings' component={ProductSettingsComponent} />
               <Route path='/orders' component={OrdersComponent} />
               <Route path='/compare_rates' component={CompareRates} />
               <Route path='/user_guide' component={UserGuideComponent} />

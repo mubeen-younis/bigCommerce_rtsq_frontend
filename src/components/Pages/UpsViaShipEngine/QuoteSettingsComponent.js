@@ -8,6 +8,7 @@ import {
   validateHandlingFeeMarkup,
 } from '../../../Utilities/numberValidation';
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
+import PackageRatingMethod from "../../PackageRatingMethod"
 import CutOffTime from '../../CutOffTime';
 import DomesticServices from './Services/DomesticServices';
 import InternationalServices from './Services/InternationalServices';
@@ -15,6 +16,7 @@ import GroundTransit from '../../GroundTransit';
 import HazardousMaterial from '../../HazardousMaterial';
 import SaveButton from '../../SaveButton';
 import ErrorManagment from '../../ErrorManagment';
+import EnableLogs from '../../EnableLogs';
 
 const { Title } = Typography;
 const initialState = {
@@ -64,6 +66,7 @@ const initialState = {
   air_hazardous_material_fee: null,
   handling_fee_markup: null,
   quote_details: null,
+  packageRatingMethod: 1,
 };
 
 function QuoteSettingsComponentUpsShipEngine(props) {
@@ -434,6 +437,10 @@ function QuoteSettingsComponentUpsShipEngine(props) {
         </Row>
 
         <Row className={'mb-2'}></Row>
+        <PackageRatingMethod
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
         <DeliveryEstimateOptions
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
@@ -490,6 +497,11 @@ function QuoteSettingsComponentUpsShipEngine(props) {
             </div>
           </Col>
         </Row>
+
+        <EnableLogs 
+					quoteSettingsState={quoteSettingsState} 
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
 
         <ErrorManagment
           quoteSettingsState={quoteSettingsState}

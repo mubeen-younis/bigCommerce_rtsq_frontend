@@ -2,18 +2,18 @@ import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tabs } from 'antd';
 import CarriersComponent from '../components/CarriersComponent';
-import ProductSettingsComponent from '../components/ProductSettingsComponent';
 import PlanStatusHeading from '../partials/PlanStatusHeading';
 import GTZCarriersComponent from '../components/Pages/GlobalTranz/Ltl/CarriersComponent';
 import useLoadComponent from '../hooks/useLoadComponent';
 import ShippingRatesComponent from '../components/Pages/DBSC/ShippingRatesComponent';
 import ShippingClassesComponent from '../components/Pages/DBSC/ShippingClassesComponent';
 import OtherSettings from '../components/Pages/DBSC/OtherSettings';
+import DisplayLogsPage from '../components/DisplayLogsPage';
 
 const { TabPane } = Tabs;
 
 function TabsLayout() {
-  const { installedCarriers, carrierId } = useSelector((state) => state);
+  const { installedCarriers, carrierId, quoteSettings } = useSelector(state => state);
   const [component, setComponent] = useState(0);
   const [tab, setTab] = useState('1');
   const [carrierSlug, setCarrierSlug] = useState('');
@@ -53,6 +53,7 @@ function TabsLayout() {
         'purolator-small',
         'freightquote-chr-ltl',
         'ups-ship-engine',
+        'priority-one-ltl',
         'dbsc',
       ];
 
@@ -120,6 +121,7 @@ function TabsLayout() {
           'tql-ltl',
           'echo-ltl',
           'freightquote-chr-ltl',
+          'priority-one-ltl'
         ].includes(carrierSlug) && (
           <TabPane tab='Carriers' key='2'>
             <CarriersComponent />
@@ -144,17 +146,20 @@ function TabsLayout() {
           </>
         )}
 
-        {!['dbsc'].includes(carrierSlug) && (
-          <TabPane tab='Quote Settings' key='5'>
-            {quoteSettingsComponent}
-          </TabPane>
-        )}
-        <TabPane tab='Product Settings' key='6'>
-          <ProductSettingsComponent />
-        </TabPane>
-      </Tabs>
-    </Fragment>
-  );
+				{!['dbsc'].includes(carrierSlug) && (
+					<TabPane tab='Quote Settings' key='5'>
+						{quoteSettingsComponent}
+					</TabPane>
+				)}
+				
+				{quoteSettings?.isEnableLogs && (
+					<TabPane tab='Logs' key='7'>
+						<DisplayLogsPage />
+					</TabPane>
+				)}
+			</Tabs>
+		</Fragment>
+	)
 }
 
 export default TabsLayout;

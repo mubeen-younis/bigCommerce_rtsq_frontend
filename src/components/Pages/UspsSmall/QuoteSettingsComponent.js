@@ -15,24 +15,34 @@ import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 import ErrorManagment from '../../ErrorManagment'
+import EnableLogs from '../../EnableLogs'
 
 const { Title } = Typography
 const initialState = {
 	carrier_services: {
 		usps_first_class_mail: false,
+		usps_first_class_mail_label: "",
 		usps_priority_mail_express: false,
-		usps_priority_mail: false,
+		usps_priority_mail_express_label: "",
+		usps_priority_mail: false,	
+		usps_priority_mail_label: "",
 		usps_priority_mail_flat_rate: false,
+		usps_priority_mail_flat_rate_label: "",
 		usps_retail_ground: false,
+		usps_retail_ground_label: "",
 		usps_first_class_mail_markup: '',
 		usps_priority_mail_express_markup: '',
 		usps_priority_mail_markup: '',
 		usps_priority_mail_flat_rate_markup: '',
 		usps_retail_ground_markup: '',
 		usps_priority_mail_international_express: false,
+		usps_priority_mail_international_express_label: '',
 		usps_priority_mail_international: false,
+		usps_priority_mail_international_label: '',
 		usps_priority_mail_international_flat_rate_box: false,
+		usps_priority_mail_international_flat_rate_box_label: '',
 		usps_first_class_package_international_service: false,
+		usps_first_class_package_international_service_label: '',
 		usps_priority_mail_international_express_markup: '',
 		usps_priority_mail_internationalmarkup: '',
 		usps_priority_mail_international_flat_rate_box_markup: '',
@@ -53,8 +63,42 @@ const initialState = {
 	ground_hazardous_material_fee: null,
 	air_hazardous_material_fee: null,
 	handling_fee_markup: null,
+	estimate_date: null,
 	rate_tier: 'retail',
 }
+const EstimateDate = ({ quoteSettingsState, setQuoteSettingsState }) => (
+<Row gutter={30} align='middle' className={'mb-4'}>
+<Col className='gutter-row mb-3' xs={24} sm={12} md={12} lg={12} xl={6}>
+				<label className={'text-gray'}>
+				Retail Ground/Ground Advantage delivery estimate
+				</label>
+			</Col>
+			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={18}>
+				<Form.Item className={'mb-0'}>
+					<Input
+						type='number'
+						name='estimate_days'
+						min={1}
+						max={8}
+						maxLength={1}
+						pattern='/^[0-8]*$/'
+						disabled={
+							quoteSettingsState?.delivery_estimate_options ==
+							1 || quoteSettingsState?.delivery_estimate_options == 3
+						}
+						value={quoteSettingsState?.estimate_date}
+								onChange={e =>
+									setQuoteSettingsState({
+										...quoteSettingsState,
+										estimate_date: e.target.value,
+						})}
+					/>
+				</Form.Item>
+				<p className='text-gray'>Sometimes, the USPS API may not give delivery estimates for Retail Ground/Ground Advantage service. In those cases, please give the estimated delivery days for this service to show on the checkout page. </p>
+			</Col>
+</Row>
+)
+
 
 function QuoteSettingsComponentWweSmall(props) {
 	const [loading, setLoading] = useState(true)
@@ -204,7 +248,7 @@ function QuoteSettingsComponentWweSmall(props) {
 		if (errormsg === '') {
 			errormsg = validateHandlingFeeMarkup(
 				quoteSettingsState?.carrier_services?.usps_first_class_mail_markup,
-				'USPS First Class Mail markup ',
+				'USPS First-Class Mail markup ',
 				true
 			)
 		}
@@ -459,17 +503,20 @@ function QuoteSettingsComponentWweSmall(props) {
 						</Form.Item>
 					</Col>
 				</Row>
-
-				<Row gutter={24} className={'mb-3'}>
-					<Col
-						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}>
-						<Title level={4}>Other settings</Title>
-					</Col>
+		<Row className={'mb-2'}></Row>
+        <DeliveryEstimateOptions
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+        />
+        <EstimateDate
+          quoteSettingsState={quoteSettingsState}
+          setQuoteSettingsState={setQuoteSettingsState}
+          handleChange={handleStateChange}
+        />
+        <Row gutter={24} className={"mb-3"}>
+          <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Title level={4}>Other settings</Title>
+          </Col>
 
 					<Col
 						className='gutter-row'
@@ -509,6 +556,11 @@ function QuoteSettingsComponentWweSmall(props) {
 						</div>
 					</Col>
 				</Row>
+
+				<EnableLogs 
+					quoteSettingsState={quoteSettingsState} 
+					setQuoteSettingsState={setQuoteSettingsState}
+				/>
 
 				<ErrorManagment
           			quoteSettingsState={quoteSettingsState}

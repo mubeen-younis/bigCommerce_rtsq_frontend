@@ -257,7 +257,7 @@ function PlansComponent() {
   return plans ? (
     <Fragment>
       <PlanStatusHeading />
-      {currentPlan?.plan_id > 1 && currentPlan.status !== 3 && (
+      {currentPlan?.plan_id > 1 && (
         <Space className={'mb-3'}>
           {currentPlan.status !== 2 ? (
             <Button

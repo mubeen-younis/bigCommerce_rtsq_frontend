@@ -52,21 +52,29 @@ const Settings = ({
 	const isSmallCarrier =
 		installedCarriers &&
 		installedCarriers?.find(
-			c => c.id === +carrierId && smallCarriers.includes(c.slug)
+			c => c.carrier_type === 2 && c.is_enabled === 1
+		)
+			? true
+			: false
+
+	const isLtlCarrier =
+		installedCarriers &&
+		installedCarriers?.find(
+			c => c.carrier_type === 1 && c.is_enabled === 1
 		)
 			? true
 			: false
 	const isSbsSuspended = installedAddons?.find(
-		add => add.short_code === 'SBS' && add.is_enabled === 0
-	)
-		? true
-		: false || (sbsPlans && sbsPlans?.currentPackage?.status === 3)
+		add => add.short_code === 'SBS' && add.is_enabled === 1
+	) && !(sbsPlans && sbsPlans?.currentPackage?.status === 3)
+		? false
+		: true
 
 	const isPalletPkgSuspended = installedAddons?.find(
-		add => add.short_code === 'PLT' && add.is_enabled === 0
-	)
-		? true
-		: false || (palletPlans && palletPlans?.currentPackage?.status === 3)
+		add => add.short_code === 'PLT' && add.is_enabled === 1
+	) && !(palletPlans && palletPlans?.currentPackage?.status === 3)
+		? false
+		: true
 
 	const isDbscEnabled = installedCarriers?.find(
 		ic => ic?.slug === 'dbsc' && ic?.is_enabled
@@ -109,28 +117,9 @@ const Settings = ({
 					<Col span={24}>
 						<Form.Item style={{ marginBottom: '0px' }}>
 							<Checkbox
-								name='freight_enabled'
-								id={'freight_enabled' + index}
-								onChange={e => {
-									onChangeVariant(
-										index,
-										'freight_enabled',
-										e.target.checked
-									)
-									onChangeVariant(index, 'parcel_enabled', false)
-									onChangeVariant(index, 'quote_as_instore', false)
-									onChangeVariant(index, 'quote_as_local', false)
-								}}
-								checked={product?.freight_enabled}>
-								Quote as an LTL shipment
-							</Checkbox>
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item>
-							<Checkbox
 								name='parcel_enabled'
 								id={'parcel_enabled' + index}
+								disabled={!isSmallCarrier}
 								onChange={e => {
 									onChangeVariant(
 										index,
@@ -143,6 +132,27 @@ const Settings = ({
 								}}
 								checked={product?.parcel_enabled}>
 								Quote as a parcel shipment
+							</Checkbox>
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item>
+							<Checkbox
+								name='freight_enabled'
+								id={'freight_enabled' + index}
+								disabled={!isLtlCarrier}
+								onChange={e => {
+									onChangeVariant(
+										index,
+										'freight_enabled',
+										e.target.checked
+									)
+									onChangeVariant(index, 'parcel_enabled', false)
+									onChangeVariant(index, 'quote_as_instore', false)
+									onChangeVariant(index, 'quote_as_local', false)
+								}}
+								checked={product?.freight_enabled}>
+								Quote as an LTL shipment
 							</Checkbox>
 						</Form.Item>
 					</Col>
@@ -384,23 +394,21 @@ const Settings = ({
 					</Col>
 				</Row>
 				<Row gutter={16}>
-					{insuranceStatus && (
-						<Col span={24}>
-							<Checkbox
-								onChange={e =>
-									onChangeVariant(
-										index,
-										'insurance',
-										e.target.checked
-									)
-								}
-								name='insurance'
-								id={'insurance' + index}
-								checked={product?.insurance}>
-								Insurance
-							</Checkbox>
-						</Col>
-					)}
+					<Col span={24}>
+						<Checkbox
+							onChange={e =>
+								onChangeVariant(
+									index,
+									'insurance',
+									e.target.checked
+								)
+							}
+							name='insurance'
+							id={'insurance' + index}
+							checked={product?.insurance}>
+							Insurance
+						</Checkbox>
+					</Col>
 					<Col span={24} style={{ marginTop: '7px' }}>
 						<Checkbox
 							onChange={e =>
@@ -470,11 +478,11 @@ const Settings = ({
 										? dropships.map(value => (
 												<Option
 													value={value.id}
-													key={value.id}>{`${
-													value.city + ','
-												} ${value.state} ${
-													value.zip_code
-												}`}</Option>
+													key={value.id}>
+														{
+												value.nickname == value.city + ', ' + value.state + ' ' + value.zip_code ? value.nickname : value.nickname + ' - ' + value.city + ', ' + value.state + ' ' + value.zip_code
+												}
+												</Option>
 										  ))
 										: null}
 								</Select>
