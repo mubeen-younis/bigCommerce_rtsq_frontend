@@ -152,6 +152,7 @@ function ConnectionSettingsComponent(props) {
 						<Radio value='pro'>Production</Radio>
 					</Radio.Group>
 				</Form.Item> */}
+				</>)}
 
 				<Form.Item
 					name='rates_my_freight_based'
@@ -163,7 +164,6 @@ function ConnectionSettingsComponent(props) {
 						<Radio value={1}>Dimensions</Radio>
 					</Radio.Group>
 				</Form.Item>
-				</>)}
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
