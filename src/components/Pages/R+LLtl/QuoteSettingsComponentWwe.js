@@ -240,6 +240,7 @@ function QuoteSettingsComponentWwe(props) {
                 name='label_as'
                 value={props.quoteSettings ? props.quoteSettings.label_as : ''}
                 onKeyDown={LableAsLimit}
+                maxLength={20}
                 onChange={(e) => setInputValue(e.target.value)}
 								addonAfter={inputValue ? <span>{`${inputValue?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
               />

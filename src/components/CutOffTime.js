@@ -87,7 +87,11 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 					lg={12}
 					xl={18}>
 					<Form.Item className={'mb-0'}>
+						<div id='type_dropdown'>
 						<TimePicker
+							getPopupContainer={() =>
+								document.getElementById('type_dropdown')
+							}
 							style={{ width: '100%' }}
 							use24Hours
 							value={
@@ -107,6 +111,8 @@ const CutOffTime = ({ quoteSettingsState, setQuoteSettingsState, handleChange })
 								quoteSettingsState?.delivery_estimate_options === 1
 							}
 						/>
+						</div>
+						
 						<div className={'text-gray'}>
 							Enter the cut off time (e.g. 2:00) for orders. Orders
 							placed after this time will be quoted as shipping the
