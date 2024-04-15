@@ -379,8 +379,9 @@ function OrderSettingsComponent(props) {
 							paddingRight: '0px',
 						}}>
 						<h4>{bin?.items[0]?.['product_name'] ?? ''}</h4>
-						<h4>Box weight:{' '}{bin?.weight ?? 0} lbs</h4>
+						{bin?.weight ? <h4>Box weight:{' '}{bin?.weight ?? 0} lbs</h4> : null}
 						<span style={{ width: '100%', float: 'left' }}>
+							Box dim:{' '}
 							{bin?.d}
 							{bin?.w}
 							{bin?.h}
@@ -505,13 +506,14 @@ function OrderSettingsComponent(props) {
 										<br /> Number of items:{' '}
 										{bin?.number_of_items} <br />
 
-										Box weight:{' '}
-										{bin?.weight} lbs<br />
+										{bin?.weight ? <> Box weight:{' '}
+										{bin?.weight} lbs<br /> </>: null}
 										{bin?.nickname}
 									</strong>
 								</Col>
 								<Col span={16}>
 									<span>
+										Box dim:{' '}
 										{bin?.d}
 										{bin?.w}
 										{bin?.h}

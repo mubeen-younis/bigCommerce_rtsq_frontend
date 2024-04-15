@@ -28,7 +28,11 @@ const PalletRates = ({
 				</Col>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
 					<Form.Item className={'mb-0'}>
-						<Select
+					<div id='type_dropdown'>
+					    <Select
+						getPopupContainer={() =>
+							document.getElementById('type_dropdown')
+						  }
 							defaultValue={
 								quoteSettingsState &&
 								quoteSettingsState?.pallet_code !== undefined
@@ -47,15 +51,17 @@ const PalletRates = ({
 							}>
 							{connectionSettings?.pallets
 								? connectionSettings?.pallets?.map(value => (
-									<Option
-										value={value.Code}
-										key={value.Code}
-										>{`${value.Description}`}
-									</Option>
+								<Option
+								value={value.Code}
+								key={value.Code}
+								>{`${value.Description}`}
+								</Option>
 								))
 							: 'No Pallet Selected'}
 						</Select>
-					</Form.Item>
+					</div>
+						
+				</Form.Item>
 					<div className={'text-gray'}>
 						Please verify your API credentials,if pallets are not listed.
 					</div>
