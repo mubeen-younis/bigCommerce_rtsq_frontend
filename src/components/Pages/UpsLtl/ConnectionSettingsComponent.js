@@ -80,13 +80,6 @@ function ConnectionSettingsComponent(props) {
 					/>
 				</Form.Item>
 
-				<Form.Item
-					label='Account Number'
-					name='account_number'
-					rules={[{ required:false, message: 'Account Number' }]}
-				>
-					<Input placeholder='Account Number' />
-				</Form.Item>
 
 				<Form.Item
 					label='Username'
@@ -94,6 +87,14 @@ function ConnectionSettingsComponent(props) {
 					rules={[{ required: UpsLtlApiType == 'new_api' ? false : true, message: 'Username is required' }]}
 				>
 					<Input placeholder='Username' />
+				</Form.Item>
+
+				<Form.Item
+					label='Password'
+					name='password'
+					rules={[{ required: UpsLtlApiType == 'new_api' ? false : true, message: 'Password is required' }]}
+				>
+					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
 				{ UpsLtlApiType == 'new_api' ? (
@@ -120,11 +121,11 @@ function ConnectionSettingsComponent(props) {
 					<>
 
 				<Form.Item
-					label='Password'
-					name='password'
-					rules={[{ required: true, message: 'Password is required' }]}
+					label='Account Number'
+					name='account_number'
+					rules={[{ required:false, message: 'Account Number' }]}
 				>
-					<Input type='text' placeholder='Password' />
+					<Input placeholder='Account Number' />
 				</Form.Item>
 
 				<Form.Item
