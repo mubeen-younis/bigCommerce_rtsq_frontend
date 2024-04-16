@@ -119,3 +119,53 @@ export const getThresholdSettings = (token) => {
       });
   };
 };
+
+export const getStaffNoteSettings = (token) => {
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  };
+
+  return (dispatch) => {
+    dispatch({
+      type: 'ALERT_MESSAGE',
+      payload: {
+        showAlertMessage: false,
+        alertMessageType: 'loading',
+      },
+    });
+    
+
+    axios
+      .get(
+        `${process.env.REACT_APP_ENITURE_API_URL}/get_staffnote_settings`,
+        config
+      )
+      .then(({ data }) => {
+        if (data.data) {
+          dispatch({
+            type: 'GET_STAFFNOTE_SETTINGS',
+            payload: data.data,
+          });
+        } else {
+          dispatch({
+            type: 'GET_STAFFNOTE_SETTINGS',
+            payload: {},
+          });
+        }
+
+        dispatch({
+          type: 'ALERT_MESSAGE',
+          payload: {
+            showAlertMessage: false,
+            alertMessageType: 'success',
+          },
+        });
+
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};

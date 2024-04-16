@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { Typography, Row, Col, Form, Input, Skeleton, Radio } from 'antd'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
 import { handlingFeeMarkup, validateHandlingFeeMarkup } from '../../../Utilities/numberValidation'
@@ -14,6 +14,7 @@ import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 import ErrorManagment from '../../ErrorManagment'
+import StaffNoteSettings from '../../StaffNoteSettings'
 import EnableLogs from '../../EnableLogs'
 
 const { Title } = Typography
@@ -83,6 +84,7 @@ function QuoteSettingsComponentWweSmall(props) {
 	const [checkAllSimpleRate, setCheckAllSimpleRate] = useState(false)
 	const [internationalcheckAll, setInternationalCheckAll] = useState(false)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
+	const { staffNoteSettings } = useSelector(state => state)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -425,6 +427,15 @@ function QuoteSettingsComponentWweSmall(props) {
 				{ ...quoteSettingsState, carrierId: +props.carrierId },
 				props.token
 			)
+			dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
+					props.token
+				)
+			)
+			
 		} else {
 			errormsg =
 				errormsg === '' ? 'Please select at least one service option.' : errormsg
@@ -590,6 +601,11 @@ function QuoteSettingsComponentWweSmall(props) {
 				<EnableLogs 
 					quoteSettingsState={quoteSettingsState} 
 					setQuoteSettingsState={setQuoteSettingsState}
+				/>
+
+				<StaffNoteSettings
+					quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
 				/>
 
 				<Row gutter={24} align='middle' className={'mb-4'}>

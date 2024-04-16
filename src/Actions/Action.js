@@ -54,7 +54,7 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 					}
 				}
 
-				if(url !== 'submit_threshold_settings'){
+				if(url !== 'submit_threshold_settings' && url !== 'submit_staffnote_settings'){
 					dispatch({
 						type: 'ALERT_MESSAGE',
 						payload: {
