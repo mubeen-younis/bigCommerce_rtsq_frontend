@@ -132,7 +132,7 @@ function ConnectionSettingsComponent(props) {
 					name='username'
 					rules={[{ required: true, message: 'Username is required' }]}
 				>
-					<Input placeholder='Username' />
+					<Input placeholder='Username' maxLength={100}/>
 				</Form.Item>
 
 				<Form.Item
@@ -140,7 +140,7 @@ function ConnectionSettingsComponent(props) {
 					name='password'
 					rules={[{ required: true, message: 'Password is required' }]}
 				>
-					<Input type='text' placeholder='Password' />
+					<Input type='text' placeholder='Password' maxLength={100}/>
 				</Form.Item>
 
 				<Form.Item
