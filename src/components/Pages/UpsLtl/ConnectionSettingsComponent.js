@@ -80,23 +80,6 @@ function ConnectionSettingsComponent(props) {
 					/>
 				</Form.Item>
 
-
-				<Form.Item
-					label='Username'
-					name='username'
-					rules={[{ required: UpsLtlApiType == 'new_api' ? false : true, message: 'Username is required' }]}
-				>
-					<Input placeholder='Username' />
-				</Form.Item>
-
-				<Form.Item
-					label='Password'
-					name='password'
-					rules={[{ required: UpsLtlApiType == 'new_api' ? false : true, message: 'Password is required' }]}
-				>
-					<Input type='text' placeholder='Password' />
-				</Form.Item>
-
 				{ UpsLtlApiType == 'new_api' ? (
 					<>
 
@@ -116,6 +99,22 @@ function ConnectionSettingsComponent(props) {
 						<Input placeholder='Client Secret' maxLength={100}/>
 					</Form.Item>
 
+					<Form.Item
+						label='Username'
+						name='username'
+						rules={[{ required: false, message: 'Username is required' }]}
+					>
+						<Input placeholder='Username' />
+					</Form.Item>
+
+					<Form.Item
+						label='Password'
+						name='password'
+						rules={[{ required: false, message: 'Password is required' }]}
+					>
+						<Input type='text' placeholder='Password' />
+					</Form.Item>
+
 					</>
 				) : (
 					<>
@@ -126,6 +125,22 @@ function ConnectionSettingsComponent(props) {
 					rules={[{ required:false, message: 'Account Number' }]}
 				>
 					<Input placeholder='Account Number' />
+				</Form.Item>
+
+				<Form.Item
+					label='Username'
+					name='username'
+					rules={[{ required: true, message: 'Username is required' }]}
+				>
+					<Input placeholder='Username' />
+				</Form.Item>
+
+				<Form.Item
+					label='Password'
+					name='password'
+					rules={[{ required: true, message: 'Password is required' }]}
+				>
+					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
 				<Form.Item
