@@ -9,6 +9,12 @@ function ConnectionSettingsComponent(props) {
 	const { connectionSettings, token, carrierId } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
+	const [formData, setFormData] = useState({});
+
+	const handleFormChange = (changedValues, allValues) => {
+	  // Update the form data whenever it changes
+	  setFormData(allValues);
+	};
 
 	const onFinish = values => {
 		values = {
@@ -43,17 +49,18 @@ function ConnectionSettingsComponent(props) {
 				className='connection-settings'
 				size='large'
 				initialValues={connectionSettings}
-				onFinish={onFinish}>
+				onFinish={onFinish}
+				onValuesChange={handleFormChange}>
 				<Form.Item
 					label='Carrier ID'
 					name='shipengine_carrier_id'
-					rules={[{ required: false, message: 'Business ID' }]}>
+					rules={[{ required: formData?.shipengine_api_key != '' && formData?.shipengine_api_key != null, message: 'Carrier ID is required' }]}>
 					<Input placeholder='Carrier ID' maxLength={100}/>
 				</Form.Item>
         		<Form.Item
 					label='ShipEngine API Key'
 					name='shipengine_api_key'
-					rules={[{ required: false, message: 'ShipEngine API Key' }]}>
+					rules={[{ required: formData?.shipengine_carrier_id != '' && formData?.shipengine_carrier_id != null, message: 'ShipEngine API Key is required' }]}>
 					<Input placeholder='ShipEngine API Key' maxLength={100}/>
 				</Form.Item>
 				
