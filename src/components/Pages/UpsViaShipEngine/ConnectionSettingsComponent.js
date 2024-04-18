@@ -48,13 +48,13 @@ function ConnectionSettingsComponent(props) {
 					label='Carrier ID'
 					name='shipengine_carrier_id'
 					rules={[{ required: false, message: 'Business ID' }]}>
-					<Input placeholder='Carrier ID' />
+					<Input placeholder='Carrier ID' maxLength={100}/>
 				</Form.Item>
-        <Form.Item
+        		<Form.Item
 					label='ShipEngine API Key'
 					name='shipengine_api_key'
 					rules={[{ required: false, message: 'ShipEngine API Key' }]}>
-					<Input placeholder='ShipEngine API Key' />
+					<Input placeholder='ShipEngine API Key' maxLength={100}/>
 				</Form.Item>
 				
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
