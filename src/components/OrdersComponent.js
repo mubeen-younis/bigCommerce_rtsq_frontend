@@ -379,7 +379,9 @@ function OrderSettingsComponent(props) {
 							paddingRight: '0px',
 						}}>
 						<h4>{bin?.items[0]?.['product_name'] ?? ''}</h4>
+						{bin?.weight ? <h4>Box weight:{' '}{bin?.weight ?? 0} lbs</h4> : null}
 						<span style={{ width: '100%', float: 'left' }}>
+							Box dim:{' '}
 							{bin?.d}
 							{bin?.w}
 							{bin?.h}
@@ -503,11 +505,15 @@ function OrderSettingsComponent(props) {
 										{count + 1} of {numBoxes}
 										<br /> Number of items:{' '}
 										{bin?.number_of_items} <br />
+
+										{bin?.weight ? <> Box weight:{' '}
+										{bin?.weight} lbs<br /> </>: null}
 										{bin?.nickname}
 									</strong>
 								</Col>
 								<Col span={16}>
 									<span>
+										Box dim:{' '}
 										{bin?.d}
 										{bin?.w}
 										{bin?.h}
@@ -539,7 +545,7 @@ function OrderSettingsComponent(props) {
 													/>
 													<br />
 													<span>
-														{box?.product_name} <br />{' '}
+														{box?.product_name} <br />
 														{box?.d + ' x '}
 														{box?.w + ' x '}
 														{box?.h}
@@ -740,7 +746,6 @@ function OrderSettingsComponent(props) {
 													))}
 												<span> Shipping method: {shipment?.shipping_method}</span> <br/>
 												<span> Tracking # {shipment?.tracking_number}</span>
-												
 											</Card>
 										</Col>
 									))}

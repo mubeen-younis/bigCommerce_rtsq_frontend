@@ -1,3 +1,35 @@
+= 2.1.20 2024-04-18 =
+
+* Fix - Update some shipping rule fields text (Ticket:2600827778) [#274] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/274)
+
+= 2.1.19 2024-04-17 =
+
+* Update - Add Tforce New API in BC (Ticket:2537259103 and 2541618719) [#273] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/273)
+
+= 2.1.18 2024-04-08 =
+
+* Update - Update override rates feature (3rd chunk) (Ticket:2007189654) [#272] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/272)
+
+= 2.1.17 2024-03-25 =
+
+* Update - R+L Carrier New API (Ticket:1870032478) [#271] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/271)
+
+= 2.1.16 2024-03-21 =
+
+* Update - Update override rates feature (2nd chunk) (Ticket:2007189654) [#270] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/270)
+
+= 2.1.15 2024-03-12 =
+
+* Update - Add staff note and show box weight.  (Ticket:2329677373) [#269] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/269)
+
+= 2.1.14 2024-03-12 =
+
+* Fix - USPS give ease to customize label (Ticket:2355944059) [#268] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/268)
+
+= 2.1.13 2024-03-11 =
+
+* Update - Update override rates feature (1st chunk) (Ticket:2007189654) [#267] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/267)
+
 = 2.1.12 2024-02-29 =
 
 * Fix - Update Dropship nickname (Ticket:2302999298) [#266] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/266)
