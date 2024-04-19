@@ -12,17 +12,17 @@ const HoldAtTerminal = ({ quoteSettingsState, handleChange }) => {
 			<Col
 				className='gutter-row'
 				style={{ paddingTop: '11px' }}
-				xs={24}
-				sm={24}
-				md={24}
-				lg={24}
+				xs={12}
+				sm={12}
+				md={12}
+				lg={12}
 				xl={6}>
 				<label className={'text-gray'}>
 					Offer Hold At Terminal as an option
 				</label>
 			</Col>
-			<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-				<Form.Item className={'mb-3'}>
+			<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={18}>
+				<Form.Item className={'mb-0'}>
 					<Checkbox
 						name='hold_at_terminal'
 						checked={quoteSettingsState.hold_at_terminal}
@@ -35,7 +35,6 @@ const HoldAtTerminal = ({ quoteSettingsState, handleChange }) => {
 
 			<Col
 				className='gutter-row'
-				style={{ paddingTop: '11px' }}
 				xs={24}
 				sm={24}
 				md={24}
