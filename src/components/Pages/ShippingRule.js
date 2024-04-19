@@ -852,7 +852,7 @@ function ShippingRulesComponent() {
                       >
                         <div id='country_dropdown'>
                           <Form.Item
-                            className={'mb-2'}
+                            className={'mb-0'}
                             label='Countries'
                             name='filter_country'
                             rules={[
@@ -875,6 +875,9 @@ function ShippingRulesComponent() {
                             </Select>
                           </Form.Item>
                         </div>
+                        <div className={'text-gray mb-2'}>
+                          The app will show shipping rates to ONLY these countries.
+                        </div>
                       </Col>
                     </Row>
                   )}
@@ -890,7 +893,7 @@ function ShippingRulesComponent() {
                       >
                         <div id='state_dropdown'>
                           <Form.Item
-                            className={'mb-2'}
+                            className={'mb-0'}
                             label='States/Provinces'
                             name='filter_state_province'
                             rules={[
@@ -919,6 +922,9 @@ function ShippingRulesComponent() {
                               ))}
                             </Select>
                           </Form.Item>
+                        </div>
+                        <div className={'text-gray mb-2'}>
+                          The app will show shipping rates to ONLY these states/provinces.
                         </div>
                       </Col>
                     </Row>
