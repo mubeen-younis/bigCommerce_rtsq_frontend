@@ -57,7 +57,7 @@ function QuoteSettingsComponentWwe(props) {
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
   const dispatch = useDispatch()
-  const { thresholdSetting } = useSelector(state => state)
+  const { thresholdSetting, staffNoteSettings } = useSelector(state => state)
   const [inputEconomy, setInputEconomy] = useState(props?.quoteSettings?.fedex_freight_economy_label);
   const [inputPriority, setInputPriority] = useState(props?.quoteSettings?.fedex_freight_priority_label);
 
@@ -153,6 +153,14 @@ function QuoteSettingsComponentWwe(props) {
           props.token
         )
       )
+      dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
+					props.token
+				)
+			)
     } else {
       errormsg =
         errormsg === ''

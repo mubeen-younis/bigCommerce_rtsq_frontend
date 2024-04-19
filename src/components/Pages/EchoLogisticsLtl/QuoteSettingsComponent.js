@@ -41,7 +41,7 @@ function QuoteSettingsComponentWwe(props) {
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const [ratingMethod, setRatingMethod] = useState(1)
-	const { quoteSettings, installedAddons, token, carrierId, radPlans, thresholdSetting } =
+	const { quoteSettings, installedAddons, token, carrierId, radPlans, thresholdSetting, staffNoteSettings } =
 		useSelector(state => state)
 
 	useEffect(() => {
@@ -99,6 +99,14 @@ function QuoteSettingsComponentWwe(props) {
 					thresholdSetting,
 					'GET_THRESHOLD_SETTINGS',
 					'submit_threshold_settings',
+					token
+				)
+			)
+			dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
 					token
 				)
 			)
