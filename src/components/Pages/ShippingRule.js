@@ -876,7 +876,7 @@ function ShippingRulesComponent() {
                           </Form.Item>
                         </div>
                         <div className={'text-gray mb-2'}>
-                          The app will show shipping rates to ONLY these countries.
+                            Only customers from this country will be presented with shipping rates for this provider.
                         </div>
                       </Col>
                     </Row>
@@ -924,7 +924,7 @@ function ShippingRulesComponent() {
                           </Form.Item>
                         </div>
                         <div className={'text-gray mb-2'}>
-                          The app will show shipping rates to ONLY these states/provinces.
+                            Only customers from these states/provinces will be presented with shipping rates for this provider.
                         </div>
                       </Col>
                     </Row>
