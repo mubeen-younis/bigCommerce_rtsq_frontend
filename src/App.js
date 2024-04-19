@@ -1,51 +1,52 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from 'react-router-dom'
-import { Layout, message, Modal, Spin } from 'antd'
-import { LoadingOutlined } from '@ant-design/icons'
-import './App.css'
-import './responsive.css'
-import SideMenu from './partials/SideMenu'
-import { connect, useDispatch, useSelector } from 'react-redux'
-import { getLocations } from './Actions/Warehouse'
+} from 'react-router-dom';
+import { Layout, message, Modal, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import './App.css';
+import './responsive.css';
+import SideMenu from './partials/SideMenu';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { getLocations } from './Actions/Warehouse';
 import {
   getInstalledCarriers,
   getInstalledAddons,
   getAllCarriers,
   getAllAddons,
-} from './Actions/EnitureStore'
-import { getPlans } from './Actions/Plans'
-import { getRadPlans, getRADSettings } from './Actions/RAD'
-import { getSbsPlans } from './Actions/SBS'
-import { getPalletsPlans } from './Actions/Pallets'
-import RendorCarrier from './components/RendorCarrier'
-import RendorAddon from './components/RenderAddon'
-import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent'
-import PlansComponent from './components/Plans/PlansComponent'
-import { setStore, getCurrentPlanInfo } from './Actions/Action'
-import { getShippingGroups } from './Actions/ShippingGroupsActions'
-import WarehouseComponent from './components/Pages/WarehouseComponent'
-import FDOComponent from './components/Pages/FDOComponent'
-import AVComponent from './components/Pages/AVComponent'
-import { getFDOCouponInfo } from './Actions/FDOActions'
-import ImportCsvComponent from './components/Pages/ImportCsvComponent'
-import UserGuideComponent from './components/Pages/UserGuideComponent'
-import AppLogs from './components/Pages/AppLogs'
-import { getDbscData}from './Actions/DbscActions'
-import types from './Stores/types'
-import OrdersComponent from './components/OrdersComponent'
-import ShippingGroupsComponent from './components/Pages/ShippingGroup'
-import ShippingRulesComponent from './components/Pages/ShippingRule'
-import RADSettings from './components/Pages/RADSettings'
-import CompareRates from './components/Pages/CompareRates'
-import ProductSettingsComponent from './components/ProductSettingsComponent'
-import PaymentsTabComponent from './components/Pages/PaymentTabComponent'
+} from './Actions/EnitureStore';
+import { getPlans } from './Actions/Plans';
+import { getRadPlans, getRADSettings } from './Actions/RAD';
+import { getSbsPlans } from './Actions/SBS';
+import { getPalletsPlans } from './Actions/Pallets';
+import RendorCarrier from './components/RendorCarrier';
+import RendorAddon from './components/RenderAddon';
+import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent';
+import PlansComponent from './components/Plans/PlansComponent';
+import { setStore, getCurrentPlanInfo } from './Actions/Action';
+import { getShippingGroups } from './Actions/ShippingGroupsActions';
+import WarehouseComponent from './components/Pages/WarehouseComponent';
+import FDOComponent from './components/Pages/FDOComponent';
+import AVComponent from './components/Pages/AVComponent';
+import { getFDOCouponInfo } from './Actions/FDOActions';
+import ImportCsvComponent from './components/Pages/ImportCsvComponent';
+import UserGuideComponent from './components/Pages/UserGuideComponent';
+import AppLogs from './components/Pages/AppLogs';
+import { getDbscData } from './Actions/DbscActions';
+import types from './Stores/types';
+import OrdersComponent from './components/OrdersComponent';
+import ShippingGroupsComponent from './components/Pages/ShippingGroup';
+import ShippingRulesComponent from './components/Pages/ShippingRule';
+import RADSettings from './components/Pages/RADSettings';
+import CompareRates from './components/Pages/CompareRates';
+import ProductSettingsComponent from './components/ProductSettingsComponent';
+import PaymentsTabComponent from './components/Pages/PaymentTabComponent';
+import { getCSVDownloadLink } from './Actions/ImportCsv';
 
-const { Header, Content } = Layout
+const { Header, Content } = Layout;
 
 function App(props) {
   const {
@@ -71,48 +72,50 @@ function App(props) {
     getStorePlans,
     setStoreData,
     getShippingGroups,
-  } = props
+  } = props;
 
-  const [logsRoute, setLogsRoute] = useState(false)
-  const dispatch = useDispatch()
-  const cPlan = useSelector((state) => state.currentPlan)
-  const pathName = window.location.pathname
+  const [logsRoute, setLogsRoute] = useState(false);
+  const dispatch = useDispatch();
+  const cPlan = useSelector((state) => state.currentPlan);
+  const pathName = window.location.pathname;
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
+    const urlParams = new URLSearchParams(window.location.search);
 
     const fetchAppData = (token = '') => {
-      setStoreData(token)
-      currentPlan(token)
-      getRADPlans(token)
-      getSbsPlans(token)
-      getPalletsPlans(token)
-      locations(token)
-      getAllCarriers(token)
-      getAllAddons(token)
-      getInstalledCarriers(token)
-      getInstalledAddons(token)
-      getStorePlans()
-      getShippingGroups(token)
-      dispatch(getFDOCouponInfo(token))
-      dispatch(getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES, token))
-      dispatch(getRADSettings(token))
-    }
- 
-      const devEnv = process?.env?.NODE_ENV === 'development'
-      if (devEnv) {
-        const localToken =
-          urlParams.get('store') ?? localStorage.getItem('store') ?? null
-        setToken(localToken)
-        if (!pathName.includes('app_logs')) {
-        fetchAppData(localToken)
-        }
-      } else {
-        const prodToken = urlParams.get('store') ?? null
-        dispatch({ type: 'TOKEN', payload: prodToken })
-        fetchAppData(prodToken)
+      setStoreData(token);
+      currentPlan(token);
+      getRADPlans(token);
+      getSbsPlans(token);
+      getPalletsPlans(token);
+      locations(token);
+      getAllCarriers(token);
+      getAllAddons(token);
+      getInstalledCarriers(token);
+      getInstalledAddons(token);
+      getStorePlans();
+      getShippingGroups(token);
+      dispatch(getFDOCouponInfo(token));
+      dispatch(
+        getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES, token)
+      );
+      dispatch(getRADSettings(token));
+      dispatch(getCSVDownloadLink(token, false));
+    };
+
+    const devEnv = process?.env?.NODE_ENV === 'development';
+    if (devEnv) {
+      const localToken =
+        urlParams.get('store') ?? localStorage.getItem('store') ?? null;
+      setToken(localToken);
+      if (!pathName.includes('app_logs')) {
+        fetchAppData(localToken);
       }
-  
+    } else {
+      const prodToken = urlParams.get('store') ?? null;
+      dispatch({ type: 'TOKEN', payload: prodToken });
+      fetchAppData(prodToken);
+    }
   }, [
     currentPlan,
     dispatch,
@@ -127,53 +130,51 @@ function App(props) {
     locations,
     setStoreData,
     setToken,
-  ])
+  ]);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     if (pathName.includes('app_logs')) {
-      setLogsRoute(true)
+      setLogsRoute(true);
     }
-  }, [window.location.pathname])
+  }, [window.location.pathname]);
 
   message.config({
     maxCount: 1,
-  })
+  });
 
   if (pathName.includes('app_logs')) {
-    return <AppLogs/>
+    return <AppLogs />;
   }
   if (alertMessageType === 'Token Mismatch') {
-    return <h2 text='danger'>Invalid Token! Contact your administrator.</h2>
+    return <h2 text='danger'>Invalid Token! Contact your administrator.</h2>;
   }
-
 
   const showMessageNotice = () => {
     if (alertMessageType === 'success') {
-      message.success(alertMessage)
+      message.success(alertMessage);
     } else if (alertMessageType === 'error') {
-      message.error(alertMessage)
+      message.error(alertMessage);
     } else if (alertMessageType === 'warning') {
-      message.warning(alertMessage)
+      message.warning(alertMessage);
     } else if (alertMessageType === 'loading') {
-      message.loading('Loading. Please wait...')
+      message.loading('Loading. Please wait...');
     }
-  }
+  };
 
   if (showAlertMessage) {
-    showMessageNotice()
+    showMessageNotice();
   }
 
   const confirmModal = (ok, cancel) => {
-    confirmModalAction(ok, cancel)
-  }
+    confirmModalAction(ok, cancel);
+  };
 
   if (token === null || token === undefined) {
-    return <h1>Invalid store.</h1>
+    return <h1>Invalid store.</h1>;
   }
 
   if (alertMessageType === 'Token Mismatch') {
-    return <h2 text='danger'>Invalid Token! Contact your administrator.</h2>
+    return <h2 text='danger'>Invalid Token! Contact your administrator.</h2>;
   }
 
   if (
@@ -189,9 +190,9 @@ function App(props) {
           marginTop: '400px',
         }}
       />
-    )
+    );
 
-    return <Spin indicator={antIcon} />
+    return <Spin indicator={antIcon} />;
   }
 
   return (
@@ -214,10 +215,19 @@ function App(props) {
               <Route exact path='/plans' component={PlansComponent} />
               <Route path='/fdo' component={FDOComponent} />
               <Route path='/importcsv' component={ImportCsvComponent} />
-              <Route path='/shipping_groups' component={ShippingGroupsComponent} />
-              <Route path='/shipping_rules' component={ShippingRulesComponent} />
+              <Route
+                path='/shipping_groups'
+                component={ShippingGroupsComponent}
+              />
+              <Route
+                path='/shipping_rules'
+                component={ShippingRulesComponent}
+              />
               <Route path='/rad_settings' component={RADSettings} />
-              <Route path='/product_settings' component={ProductSettingsComponent} />
+              <Route
+                path='/product_settings'
+                component={ProductSettingsComponent}
+              />
               <Route path='/orders' component={OrdersComponent} />
               <Route path='/compare_rates' component={CompareRates} />
               <Route path='/user_guide' component={UserGuideComponent} />
@@ -242,7 +252,7 @@ function App(props) {
         </Layout>
       </Layout>
     </Router>
-  )
+  );
 }
 
 const mapStateToProps = (state) => {
@@ -259,8 +269,8 @@ const mapStateToProps = (state) => {
     installedAddons: state.installedAddons,
     carriers: state.carriers,
     addons: state.addons,
-  }
-}
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -275,8 +285,8 @@ const mapDispatchToProps = (dispatch) => {
     getStorePlans: () => dispatch(getPlans()),
     getShippingGroups: (token) => dispatch(getShippingGroups(token)),
     setToken: (token) => {
-      localStorage.setItem('store', token)
-      dispatch({ type: 'TOKEN', payload: token })
+      localStorage.setItem('store', token);
+      dispatch({ type: 'TOKEN', payload: token });
     },
     setStoreData: (store_token) => dispatch(setStore(store_token)),
     currentPlan: (store_token) => dispatch(getCurrentPlanInfo(store_token)),
@@ -291,7 +301,7 @@ const mapDispatchToProps = (dispatch) => {
           body: '',
         },
       }),
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -605,6 +605,12 @@ const Reducer = (state = initialState, action) => {
 				importIndexes: action.payload,
 			}
 
+		case types.DOWNLOAD_LINK:
+			return {
+				...state,
+				exportCSVDownloadLink: action.payload,
+			}
+
 		case types.SET_CARRIER_TYPE: {
 			return {
 				...state,
@@ -700,6 +706,12 @@ const Reducer = (state = initialState, action) => {
 				statesProvinces: action.payload,
 			}
 
+		/* Get Carrier Services */
+		case types.GET_CARRIER_SERVICES:
+			return {
+				...state,
+				carrierServices: action.payload,
+			}
 		/* Get Store Categories */
 		case types.GET_STORE_CATEGORIES:
 			return {

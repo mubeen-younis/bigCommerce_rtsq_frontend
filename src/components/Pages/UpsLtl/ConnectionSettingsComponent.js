@@ -18,14 +18,9 @@ function ConnectionSettingsComponent(props) {
 			if(!(connectionSettings?.api_type) && (connectionSettings?.carrierId)){
 				connectionSettings['api_type'] = 'legacy_api'
 			}
-			// TODO: Remove below condition to enable new api on UI
-			if((connectionSettings?.api_type === 'new_api') && (connectionSettings?.carrierId)){
-				connectionSettings['api_type'] = 'legacy_api'
-			}
-			// TODO: In case of new api pass 'new_api' instead of 'legacy_api' in dispatch()
 			dispatch({
 				type: types.SET_UPS_LTL_API_TYPE,
-				payload: connectionSettings?.api_type ?? 'legacy_api',
+				payload: connectionSettings?.api_type ?? 'new_api',
 			})
 		}
 	}, [connectionSettings, dispatch])
@@ -69,7 +64,6 @@ function ConnectionSettingsComponent(props) {
 				}}
 				onFinish={onFinish}
 			>
-				{/* TODO: Uncommit this code to select new api from dropdown
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>
 					<Select
 						defaultValue={!connectionSettings?.api_type && connectionSettings?.carrierId ? 'legacy_api' : 'new_api'}
@@ -84,22 +78,15 @@ function ConnectionSettingsComponent(props) {
 							})
 						}
 					/>
-				</Form.Item> */}
+				</Form.Item>
 
 				{ UpsLtlApiType == 'new_api' ? (
 					<>
-					<Form.Item
-						label='Account Number'
-						name='new_api_account_number'
-						rules={[{ required:false, message: 'Account Number' }]}
-					>
-						<Input placeholder='Account Number' maxLength={8}/>
-					</Form.Item>
 
 					<Form.Item
 						label='Client ID'
 						name='clientId'
-						rules={[{ required: true, message: 'Client ID' }]}
+						rules={[{ required: true, message: 'Client ID is required' }]}
 					>
 						<Input placeholder='Client ID' maxLength={100}/>
 					</Form.Item>
@@ -107,14 +94,31 @@ function ConnectionSettingsComponent(props) {
 					<Form.Item
 						label='Client Secret'
 						name='clientSecret'
-						rules={[{ required: true, message: 'Client Secret' }]}
+						rules={[{ required: true, message: 'Client Secret is required' }]}
 					>
 						<Input placeholder='Client Secret' maxLength={100}/>
+					</Form.Item>
+
+					<Form.Item
+						label='Username'
+						name='username'
+						rules={[{ required: false, message: 'Username is required' }]}
+					>
+						<Input placeholder='Username' maxLength={100}/>
+					</Form.Item>
+
+					<Form.Item
+						label='Password'
+						name='password'
+						rules={[{ required: false, message: 'Password is required' }]}
+					>
+						<Input type='text' placeholder='Password' maxLength={100}/>
 					</Form.Item>
 
 					</>
 				) : (
 					<>
+
 				<Form.Item
 					label='Account Number'
 					name='account_number'
@@ -126,23 +130,23 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item
 					label='Username'
 					name='username'
-					rules={[{ required: true, message: 'Username' }]}
+					rules={[{ required: true, message: 'Username is required' }]}
 				>
-					<Input placeholder='Username' />
+					<Input placeholder='Username' maxLength={100}/>
 				</Form.Item>
 
 				<Form.Item
 					label='Password'
 					name='password'
-					rules={[{ required: true, message: 'Password' }]}
+					rules={[{ required: true, message: 'Password is required' }]}
 				>
-					<Input type='text' placeholder='Password' />
+					<Input type='text' placeholder='Password' maxLength={100}/>
 				</Form.Item>
 
 				<Form.Item
 					label='API Access Key'
 					name='ups_api_access_key'
-					rules={[{ required: true, message: 'API Access Key' }]}
+					rules={[{ required: true, message: 'API Access Key is required' }]}
 				>
 					<Input placeholder='API Access Key' />
 				</Form.Item>
@@ -158,6 +162,7 @@ function ConnectionSettingsComponent(props) {
 						<Radio value='pro'>Production</Radio>
 					</Radio.Group>
 				</Form.Item> */}
+				</>)}
 
 				<Form.Item
 					name='rates_my_freight_based'
@@ -169,7 +174,6 @@ function ConnectionSettingsComponent(props) {
 						<Radio value={1}>Dimensions</Radio>
 					</Radio.Group>
 				</Form.Item>
-				</>)}
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

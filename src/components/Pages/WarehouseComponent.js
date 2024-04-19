@@ -541,6 +541,7 @@ useEffect(() => {
                     >
                       <Input
                         name='nickname'
+                        maxLength={50}
                         placeholder='Nickname'
                         value={locationDetail.nickname}
                         onChange={changeValue}
