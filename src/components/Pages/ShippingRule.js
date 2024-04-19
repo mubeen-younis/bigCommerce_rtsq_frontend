@@ -797,9 +797,9 @@ function ShippingRulesComponent() {
                         document.getElementById('type_dropdown')
                       }
                     >
-                      <Option value={'1'}>Restrict By Country</Option>
-                      <Option value={'3'}>Restrict By State</Option>
-                      <Option value={'4'}>Restrict By Postal Codes</Option>
+                      <Option value={'1'}>Restrict To Country</Option>
+                      <Option value={'3'}>Restrict To State</Option>
+                      <Option value={'4'}>Restrict To Postal Codes</Option>
                       <Option value={'5'}>Restrict To Origin Locations</Option>
                       <Option value={'2'}>Hide Methods</Option>
                       <Option value={'6'}>Override Rates</Option>
