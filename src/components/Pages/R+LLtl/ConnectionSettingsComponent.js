@@ -54,36 +54,26 @@ function ConnectionSettingsComponent(props) {
 				size={'large'}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					label='Account Number'
-					name='account_number'
-					rules={[
-						{
-							message: 'Account Number',
-						},
-					]}>
-					<Input placeholder='Account Number' />
-				</Form.Item>
-
+					
 				<Form.Item
 					label='Username'
 					name='username'
-					rules={[{ required: true, message: 'Username' }]}>
+					rules={[{ required: false, message: 'Username' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
 
 				<Form.Item
 					label='Password'
 					name='password'
-					rules={[{ required: true, message: 'Password' }]}>
+					rules={[{ required: false, message: 'Password' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
 				<Form.Item
-					label='Authentication Key'
-					name='authentication_key'
-					rules={[{ required: true, message: 'Authentication Key' }]}>
-					<Input placeholder='Authentication Key' />
+					label='API Key'
+					name='api_key'
+					rules={[{ required: true, message: 'API Key Is Required ' }]}>
+					<Input placeholder='API Key' />
 				</Form.Item>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>

@@ -621,7 +621,7 @@ function ShippingRulesComponent() {
                 (carrier.carrier_type == 1
                   ? <span> {carrier.name} (LTL Freight Providers) <br/> {accessorialServices[record?.filter_services]} </span>
                   : carrier.carrier_type == 2
-                  ? record?.filter_services
+                  ? <span> {carrier.name} (Parcel & Postal Providers) <br/> {record?.filter_services} </span>
                   : null
                 )
             )
@@ -801,9 +801,9 @@ function ShippingRulesComponent() {
                         document.getElementById('type_dropdown')
                       }
                     >
-                      <Option value={'1'}>Restrict By Country</Option>
-                      <Option value={'3'}>Restrict By State</Option>
-                      <Option value={'4'}>Restrict By Postal Codes</Option>
+                      <Option value={'1'}>Restrict To Country</Option>
+                      <Option value={'3'}>Restrict To State</Option>
+                      <Option value={'4'}>Restrict To Postal Codes</Option>
                       <Option value={'5'}>Restrict To Origin Locations</Option>
                       <Option value={'2'}>Hide Methods</Option>
                       <Option value={'6'}>Override Rates</Option>
@@ -911,7 +911,7 @@ function ShippingRulesComponent() {
                       >
                         <div id='state_dropdown'>
                           <Form.Item
-                            className={'mb-2'}
+                            className={'mb-0'}
                             label='States/Provinces'
                             name='filter_state_province'
                             rules={[
@@ -941,6 +941,9 @@ function ShippingRulesComponent() {
                             </Select>
                           </Form.Item>
                         </div>
+                        <div className={'text-gray mb-2'}>
+                            Only customers from these states/provinces will be presented with shipping rates for this provider.
+                          </div>
                       </Col>
                     </Row>
                   )}
@@ -1325,7 +1328,18 @@ function ShippingRulesComponent() {
                                   carrier?.slug == 'ups-ltl' ||
                                   carrier?.slug == 'ups-small' ||
                                   carrier?.slug == 'echo-ltl' ||
-                                  carrier?.slug == 'saia-ltl' ? (
+                                  carrier?.slug == 'odfl-ltl' ||
+                                  carrier?.slug == 'daylight-ltl' ||
+                                  carrier?.slug == 'ltl-quotes' ||
+                                  carrier?.slug == 'rl-ltl' ||
+                                  carrier?.slug == 'southeastern-ltl' ||
+                                  carrier?.slug == 'saia-ltl' ||
+                                  carrier?.slug == 'freightquote-chr-ltl' ||
+                                  carrier?.slug == 'freightquote-ltl' ||
+                                  carrier?.slug == 'ups-ship-engine' ||
+                                  carrier?.slug == 'small-package' ||
+                                  carrier?.slug == 'fedex-small' ||
+                                  carrier?.slug == 'priority-one-ltl'? (
                                   <Option value={carrier?.slug}>
                                     {carrier.carrier_type == 1
                                       ? carrier.name + ' (LTL Freight Providers)'
