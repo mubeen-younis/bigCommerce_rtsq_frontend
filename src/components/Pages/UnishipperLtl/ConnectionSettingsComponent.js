@@ -54,10 +54,10 @@ function ConnectionSettingsComponent(props) {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have a Unishippers account to
+				<strong>Note!</strong> You must have a Unishippers Freight account to
 				use this application. If you do not have one, click{' '}
 				<a
-					href='https://eniture.com/request-worldwide-express-account-number/'
+					href='https://www.unishippers.com/request-account'
 					target='_blank'
 					rel='noreferrer'>
 					here
