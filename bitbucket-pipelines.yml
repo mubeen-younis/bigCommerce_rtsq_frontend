@@ -8,7 +8,7 @@ options:
   max-time: 60
 pipelines:
   branches:
-    remove-upsltl-newapi:
+    feature/add-carrier-unishipper-ltl:
     - step:
         caches:
           - composer
