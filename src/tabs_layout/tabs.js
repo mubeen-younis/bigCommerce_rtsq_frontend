@@ -54,6 +54,7 @@ function TabsLayout() {
         'freightquote-chr-ltl',
         'ups-ship-engine',
         'priority-one-ltl',
+        'unishipper-ltl',
         'dbsc',
       ];
 
@@ -120,7 +121,8 @@ function TabsLayout() {
           'tql-ltl',
           'echo-ltl',
           'freightquote-chr-ltl',
-          'priority-one-ltl'
+          'priority-one-ltl',
+          'unishipper-ltl'
         ].includes(carrierSlug) && (
           <TabPane tab='Carriers' key='2'>
             <CarriersComponent />
