@@ -1,3 +1,11 @@
+= 2.1.21 2024-04-22 =
+
+* Update - Add Connection Settings In shipEngine (Ticket:2455207255) [#275] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/275)
+
+= 2.1.20 2024-04-18 =
+
+* Fix - Update some shipping rule fields text (Ticket:2600827778) [#274] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/274)
+
 = 2.1.19 2024-04-17 =
 
 * Update - Add Tforce New API in BC (Ticket:2537259103 and 2541618719) [#273] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/273)
