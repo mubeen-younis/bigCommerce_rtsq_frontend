@@ -3,6 +3,8 @@ import { Typography, Row, Col, Space, Button, Table } from 'antd';
 import { getPaymentsDetial } from '../../Actions/PaymentsAction';
 import addKeysToList from './../../Utilities/addKey';
 import { useDispatch, useSelector } from 'react-redux';
+import { dispatchAlert } from '../../Utilities/dispatchAlert';
+import axios from './../../Utilities/authToken';
 const { Title } = Typography;
 
 function PaymentsTabComponent(props) {
@@ -19,6 +21,60 @@ function PaymentsTabComponent(props) {
     }
   }, [dispatch, getPayments, token]);
 
+  const getReceiptDetial = async (id) => {
+    try {
+      dispatch(dispatchAlert(true, 'loading'));
+
+      const config = {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      };
+
+      const {
+        data: { error, data, message },
+      } = await axios.get('get_receipt?id=' + id, config);
+
+      if (!error) {
+        openInNewTab(data?.file_url);
+      } else {
+        dispatch(dispatchAlert(error, error ? 'error' : 'success', message));
+      }
+    } catch ({ response }) {
+      dispatch(dispatchAlert(false, null));
+    }
+  };
+  const formatDate = (date = '') => {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    if (!date || (date && date?.trim() === '')) return date;
+
+    let newDate = new Date(date);
+    const monthIndex = newDate.getMonth();
+    const year = newDate.getFullYear();
+    let day = newDate.getDate();
+
+    if (+day < 10) {
+      day = '0' + day;
+    }
+
+    const formattedDate = `${months[monthIndex]} ${day}, ${year}`;
+
+    return formattedDate;
+  };
   const columns = [
     {
       key: 'amount',
@@ -42,13 +98,14 @@ function PaymentsTabComponent(props) {
       key: 'created_at',
       title: 'Date',
       dataIndex: 'created_at',
+      render: (created_at) => formatDate(created_at),
     },
     {
       key: 'action',
       title: 'Manage',
       render: (text) => (
         <Space size='middle'>
-          <Button onClick={() => openInNewTab(text.receipt_url)}>
+          <Button onClick={() => getReceiptDetial(text.id)}>
             View Receipt
           </Button>
         </Space>
