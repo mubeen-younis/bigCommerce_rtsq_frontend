@@ -85,6 +85,7 @@ function PaymentsTabComponent(props) {
       key: 'invoice_id',
       title: 'Description',
       dataIndex: 'receipt_number',
+      render: (data) => (data?.is_addon ? 'Addon fee' : 'Subscription fee'),
     },
     {
       key: 'is_addon',
@@ -105,7 +106,7 @@ function PaymentsTabComponent(props) {
       render: (text) => (
         <Space size='middle'>
           <Button onClick={() => getReceiptDetial(text.id)}>
-            View Receipt
+            View/Download
           </Button>
         </Space>
       ),
