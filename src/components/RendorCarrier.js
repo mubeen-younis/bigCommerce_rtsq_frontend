@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import TabsLayout from '../tabs_layout/tabs';
 import { getConnectionSettings } from '../Actions/Connection';
-import { getQuoteSettings, getThresholdSettings } from '../Actions/Settings';
+import { getQuoteSettings, getStaffNoteSettings, getThresholdSettings } from '../Actions/Settings';
 import { getInsuraceStatus } from '../Actions/ProductSettings';
 
 function RendorCarrier(props) {
@@ -29,6 +29,7 @@ function RendorCarrier(props) {
       dispatch({ type: 'GET_SERVICES', payload: null });
       dispatch({ type: 'GET_ADD_TAB_SETTING', payload: null });
       dispatch(getThresholdSettings(token));
+      dispatch(getStaffNoteSettings(token));
     }
   }, [
     carrierId,

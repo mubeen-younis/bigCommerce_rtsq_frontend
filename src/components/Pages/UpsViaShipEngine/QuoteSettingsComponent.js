@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import { Typography, Row, Col, Form, Input, Skeleton, Radio } from 'antd';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getQuoteSettings } from '../../../Actions/Settings';
 import {
@@ -16,6 +16,7 @@ import GroundTransit from '../../GroundTransit';
 import HazardousMaterial from '../../HazardousMaterial';
 import SaveButton from '../../SaveButton';
 import ErrorManagment from '../../ErrorManagment';
+import StaffNoteSettings from '../../StaffNoteSettings'
 import EnableLogs from '../../EnableLogs';
 
 const { Title } = Typography;
@@ -74,6 +75,7 @@ function QuoteSettingsComponentUpsShipEngine(props) {
   const [checkAll, setCheckAll] = useState(false);
   const [internationalcheckAll, setInternationalCheckAll] = useState(false);
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState);
+  const { staffNoteSettings } = useSelector(state => state)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -354,6 +356,14 @@ function QuoteSettingsComponentUpsShipEngine(props) {
         { ...quoteSettingsState, carrierId: +props.carrierId },
         props.token
       );
+      dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
+					props.token
+				)
+			)
     } else {
       errormsg =
         errormsg === ''
@@ -501,6 +511,11 @@ function QuoteSettingsComponentUpsShipEngine(props) {
         <EnableLogs 
 					quoteSettingsState={quoteSettingsState} 
 					setQuoteSettingsState={setQuoteSettingsState}
+				/>
+
+        <StaffNoteSettings
+					quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
 				/>
 
         <ErrorManagment

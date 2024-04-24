@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { Typography, Row, Col, Form, Input, Skeleton, Select } from 'antd'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
 import {
@@ -16,6 +16,7 @@ import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 import ErrorManagment from '../../ErrorManagment'
 import EnableLogs from '../../EnableLogs'
+import StaffNoteSettings from '../../StaffNoteSettings'
 
 const { Title } = Typography
 const initialState = {
@@ -105,6 +106,7 @@ function QuoteSettingsComponentWweSmall(props) {
 	const [checkAll, setCheckAll] = useState(false)
 	const [internationalcheckAll, setInternationalCheckAll] = useState(false)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
+	const { staffNoteSettings } = useSelector(state => state)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -347,6 +349,14 @@ function QuoteSettingsComponentWweSmall(props) {
 				{ ...quoteSettingsState, carrierId: +props.carrierId },
 				props.token
 			)
+			dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
+					props.token
+				)
+			)
 		} else {
 			errormsg =
 				errormsg === ''
@@ -560,6 +570,11 @@ function QuoteSettingsComponentWweSmall(props) {
 				<EnableLogs 
 					quoteSettingsState={quoteSettingsState} 
 					setQuoteSettingsState={setQuoteSettingsState}
+				/>
+
+				<StaffNoteSettings
+					quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
 				/>
 
 				<ErrorManagment

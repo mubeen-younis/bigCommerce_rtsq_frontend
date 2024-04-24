@@ -64,7 +64,7 @@ function QuoteSettingsComponentWwe(props) {
   const [holdTeminalStatus, SetHoldTeminalStatus] = useState(false)
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
-  const { thresholdSetting, connectionSettings, quoteSettings  } = useSelector(state => state)
+  const { thresholdSetting, connectionSettings, quoteSettings, staffNoteSettings  } = useSelector(state => state)
   const [inputValue, setInputValue] = useState('');
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -164,6 +164,14 @@ function QuoteSettingsComponentWwe(props) {
           props.token
         )
       )
+      dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
+					props.token
+				)
+			)
     } else {
       dispatch({
         type: 'ALERT_MESSAGE',

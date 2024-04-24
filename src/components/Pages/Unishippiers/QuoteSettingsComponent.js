@@ -18,6 +18,7 @@ import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
 import SaveButton from '../../SaveButton'
 import ErrorManagment from '../../ErrorManagment'
+import StaffNoteSettings from '../../StaffNoteSettings'
 import EnableLogs from '../../EnableLogs'
 import { useSelector } from 'react-redux'
 
@@ -85,7 +86,7 @@ function QuoteSettingsComponentWweSmall(props) {
 	const [internationalcheckAll, setInternationalCheckAll] = useState(false)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
-	const {uniShipperSmallApiType} = useSelector(state => state)
+	const {uniShipperSmallApiType, staffNoteSettings} = useSelector(state => state)
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -423,6 +424,14 @@ function QuoteSettingsComponentWweSmall(props) {
 		if (checkCS && errormsg === '') {
 			const data = { ...quoteSettingsState, carrierId: +props.carrierId }
 			props.postData(data, props.token)
+			dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
+					props.token
+				)
+			)
 		} else {
 			errormsg =
 				errormsg === ''
@@ -623,6 +632,11 @@ function QuoteSettingsComponentWweSmall(props) {
 				<EnableLogs 
 					quoteSettingsState={quoteSettingsState} 
 					setQuoteSettingsState={setQuoteSettingsState}
+				/>
+
+				<StaffNoteSettings
+					quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
 				/>
 
 				<ErrorManagment
