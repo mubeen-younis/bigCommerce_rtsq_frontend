@@ -36,6 +36,7 @@ function PaymentsTabComponent(props) {
       } = await axios.get('get_receipt?id=' + id, config);
 
       if (!error) {
+        dispatch(dispatchAlert(false, null));
         openInNewTab(data?.file_url);
       } else {
         dispatch(dispatchAlert(error, error ? 'error' : 'success', message));
