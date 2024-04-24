@@ -123,6 +123,7 @@ function PaymentsTabComponent(props) {
               className={'custom-table'}
               dataSource={getPayments ? addKeysToList(getPayments) : []}
               columns={columns}
+              pagination={false}
             />
           </Col>
         </Row>
