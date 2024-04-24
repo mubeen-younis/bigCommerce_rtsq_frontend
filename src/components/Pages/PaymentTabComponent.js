@@ -16,10 +16,8 @@ function PaymentsTabComponent(props) {
   };
 
   useEffect(() => {
-    if (!getPayments) {
-      dispatch(getPaymentsDetial(token));
-    }
-  }, [dispatch, getPayments, token]);
+    dispatch(getPaymentsDetial(token));
+  }, [dispatch, token]);
 
   const getReceiptDetial = async (id) => {
     try {
