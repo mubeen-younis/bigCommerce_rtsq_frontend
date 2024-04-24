@@ -86,7 +86,7 @@ function PaymentsTabComponent(props) {
     {
       key: 'invoice_id',
       title: 'Description',
-      dataIndex: 'invoice_id',
+      dataIndex: 'receipt_number',
     },
     {
       key: 'is_addon',
