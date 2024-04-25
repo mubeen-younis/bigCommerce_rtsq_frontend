@@ -37,7 +37,7 @@ const StaffNoteSettings = ({ quoteSettingsState, handleStateChange }) => {
                   payload: e.target.checked ? 1 : 0,
                 })
 							}>
-							When checked, a summary of the shipment will be recorded in the order notes.
+							When checked, a summary of the shipping quote will be recorded in the order notes.
 						</Checkbox>
 					</Form.Item>
 				</Col>
