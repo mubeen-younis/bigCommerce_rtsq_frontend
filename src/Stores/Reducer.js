@@ -1087,6 +1087,17 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				thresholdSetting: {...state.thresholdSetting, parcel_rates:action.payload},
 			}
+		case types.GET_STAFFNOTE_SETTINGS:
+		case types.SET_STAFFNOTE_SETTINGS:
+			return {
+				...state,
+				staffNoteSettings: action.payload,
+			}
+		case types.TOGGLE_STAFFNOTE_SETTINGS:
+			return {
+				...state,
+				staffNoteSettings: {...state.staffNoteSettings, is_staff_note_active:action.payload},
+			}
 		case types.SET_COMPARE_RATES:
 				return {
 					...state,

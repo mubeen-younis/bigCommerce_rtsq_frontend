@@ -2,6 +2,7 @@ import React from 'react'
 import { Row, Col, Form, Input } from 'antd'
 import { handlingFeeMarkup } from '../Utilities/numberValidation'
 import EnableLogs from './EnableLogs'
+import StaffNoteSettings from './StaffNoteSettings'
 
 const HandlingUnit = ({ quoteSettingsState, handleChange, setQuoteSettingsState }) => {
 	return (
@@ -118,6 +119,11 @@ const HandlingUnit = ({ quoteSettingsState, handleChange, setQuoteSettingsState 
 			<EnableLogs 
 				quoteSettingsState={quoteSettingsState} 
 				setQuoteSettingsState={setQuoteSettingsState}
+			/>
+
+			<StaffNoteSettings
+				quoteSettingsState={quoteSettingsState}
+				handleChange={handleChange}
 			/>
 		</>
 	)

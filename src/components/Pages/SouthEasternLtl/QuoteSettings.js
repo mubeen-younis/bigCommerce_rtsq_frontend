@@ -42,7 +42,7 @@ function QuoteSettingsComponent(props) {
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
   const dispatch = useDispatch()
-  const { thresholdSetting, quoteSettings } = useSelector(state => state)
+  const { thresholdSetting, quoteSettings, staffNoteSettings } = useSelector(state => state)
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
@@ -108,6 +108,14 @@ function QuoteSettingsComponent(props) {
           props.token
         )
       )
+      dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
+					props.token
+				)
+			)
     } else {
       dispatch({
         type: 'ALERT_MESSAGE',

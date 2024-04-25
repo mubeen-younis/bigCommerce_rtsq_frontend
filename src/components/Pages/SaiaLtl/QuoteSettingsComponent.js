@@ -41,7 +41,7 @@ function QuoteSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
-	const { thresholdSetting, quoteSettings } = useSelector(state => state)
+	const { thresholdSetting, quoteSettings, staffNoteSettings } = useSelector(state => state)
 	const [notifyDelivery, setNotifyDelivery] = useState(true)
 	const [inputValue, setInputValue] = useState('');
 
@@ -117,6 +117,14 @@ function QuoteSettingsComponent(props) {
 					thresholdSetting,
 					'GET_THRESHOLD_SETTINGS',
 					'submit_threshold_settings',
+					props.token
+				)
+			)
+			dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
 					props.token
 				)
 			)
