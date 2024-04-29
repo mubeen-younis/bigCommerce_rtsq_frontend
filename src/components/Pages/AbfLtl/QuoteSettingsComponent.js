@@ -44,7 +44,7 @@ function QuoteSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
-	const { thresholdSetting } = useSelector(state => state)
+	const { thresholdSetting, staffNoteSettings } = useSelector(state => state)
 	const [inputValue, setInputValue] = useState(props?.quoteSettings?.label_as);
 
 	useEffect(() => {
@@ -106,6 +106,14 @@ function QuoteSettingsComponent(props) {
 					thresholdSetting,
 					'GET_THRESHOLD_SETTINGS',
 					'submit_threshold_settings',
+					props.token
+				)
+			)
+			dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
 					props.token
 				)
 			)

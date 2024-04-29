@@ -44,7 +44,7 @@ function QuoteSettingsComponentWwe(props) {
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
   const [ratingMethod, setRatingMethod] = useState(1)
-  const { thresholdSetting } = useSelector(state => state)
+  const { thresholdSetting, staffNoteSettings } = useSelector(state => state)
 
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -115,6 +115,14 @@ function QuoteSettingsComponentWwe(props) {
           props.token
         )
       )
+      dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
+					props.token
+				)
+			)
     } else {
       dispatch({
         type: 'ALERT_MESSAGE',
