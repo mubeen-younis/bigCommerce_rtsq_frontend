@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import { Typography, Row, Col, Form, Input, Skeleton, Select } from 'antd';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { postData } from '../../../Actions/Action';
 import { getQuoteSettings } from '../../../Actions/Settings';
 import {
@@ -8,11 +8,15 @@ import {
   validateHandlingFeeMarkup,
 } from '../../../Utilities/numberValidation';
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
+import CutOffTime from '../../CutOffTime';
 import DomesticServices from './Services/DomesticServices';
 import InternationalServices from './Services/InternationalServices';
+import GroundTransit from '../../GroundTransit';
+import HazardousMaterial from '../../HazardousMaterial';
 import SaveButton from '../../SaveButton';
 import ErrorManagment from '../../ErrorManagment';
 import EnableLogs from '../../EnableLogs';
+import StaffNoteSettings from '../../StaffNoteSettings';
 
 const { Title } = Typography;
 const initialState = {
@@ -103,6 +107,7 @@ function QuoteSettingsComponentWweSmall(props) {
   const [checkAll, setCheckAll] = useState(false);
   const [internationalcheckAll, setInternationalCheckAll] = useState(false);
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState);
+  const { staffNoteSettings } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -236,7 +241,7 @@ function QuoteSettingsComponentWweSmall(props) {
       CS?.usps_first_class_package_international_service;
 
     let errormsg = '';
-
+    // Domestic services check
     if (errormsg === '') {
       errormsg += validateHandlingFeeMarkup(
         quoteSettingsState?.carrier_services?.usps_priority_mail_express_markup,
@@ -262,7 +267,7 @@ function QuoteSettingsComponentWweSmall(props) {
     if (errormsg === '') {
       errormsg += validateHandlingFeeMarkup(
         quoteSettingsState?.carrier_services?.usps_ground_advantage_markup,
-        'USPS Ground Advantage markup',
+        'USPS Retail Ground markup',
         true
       );
     }
@@ -330,6 +335,14 @@ function QuoteSettingsComponentWweSmall(props) {
       props.postData(
         { ...quoteSettingsState, carrierId: +props.carrierId },
         props.token
+      );
+      dispatch(
+        postData(
+          staffNoteSettings,
+          'GET_STAFFNOTE_SETTINGS',
+          'submit_staffnote_settings',
+          props.token
+        )
       );
     } else {
       errormsg =
@@ -523,6 +536,11 @@ function QuoteSettingsComponentWweSmall(props) {
         <EnableLogs
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
+        />
+
+        <StaffNoteSettings
+          quoteSettingsState={quoteSettingsState}
+          handleChange={handleStateChange}
         />
 
         <ErrorManagment

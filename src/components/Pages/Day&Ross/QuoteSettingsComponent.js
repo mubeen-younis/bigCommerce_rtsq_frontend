@@ -69,7 +69,7 @@ function QuoteSettingsComponentWwe(props) {
 	const [form] = Form.useForm()
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
-	const { dayRossApiType, thresholdSetting, quoteSettings } = useSelector(state => state)
+	const { dayRossApiType, thresholdSetting, quoteSettings, staffNoteSettings } = useSelector(state => state)
 	const [inputValue, setInputValue] = useState('');
 
 	useEffect(() => {
@@ -139,6 +139,14 @@ function QuoteSettingsComponentWwe(props) {
 					thresholdSetting,
 					'GET_THRESHOLD_SETTINGS',
 					'submit_threshold_settings',
+					props.token
+				)
+			)
+			dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
 					props.token
 				)
 			)

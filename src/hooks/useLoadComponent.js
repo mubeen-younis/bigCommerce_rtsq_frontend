@@ -52,6 +52,8 @@ import {
   QSUpsShipEngineSmall,
   CSPriorityOneLtl,
   QSPriorityOneLtl,
+  CSUnishipperLtl,
+  QSUnishipperLtl,
 } from '../components/Pages';
 
 const useLoadComponent = (index) => {
@@ -82,6 +84,7 @@ const useLoadComponent = (index) => {
     <CSFreightQuoteChrLtl />,
     <CSUpsShipEngineSmall />,
     <CSPriorityOneLtl />,
+    <CSUnishipperLtl />
   ];
   const quoteSettingsList = [
     <QSWweltl />,
@@ -110,6 +113,7 @@ const useLoadComponent = (index) => {
     <QSFreightQuoteChrLtl />,
     <QSUpsShipEngineSmall />,
     <QSPriorityOneLtl />,
+    <QSUnishipperLtl />,
   ];
 
   return [connectionSettigsList[+index], quoteSettingsList[+index]];

@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { Typography, Row, Col, Form, Input, Skeleton, Radio } from 'antd'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
 import { getQuoteSettings } from '../../../../Actions/Settings'
 import {
@@ -20,6 +20,7 @@ import GroundTransit from '../../../GroundTransit'
 import HazardousMaterial from '../../../HazardousMaterial'
 import SaveButton from '../../../SaveButton'
 import ErrorManagment from '../../../ErrorManagment'
+import StaffNoteSettings from '../../../StaffNoteSettings'
 import EnableLogs from '../../../EnableLogs'
 
 const { Title } = Typography
@@ -54,6 +55,7 @@ function QuoteSettingsComponentWweSmall(props) {
 	const [oneRatecheckAll, setOneRateCheckAll] = useState(false)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const [sbsCheck, setSbsCheck] = useState(true)
+	const { staffNoteSettings } = useSelector(state => state)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -191,118 +193,122 @@ function QuoteSettingsComponentWweSmall(props) {
 		},
 		[generateIndex, quoteSettingsState]
 	)
-
-	const onFinish = useCallback(
-		data => {
-			let checkCS = [
-				...domestic_services.map(
-					srvc =>
+	const onFinish = data => {
+		let checkCS = [
+			...domestic_services.map(
+				srvc =>
+					quoteSettingsState?.carrier_services?.[
+						'fedex_' + generateIndex(srvc)
+					]
+			),
+			...one_rate_services
+				.filter(srvc => srvc.label.length)
+				.map(
+					({ label }) =>
 						quoteSettingsState?.carrier_services?.[
-							'fedex_' + generateIndex(srvc)
+							'one_rate_' + generateIndex(label)
 						]
 				),
+			...international_services.map(
+				srvc =>
+					quoteSettingsState?.carrier_services?.[generateIndex(srvc)]
+			),
+		].some(srvc => srvc)
+
+		let errormsg = '',
+			markup = '_markup',
+			allMarkups = [
+				...domestic_services.map(srvc => ({
+					label: srvc,
+					index: `fedex_${generateIndex(srvc)}${markup}`,
+				})),
 				...one_rate_services
-					.filter(srvc => srvc.label.length)
-					.map(
-						({ label }) =>
-							quoteSettingsState?.carrier_services?.[
-								'one_rate_' + generateIndex(label)
-							]
-					),
-				...international_services.map(
-					srvc =>
-						quoteSettingsState?.carrier_services?.[generateIndex(srvc)]
-				),
-			].some(srvc => srvc)
-
-			let errormsg = '',
-				markup = '_markup',
-				allMarkups = [
-					...domestic_services.map(srvc => ({
-						label: srvc,
-						index: `fedex_${generateIndex(srvc)}${markup}`,
+					.filter(({ label }) => label.length)
+					.map(({ label }) => ({
+						label,
+						index: `one_rate_${generateIndex(label)}${markup}`,
 					})),
-					...one_rate_services
-						.filter(({ label }) => label.length)
-						.map(({ label }) => ({
-							label,
-							index: `one_rate_${generateIndex(label)}${markup}`,
-						})),
-					...international_services.map(srvc => ({
-						label: srvc,
-						index: `${generateIndex(srvc)}${markup}`,
-					})),
-				]
+				...international_services.map(srvc => ({
+					label: srvc,
+					index: `${generateIndex(srvc)}${markup}`,
+				})),
+			]
 
-			if (checkCS) {
-				for (const am of allMarkups) {
-					errormsg = validateHandlingFeeMarkup(
-						quoteSettingsState?.carrier_services?.[am.index],
-						`${am.label} markup`,
-						true
-					)
+		if (checkCS) {
+			for (const am of allMarkups) {
+				errormsg = validateHandlingFeeMarkup(
+					quoteSettingsState?.carrier_services?.[am.index],
+					`${am.label} markup`,
+					true
+				)
 
-					if (errormsg !== '') break
-				}
-
-				if (errormsg === '')
-					errormsg += validateHandlingFeeMarkup(
-						quoteSettingsState?.ground_hazardous_material_fee,
-						'Ground Hazardous Material Fee',
-						true
-					)
-
-				if (errormsg === '')
-					errormsg += validateHandlingFeeMarkup(
-						quoteSettingsState?.air_hazardous_material_fee,
-						'Air Hazardous Material Fee',
-						true
-					)
-
-				if (errormsg === '')
-					errormsg += validateHandlingFeeMarkup(
-						quoteSettingsState?.handling_fee_markup,
-						'Handling Fee markup',
-						true
-					)
+				if (errormsg !== '') break
 			}
 
-			if (checkCS && errormsg === '') {
-				const qs = { ...quoteSettingsState, carrierId: +props.carrierId }
-				delete qs.carrier_services?.['standard_overnight']
-				delete qs.carrier_services?.['priority_overnight']
+			if (errormsg === '')
+				errormsg += validateHandlingFeeMarkup(
+					quoteSettingsState?.ground_hazardous_material_fee,
+					'Ground Hazardous Material Fee',
+					true
+				)
 
-				props.postData(qs, props.token)
-			} else {
-				errormsg =
-					errormsg === ''
-						? 'Please select at least one service option.'
-						: errormsg
-				errormsg = errormsg.split('exploder')[0]
+			if (errormsg === '')
+				errormsg += validateHandlingFeeMarkup(
+					quoteSettingsState?.air_hazardous_material_fee,
+					'Air Hazardous Material Fee',
+					true
+				)
 
+			if (errormsg === '')
+				errormsg += validateHandlingFeeMarkup(
+					quoteSettingsState?.handling_fee_markup,
+					'Handling Fee markup',
+					true
+				)
+		}
+
+		if (checkCS && errormsg === '') {
+			const qs = { ...quoteSettingsState, carrierId: +props.carrierId }
+			delete qs.carrier_services?.['standard_overnight']
+			delete qs.carrier_services?.['priority_overnight']
+
+			props.postData(qs, props.token)
+			dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
+					props.token
+				)
+			)
+		} else {
+			errormsg =
+				errormsg === ''
+					? 'Please select at least one service option.'
+					: errormsg
+			errormsg = errormsg.split('exploder')[0]
+
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					showAlertMessage: true,
+					alertMessage: errormsg,
+					alertMessageType: 'error',
+				},
+			})
+
+			setTimeout(() => {
 				dispatch({
 					type: 'ALERT_MESSAGE',
 					payload: {
-						showAlertMessage: true,
+						showAlertMessage: false,
 						alertMessage: errormsg,
 						alertMessageType: 'error',
 					},
 				})
-
-				setTimeout(() => {
-					dispatch({
-						type: 'ALERT_MESSAGE',
-						payload: {
-							showAlertMessage: false,
-							alertMessage: errormsg,
-							alertMessageType: 'error',
-						},
-					})
-				}, 1500)
-			}
-		},
-		[dispatch, generateIndex, props, quoteSettingsState]
-	)
+			}, 1500)
+		}
+	}
 
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
@@ -489,6 +495,11 @@ function QuoteSettingsComponentWweSmall(props) {
 				<EnableLogs 
 				quoteSettingsState={quoteSettingsState} 
 				setQuoteSettingsState={setQuoteSettingsState}
+				/>
+
+				<StaffNoteSettings
+					quoteSettingsState={quoteSettingsState}
+					handleChange={handleStateChange}
 				/>
 
 				<Row gutter={30} className={'mb-3'}>

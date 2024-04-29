@@ -8,7 +8,7 @@ options:
   max-time: 60
 pipelines:
   branches:
-    remove-upsltl-newapi:
+    feature/add-carrier-unishipper-ltl:
     - step:
         caches:
           - composer
@@ -20,7 +20,7 @@ pipelines:
               MODE: 'command'
               COMMAND: '/home/apx-bc-01/html/bc-fe/remote-script.sh'
               
-    feature/shipengine-conn-settings:
+    add-control-staff-notes:
     - step:
         caches:
           - composer
