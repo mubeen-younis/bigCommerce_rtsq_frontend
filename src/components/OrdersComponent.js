@@ -381,7 +381,7 @@ function OrderSettingsComponent(props) {
 						<h4>{bin?.items[0]?.['product_name'] ?? ''}</h4>
 						{bin?.weight ? <h4>Box weight:{' '}{bin?.weight ?? 0} lbs</h4> : null}
 						<span style={{ width: '100%', float: 'left' }}>
-						{isPalletWidget ? 'Pallet' : 'Box'}{' '}dim:{' '}
+						{isPalletWidget ? 'Pallet' : 'Box'}{' '}Dimensions:{' '}
 							{bin?.d}
 							{bin?.w}
 							{bin?.h}
@@ -513,7 +513,7 @@ function OrderSettingsComponent(props) {
 								</Col>
 								<Col span={16}>
 									<span>
-									{isPalletWidget ? 'Pallet' : 'Box'}{' '}dim:{' '}
+									{isPalletWidget ? 'Pallet' : 'Box'}{' '}Dimensions:{' '}
 										{bin?.d}
 										{bin?.w}
 										{bin?.h}
