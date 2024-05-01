@@ -382,7 +382,7 @@ function ShippingCarriersComponent(props) {
         )}
       </Row>
 
-      <Row gutter={25}>
+      {/* <Row gutter={25}>
         <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
           <Title level={4}>Other Available LTL Freight Providers</Title>
         </Col>
@@ -403,9 +403,9 @@ function ShippingCarriersComponent(props) {
             <span className={'no-data'}>No Carrier Found</span>
           </Col>
         )}
-      </Row>
+      </Row> */}
 
-      <Row gutter={25}>
+      {/* <Row gutter={25}>
         <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
           <Title level={4}>Other Available Parcel & Postal Providers</Title>
         </Col>
@@ -426,9 +426,9 @@ function ShippingCarriersComponent(props) {
             <span className={'no-data'}>No Carrier Found</span>
           </Col>
         )}
-      </Row>
+      </Row> */}
 
-      <Row gutter={25} id='addons-section'>
+      {/* <Row gutter={25} id='addons-section'>
         <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
           <Title level={4}>Other Available Add-ons</Title>
         </Col>
@@ -447,7 +447,7 @@ function ShippingCarriersComponent(props) {
             <span className={'no-data'}>No Add-on Found</span>
           </Col>
         )}
-      </Row>
+      </Row> */}
     </Fragment>
   );
 }
