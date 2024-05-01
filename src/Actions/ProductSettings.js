@@ -46,7 +46,7 @@ export const submitProductSettings = (productSettings, token, setState) => {
 	}
 }
 
-export const getProduct = (id, setselectedProductDetail, setLoadProduct, token) => {
+export const getProduct = (id, setselectedProductDetail, setLoadProduct, token, variant_id) => {
 	return dispatch => {
 		dispatch({
 			type: 'GET_PRODUCT_DETAIL',
@@ -59,6 +59,7 @@ export const getProduct = (id, setselectedProductDetail, setLoadProduct, token) 
 				},
 				params: {
 					product_id: id,
+					variant_id: variant_id,
 				},
 			})
 			.then(({ data }) => {
