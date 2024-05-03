@@ -32,7 +32,7 @@ const PromoCodeField = () => {
 	}
 
 	return (
-		<Form.Item label='Promo Code' name='promo_code'>
+		<Form.Item label='Promo Code' name='promo_code' style={{ marginBottom: '10px' }}>
 			<Input
 				placeholder={
 					!fdoCouponInfo || !fdoCouponInfo?.freightdesk_company_id

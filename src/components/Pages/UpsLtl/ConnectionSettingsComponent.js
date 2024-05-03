@@ -92,6 +92,7 @@ function ConnectionSettingsComponent(props) {
 					</Form.Item>
 
 					<Form.Item
+						style={{ marginBottom: '2px' }}
 						label='Client Secret'
 						name='clientSecret'
 						rules={[{ required: true, message: 'Client Secret is required' }]}
@@ -99,7 +100,18 @@ function ConnectionSettingsComponent(props) {
 						<Input placeholder='Client Secret' maxLength={100}/>
 					</Form.Item>
 
+					<div>
+						<a
+							href='https://eniture.com/bigcommerce-tforce-api-connection-instructions/'
+							target='_blank'
+							rel='noreferrer'
+						>
+							How to obtain your TForce Client ID and Client Secret?
+						</a>
+					</div>
+
 					<Form.Item
+						style={{ marginTop: '10px' }}
 						label='Username'
 						name='username'
 						rules={[{ required: false, message: 'Username is required' }]}

@@ -118,11 +118,22 @@ function ConnectionSettingsComponent(props) {
 					<Input placeholder='Production Key' />
 				</Form.Item>
 				<Form.Item
+					style={{ marginBottom: '10px' }}
 					label='Production Key Password'
 					name='productionPass'
 					rules={[{ required: true, message: 'Production Key Password' }]}>
 					<Input placeholder='Production Key Password' />
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-purolator-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your Purolator API credentials?
+					</a>
+				</div>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

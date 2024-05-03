@@ -45,11 +45,22 @@ function ConnectionSettingsComponent(props) {
 				onFinish={onFinish}>
 				
 				<Form.Item
+					style={{ marginBottom: '10px' }}
 					label='API Key'
 					name='api_key'
 					rules={[{ required: true, message: 'API Key' }]}>
 					<Input placeholder='API Key' maxLength={256}/>
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/priority-1-api-connection-instructions-bigcommerce/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your Priority 1 API key?
+					</a>
+				</div>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

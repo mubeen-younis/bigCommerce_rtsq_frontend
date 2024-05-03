@@ -146,6 +146,7 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 
 				<Form.Item
+					style={{ marginBottom: '0px' }}
 					name='access_level'
 					label='Access Level'
 					rules={[{ required: true, message: 'Access Level' }]}>
@@ -162,6 +163,16 @@ function ConnectionSettingsComponent(props) {
 						</Radio>
 					</Radio.Group>
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-sefl-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your SEFL account credentials?
+					</a>
+				</div>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

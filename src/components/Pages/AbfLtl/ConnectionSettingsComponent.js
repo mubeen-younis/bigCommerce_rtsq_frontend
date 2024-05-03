@@ -56,7 +56,7 @@ function ConnectionSettingsComponent(props) {
 					name='business_id'
 					rules={[{ required: true, message: 'Business ID' }]}>
 					<Input placeholder='Business ID' />
-				</Form.Item>
+				</Form.Item>	
 				<Row gutter={30} className='mb-1'>
 					<Col xl={16} lg={12} md={12} sm={8} xs={8}>
 						<Radio
@@ -76,6 +76,17 @@ function ConnectionSettingsComponent(props) {
 						</Radio>
 					</Col>
 				</Row>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-abf-freight-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your ABF Freight API ID?
+					</a>
+				</div>
+				
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
 						<Button

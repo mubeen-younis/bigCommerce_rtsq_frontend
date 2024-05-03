@@ -114,7 +114,7 @@ function ConnectionSettingsComponent(props) {
 					<Input placeholder='Authentication Key' />
 				</Form.Item>
 
-				<Form.Item label='Hub Id' name='hub_id'>
+				<Form.Item label='Hub Id' name='hub_id' style={{ marginBottom: '10px' }}>
 					<Select defaultValue='Select'>
 						{hub_id_options.map((id, index) => (
 							<Option value={id} key={index}>
@@ -123,6 +123,16 @@ function ConnectionSettingsComponent(props) {
 						))}
 					</Select>
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-fedex-api-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your FedEx API credentials?
+					</a>
+				</div>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

@@ -66,11 +66,23 @@ function ConnectionSettingsComponent(props) {
 					<Input placeholder='Username' />
 				</Form.Item>
 				<Form.Item
+					style={{ marginBottom: '10px' }}
 					label='Password'
 					name='password'
 					rules={[{ required: true, message: 'Password' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-estes-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your Estes account credentials?
+					</a>
+				</div>
+
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
 						<Button

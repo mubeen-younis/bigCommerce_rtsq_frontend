@@ -58,11 +58,22 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 
 				<Form.Item
+					style={{ marginBottom: '10px' }}
 					label='Account Number'
 					name='account_number'
 					rules={[{ required: true, message: 'Account Number' }]}>
 					<Input placeholder='Account Number' />
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-daylight-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your Daylight Transport account credentials?
+					</a>
+				</div>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

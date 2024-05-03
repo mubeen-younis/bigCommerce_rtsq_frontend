@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { Form, Input, Button, Space, Skeleton, Select } from 'antd'
+import { Form, Input, Button, Space, Skeleton, Select, Row, Col } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import types from '../../../Stores/types'
@@ -96,11 +96,22 @@ function ConnectionSettingsComponent(props) {
 					<Input placeholder='Email' />
 				</Form.Item>
 				<Form.Item
+					style={{ marginBottom: '10px' }}
 					label='Password'
 					name='password'
 					rules={[{ required: true, message: 'Password' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-day-ross-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your Day & Ross API credentials?
+					</a>
+				</div>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

@@ -371,6 +371,7 @@ function ConnectionSettingsComponent(props) {
 							/>
 						</Form.Item>
 						<Form.Item
+							style={{ marginBottom: '2px' }}
 							label='Client Secret'
 							name='clientSecret'
 							rules={[{ required: true, message: 'Client Secret' }]}
@@ -383,7 +384,19 @@ function ConnectionSettingsComponent(props) {
 
 							/>
 						</Form.Item>
+
+						<div>
+							<a
+								href='https://eniture.com/bigcommerce-globaltranz-connection/'
+								target='_blank'
+								rel='noreferrer'
+							>
+								How to obtain your GlobalTranz Client ID and Client Secret?
+							</a>
+						</div>
+
 						<Form.Item
+							style={{ marginTop: '10px' }}
 							label='Username'
 							name='user_name'
 							rules={[{ required: false, message: 'Username' }]}>
@@ -408,6 +421,18 @@ function ConnectionSettingsComponent(props) {
 						</>
 					)}
 					<PromoCodeField />
+
+					{apiType != 'NEWAPI' && (
+						<div>
+							<a
+								href='https://eniture.com/bigcommerce-globaltranz-connection/'
+								target='_blank'
+								rel='noreferrer'
+							>
+								How to obtain your GlobalTranz API Credentials?
+							</a>
+						</div>
+					)}
 
 					<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 						<Space>

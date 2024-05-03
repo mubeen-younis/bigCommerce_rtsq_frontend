@@ -54,11 +54,22 @@ function ConnectionSettingsComponent() {
 					<Input placeholder='Account Number' />
 				</Form.Item>
 				<Form.Item
+					style={{ marginBottom: '10px' }}
 					label='API Key'
 					name='api_key'
 					rules={[{ required: true, message: 'API Key' }]}>
 					<Input placeholder='API Key' />
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-echo-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your Echo web services API key?
+					</a>
+				</div>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
