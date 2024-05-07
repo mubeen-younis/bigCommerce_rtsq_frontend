@@ -269,6 +269,7 @@ function ConnectionSettingsComponent(props) {
 				</Row>
 
 				<Form.Item
+					style={{ marginBottom: '10px' }}
 					label='Third Party Account Number'
 					name='third_party_account'
 					rules={[
@@ -279,6 +280,16 @@ function ConnectionSettingsComponent(props) {
 					]}>
 					<Input type='text' />
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-fedex-freight-api-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your FedEx Freight API authentication credentials?
+					</a>
+				</div>
 
 				<Form.Item
 					style={{ marginBottom: '0px' }}
@@ -303,16 +314,6 @@ function ConnectionSettingsComponent(props) {
 						</Radio>
 					</Radio.Group>
 				</Form.Item>
-
-				<div>
-					<a
-						href='https://eniture.com/bigcommerce-fedex-freight-api-connection-instructions/'
-						target='_blank'
-						rel='noreferrer'
-					>
-						How to obtain your FedEx Freight API authentication credentials?
-					</a>
-				</div>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

@@ -81,7 +81,7 @@ function ConnectionSettingsComponent(props) {
 							<Input placeholder='Client ID' maxLength={100}/>
 						</Form.Item>
 						<Form.Item
-							style={{ marginBottom: '2px' }}
+							style={{ marginBottom: '10px' }}
 							label='Client Secret'
 							name='clientSecret'
 							rules={[{ required: true, message: 'Client Secret is required.' }]}

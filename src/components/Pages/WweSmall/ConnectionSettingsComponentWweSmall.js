@@ -113,7 +113,7 @@ function ConnectionSettingsComponent(props) {
 							<Input placeholder='Client ID' maxLength={100}/>
 						</Form.Item>
 						<Form.Item
-							style={{ marginBottom: '2px' }}
+							style={{ marginBottom: '10px' }}
 							label='Client Secret'
 							name='clientSecret'
 							rules={[{ required: true, message: 'Client Secret' }]}
@@ -166,6 +166,7 @@ function ConnectionSettingsComponent(props) {
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
 						<Form.Item
+							style={{ marginBottom: '10px' }}
 							label='Authentication Key'
 							name='authentication_key'
 							rules={[{ required: true, message: 'Authentication Key' }]}>
@@ -173,7 +174,6 @@ function ConnectionSettingsComponent(props) {
 						</Form.Item>
 					</> 
 				)}
-				<PromoCodeField />
 
 				{WweSmallApiType != 'new_api' && (
 					<div>
@@ -186,6 +186,8 @@ function ConnectionSettingsComponent(props) {
 						</a>
 					</div>
 				)}
+
+				<PromoCodeField />
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

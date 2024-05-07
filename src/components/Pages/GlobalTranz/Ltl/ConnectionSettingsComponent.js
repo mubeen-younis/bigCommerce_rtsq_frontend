@@ -281,6 +281,7 @@ function ConnectionSettingsComponent(props) {
 							</Form.Item>
 
 							<Form.Item
+								style={{ marginBottom: '10px' }}
 								label='Access Key'
 								name='access_key'
 								// name='gtz_access_key'
@@ -342,6 +343,7 @@ function ConnectionSettingsComponent(props) {
 							</Form.Item>
 
 							<Form.Item
+								style={{ marginBottom: '10px' }}
 								label='Access Key'
 								name='access_key'
 								// name='cerasis_access_key'
@@ -371,7 +373,7 @@ function ConnectionSettingsComponent(props) {
 							/>
 						</Form.Item>
 						<Form.Item
-							style={{ marginBottom: '2px' }}
+							style={{ marginBottom: '10px' }}
 							label='Client Secret'
 							name='clientSecret'
 							rules={[{ required: true, message: 'Client Secret' }]}
@@ -420,7 +422,6 @@ function ConnectionSettingsComponent(props) {
 						</Form.Item>
 						</>
 					)}
-					<PromoCodeField />
 
 					{apiType != 'NEWAPI' && (
 						<div>
@@ -433,6 +434,8 @@ function ConnectionSettingsComponent(props) {
 							</a>
 						</div>
 					)}
+
+					<PromoCodeField />
 
 					<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 						<Space>

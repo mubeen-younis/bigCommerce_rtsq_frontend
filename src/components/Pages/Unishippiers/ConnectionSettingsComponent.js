@@ -138,7 +138,7 @@ function ConnectionSettingsComponent(props) {
 							<Input placeholder='Client ID' maxLength={100}/>
 						</Form.Item>
 						<Form.Item
-							style={{ marginBottom: '2px' }}
+							style={{ marginBottom: '10px' }}
 							label='Client Secret'
 							name='clientSecret'
 							rules={[{ required: true, message: 'Client Secret' }]}
@@ -198,12 +198,11 @@ function ConnectionSettingsComponent(props) {
 							rules={[{ required: true, message: 'Password' }]}>
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
-						<Form.Item label='Request Key' name='request_key'>
+						<Form.Item label='Request Key' name='request_key' style={{ marginBottom: '10px' }}>
 							<Input placeholder='Request Key' />
 						</Form.Item>
 					</>
 				)}
-				<PromoCodeField />
 
 				{uniShipperSmallApiType != 'new_api' && (
 					<div>
@@ -216,6 +215,8 @@ function ConnectionSettingsComponent(props) {
 						</a>	
 					</div>
 				)}
+
+				<PromoCodeField />
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
