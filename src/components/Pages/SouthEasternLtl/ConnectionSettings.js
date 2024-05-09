@@ -132,7 +132,7 @@ function ConnectionSettingsComponent(props) {
 				</Row>
 
 				<Form.Item
-					style={{ marginBottom: '10px' }}
+					className='mb-1'
 					label='Third Party Account Number'
 					name='third_party_account_number'
 					rules={[
@@ -157,7 +157,7 @@ function ConnectionSettingsComponent(props) {
 				</div>
 
 				<Form.Item
-					style={{ marginTop: '10px' }}
+					className='mt-1'
 					name='access_level'
 					label='Access Level'
 					rules={[{ required: true, message: 'Access Level' }]}>

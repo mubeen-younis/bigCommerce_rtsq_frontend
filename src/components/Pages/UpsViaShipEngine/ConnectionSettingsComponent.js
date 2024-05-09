@@ -58,7 +58,7 @@ function ConnectionSettingsComponent(props) {
 					<Input placeholder='Carrier ID' maxLength={100}/>
 				</Form.Item>
         		<Form.Item
-					style={{ marginBottom: '10px' }}
+					className='mb-1'
 					label='ShipEngine API Key'
 					name='shipengine_api_key'
 					rules={[{ required: formData?.shipengine_carrier_id != '' && formData?.shipengine_carrier_id != null, message: 'ShipEngine API Key is required' }]}>

@@ -373,7 +373,7 @@ function ConnectionSettingsComponent(props) {
 							/>
 						</Form.Item>
 						<Form.Item
-							style={{ marginBottom: '10px' }}
+							className='mb-1'
 							label='Client Secret'
 							name='clientSecret'
 							rules={[{ required: true, message: 'Client Secret' }]}
@@ -398,7 +398,7 @@ function ConnectionSettingsComponent(props) {
 						</div>
 
 						<Form.Item
-							style={{ marginTop: '10px' }}
+							className='mt-1'
 							label='Username'
 							name='user_name'
 							rules={[{ required: false, message: 'Username' }]}>

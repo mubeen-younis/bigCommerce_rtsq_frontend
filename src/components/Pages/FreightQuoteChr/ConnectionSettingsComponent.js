@@ -61,7 +61,7 @@ function ConnectionSettingsComponent() {
 				role='form'
 				onFinish={onFinish}>
 				<Form.Item
-					style={{ marginBottom: '10px' }}
+					className='mb-1'
 					label='Customer Code'
 					name='customer_code'
 					rules={[{ required: true, message: 'Customer Code' }]}>

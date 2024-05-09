@@ -114,7 +114,7 @@ function ConnectionSettingsComponent(props) {
 					<Input placeholder='Authentication Key' />
 				</Form.Item>
 
-				<Form.Item label='Hub Id' name='hub_id' style={{ marginBottom: '10px' }}>
+				<Form.Item label='Hub Id' name='hub_id' className='mb-1'>
 					<Select defaultValue='Select'>
 						{hub_id_options.map((id, index) => (
 							<Option value={id} key={index}>

@@ -72,7 +72,7 @@ function ConnectionSettingsComponent(props) {
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 				<Form.Item
-					style={{ marginBottom: '10px' }}
+					className='mb-1'
 					label='Subscription Key'
 					name='subscriptionKey'
 					rules={[{ required: true, message: 'Subscription Key' }]}>

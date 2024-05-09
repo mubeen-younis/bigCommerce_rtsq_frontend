@@ -54,7 +54,7 @@ function ConnectionSettingsComponent() {
 					<Input placeholder='Account Number' />
 				</Form.Item>
 				<Form.Item
-					style={{ marginBottom: '10px' }}
+					className='mb-1'
 					label='API Key'
 					name='api_key'
 					rules={[{ required: true, message: 'API Key' }]}>

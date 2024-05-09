@@ -112,7 +112,7 @@ function ConnectionSettingsComponent(props) {
 							<Input placeholder='Client ID' maxLength={100}/>
 						</Form.Item>
 						<Form.Item
-							style={{ marginBottom: '10px' }}
+							className='mb-1'
 							label='Client Secret'
 							name='clientSecret'
 							rules={[{ required: true, message: 'Client Secret' }]}
@@ -131,7 +131,7 @@ function ConnectionSettingsComponent(props) {
 						</div>
 
 						<Form.Item
-							style={{ marginTop: '10px' }}
+							className='mt-1'
 							label='Username'
 							name='new_api_username'
 							rules={[{ required: false, message: 'Username' }]}>
@@ -165,7 +165,7 @@ function ConnectionSettingsComponent(props) {
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
 						<Form.Item
-							style={{ marginBottom: '10px' }}
+							className='mb-1'
 							label='Authentication Key'
 							name='authentication_key'
 							rules={[{ required: true, message: 'Authentication Key' }]}>

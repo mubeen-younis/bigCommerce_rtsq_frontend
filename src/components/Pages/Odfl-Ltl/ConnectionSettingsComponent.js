@@ -73,7 +73,7 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 
 				<Form.Item
-					style={{ marginBottom: '10px' }}
+					className='mb-1'
 					label='Billing Postal Code'
 					name='billing_postal_Code'
 					rules={[{ required: true, message: 'Billing Postal Code' }]}

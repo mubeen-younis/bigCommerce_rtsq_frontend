@@ -70,7 +70,7 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 
 				<Form.Item
-					style={{ marginBottom: '10px' }}
+					className='mb-1'
 					label='API Key'
 					name='api_key'
 					rules={[{ required: true, message: 'API Key Is Required ' }]}>
@@ -83,7 +83,7 @@ function ConnectionSettingsComponent(props) {
 						target='_blank'
 						rel='noreferrer'
 					>
-						How to obtain your R+L Carriers API  key?
+						How to obtain your R+L Carriers API key?
 					</a>
 				</div>
 

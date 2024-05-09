@@ -58,7 +58,7 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 
 				<Form.Item
-					style={{ marginBottom: '10px' }}
+					className='mb-1'
 					label='Account Number'
 					name='account_number'
 					rules={[{ required: true, message: 'Account Number' }]}>

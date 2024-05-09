@@ -269,7 +269,7 @@ function ConnectionSettingsComponent(props) {
 				</Row>
 
 				<Form.Item
-					style={{ marginBottom: '10px' }}
+					className='mb-1'
 					label='Third Party Account Number'
 					name='third_party_account'
 					rules={[
@@ -292,7 +292,7 @@ function ConnectionSettingsComponent(props) {
 				</div>
 
 				<Form.Item
-					style={{ marginBottom: '0px' }}
+					className='mb-0'
 					name='account_type'
 					rules={[{ required: true, message: 'Account Type' }]}>
 					<Radio.Group defaultValue={accountType}>

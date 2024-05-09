@@ -52,7 +52,7 @@ function ConnectionSettingsComponent(props) {
 				initialValues={connectionSettings}
 				onFinish={onFinish}>
 				<Form.Item
-					style={{ marginBottom: '10px' }}
+					className='mb-1'
 					label='ID'
 					name='business_id'
 					rules={[{ required: true, message: 'Business ID' }]}>
@@ -69,7 +69,7 @@ function ConnectionSettingsComponent(props) {
 					</a>
 				</div>
 
-				<Row gutter={30} className='mb-1' style={{ marginTop: '10px' }}>
+				<Row gutter={30} className='mb-1 mt-1'>
 					<Col xl={16} lg={12} md={12} sm={8} xs={8}>
 						<Radio
 							onChange={() => setRates('ShipAff')}

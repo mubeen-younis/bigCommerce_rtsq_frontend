@@ -110,7 +110,7 @@ function ConnectionSettingsComponent(props) {
 					<Input placeholder='Bill To Account Number ' />
 				</Form.Item>
 
-				<Form.Item label='API Key' name='api_key' style={{ marginBottom: '10px' }}>
+				<Form.Item label='API Key' name='api_key' className='mb-1'>
 					<Input placeholder='API Key' />
 				</Form.Item>
 
@@ -120,7 +120,7 @@ function ConnectionSettingsComponent(props) {
 						target='_blank'
 						rel='noreferrer'
 					>
-						How to obtain your XPO Logistics API  key?
+						How to obtain your XPO Logistics API key?
 					</a>
 				</div>
 

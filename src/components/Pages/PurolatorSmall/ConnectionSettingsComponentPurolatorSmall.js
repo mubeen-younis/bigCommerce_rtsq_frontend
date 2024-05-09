@@ -118,7 +118,7 @@ function ConnectionSettingsComponent(props) {
 					<Input placeholder='Production Key' />
 				</Form.Item>
 				<Form.Item
-					style={{ marginBottom: '10px' }}
+					className='mb-1'
 					label='Production Key Password'
 					name='productionPass'
 					rules={[{ required: true, message: 'Production Key Password' }]}>

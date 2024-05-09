@@ -131,7 +131,7 @@ function ConnectionSettingsComponent(props) {
 							</Form.Item>
 
 							<Form.Item
-								style={{ marginBottom: '10px' }}
+								className='mb-1'
 								label='Client Secret'
 								name='clientSecret'
 								rules={[{ required: true, message: 'Client Secret' }]}
@@ -173,7 +173,7 @@ function ConnectionSettingsComponent(props) {
 							</Form.Item>
 
 							<Form.Item
-								style={{ marginBottom: '10px' }}
+								className='mb-1'
 								label='API Access Key '
 								name='ups_api_access_key'
 								rules={[{ required: true, message: 'API Access Key' }]}>
