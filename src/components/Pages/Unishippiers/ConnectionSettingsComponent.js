@@ -198,7 +198,7 @@ function ConnectionSettingsComponent(props) {
 							rules={[{ required: true, message: 'Password' }]}>
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
-						<Form.Item label='Request Key' name='request_key' style={{ marginBottom: '10px' }}>
+						<Form.Item label='Request Key' name='request_key' className='mb-1'>
 							<Input placeholder='Request Key' />
 						</Form.Item>
 					</>

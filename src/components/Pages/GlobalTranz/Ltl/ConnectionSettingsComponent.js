@@ -281,7 +281,7 @@ function ConnectionSettingsComponent(props) {
 							</Form.Item>
 
 							<Form.Item
-								style={{ marginBottom: '10px' }}
+								className='mb-1'
 								label='Access Key'
 								name='access_key'
 								// name='gtz_access_key'
@@ -343,7 +343,7 @@ function ConnectionSettingsComponent(props) {
 							</Form.Item>
 
 							<Form.Item
-								style={{ marginBottom: '10px' }}
+								className='mb-1'
 								label='Access Key'
 								name='access_key'
 								// name='cerasis_access_key'
