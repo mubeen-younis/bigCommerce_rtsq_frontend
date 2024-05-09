@@ -132,6 +132,7 @@ function ConnectionSettingsComponent(props) {
 				</Row>
 
 				<Form.Item
+					className='mb-1'
 					label='Third Party Account Number'
 					name='third_party_account_number'
 					rules={[
@@ -145,7 +146,18 @@ function ConnectionSettingsComponent(props) {
 					<Input type='text' />
 				</Form.Item>
 
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-sefl-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your SEFL account credentials?
+					</a>
+				</div>
+
 				<Form.Item
+					className='mt-1'
 					name='access_level'
 					label='Access Level'
 					rules={[{ required: true, message: 'Access Level' }]}>

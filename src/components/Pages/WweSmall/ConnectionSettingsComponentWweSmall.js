@@ -113,13 +113,26 @@ function ConnectionSettingsComponent(props) {
 							<Input placeholder='Client ID' maxLength={100}/>
 						</Form.Item>
 						<Form.Item
+							className='mb-1'
 							label='Client Secret'
 							name='clientSecret'
 							rules={[{ required: true, message: 'Client Secret' }]}
 						>
 							<Input placeholder='Client Secret' maxLength={100}/>
 						</Form.Item>
+
+						<div>
+							<a
+								href='https://eniture.com/bigcommerce-worldwide-express-api-connection-instructions/'
+								target='_blank'
+								rel='noreferrer'
+							>
+								How to obtain your Worldwide Express Client ID and Client Secret?
+							</a>
+						</div>
+
 						<Form.Item
+							className='mt-1'
 							label='Username'
 							name='new_api_username'
 							rules={[{ required: false, message: 'Username' }]}>
@@ -153,6 +166,7 @@ function ConnectionSettingsComponent(props) {
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
 						<Form.Item
+							className='mb-1'
 							label='Authentication Key'
 							name='authentication_key'
 							rules={[{ required: true, message: 'Authentication Key' }]}>
@@ -160,6 +174,19 @@ function ConnectionSettingsComponent(props) {
 						</Form.Item>
 					</> 
 				)}
+
+				{WweSmallApiType != 'new_api' && (
+					<div>
+						<a
+							href='https://eniture.com/bigcommerce-worldwide-express-api-connection-instructions/'
+							target='_blank'
+							rel='noreferrer'
+						>
+							How to obtain your Worldwide Express API credentials?
+						</a>
+					</div>
+				)}
+
 				<PromoCodeField />
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>

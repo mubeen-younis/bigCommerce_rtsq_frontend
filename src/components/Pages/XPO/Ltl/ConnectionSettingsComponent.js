@@ -110,9 +110,19 @@ function ConnectionSettingsComponent(props) {
 					<Input placeholder='Bill To Account Number ' />
 				</Form.Item>
 
-				<Form.Item label='API Key' name='api_key'>
+				<Form.Item label='API Key' name='api_key' className='mb-1'>
 					<Input placeholder='API Key' />
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-xpo-logistics/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your XPO Logistics API key?
+					</a>
+				</div>
 
 				<Form.Item
 					name='access_level'
