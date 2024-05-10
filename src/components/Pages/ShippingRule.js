@@ -43,6 +43,7 @@ import {
   handleNumbersOnly,
 } from '../../Utilities/numberValidation';
 import ServiceRate from '../ServiceRate';
+import LargeCartSettings from '../LargeCartSettings';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -70,6 +71,8 @@ const initialState = {
   price_to: '',
   quantity_from: '',
   quantity_to: '',
+  max_items: '',
+  max_package_weight: '',
 };
 
 function ShippingRulesComponent() {
@@ -803,11 +806,13 @@ function ShippingRulesComponent() {
                       <Option value={'5'}>Restrict To Origin Locations</Option>
                       <Option value={'2'}>Hide Methods</Option>
                       <Option value={'6'}>Override Rates</Option>
+                      <Option value={'9'}>Large Cart Settings</Option>
                     </Select>
                   </Form.Item>
                 </div>
               </Col>
             </Row>
+            {ruleType != 9 ? (
             <Row gutter={30}>
               <Col
                 className='gutter-row'
@@ -835,6 +840,10 @@ function ShippingRulesComponent() {
                 </Form.Item>
               </Col>
             </Row>
+            ) : null }
+            {ruleType == 9 && (
+              <LargeCartSettings />
+            )}
             {(ruleType == 1 ||
               ruleType == 3 ||
               ruleType == 4 ||
