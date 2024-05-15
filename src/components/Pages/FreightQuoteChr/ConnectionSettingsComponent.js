@@ -61,11 +61,22 @@ function ConnectionSettingsComponent() {
 				role='form'
 				onFinish={onFinish}>
 				<Form.Item
+					className='mb-1'
 					label='Customer Code'
 					name='customer_code'
 					rules={[{ required: true, message: 'Customer Code' }]}>
 					<Input type='text' placeholder='Customer Code' />
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-ch-robinson-connection/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your C.H. Robinson Customer Code?
+					</a>
+				</div>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

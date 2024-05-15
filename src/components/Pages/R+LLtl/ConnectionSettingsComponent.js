@@ -70,11 +70,22 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 
 				<Form.Item
+					className='mb-1'
 					label='API Key'
 					name='api_key'
 					rules={[{ required: true, message: 'API Key Is Required ' }]}>
 					<Input placeholder='API Key' />
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-rl-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your R+L Carriers API key?
+					</a>
+				</div>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

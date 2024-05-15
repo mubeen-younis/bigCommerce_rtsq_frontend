@@ -873,7 +873,7 @@ function ShippingRulesComponent() {
                       >
                         <div id='country_dropdown'>
                           <Form.Item
-                            className={'mb-2'}
+                            className={'mb-0'}
                             label='Countries'
                             name='filter_country'
                             rules={[
@@ -895,6 +895,9 @@ function ShippingRulesComponent() {
                               <Option value={'CA'}>CA</Option>
                             </Select>
                           </Form.Item>
+                        </div>
+                        <div className={'text-gray mb-2'}>
+                            Only customers from this country will be presented with shipping rates for this provider.
                         </div>
                       </Col>
                     </Row>
@@ -943,7 +946,7 @@ function ShippingRulesComponent() {
                         </div>
                         <div className={'text-gray mb-2'}>
                             Only customers from these states/provinces will be presented with shipping rates for this provider.
-                          </div>
+                        </div>
                       </Col>
                     </Row>
                   )}
@@ -1339,7 +1342,7 @@ function ShippingRulesComponent() {
                                   carrier?.slug == 'ups-ship-engine' ||
                                   carrier?.slug == 'small-package' ||
                                   carrier?.slug == 'fedex-small' ||
-                                  carrier?.slug == 'priority-one-ltl'? (
+                                  carrier?.slug == 'priority-one-ltl' ? (
                                   <Option value={carrier?.slug}>
                                     {carrier.carrier_type == 1
                                       ? carrier.name + ' (LTL Freight Providers)'

@@ -72,11 +72,22 @@ function ConnectionSettingsComponent(props) {
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 				<Form.Item
+					className='mb-1'
 					label='Subscription Key'
 					name='subscriptionKey'
 					rules={[{ required: true, message: 'Subscription Key' }]}>
 					<Input type='text' placeholder='Subscription Key' />
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-tql-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your TQL API credentials?
+					</a>
+				</div>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

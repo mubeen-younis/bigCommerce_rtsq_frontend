@@ -1,3 +1,15 @@
+= 2.2.4 2024-05-09 =
+
+* Update - The link on the Connection Settings page to the API credential instructions (Ticket:2667421990) [#282] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/282)
+
+= 2.2.3 2024-05-02 =
+
+* Update - add functionality to install all carriers on app installation (Ticket:2295363422) [#281] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/281)
+
+= 2.2.2 2024-05-01 =
+
+* Fix - update product settings functionality (Ticket:2257786184) [#280] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/280)
+
 = 2.2.1 2024-04-24 =
 
 * Update - Add control staff notes functionality (Ticket:2555082021) [#277] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/277)

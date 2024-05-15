@@ -58,11 +58,22 @@ function ConnectionSettingsComponent(props) {
 					<Input placeholder='Carrier ID' maxLength={100}/>
 				</Form.Item>
         		<Form.Item
+					className='mb-1'
 					label='ShipEngine API Key'
 					name='shipengine_api_key'
 					rules={[{ required: formData?.shipengine_carrier_id != '' && formData?.shipengine_carrier_id != null, message: 'ShipEngine API Key is required' }]}>
 					<Input placeholder='ShipEngine API Key' maxLength={100}/>
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-shipengine-ups-api-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your ShipEngine Carrier ID and API Key?
+					</a>
+				</div>
 				
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
