@@ -55,6 +55,7 @@ const LargeCartSettings = () => {
 							type='number'
 							onKeyDown={handleNumbersOnly}
 							step='1'
+							min={0}
 							placeholder='Enter Max items'
 						/>
 					</Form.Item>
@@ -99,6 +100,7 @@ const LargeCartSettings = () => {
 							type='number'
 							onKeyDown={handleNumbersOnly}
 							step='1'
+							min={0}
 							placeholder='Enter Max weight per package'
 						/>
 					</Form.Item>
