@@ -18,7 +18,7 @@ const LargeCartSettings = () => {
 						This rule impacts parcel quoting apps only. <br /><br />
 						The packaging algorithm identifies the ideal packaging solution via an iterative process.
 						If the Cart contains a large number of items, the time the packaging algorithm requires to
-						identify the ideal packaging solution can exceed the window of time Shopify allows for shipping quotes to be returned.
+						identify the ideal packaging solution can exceed the window of time BigCommerce allows for shipping quotes to be returned.
 						In these cases, the packaging algorithm needs to be bypassed. Use the settings below to specify your preferences for when
 						the packaging algorithm is to be bypassed. Test the results to make sure results (shipping quotes) are returned when a
 						large number of items is in the Cart. The number of boxes you define and the diversity of the items in your product catalog
