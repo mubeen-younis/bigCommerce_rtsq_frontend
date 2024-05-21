@@ -1509,13 +1509,9 @@ function ShippingRulesComponent() {
                       >
                         Filter by weight (lbs)
                       </Checkbox>
-                      <Tooltip
-                        title={
-                          'The total weight of the ' + helptext + ' in pounds.'
-                        }
-                      >
-                        <a href='#!'>[ i ]</a>
-                      </Tooltip>
+                      <div className={'text-gray mb-2'}>
+                        Enable the checkbox and enter a weight range in lbs; the From field (accepts zero) is required, and leave the To field blank to avoid an upper limit.
+                      </div>
                     </Form.Item>
                   </Col>
                   <Col
@@ -1544,6 +1540,7 @@ function ShippingRulesComponent() {
                         type='number'
                         onKeyDown={blockInvalidChar}
                         step='0.01'
+                        min={0}
                         placeholder='Enter weight from'
                       />
                     </Form.Item>
@@ -1574,6 +1571,7 @@ function ShippingRulesComponent() {
                         type='number'
                         onKeyDown={blockInvalidChar}
                         step='0.01'
+                        min={0}
                         placeholder='Enter weight to'
                       />
                     </Form.Item>
@@ -1596,15 +1594,9 @@ function ShippingRulesComponent() {
                       >
                         Filter by price
                       </Checkbox>
-                      <Tooltip
-                        title={
-                          'The total value of the items in the ' +
-                          helptext +
-                          '.'
-                        }
-                      >
-                        <a href='#!'>[ i ]</a>
-                      </Tooltip>
+                      <div className={'text-gray mb-2'}>
+                        Enable the checkbox and enter a price range in US dollars; the From field (accepts zero) is required, and leave the To field blank to avoid an upper limit.
+                      </div>
                     </Form.Item>
                   </Col>
                   <Col
@@ -1633,6 +1625,7 @@ function ShippingRulesComponent() {
                         type='number'
                         onKeyDown={blockInvalidChar}
                         step='0.01'
+                        min={0}
                         placeholder='Enter price from'
                       />
                     </Form.Item>
@@ -1663,6 +1656,7 @@ function ShippingRulesComponent() {
                         type='number'
                         onKeyDown={blockInvalidChar}
                         step='0.01'
+                        min={0}
                         placeholder='Enter price to'
                       />
                     </Form.Item>
@@ -1685,13 +1679,9 @@ function ShippingRulesComponent() {
                       >
                         Filter by quantity
                       </Checkbox>
-                      <Tooltip
-                        title={
-                          'The total number of items in the ' + helptext + '.'
-                        }
-                      >
-                        <a href='#!'>[ i ]</a>
-                      </Tooltip>
+                      <div className={'text-gray mb-2'}>
+                        Enable the checkbox and enter a quantity range in whole numbers(no decimals); the From field (accepts zero) is required, and leave the To field blank to avoid an upper limit.
+                      </div>
                     </Form.Item>
                   </Col>
                   <Col
@@ -1720,6 +1710,7 @@ function ShippingRulesComponent() {
                         type='number'
                         onKeyDown={handleNumbersOnly}
                         step='1'
+                        min={0}
                         placeholder='Enter quantity from'
                       />
                     </Form.Item>
@@ -1750,6 +1741,7 @@ function ShippingRulesComponent() {
                         type='number'
                         onKeyDown={handleNumbersOnly}
                         step='1'
+                        min={0}
                         placeholder='Enter quantity to'
                       />
                     </Form.Item>
