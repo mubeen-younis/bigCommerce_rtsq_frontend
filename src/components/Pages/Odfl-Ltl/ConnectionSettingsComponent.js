@@ -73,12 +73,23 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 
 				<Form.Item
+					className='mb-1'
 					label='Billing Postal Code'
 					name='billing_postal_Code'
 					rules={[{ required: true, message: 'Billing Postal Code' }]}
 				>
 					<Input placeholder='Billing Postal Code' />
 				</Form.Item>
+
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-odfl-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your ODFL account credentials?
+					</a>
+				</div>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

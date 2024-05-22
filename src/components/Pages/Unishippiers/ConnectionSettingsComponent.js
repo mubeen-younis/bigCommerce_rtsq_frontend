@@ -138,13 +138,26 @@ function ConnectionSettingsComponent(props) {
 							<Input placeholder='Client ID' maxLength={100}/>
 						</Form.Item>
 						<Form.Item
+							className='mb-1'
 							label='Client Secret'
 							name='clientSecret'
 							rules={[{ required: true, message: 'Client Secret' }]}
 						>
 							<Input placeholder='Client Secret' maxLength={100}/>
 						</Form.Item>
+
+						<div>
+							<a
+								href='https://eniture.com/bigcommerce-unishippers-api-connection-instructions/'
+								target='_blank'
+								rel='noreferrer'
+							>
+								How to obtain your Unishippers Client ID and Client Secret?
+							</a>
+						</div>
+
 						<Form.Item
+							className='mt-1'
 							label='Username'
 							name='new_api_username'
 							rules={[{ required: false, message: 'Username' }]}>
@@ -185,11 +198,24 @@ function ConnectionSettingsComponent(props) {
 							rules={[{ required: true, message: 'Password' }]}>
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
-						<Form.Item label='Request Key' name='request_key'>
+						<Form.Item label='Request Key' name='request_key' className='mb-1'>
 							<Input placeholder='Request Key' />
 						</Form.Item>
 					</>
 				)}
+
+				{uniShipperSmallApiType != 'new_api' && (
+					<div>
+						<a
+							href='https://eniture.com/bigcommerce-unishippers-api-connection-instructions/'
+							target='_blank'
+							rel='noreferrer'
+						>
+							How to obtain your Unishippers API credentials?
+						</a>	
+					</div>
+				)}
+
 				<PromoCodeField />
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>

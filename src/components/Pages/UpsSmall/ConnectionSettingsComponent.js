@@ -131,12 +131,23 @@ function ConnectionSettingsComponent(props) {
 							</Form.Item>
 
 							<Form.Item
+								className='mb-1'
 								label='Client Secret'
 								name='clientSecret'
 								rules={[{ required: true, message: 'Client Secret' }]}
 							>
 								<Input placeholder='Client Secret' maxLength={100}/>
 							</Form.Item>
+
+							<div>
+								<a
+									href='https://eniture.com/bigcommerce-ups-api-connection-instructions/'
+									target='_blank'
+									rel='noreferrer'
+								>
+									How to obtain your UPS Client ID and Client Secret?
+								</a>
+							</div>
 						</>
 						) : (
 						<>
@@ -162,11 +173,22 @@ function ConnectionSettingsComponent(props) {
 							</Form.Item>
 
 							<Form.Item
+								className='mb-1'
 								label='API Access Key '
 								name='ups_api_access_key'
 								rules={[{ required: true, message: 'API Access Key' }]}>
 								<Input placeholder='API Access Key' />
 							</Form.Item>
+
+							<div>
+								<a
+									href='https://eniture.com/bigcommerce-ups-api-connection-instructions/'
+									target='_blank'
+									rel='noreferrer'
+								>
+									How to obtain your UPS API credentials?
+								</a>
+							</div>
 						</>
 						)}
 					</>
