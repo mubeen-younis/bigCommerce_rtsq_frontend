@@ -90,7 +90,7 @@ function PaymentsTabComponent(props) {
     },
     {
       key: 'is_addon',
-      title: 'Plan / Add-on name',
+      title: 'Plan / Add-on',
       dataIndex: 'is_addon',
       render: (is_addon, data) =>
         is_addon ? data.addon_name : 'Monthly ' + data.product_name + ' Plan',
