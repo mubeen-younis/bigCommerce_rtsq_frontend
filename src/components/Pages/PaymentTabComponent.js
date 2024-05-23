@@ -84,8 +84,9 @@ function PaymentsTabComponent(props) {
     {
       key: 'invoice_id',
       title: 'Description',
-      dataIndex: 'receipt_number',
-      render: (data) => (data?.is_addon ? 'Addon fee' : 'Subscription fee'),
+      dataIndex: 'is_addon',
+      render: (is_addon, data) =>
+        is_addon ? 'Monthly renewal fee' : 'Subscription fee',
     },
     {
       key: 'is_addon',
