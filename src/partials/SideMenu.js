@@ -177,7 +177,7 @@ function SideMenu(props) {
                 warnkey={112}
                 onClick={() => setActiveMenu('112')}
               >
-                <Link to={`/payments`}>Payments</Link>
+                <Link to={`/payments`}>Payments History</Link>
               </Menu.Item>
 
               <Menu.Item
