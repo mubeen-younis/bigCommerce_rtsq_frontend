@@ -79,7 +79,7 @@ function PaymentsTabComponent(props) {
       key: 'amount',
       title: 'Amount',
       dataIndex: 'amount',
-      render: (amount) => '$' + amount,
+      render: (amount) => amount,
     },
     {
       key: 'invoice_id',
