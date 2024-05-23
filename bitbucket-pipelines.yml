@@ -8,7 +8,7 @@ options:
   max-time: 60
 pipelines:
   branches:
-    remove-upsltl-newapi:
+    feature/add-carrier-unishipper-ltl:
       - step:
           caches:
             - composer
@@ -20,7 +20,7 @@ pipelines:
                 MODE: 'command'
                 COMMAND: '/home/apx-bc-01/html/bc-fe/remote-script.sh'
 
-    payments-tab:
+    install-all-carriers:
       - step:
           caches:
             - composer
@@ -30,7 +30,7 @@ pipelines:
                 SSH_USER: 'apx-bc-01'
                 SERVER: '52.87.17.243'
                 MODE: 'command'
-                COMMAND: '/home/apx-bc-01/html/bc-fe/remote-script.sh'
+                COMMAND: '/var/www/html/bigcommerce/bc-fe/remote-script.sh'
 
     master:
       - step:

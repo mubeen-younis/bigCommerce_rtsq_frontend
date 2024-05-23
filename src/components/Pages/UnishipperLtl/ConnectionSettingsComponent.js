@@ -1,7 +1,9 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { Form, Input, Button, Space, Skeleton, Row, Col } from 'antd'
+import React, { Fragment, useState, useEffect } from 'react'
+import { Form, Input, Button, Space, Skeleton } from 'antd'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
+import PromoCodeNote from '../../PromoCodeNote'
+import PromoCodeField from '../../PromoCodeField'
 import { getFDOCouponCarrierInfo } from '../../../Actions/FDOActions'
 
 function ConnectionSettingsComponent(props) {
@@ -9,7 +11,7 @@ function ConnectionSettingsComponent(props) {
 		testType: false,
 		skeleton_loading: true,
 	})
-	const { fdoCouponInfo, fdoCouponCarrierInfo, token } = useSelector(
+	const { fdoCouponInfo, fdoCouponCarrierInfo, token, connectionSettings } = useSelector(
 		state => state
 	)
 	const dispatch = useDispatch()
@@ -18,7 +20,7 @@ function ConnectionSettingsComponent(props) {
 		dispatch(
 			getFDOCouponCarrierInfo(
 				token,
-				'small-package',
+				'unishipper-ltl',
 				fdoCouponInfo ? fdoCouponInfo?.code ?? '' : ''
 			)
 		)
@@ -31,6 +33,7 @@ function ConnectionSettingsComponent(props) {
 	}
 
 	const onFinish = values => {
+		values = { ...connectionSettings, ...values}
 		values.testType = connectionState.testType
 		values.installed_carrier_id = props.carrierId
 		values.carrierId = props.carrierId
@@ -51,17 +54,17 @@ function ConnectionSettingsComponent(props) {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> You must have a Purolator account to use this
-				application. If you do not have one contact Purolator at
-				1-888-744-7123 or{' '}
+				<strong>Note!</strong> You must have a Unishippers Freight account to
+				use this application. If you do not have one, click{' '}
 				<a
-					href='https://www.purolator.com/en'
+					href='https://www.unishippers.com/request-account'
 					target='_blank'
 					rel='noreferrer'>
-					register online
-				</a>
-				.
+					here
+				</a>{' '}
+				to access the new account request form.
 			</div>
+			<PromoCodeNote carrierName='Unishippers LTL' />
 
 			<Form
 				layout='vertical'
@@ -70,70 +73,47 @@ function ConnectionSettingsComponent(props) {
 				size={'large'}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					label='Billing Account Number'
-					name='billingAccount'
-					rules={[{ required: true, message: 'Billing Account Number' }]}>
-					<Input placeholder='Billing Account Number' />
-				</Form.Item>
-				<Form.Item
-					label='Registered Account Number'
-					name='registeredAccount'
-					rules={[
-						{ required: true, message: 'Registered Account Number' },
-					]}>
-					<Input placeholder='Registered Account Number' />
-				</Form.Item>
-				<Row>
-					<Col span={24}>
 						<Form.Item
-							label='Registered Address'
-							name='senderCity'
-							rules={[{ required: true, message: 'City' }]}>
-							<Input type='text' placeholder='City' />
+							label='Client ID'
+							name='clientId'
+							rules={[{ required: true, message: 'Client ID is required.' }]}
+						>
+							<Input placeholder='Client ID' maxLength={100}/>
 						</Form.Item>
-					</Col>
-				</Row>
-				<Row>
-					<Col span={12}>
 						<Form.Item
-							name='senderState'
-							rules={[{ required: true, message: 'State' }]}>
-							<Input type='text' placeholder='State' />
+							className='mb-1'
+							label='Client Secret'
+							name='clientSecret'
+							rules={[{ required: true, message: 'Client Secret is required.' }]}
+						>
+							<Input placeholder='Client Secret' maxLength={256}/>
 						</Form.Item>
-					</Col>
-					<Col span={12}>
-						<Form.Item
-							style={{ marginLeft: '2em' }}
-							name='senderZip'
-							rules={[{ required: true, message: 'Zip' }]}>
-							<Input type='text' placeholder='Zip' />
-						</Form.Item>
-					</Col>
-				</Row>
-				<Form.Item
-					label='Production Key'
-					name='productionKey'
-					rules={[{ required: true, message: 'Production Key' }]}>
-					<Input placeholder='Production Key' />
-				</Form.Item>
-				<Form.Item
-					className='mb-1'
-					label='Production Key Password'
-					name='productionPass'
-					rules={[{ required: true, message: 'Production Key Password' }]}>
-					<Input placeholder='Production Key Password' />
-				</Form.Item>
 
-				<div>
-					<a
-						href='https://eniture.com/bigcommerce-purolator-connection-instructions/'
-						target='_blank'
-						rel='noreferrer'
-					>
-						How to obtain your Purolator API credentials?
-					</a>
-				</div>
+						<div>
+							<a
+								href='https://eniture.com/bigcommerce-unishippers-api-connection-instructions-2/'
+								target='_blank'
+								rel='noreferrer'
+							>
+								How to obtain your Unishippers Client ID and Client Secret?
+							</a>
+						</div>
+
+						<Form.Item
+							className='mt-1'
+							label='Username'
+							name='username'
+							rules={[{ required: false, message: 'Username' }]}>
+							<Input placeholder='Username' maxLength={100} />
+						</Form.Item>
+						<Form.Item
+							label='Password'
+							name='password'
+							rules={[{ required: false, message: 'Password' }]}>
+							<Input type='text' placeholder='Password' maxLength={100} />
+						</Form.Item>
+			
+				<PromoCodeField />
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

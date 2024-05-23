@@ -695,6 +695,7 @@ const Settings = ({
 									'pallet_vertical_rotation',
 									e.target.checked
 								)
+								onChangeVariant(index, 'own_pallet', false)
 							}}
 							name='pallet_vertical_rotation'
 							id={'pallet_vertical_rotation' + index}
@@ -705,13 +706,14 @@ const Settings = ({
 					</Col>
 					<Col span={24} style={{ marginTop: '7px' }}>
 						<Checkbox
-							onChange={e =>
+							onChange={e => {
 								onChangeVariant(
 									index,
 									'own_pallet',
 									e.target.checked
 								)
-							}
+								onChangeVariant(index, 'pallet_vertical_rotation', false)
+							}}
 							name='own_pallet'
 							id={'own_pallet' + index}
 							checked={product?.own_pallet}

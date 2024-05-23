@@ -269,6 +269,7 @@ function ConnectionSettingsComponent(props) {
 				</Row>
 
 				<Form.Item
+					className='mb-1'
 					label='Third Party Account Number'
 					name='third_party_account'
 					rules={[
@@ -280,7 +281,18 @@ function ConnectionSettingsComponent(props) {
 					<Input type='text' />
 				</Form.Item>
 
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-fedex-freight-api-connection-instructions/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your FedEx Freight API authentication credentials?
+					</a>
+				</div>
+
 				<Form.Item
+					className='mb-0'
 					name='account_type'
 					rules={[{ required: true, message: 'Account Type' }]}>
 					<Radio.Group defaultValue={accountType}>

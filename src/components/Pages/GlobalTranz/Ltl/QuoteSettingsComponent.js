@@ -44,7 +44,7 @@ function QuoteSettingsComponentWwe(props) {
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(true)
   const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
-  const { carrier_type, thresholdSetting } = useSelector((state) => state)
+  const { carrier_type, thresholdSetting, staffNoteSettings } = useSelector((state) => state)
 
   useEffect(() => {
     if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -132,6 +132,14 @@ function QuoteSettingsComponentWwe(props) {
           props.token
         )
       )
+      dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
+					props.token
+				)
+			)
     } else {
       dispatch({
         type: 'ALERT_MESSAGE',
