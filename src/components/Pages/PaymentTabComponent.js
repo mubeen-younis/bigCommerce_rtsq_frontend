@@ -102,7 +102,7 @@ function PaymentsTabComponent(props) {
     },
     {
       key: 'action',
-      title: 'Manage',
+      title: 'Receipt',
       render: (text) => (
         <Space size='middle'>
           <Button onClick={() => getReceiptDetial(text.id)}>
