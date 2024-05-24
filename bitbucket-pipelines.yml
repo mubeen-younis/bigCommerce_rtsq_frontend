@@ -22,15 +22,15 @@ pipelines:
               
     feature/large-cart-settings:
     - step:
-        caches:
-          - composer
-        script:
-          - pipe: atlassian/ssh-run:0.2.2
-            variables:
-              SSH_USER: 'apx-bc-01'
-              SERVER: '52.87.17.243'
-              MODE: 'command'
-              COMMAND: '/var/www/html/bigcommerce/bc-fe/remote-script.sh'
+          caches:
+            - composer
+          script:
+            - pipe: atlassian/ssh-run:0.2.2
+              variables:
+                SSH_USER: 'apx-bc-01'
+                SERVER: '52.87.17.243'
+                MODE: 'command'
+                COMMAND: '/var/www/html/bigcommerce/bc-fe/ && \git fetch | git checkout feature/large-cart-settings && \php artisan route:clear && \php artisan optimize && \php artisan config:clear && \(echo "OK."; exit 0) || (c=$?; echo "NOK"; (exit 0))'
               
     master:
     - step:
