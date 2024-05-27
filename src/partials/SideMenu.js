@@ -18,6 +18,8 @@ function SideMenu(props) {
     [dispatch]
   );
 
+  const appTitleStyle = { display: 'block', fontSize: 18, float: 'left' };
+
   useEffect(() => {
     const name = window.location.pathname;
     if (name.match(/\/$/)) setActiveMenu('99');
@@ -41,10 +43,7 @@ function SideMenu(props) {
 
   return (
     <>
-      <h4
-        className={'app-logo'}
-        style={{ display: 'block', fontSize: 18, float: 'left' }}
-      >
+      <h4 className={'app-logo'} style={appTitleStyle}>
         Real-time Shipping Quotes
       </h4>
       <hr></hr>
@@ -57,10 +56,7 @@ function SideMenu(props) {
         className={'sidemenu'}
         width={240}
       >
-        <h4
-          className={'header'}
-          style={{ display: 'block', fontSize: 18, float: 'left' }}
-        >
+        <h4 className={'header'} style={appTitleStyle}>
           Real-time Shipping Quotes
         </h4>
         <Menu
