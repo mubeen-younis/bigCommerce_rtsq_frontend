@@ -33,25 +33,13 @@ pipelines:
               COMMAND: '/var/www/html/bigcommerce/bc-fe/remote-script.sh'
               
     master:
-    - step:
-        caches:
-          - composer
-        script:
-          - pipe: atlassian/ssh-run:0.2.2
-            variables:
-              SSH_USER: 'ec2-user'
-              SERVER: '34.197.112.152'
-              MODE: 'command'
-              COMMAND: '/var/www/html/bigcommerce/bc-fe/remote-script.sh'
-              
-    ws-elb:
-    - step:
-        caches:
-          - composer
-        script:
-          - pipe: atlassian/ssh-run:0.2.2
-            variables:
-              SSH_USER: 'ec2-user'
-              SERVER: '54.159.170.144'
-              MODE: 'command'
-              COMMAND: '/var/www/html/ws/carriers/cerasis/remote-script.sh'
+      - step:
+          caches:
+            - composer
+          script:
+            - pipe: atlassian/ssh-run:0.2.2
+              variables:
+                SSH_USER: 'ec2-user'
+                SERVER: '34.197.112.152'
+                MODE: 'command'
+                COMMAND: '/var/www/html/bigcommerce/bc-fe/remote-script.sh'
