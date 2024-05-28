@@ -42,6 +42,7 @@ import {
   blockInvalidChar,
   handleNumbersOnly,
 } from '../../Utilities/numberValidation';
+import ProviderComponent from './ProvidersComponent';
 import ServiceRate from '../ServiceRate';
 
 const { Title } = Typography;
@@ -474,7 +475,7 @@ function ShippingRulesComponent() {
       dataIndex: 'filter_name',
       render: (filter_name, record) => (
         <>
-          {record?.rule_type == 2 ? (
+          {record?.rule_type == 2 || record?.rule_type == 7 ? (
             installedCarriers?.map(
               (carrier) =>
                 carrier.slug == filter_name &&
@@ -803,6 +804,7 @@ function ShippingRulesComponent() {
                       <Option value={'5'}>Restrict To Origin Locations</Option>
                       <Option value={'2'}>Hide Methods</Option>
                       <Option value={'6'}>Override Rates</Option>
+                      <Option value={'7'}>Hide Delivery Estimates</Option>
                     </Select>
                   </Form.Item>
                 </div>
@@ -838,30 +840,31 @@ function ShippingRulesComponent() {
             {(ruleType == 1 ||
               ruleType == 3 ||
               ruleType == 4 ||
-              ruleType == 5) && (
-                <>
-                  {ruleType != 5 && ruleType != 6 && (
-                    <Row gutter={30}>
-                      <Col
-                        className='gutter-row'
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
+              ruleType == 5 ||
+              ruleType == 7) && (
+              <>
+                {ruleType != 5 && ruleType != 6 && ruleType != 7 && (
+                  <Row gutter={30}>
+                    <Col
+                      className='gutter-row'
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                    >
+					<div id='country_dropdown'>
+                      <Form.Item
+                        className={'mb-2'}
+                        label='Countries'
+                        name='filter_country'
+                        rules={[
+                          {
+                            required: false,
+                            message: 'Select Countries',
+                          },
+                        ]}
                       >
-                        <div id='country_dropdown'>
-                          <Form.Item
-                            className={'mb-0'}
-                            label='Countries'
-                            name='filter_country'
-                            rules={[
-                              {
-                                required: false,
-                                message: 'Select countries',
-                              },
-                            ]}
-                          >
                             <Select
                               placeholder='Select countries'
                               value={this?.filter_country || undefined}
@@ -870,39 +873,45 @@ function ShippingRulesComponent() {
                                 document.getElementById('country_dropdown')
                               }
                             >
-                              <Option value={'US'}>US</Option>
-                              <Option value={'CA'}>CA</Option>
-                            </Select>
-                          </Form.Item>
-                        </div>
-                        <div className={'text-gray mb-2'}>
-                            Only customers from this country will be presented with shipping rates for this provider.
-                        </div>
-                      </Col>
-                    </Row>
-                  )}
-                  {(ruleType == 3 || ruleType == 4) && (
-                    <Row gutter={30}>
-                      <Col
-                        className='gutter-row'
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
+                            <Option value={'US'}>US</Option>
+                            <Option value={'CA'}>CA</Option>
+                          </Select>
+                      </Form.Item>
+					          </div>
+                    </Col>
+                  </Row>
+                )}
+                {ruleType == 7 && (
+                  <>
+                  <ProviderComponent
+                     installedCarriers={installedCarriers}
+                     handleProviderServices={handleProviderServices}
+                     filterProvider={initialState.filter_provider}
+                    />
+                  </>
+                )}
+                {(ruleType == 3 || ruleType == 4) && (
+                  <Row gutter={30}>
+                    <Col
+                      className='gutter-row'
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                    >
+					<div id='state_dropdown'>
+                      <Form.Item
+                        className={'mb-0'}
+                        label='States/Provinces'
+                        name='filter_state_province'
+                        rules={[
+                          {
+                            required: true,
+                            message: 'States/Provinces are required',
+                          },
+                        ]}
                       >
-                        <div id='state_dropdown'>
-                          <Form.Item
-                            className={'mb-0'}
-                            label='States/Provinces'
-                            name='filter_state_province'
-                            rules={[
-                              {
-                                required: true,
-                                message: 'States/Provinces are required',
-                              },
-                            ]}
-                          >
                             <Select
                               mode='multiple'
                               style={{ width: '100%' }}
@@ -970,7 +979,7 @@ function ShippingRulesComponent() {
                             ))}
                           </Select>
                         </Form.Item>
-                        <div className={'text-gray mb-1'}>
+                        <div className={'text-gray mb-2'}>
                           Postal codes can be entered with exact values (e.g.,
                           90210), containing wildcards (e.g., 902*), or as fully
                           numeric ranges (e.g., 90210...99000). Use enter to add
@@ -1223,52 +1232,13 @@ function ShippingRulesComponent() {
 
             {(ruleType == 2 || ruleType == 6) && (
               <>
-                {ruleType == 2 && (
+                {ruleType == 2  && (
                   <>
-                    <Row gutter={30}>
-                      <Col
-                        className='gutter-row'
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                      >
-                        <div id='country_dropdown'>
-                          <Form.Item
-                            className={'mb-2'}
-                            label='Provider'
-                            name='filter_provider'
-                            rules={[
-                              {
-                                required: true,
-                                message: 'Provider is required',
-                              },
-                            ]}
-                          >
-                            <Select
-                              placeholder='Select provider'
-                              value={this?.filter_provider || undefined}
-                              onChange={handleProviderServices}
-                              getPopupContainer={() =>
-                                document.getElementById('country_dropdown')
-                              }
-                            >
-                              {installedCarriers?.map((carrier) => (
-                                <Option value={carrier?.slug}>
-                                  {carrier.carrier_type == 1
-                                    ? carrier.name + ' (LTL Freight Providers)'
-                                    : carrier.carrier_type == 2
-                                      ? carrier.name +
-                                      ' (Parcel & Postal Providers)'
-                                      : null}
-                                </Option>
-                              ))}
-                            </Select>
-                          </Form.Item>
-                        </div>
-                      </Col>
-                    </Row>
+                    <ProviderComponent
+                     installedCarriers={installedCarriers}
+                     handleProviderServices={handleProviderServices}
+                     filterProvider={initialState.filter_provider}
+                    />
                   </>
                 )}
                 {ruleType == 6 && (
