@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, Form, Input } from 'antd'
-import { handleNumbersOnly } from '../Utilities/numberValidation'
+import { handleNumbersOnly, numberFieldLimit } from '../Utilities/numberValidation'
 
 const LargeCartSettings = () => {
 	return (
@@ -53,7 +53,7 @@ const LargeCartSettings = () => {
 					>
 						<Input
 							type='number'
-							onKeyDown={handleNumbersOnly}
+							onKeyDown={(e) => { handleNumbersOnly(e); numberFieldLimit(e); }}
 							step='1'
 							min={0}
 							placeholder='Enter Max items'
