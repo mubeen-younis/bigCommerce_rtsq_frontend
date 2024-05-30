@@ -42,6 +42,7 @@ export const shippingRuleTypes = {
     4: 'Restrict To Postal Codes',
     5: 'Restrict To Origin Locations',
     6: 'Override Rates',
+    7: 'Hide Delivery Estimates',
     9: 'Large Cart Settings',
 }
 
