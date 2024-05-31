@@ -377,7 +377,22 @@ const Settings = ({
 					</Col>
 				</Row>
 				<Row gutter={16}>
-					<Col span={24}>
+					<Col span={8}>
+						<Form.Item label='HS Code' >
+							<Input
+								//maxLength='7'
+								id={'hs_code' + index}
+								name='hs_code'
+								//onKeyDown={handlingFeeMarkup}
+								placeholder='e.g 8413.70.2040'
+								value={product?.hs_code}
+								onChange={e =>
+									onChangeVariant(index, 'hs_code', e.target.value)
+								}
+							/>
+						</Form.Item>
+					</Col>
+					<Col span={16}>
 						<Form.Item label='Markup' >
 							<Input
 								maxLength='7'

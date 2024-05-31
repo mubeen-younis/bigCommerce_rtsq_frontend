@@ -21,17 +21,22 @@ const TransportationModes = ({
 					<label className={'text-gray'}>Transportation Modes</label>
 				</Col>
 				<Col span={18}>
+				<div id='type_dropdown'>
 					<Form.Item>
 						<Select
 							name='TransportationModes'
-							value={quoteSettingsState?.TransportationModes}
+							value={quoteSettingsState?.TransportationModes ?? ''}
 							onChange={(value) => {
 								setQuoteSettingsState(prevState => ({
 									...prevState,
 									TransportationModes: value,
 								}))
 							}}
+							getPopupContainer={() =>
+								document.getElementById('type_dropdown')
+							  }
 						>
+							<Option value=''>Select mode</Option>
 							<Option value='INT_AIR'>INT AIR</Option>
 							<Option value='INT_OCEAN'>INT OCEAN</Option>
 							<Option value='INT_RAIL'>INT RAIL</Option>
@@ -42,6 +47,7 @@ const TransportationModes = ({
 							<Option value='DOM_TRUCK'>DOM TRUCK</Option>
 						</Select>
 					</Form.Item>
+				</div>
 				</Col>
 			</Row>
 		</>
