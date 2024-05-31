@@ -7,6 +7,7 @@ function ConnectionSettingsComponent(props) {
 	const [testType, setTestType] = useState(false)
 	const dispatch = useDispatch()
 	const [rates, setRates] = useState('ShipAff')
+	const [ratesAccount, setRatesAccount] = useState('0')
 	const { connectionSettings, token, carrierId } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
@@ -14,6 +15,7 @@ function ConnectionSettingsComponent(props) {
 	useEffect(() => {
 		if (connectionSettings)
 			setRates(connectionSettings?.request_freight_quotes ?? 'ShipAff')
+			setRatesAccount(connectionSettings?.weight_base_account ?? '0')
 	}, [connectionSettings])
 
 	const onFinish = values => {
@@ -23,6 +25,7 @@ function ConnectionSettingsComponent(props) {
 			carrierId,
 			installed_carrier_id: carrierId,
 			request_freight_quotes: rates,
+			weight_base_account:ratesAccount,
 		}
 
 		dispatch(
@@ -69,25 +72,65 @@ function ConnectionSettingsComponent(props) {
 					</a>
 				</div>
 
-				<Row gutter={30} className='mb-1 mt-1'>
-					<Col xl={16} lg={12} md={12} sm={8} xs={8}>
+				<Row gutter={30} className='mb-1 mt-2'>
+					<Col
+						className='gutter-row mb-1'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
+						<label>Request LTL freight quotes as</label>
+					</Col>
+					<Col xl={24} lg={24} md={24} sm={24} xs={24} className={'mb-1'}>
 						<Radio
 							onChange={() => setRates('ShipAff')}
 							defaultChecked
 							checked={rates === 'ShipAff'}>
-							Request LTL freight quotes as the shipper
+							shipper
 						</Radio>
 					</Col>
-				</Row>
-				<Row gutter={30} className='mb-1'>
-					<Col xl={16} lg={12} md={12} sm={8} xs={8}>
+					<Col xl={24} lg={24} md={24} sm={24} xs={24}>
 						<Radio
 							onChange={() => setRates('TPBPay')}
 							checked={rates === 'TPBPay'}>
-							Request LTL freight quotes as a 3rd party
+							3rd party
 						</Radio>
 					</Col>
 				</Row>
+
+				<Row gutter={30} className='mb-1 mt-2'>
+					<Col
+						className='gutter-row mb-1'
+						xs={24}
+						sm={24}
+						md={24}
+						lg={24}
+						xl={24}>
+						<label>ABF rates my freight on weight,</label>
+					</Col>
+					<Col xl={24} lg={24} md={24} sm={24} xs={24} className={'mb-1'}>
+						<Radio
+							onChange={() => setRatesAccount('0')}
+							defaultChecked
+							checked={ratesAccount === '0'}>
+							and freight class.
+						</Radio>
+					</Col>
+					<Col xl={24} lg={24} md={24} sm={24} xs={24}>
+						<Radio
+							onChange={() => setRatesAccount('1')}
+							checked={ratesAccount === '1'}>
+							freight class, and dimensions.
+						</Radio>
+					</Col>
+				</Row>
+
+				{ratesAccount === '1' && (
+					<div>
+						<p className='text-danger'>Use of the Pallets feature will be required for your account.</p>
+					</div>
+				)} 
 				
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

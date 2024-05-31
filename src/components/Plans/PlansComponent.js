@@ -275,6 +275,7 @@ function PlansComponent() {
           <Button type='primary' onClick={updatePaymentMethod}>
             Change Payment Method
           </Button>
+
           <Modal
             title='Cancel Subscription'
             visible={cancelSubsriptionVisible}
@@ -792,7 +793,7 @@ function PlansComponent() {
         )}
       </Space>
 
-      <Row gutter={24}>
+      <Row gutter={24} >
         {plans.map((plan, i) =>
           (plan.id === 1 && currentPlan?.plan_id > 1) ||
           ((plan.id === 1 || (plan.name + '').toLowerCase() === 'trial') &&
