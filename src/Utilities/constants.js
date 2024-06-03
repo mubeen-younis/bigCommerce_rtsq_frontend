@@ -36,14 +36,15 @@ export const boxDiscription = {
 }
 
 export const shippingRuleTypes = {
-	1: 'Restrict By Country',
+	1: 'Restrict To Country',
     2: 'Hide Methods',
-    3: 'Restrict By State',
-    4: 'Restrict By Postal Codes',
+    3: 'Restrict To State',
+    4: 'Restrict To Postal Codes',
     5: 'Restrict To Origin Locations',
     6: 'Override Rates',
     7: 'Hide Delivery Estimates',
-    8: 'Surcharge'
+    8: 'Surcharge',
+    9: 'Large Cart Settings',
 }
 
 export const accessorialServices = {
