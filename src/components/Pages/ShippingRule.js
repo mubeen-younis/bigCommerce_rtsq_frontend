@@ -278,6 +278,10 @@ function ShippingRulesComponent() {
     setSelectedWarehouses(selectedValues);
   };
 
+  const handleChangeRule = (selectedRule) => {
+    setApplyTo(selectedRule.target.value);
+  };
+
   const handleSelectChange = (selectedValues) => {
     setSelectedPostalCodes(selectedValues);
   };
@@ -372,16 +376,15 @@ function ShippingRulesComponent() {
     setIsFilterPrice(text?.isFilterPrice);
     setIsFilterQuantity(text?.isFilterQuantity);
     setApplyRuleTo(text?.apply_rule_to ?? 1);
-
+    setApplyTo(text?.apply_to ?? 1)
     editLocation(text);
   };
-
   const helptext = ruleType == 6 ? 'Shipment' : 'Cart';
 
   const onFinish = useCallback(
     (values) => {
       values = { ...values, apply_to: applyTo, available: available };
-      if (values['rule_type'] == 2 || values['rule_type'] == 6) {
+      if (values['rule_type'] == 2 || values['rule_type'] == 6 || values['rule_type'] == 8 ) {
         values = {
           ...values,
           isFilterWeight: isFilterWeight,
@@ -681,6 +684,7 @@ function ShippingRulesComponent() {
                   form.setFieldsValue(initialState);
                   setAvailable(true);
                   setRuleType(1);
+                  setApplyTo(1);
                   setCountryCode('US');
                   setIsFilterWeight(false);
                   setIsFilterPrice(false);
@@ -808,6 +812,7 @@ function ShippingRulesComponent() {
                       <Option value={'2'}>Hide Methods</Option>
                       <Option value={'6'}>Override Rates</Option>
                       <Option value={'7'}>Hide Delivery Estimates</Option>
+                      <Option value={'8'}>Surcharge</Option>
                       <Option value={'9'}>Large Cart Settings</Option>
                     </Select>
                   </Form.Item>
@@ -834,11 +839,27 @@ function ShippingRulesComponent() {
                     },
                   ]}
                 >
-                  {ruleType == 6 ? (
-                    <Radio checked={applyTo == 1}>Shipment</Radio>
-                  ) : (
-                    <Radio checked={applyTo == 1}>Cart</Radio>
-                  )}
+                {ruleType == 6 ? (
+                  <Radio checked={applyTo == 1}>Shipment</Radio>
+                ) : (
+                  <Radio checked={applyTo == 1} value={1} onChange={handleChangeRule}>Cart</Radio>
+                )}
+
+                {ruleType == 8 && (
+                  <>
+                    <Radio 
+                    checked={applyTo == 0} 
+                    value='0'  
+                    onChange= {(value) => handleChangeRule(value)}
+                    >Shipment</Radio>
+                    <Radio 
+                     checked={applyTo == 2}
+                     value='2'  
+                     onChange= {(value) => handleChangeRule(value)}
+                    >Product/Category/Brand</Radio>
+                  </>
+                )}
+
                 </Form.Item>
               </Col>
             </Row>
@@ -849,10 +870,10 @@ function ShippingRulesComponent() {
             {(ruleType == 1 ||
               ruleType == 3 ||
               ruleType == 4 ||
-              ruleType == 5 ||
-              ruleType == 7) && (
+              ruleType == 5 || ruleType == 7 || 
+              ( applyTo == 2 && ruleType == 8)) && (
               <>
-                {ruleType != 5 && ruleType != 6 && ruleType != 7 && (
+                {ruleType != 5 && ruleType != 6 && ruleType != 7 && ruleType !=8 && (
                   <Row gutter={30}>
                     <Col
                       className='gutter-row'
@@ -1239,7 +1260,7 @@ function ShippingRulesComponent() {
                 </>
               )}
 
-            {(ruleType == 2 || ruleType == 6) && (
+            {(ruleType == 2 || ruleType == 6 || ruleType == 8) && (
               <>
                 {ruleType == 2  && (
                   <>
@@ -1441,6 +1462,15 @@ function ShippingRulesComponent() {
                     )}
                   </>
                 )}
+                {ruleType == 8 && (
+               <ServiceRate
+                  label='Service rate (e.g. 5.25)'
+                  name='service_rates'
+                  placeholder='Enter service rate'
+                  required={true}
+                  message='Service rate is required'
+                />
+                )}
                 <Row gutter={30}>
                   <Col
                     className='gutter-row'
@@ -1458,13 +1488,9 @@ function ShippingRulesComponent() {
                       >
                         Filter by weight (lbs)
                       </Checkbox>
-                      <Tooltip
-                        title={
-                          'The total weight of the ' + helptext + ' in pounds.'
-                        }
-                      >
-                        <a href='#!'>[ i ]</a>
-                      </Tooltip>
+                      <div className={'text-gray mb-2'}>
+                        Enable the checkbox and enter a weight range in lbs; the From field (accepts zero) is required, and leave the To field blank to avoid an upper limit.
+                      </div>
                     </Form.Item>
                   </Col>
                   <Col
@@ -1493,6 +1519,7 @@ function ShippingRulesComponent() {
                         type='number'
                         onKeyDown={blockInvalidChar}
                         step='0.01'
+                        min={0}
                         placeholder='Enter weight from'
                       />
                     </Form.Item>
@@ -1523,6 +1550,7 @@ function ShippingRulesComponent() {
                         type='number'
                         onKeyDown={blockInvalidChar}
                         step='0.01'
+                        min={0}
                         placeholder='Enter weight to'
                       />
                     </Form.Item>
@@ -1545,15 +1573,9 @@ function ShippingRulesComponent() {
                       >
                         Filter by price
                       </Checkbox>
-                      <Tooltip
-                        title={
-                          'The total value of the items in the ' +
-                          helptext +
-                          '.'
-                        }
-                      >
-                        <a href='#!'>[ i ]</a>
-                      </Tooltip>
+                      <div className={'text-gray mb-2'}>
+                        Enable the checkbox and enter a price range in US dollars; the From field (accepts zero) is required, and leave the To field blank to avoid an upper limit.
+                      </div>
                     </Form.Item>
                   </Col>
                   <Col
@@ -1582,6 +1604,7 @@ function ShippingRulesComponent() {
                         type='number'
                         onKeyDown={blockInvalidChar}
                         step='0.01'
+                        min={0}
                         placeholder='Enter price from'
                       />
                     </Form.Item>
@@ -1612,6 +1635,7 @@ function ShippingRulesComponent() {
                         type='number'
                         onKeyDown={blockInvalidChar}
                         step='0.01'
+                        min={0}
                         placeholder='Enter price to'
                       />
                     </Form.Item>
@@ -1634,13 +1658,9 @@ function ShippingRulesComponent() {
                       >
                         Filter by quantity
                       </Checkbox>
-                      <Tooltip
-                        title={
-                          'The total number of items in the ' + helptext + '.'
-                        }
-                      >
-                        <a href='#!'>[ i ]</a>
-                      </Tooltip>
+                      <div className={'text-gray mb-2'}>
+                        Enable the checkbox and enter a quantity range in whole numbers(no decimals); the From field (accepts zero) is required, and leave the To field blank to avoid an upper limit.
+                      </div>
                     </Form.Item>
                   </Col>
                   <Col
@@ -1669,6 +1689,7 @@ function ShippingRulesComponent() {
                         type='number'
                         onKeyDown={handleNumbersOnly}
                         step='1'
+                        min={0}
                         placeholder='Enter quantity from'
                       />
                     </Form.Item>
@@ -1699,6 +1720,7 @@ function ShippingRulesComponent() {
                         type='number'
                         onKeyDown={handleNumbersOnly}
                         step='1'
+                        min={0}
                         placeholder='Enter quantity to'
                       />
                     </Form.Item>
@@ -1706,7 +1728,7 @@ function ShippingRulesComponent() {
                 </Row>
               </>
             )}
-
+             
             <Row gutter={30}>
               <Col
                 className='gutter-row'
