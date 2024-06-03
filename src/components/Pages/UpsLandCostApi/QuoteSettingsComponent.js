@@ -18,7 +18,7 @@ const { Title } = Typography;
 
 const initialState = {
 	label_as: '',
-	handling_fee_markup: null,
+	handling_free_markup: null,
 	error_managment:1,
 	currencyCode:'USD',
 	TransportationModes:'',
@@ -210,13 +210,13 @@ function QuoteSettingsComponent(props) {
 						<Form.Item className={'mb-0'}>
 							<Input
 								type='text'
-								name='handling_fee_markup'
+								name='handling_free_markup'
 								maxLength='7'
-								value={quoteSettingsState?.handling_fee_markup}
+								value={quoteSettingsState?.handling_free_markup}
 								onChange={e =>
 									setQuoteSettingsState({
 										...quoteSettingsState,
-										handling_fee_markup: e.target.value,
+										handling_free_markup: e.target.value,
 									})
 								}
 								onKeyDown={handlingFeeMarkup}
