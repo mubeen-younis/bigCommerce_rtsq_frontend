@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button, Col, Row, Select, Checkbox, Input, Typography } from 'antd'
 import { getLocations } from '../../Actions/Warehouse'
-import { handlingFeeMarkup } from '../../Utilities/numberValidation'
+import { handleNumbersWithDecimalOnly, handlingFeeMarkup } from '../../Utilities/numberValidation'
 
 const { Option } = Select
 const smallCarriers = [
@@ -380,11 +380,11 @@ const Settings = ({
 					<Col span={8}>
 						<Form.Item label='HS Code' >
 							<Input
-								//maxLength='7'
+								maxLength='20'
 								id={'hs_code' + index}
 								name='hs_code'
-								//onKeyDown={handlingFeeMarkup}
-								placeholder='e.g 8413.70.2040'
+								onKeyDown={handleNumbersWithDecimalOnly}
+								placeholder='e.g 1234.12.4456'
 								value={product?.hs_code}
 								onChange={e =>
 									onChangeVariant(index, 'hs_code', e.target.value)
