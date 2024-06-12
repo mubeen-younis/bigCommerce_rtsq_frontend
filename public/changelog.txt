@@ -1,3 +1,7 @@
+= 2.2.9 2024-06-12 =
+
+* Update - Landed Cost Quote API for international shipping (Ticket:2720770325) [#288] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/288)
+
 = 2.2.8 2024-06-03 =
 
 * Update -Introduce "Surcharge" shipping rule in BC (Ticket:2451812923) [#286] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/286)
