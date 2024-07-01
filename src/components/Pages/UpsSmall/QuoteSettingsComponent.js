@@ -16,6 +16,7 @@ import SaveButton from '../../SaveButton'
 import ErrorManagment from '../../ErrorManagment'
 import StaffNoteSettings from '../../StaffNoteSettings'
 import EnableLogs from '../../EnableLogs'
+import UpsLandedCostApiSettings from '../../UpsLandedCostApiSettings'
 
 const { Title } = Typography
 const initialState = {
@@ -76,6 +77,7 @@ const initialState = {
 	quote_details: null,
 	rate_source: 1,
 	packageRatingMethod: 1,
+	isUpsLandedCost: 0,
 }
 
 function QuoteSettingsComponentWweSmall(props) {
@@ -537,6 +539,12 @@ function QuoteSettingsComponentWweSmall(props) {
 					onCheck={onCheck}
 				/>
 				<Row className={'mb-2'}></Row>
+				
+				<UpsLandedCostApiSettings
+          			quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
+
 				<PackageRatingMethod
           			quoteSettingsState={quoteSettingsState}
           			setQuoteSettingsState={setQuoteSettingsState}
