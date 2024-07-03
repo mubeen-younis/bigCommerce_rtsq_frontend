@@ -773,7 +773,7 @@ function ShippingRulesComponent() {
                     },
                   ]}
                 >
-                  <Input placeholder='Rule name' />
+                  <Input placeholder='Rule name' maxLength={50} onKeyDown={blockInvalidChar}/>
                 </Form.Item>
               </Col>
             </Row>
