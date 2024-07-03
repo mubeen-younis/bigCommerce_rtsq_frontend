@@ -55,6 +55,7 @@ function TabsLayout() {
         'ups-ship-engine',
         'priority-one-ltl',
         'unishipper-ltl',
+        'ups-land-cost-small',
         'dbsc',
       ];
 

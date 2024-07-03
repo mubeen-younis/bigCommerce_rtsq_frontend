@@ -26,6 +26,7 @@ export { default as CSFreightQuoteChrLtl } from './FreightQuoteChr/ConnectionSet
 export { default as CSUpsShipEngineSmall } from './UpsViaShipEngine/ConnectionSettingsComponent';
 export { default as CSPriorityOneLtl } from './PriorityOneLtl/ConnectionSettingsComponent';
 export { default as CSUnishipperLtl } from './UnishipperLtl/ConnectionSettingsComponent';
+export { default as CSUpsLandCostApi } from './UpsLandCostApi/ConnectionSettingsComponent';
 
 // Quote Settings Component
 export { default as QSWweltl } from './WweLtl/QuoteSettingsComponentWwe';
@@ -55,3 +56,4 @@ export { default as QSFreightQuoteChrLtl } from './FreightQuoteChr/QuoteSettings
 export { default as QSUpsShipEngineSmall } from './UpsViaShipEngine/QuoteSettingsComponent';
 export { default as QSPriorityOneLtl } from './PriorityOneLtl/QuoteSettingsComponent';
 export { default as QSUnishipperLtl } from './UnishipperLtl/QuoteSettingsComponent';
+export { default as QSUpsLandCostApi } from './UpsLandCostApi/QuoteSettingsComponent';
