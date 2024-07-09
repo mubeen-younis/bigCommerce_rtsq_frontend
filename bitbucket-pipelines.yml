@@ -20,7 +20,7 @@ pipelines:
               MODE: 'command'
               COMMAND: '/home/apx-bc-01/html/bc-fe/remote-script.sh'
               
-    feature/shipping-rule-surcharge:
+    feature/ups-landed-cost-api:
     - step:
           caches:
             - composer
