@@ -86,7 +86,7 @@ function QuoteSettingsComponentWweSmall(props) {
 	const [checkAllSimpleRate, setCheckAllSimpleRate] = useState(false)
 	const [internationalcheckAll, setInternationalCheckAll] = useState(false)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
-	const { staffNoteSettings } = useSelector(state => state)
+	const { staffNoteSettings, UpsSmallApiType } = useSelector(state => state)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -543,6 +543,7 @@ function QuoteSettingsComponentWweSmall(props) {
 				<UpsLandedCostApiSettings
           			quoteSettingsState={quoteSettingsState}
           			setQuoteSettingsState={setQuoteSettingsState}
+					isUpsNewAPI = {UpsSmallApiType == 'new_api'}
         		/>
 
 				<PackageRatingMethod
