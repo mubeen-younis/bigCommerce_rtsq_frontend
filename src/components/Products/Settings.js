@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button, Col, Row, Select, Checkbox, Input, Typography } from 'antd'
 import { getLocations } from '../../Actions/Warehouse'
-import { handleNumbersWithDecimalOnly, handlingFeeMarkup } from '../../Utilities/numberValidation'
+import { fieldValueLimit, handleNumbersOnly, handleNumbersWithDecimalOnly, handlingFeeMarkup, numberFieldLimit } from '../../Utilities/numberValidation'
 
 const { Option } = Select
 const smallCarriers = [
@@ -487,11 +487,12 @@ const Settings = ({
 						<Col span={12} className='mt-1'>
 						<Form.Item label='Nesting %' >
 							<Input
-								maxLength='7'
+								maxLength='3'
 								id={'nesting_percentage' + index}
 								name='nesting_percentage'
-								onKeyDown={handlingFeeMarkup}
-								value={product?.nesting_percentage ?? 0}
+								onKeyDown={(e) => { handleNumbersOnly(e); fieldValueLimit(e); }}
+								placeholder='Nesting (%) e.g. 80'
+								value={product?.nesting_percentage}
 								onChange={e =>
 									onChangeVariant(index, 'nesting_percentage', e.target.value)
 								}
@@ -505,9 +506,9 @@ const Settings = ({
 								maxLength='7'
 								id={'max_nested_items' + index}
 								name='max_nested_items'
-								onKeyDown={handlingFeeMarkup}
+								onKeyDown={handleNumbersOnly}
 								placeholder='e.g. 5 '
-								value={product?.max_nested_items ?? null}
+								value={product?.max_nested_items}
 								onChange={e =>
 									onChangeVariant(index, 'max_nested_items', e.target.value)
 								}

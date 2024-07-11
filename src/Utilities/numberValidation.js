@@ -391,6 +391,22 @@ export const numberFieldLimit = e => {
 	return ''
 }
 
+export const fieldValueLimit = e => {
+	blockInvalidChar(e)
+	const { key, target: { value } } = e;
+
+    // Allow control keys like backspace, delete, arrow keys, etc.
+    if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(key)) {
+      return;
+    }
+
+    const newValue = parseInt(value + key, 10);
+    if (newValue >= 101) {
+      e.preventDefault();
+	  return true
+    }
+}
+
 export const LableAsLimit = e => {
 	let value = e.target.value
 	let condition =
