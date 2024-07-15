@@ -1,8 +1,17 @@
 import React from 'react'
 import { Row, Col, Typography, Form, Checkbox, Input } from 'antd'
-import { handlingFeeMarkup } from '../../../../Utilities/numberValidation'
+import { blockSpecialChar, handlingFeeMarkup } from '../../../../Utilities/numberValidation'
 
 const { Title } = Typography
+
+const LabelAs = () => (
+	<Col className='gutter-row mb-2' xs={14} sm={14} md={14} lg={14} xl={14}>
+	  <label className={'text-gray'}>
+		Service name displays by default. Enter an alternative if you prefer
+		something different.
+	  </label>
+	</Col>
+);
 
 const CanadaToCanada = ({
 	quoteSettingsState,
@@ -57,6 +66,23 @@ const CanadaToCanada = ({
 					</Form.Item>
 				</Col>
 				<Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='purolator_express_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.purolator_express_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='Purolator Express'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
 							name='purolator_express_markup'
@@ -72,7 +98,7 @@ const CanadaToCanada = ({
 					</Form.Item>
 				</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+				<Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
 					<label className={'text-gray'}>
 						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
@@ -95,6 +121,23 @@ const CanadaToCanada = ({
 					</Form.Item>
 				</Col>
 				<Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='purolator_express_9AM_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.purolator_express_9AM_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='Purolator Express 9 AM'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
 							value={
@@ -110,7 +153,7 @@ const CanadaToCanada = ({
 					</Form.Item>
 				</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+				<Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
 					<label className={'text-gray'}>
 						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
@@ -133,6 +176,23 @@ const CanadaToCanada = ({
 					</Form.Item>
 				</Col>
 				<Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='purolator_express_10__30AM_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.purolator_express_10__30AM_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='Purolator Express 10:30 AM'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
 							value={
@@ -148,7 +208,7 @@ const CanadaToCanada = ({
 					</Form.Item>
 				</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+				<Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
 					<label className={'text-gray'}>
 						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
@@ -171,6 +231,23 @@ const CanadaToCanada = ({
 					</Form.Item>
 				</Col>
 				<Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='purolator_ground_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.purolator_ground_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='Purolator Ground'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
 							value={
@@ -186,7 +263,7 @@ const CanadaToCanada = ({
 					</Form.Item>
 				</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+				<Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
 					<label className={'text-gray'}>
 						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
@@ -209,6 +286,23 @@ const CanadaToCanada = ({
 					</Form.Item>
 				</Col>
 				<Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='purolator_ground_9AM_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.purolator_ground_9AM_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='Purolator Ground 09:00 AM'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
 							//maxLength='7'
@@ -226,7 +320,7 @@ const CanadaToCanada = ({
 					</Form.Item>
 				</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+				<Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
 					<label className={'text-gray'}>
 						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
@@ -249,6 +343,23 @@ const CanadaToCanada = ({
 					</Form.Item>
 				</Col>
 				<Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='purolator_ground_10__30AM_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.purolator_ground_10__30AM_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='Purolator Ground 10:30 AM'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+				<Col span={14}>
 					<Form.Item className={'mb-0'}>
 						<Input
 							//maxLength='7'
@@ -266,7 +377,7 @@ const CanadaToCanada = ({
 					</Form.Item>
 				</Col>
 
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+				<Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
 					<label className={'text-gray'}>
 						Markup (e.g Currency 1.00 or percentage 5%)
 					</label>
