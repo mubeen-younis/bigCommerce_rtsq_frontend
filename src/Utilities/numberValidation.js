@@ -3,8 +3,8 @@ export const blockInvalidChar = e =>
 export const blockInvalidCharWithPoint = e =>
 	['e', 'E', '+', '-', '.'].includes(e.key) && e.preventDefault()
 export const blockSpecialChar = e => {
-	const regex = /[a-zA-Z0-9\s]/;
-    if (!regex.test(e.key)) {
+	const regex = /_/;
+    if (regex.test(e.key)) {
       e.preventDefault();
     }
 }
