@@ -2,6 +2,12 @@ export const blockInvalidChar = e =>
 	['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
 export const blockInvalidCharWithPoint = e =>
 	['e', 'E', '+', '-', '.'].includes(e.key) && e.preventDefault()
+export const blockSpecialChar = e => {
+	const regex = /[a-zA-Z0-9\s]/;
+    if (!regex.test(e.key)) {
+      e.preventDefault();
+    }
+}
 
 export const handleKeyDownDecimalNumber = (e, allowedLength) => {
 	let value = e.target.value

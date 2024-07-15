@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, Typography, Form, Checkbox, Input } from 'antd'
-import { handlingFeeMarkup } from '../../../../Utilities/numberValidation'
+import { blockSpecialChar, handlingFeeMarkup } from '../../../../Utilities/numberValidation'
 
 const { Title } = Typography
 const contract_services = [
@@ -78,6 +78,7 @@ const ContractServices = ({ quoteSettingsState, onChange, onCheck }) => {
 											'_label'
 										}
 										onChange={onChange}
+										onKeyDown={blockSpecialChar}
 										type='text'
 										placeholder={cs}
 										maxLength={50}
