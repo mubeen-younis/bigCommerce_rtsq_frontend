@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Typography, Form, Checkbox, Input } from 'antd';
-import { handlingFeeMarkup } from '../../../../Utilities/numberValidation';
+import { blockSpecialChar, handlingFeeMarkup } from '../../../../Utilities/numberValidation';
 
 const { Title } = Typography;
 
@@ -78,6 +78,7 @@ const DomesticServices = ({
 									?.ups_ground_label
 							}
 							onChange={onChange}
+              onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='UPS Ground'
 							maxLength={50}
@@ -129,6 +130,7 @@ const DomesticServices = ({
 									?.ups_2nd_day_air_label
 							}
 							onChange={onChange}
+              onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='UPS 2nd Day Air'
 							maxLength={50}
@@ -184,6 +186,7 @@ const DomesticServices = ({
 									?.ups_next_day_air_saver_label
 							}
 							onChange={onChange}
+              onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='UPS Next Day Air Saver'
 							maxLength={50}
@@ -238,6 +241,7 @@ const DomesticServices = ({
 									?.ups_next_day_air_label
 							}
 							onChange={onChange}
+              onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='UPS Next Day Air'
 							maxLength={50}
@@ -292,6 +296,7 @@ const DomesticServices = ({
 									?.ups_standard_label
 							}
 							onChange={onChange}
+              onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='UPS Standard'
 							maxLength={50}
@@ -343,6 +348,7 @@ const DomesticServices = ({
 									?.ups_2nd_day_air_am_label
 							}
 							onChange={onChange}
+              onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='UPS 2nd Day Air A.M.'
 							maxLength={50}
@@ -397,6 +403,7 @@ const DomesticServices = ({
 									?.ups_next_day_air_early_am_label
 							}
 							onChange={onChange}
+              onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='UPS Next Day Air Early'
 							maxLength={50}
@@ -452,6 +459,7 @@ const DomesticServices = ({
 									?.ups_3_day_select_label
 							}
 							onChange={onChange}
+              onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='UPS 3 Day Select'
 							maxLength={50}

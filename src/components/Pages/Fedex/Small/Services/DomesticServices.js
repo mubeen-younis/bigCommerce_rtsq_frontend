@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, Typography, Checkbox, Input, Form } from 'antd'
-import { handlingFeeMarkup } from '../../../../../Utilities/numberValidation'
+import { blockInvalidChar, blockSpecialChar, handlingFeeMarkup } from '../../../../../Utilities/numberValidation'
 
 const { Title } = Typography
 export const domestic_services = [
@@ -97,6 +97,7 @@ const DomesticServices = ({
 									?.fedex_ground_home_delivery_label
 							}
 							onChange={onChange}
+							onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='Home Delivery'
 							maxLength={50}
@@ -154,6 +155,7 @@ const DomesticServices = ({
 											?.fedex_date_certain_home_delivery_label
 										}
 										onChange={onChange}
+										onKeyDown={blockSpecialChar}
 										type='text'
 										placeholder='Date Certain Home Delivery'
 										maxLength={50}
@@ -216,6 +218,7 @@ const DomesticServices = ({
 											?.fedex_evening_home_delivery_label
 										}
 										onChange={onChange}
+										onKeyDown={blockSpecialChar}
 										type='text'
 										placeholder='Evening Home Delivery'
 										maxLength={50}
@@ -279,6 +282,7 @@ const DomesticServices = ({
 											?.fedex_appointment_home_delivery_label
 										}
 										onChange={onChange}
+										onKeyDown={blockSpecialChar}
 										type='text'
 										placeholder='Appointment Home Delivery'
 										maxLength={50}
@@ -338,6 +342,7 @@ const DomesticServices = ({
 									?.fedex_ground_label
 							}
 							onChange={onChange}
+							onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='Ground'
 							maxLength={50}
@@ -393,6 +398,7 @@ const DomesticServices = ({
 									?.fedex_express_saver_label
 							}
 							onChange={onChange}
+							onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='Express Saver'
 							maxLength={50}
@@ -449,6 +455,7 @@ const DomesticServices = ({
 									?.fedex_2_day_label
 							}
 							onChange={onChange}
+							onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='2 Day'
 							maxLength={50}
@@ -502,6 +509,7 @@ const DomesticServices = ({
 									?.fedex_2_day_am_label
 							}
 							onChange={onChange}
+							onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='2 Day AM'
 							maxLength={50}
@@ -557,6 +565,7 @@ const DomesticServices = ({
 									?.fedex_standard_overnight_label
 							}
 							onChange={onChange}
+							onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='Standard Overnight'
 							maxLength={50}
@@ -612,6 +621,7 @@ const DomesticServices = ({
 									?.fedex_priority_overnight_label
 							}
 							onChange={onChange}
+							onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='Priority Overnight'
 							maxLength={50}
@@ -666,6 +676,7 @@ const DomesticServices = ({
 									?.fedex_first_overnight_label
 							}
 							onChange={onChange}
+							onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='First Overnight'
 							maxLength={50}
@@ -720,6 +731,7 @@ const DomesticServices = ({
 									?.fedex_smart_post_label
 							}
 							onChange={onChange}
+							onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder='SmartPost'
 							maxLength={50}
