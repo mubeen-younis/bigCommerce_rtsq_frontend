@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, Typography, Form, Checkbox, Input } from 'antd'
-import { handlingFeeMarkup } from '../../../../Utilities/numberValidation'
+import { blockSpecialChar, handlingFeeMarkup } from '../../../../Utilities/numberValidation'
 
 const { Title } = Typography
 
@@ -87,6 +87,7 @@ const InternationalServices = ({
 							}
 							name={makeServiceIndex(srvc) + '_label'}
 							onChange={onChange}
+							onKeyDown={blockSpecialChar}
 							type='text'
 							placeholder={srvc}
 							maxLength={50}
