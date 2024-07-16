@@ -490,7 +490,7 @@ const Settings = ({
 								maxLength='3'
 								id={'nesting_percentage' + index}
 								name='nesting_percentage'
-								onKeyDown={(e) => { handleNumbersOnly(e); fieldValueLimit(e); }}
+								onKeyDown={(e) => { handleNumbersOnly(e); }}
 								placeholder='Nesting (%) e.g. 80'
 								value={product?.nesting_percentage}
 								onChange={e =>
