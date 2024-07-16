@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, Typography, Form, Checkbox, Input } from 'antd'
-import { handlingFeeMarkup } from '../../../../../Utilities/numberValidation'
+import { blockSpecialChar, handlingFeeMarkup } from '../../../../../Utilities/numberValidation'
 
 const { Title } = Typography
 export const international_services = [
@@ -16,6 +16,15 @@ export const international_services = [
 	'International Standard Overnight',
 	'International Ground',
 ]
+
+const LabelAs = () => (
+	<Col className='gutter-row mb-2' xs={24} sm={24} md={24} lg={24} xl={24}>
+	  <label className={'text-gray'}>
+		Service name displays by default. Enter an alternative if you prefer
+		something different.
+	  </label>
+	</Col>
+  );
 
 const InternationalServices = ({
 	quoteSettingsState,
@@ -76,6 +85,30 @@ const InternationalServices = ({
 							/>
 						</Form.Item>
 					</Col>
+					<Col span={24}>
+						<Form.Item className='mb-0'>
+							<Input
+								value={
+									quoteSettingsState?.carrier_services?.[
+										is
+											.toLowerCase()
+											.trim()
+											.replaceAll(' ', '_') + '_label'
+									]
+								}
+								name={
+									is.toLowerCase().trim().replaceAll(' ', '_') +
+									'_label'
+								}
+								onChange={onChange}
+								onKeyDown={blockSpecialChar}
+								type='text'
+								placeholder={is}
+								maxLength={50}
+							/>
+						</Form.Item>
+					</Col>
+					<LabelAs />
 					<Col span={24} xs={24} sm={24} md={24} lg={24} xl={24}>
 						<Form.Item className={'mb-0'}>
 							<Input
