@@ -496,6 +496,9 @@ const Settings = ({
 								onChange={e =>
 									onChangeVariant(index, 'nesting_percentage', e.target.value)
 								}
+								type='number'
+								max={100}
+								min={0}
 							/>
 						</Form.Item>
 					</Col>
@@ -512,6 +515,8 @@ const Settings = ({
 								onChange={e =>
 									onChangeVariant(index, 'max_nested_items', e.target.value)
 								}
+								type='number'
+								min={0}
 							/>
 						</Form.Item>
 					</Col>

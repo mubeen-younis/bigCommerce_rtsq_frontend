@@ -407,7 +407,7 @@ export const fieldValueLimit = e => {
     }
 
     const newValue = parseInt(value + key, 10);
-    if (newValue >= 101) {
+    if (newValue >= 101 || value?.length > 2) {
       e.preventDefault();
 	  return true
     }
