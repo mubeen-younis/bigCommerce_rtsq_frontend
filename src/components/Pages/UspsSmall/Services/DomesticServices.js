@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Typography, Form, Checkbox, Input } from 'antd';
-import { handlingFeeMarkup } from '../../../../Utilities/numberValidation';
+import { blockSpecialChar, handlingFeeMarkup } from '../../../../Utilities/numberValidation';
 
 const { Title } = Typography;
 
@@ -83,6 +83,7 @@ const DomesticServices = ({
                   ?.usps_priority_mail_express_label
               }
               onChange={onChange}
+              onKeyDown={blockSpecialChar}
               type='text'
               placeholder='USPS Priority Mail Express'
               maxLength={50}
@@ -130,6 +131,7 @@ const DomesticServices = ({
                 quoteSettingsState?.carrier_services?.usps_priority_mail_label
               }
               onChange={onChange}
+              onKeyDown={blockSpecialChar}
               type='text'
               placeholder='USPS Priority Mail'
               maxLength={50}
@@ -180,6 +182,7 @@ const DomesticServices = ({
                   ?.usps_priority_mail_flat_rate_label
               }
               onChange={onChange}
+              onKeyDown={blockSpecialChar}
               type='text'
               placeholder='USPS Priority Mail Flat Rate'
               maxLength={50}
@@ -230,6 +233,7 @@ const DomesticServices = ({
                   ?.usps_ground_advantage_label
               }
               onChange={onChange}
+              onKeyDown={blockSpecialChar}
               type='text'
               placeholder='USPS Ground Advantage'
               maxLength={50}
