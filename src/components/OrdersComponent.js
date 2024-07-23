@@ -690,7 +690,7 @@ function OrderSettingsComponent(props) {
 															: ''}
 														{widget?.address}
 													</li>
-													<li>
+													<li style={styles.breakAll}>
 														{widget?.shipping_method}:{' '}
 														{widget?.shipping_rate}
 													</li>
@@ -782,5 +782,12 @@ const mapDispatchToProps = dispatch => {
 			dispatch(submitOrderSettings(data, token, visibility)),
 	}
 }
+
+const styles = {
+	breakAll: {
+	  wordBreak: 'break-all',
+	  whiteSpace: 'normal',
+	},
+  };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderSettingsComponent)
