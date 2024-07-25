@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button, Col, Row, Select, Checkbox, Input, Typography } from 'antd'
 import { getLocations } from '../../Actions/Warehouse'
-import { handleNumbersWithDecimalOnly, handlingFeeMarkup } from '../../Utilities/numberValidation'
+import { fieldValueLimit, handleNumbersOnly, handleNumbersWithDecimalOnly, handlingFeeMarkup, numberFieldLimit } from '../../Utilities/numberValidation'
 
 const { Option } = Select
 const smallCarriers = [
@@ -424,7 +424,7 @@ const Settings = ({
 							Insurance
 						</Checkbox>
 					</Col>
-					<Col span={24} style={{ marginTop: '7px' }}>
+					<Col span={24} className='mt-1'>
 						<Checkbox
 							onChange={e =>
 								onChangeVariant(
@@ -439,6 +439,110 @@ const Settings = ({
 							Hazardous Material
 						</Checkbox>
 					</Col>
+					{/* Nesting items start*/}
+					<Col span={24} className='mt-1'>
+						<Checkbox
+							onChange={e => {
+								onChangeVariant(
+									index,
+									'showNestingItems',
+									e.target.checked
+								)
+								onChangeVariant(
+									index,
+									'is_nesting_enabled',
+									!product?.is_nesting_enabled
+								)
+							}}
+							name='is_nesting_enabled'
+							id={'is_nesting_enabled' + index}
+							checked={product?.is_nesting_enabled}>
+							Nested item
+						</Checkbox>
+					</Col>
+
+					{product?.is_nesting_enabled ? (
+						<>
+						<Col span={12} className='mt-1 mb-0'>
+							<Form.Item label='Nested dimension'>
+								<Select
+									name='dimension_type'
+									id={'dimension_type' + index}
+									defaultValue={product?.dimension_type ?? 0}
+									value={product?.dimension_type ?? 0}
+									onChange={location =>
+										onChangeVariant(
+											index,
+											'dimension_type',
+											location
+										)
+									}>
+									<Option value={0}>Length</Option>
+									<Option value={1}>Width</Option>
+									<Option value={2}>Height</Option>
+								</Select>
+							</Form.Item>
+						</Col>
+
+						<Col span={12} className='mt-1'>
+						<Form.Item label='Nesting %' >
+							<Input
+								maxLength='3'
+								id={'nesting_percentage' + index}
+								name='nesting_percentage'
+								onKeyDown={(e) => { handleNumbersOnly(e); }}
+								placeholder='Nesting (%) e.g. 80'
+								value={product?.nesting_percentage}
+								onChange={e =>
+									onChangeVariant(index, 'nesting_percentage', e.target.value)
+								}
+								type='number'
+								max={100}
+								min={0}
+							/>
+						</Form.Item>
+					</Col>
+
+					<Col span={12} className='mt-0'>
+						<Form.Item label='Maximum nested items' >
+							<Input
+								maxLength='7'
+								id={'max_nested_items' + index}
+								name='max_nested_items'
+								onKeyDown={handleNumbersOnly}
+								placeholder='e.g. 5 '
+								value={product?.max_nested_items}
+								onChange={e =>
+									onChangeVariant(index, 'max_nested_items', e.target.value)
+								}
+								type='number'
+								min={0}
+							/>
+						</Form.Item>
+					</Col>
+
+					<Col span={12}>
+							<Form.Item label='Stacking property'>
+								<Select
+									name='stacked_type'
+									id={'stacked_type' + index}
+									defaultValue={product?.stacked_type ?? 0}
+									value={product?.stacked_type ?? 0}
+									onChange={location =>
+										onChangeVariant(
+											index,
+											'stacked_type',
+											location
+										)
+									}>
+									<Option value={0}>Evenly</Option>
+									<Option value={1}>Maximized</Option>
+								</Select>
+							</Form.Item>
+						</Col>
+						</>
+					) : null}
+					{/* Nesting items end*/}
 
 					<Col span={24} style={{ marginTop: '7px' }}>
 						<Checkbox

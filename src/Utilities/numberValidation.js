@@ -2,6 +2,12 @@ export const blockInvalidChar = e =>
 	['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
 export const blockInvalidCharWithPoint = e =>
 	['e', 'E', '+', '-', '.'].includes(e.key) && e.preventDefault()
+export const blockSpecialChar = e => {
+	const regex = /_/;
+    if (regex.test(e.key)) {
+      e.preventDefault();
+    }
+}
 
 export const handleKeyDownDecimalNumber = (e, allowedLength) => {
 	let value = e.target.value
@@ -389,6 +395,22 @@ export const numberFieldLimit = e => {
 		return true
 	}
 	return ''
+}
+
+export const fieldValueLimit = e => {
+	blockInvalidChar(e)
+	const { key, target: { value } } = e;
+
+    // Allow control keys like backspace, delete, arrow keys, etc.
+    if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(key)) {
+      return;
+    }
+
+    const newValue = parseInt(value + key, 10);
+    if (newValue >= 101 || value?.length > 2) {
+      e.preventDefault();
+	  return true
+    }
 }
 
 export const LableAsLimit = e => {
