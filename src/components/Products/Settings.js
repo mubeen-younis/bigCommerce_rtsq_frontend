@@ -490,12 +490,15 @@ const Settings = ({
 								maxLength='3'
 								id={'nesting_percentage' + index}
 								name='nesting_percentage'
-								onKeyDown={(e) => { handleNumbersOnly(e); fieldValueLimit(e); }}
+								onKeyDown={(e) => { handleNumbersOnly(e); }}
 								placeholder='Nesting (%) e.g. 80'
 								value={product?.nesting_percentage}
 								onChange={e =>
 									onChangeVariant(index, 'nesting_percentage', e.target.value)
 								}
+								type='number'
+								max={100}
+								min={0}
 							/>
 						</Form.Item>
 					</Col>
@@ -512,6 +515,8 @@ const Settings = ({
 								onChange={e =>
 									onChangeVariant(index, 'max_nested_items', e.target.value)
 								}
+								type='number'
+								min={0}
 							/>
 						</Form.Item>
 					</Col>
