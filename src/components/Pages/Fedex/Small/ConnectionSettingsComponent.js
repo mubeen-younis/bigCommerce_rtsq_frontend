@@ -125,7 +125,7 @@ function ConnectionSettingsComponent(props) {
 								name='new_api_account_number'
 								rules={[{ required:true, message: 'Account Number' }]}
 							>
-								<Input placeholder='Account Number' maxLength={8}/>
+								<Input placeholder='Account Number' maxLength={10}/>
 							</Form.Item>
 
 							<Form.Item
