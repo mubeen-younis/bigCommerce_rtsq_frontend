@@ -1,7 +1,8 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Form, Input, Button, Space, Skeleton, Select } from 'antd'
-import { connect } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
+import types from '../../../../Stores/types'
 
 const { Option } = Select
 
@@ -43,12 +44,28 @@ function ConnectionSettingsComponent(props) {
 		testType: false,
 		skeleton_loading: true,
 	})
+	const dispatch = useDispatch()
+	const { connectionSettings, token, FedexSmallApiType } = useSelector(state => state)
+
+	useEffect(() => {
+		if (connectionSettings) {
+			if(!(connectionSettings?.api_type) && (connectionSettings?.carrierId)){
+				connectionSettings['api_type'] = 'legacy_api'
+			}
+
+			dispatch({
+				type: types.SET_FEDEX_SMALL_API_TYPE,
+				payload: connectionSettings?.api_type ?? 'new_api',
+			})
+		}
+	}, [connectionSettings, dispatch])
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
 	}
 
 	const onFinish = values => {
+		values = { ... props.connectionSettings, ...values, api_type: FedexSmallApiType}
 		values.testType = connectionState.testType
 		values.installed_carrier_id = props.carrierId
 		values.carrierId = props.carrierId
@@ -86,53 +103,109 @@ function ConnectionSettingsComponent(props) {
 				size={'large'}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					label='Account Number'
-					name='account_number'
-					rules={[{ required: true, message: 'Account Number' }]}>
-					<Input placeholder='Account Number' />
+				<Form.Item label='Which API Will You Connect To?' name='api_type'>
+					<Select
+						defaultValue={!connectionSettings?.api_type && connectionSettings?.carrierId ? 'legacy_api' : 'new_api'}
+						options={[
+							{ label: 'Legacy API', value: 'legacy_api' },
+							{ label: 'New API', value: 'new_api' },
+						]}
+						onChange={opt =>
+							dispatch({
+								type: types.SET_FEDEX_SMALL_API_TYPE,
+								payload: opt,
+							})
+						}
+					/>
 				</Form.Item>
+				{ FedexSmallApiType == 'new_api' ? (
+						<>
+							<Form.Item
+								label='Account Number'
+								name='new_api_account_number'
+								rules={[{ required:true, message: 'Account Number' }]}
+							>
+								<Input placeholder='Account Number' maxLength={8}/>
+							</Form.Item>
 
-				<Form.Item
-					label='Meter Number'
-					name='meter_number'
-					rules={[{ required: true, message: 'Meter Number' }]}>
-					<Input placeholder='Meter Number' />
-				</Form.Item>
+							<Form.Item
+								label='Client ID'
+								name='clientId'
+								rules={[{ required: true, message: 'Client ID' }]}
+							>
+								<Input placeholder='Client ID' maxLength={100}/>
+							</Form.Item>
 
-				<Form.Item
-					label='Password'
-					name='password'
-					rules={[{ required: true, message: 'Password' }]}>
-					<Input type='text' placeholder='Password' />
-				</Form.Item>
+							<Form.Item
+								className='mb-1'
+								label='Client Secret'
+								name='clientSecret'
+								rules={[{ required: true, message: 'Client Secret' }]}
+							>
+								<Input placeholder='Client Secret' maxLength={100}/>
+							</Form.Item>
 
-				<Form.Item
-					label='Authentication Key'
-					name='api_access_key'
-					rules={[{ required: true, message: 'Authentication Key' }]}>
-					<Input placeholder='Authentication Key' />
-				</Form.Item>
+							<div>
+								<a
+									href='https://eniture.com/bigcommerce-fedex-api-connection-instructions/'
+									target='_blank'
+									rel='noreferrer'
+								>
+									How to obtain your Fedex Client ID and Client Secret?
+								</a>
+							</div>
+						</>
+				) : (
+					<>
+						<Form.Item
+							label='Account Number'
+							name='account_number'
+							rules={[{ required: true, message: 'Account Number' }]}>
+							<Input placeholder='Account Number' />
+						</Form.Item>
 
-				<Form.Item label='Hub Id' name='hub_id' className='mb-1'>
-					<Select defaultValue='Select'>
-						{hub_id_options.map((id, index) => (
-							<Option value={id} key={index}>
-								{id}
-							</Option>
-						))}
-					</Select>
-				</Form.Item>
+						<Form.Item
+							label='Meter Number'
+							name='meter_number'
+							rules={[{ required: true, message: 'Meter Number' }]}>
+							<Input placeholder='Meter Number' />
+						</Form.Item>
 
-				<div>
-					<a
-						href='https://eniture.com/bigcommerce-fedex-api-connection-instructions/'
-						target='_blank'
-						rel='noreferrer'
-					>
-						How to obtain your FedEx API credentials?
-					</a>
-				</div>
+						<Form.Item
+							label='Password'
+							name='password'
+							rules={[{ required: true, message: 'Password' }]}>
+							<Input type='text' placeholder='Password' />
+						</Form.Item>
+
+						<Form.Item
+							label='Authentication Key'
+							name='api_access_key'
+							rules={[{ required: true, message: 'Authentication Key' }]}>
+							<Input placeholder='Authentication Key' />
+						</Form.Item>
+
+						<Form.Item label='Hub Id' name='hub_id' className='mb-1'>
+							<Select defaultValue='Select'>
+								{hub_id_options.map((id, index) => (
+									<Option value={id} key={index}>
+										{id}
+									</Option>
+								))}
+							</Select>
+						</Form.Item>
+
+						<div>
+							<a
+								href='https://eniture.com/bigcommerce-fedex-api-connection-instructions/'
+								target='_blank'
+								rel='noreferrer'
+							>
+								How to obtain your FedEx API credentials?
+							</a>
+						</div>
+					</>
+				)}
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
