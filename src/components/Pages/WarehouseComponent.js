@@ -1144,12 +1144,13 @@ useEffect(() => {
                         name='instock_description'
                         value={locationDetail.instock_description}
                         placeholder='In-store pick up'
+                        maxLength={labelLimit}
                         onChange={(e) => {
                           e.target.value.length <= labelLimit && changeValue(e)
                           setInputValue(e.target.value)
                         }
                         }
-                        addonAfter={inputValue && inputValue?.length <= labelLimit ? <span>{`${inputValue?.length}/${labelLimit}`}</span> : <span>{`${0}/${labelLimit}`}</span>}
+                        addonAfter={inputValue ? <span>{`${inputValue?.length}/${labelLimit}`}</span> : <span>{`${0}/${labelLimit}`}</span>}
                       />
                     </Form.Item>
                   </Col>
