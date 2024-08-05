@@ -123,7 +123,7 @@ function ConnectionSettingsComponent(props) {
 							<Form.Item
 								label='Account Number'
 								name='new_api_account_number'
-								rules={[{ required:true, message: 'Account Number' }]}
+								rules={[{ required: true, message: 'Account Number is required' }]}
 							>
 								<Input placeholder='Account Number' maxLength={10}/>
 							</Form.Item>
@@ -131,7 +131,7 @@ function ConnectionSettingsComponent(props) {
 							<Form.Item
 								label='Client ID'
 								name='clientId'
-								rules={[{ required: true, message: 'Client ID' }]}
+								rules={[{ required: true, message: 'Client ID is required' }]}
 							>
 								<Input placeholder='Client ID' maxLength={100}/>
 							</Form.Item>
@@ -140,7 +140,7 @@ function ConnectionSettingsComponent(props) {
 								className='mb-1'
 								label='Client Secret'
 								name='clientSecret'
-								rules={[{ required: true, message: 'Client Secret' }]}
+								rules={[{ required: true, message: 'Client Secret is required' }]}
 							>
 								<Input placeholder='Client Secret' maxLength={100}/>
 							</Form.Item>
@@ -160,28 +160,28 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='Account Number'
 							name='account_number'
-							rules={[{ required: true, message: 'Account Number' }]}>
+							rules={[{ required: true, message: 'Account Number is required' }]}>
 							<Input placeholder='Account Number' />
 						</Form.Item>
 
 						<Form.Item
 							label='Meter Number'
 							name='meter_number'
-							rules={[{ required: true, message: 'Meter Number' }]}>
+							rules={[{ required: true, message: 'Meter Number is required' }]}>
 							<Input placeholder='Meter Number' />
 						</Form.Item>
 
 						<Form.Item
 							label='Password'
 							name='password'
-							rules={[{ required: true, message: 'Password' }]}>
+							rules={[{ required: true, message: 'Password is required' }]}>
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
 
 						<Form.Item
 							label='Authentication Key'
 							name='api_access_key'
-							rules={[{ required: true, message: 'Authentication Key' }]}>
+							rules={[{ required: true, message: 'Authentication Key is required' }]}>
 							<Input placeholder='Authentication Key' />
 						</Form.Item>
 
