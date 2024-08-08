@@ -348,7 +348,7 @@ useEffect(() => {
       setLabelLimit(limit)
     }
     if(JSON.parse(data?.additionals)?.enable_instore_phone){
-      limit = limit - 17
+      limit = limit - 19
       setLabelLimit(limit)
     }
   }
@@ -375,9 +375,9 @@ useEffect(() => {
     }
 
     if(e.target.name == "enable_instore_phone" && e.target.checked){
-      setLabelLimit(labelLimit - 17)
+      setLabelLimit(labelLimit - 19)
     } else if(e.target.name == "enable_instore_phone" && !(e.target.checked)){
-      setLabelLimit(labelLimit + 17)
+      setLabelLimit(labelLimit + 19)
     }
   }
 
@@ -1758,6 +1758,8 @@ useEffect(() => {
                   setLocationId(null)
                   setLocationDetail(initialState)
                   openLocationModal(1)
+                  setInputValue('')
+                  setLabelLimit(100)
                 }}
               >
                 Add
@@ -1791,6 +1793,8 @@ useEffect(() => {
                   setLocationId(null)
                   setLocationDetail(initialState)
                   openLocationModal(2)
+                  setInputValue('')
+                  setLabelLimit(100)
                 }}
               >
                 Add
