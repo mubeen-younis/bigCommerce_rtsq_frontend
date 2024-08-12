@@ -732,6 +732,12 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				shippingRules: action.payload,
 			}
+		/* Update product parameter api access token */
+		case types.API_ACCESS_TOKEN:
+			return {
+				...state,
+				updateProductApiToken: action.payload,
+			}
 		case types.ADD_SHIPPING_RULE:
 			return {
 				...state,
