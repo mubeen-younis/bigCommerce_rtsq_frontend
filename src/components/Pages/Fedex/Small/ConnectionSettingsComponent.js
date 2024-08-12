@@ -125,7 +125,7 @@ function ConnectionSettingsComponent(props) {
 								name='new_api_account_number'
 								rules={[{ required: true, message: 'Account Number is required' }]}
 							>
-								<Input placeholder='Account Number' maxLength={10}/>
+								<Input placeholder='Account Number' maxLength={50}/>
 							</Form.Item>
 
 							<Form.Item
@@ -151,7 +151,7 @@ function ConnectionSettingsComponent(props) {
 									target='_blank'
 									rel='noreferrer'
 								>
-									How to obtain your Fedex Client ID and Client Secret?
+									How to obtain your FedEx Client ID and Client Secret?
 								</a>
 							</div>
 						</>
