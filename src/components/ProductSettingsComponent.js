@@ -6,6 +6,7 @@ import {
   getAllProducts,
   getProduct,
 } from '../Actions/ProductSettings';
+import { EllipsisOutlined, CopyOutlined } from '@ant-design/icons';
 import {
   Table,
   Button,
@@ -18,14 +19,30 @@ import {
   Row,
   Skeleton,
   Input,
+  Menu,
+  Dropdown,
+  Tooltip,
 } from 'antd';
 import addKeysToList from '../Utilities/addKey';
 import Settings from './Products/Settings';
 import { isFireFox } from '../Utilities/browserName';
 import { getLocations } from './../Actions/Warehouse';
 import { validateHandlingFeeMarkup } from '../Utilities/numberValidation';
+import ReactJson from 'react-json-view';
 
-const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId) => {
+const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId, apiRequestBody) => {
+
+  const actionMenu = (source_product_id, record) => (
+    <Menu>
+      <Menu.Item key="1" onClick={() => showProductDetails(source_product_id, record)}>
+        Edit
+      </Menu.Item>
+      <Menu.Item key="2" onClick={() => apiRequestBody(source_product_id, record)}>
+        API request
+      </Menu.Item>
+    </Menu>
+  );
+
   const columns = [
     {
       title: 'Product Name',
@@ -137,9 +154,9 @@ const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId) 
       key: 'source_product_id',
       render: (source_product_id, record) => (
         <Space size='middle'>
-          <Button onClick={() => showProductDetails(source_product_id, record)}>
-            Edit
-          </Button>
+          <Dropdown overlay={actionMenu(source_product_id, record)} trigger={['hover']} placement="bottomRight">
+          <Button type="text" icon={<EllipsisOutlined className="large-ellipsis-icon" />} />
+        </Dropdown>
         </Space>
       ),
     },
@@ -157,11 +174,13 @@ function ProductSettingsComponent(props) {
   const [emailAddress, setEmailAddress] = useState(
     props?.store?.admin_email || ''
   );
+  const [isHovered, setIsHovered] = useState(false);
   const [state, setState] = useState({
     filteredInfo: null,
     sortedInfo: null,
     selectedRowKeys: [],
     showDropship: false,
+    showData: false,
     showNestingItems: false,
     visible: false,
   });
@@ -195,6 +214,8 @@ function ProductSettingsComponent(props) {
   const addonCheck = props.installedAddons.find(
     (add) => add.short_code === 'SBS'
   );
+
+  let requestBody = [];
 
   const showMoreItems = key => {
     setRecordId(key)
@@ -275,10 +296,113 @@ function ProductSettingsComponent(props) {
     }, 1000);
   };
 
+  const apiRequestBody = async (id, product) => {
+
+    setState({
+      ...state,
+      showData: true,
+    });
+
+    dispatch(getLocations(props.token));
+    dispatch(
+      getProduct(id, setselectedProductDetail, setLoadProduct, props.token, product?.variant_id)
+    );
+
+
+    setLoadProduct(true);
+
+    setTimeout(() => {
+      setLoadProduct(false);
+    }, 1000);
+  };
+
   const onClose = () => {
     setState({
       ...state,
       visible: false,
+      showData: false,
+    });
+  };
+
+  let index = 0;
+  for (const prd of productVariants) {
+
+    requestBody[index] = {
+      "data": {
+          "productId": prd?.source_product_id,
+          "variantId": prd?.variant_id,
+          "attributes": {
+              "sku": prd?.sku,
+              "name": prd?.name,
+              "quoteMethod": prd?.freight_enabled ? 'L' : prd?.parcel_enabled ? 'S' : 'PD',
+              "weight": prd?.weight,
+              "freightClass": prd?.freight_class ?? '',
+              "nmfc": prd?.nmfc ?? '',
+              "HSCode": prd?.hs_code ?? '',
+              "width": prd?.width,
+              "height": prd?.height,
+              "length": prd?.length,
+              "boxingProperties": prd?.allow_vertical ? '2' : prd?.ship_own_package ? '1' : prd?.ship_multiple_package ? '3' : '',
+              "palletProperties": prd?.pallet_vertical_rotation ? '2' : prd?.own_pallet ? '1' : '',
+              "productMarkup": prd?.product_markup ?? '',
+              "insuranceEnabled": prd?.insurance ?? false,
+              "hazardousEnabled": prd?.hazardous_enabled ?? false,
+              "dropship": {
+                  "enabled": prd?.dropship_enabled,
+                  // "nickname": prd?.,
+                  // "zipcode": prd?.,
+                  // "city": prd?.,
+                  // "state": prd?.,
+                  // "country": prd?.,
+              },
+              "nesting": {
+                  "enabled": prd?.is_nesting_enabled,
+                  "dimensionType": prd?.dimension_type == 0 ? 'length' : prd?.dimension_type == 1 ? 'width' : prd?.dimension_type == 2 ? 'height' : '',
+                  "percentage": prd?.nesting_percentage,
+                  "maximumNestedItems": prd?.max_nested_items,
+                  "stackingProperty": prd?.stacked_type == 0 ? 'evenly' : prd?.stacked_type == 1 ? 'maximized' : '',
+              }
+          }
+      }
+    };
+    
+    index++;
+  }
+
+  const copyToClipboard = (data) => {
+    // Convert the JSON data to a string
+    const jsonString = JSON.stringify(data, null, 2);
+    // Copy the string to clipboard
+    navigator.clipboard.writeText(jsonString).then(() => {
+      dispatch({
+        type: 'ALERT_MESSAGE',
+        payload: {
+          showAlertMessage: false,
+        },
+      })
+      dispatch({
+        type: 'ALERT_MESSAGE',
+        payload: {
+          showAlertMessage: true,
+          alertMessage: 'JSON copied to clipboard!',
+          alertMessageType: 'success',
+        },
+      })
+    }).catch((error) => {
+      dispatch({
+        type: 'ALERT_MESSAGE',
+        payload: {
+          showAlertMessage: false,
+        },
+      })
+      dispatch({
+        type: 'ALERT_MESSAGE',
+        payload: {
+          showAlertMessage: true,
+          alertMessage: error,
+          alertMessageType: 'error',
+        },
+      })
     });
   };
 
@@ -665,12 +789,61 @@ function ProductSettingsComponent(props) {
       </Row>
       <Table
         className='custom-table'
-        columns={makeColumns(sortProducts, showProductDetails, showMoreItems, recordId)}
+        columns={makeColumns(sortProducts, showProductDetails, showMoreItems, recordId, apiRequestBody)}
         dataSource={addKeysToList(props.filteredProducts ?? props.allProducts)}
         onChange={handleChange}
         pagination={pagination}
         showSorterTooltip={{ title: '' }}
       />
+      {/* =======API Request Model========= */}
+      <Drawer
+        title={`Product API Request`}
+        width={720}
+        onClose={onClose}
+        open={state.showData}
+        footer={
+          <div
+            style={{
+              textAlign: "right",
+              paddingBottom: 30,
+            }}
+          ></div>
+        }
+      >
+        {loadProduct ? (
+          <Skeleton active />
+        ) : (
+          requestBody?.map((data, index) => (
+            <>
+              <div style={{ position: 'relative', }}>
+                <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }}>
+                  <Tooltip title="Copy JSON">
+                    <Button
+                      style={{
+                        border: 'none',
+                      }}
+                      onClick={() => copyToClipboard(data)}
+                      onMouseEnter={() => setIsHovered(true)}
+                      onMouseLeave={() => setIsHovered(false)}
+                      icon={<CopyOutlined style={{ fontSize: '25px', color: '#1890ff', cursor: 'pointer' }} />}
+                    />
+                  </Tooltip>
+                </div>
+                <ReactJson
+                  src={data}
+                  theme="shapeshifter:inverted"
+                  displayDataTypes={false}
+                  enableClipboard={false}
+                  iconStyle="square"
+                />
+              </div>
+              <br />
+            </>
+          ))
+        )}
+      </Drawer>
+      
+      {/* ================ */}
       <Drawer
         title={`Product Settings ${
           !loadProduct && productVariants.length > 0
@@ -679,7 +852,7 @@ function ProductSettingsComponent(props) {
         }`}
         width={720}
         onClose={onClose}
-        visible={state.visible}
+        open={state.visible}
         bodyStyle={{ paddingBottom: 80 }}
         footer={
           <div
