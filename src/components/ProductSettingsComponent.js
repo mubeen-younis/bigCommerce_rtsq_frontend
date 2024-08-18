@@ -202,8 +202,9 @@ function ProductSettingsComponent(props) {
   const [sortProd, setSortProd] = useState(false);
   const [formError /* setFormError */] = useState('');
   const dispatch = useDispatch();
-  const { productsPagination } = useSelector((state) => state);
+  const { productsPagination, dropships } = useSelector((state) => state);
   const [recordId, setRecordId] = useState(null);
+  const [requestBody, setRequestBody] = useState([]);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -215,7 +216,6 @@ function ProductSettingsComponent(props) {
     (add) => add.short_code === 'SBS'
   );
 
-  let requestBody = [];
 
   const showMoreItems = key => {
     setRecordId(key)
@@ -250,6 +250,7 @@ function ProductSettingsComponent(props) {
           ...settings,
         };
       });
+      getRequest(variants)
       setProductVariants(variants);
     }
     if (countSorting > 0) {
@@ -296,6 +297,57 @@ function ProductSettingsComponent(props) {
     }, 1000);
   };
 
+  function getRequest(variants) {
+
+    let index = 0;
+    let createRequestBody = []
+
+    for (const prd of variants) {
+      const dropShip = getNicknameById(prd?.dropship_location);
+      createRequestBody[index] = {
+        "data": {
+          "productId": prd?.source_product_id,
+          "variantId": prd?.variant_id,
+          "attributes": {
+            "sku": prd?.sku ?? '',
+            "name": prd?.name ?? '',
+            "quoteMethod": prd?.freight_enabled ? 'L' : prd?.parcel_enabled ? 'S' : 'PD',
+            "weight": prd?.weight,
+            "freightClass": prd?.freight_class ?? '',
+            "nmfc": prd?.nmfc ?? '',
+            "HSCode": prd?.hs_code ?? '',
+            "width": prd?.width,
+            "height": prd?.height,
+            "length": prd?.length,
+            "boxingProperties": prd?.allow_vertical ? '2' : prd?.ship_own_package ? '1' : prd?.ship_multiple_package ? '3' : '',
+            "palletProperties": prd?.pallet_vertical_rotation ? '2' : prd?.own_pallet ? '1' : '',
+            "productMarkup": prd?.product_markup ?? '',
+            "insuranceEnabled": prd?.insurance ?? false,
+            "hazardousEnabled": prd?.hazardous_enabled ?? false,
+            "dropship": {
+              "enabled": prd?.dropship_enabled ?? 0,
+              "nickname": dropShip?.nickname ?? '',
+              "zipcode": dropShip?.zipCode ?? '',
+              "city": dropShip?.city ?? '',
+              "state": dropShip?.state ?? '',
+              "country": dropShip?.country ?? '',
+            },
+            "nesting": {
+              "enabled": prd?.is_nesting_enabled ?? 0,
+              "dimensionType": prd?.dimension_type == 0 ? 'length' : prd?.dimension_type == 1 ? 'width' : prd?.dimension_type == 2 ? 'height' : '',
+              "percentage": prd?.nesting_percentage ?? '',
+              "maximumNestedItems": prd?.max_nested_items ?? '',
+              "stackingProperty": prd?.stacked_type == 0 ? 'evenly' : prd?.stacked_type == 1 ? 'maximized' : '',
+            }
+          }
+        }
+      };
+      index++;
+    }
+    
+    setRequestBody(createRequestBody)
+  }
+
   const apiRequestBody = async (id, product) => {
 
     setState({
@@ -307,7 +359,6 @@ function ProductSettingsComponent(props) {
     dispatch(
       getProduct(id, setselectedProductDetail, setLoadProduct, props.token, product?.variant_id)
     );
-
 
     setLoadProduct(true);
 
@@ -322,51 +373,12 @@ function ProductSettingsComponent(props) {
       visible: false,
       showData: false,
     });
+  
   };
 
-  let index = 0;
-  for (const prd of productVariants) {
-
-    requestBody[index] = {
-      "data": {
-          "productId": prd?.source_product_id,
-          "variantId": prd?.variant_id,
-          "attributes": {
-              "sku": prd?.sku,
-              "name": prd?.name,
-              "quoteMethod": prd?.freight_enabled ? 'L' : prd?.parcel_enabled ? 'S' : 'PD',
-              "weight": prd?.weight,
-              "freightClass": prd?.freight_class ?? '',
-              "nmfc": prd?.nmfc ?? '',
-              "HSCode": prd?.hs_code ?? '',
-              "width": prd?.width,
-              "height": prd?.height,
-              "length": prd?.length,
-              "boxingProperties": prd?.allow_vertical ? '2' : prd?.ship_own_package ? '1' : prd?.ship_multiple_package ? '3' : '',
-              "palletProperties": prd?.pallet_vertical_rotation ? '2' : prd?.own_pallet ? '1' : '',
-              "productMarkup": prd?.product_markup ?? '',
-              "insuranceEnabled": prd?.insurance ?? false,
-              "hazardousEnabled": prd?.hazardous_enabled ?? false,
-              "dropship": {
-                  "enabled": prd?.dropship_enabled,
-                  // "nickname": prd?.,
-                  // "zipcode": prd?.,
-                  // "city": prd?.,
-                  // "state": prd?.,
-                  // "country": prd?.,
-              },
-              "nesting": {
-                  "enabled": prd?.is_nesting_enabled,
-                  "dimensionType": prd?.dimension_type == 0 ? 'length' : prd?.dimension_type == 1 ? 'width' : prd?.dimension_type == 2 ? 'height' : '',
-                  "percentage": prd?.nesting_percentage,
-                  "maximumNestedItems": prd?.max_nested_items,
-                  "stackingProperty": prd?.stacked_type == 0 ? 'evenly' : prd?.stacked_type == 1 ? 'maximized' : '',
-              }
-          }
-      }
-    };
-    
-    index++;
+  function getNicknameById(id) {
+    const dropship = dropships.find(dropship => dropship.id === id);
+    return dropship ? { 'nickname': dropship?.nickname, 'city': dropship?.city, 'state': dropship?.state, 'zipCode': dropship?.zip_code, 'country': dropship?.country } : null;
   }
 
   const copyToClipboard = (data) => {
