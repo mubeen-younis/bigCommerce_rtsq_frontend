@@ -14,6 +14,7 @@ import WeightThreshold from '../../WeightThreshold'
 import FqChrTruckloadSettings from '../../FqChrTruckloadSettings'
 import { getServices, getAddTabSettings } from '../../../Actions/Carriers'
 import ErrorManagment from '../../ErrorManagment'
+import LimitedAccessSettings from '../../LimitedAccessSettings'
 
 const initialState = {
 	number_of_options: 1,
@@ -41,7 +42,7 @@ function QuoteSettingsComponentWwe(props) {
 	const [truckLoading, setTruckLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const [ratingMethod, setRatingMethod] = useState(1)
-	const { quoteSettings, installedAddons, token, carrierId, radPlans, carriersSettings, thresholdSetting, staffNoteSettings } =
+	const { quoteSettings, installedAddons, token, carrierId, radPlans, carriersSettings, thresholdSetting } =
 		useSelector(state => state)
 
 	useEffect(() => {
@@ -107,14 +108,6 @@ function QuoteSettingsComponentWwe(props) {
 					thresholdSetting,
 					'GET_THRESHOLD_SETTINGS',
 					'submit_threshold_settings',
-					token
-				)
-			)
-			dispatch(
-				postData(
-					staffNoteSettings,
-					'GET_STAFFNOTE_SETTINGS',
-					'submit_staffnote_settings',
 					token
 				)
 			)
@@ -186,6 +179,11 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
+
+				<LimitedAccessSettings
+          			quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
 
 				<WeightThreshold
 					quoteSettingsState={quoteSettingsState}

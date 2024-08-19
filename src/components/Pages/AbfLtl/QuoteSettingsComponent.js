@@ -6,6 +6,8 @@ import { postData } from '../../../Actions/Action'
 import {
 	validateHandlingFeeMarkup,
 	LableAsLimit,
+	checkDigitsAfterDecimal,
+	checkValueLimit,
 } from '../../../Utilities/numberValidation'
 import LiftGateDelivery from '../../LiftGateDelivery'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
@@ -14,6 +16,7 @@ import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import HoldAtTerminal from '../../HoldAtTerminal'
 import ErrorManagment from '../../ErrorManagment'
+import LimitedAccessSettings from '../../LimitedAccessSettings'
 import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
 
 const initialState = {
@@ -44,8 +47,7 @@ function QuoteSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
-	const { thresholdSetting, staffNoteSettings } = useSelector(state => state)
-	const [inputValue, setInputValue] = useState(props?.quoteSettings?.label_as);
+	const { thresholdSetting } = useSelector(state => state)
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -92,6 +94,19 @@ function QuoteSettingsComponent(props) {
 			)
 		}
 
+		if (data?.offer_limited_access_delivery === true || data?.always_limited_access_delivery === true) {
+			if (data?.limited_access_fee === '' || data?.limited_access_fee === undefined) {
+			  errormsg =
+				'Limited access delivery is enabled you must enter limited access delivery fee.'
+			} else if (checkDigitsAfterDecimal(data?.limited_access_fee, 2)) {
+			  errormsg =
+				'Limited access delivery fee only 2 digits are allowed after decimal point.'
+			} else if (checkValueLimit(data?.limited_access_fee, 7)) {
+			  errormsg =
+				'Limited access delivery fee only 7 digits are allowed.'
+			}
+		}
+
 		if (errormsg === '') {
 			dispatch(
 				postData(
@@ -106,14 +121,6 @@ function QuoteSettingsComponent(props) {
 					thresholdSetting,
 					'GET_THRESHOLD_SETTINGS',
 					'submit_threshold_settings',
-					props.token
-				)
-			)
-			dispatch(
-				postData(
-					staffNoteSettings,
-					'GET_STAFFNOTE_SETTINGS',
-					'submit_staffnote_settings',
 					props.token
 				)
 			)
@@ -177,8 +184,6 @@ function QuoteSettingsComponent(props) {
 								name='label_as'
 								value={props?.quoteSettings?.label_as ?? ''}
 								onKeyDown={LableAsLimit}
-								onChange={(e) => setInputValue(e.target.value)}
-								addonAfter={inputValue ? <span>{`${inputValue?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
@@ -205,6 +210,11 @@ function QuoteSettingsComponent(props) {
 					radStatus={radStatus}
 				/>
 
+				<LimitedAccessSettings
+			        quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+          			islimitedAccessFee = {true}
+        		/>
 				<NotifyBeforeDelivery
 				  	quoteSettingsState={quoteSettingsState}
 				  	setQuoteSettingsState={setQuoteSettingsState}
