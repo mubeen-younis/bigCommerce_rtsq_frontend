@@ -46,6 +46,7 @@ function ConnectionSettingsComponent(props) {
 	})
 	const dispatch = useDispatch()
 	const { connectionSettings, token, FedexSmallApiType } = useSelector(state => state)
+	const url = 'https://eniture.com/bigcommerce-fedex-api-connection-instructions/'
 
 	useEffect(() => {
 		if (connectionSettings) {
@@ -129,29 +130,29 @@ function ConnectionSettingsComponent(props) {
 							</Form.Item>
 
 							<Form.Item
-								label='Client ID'
+								label='API Key'
 								name='clientId'
-								rules={[{ required: true, message: 'Client ID is required' }]}
+								rules={[{ required: true, message: 'API Key is required' }]}
 							>
-								<Input placeholder='Client ID' maxLength={100}/>
+								<Input placeholder='API Key' maxLength={100}/>
 							</Form.Item>
 
 							<Form.Item
 								className='mb-1'
-								label='Client Secret'
+								label='Secret Key'
 								name='clientSecret'
-								rules={[{ required: true, message: 'Client Secret is required' }]}
+								rules={[{ required: true, message: 'Secret Key is required' }]}
 							>
-								<Input placeholder='Client Secret' maxLength={100}/>
+								<Input placeholder='Secret Key' maxLength={100}/>
 							</Form.Item>
 
 							<div>
 								<a
-									href='https://eniture.com/bigcommerce-fedex-api-connection-instructions/'
+									href={url}
 									target='_blank'
 									rel='noreferrer'
 								>
-									How to obtain your FedEx Client ID and Client Secret?
+									How to obtain your FedEx API Key and Secret Key?
 								</a>
 							</div>
 						</>
@@ -197,7 +198,7 @@ function ConnectionSettingsComponent(props) {
 
 						<div>
 							<a
-								href='https://eniture.com/bigcommerce-fedex-api-connection-instructions/'
+								href={url}
 								target='_blank'
 								rel='noreferrer'
 							>
