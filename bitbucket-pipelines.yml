@@ -8,7 +8,7 @@ options:
   max-time: 60
 pipelines:
   branches:
-    feature/nesting-products:
+    feature/fedex-new-api:
     - step:
         caches:
           - composer
@@ -18,7 +18,7 @@ pipelines:
               SSH_USER: 'apx-bc-01'
               SERVER: '44.207.204.55'
               MODE: 'command'
-              COMMAND: '/home/apx-bc-01/html/bc-fe/remote-script.sh'
+              COMMAND: '/var/www/html/bigcommerce/bc-fe/remote-script.sh'
               
     feature/add-label-fields-chunk-2:
     - step:

@@ -1082,6 +1082,7 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				FedexSmallApiType: action.payload,
 			}
+
 		case types.SET_FEDEX_LTL_API_TYPE:
 			return {
 				...state,
