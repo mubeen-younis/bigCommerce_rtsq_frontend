@@ -7,7 +7,7 @@ const { Title } = Typography
 const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, islimitedAccessFee = false }) => {
 
 	return (<>
-		<Row gutter={30} align='middle' className={'mb-1'}>
+		<Row gutter={30} align='middle' className={islimitedAccessFee ? 'mb-1' : 'mb-3'}>
             <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 				<Title level={4}>Limited access settings</Title>
 			</Col>
