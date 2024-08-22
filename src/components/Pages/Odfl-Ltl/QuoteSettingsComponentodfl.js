@@ -240,15 +240,15 @@ function QuoteSettingsComponentWwe(props) {
 					radStatus={radStatus}
 				/>
 
-				<LimitedAccessSettings
-          			quoteSettingsState={quoteSettingsState}
-          			setQuoteSettingsState={setQuoteSettingsState}
-        		/>
-
 				<NotifyBeforeDelivery
 					quoteSettingsState={quoteSettingsState}
 				  	setQuoteSettingsState={setQuoteSettingsState}
 			  	/>
+
+				<LimitedAccessSettings
+          			quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
 				
 				<WeightThreshold
 					quoteSettingsState={quoteSettingsState}
