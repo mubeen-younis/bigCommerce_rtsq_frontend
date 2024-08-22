@@ -78,7 +78,7 @@ function ConnectionSettingsComponent(props) {
 						<strong>Note!</strong> You must have a Worldwide Express account to
 						use this application. If you do not have one, click{' '}
 						<a 
-						href='https://eniture.com/request-worldwide-express-account-number/'
+						href='https://wwex.com/our-technology/e-commerce-solutions'
 						target='_blank'
 						rel='noreferrer'>
 						here
@@ -95,7 +95,7 @@ function ConnectionSettingsComponent(props) {
 						Unishippers at 1-800-999-8721 and ask to be contacted by a sales
 						person from the office serving your area or{' '}
 						<a 
-						href='https://www.unishippers.com/request-new-account/'
+						href='https://www.unishippers.com/request-shipping-consultation'
 						target='_blank'
 						rel='noreferrer'>
 						click here
