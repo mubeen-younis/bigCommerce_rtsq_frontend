@@ -210,15 +210,16 @@ function QuoteSettingsComponent(props) {
 					radStatus={radStatus}
 				/>
 
+				<NotifyBeforeDelivery
+				  	quoteSettingsState={quoteSettingsState}
+				  	setQuoteSettingsState={setQuoteSettingsState}
+			  	/>
+
 				<LimitedAccessSettings
 			        quoteSettingsState={quoteSettingsState}
           			setQuoteSettingsState={setQuoteSettingsState}
           			islimitedAccessFee = {true}
         		/>
-				<NotifyBeforeDelivery
-				  	quoteSettingsState={quoteSettingsState}
-				  	setQuoteSettingsState={setQuoteSettingsState}
-			  	/>
 
 				<HoldAtTerminal
 					quoteSettingsState={quoteSettingsState}
