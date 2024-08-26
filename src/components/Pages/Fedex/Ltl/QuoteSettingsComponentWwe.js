@@ -17,6 +17,7 @@ import QuoteServices from './QuoteServices'
 import WeightThreshold from '../../../WeightThreshold'
 import ErrorManagment from '../../../ErrorManagment'
 import NotifyBeforeDelivery from '../../../NotifyBeforeDelivery'
+import LimitedAccessSettings from '../../../LimitedAccessSettings'
 
 const initialState = {
   fedex_freight_economy_label: '',
@@ -315,6 +316,11 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 			  	setQuoteSettingsState={setQuoteSettingsState}
 			  />
+
+        <LimitedAccessSettings
+      		quoteSettingsState={quoteSettingsState}
+    			setQuoteSettingsState={setQuoteSettingsState}
+        />
 
         <HoldAtTerminal
 					quoteSettingsState={quoteSettingsState}
