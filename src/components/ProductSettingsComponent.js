@@ -381,7 +381,10 @@ function ProductSettingsComponent(props) {
     return dropship ? { 'nickname': dropship?.nickname, 'city': dropship?.city, 'state': dropship?.state, 'zipCode': dropship?.zip_code, 'country': dropship?.country } : null;
   }
 
-  const copyToClipboard = (text) => {
+  const copyToClipboard = (data) => {
+
+    const text = JSON.stringify(data, null, 2);
+
 		// Create a hidden textarea element
 		const textArea = document.createElement('textarea');
 		
