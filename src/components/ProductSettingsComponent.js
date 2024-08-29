@@ -381,42 +381,73 @@ function ProductSettingsComponent(props) {
     return dropship ? { 'nickname': dropship?.nickname, 'city': dropship?.city, 'state': dropship?.state, 'zipCode': dropship?.zip_code, 'country': dropship?.country } : null;
   }
 
-  const copyToClipboard = (data) => {
-    // Convert the JSON data to a string
-    const jsonString = JSON.stringify(data, null, 2);
-    // Copy the string to clipboard
-    navigator.clipboard.writeText(jsonString).then(() => {
-      dispatch({
-        type: 'ALERT_MESSAGE',
-        payload: {
-          showAlertMessage: false,
-        },
-      })
-      dispatch({
-        type: 'ALERT_MESSAGE',
-        payload: {
-          showAlertMessage: true,
-          alertMessage: 'JSON copied to clipboard!',
-          alertMessageType: 'success',
-        },
-      })
-    }).catch((error) => {
-      dispatch({
-        type: 'ALERT_MESSAGE',
-        payload: {
-          showAlertMessage: false,
-        },
-      })
-      dispatch({
-        type: 'ALERT_MESSAGE',
-        payload: {
-          showAlertMessage: true,
-          alertMessage: error,
-          alertMessageType: 'error',
-        },
-      })
-    });
-  };
+  const copyToClipboard = (text) => {
+		// Create a hidden textarea element
+		const textArea = document.createElement('textarea');
+		
+		// Set the text to be copied
+		textArea.value = text;
+		
+		// Style the textarea to make it invisible and prevent layout shifts
+		textArea.style.position = 'fixed';
+		textArea.style.top = '0';
+		textArea.style.left = '0';
+		textArea.style.width = '2em';
+		textArea.style.height = '2em';
+		textArea.style.padding = '0';
+		textArea.style.border = 'none';
+		textArea.style.outline = 'none';
+		textArea.style.boxShadow = 'none';
+		textArea.style.background = 'transparent';
+		
+		// Append the textarea to the document
+		document.body.appendChild(textArea);
+		
+		// Select the text in the textarea
+		textArea.select();
+		textArea.setSelectionRange(0, 99999); // For mobile devices
+		
+		try {
+		  // Execute the copy command
+		  const successful = document.execCommand('copy');
+		  if (successful) {
+        dispatch({
+          type: 'ALERT_MESSAGE',
+          payload: {
+            showAlertMessage: false,
+          },
+        })
+        dispatch({
+          type: 'ALERT_MESSAGE',
+          payload: {
+            showAlertMessage: true,
+            alertMessage: 'JSON copied to clipboard!',
+            alertMessageType: 'success',
+          },
+        })
+		  } else {
+			console.log('Failed to copy text.');
+		  }
+		} catch (error) {
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					showAlertMessage: false,
+				},
+			})
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					showAlertMessage: true,
+					alertMessage: error,
+					alertMessageType: 'error',
+				},
+			})
+		}
+		
+		// Remove the textarea from the document
+		document.body.removeChild(textArea);
+	  };
 
   const syncProducts = () => {
     if (
