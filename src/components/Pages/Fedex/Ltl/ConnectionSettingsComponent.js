@@ -365,7 +365,7 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item
 					className='mb-0'
 					name='account_type'
-					rules={[{ required: true, message: 'Account Type is required' }]}>
+					rules={[{ required: false, message: 'Account Type is required' }]}>
 					<Radio.Group defaultValue={accountType}>
 						<Radio
 							value='shipper'
