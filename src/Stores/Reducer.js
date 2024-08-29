@@ -76,6 +76,7 @@ const initialState = {
 	UpsLtlApiType: 'legacy_api',
 	WweSmallApiType: 'legacy_api',
 	WweLtlApiType: 'legacy_api',
+	FedexSmallApiType: 'legacy_api',
 	/* Pallet packaging */
 	palletPlans: null,
 	radSettings: null,
@@ -1080,6 +1081,11 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				uniShipperSmallApiType: action.payload,
+			}
+		case types.SET_FEDEX_SMALL_API_TYPE:
+			return {
+				...state,
+				FedexSmallApiType: action.payload,
 			}
 
 		case types.GET_RAD_SETTINGS:
