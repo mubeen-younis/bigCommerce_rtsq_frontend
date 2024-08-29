@@ -85,6 +85,7 @@ function ConnectionSettingsComponent(props) {
 		values.testType = connectionState.testType
 		values.installed_carrier_id = props.carrierId
 		values.carrierId = props.carrierId
+		values.account_type = accountType
 
 		props.postData(values, props.token)
 	}
