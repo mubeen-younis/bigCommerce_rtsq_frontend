@@ -202,7 +202,7 @@ function ProductSettingsComponent(props) {
   const [sortProd, setSortProd] = useState(false);
   const [formError /* setFormError */] = useState('');
   const dispatch = useDispatch();
-  const { productsPagination, dropships } = useSelector((state) => state);
+  const { productsPagination, dropships, shippingGroups } = useSelector((state) => state);
   const [recordId, setRecordId] = useState(null);
   const [requestBody, setRequestBody] = useState([]);
   const [pagination, setPagination] = useState({
@@ -304,6 +304,7 @@ function ProductSettingsComponent(props) {
 
     for (const prd of variants) {
       const dropShip = getNicknameById(prd?.dropship_location);
+      const shippingGroup = getShippingGroupById(prd?.shipping_group);
       createRequestBody[index] = {
         "data": {
           "productId": prd?.source_product_id,
@@ -331,6 +332,13 @@ function ProductSettingsComponent(props) {
               "city": dropShip?.city ?? '',
               "state": dropShip?.state ?? '',
               "country": dropShip?.country ?? '',
+            },
+            "shippingGroup": {
+              "enabled": prd?.shipping_group_enabled ?? 0,
+              "nickname": shippingGroup?.nickname ?? '',
+              "labelAs": shippingGroup?.labelAs ?? '',
+              "rate": shippingGroup?.rate ?? '',
+              "rateXquantity": shippingGroup?.rateXquantity ?? '',
             },
             "nesting": {
               "enabled": prd?.is_nesting_enabled ?? 0,
@@ -379,6 +387,11 @@ function ProductSettingsComponent(props) {
   function getNicknameById(id) {
     const dropship = dropships.find(dropship => dropship.id === id);
     return dropship ? { 'nickname': dropship?.nickname, 'city': dropship?.city, 'state': dropship?.state, 'zipCode': dropship?.zip_code, 'country': dropship?.country } : null;
+  }
+
+  function getShippingGroupById(id) {
+    const shippingGroup = shippingGroups.find(shippingGroup => shippingGroup.id === id);
+    return shippingGroup ? { 'nickname': shippingGroup?.nickname, 'labelAs': shippingGroup?.checkout_description, 'rate': shippingGroup?.rate, 'rateXquantity': shippingGroup?.rate_x_quantity } : null;
   }
 
   const copyToClipboard = (data) => {
