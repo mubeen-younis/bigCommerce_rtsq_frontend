@@ -184,7 +184,7 @@ useEffect(() => {
 		}
     if(inputValue.length > labelLimit){
       error = true
-      errormsg = 'Checkout description limit exceeds'
+      errormsg = 'Checkout description exceeds the character limit.'
     }
     if (data?.enable_ld === true) {
       if (
@@ -339,16 +339,24 @@ useEffect(() => {
 
   const updateCounter = (data) => {
     let limit = 100
+    let isUpdateCount = false;
     if(JSON.parse(data?.additionals)?.enable_instore_distance){
       limit = limit - 15
+      isUpdateCount = true;
       setLabelLimit(limit)
     }
     if(JSON.parse(data?.additionals)?.enable_instore_address){
       limit = limit - 50
+      isUpdateCount = true;
       setLabelLimit(limit)
     }
     if(JSON.parse(data?.additionals)?.enable_instore_phone){
       limit = limit - 19
+      isUpdateCount = true;
+      setLabelLimit(limit)
+    }
+
+    if(!isUpdateCount){
       setLabelLimit(limit)
     }
   }
@@ -1146,8 +1154,11 @@ useEffect(() => {
                         placeholder='In-store pick up'
                         maxLength={labelLimit}
                         onChange={(e) => {
-                          e.target.value.length <= labelLimit && changeValue(e)
-                          setInputValue(e.target.value)
+                        // Allow deleting characters even if input exceeds labelLimit
+                          if (e.target.value.length <= labelLimit || e.target.value.length < locationDetail.instock_description.length) {
+                            changeValue(e); // Call the function to update your form state
+                            setInputValue(e.target.value); // Update state for the input length display
+                          }
                         }
                         }
                         addonAfter={inputValue ? <span>{`${inputValue?.length}/${labelLimit}`}</span> : <span>{`${0}/${labelLimit}`}</span>}
