@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button, Col, Row, Select, Checkbox, Input, Typography } from 'antd'
 import { getLocations } from '../../Actions/Warehouse'
 import { fieldValueLimit, handleNumbersOnly, handleNumbersWithDecimalOnly, handleNumbersWithHyphenOnly, handlingFeeMarkup, numberFieldLimit } from '../../Utilities/numberValidation'
+import { getShippingGroups } from '../../Actions/ShippingGroupsActions'
 
 const { Option } = Select
 const smallCarriers = [
@@ -95,6 +96,7 @@ const Settings = ({
 		}
 
 		dispatch(getLocations(token))
+		dispatch(getShippingGroups(token))
 	}, [
 		dispatch,
 		index,
