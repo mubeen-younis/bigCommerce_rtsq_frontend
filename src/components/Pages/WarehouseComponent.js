@@ -506,6 +506,7 @@ useEffect(() => {
         const { data } = await axios.get(url, config)
         if (!data.error) {
           const updatedLocationDetail = {
+            instore_postalCode: zipCode ?? '',
             instore_city: data?.data?.city[0] ?? '',
             instore_state: data?.data?.state ?? '',
             instore_country: data?.data?.country ?? '',

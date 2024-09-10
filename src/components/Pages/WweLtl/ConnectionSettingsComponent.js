@@ -71,7 +71,7 @@ function ConnectionSettingsComponent(props) {
 				<strong>Note!</strong> You must have a Worldwide Express account to
 				use this application. If you do not have one, click{' '}
 				<a
-					href='https://eniture.com/request-worldwide-express-account-number/'
+					href='https://wwex.com/our-technology/e-commerce-solutions'
 					target='_blank'
 					rel='noreferrer'>
 					here

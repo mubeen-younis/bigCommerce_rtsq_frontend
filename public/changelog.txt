@@ -1,3 +1,15 @@
+= 2.2.16 2024-09-04 =
+
+* Update - Add FedEx LTL New API in BC (Ticket:2294982745) [#297] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/297)
+
+= 2.2.15 2024-08-21 =
+
+* Update - update account form links for carriers (Ticket:2789867699) [#296] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/296)
+
+= 2.2.14 2024-08-19 =
+
+* Update - Add FedEx Parcel New API in BC (Ticket:2294982745) [#294] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/294)
+
 = 2.2.13 2024-07-25 =
 
 * Update - rename parcel shipment services feature (chunk-2) (Ticket:2801730131) [#293] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/293)
