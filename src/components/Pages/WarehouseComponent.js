@@ -341,7 +341,7 @@ useEffect(() => {
     let limit = 100
     let isUpdateCount = false;
     if(JSON.parse(data?.additionals)?.enable_instore_distance){
-      limit = limit - 15
+      limit = limit - 16
       isUpdateCount = true;
       setLabelLimit(limit)
     }
@@ -371,9 +371,9 @@ useEffect(() => {
   const changeLabelLimit = (e) => {
 
     if(e.target.name == "enable_instore_distance" && e.target.checked){
-      setLabelLimit(labelLimit - 15)
+      setLabelLimit(labelLimit - 16)
     } else if(e.target.name == "enable_instore_distance" && !(e.target.checked)){
-      setLabelLimit(labelLimit + 15)
+      setLabelLimit(labelLimit + 16)
     }
 
     if(e.target.name == "enable_instore_address" && e.target.checked){
