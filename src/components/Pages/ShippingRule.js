@@ -775,7 +775,7 @@ function ShippingRulesComponent() {
                     },
                   ]}
                 >
-                  <Input placeholder='Rule name' />
+                  <Input placeholder='Rule name' maxLength={50} />
                 </Form.Item>
               </Col>
             </Row>
