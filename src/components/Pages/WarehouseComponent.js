@@ -1152,7 +1152,7 @@ useEffect(() => {
                       <Input
                         name='instock_description'
                         value={locationDetail.instock_description}
-                        placeholder='In-store pick up'
+                        placeholder='Instore Pick Up'
                         maxLength={labelLimit}
                         onChange={(e) => {
                         // Allow deleting characters even if input exceeds labelLimit
