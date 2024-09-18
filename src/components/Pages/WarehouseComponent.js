@@ -1019,7 +1019,7 @@ useEffect(() => {
                     xl={8}
                   >
                     <label className={'text-gray'}>
-                      Show distance between terminal and receiver address
+                      Show distance between pick up location and receiver address
                     </label>
                   </Col>
                   <Col
@@ -1057,7 +1057,7 @@ useEffect(() => {
                     xl={8}
                   >
                     <label className={'text-gray'}>
-                      Show terminal address
+                      Show pick up location address
                     </label>
                   </Col>
                   <Col
@@ -1094,7 +1094,7 @@ useEffect(() => {
                     xl={8}
                   >
                     <label className={'text-gray'}>
-                      Show terminal phone number
+                      Show pick up location phone number
                     </label>
                   </Col>
                   <Col
