@@ -76,7 +76,20 @@ function UpdateProductApiComponent() {
 				},
 			})
 		  } else {
-			console.log('Failed to copy text.');
+			  dispatch({
+				  type: 'ALERT_MESSAGE',
+				  payload: {
+					  showAlertMessage: false,
+				  },
+			  })
+			  dispatch({
+				  type: 'ALERT_MESSAGE',
+				  payload: {
+					  showAlertMessage: true,
+					  alertMessage: 'Failed to copy Token.',
+					  alertMessageType: 'error',
+				  },
+			  })
 		  }
 		} catch (error) {
 			dispatch({

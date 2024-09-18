@@ -441,9 +441,22 @@ function ProductSettingsComponent(props) {
             alertMessageType: 'success',
           },
         })
-		  } else {
-			console.log('Failed to copy text.');
-		  }
+      } else {
+        dispatch({
+          type: 'ALERT_MESSAGE',
+          payload: {
+            showAlertMessage: false,
+          },
+        })
+        dispatch({
+          type: 'ALERT_MESSAGE',
+          payload: {
+            showAlertMessage: true,
+            alertMessage: 'Failed to copy JSON.',
+            alertMessageType: 'error',
+          },
+        })
+      }
 		} catch (error) {
 			dispatch({
 				type: 'ALERT_MESSAGE',
