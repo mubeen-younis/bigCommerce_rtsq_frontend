@@ -1432,7 +1432,7 @@ function ShippingRulesComponent() {
                                   onChange={handleChangeServices}
                                   notFoundContent={
                                     <span>
-                                      <Spin size='small' />
+                                      No service enabled. Please enable in quote settings.
                                     </span>
                                   }
                                   filterOption={filterServices}
