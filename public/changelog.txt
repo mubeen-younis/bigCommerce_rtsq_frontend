@@ -1,3 +1,11 @@
+= 2.2.18 2024-09-18 =
+
+* Update - Update Product API in BC (Ticket:2202219416) [#299] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/299)
+
+= 2.2.17 2024-09-18 =
+
+* Update - Update instore label fields (Ticket:2721818958) [#298] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/298)
+
 = 2.2.16 2024-09-04 =
 
 * Update - Add FedEx LTL New API in BC (Ticket:2294982745) [#297] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/297)

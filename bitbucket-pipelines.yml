@@ -20,7 +20,7 @@ pipelines:
               MODE: 'command'
               COMMAND: '/var/www/html/bigcommerce/bc-fe/remote-script.sh'
               
-    feature/add-label-fields-chunk-2:
+    feature/update-product-api:
     - step:
           caches:
             - composer

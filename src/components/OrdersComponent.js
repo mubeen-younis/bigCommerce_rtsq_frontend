@@ -785,7 +785,7 @@ const mapDispatchToProps = dispatch => {
 
 const styles = {
 	breakAll: {
-	  wordBreak: 'break-all',
+	  wordBreak: 'break-word',
 	  whiteSpace: 'normal',
 	},
   };
