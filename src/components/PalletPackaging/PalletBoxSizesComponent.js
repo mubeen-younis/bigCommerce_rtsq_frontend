@@ -40,6 +40,9 @@ const initialState = {
 	box_fee: '',
 	is_available: false,
 	box_type: 4,
+	weightWithPallet:'',
+	heightWithPallet:''
+
 }
 
 const pattern = {
