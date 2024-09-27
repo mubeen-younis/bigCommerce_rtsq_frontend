@@ -356,6 +356,9 @@ function ShippingRulesComponent() {
     setCountryCode(text?.filter_country);
     if(text?.rule_type == 6){
       handleProviderServices(text?.filter_provider)
+      const applyTo = text?.apply_to == 1 ? setApplyTo(0) : setApplyTo(text?.apply_to);
+    } else{
+      setApplyTo(text?.apply_to ?? 1)
     }
     if (text?.filter_country == undefined || text?.filter_country == '') {
       setCountryCode('US');
@@ -376,7 +379,6 @@ function ShippingRulesComponent() {
     setIsFilterPrice(text?.isFilterPrice);
     setIsFilterQuantity(text?.isFilterQuantity);
     setApplyRuleTo(text?.apply_rule_to ?? 1);
-    setApplyTo(text?.apply_to ?? 1)
     editLocation(text);
   };
   const helptext = ruleType == 6 ? 'Shipment' : 'Cart';
@@ -773,7 +775,7 @@ function ShippingRulesComponent() {
                     },
                   ]}
                 >
-                  <Input placeholder='Rule name' />
+                  <Input placeholder='Rule name' maxLength={50} />
                 </Form.Item>
               </Col>
             </Row>
@@ -800,7 +802,10 @@ function ShippingRulesComponent() {
                   >
                     <Select
                       placeholder='Type'
-                      onChange={(value) => setRuleType(value)}
+                      onChange={(value) => {
+                        setRuleType(value);
+                        value = value == 6 ? setApplyTo(0) : setApplyTo(1);
+                      }}                    
                       getPopupContainer={() =>
                         document.getElementById('type_dropdown')
                       }
@@ -840,12 +845,12 @@ function ShippingRulesComponent() {
                   ]}
                 >
                 {ruleType == 6 ? (
-                  <Radio checked={applyTo == 1}>Shipment</Radio>
+                  <></>
                 ) : (
                   <Radio checked={applyTo == 1} value={1} onChange={handleChangeRule}>Cart</Radio>
                 )}
 
-                {ruleType == 8 && (
+                {(ruleType == 8 || ruleType == 6) && (
                   <>
                     <Radio 
                     checked={applyTo == 0} 
@@ -871,7 +876,7 @@ function ShippingRulesComponent() {
               ruleType == 3 ||
               ruleType == 4 ||
               ruleType == 5 || ruleType == 7 || 
-              ( applyTo == 2 && ruleType == 8)) && (
+              ( applyTo == 2 && (ruleType == 8 || ruleType == 6))) && (
               <>
                 {ruleType != 5 && ruleType != 6 && ruleType != 7 && ruleType !=8 && (
                   <Row gutter={30}>
@@ -1427,7 +1432,7 @@ function ShippingRulesComponent() {
                                   onChange={handleChangeServices}
                                   notFoundContent={
                                     <span>
-                                      <Spin size='small' />
+                                      No service enabled. Please enable in quote settings.
                                     </span>
                                   }
                                   filterOption={filterServices}

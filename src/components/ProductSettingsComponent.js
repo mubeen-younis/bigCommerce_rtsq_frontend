@@ -6,6 +6,7 @@ import {
   getAllProducts,
   getProduct,
 } from '../Actions/ProductSettings';
+import { EllipsisOutlined, CopyOutlined } from '@ant-design/icons';
 import {
   Table,
   Button,
@@ -18,14 +19,30 @@ import {
   Row,
   Skeleton,
   Input,
+  Menu,
+  Dropdown,
+  Tooltip,
 } from 'antd';
 import addKeysToList from '../Utilities/addKey';
 import Settings from './Products/Settings';
 import { isFireFox } from '../Utilities/browserName';
 import { getLocations } from './../Actions/Warehouse';
 import { validateHandlingFeeMarkup } from '../Utilities/numberValidation';
+import ReactJson from 'react-json-view';
 
-const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId) => {
+const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId, apiRequestBody) => {
+
+  const actionMenu = (source_product_id, record) => (
+    <Menu>
+      <Menu.Item key="1" onClick={() => showProductDetails(source_product_id, record)}>
+        Edit
+      </Menu.Item>
+      <Menu.Item key="2" onClick={() => apiRequestBody(source_product_id, record)}>
+        API request
+      </Menu.Item>
+    </Menu>
+  );
+
   const columns = [
     {
       title: 'Product Name',
@@ -137,9 +154,9 @@ const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId) 
       key: 'source_product_id',
       render: (source_product_id, record) => (
         <Space size='middle'>
-          <Button onClick={() => showProductDetails(source_product_id, record)}>
-            Edit
-          </Button>
+          <Dropdown overlay={actionMenu(source_product_id, record)} trigger={['hover']} placement="bottomRight">
+          <Button type="text" icon={<EllipsisOutlined className="large-ellipsis-icon" />} />
+        </Dropdown>
         </Space>
       ),
     },
@@ -157,11 +174,13 @@ function ProductSettingsComponent(props) {
   const [emailAddress, setEmailAddress] = useState(
     props?.store?.admin_email || ''
   );
+  const [isHovered, setIsHovered] = useState(false);
   const [state, setState] = useState({
     filteredInfo: null,
     sortedInfo: null,
     selectedRowKeys: [],
     showDropship: false,
+    showData: false,
     showNestingItems: false,
     visible: false,
   });
@@ -183,8 +202,9 @@ function ProductSettingsComponent(props) {
   const [sortProd, setSortProd] = useState(false);
   const [formError /* setFormError */] = useState('');
   const dispatch = useDispatch();
-  const { productsPagination } = useSelector((state) => state);
+  const { productsPagination, dropships, shippingGroups } = useSelector((state) => state);
   const [recordId, setRecordId] = useState(null);
+  const [requestBody, setRequestBody] = useState([]);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -195,6 +215,7 @@ function ProductSettingsComponent(props) {
   const addonCheck = props.installedAddons.find(
     (add) => add.short_code === 'SBS'
   );
+
 
   const showMoreItems = key => {
     setRecordId(key)
@@ -229,6 +250,7 @@ function ProductSettingsComponent(props) {
           ...settings,
         };
       });
+      getRequest(variants)
       setProductVariants(variants);
     }
     if (countSorting > 0) {
@@ -275,12 +297,186 @@ function ProductSettingsComponent(props) {
     }, 1000);
   };
 
+  function getRequest(variants) {
+
+    let index = 0;
+    let createRequestBody = []
+
+    for (const prd of variants) {
+      const dropShip = getNicknameById(prd?.dropship_location);
+      const shippingGroup = getShippingGroupById(prd?.shipping_group);
+      createRequestBody[index] = {
+        "data": {
+          "productId": prd?.source_product_id,
+          "variantId": prd?.variant_id,
+          "attributes": {
+            "sku": prd?.sku ?? '',
+            "name": prd?.name ?? '',
+            "quoteMethod": prd?.freight_enabled ? 'L' : prd?.parcel_enabled ? 'S' : 'PD',
+            "weight": prd?.weight,
+            "freightClass": prd?.freight_class ?? '',
+            "nmfc": prd?.nmfc ?? '',
+            "HSCode": prd?.hs_code ?? '',
+            "width": prd?.width,
+            "height": prd?.height,
+            "length": prd?.length,
+            "boxingProperties": prd?.allow_vertical ? '2' : prd?.ship_own_package ? '1' : prd?.ship_multiple_package ? '3' : '',
+            "palletProperties": prd?.pallet_vertical_rotation ? '2' : prd?.own_pallet ? '1' : '',
+            "productMarkup": prd?.product_markup ?? '',
+            "insuranceEnabled": prd?.insurance ?? false,
+            "hazardousEnabled": prd?.hazardous_enabled ?? false,
+            "dropship": {
+              "enabled": prd?.dropship_enabled ?? 0,
+              "nickname": dropShip?.nickname ?? '',
+              "zipcode": dropShip?.zipCode ?? '',
+              "city": dropShip?.city ?? '',
+              "state": dropShip?.state ?? '',
+              "country": dropShip?.country ?? '',
+            },
+            "shippingGroup": {
+              "enabled": prd?.shipping_group_enabled ?? 0,
+              "nickname": shippingGroup?.nickname ?? '',
+              "labelAs": shippingGroup?.labelAs ?? '',
+              "rate": shippingGroup?.rate ?? '',
+              "rateXquantity": shippingGroup?.rateXquantity ?? '',
+            },
+            "nesting": {
+              "enabled": prd?.is_nesting_enabled ?? 0,
+              "dimensionType": prd?.dimension_type == 0 ? 'length' : prd?.dimension_type == 1 ? 'width' : prd?.dimension_type == 2 ? 'height' : '',
+              "percentage": prd?.nesting_percentage ?? '',
+              "maximumNestedItems": prd?.max_nested_items ?? '',
+              "stackingProperty": prd?.stacked_type == 0 ? 'evenly' : prd?.stacked_type == 1 ? 'maximized' : '',
+            }
+          }
+        }
+      };
+      index++;
+    }
+    
+    setRequestBody(createRequestBody)
+  }
+
+  const apiRequestBody = async (id, product) => {
+
+    setState({
+      ...state,
+      showData: true,
+    });
+
+    dispatch(getLocations(props.token));
+    dispatch(
+      getProduct(id, setselectedProductDetail, setLoadProduct, props.token, product?.variant_id)
+    );
+
+    setLoadProduct(true);
+
+    setTimeout(() => {
+      setLoadProduct(false);
+    }, 1000);
+  };
+
   const onClose = () => {
     setState({
       ...state,
       visible: false,
+      showData: false,
     });
+  
   };
+
+  function getNicknameById(id) {
+    const dropship = dropships.find(dropship => dropship.id === id);
+    return dropship ? { 'nickname': dropship?.nickname, 'city': dropship?.city, 'state': dropship?.state, 'zipCode': dropship?.zip_code, 'country': dropship?.country } : null;
+  }
+
+  function getShippingGroupById(id) {
+    const shippingGroup = shippingGroups.find(shippingGroup => shippingGroup.id === id);
+    return shippingGroup ? { 'nickname': shippingGroup?.nickname, 'labelAs': shippingGroup?.checkout_description, 'rate': shippingGroup?.rate, 'rateXquantity': shippingGroup?.rate_x_quantity } : null;
+  }
+
+  const copyToClipboard = (data) => {
+
+    const text = JSON.stringify(data, null, 2);
+
+		// Create a hidden textarea element
+		const textArea = document.createElement('textarea');
+		
+		// Set the text to be copied
+		textArea.value = text;
+		
+		// Style the textarea to make it invisible and prevent layout shifts
+		textArea.style.position = 'fixed';
+		textArea.style.top = '0';
+		textArea.style.left = '0';
+		textArea.style.width = '2em';
+		textArea.style.height = '2em';
+		textArea.style.padding = '0';
+		textArea.style.border = 'none';
+		textArea.style.outline = 'none';
+		textArea.style.boxShadow = 'none';
+		textArea.style.background = 'transparent';
+		
+		// Append the textarea to the document
+		document.body.appendChild(textArea);
+		
+		// Select the text in the textarea
+		textArea.select();
+		textArea.setSelectionRange(0, 99999); // For mobile devices
+		
+		try {
+		  // Execute the copy command
+		  const successful = document.execCommand('copy');
+		  if (successful) {
+        dispatch({
+          type: 'ALERT_MESSAGE',
+          payload: {
+            showAlertMessage: false,
+          },
+        })
+        dispatch({
+          type: 'ALERT_MESSAGE',
+          payload: {
+            showAlertMessage: true,
+            alertMessage: 'JSON copied to clipboard!',
+            alertMessageType: 'success',
+          },
+        })
+      } else {
+        dispatch({
+          type: 'ALERT_MESSAGE',
+          payload: {
+            showAlertMessage: false,
+          },
+        })
+        dispatch({
+          type: 'ALERT_MESSAGE',
+          payload: {
+            showAlertMessage: true,
+            alertMessage: 'Failed to copy JSON.',
+            alertMessageType: 'error',
+          },
+        })
+      }
+		} catch (error) {
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					showAlertMessage: false,
+				},
+			})
+			dispatch({
+				type: 'ALERT_MESSAGE',
+				payload: {
+					showAlertMessage: true,
+					alertMessage: error,
+					alertMessageType: 'error',
+				},
+			})
+		}
+		
+		// Remove the textarea from the document
+		document.body.removeChild(textArea);
+	  };
 
   const syncProducts = () => {
     if (
@@ -665,12 +861,61 @@ function ProductSettingsComponent(props) {
       </Row>
       <Table
         className='custom-table'
-        columns={makeColumns(sortProducts, showProductDetails, showMoreItems, recordId)}
+        columns={makeColumns(sortProducts, showProductDetails, showMoreItems, recordId, apiRequestBody)}
         dataSource={addKeysToList(props.filteredProducts ?? props.allProducts)}
         onChange={handleChange}
         pagination={pagination}
         showSorterTooltip={{ title: '' }}
       />
+      {/* =======API Request Model========= */}
+      <Drawer
+        title={`Product API Request`}
+        width={720}
+        onClose={onClose}
+        open={state.showData}
+        footer={
+          <div
+            style={{
+              textAlign: "right",
+              paddingBottom: 30,
+            }}
+          ></div>
+        }
+      >
+        {loadProduct ? (
+          <Skeleton active />
+        ) : (
+          requestBody?.map((data, index) => (
+            <>
+              <div style={{ position: 'relative', }}>
+                <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }}>
+                  <Tooltip title="Copy JSON">
+                    <Button
+                      style={{
+                        border: 'none',
+                      }}
+                      onClick={() => copyToClipboard(data)}
+                      onMouseEnter={() => setIsHovered(true)}
+                      onMouseLeave={() => setIsHovered(false)}
+                      icon={<CopyOutlined style={{ fontSize: '25px', color: '#1890ff', cursor: 'pointer' }} />}
+                    />
+                  </Tooltip>
+                </div>
+                <ReactJson
+                  src={data}
+                  theme="shapeshifter:inverted"
+                  displayDataTypes={false}
+                  enableClipboard={false}
+                  iconStyle="square"
+                />
+              </div>
+              <br />
+            </>
+          ))
+        )}
+      </Drawer>
+      
+      {/* ================ */}
       <Drawer
         title={`Product Settings ${
           !loadProduct && productVariants.length > 0
@@ -679,7 +924,7 @@ function ProductSettingsComponent(props) {
         }`}
         width={720}
         onClose={onClose}
-        visible={state.visible}
+        open={state.visible}
         bodyStyle={{ paddingBottom: 80 }}
         footer={
           <div

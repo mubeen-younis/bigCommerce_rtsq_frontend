@@ -8,7 +8,7 @@ options:
   max-time: 60
 pipelines:
   branches:
-    feature/fedex-ltl-new-api:
+    update-override-rates-rule:
     - step:
         caches:
           - composer
@@ -20,7 +20,7 @@ pipelines:
               MODE: 'command'
               COMMAND: '/var/www/html/bigcommerce/bc-fe/remote-script.sh'
               
-    update-instore-label-fields:
+    feature/update-product-api:
     - step:
           caches:
             - composer
