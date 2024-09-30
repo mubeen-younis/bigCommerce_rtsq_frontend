@@ -165,7 +165,7 @@ function UpdateProductApiComponent() {
 						</Title>
 						<div className={'gray-text-block mb-3'}>
 							<p>
-								API tokens allow to authenticate with our application on your behalf.
+								Create an API token to allow our app to securely update your product shipping parameters via the Product API.
 							</p>
 							<Form.Item style={{ textAlign: 'center', marginBottom: '0' }}>
 								<Space>
@@ -202,6 +202,15 @@ function UpdateProductApiComponent() {
 									</p>
 								</> : null
 							}
+
+							For detailed instructions on using this feature, please refer to our{' '}
+							<a
+								href='https://documenter.getpostman.com/view/17487720/2sAXqqdi4a'
+								target='_blank'
+								rel='noreferrer'
+							>
+								documentation
+							</a>.
 						</div>
 					</Col>
 				</Row>
