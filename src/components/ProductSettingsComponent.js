@@ -29,6 +29,7 @@ import { isFireFox } from '../Utilities/browserName';
 import { getLocations } from './../Actions/Warehouse';
 import { validateHandlingFeeMarkup } from '../Utilities/numberValidation';
 import ReactJson from 'react-json-view';
+import Title from 'antd/lib/typography/Title'
 
 const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId, apiRequestBody) => {
 
@@ -210,6 +211,7 @@ function ProductSettingsComponent(props) {
     pageSize: 10,
     total: productsPagination?.total,
     search: null,
+    showSizeChanger: true,
     pageSizeOptions: ["10", "20", "30"],
   });
   const addonCheck = props.installedAddons.find(
@@ -276,25 +278,17 @@ function ProductSettingsComponent(props) {
     props.token,
   ]);
 
-  useEffect(() => {
-    dispatch(getLocations(props.token));
-  }, [dispatch, props.token]);
 
   const showProductDetails = async (id, product) => {
-    dispatch(getLocations(props.token));
 
     setState({
       ...state,
       visible: true,
     });
+    setLoadProduct(true);
     dispatch(
       getProduct(id, setselectedProductDetail, setLoadProduct, props.token, product?.variant_id)
     );
-    setLoadProduct(true);
-
-    setTimeout(() => {
-      setLoadProduct(false);
-    }, 1000);
   };
 
   function getRequest(variants) {
@@ -363,16 +357,11 @@ function ProductSettingsComponent(props) {
       showData: true,
     });
 
-    dispatch(getLocations(props.token));
+    setLoadProduct(true);
     dispatch(
       getProduct(id, setselectedProductDetail, setLoadProduct, props.token, product?.variant_id)
     );
 
-    setLoadProduct(true);
-
-    setTimeout(() => {
-      setLoadProduct(false);
-    }, 1000);
   };
 
   const onClose = () => {
@@ -848,7 +837,8 @@ function ProductSettingsComponent(props) {
             Search
           </Button>
         </Col>
-        <Col span={6}>
+        {/* Below code will use for sync BC => APP products in future */}
+        {/* <Col span={6}>
           <Button
             onClick={openConfirmModel}
             type='primary'
@@ -857,7 +847,7 @@ function ProductSettingsComponent(props) {
           >
             Sync Products
           </Button>
-        </Col>
+        </Col> */}
       </Row>
       <Table
         className='custom-table'
@@ -869,7 +859,11 @@ function ProductSettingsComponent(props) {
       />
       {/* =======API Request Model========= */}
       <Drawer
-        title={`Product API Request`}
+        title={`Product API Request ${
+          !loadProduct && productVariants.length > 0
+            ? ' (' + productVariants?.[0]?.name + ')'
+            : ''
+        }`}
         width={720}
         onClose={onClose}
         open={state.showData}
@@ -962,7 +956,18 @@ function ProductSettingsComponent(props) {
                     addonCheck={addonCheck}
                   />
                 ))
-              : null}
+              : (
+                <Fragment>
+									<Title
+										level={3}
+										style={{
+											width: '100%',
+											textAlign: 'center',
+										}}>
+										No product details found
+									</Title>
+								</Fragment>
+              )}
           </Form>
         )}
       </Drawer>

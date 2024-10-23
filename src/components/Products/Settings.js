@@ -94,9 +94,6 @@ const Settings = ({
 			onChangeVariant(index, 'pallet_vertical_rotation', false)
 			onChangeVariant(index, 'own_pallet', false)
 		}
-
-		dispatch(getLocations(token))
-		dispatch(getShippingGroups(token))
 	}, [
 		dispatch,
 		index,
