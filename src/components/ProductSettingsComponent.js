@@ -31,7 +31,7 @@ import { validateHandlingFeeMarkup } from '../Utilities/numberValidation';
 import ReactJson from 'react-json-view';
 import Title from 'antd/lib/typography/Title'
 
-const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId, apiRequestBody) => {
+const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId, storeCategories, storeBrands, apiRequestBody) => {
 
   const actionMenu = (source_product_id, record) => (
     <Menu>
@@ -67,33 +67,40 @@ const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId, 
     },
     {
       title: "Category",
-      dataIndex: "category_name",
-      key: "category_name",
+      dataIndex: "categories_id",
+      key: "categories_id",
       ellipsis: true,
-      render: (categories, record) => (
-        
+      render: (categories_id, record) => (
         <>
           {record.key == recordId ?  (
             <>
-              {categories?.map((key) => {
+              {storeCategories?.map((data) => {
               return (
                 <>
-                  <span> {key} </span>
-                  <br/>
+                  {categories_id.includes(data?.key) && (
+                    <>
+                      <span> {data?.value} </span>
+                      <br/>
+                    </>
+                  )}
                 </>
               )})}
             </>
           ): (
             <>
-              {categories?.map((key, item) => {
-              if(item < 3){
+              {storeCategories?.map((data, key) => {
+              if(key < 3){
                 return (
-                <>
-                  <span> {key} </span>
-                  <br/>
-                </>
-              )}})}
-              {categories?.length > 3 ? <a className="btn mt-2" onClick={() => showMoreItems(record.key)}>show more</a> : null}
+                  <>
+                    {categories_id.includes(data?.key) && (
+                      <>
+                        <span> {data?.value} </span>
+                        <br/>
+                      </>
+                    )}
+                  </>
+                )}})}
+              {categories_id.length > 3 ? <a className="btn mt-2" onClick={() => showMoreItems(record.key)}>show more</a> : null}
             </>
           )}
         </>
@@ -101,43 +108,47 @@ const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId, 
     },
     {
       title: 'Brand',
-      dataIndex: 'brand_name',
-      key: 'brand_name',
-      /*sorter: (a, b) => a.sku - b.sku,
-			sortOrder: sortedInfo.columnKey === 'sku' && sortedInfo.order,
-			ellipsis: true,*/
+      dataIndex: 'brand_id',
+      key: 'brand_id',
+      render: (brand_id, record) => (
+        <>
+          {storeBrands &&  (            
+            <>
+              {storeBrands?.map((data) => {
+              return (
+                <>
+                  {data?.key == brand_id && (
+                    <>
+                    <span> {data?.value} </span>
+                    <br/>
+                    </>
+                  )}
+                </>
+              )})}
+            </>
+          )}
+        </>
+      ),
     },
     {
       title: 'Product Id',
       dataIndex: 'source_product_id',
       key: 'source_product_id',
-      /*sorter: (a, b) => a.sku - b.sku,
-			sortOrder: sortedInfo.columnKey === 'sku' && sortedInfo.order,
-			ellipsis: true,*/
     },
     {
       title: 'Variant Id',
       dataIndex: 'variant_id',
       key: 'variant_id',
-      /*sorter: (a, b) => a.sku - b.sku,
-			sortOrder: sortedInfo.columnKey === 'sku' && sortedInfo.order,
-			ellipsis: true,*/
     },
     {
       title: 'Product SKU',
       dataIndex: 'sku',
       key: 'sku',
-      /*sorter: (a, b) => a.sku - b.sku,
-			sortOrder: sortedInfo.columnKey === 'sku' && sortedInfo.order,
-			ellipsis: true,*/
     },
     {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
-      /*sorter: (a, b) => +a.price.substring(1) - +b.price.substring(1),
-			sortOrder: sortedInfo.columnKey === 'price' && sortedInfo.order,
-			ellipsis: true,*/
     },
     {
       title: 'Default',
@@ -203,7 +214,7 @@ function ProductSettingsComponent(props) {
   const [sortProd, setSortProd] = useState(false);
   const [formError /* setFormError */] = useState('');
   const dispatch = useDispatch();
-  const { productsPagination, dropships, shippingGroups } = useSelector((state) => state);
+  const { productsPagination, dropships, shippingGroups, storeBrands, storeCategories } = useSelector((state) => state);
   const [recordId, setRecordId] = useState(null);
   const [requestBody, setRequestBody] = useState([]);
   const [pagination, setPagination] = useState({
@@ -851,7 +862,7 @@ function ProductSettingsComponent(props) {
       </Row>
       <Table
         className='custom-table'
-        columns={makeColumns(sortProducts, showProductDetails, showMoreItems, recordId, apiRequestBody)}
+        columns={makeColumns(sortProducts, showProductDetails, showMoreItems, recordId, storeCategories, storeBrands, apiRequestBody)}
         dataSource={addKeysToList(props.filteredProducts ?? props.allProducts)}
         onChange={handleChange}
         pagination={pagination}
