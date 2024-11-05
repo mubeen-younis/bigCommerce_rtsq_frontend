@@ -7,7 +7,7 @@ const { Title } = Typography;
 
 function SideMenu(props) {
   const dispatch = useDispatch();
-  const { currentPlan } = useSelector((state) => state);
+  const { currentPlan, store } = useSelector((state) => state);
   const setActiveMenu = useCallback(
     (menuId) => {
       dispatch({
@@ -64,7 +64,7 @@ function SideMenu(props) {
           defaultSelectedKeys={'99'}
           selectedKeys={props.activeMenu}
         >
-          {currentPlan?.plan_id && (
+          {((currentPlan?.plan_id === 2 && store?.plan_level == 'Trial Plan Store') || (currentPlan?.plan_id && currentPlan?.plan_id != 2)) && (
             <Menu.Item
               key='99'
               warnkey='99'
@@ -81,7 +81,7 @@ function SideMenu(props) {
           >
             <Link to='/plans'>Plans</Link>
           </Menu.Item>
-          {currentPlan?.plan_id && (
+          {((currentPlan?.plan_id === 2 && store?.plan_level == 'Trial Plan Store') || (currentPlan?.plan_id && currentPlan?.plan_id != 2)) && (
             <>
               <Menu.Item
                 key='101'

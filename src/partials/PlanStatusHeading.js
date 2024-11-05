@@ -2,12 +2,20 @@ import React, { Fragment } from 'react'
 import { useSelector } from 'react-redux'
 
 function PlanStatusHeading() {
-	const { currentPlan } = useSelector(state => state)
+	const { currentPlan, store } = useSelector(state => state)
 
 	const trailPlanCheck =
 		currentPlan?.status === 2
 			? 'Your trial plan has been expired. Please activate your paid plan.'
 			: `You are currently on the Trial plan. ${
+					currentPlan?.status === 1 &&
+					`It will expire on ${currentPlan?.ends_at}`
+			  }.`
+
+	const devPlanCheck =
+		currentPlan?.status === 2 || (currentPlan?.plan_id === 2 && store?.plan_level != 'Trial Plan Store')
+			? 'Your development plan has been expired. Please activate your paid plan.'
+			: `You are currently on the Development plan. ${
 					currentPlan?.status === 1 &&
 					`It will expire on ${currentPlan?.ends_at}`
 			  }.`
@@ -28,6 +36,8 @@ function PlanStatusHeading() {
 			) : currentPlan?.plan_id === 1 ? (
 				<div className='note-bx'>{trailPlanCheck}</div>
 			) : currentPlan?.plan_id === 2 ? (
+				<div className='note-bx'>{devPlanCheck}</div>
+			) : currentPlan?.plan_id === 3 ? (
 				<div className='note-bx'>
 					You are currently on the Basic plan.
 					{currentPlan?.status === 2
@@ -36,7 +46,7 @@ function PlanStatusHeading() {
 						  '.'
 						: ' It will auto-renew on ' + currentPlan?.ends_at + '.'}
 				</div>
-			) : currentPlan?.plan_id === 3 ? (
+			) : currentPlan?.plan_id === 4 ? (
 				<div className='note-bx'>
 					You are currently on the Standard plan.
 					{currentPlan?.status === 2
@@ -45,7 +55,7 @@ function PlanStatusHeading() {
 						  '.'
 						: ' It will auto-renew on ' + currentPlan.ends_at + '.'}
 				</div>
-			) : currentPlan?.plan_id === 4 ? (
+			) : currentPlan?.plan_id === 5 ? (
 				<div className='note-bx'>
 					You are currently on the Advanced plan.
 					{currentPlan?.status === 2
