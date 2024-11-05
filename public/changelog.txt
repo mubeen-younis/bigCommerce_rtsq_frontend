@@ -1,3 +1,7 @@
+= 2.2.21 2024-11-05 =
+
+* Update - Update Functionality of Products Listing, import/export and search/save/update Settings (Ticket:2593063812) [#302] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/302)
+
 = 2.2.20 2024-09-30 =
 
 * Update - Update pallet packaging api (Ticket:2657775383) [#301] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/301)
