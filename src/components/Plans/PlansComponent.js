@@ -60,6 +60,7 @@ function PlansComponent() {
   const [updatePaymentMethodCheck, SetUpdatePaymentMethodCheck] =
     useState(false)
   const [trialVisible, SetTrialVisible] = useState(false)
+  const [devPlanVisible, SetDevPlanVisible] = useState(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -90,6 +91,8 @@ function PlansComponent() {
     if (id === 1) {
       SetTrialVisible(true)
       //dispatch(submitPaymentInfo({plan:1}, token, setIsModalVisible))
+    } else if(id === 2) {
+      SetDevPlanVisible(true)
     } else {
       setIsModalVisible(!isModalVisible)
     }
@@ -101,7 +104,7 @@ function PlansComponent() {
         submitPaymentInfo(
           { plan: planid, email: email },
           token,
-          SetTrialVisible
+          planid == 2 ? SetDevPlanVisible : SetTrialVisible,
         )
       )
     } else {
@@ -257,7 +260,7 @@ function PlansComponent() {
   return plans ? (
     <Fragment>
       <PlanStatusHeading />
-      {currentPlan?.plan_id > 1 && (
+      {currentPlan?.plan_id > 2 && (
         <Space className={'mb-3'}>
           {currentPlan.status !== 2 ? (
             <Button
@@ -291,9 +294,9 @@ function PlansComponent() {
       )}
       <Space>
         <Modal
-          title='Trial Plan'
-          visible={trialVisible}
-          onCancel={() => SetTrialVisible(false)}
+          title= {devPlanVisible ? 'Development Plan' : 'Trial Plan'}
+          visible={trialVisible || devPlanVisible}
+          onCancel={() => {SetTrialVisible(false); SetDevPlanVisible(false);}}
           centered
           onOk={() => activateTrialPlan()}
           okText='Activate'
@@ -325,7 +328,7 @@ function PlansComponent() {
             okButtonProps={{ style: { display: 'none' } }}
             cancelButtonProps={{ style: { display: 'none' } }}
           >
-            {currentPlan?.plan_id > 1 && (
+            {currentPlan?.plan_id > 2 && (
               <>
                 <p>Default payment method</p>
                 <Radio
@@ -795,7 +798,8 @@ function PlansComponent() {
 
       <Row gutter={24} >
         {plans.map((plan, i) =>
-          (plan.id === 1 && currentPlan?.plan_id > 1) ||
+          (plan.id === 1 && currentPlan?.plan_id > 1) ||  (plan.id === 1 && store?.plan_level == 'Trial Plan Store') || 
+          (plan.id === 2 && store?.plan_level != 'Trial Plan Store') || 
           ((plan.id === 1 || (plan.name + '').toLowerCase() === 'trial') &&
             currentPlan?.plan_id === 1 &&
             currentPlan?.status === 2) ? null : (
