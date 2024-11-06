@@ -798,8 +798,9 @@ function PlansComponent() {
 
       <Row gutter={24} >
         {plans.map((plan, i) =>
-          (plan.id === 1 && currentPlan?.plan_id > 1) ||  (plan.id === 1 && store?.plan_level == 'Trial Plan Store') || 
-          (plan.id === 2 && store?.plan_level != 'Trial Plan Store') || 
+          (plan.id === 1 && currentPlan?.plan_id > 1) || (plan.id === 1 && store?.plan_level == 'Sandbox Store') || 
+          (plan.id === 2 && store?.plan_level != 'Sandbox Store') || (plan.id === 2 && currentPlan?.plan_id && currentPlan?.plan_id != 2) || 
+          (plan.id === 2 && currentPlan?.plan_id && currentPlan?.status === 2) || 
           ((plan.id === 1 || (plan.name + '').toLowerCase() === 'trial') &&
             currentPlan?.plan_id === 1 &&
             currentPlan?.status === 2) ? null : (
