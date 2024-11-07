@@ -30,8 +30,6 @@ import {
   deleteShippingRule,
   getStatesProvinces,
   getCarrServices,
-  getCategories,
-  getBrands,
 } from '../../Actions/ShippingRulesActions';
 import addKeysToList from './../../Utilities/addKey';
 import types from '../../Stores/types';
@@ -128,14 +126,7 @@ function ShippingRulesComponent() {
     if (ruleType == 3 || ruleType == 4) {
       dispatch(getStatesProvinces(countryCode, token));
     }
-
-    if (!storeCategories) {
-      dispatch(getCategories(token));
-    }
-
-    if (!storeBrands) {
-      dispatch(getBrands(token));
-    }
+    
   }, [dispatch, shippingRules, token, countryCode, ruleType]);
 
   useEffect(() => {
