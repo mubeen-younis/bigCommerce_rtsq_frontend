@@ -64,7 +64,7 @@ function SideMenu(props) {
           defaultSelectedKeys={'99'}
           selectedKeys={props.activeMenu}
         >
-          {((currentPlan?.plan_id === 2 && store?.plan_level != 'Sandbox Store') || (currentPlan?.plan_id && currentPlan?.plan_id != 2)) && (
+          {((currentPlan?.plan_id === 2 && store?.plan_level == 'Sandbox Store') || (currentPlan?.plan_id && currentPlan?.plan_id != 2)) && (
             <Menu.Item
               key='99'
               warnkey='99'
@@ -81,7 +81,7 @@ function SideMenu(props) {
           >
             <Link to='/plans'>Plans</Link>
           </Menu.Item>
-          {((currentPlan?.plan_id === 2 && store?.plan_level != 'Sandbox Store') || (currentPlan?.plan_id && currentPlan?.plan_id != 2)) && (
+          {((currentPlan?.plan_id === 2 && store?.plan_level == 'Sandbox Store') || (currentPlan?.plan_id && currentPlan?.plan_id != 2)) && (
             <>
               <Menu.Item
                 key='101'

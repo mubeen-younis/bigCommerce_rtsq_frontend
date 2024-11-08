@@ -194,7 +194,7 @@ function AutoDetectResidentialComponent(props) {
 														plan.cost
 												  })
 												  </Option>
-												: (plan.name == 'Development Plan' && store.plan_level == 'Sandbox Store1')
+												: (plan.name == 'Development Plan' && store.plan_level == 'Sandbox Store')
 												? <Option key={plan.id} value={plan.id}>
 													{Intl.NumberFormat(
 														'en-US'
@@ -202,7 +202,7 @@ function AutoDetectResidentialComponent(props) {
 														plan.cost
 												  })
 													</Option>
-												: (store.plan_level != 'Sandbox Store1')
+												: (store.plan_level != 'Sandbox Store')
 												? <Option key={plan.id} value={plan.id}>
 													{Intl.NumberFormat(
 														'en-US'
