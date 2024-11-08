@@ -826,6 +826,7 @@ function PlansComponent() {
                       size={'large'}
                       type='primary'
                       className='mt-2'
+                      disabled={plan.id !== 2 && store?.plan_level === 'Sandbox Store'} // Disable condition
                       onClick={() => toggleModal(plan.id)}
                     >
                       ${plan.price} / {plan.id === 2 ? '5 years' : 'month'}
