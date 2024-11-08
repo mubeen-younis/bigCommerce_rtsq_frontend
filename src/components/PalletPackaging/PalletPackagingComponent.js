@@ -156,7 +156,7 @@ function AutoDetectResidentialComponent(props) {
 											<>
 											
 												{plan.cost !== 0
-													? <Option key={plan.id} value={plan.id}>
+													? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store'}>
 														{Intl.NumberFormat('en-US').format(
 															plan.htis)}/mo (${
 															plan.cost
@@ -170,7 +170,7 @@ function AutoDetectResidentialComponent(props) {
                             							})
                             							</Option>
                           							: (store.plan_level != 'Sandbox Store')
-                          							? <Option key={plan.id} value={plan.id}>
+                          							? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store'}>
                               							{Intl.NumberFormat('en-US').format(
 															plan.htis)}/15 days (${plan.cost
 														})

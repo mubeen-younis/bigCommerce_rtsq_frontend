@@ -23,12 +23,16 @@ function PlanStatusHeading() {
 
 	return (
 		<Fragment>
-			{currentPlan?.is_expired ? (
+			{(currentPlan?.is_expired && store?.plan_level != 'Sandbox Store') ? (
 				<div className='note-bx'>
 				Your current {currentPlan?.name} plan has expired. Please renew your plan.
 				</div>
-			) : currentPlan?.status === 3 ? (
+			) : (currentPlan?.status === 3 && store?.plan_level != 'Sandbox Store') ? (
 				<div className='note-bx'>Your current {currentPlan?.name} plan has expired. Please renew your plan.</div>
+			) : (currentPlan?.plan_id === 0 && store?.plan_level == 'Sandbox Store') ? (
+				<div className='note-bx'>
+					You are currently on a Sandbox Store. To get started with your store, please choose a Development Plan.
+				</div>
 			) : currentPlan?.plan_id === 0 ? (
 				<div className='note-bx'>
 					You don't have an active plan. On the Plans page, choose the

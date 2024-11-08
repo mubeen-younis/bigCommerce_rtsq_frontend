@@ -187,7 +187,7 @@ function AutoDetectResidentialComponent(props) {
 								? props?.sbsPlans?.allSbsPackages?.map(plan => (
 										<>
 											{plan.cost !== 0
-												? <Option key={plan.id} value={plan.id}>
+												? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store'}>
 													{Intl.NumberFormat(
 														'en-US'
 												  ).format(plan.htis)}/mo (${
@@ -203,7 +203,7 @@ function AutoDetectResidentialComponent(props) {
 												  })
 													</Option>
 												: (store.plan_level != 'Sandbox Store')
-												? <Option key={plan.id} value={plan.id}>
+												? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store'}>
 													{Intl.NumberFormat(
 														'en-US'
 												  ).format(plan.htis)}/15 days (${
