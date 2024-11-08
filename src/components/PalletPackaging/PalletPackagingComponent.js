@@ -169,7 +169,7 @@ function AutoDetectResidentialComponent(props) {
                               								plan.cost
                             							})
                             							</Option>
-                          							: (store.plan_level != 'Sandbox Store')
+                          							: (plan.id != 2 && store.plan_level != 'Sandbox Store')
                           							? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store'}>
                               							{Intl.NumberFormat('en-US').format(
 															plan.htis)}/15 days (${plan.cost
