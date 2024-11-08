@@ -819,7 +819,7 @@ function PlansComponent() {
                   {currentPlan?.plan_id === plan.id &&
                   !currentPlan?.is_expired ? (
                     <Button size={'large'} className='mt-2'>
-                      ${plan.price} / month
+                      ${plan.price} / {plan.id === 2 ? '5 years' : 'month'} 
                     </Button>
                   ) : (
                     <Button
@@ -828,7 +828,7 @@ function PlansComponent() {
                       className='mt-2'
                       onClick={() => toggleModal(plan.id)}
                     >
-                      ${plan.price} / month
+                      ${plan.price} / {plan.id === 2 ? '5 years' : 'month'}
                     </Button>
                   )}
                 </div>
