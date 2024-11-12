@@ -91,7 +91,7 @@ function PlansComponent() {
     if (id === 1) {
       SetTrialVisible(true)
       //dispatch(submitPaymentInfo({plan:1}, token, setIsModalVisible))
-    } else if(id === 2) {
+    } else if(id === 5) {
       SetDevPlanVisible(true)
     } else {
       setIsModalVisible(!isModalVisible)
@@ -104,7 +104,7 @@ function PlansComponent() {
         submitPaymentInfo(
           { plan: planid, email: email },
           token,
-          planid == 2 ? SetDevPlanVisible : SetTrialVisible,
+          planid == 5 ? SetDevPlanVisible : SetTrialVisible,
         )
       )
     } else {
@@ -260,7 +260,7 @@ function PlansComponent() {
   return plans ? (
     <Fragment>
       <PlanStatusHeading />
-      {currentPlan?.plan_id > 2 && (
+      {currentPlan?.plan_id > 1 && currentPlan?.plan_id != 5 && (
         <Space className={'mb-3'}>
           {currentPlan.status !== 2 ? (
             <Button
@@ -328,7 +328,7 @@ function PlansComponent() {
             okButtonProps={{ style: { display: 'none' } }}
             cancelButtonProps={{ style: { display: 'none' } }}
           >
-            {currentPlan?.plan_id > 2 && (
+            {currentPlan?.plan_id > 1 && currentPlan?.plan_id != 5 && (
               <>
                 <p>Default payment method</p>
                 <Radio
@@ -799,8 +799,8 @@ function PlansComponent() {
       <Row gutter={24} >
         {plans.map((plan, i) =>
           (plan.id === 1 && currentPlan?.plan_id > 1) || (plan.id === 1 && store?.plan_level == 'Sandbox Store') || 
-          (plan.id === 2 && store?.plan_level != 'Sandbox Store') || (plan.id === 2 && currentPlan?.plan_id && currentPlan?.plan_id != 2) || 
-          (plan.id === 2 && currentPlan?.plan_id && currentPlan?.status === 2) || 
+          (plan.id === 5 && store?.plan_level != 'Sandbox Store') || (plan.id === 5 && currentPlan?.plan_id && currentPlan?.plan_id != 5) || 
+          (plan.id === 5 && currentPlan?.plan_id && currentPlan?.status === 2) || 
           ((plan.id === 1 || (plan.name + '').toLowerCase() === 'trial') &&
             currentPlan?.plan_id === 1 &&
             currentPlan?.status === 2) ? null : (
@@ -819,17 +819,17 @@ function PlansComponent() {
                   {currentPlan?.plan_id === plan.id &&
                   !currentPlan?.is_expired ? (
                     <Button size={'large'} className='mt-2'>
-                      ${plan.price} / {plan.id === 2 ? '5 years' : 'month'} 
+                      ${plan.price} / {plan.id === 5 ? '5 years' : 'month'} 
                     </Button>
                   ) : (
                     <Button
                       size={'large'}
                       type='primary'
                       className='mt-2'
-                      disabled={plan.id !== 2 && store?.plan_level === 'Sandbox Store'} // Disable condition
+                      disabled={plan.id !== 5 && store?.plan_level === 'Sandbox Store'} // Disable condition
                       onClick={() => toggleModal(plan.id)}
                     >
-                      ${plan.price} / {plan.id === 2 ? '5 years' : 'month'}
+                      ${plan.price} / {plan.id === 5 ? '5 years' : 'month'}
                     </Button>
                   )}
                 </div>

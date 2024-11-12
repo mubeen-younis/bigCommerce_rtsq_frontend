@@ -15,7 +15,7 @@ function PlanStatusHeading() {
 	const devPlanCheck =
 		currentPlan?.status === 2
 			? 'Your development plan has been expired. Please activate your paid plan.'
-			: (currentPlan?.plan_id === 2 && store?.plan_level != 'Sandbox Store') ? 'You are now on live store. Please activate your paid plan.'
+			: (currentPlan?.plan_id === 5 && store?.plan_level != 'Sandbox Store') ? 'You are now on live store. Please activate your paid plan.'
 			: `You are currently on the Development plan. ${
 					currentPlan?.status === 1 &&
 					`It will expire on ${currentPlan?.ends_at}`
@@ -40,7 +40,7 @@ function PlanStatusHeading() {
 				</div>
 			) : currentPlan?.plan_id === 1 ? (
 				<div className='note-bx'>{trailPlanCheck}</div>
-			) : currentPlan?.plan_id === 2 ? (
+			) : currentPlan?.plan_id === 5 ? (
 				<div className='note-bx'>{devPlanCheck}</div>
 			) : currentPlan?.plan_id === 3 ? (
 				<div className='note-bx'>
