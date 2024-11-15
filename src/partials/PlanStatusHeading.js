@@ -42,7 +42,7 @@ function PlanStatusHeading() {
 				<div className='note-bx'>{trailPlanCheck}</div>
 			) : currentPlan?.plan_id === 5 ? (
 				<div className='note-bx'>{devPlanCheck}</div>
-			) : currentPlan?.plan_id === 3 ? (
+			) : currentPlan?.plan_id === 2 ? (
 				<div className='note-bx'>
 					You are currently on the Basic plan.
 					{currentPlan?.status === 2
@@ -51,7 +51,7 @@ function PlanStatusHeading() {
 						  '.'
 						: ' It will auto-renew on ' + currentPlan?.ends_at + '.'}
 				</div>
-			) : currentPlan?.plan_id === 4 ? (
+			) : currentPlan?.plan_id === 3 ? (
 				<div className='note-bx'>
 					You are currently on the Standard plan.
 					{currentPlan?.status === 2
@@ -60,7 +60,7 @@ function PlanStatusHeading() {
 						  '.'
 						: ' It will auto-renew on ' + currentPlan.ends_at + '.'}
 				</div>
-			) : currentPlan?.plan_id === 5 ? (
+			) : currentPlan?.plan_id === 4 ? (
 				<div className='note-bx'>
 					You are currently on the Advanced plan.
 					{currentPlan?.status === 2

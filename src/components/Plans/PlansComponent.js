@@ -247,10 +247,25 @@ function PlansComponent() {
   const toggleSubscription = useCallback(() => {
     const data = {
       cancel: currentPlan && currentPlan?.status === 2 ? 0 : 1,
+      isSandboxStore: store?.plan_level && store?.plan_level == 'Sandbox Store' ? 1 : 0,
     }
     dispatch(updateSubscription(token, data))
     SetCancelSubsriptionVisible(false)
   }, [currentPlan, dispatch, token])
+
+  // Move the last entry to the first index
+  let rearrangedPlans = [];
+  if(store?.plan_level == 'Sandbox Store'){
+    rearrangedPlans = (() => {
+      const plansCopy = [...plans]; // Clone the array to avoid mutating the original
+      const lastPlan = plansCopy.pop(); // Remove the last item
+      plansCopy.unshift(lastPlan); // Add it to the start of the array
+      return plansCopy;
+    })();
+  } else {
+    rearrangedPlans = plans
+  }
+  
 
   const updatePaymentMethod = useCallback(() => {
     clearForm()
@@ -797,7 +812,7 @@ function PlansComponent() {
       </Space>
 
       <Row gutter={24} >
-        {plans.map((plan, i) =>
+        {rearrangedPlans.map((plan, i) =>
           (plan.id === 1 && currentPlan?.plan_id > 1) || (plan.id === 1 && store?.plan_level == 'Sandbox Store') || 
           (plan.id === 5 && store?.plan_level != 'Sandbox Store') || (plan.id === 5 && currentPlan?.plan_id && currentPlan?.plan_id != 5) || 
           (plan.id === 5 && currentPlan?.plan_id && currentPlan?.status === 2) || 
