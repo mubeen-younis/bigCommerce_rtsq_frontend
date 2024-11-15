@@ -275,7 +275,7 @@ function PlansComponent() {
   return plans ? (
     <Fragment>
       <PlanStatusHeading />
-      {currentPlan?.plan_id > 1 && currentPlan?.plan_id != 5 && (
+      {((currentPlan?.plan_id == 1 && store?.plan_level == 'Sandbox Store') || currentPlan?.plan_id > 1) && currentPlan?.plan_id != 5 && (
         <Space className={'mb-3'}>
           {currentPlan.status !== 2 ? (
             <Button
@@ -290,9 +290,11 @@ function PlansComponent() {
             </Button>
           )}
 
-          <Button type='primary' onClick={updatePaymentMethod}>
-            Change Payment Method
-          </Button>
+          {store?.plan_level != 'Sandbox Store' && (
+            <Button type='primary' onClick={updatePaymentMethod}>
+              Change Payment Method
+            </Button>
+          )}
 
           <Modal
             title='Cancel Subscription'
