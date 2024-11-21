@@ -709,7 +709,7 @@ function OrderSettingsComponent(props) {
 											<div>
 												<h3>Items</h3>
 												<ul>
-													{widget?.items.map(item => (
+													{widget?.items?.map(item => (
 														<li>{item}</li>
 													))}
 												</ul>
