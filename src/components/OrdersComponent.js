@@ -705,18 +705,20 @@ function OrderSettingsComponent(props) {
 												</ul>
 											</div>
 										</Col>
-										<Col span={12}>
-											<div>
-												<h3>Items</h3>
-												<ul>
-													{widget?.items?.map(item => (
-														<li>{item}</li>
-													))}
-												</ul>
-											</div>
-										</Col>
+										{widget?.items && widget?.items?.length > 0 ? (
+											<Col span={12}>
+												<div>
+													<h3>Items</h3>
+													<ul>
+														{widget?.items?.map(item => (
+															<li>{item}</li>
+														))}
+													</ul>
+												</div>
+												</Col>
+										) : null}
 										{widget?.freeShippingItems && widget?.freeShippingItems?.length > 0 ? (
-											<Col span={24}>
+											<Col span={12}>
 												<div>
 													<h3>Flat Rate Shipping Items</h3>
 													<ul>
