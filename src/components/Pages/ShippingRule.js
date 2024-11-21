@@ -72,6 +72,7 @@ const initialState = {
   quantity_to: '',
   max_items: '',
   max_package_weight: '',
+  filter_flat_shipping_rate: '',
 };
 
 function ShippingRulesComponent() {
@@ -85,6 +86,7 @@ function ShippingRulesComponent() {
   const [isFilterWeight, setIsFilterWeight] = useState(false);
   const [isFilterPrice, setIsFilterPrice] = useState(false);
   const [isFilterQuantity, setIsFilterQuantity] = useState(false);
+  const [isFilterFlatPrice, setIsFilterFlatPrice] = useState(false);
   const [ruleType, setRuleType] = useState(1);
   const [applyRuleTo, setApplyRuleTo] = useState(1);
   const [applyTo, setApplyTo] = useState(1);
@@ -123,7 +125,7 @@ function ShippingRulesComponent() {
       dispatch(getShippingRules(token));
     }
 
-    if (ruleType == 3 || ruleType == 4) {
+    if (ruleType == 3 || ruleType == 4 || ruleType == 10) {
       dispatch(getStatesProvinces(countryCode, token));
     }
     
@@ -369,6 +371,7 @@ function ShippingRulesComponent() {
     setIsFilterWeight(text?.isFilterWeight);
     setIsFilterPrice(text?.isFilterPrice);
     setIsFilterQuantity(text?.isFilterQuantity);
+    setIsFilterFlatPrice(text?.isFilterFlatPrice);
     setApplyRuleTo(text?.apply_rule_to ?? 1);
     editLocation(text);
   };
@@ -383,6 +386,13 @@ function ShippingRulesComponent() {
           isFilterWeight: isFilterWeight,
           isFilterPrice: isFilterPrice,
           isFilterQuantity: isFilterQuantity,
+        };
+      }
+
+      if (values['rule_type'] == 10 ) {
+        values = {
+          ...values,
+          isFilterFlatPrice : isFilterFlatPrice,
         };
       }
 
@@ -451,6 +461,7 @@ function ShippingRulesComponent() {
       isFilterPrice,
       isFilterQuantity,
       applyTo,
+      isFilterFlatPrice,
     ]
   );
 
@@ -485,7 +496,7 @@ function ShippingRulesComponent() {
                   : null
                 )
               )
-          ) : record?.rule_type == 3 ? (
+          ) : record?.rule_type == 3 || record?.rule_type == 10 ? (
             <>
               {record.id == recordId ? (
                 <>
@@ -682,6 +693,7 @@ function ShippingRulesComponent() {
                   setIsFilterWeight(false);
                   setIsFilterPrice(false);
                   setIsFilterQuantity(false);
+                  setIsFilterFlatPrice(false)
                   setCarrierSlug();
                   setCarrierId();
                   setSelectedBrands([]);
@@ -810,6 +822,7 @@ function ShippingRulesComponent() {
                       <Option value={'7'}>Hide Delivery Estimates</Option>
                       <Option value={'8'}>Surcharge</Option>
                       <Option value={'9'}>Large Cart Settings</Option>
+                      <Option value={'10'}>Flat Shipping Rate</Option>
                     </Select>
                   </Form.Item>
                 </div>
@@ -866,7 +879,7 @@ function ShippingRulesComponent() {
             {(ruleType == 1 ||
               ruleType == 3 ||
               ruleType == 4 ||
-              ruleType == 5 || ruleType == 7 || 
+              ruleType == 5 || ruleType == 7 || ruleType == 10 || 
               ( applyTo == 2 && (ruleType == 8 || ruleType == 6))) && (
               <>
                 {ruleType != 5 && ruleType != 6 && ruleType != 7 && ruleType !=8 && (
@@ -879,7 +892,7 @@ function ShippingRulesComponent() {
                       lg={24}
                       xl={24}
                     >
-					<div id='country_dropdown'>
+					          <div id='country_dropdown'>
                       <Form.Item
                         className={'mb-2'}
                         label='Countries'
@@ -916,7 +929,7 @@ function ShippingRulesComponent() {
                     />
                   </>
                 )}
-                {(ruleType == 3 || ruleType == 4) && (
+                {(ruleType == 3 || ruleType == 4 || ruleType == 10) && (
                   <Row gutter={30}>
                     <Col
                       className='gutter-row'
@@ -926,7 +939,7 @@ function ShippingRulesComponent() {
                       lg={24}
                       xl={24}
                     >
-					<div id='state_dropdown'>
+					          <div id='state_dropdown'>
                       <Form.Item
                         className={'mb-0'}
                         label='States/Provinces'
@@ -963,6 +976,70 @@ function ShippingRulesComponent() {
                         </div>
                       </Col>
                     </Row>
+                  )}
+                  {ruleType == 10 && (
+                    <>
+                    <Row gutter={30}>
+                      <Col
+                        className='gutter-row'
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                      >
+                        <Form.Item
+                          className={'mb-3'}
+                          label='Flat Shipping Rate'
+                          name='filter_flat_shipping_rate'
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Flat Shipping Rate is required',
+                            },
+                            {
+                              pattern: /^(\d{0,15}(\.\d{0,2})?)?$/,
+                              message: 'Please enter up to 15 numbers with 2 decimal places.',
+                            },
+                          ]}
+                        >
+                          <Input
+                            type='number'
+                            onKeyDown={blockInvalidChar}
+                            step='0.01'
+                            min={0}
+                            placeholder='Enter flat shipping rate'
+                          /> 
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        className='gutter-row'
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                      >
+                        <Form.Item
+                          className={'mt-4'}
+                          rules={[
+                            {
+                              required: false,
+                              message: 'Multiply flat shipping rate',
+                            },
+                          ]}
+                        >
+                          <Checkbox
+                            name='is_flate_rate_multiply'
+                            checked={isFilterFlatPrice}
+                            onChange={(e) => setIsFilterFlatPrice(e.target.checked)}
+                          >
+                            Multiply flat shipping rate by Cart quantity
+                          </Checkbox>
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    </>
                   )}
                   {ruleType == 4 && (
                     <Row gutter={30}>

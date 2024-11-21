@@ -715,6 +715,18 @@ function OrderSettingsComponent(props) {
 												</ul>
 											</div>
 										</Col>
+										{widget?.freeShippingItems && widget?.freeShippingItems?.length > 0 ? (
+											<Col span={24}>
+												<div>
+													<h3>Flat Rate Shipping Items</h3>
+													<ul>
+														{widget?.freeShippingItems?.map(item => (
+															<li>{item}</li>
+														))}
+													</ul>
+												</div>
+											</Col>
+										) : null}
 										<Col span={24}>{widgetData(widget)}</Col>
 										<Col span={24}>
 											{widgetData(widget, true)}
