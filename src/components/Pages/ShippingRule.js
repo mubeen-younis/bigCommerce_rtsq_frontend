@@ -247,6 +247,16 @@ function ShippingRulesComponent() {
     setSelectedProvinces(selectedValues);
   };
 
+  const handleChangeCountry = (value) => {
+    form.resetFields(['filter_state_province']);
+    setCountryCode(value)
+  };
+
+  const handleChangeApplyRuleTo = (value) => {
+    form.resetFields(['filter_categories', 'filter_brands', 'filter_products']);
+    setApplyRuleTo(value)
+  };
+
   const handleProviderServices = (slug) => {
     if (slug.includes('ltl')) {
       setIsLTL(true)
@@ -508,6 +518,14 @@ function ShippingRulesComponent() {
                       </>
                     );
                   })}
+                  {record?.filter_state_province?.length > 5 ? (
+                    <a
+                      className='btn mt-2'
+                      onClick={() => showMoreItems(null)}
+                    >
+                      show less
+                    </a>
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -544,6 +562,14 @@ function ShippingRulesComponent() {
                       </>
                     );
                   })}
+                  {record?.filter_postal_code?.length > 5 ? (
+                    <a
+                      className='btn mt-2'
+                      onClick={() => showMoreItems(null)}
+                    >
+                      show less
+                    </a>
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -589,6 +615,14 @@ function ShippingRulesComponent() {
                       </>
                     );
                   })}
+                  {record?.warehouses?.length > 5 ? (
+                    <a
+                      className='btn mt-2'
+                      onClick={() => showMoreItems(null)}
+                    >
+                      show less
+                    </a>
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -907,7 +941,7 @@ function ShippingRulesComponent() {
                             <Select
                               placeholder='Select countries'
                               value={this?.filter_country || undefined}
-                              onChange={(value) => setCountryCode(value)}
+                              onChange={(value) => handleChangeCountry(value)}
                               getPopupContainer={() =>
                                 document.getElementById('country_dropdown')
                               }
@@ -1163,7 +1197,7 @@ function ShippingRulesComponent() {
                         >
                           <Select
                             placeholder='Apply rule to'
-                            onChange={(value) => setApplyRuleTo(value)}
+                            onChange={(value) => handleChangeApplyRuleTo(value)}
                             getPopupContainer={() =>
                               document.getElementById('apply_rule_to')
                             }
