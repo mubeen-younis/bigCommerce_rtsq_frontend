@@ -254,7 +254,9 @@ function ShippingRulesComponent() {
     setCarrierSlug(slug);
     setSelectedServices([]);
     form.resetFields(['filter_services']);
-    getCarrierServices(slug)
+    if(ruleType == 6){
+      getCarrierServices(slug)
+    }
   };
 
   const getCarrierServices = (slug) => {
@@ -856,6 +858,16 @@ function ShippingRulesComponent() {
                   </>
                 )}
 
+                {(ruleType == 2) && (
+                  <>
+                    <Radio 
+                     checked={applyTo == 2}
+                     value='2'  
+                     onChange= {(value) => handleChangeRule(value)}
+                    >Product/Category/Brand</Radio>
+                  </>
+                )}
+
                 </Form.Item>
               </Col>
             </Row>
@@ -867,9 +879,9 @@ function ShippingRulesComponent() {
               ruleType == 3 ||
               ruleType == 4 ||
               ruleType == 5 || ruleType == 7 || 
-              ( applyTo == 2 && (ruleType == 8 || ruleType == 6))) && (
+              ( applyTo == 2 && (ruleType == 8 || ruleType == 6 || ruleType == 2))) && (
               <>
-                {ruleType != 5 && ruleType != 6 && ruleType != 7 && ruleType !=8 && (
+                {ruleType != 5 && ruleType != 6 && ruleType != 7 && ruleType !=8 && ruleType !=2 && (
                   <Row gutter={30}>
                     <Col
                       className='gutter-row'
@@ -907,7 +919,7 @@ function ShippingRulesComponent() {
                     </Col>
                   </Row>
                 )}
-                {ruleType == 7 && (
+                {ruleType == 7 || ruleType == 2 && (
                   <>
                   <ProviderComponent
                      installedCarriers={installedCarriers}
@@ -1256,7 +1268,7 @@ function ShippingRulesComponent() {
                 </>
               )}
 
-            {(ruleType == 2 || ruleType == 6 || ruleType == 8) && (
+            {(ruleType == 2 && applyTo == 1 || ruleType == 6 || ruleType == 8) && (
               <>
                 {ruleType == 2  && (
                   <>
