@@ -884,6 +884,15 @@ function ShippingRulesComponent() {
                 >
                 {ruleType == 6 ? (
                   <></>
+                ) : ruleType == 10 ? (
+                  <>
+                    <Radio 
+                      value='0'  
+                      defaultChecked
+                      onChange= {(value) => handleChangeRule(value)}>
+                      Shipment
+                    </Radio>
+                  </>
                 ) : (
                   <Radio checked={applyTo == 1} value={1} onChange={handleChangeRule}>Cart</Radio>
                 )}
