@@ -506,7 +506,7 @@ function ShippingRulesComponent() {
                   : null
                 )
               )
-          ) : record?.rule_type == 3 || record?.rule_type == 10 ? (
+          ) : record?.rule_type == 3 ? (
             <>
               {record.id == recordId ? (
                 <>
@@ -989,7 +989,7 @@ function ShippingRulesComponent() {
                         name='filter_state_province'
                         rules={[
                           {
-                            required: true,
+                            required: ruleType != 10,
                             message: 'States/Provinces are required',
                           },
                         ]}
