@@ -30,8 +30,6 @@ import {
   deleteShippingRule,
   getStatesProvinces,
   getCarrServices,
-  getCategories,
-  getBrands,
 } from '../../Actions/ShippingRulesActions';
 import addKeysToList from './../../Utilities/addKey';
 import types from '../../Stores/types';
@@ -74,6 +72,7 @@ const initialState = {
   quantity_to: '',
   max_items: '',
   max_package_weight: '',
+  filter_flat_shipping_rate: '',
 };
 
 function ShippingRulesComponent() {
@@ -87,6 +86,7 @@ function ShippingRulesComponent() {
   const [isFilterWeight, setIsFilterWeight] = useState(false);
   const [isFilterPrice, setIsFilterPrice] = useState(false);
   const [isFilterQuantity, setIsFilterQuantity] = useState(false);
+  const [isFilterFlatPrice, setIsFilterFlatPrice] = useState(false);
   const [ruleType, setRuleType] = useState(1);
   const [applyRuleTo, setApplyRuleTo] = useState(1);
   const [applyTo, setApplyTo] = useState(1);
@@ -125,17 +125,10 @@ function ShippingRulesComponent() {
       dispatch(getShippingRules(token));
     }
 
-    if (ruleType == 3 || ruleType == 4) {
+    if (ruleType == 3 || ruleType == 4 || ruleType == 10) {
       dispatch(getStatesProvinces(countryCode, token));
     }
-
-    if (!storeCategories) {
-      dispatch(getCategories(token));
-    }
-
-    if (!storeBrands) {
-      dispatch(getBrands(token));
-    }
+    
   }, [dispatch, shippingRules, token, countryCode, ruleType]);
 
   useEffect(() => {
@@ -254,6 +247,16 @@ function ShippingRulesComponent() {
     setSelectedProvinces(selectedValues);
   };
 
+  const handleChangeCountry = (value) => {
+    form.resetFields(['filter_state_province']);
+    setCountryCode(value)
+  };
+
+  const handleChangeApplyRuleTo = (value) => {
+    form.resetFields(['filter_categories', 'filter_brands', 'filter_products']);
+    setApplyRuleTo(value)
+  };
+
   const handleProviderServices = (slug) => {
     if (slug.includes('ltl')) {
       setIsLTL(true)
@@ -356,6 +359,9 @@ function ShippingRulesComponent() {
     setCountryCode(text?.filter_country);
     if(text?.rule_type == 6){
       handleProviderServices(text?.filter_provider)
+      const applyTo = text?.apply_to == 1 ? setApplyTo(0) : setApplyTo(text?.apply_to);
+    } else{
+      setApplyTo(text?.apply_to ?? 1)
     }
     if (text?.filter_country == undefined || text?.filter_country == '') {
       setCountryCode('US');
@@ -375,8 +381,8 @@ function ShippingRulesComponent() {
     setIsFilterWeight(text?.isFilterWeight);
     setIsFilterPrice(text?.isFilterPrice);
     setIsFilterQuantity(text?.isFilterQuantity);
+    setIsFilterFlatPrice(text?.isFilterFlatPrice);
     setApplyRuleTo(text?.apply_rule_to ?? 1);
-    setApplyTo(text?.apply_to ?? 1)
     editLocation(text);
   };
   const helptext = ruleType == 6 ? 'Shipment' : 'Cart';
@@ -390,6 +396,13 @@ function ShippingRulesComponent() {
           isFilterWeight: isFilterWeight,
           isFilterPrice: isFilterPrice,
           isFilterQuantity: isFilterQuantity,
+        };
+      }
+
+      if (values['rule_type'] == 10 ) {
+        values = {
+          ...values,
+          isFilterFlatPrice : isFilterFlatPrice,
         };
       }
 
@@ -458,6 +471,7 @@ function ShippingRulesComponent() {
       isFilterPrice,
       isFilterQuantity,
       applyTo,
+      isFilterFlatPrice,
     ]
   );
 
@@ -504,6 +518,14 @@ function ShippingRulesComponent() {
                       </>
                     );
                   })}
+                  {record?.filter_state_province?.length > 5 ? (
+                    <a
+                      className='btn mt-2'
+                      onClick={() => showMoreItems(null)}
+                    >
+                      show less
+                    </a>
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -540,6 +562,14 @@ function ShippingRulesComponent() {
                       </>
                     );
                   })}
+                  {record?.filter_postal_code?.length > 5 ? (
+                    <a
+                      className='btn mt-2'
+                      onClick={() => showMoreItems(null)}
+                    >
+                      show less
+                    </a>
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -585,6 +615,14 @@ function ShippingRulesComponent() {
                       </>
                     );
                   })}
+                  {record?.warehouses?.length > 5 ? (
+                    <a
+                      className='btn mt-2'
+                      onClick={() => showMoreItems(null)}
+                    >
+                      show less
+                    </a>
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -689,6 +727,7 @@ function ShippingRulesComponent() {
                   setIsFilterWeight(false);
                   setIsFilterPrice(false);
                   setIsFilterQuantity(false);
+                  setIsFilterFlatPrice(false)
                   setCarrierSlug();
                   setCarrierId();
                   setSelectedBrands([]);
@@ -773,7 +812,7 @@ function ShippingRulesComponent() {
                     },
                   ]}
                 >
-                  <Input placeholder='Rule name' />
+                  <Input placeholder='Rule name' maxLength={50} />
                 </Form.Item>
               </Col>
             </Row>
@@ -800,7 +839,10 @@ function ShippingRulesComponent() {
                   >
                     <Select
                       placeholder='Type'
-                      onChange={(value) => setRuleType(value)}
+                      onChange={(value) => {
+                        setRuleType(value);
+                        value = value == 6 ? setApplyTo(0) : setApplyTo(1);
+                      }}                    
                       getPopupContainer={() =>
                         document.getElementById('type_dropdown')
                       }
@@ -814,6 +856,7 @@ function ShippingRulesComponent() {
                       <Option value={'7'}>Hide Delivery Estimates</Option>
                       <Option value={'8'}>Surcharge</Option>
                       <Option value={'9'}>Large Cart Settings</Option>
+                      <Option value={'10'}>Flat Shipping Rate</Option>
                     </Select>
                   </Form.Item>
                 </div>
@@ -840,12 +883,21 @@ function ShippingRulesComponent() {
                   ]}
                 >
                 {ruleType == 6 ? (
-                  <Radio checked={applyTo == 1}>Shipment</Radio>
+                  <></>
+                ) : ruleType == 10 ? (
+                  <>
+                    <Radio 
+                      value='0'  
+                      defaultChecked
+                      onChange= {(value) => handleChangeRule(value)}>
+                      Shipment
+                    </Radio>
+                  </>
                 ) : (
                   <Radio checked={applyTo == 1} value={1} onChange={handleChangeRule}>Cart</Radio>
                 )}
 
-                {ruleType == 8 && (
+                {(ruleType == 8 || ruleType == 6) && (
                   <>
                     <Radio 
                     checked={applyTo == 0} 
@@ -870,8 +922,8 @@ function ShippingRulesComponent() {
             {(ruleType == 1 ||
               ruleType == 3 ||
               ruleType == 4 ||
-              ruleType == 5 || ruleType == 7 || 
-              ( applyTo == 2 && ruleType == 8)) && (
+              ruleType == 5 || ruleType == 7 || ruleType == 10 || 
+              ( applyTo == 2 && (ruleType == 8 || ruleType == 6))) && (
               <>
                 {ruleType != 5 && ruleType != 6 && ruleType != 7 && ruleType !=8 && (
                   <Row gutter={30}>
@@ -883,7 +935,7 @@ function ShippingRulesComponent() {
                       lg={24}
                       xl={24}
                     >
-					<div id='country_dropdown'>
+					          <div id='country_dropdown'>
                       <Form.Item
                         className={'mb-2'}
                         label='Countries'
@@ -898,7 +950,7 @@ function ShippingRulesComponent() {
                             <Select
                               placeholder='Select countries'
                               value={this?.filter_country || undefined}
-                              onChange={(value) => setCountryCode(value)}
+                              onChange={(value) => handleChangeCountry(value)}
                               getPopupContainer={() =>
                                 document.getElementById('country_dropdown')
                               }
@@ -920,7 +972,7 @@ function ShippingRulesComponent() {
                     />
                   </>
                 )}
-                {(ruleType == 3 || ruleType == 4) && (
+                {(ruleType == 3 || ruleType == 4 || ruleType == 10) && (
                   <Row gutter={30}>
                     <Col
                       className='gutter-row'
@@ -930,14 +982,14 @@ function ShippingRulesComponent() {
                       lg={24}
                       xl={24}
                     >
-					<div id='state_dropdown'>
+					          <div id='state_dropdown'>
                       <Form.Item
                         className={'mb-0'}
                         label='States/Provinces'
                         name='filter_state_province'
                         rules={[
                           {
-                            required: true,
+                            required: ruleType != 10,
                             message: 'States/Provinces are required',
                           },
                         ]}
@@ -967,6 +1019,70 @@ function ShippingRulesComponent() {
                         </div>
                       </Col>
                     </Row>
+                  )}
+                  {ruleType == 10 && (
+                    <>
+                    <Row gutter={30}>
+                      <Col
+                        className='gutter-row'
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                      >
+                        <Form.Item
+                          className={'mb-3'}
+                          label='Flat Shipping Rate'
+                          name='filter_flat_shipping_rate'
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Flat Shipping Rate is required',
+                            },
+                            {
+                              pattern: /^(\d{0,15}(\.\d{0,2})?)?$/,
+                              message: 'Please enter up to 15 numbers with 2 decimal places.',
+                            },
+                          ]}
+                        >
+                          <Input
+                            type='number'
+                            onKeyDown={blockInvalidChar}
+                            step='0.01'
+                            min={0}
+                            placeholder='Enter flat shipping rate'
+                          /> 
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        className='gutter-row'
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                      >
+                        <Form.Item
+                          className={'mt-4'}
+                          rules={[
+                            {
+                              required: false,
+                              message: 'Multiply flat shipping rate',
+                            },
+                          ]}
+                        >
+                          <Checkbox
+                            name='is_flate_rate_multiply'
+                            checked={isFilterFlatPrice}
+                            onChange={(e) => setIsFilterFlatPrice(e.target.checked)}
+                          >
+                            Multiply flat shipping rate by Cart quantity
+                          </Checkbox>
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    </>
                   )}
                   {ruleType == 4 && (
                     <Row gutter={30}>
@@ -1090,7 +1206,7 @@ function ShippingRulesComponent() {
                         >
                           <Select
                             placeholder='Apply rule to'
-                            onChange={(value) => setApplyRuleTo(value)}
+                            onChange={(value) => handleChangeApplyRuleTo(value)}
                             getPopupContainer={() =>
                               document.getElementById('apply_rule_to')
                             }
@@ -1427,7 +1543,7 @@ function ShippingRulesComponent() {
                                   onChange={handleChangeServices}
                                   notFoundContent={
                                     <span>
-                                      <Spin size='small' />
+                                      No service enabled. Please enable in quote settings.
                                     </span>
                                   }
                                   filterOption={filterServices}

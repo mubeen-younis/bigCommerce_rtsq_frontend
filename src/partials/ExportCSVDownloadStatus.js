@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCSVDownloadLink } from '../Actions/ImportCsv'
 import { CloseOutlined } from '@ant-design/icons';
@@ -12,6 +12,12 @@ function ExportCSVDownloadStatus() {
 		setIsVisible(!isVisible);
 		dispatch(getCSVDownloadLink(token, isVisible))
 	};
+
+	useEffect(() => {
+		if (!exportCSVDownloadLink) {
+			dispatch(getCSVDownloadLink(token))
+		}
+	  }, [dispatch, exportCSVDownloadLink])
 
 	const containerStyle = {
 		display: isVisible ? 'block' : 'none',

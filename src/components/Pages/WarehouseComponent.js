@@ -37,6 +37,9 @@ import AccountNumber from '../AccountNumber'
 const { Title } = Typography
 const initialState = {
   enable_instore: false,
+  enable_instore_distance: false,
+  enable_instore_address: false,
+  enable_instore_phone: false,
   enable_ld: false,
   instore_zipcodes: [],
   ld_zipcodes: [],
@@ -77,6 +80,8 @@ function WarehouseComponent(props) {
   const [purolatorEnabled, setPurolatorEnabled] = useState(false)
   const [carrIds, setCarrIds] = useState({xpo_id:'',odfl_id:'',sefl_id:'',fedex_id:'', saia_id:'',purolator_id:''})
   const dispatch = useDispatch()
+  const [inputValue, setInputValue] = useState('');
+  const [labelLimit, setLabelLimit] = useState(100);
   const {
     postData,
     getGoogleResponse,
@@ -177,6 +182,10 @@ useEffect(() => {
         error = true  
       }
 		}
+    if(inputValue.length > labelLimit){
+      error = true
+      errormsg = 'Checkout description exceeds the character limit.'
+    }
     if (data?.enable_ld === true) {
       if (
         (data?.ld_miles === undefined || data?.ld_miles === '') &&
@@ -322,8 +331,34 @@ useEffect(() => {
     setVisibleWarehouse(true)
     setZipAdded(true)
     setZipCode(data.zip_code)
+    setInputValue(JSON.parse(data?.additionals)?.instore_pickup_data['checkout_description'])
+    updateCounter(data)
 
     getWarehouse(data.id, setLocationDetail, setVisibleWarehouse, props.token)
+  }
+
+  const updateCounter = (data) => {
+    let limit = 100
+    let isUpdateCount = false;
+    if(JSON.parse(data?.additionals)?.enable_instore_distance){
+      limit = limit - 16
+      isUpdateCount = true;
+      setLabelLimit(limit)
+    }
+    if(JSON.parse(data?.additionals)?.enable_instore_address){
+      limit = limit - 50
+      isUpdateCount = true;
+      setLabelLimit(limit)
+    }
+    if(JSON.parse(data?.additionals)?.enable_instore_phone){
+      limit = limit - 19
+      isUpdateCount = true;
+      setLabelLimit(limit)
+    }
+
+    if(!isUpdateCount){
+      setLabelLimit(limit)
+    }
   }
 
   const changeValue = (e) => {
@@ -331,6 +366,27 @@ useEffect(() => {
       ...locationDetail,
       [e.target.name]: e.target.value,
     })
+  }
+
+  const changeLabelLimit = (e) => {
+
+    if(e.target.name == "enable_instore_distance" && e.target.checked){
+      setLabelLimit(labelLimit - 16)
+    } else if(e.target.name == "enable_instore_distance" && !(e.target.checked)){
+      setLabelLimit(labelLimit + 16)
+    }
+
+    if(e.target.name == "enable_instore_address" && e.target.checked){
+      setLabelLimit(labelLimit - 50)
+    } else if(e.target.name == "enable_instore_address" && !(e.target.checked)){
+      setLabelLimit(labelLimit + 50)
+    }
+
+    if(e.target.name == "enable_instore_phone" && e.target.checked){
+      setLabelLimit(labelLimit - 19)
+    } else if(e.target.name == "enable_instore_phone" && !(e.target.checked)){
+      setLabelLimit(labelLimit + 19)
+    }
   }
 
   const handleChange = (name, tags) => {
@@ -896,7 +952,7 @@ useEffect(() => {
                   </Col>
                 </Row>
 
-                <Row gutter={30} align='middle' className={'mb-2'}>
+                <Row gutter={30} align='middle' className={'mb-1'}>
                   <Col
                     className='gutter-row'
                     xs={24}
@@ -953,6 +1009,118 @@ useEffect(() => {
                     </Form.Item>
                   </Col>
                 </Row>
+                <Row gutter={30} align='middle' className={'mb-1'}>
+                  <Col
+                    className='gutter-row'
+                    xs={24}
+                    sm={8}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                  >
+                    <label className={'text-gray'}>
+                      Show distance between pick up location and receiver address
+                    </label>
+                  </Col>
+                  <Col
+                    className='gutter-row'
+                    xs={24}
+                    sm={16}
+                    md={16}
+                    lg={16}
+                    xl={16}
+                  >
+                    <Form.Item name='enable_instore_distance' className={'mb-0'}>
+                      <Checkbox
+                        name='enable_instore_distance'
+                        checked={locationDetail?.enable_instore_distance}
+                        onChange={(e) => {
+                          setLocationDetail({
+                            ...locationDetail,
+                            enable_instore_distance: !locationDetail?.enable_instore_distance,
+                          })
+                          changeLabelLimit(e)
+                        }
+                          
+                        }
+                      ></Checkbox>
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={30} align='middle' className={'mb-1'}>
+                  <Col
+                    className='gutter-row'
+                    xs={24}
+                    sm={8}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                  >
+                    <label className={'text-gray'}>
+                      Show pick up location address
+                    </label>
+                  </Col>
+                  <Col
+                    className='gutter-row'
+                    xs={24}
+                    sm={16}
+                    md={16}
+                    lg={16}
+                    xl={16}
+                  >
+                    <Form.Item name='enable_instore_address' className={'mb-0'}>
+                      <Checkbox
+                        name='enable_instore_address'
+                        checked={locationDetail?.enable_instore_address}
+                        onChange={(e) => {
+                          setLocationDetail({
+                            ...locationDetail,
+                            enable_instore_address: !locationDetail?.enable_instore_address,
+                          })
+                          changeLabelLimit(e)
+                        }
+                        }
+                      ></Checkbox>
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={30} align='middle' className={'mb-1'}>
+                  <Col
+                    className='gutter-row'
+                    xs={24}
+                    sm={8}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                  >
+                    <label className={'text-gray'}>
+                      Show pick up location phone number
+                    </label>
+                  </Col>
+                  <Col
+                    className='gutter-row'
+                    xs={24}
+                    sm={16}
+                    md={16}
+                    lg={16}
+                    xl={16}
+                  >
+                    <Form.Item name='enable_instore_phone' className={'mb-0'}>
+                      <Checkbox
+                        name='enable_instore_phone'
+                        checked={locationDetail?.enable_instore_phone}
+                        onChange={(e) => {
+                          setLocationDetail({
+                            ...locationDetail,
+                            enable_instore_phone: !locationDetail?.enable_instore_phone,
+                          })
+                          changeLabelLimit(e)
+                        }
+                        }
+                      ></Checkbox>
+                    </Form.Item>
+                  </Col>
+                </Row>
                 <Row gutter={30} align='middle' className={'mb-2'}>
                   <Col
                     className='gutter-row'
@@ -984,11 +1152,17 @@ useEffect(() => {
                       <Input
                         name='instock_description'
                         value={locationDetail.instock_description}
-                        placeholder='In-store pick up'
-                        onChange={(e) =>
-                          e.target.value.length < 21 && changeValue(e)
+                        placeholder='Instore Pick Up'
+                        maxLength={labelLimit}
+                        onChange={(e) => {
+                        // Allow deleting characters even if input exceeds labelLimit
+                          if (e.target.value.length <= labelLimit || e.target.value.length < locationDetail.instock_description.length) {
+                            changeValue(e); // Call the function to update your form state
+                            setInputValue(e.target.value); // Update state for the input length display
+                          }
                         }
-                        //disabled={plansInfo && plansInfo.plan_type > 2 ? false : true}
+                        }
+                        addonAfter={inputValue ? <span>{`${inputValue?.length}/${labelLimit}`}</span> : <span>{`${0}/${labelLimit}`}</span>}
                       />
                     </Form.Item>
                   </Col>
@@ -1596,6 +1770,8 @@ useEffect(() => {
                   setLocationId(null)
                   setLocationDetail(initialState)
                   openLocationModal(1)
+                  setInputValue('')
+                  setLabelLimit(100)
                 }}
               >
                 Add
@@ -1629,6 +1805,8 @@ useEffect(() => {
                   setLocationId(null)
                   setLocationDetail(initialState)
                   openLocationModal(2)
+                  setInputValue('')
+                  setLabelLimit(100)
                 }}
               >
                 Add
