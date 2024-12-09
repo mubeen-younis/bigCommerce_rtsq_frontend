@@ -3,7 +3,7 @@ import { Col, Form, Input, Row, Select, Skeleton } from 'antd'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
 import { getQuoteSettings } from '../../../../Actions/Settings'
-import { validateHandlingFeeMarkup } from '../../../../Utilities/numberValidation'
+import { checkDigitsAfterDecimal, checkValueLimit, validateHandlingFeeMarkup } from '../../../../Utilities/numberValidation'
 import GlobalTranz from './QuoteSettings/GlobalTranz'
 import Cerasis from './QuoteSettings/Cerasis'
 import HandlingUnit from '../../../HandlingUnit'
@@ -120,6 +120,20 @@ function QuoteSettingsComponentWwe(props) {
         data?.handling_free_markup,
         'Handling fee'
       )
+    }
+
+    if (carrier_type === 'CRS' && (data?.offer_limited_access_delivery === true || data?.always_limited_access_delivery === true)) {
+      console.log(data?.limited_access_fee)
+      if (data?.limited_access_fee == '' || data?.limited_access_fee == null || data?.limited_access_fee === undefined) {
+        errormsg =
+          'Limited access delivery is enabled you must enter limited access delivery fee.'
+      } else if (checkDigitsAfterDecimal(data?.limited_access_fee, 2)) {
+        errormsg =
+          'Limited access delivery fee only 2 digits are allowed after decimal point.'
+      } else if (checkValueLimit(data?.limited_access_fee, 7)) {
+        errormsg =
+          'Limited access delivery fee only 7 digits are allowed.'
+      }
     }
 
     if (errormsg === '') {
