@@ -192,13 +192,15 @@ function QuoteSettingsComponentWwe(props) {
 				  quoteSettingsState={quoteSettingsState}
 				  setQuoteSettingsState={setQuoteSettingsState}
 			  />
-        {/* Below committed code will use for future use */}
-        {/* <LimitedAccessSettings
+
+        <LimitedAccessSettings
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}
           islimitedAccessFee = {true}
         />
-
+        
+        {/* Below committed code will use for future use */}
+        {/* 
         <InsideDeliverySettings
           quoteSettingsState={quoteSettingsState}
           setQuoteSettingsState={setQuoteSettingsState}

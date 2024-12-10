@@ -17,6 +17,7 @@ import SaveButton from '../../../SaveButton'
 import WeightThreshold from '../../../WeightThreshold'
 import ErrorManagment from '../../../ErrorManagment'
 import NotifyBeforeDelivery from '../../../NotifyBeforeDelivery'
+import LimitedAccessSettings from '../../../LimitedAccessSettings'
 
 const initialState = {
   label_as: '',
@@ -222,6 +223,11 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 			  	setQuoteSettingsState={setQuoteSettingsState}
 		  	/>
+
+        <LimitedAccessSettings
+			    quoteSettingsState={quoteSettingsState}
+      		setQuoteSettingsState={setQuoteSettingsState}
+        />
 
         <HoldAtTerminal
           quoteSettingsState={quoteSettingsState}
