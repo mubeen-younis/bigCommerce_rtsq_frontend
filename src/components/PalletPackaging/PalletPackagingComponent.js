@@ -17,7 +17,7 @@ function AutoDetectResidentialComponent(props) {
 	const [cancelSubsriptionVisible, SetCancelSubsriptionVisible] = useState(false)
 	const [newPlan, SetNewPlan] = useState({})
 	const dispatch = useDispatch()
-	const { token, palletPlans } = useSelector(state => state)
+	const { token, palletPlans, store } = useSelector(state => state)
 
 	useEffect(() => {
 		if (!palletPlans) dispatch(getPalletsPlans(token))
@@ -29,7 +29,7 @@ function AutoDetectResidentialComponent(props) {
 
 	const chanePlanAction = useCallback(
 		plan_value => {
-			if (plan_value === 'disable' || +plan_value === 1) {
+			if (plan_value === 'disable' || plan_value === 15 || plan_value === 23) {
 				dispatch(changePlan(token, plan_value, SetCancelSubsriptionVisible))
 			} else {
 				const plan = palletPlans
@@ -131,6 +131,11 @@ function AutoDetectResidentialComponent(props) {
 											?.package_to_be_charge_status === 'Trial'
 									? '100/15 days ($0)'
 									: props?.palletPlans?.currentPackage
+											?.package_to_be_charge_status === 'Development Plan'
+									? props?.palletPlans?.currentPackage
+											?.total_hits  + '/' + props?.palletPlans?.currentPackage
+											?.current_package_period + ' Development Plan ($0)'
+									: props?.palletPlans?.currentPackage
 											?.package_to_be_charge_status
 							}
 							style={{ width: '100%', marginBottom: '20px' }}
@@ -138,7 +143,8 @@ function AutoDetectResidentialComponent(props) {
 							name='plan_value'>
 							{props?.palletPlans?.currentPackage !== null &&
 							props?.palletPlans?.currentPackage
-								?.current_package_name !== 'Trial' &&
+								?.current_package_name !== 'Trial' && props?.palletPlans?.currentPackage
+								?.current_package_name !== 'Development Plan' &&
 							props?.palletPlans?.currentPackage?.status !== 0 ? (
 								<Option key='disable' value='disable'>
 									Disable
@@ -147,21 +153,34 @@ function AutoDetectResidentialComponent(props) {
 							{props?.palletPlans?.allPalletPackages?.length > 0
 								? props?.palletPlans?.allPalletPackages?.map(
 										plan => (
-											<Option key={plan.id} value={plan.id}>
+											<>
+											
 												{plan.cost !== 0
-													? `${Intl.NumberFormat(
-															'en-US'
-													  ).format(plan.htis)}/mo ($${
+													? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store'}>
+														{Intl.NumberFormat('en-US').format(
+															plan.htis)}/mo (${
 															plan.cost
-													  })`
-													: `${Intl.NumberFormat(
-															'en-US'
-													  ).format(
-															plan.htis
-													  )}/15 days ($${plan.cost})`}
-											</Option>
+													  	})
+													  </Option>
+													: (plan.name == 'Development Plan' && store.plan_level == 'Sandbox Store')
+                          							? <Option key={plan.id} value={plan.id}>
+                            							{Intl.NumberFormat('en-US').format(
+                              								plan.htis)}/5 years {plan.name} (${
+                              								plan.cost
+                            							})
+                            							</Option>
+                          							: (plan.name == 'Trial' && store.plan_level != 'Sandbox Store')
+                          							? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store'}>
+                              							{Intl.NumberFormat('en-US').format(
+															plan.htis)}/15 days (${plan.cost
+														})
+														</Option>
+                          							: null
+												}
+											
+											</>
 										)
-								  )
+								  	)
 								: null}
 						</Select>
 

@@ -162,21 +162,21 @@ function ConnectionSettingsComponent(props) {
 							label='Account Number'
 							name='account_number'
 							rules={[{ required: true, message: 'Account Number is required' }]}>
-							<Input placeholder='Account Number' />
+							<Input placeholder='Account Number' maxLength={50} />
 						</Form.Item>
 
 						<Form.Item
 							label='Meter Number'
 							name='meter_number'
 							rules={[{ required: true, message: 'Meter Number is required' }]}>
-							<Input placeholder='Meter Number' />
+							<Input placeholder='Meter Number' maxLength={50} />
 						</Form.Item>
 
 						<Form.Item
 							label='Password'
 							name='password'
 							rules={[{ required: true, message: 'Password is required' }]}>
-							<Input type='text' placeholder='Password' />
+							<Input type='text' placeholder='Password' maxLength={100} />
 						</Form.Item>
 
 						<Form.Item

@@ -64,16 +64,13 @@ export const getProduct = (id, setselectedProductDetail, setLoadProduct, token, 
 			})
 			.then(({ data }) => {
 				if (!data.error) {
-					/*let product = data.data[0];
-				let settings = product.settings !="" ? JSON.parse(product.settings) : {}
-				product = { ...product, ...settings, product_id: id };*/
+
 					dispatch({
 						type: 'GET_PRODUCT_DETAIL',
 						payload: data.data,
 					})
-					//setselectedProductDetail(product);
-					//setLoadProduct(false);
 				}
+				setLoadProduct(false);
 			})
 	}
 }
