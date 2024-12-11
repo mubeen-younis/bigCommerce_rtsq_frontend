@@ -47,13 +47,14 @@ function QuoteSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
-	const { thresholdSetting, staffNoteSettings  } = useSelector(state => state)
+	const { thresholdSetting, quoteSettings, staffNoteSettings  } = useSelector(state => state)
 	const [inputValue, setInputValue] = useState(props?.quoteSettings?.label_as);
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
 			getQuoteSettings()
 		}
+		setInputValue(quoteSettings?.label_as)
 		// eslint-disable-next-line
 	}, [props.quoteSettings])
 
