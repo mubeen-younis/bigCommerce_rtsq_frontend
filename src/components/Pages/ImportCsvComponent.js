@@ -18,6 +18,7 @@ import {
 	Checkbox,
 	Modal,
 } from 'antd'
+import UpdateProductApiComponent from '../UpdateProductApiComponent'
 
 const { Option } = Select
 const { Title } = Typography
@@ -236,7 +237,7 @@ function ImportCsvComponent() {
 						md={24}
 						lg={24}
 						xl={18}>
-						<Title className={'mt-3'} level={3}>
+						<Title className={'mt-0'} level={3}>
 							Import CSV - Step 1
 						</Title>
 						<div className={'gray-text-block mb-3'}>
@@ -354,6 +355,7 @@ function ImportCsvComponent() {
 					</Col>
 				</Row>
 			</Modal>
+			<UpdateProductApiComponent />
 		</Fragment>
 	) : (
 		// else

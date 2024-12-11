@@ -389,7 +389,7 @@ export const numberFieldLimit = e => {
 	let value = e.target.value
 	let condition =
 		!['Backspace', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.key) &&
-		value.length >= 6
+		value.length >= 7
 	if (condition) {
 		e.preventDefault()
 		return true
@@ -429,6 +429,16 @@ export const handleNumbersWithDecimalOnly = e => {
 	let condition =
 		!['Backspace', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.key) &&
 		!['.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)
+	if (condition) {
+		e.preventDefault()
+		return true
+	}
+}
+
+export const handleNumbersWithHyphenOnly = e => {
+	let condition =
+		!['Backspace', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.key) &&
+		!['-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)
 	if (condition) {
 		e.preventDefault()
 		return true

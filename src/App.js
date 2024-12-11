@@ -45,6 +45,7 @@ import CompareRates from './components/Pages/CompareRates';
 import ProductSettingsComponent from './components/ProductSettingsComponent';
 import PaymentsTabComponent from './components/Pages/PaymentTabComponent';
 import { getCSVDownloadLink } from './Actions/ImportCsv';
+import { getBrands, getCategories } from './Actions/ShippingRulesActions';
 
 const { Header, Content } = Layout;
 
@@ -101,6 +102,8 @@ function App(props) {
       );
       dispatch(getRADSettings(token));
       dispatch(getCSVDownloadLink(token, false));
+      dispatch(getBrands(token));
+      dispatch(getCategories(token));
     };
 
     const devEnv = process?.env?.NODE_ENV === 'development';

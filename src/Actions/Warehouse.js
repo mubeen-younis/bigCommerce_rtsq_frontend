@@ -98,6 +98,9 @@ export const getWarehouse = (
           origin_markup: data.origin_markup ?? '',
 
           enable_instore: additional.instore_pickup ?? false,
+          enable_instore_distance: additional?.enable_instore_distance ?? false,
+          enable_instore_address: additional?.enable_instore_address ?? false,
+          enable_instore_phone: additional?.enable_instore_phone ?? false,
           instore_miles: additional.instore_pickup_data.miles ?? null,
           instore_zipcodes:
             additional.instore_pickup_data.postalCodes.length > 0
