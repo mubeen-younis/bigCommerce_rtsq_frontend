@@ -542,11 +542,11 @@ const Cerasis = ({
 				  		setQuoteSettingsState={setQuoteSettingsState}
 			  		/>
 
-					{/* <LimitedAccessSettings
+					<LimitedAccessSettings
           				quoteSettingsState={quoteSettingsState}
           				setQuoteSettingsState={setQuoteSettingsState}
           				islimitedAccessFee = {true}
-        			/> */}
+        			/>
 
 				</Fragment>
 			)}
