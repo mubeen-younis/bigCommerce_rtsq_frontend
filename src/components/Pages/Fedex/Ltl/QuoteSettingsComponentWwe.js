@@ -317,10 +317,10 @@ function QuoteSettingsComponentWwe(props) {
 			  	setQuoteSettingsState={setQuoteSettingsState}
 			  />
 
-        <LimitedAccessSettings
+        {/* <LimitedAccessSettings
       		quoteSettingsState={quoteSettingsState}
     			setQuoteSettingsState={setQuoteSettingsState}
-        />
+        /> */}
 
         <HoldAtTerminal
 					quoteSettingsState={quoteSettingsState}
