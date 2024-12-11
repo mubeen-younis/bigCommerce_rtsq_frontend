@@ -4,6 +4,7 @@ import { LableAsLimit } from '../../../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../../CutOffTime'
 import LiftGateDelivery from '../../../../LiftGateDelivery'
+import LimitedAccessSettings from '../../../../LimitedAccessSettings'
 import NotifyBeforeDelivery from '../../../../NotifyBeforeDelivery'
 const { Option } = Select
 const { Title } = Typography
@@ -329,6 +330,11 @@ const GlobalTranz = ({
 				quoteSettingsState={quoteSettingsState}
 			  	setQuoteSettingsState={setQuoteSettingsState}
 		  	/>
+
+			<LimitedAccessSettings
+        		quoteSettingsState={quoteSettingsState}
+          		setQuoteSettingsState={setQuoteSettingsState}
+			/>
 
 			{/*}
 			<Row gutter={30} align='middle' className={'mb-4'}>

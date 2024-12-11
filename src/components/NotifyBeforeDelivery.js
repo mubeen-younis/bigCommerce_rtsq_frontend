@@ -7,7 +7,7 @@ const { Title } = Typography
 const NotifyBeforeDelivery = ({ quoteSettingsState, setQuoteSettingsState, isUPS = false }) => {
 
 	return (
-		<Row gutter={30} align='middle' className={'mb-4'}>
+		<Row gutter={30} align='middle' className={'mb-3'}>
             <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
 					<Title level={4}>Notify before delivery settings</Title>
 				</Col>
