@@ -47,7 +47,8 @@ function QuoteSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
-	const { thresholdSetting } = useSelector(state => state)
+	const { thresholdSetting, staffNoteSettings  } = useSelector(state => state)
+	const [inputValue, setInputValue] = useState(props?.quoteSettings?.label_as);
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -124,6 +125,14 @@ function QuoteSettingsComponent(props) {
 					props.token
 				)
 			)
+			dispatch(
+				postData(
+					staffNoteSettings,
+					'GET_STAFFNOTE_SETTINGS',
+					'submit_staffnote_settings',
+					props.token
+				)
+			)
 		} else {
 			dispatch({
 				type: 'ALERT_MESSAGE',
@@ -184,6 +193,8 @@ function QuoteSettingsComponent(props) {
 								name='label_as'
 								value={props?.quoteSettings?.label_as ?? ''}
 								onKeyDown={LableAsLimit}
+								onChange={(e) => setInputValue(e.target.value)}
+								addonAfter={inputValue ? <span>{`${inputValue?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
 							/>
 						</Form.Item>
 						<div className={'text-gray'}>
