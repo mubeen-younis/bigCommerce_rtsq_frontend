@@ -45,7 +45,7 @@ function QuoteSettingsComponent(props) {
 	const { thresholdSetting, quoteSettings, staffNoteSettings } = useSelector(state => state)
 	const [notifyDelivery, setNotifyDelivery] = useState(true)
 	const [inputValue, setInputValue] = useState('');
-	const [limitedDelivery, setLimitedDelivery] = useState(true)
+	const [limitedDelivery, setLimitedDelivery] = useState(false)
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {

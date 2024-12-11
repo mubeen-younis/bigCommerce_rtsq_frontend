@@ -331,10 +331,10 @@ const GlobalTranz = ({
 			  	setQuoteSettingsState={setQuoteSettingsState}
 		  	/>
 
-			<LimitedAccessSettings
+			{/* <LimitedAccessSettings
         		quoteSettingsState={quoteSettingsState}
           		setQuoteSettingsState={setQuoteSettingsState}
-			/>
+			/> */}
 
 			{/*}
 			<Row gutter={30} align='middle' className={'mb-4'}>
