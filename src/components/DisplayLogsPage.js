@@ -230,6 +230,7 @@ function DisplayLogsPage(props) {
     WweSmallApiType,
     WweLtlApiType,
     FedexSmallApiType,
+    FedexLTLApiType,
   } = useSelector(state => state)
   const [pagination, setPagination] = useState({
     current: 1,
@@ -269,6 +270,9 @@ function DisplayLogsPage(props) {
         }
         if (slug === 'fedex-small' && FedexSmallApiType === "new_api") {
           slug = "fedex-small-new"
+        }
+        if (slug === 'fedex-ltl' && FedexLTLApiType === "new_api") {
+          slug = "fedex-ltl-new"
         }
       }
     })
