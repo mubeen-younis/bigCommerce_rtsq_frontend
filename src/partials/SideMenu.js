@@ -7,7 +7,7 @@ const { Title } = Typography;
 
 function SideMenu(props) {
   const dispatch = useDispatch();
-  const { currentPlan } = useSelector((state) => state);
+  const { currentPlan, store } = useSelector((state) => state);
   const setActiveMenu = useCallback(
     (menuId) => {
       dispatch({
@@ -26,8 +26,8 @@ function SideMenu(props) {
     else if (name.includes('plans')) setActiveMenu('100');
     else if (name.includes('warehouses')) setActiveMenu('101');
     else if (name.includes('shipping_groups')) setActiveMenu('106');
-    else if (name.includes('rad_settings')) setActiveMenu('111');
-    else if (name.includes('product_settings')) setActiveMenu('108');
+    else if (name.includes('rad_settings')) setActiveMenu('108');
+    else if (name.includes('product_settings')) setActiveMenu('111');
     else if (name.includes('fdo')) setActiveMenu('102');
     else if (name.includes('av')) setActiveMenu('103');
     else if (name.includes('importcsv')) setActiveMenu('104');
@@ -64,7 +64,7 @@ function SideMenu(props) {
           defaultSelectedKeys={'99'}
           selectedKeys={props.activeMenu}
         >
-          {currentPlan?.plan_id && (
+          {((currentPlan?.plan_id === 5 && store?.plan_level == 'Sandbox Store') || (currentPlan?.plan_id && currentPlan?.plan_id != 5 && store?.plan_level !== 'Sandbox Store')) && (
             <Menu.Item
               key='99'
               warnkey='99'
@@ -81,7 +81,7 @@ function SideMenu(props) {
           >
             <Link to='/plans'>Plans</Link>
           </Menu.Item>
-          {currentPlan?.plan_id && (
+          {((currentPlan?.plan_id === 5 && store?.plan_level == 'Sandbox Store') || (currentPlan?.plan_id && currentPlan?.plan_id != 5 && store?.plan_level !== 'Sandbox Store')) && (
             <>
               <Menu.Item
                 key='101'

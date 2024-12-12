@@ -2,7 +2,8 @@ import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button, Col, Row, Select, Checkbox, Input, Typography } from 'antd'
 import { getLocations } from '../../Actions/Warehouse'
-import { fieldValueLimit, handleNumbersOnly, handleNumbersWithDecimalOnly, handlingFeeMarkup, numberFieldLimit } from '../../Utilities/numberValidation'
+import { fieldValueLimit, handleNumbersOnly, handleNumbersWithDecimalOnly, handleNumbersWithHyphenOnly, handlingFeeMarkup, numberFieldLimit } from '../../Utilities/numberValidation'
+import { getShippingGroups } from '../../Actions/ShippingGroupsActions'
 
 const { Option } = Select
 const smallCarriers = [
@@ -93,8 +94,6 @@ const Settings = ({
 			onChangeVariant(index, 'pallet_vertical_rotation', false)
 			onChangeVariant(index, 'own_pallet', false)
 		}
-
-		dispatch(getLocations(token))
 	}, [
 		dispatch,
 		index,
@@ -286,11 +285,11 @@ const Settings = ({
 					<Col span={8}>
 						<Form.Item label='NMFC'>
 							<Input
-								type='number'
 								id={'nmfc' + index}
 								name='nmfc'
 								placeholder='e.g 100 or 132-597'
 								value={product?.nmfc}
+								onKeyDown={handleNumbersWithHyphenOnly}
 								onChange={e =>
 									onChangeVariant(index, 'nmfc', e.target.value)
 								}
