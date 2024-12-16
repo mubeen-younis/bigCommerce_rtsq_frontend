@@ -9,10 +9,12 @@ import {
 	Col,
 	Checkbox,
 	Radio,
+	Select,
 } from 'antd'
-import { connect } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 
 import { postData } from '../../../../Actions/Action'
+import types from '../../../../Stores/types'
 
 function ConnectionSettingsComponent(props) {
 	const [connectionState, setConnectionState] = useState({
@@ -21,6 +23,21 @@ function ConnectionSettingsComponent(props) {
 	})
 	const [form] = Form.useForm()
 	const [accountType, setAccountType] = useState('shipper')
+	const dispatch = useDispatch()
+	const { connectionSettings, token, FedexLTLApiType } = useSelector(state => state)
+	const url = 'https://eniture.com/bigcommerce-fedex-freight-api-connection-instructions/'
+
+	useEffect(() => {
+		if (connectionSettings) {
+			if(!(connectionSettings?.api_type) && (connectionSettings?.carrierId)){
+				connectionSettings['api_type'] = 'legacy_api'
+			}
+			dispatch({
+				type: types.SET_FEDEX_LTL_API_TYPE,
+				payload: connectionSettings?.api_type ?? 'new_api',
+			})
+		}
+	}, [connectionSettings, dispatch])
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
@@ -64,9 +81,11 @@ function ConnectionSettingsComponent(props) {
 	)
 
 	const onFinish = values => {
+		values = { ... props.connectionSettings, ...values, api_type: FedexLTLApiType}
 		values.testType = connectionState.testType
 		values.installed_carrier_id = props.carrierId
 		values.carrierId = props.carrierId
+		values.account_type = accountType
 
 		props.postData(values, props.token)
 	}
@@ -103,33 +122,82 @@ function ConnectionSettingsComponent(props) {
 				form={form}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					label='Billing Account Number'
-					name='account_number'
-					rules={[{ required: true, message: 'Billing Account Number' }]}>
-					<Input placeholder='Billing Account Number' />
+				<Form.Item label='Which API Will You Connect To?' name='api_type'>
+					<Select
+						defaultValue={!connectionSettings?.api_type && connectionSettings?.carrierId ? 'legacy_api' : 'new_api'}
+						options={[
+							{ label: 'Legacy API', value: 'legacy_api' },
+							{ label: 'New API', value: 'new_api' },
+						]}
+						onChange={opt =>
+							dispatch({
+								type: types.SET_FEDEX_LTL_API_TYPE,
+								payload: opt,
+							})
+						}
+					/>
 				</Form.Item>
 
-				<Form.Item
-					label='Meter Number'
-					name='meter_number'
-					rules={[{ required: true, message: 'Meter Number' }]}>
-					<Input placeholder='Meter Number' />
-				</Form.Item>
+				{ FedexLTLApiType == 'new_api' ? (
+					<>
+						<Form.Item
+							label='API Key'
+							name='clientId'
+							rules={[{ required: true, message: 'API Key is required' }]}
+						>
+							<Input placeholder='API Key' maxLength={100} />
+						</Form.Item>
 
-				<Form.Item
-					label='Password'
-					name='password'
-					rules={[{ required: true, message: 'Password' }]}>
-					<Input type='text' placeholder='Password' />
-				</Form.Item>
+						<Form.Item
+							className='mb-0'
+							label='Secret Key'
+							name='clientSecret'
+							rules={[{ required: true, message: 'Secret Key is required' }]}
+						>
+							<Input placeholder='Secret Key' maxLength={100} />
+						</Form.Item>
 
-				<Form.Item
-					label='Authentication Key'
-					name='api_access_key'
-					rules={[{ required: true, message: 'Authentication Key' }]}>
-					<Input placeholder='Authentication Key' />
-				</Form.Item>
+						<div className='mb-1'>
+							<a
+								href={url}
+								target='_blank'
+								rel='noreferrer'
+							>
+								How to obtain your FedEx Freight API Key and Secret Key?
+							</a>
+						</div>
+					</>
+				) : (
+					<>
+						<Form.Item
+							label='Billing Account Number'
+							name='account_number'
+							rules={[{ required: true, message: 'Billing Account Number is required' }]}>
+							<Input placeholder='Billing Account Number' maxLength={50} />
+						</Form.Item>
+
+						<Form.Item
+							label='Meter Number'
+							name='meter_number'
+							rules={[{ required: true, message: 'Meter Number is required' }]}>
+							<Input placeholder='Meter Number' maxLength={50} />
+						</Form.Item>
+
+						<Form.Item
+							label='Password'
+							name='password'
+							rules={[{ required: true, message: 'Password is required' }]}>
+							<Input type='text' placeholder='Password' maxLength={100} />
+						</Form.Item>
+
+						<Form.Item
+							label='Authentication Key'
+							name='api_access_key'
+							rules={[{ required: true, message: 'Authentication Key is required' }]}>
+							<Input placeholder='Authentication Key' />
+						</Form.Item>
+					</>
+				)}
 
 				<Form.Item
 					label='Shipper Account Number'
@@ -137,10 +205,10 @@ function ConnectionSettingsComponent(props) {
 					rules={[
 						{
 							required: accountType === 'shipper',
-							message: 'Shipper Account Number',
+							message: 'Shipper Account Number is required',
 						},
 					]}>
-					<Input type='text' placeholder='Shipper Account Number' />
+					<Input type='text' placeholder='Shipper Account Number' maxLength={50} />
 				</Form.Item>
 
 				<Row gutter={30}>
@@ -148,7 +216,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='Billing Address'
 							name='billing_address'
-							rules={[{ required: true, message: 'Billing Address' }]}>
+							rules={[{ required: true, message: 'Billing Address is required' }]}>
 							<Input type='text' placeholder='Billing Address' />
 						</Form.Item>
 					</Col>
@@ -157,7 +225,7 @@ function ConnectionSettingsComponent(props) {
 							// label='City'
 							style={{ marginTop: '2em' }}
 							name='billing_city'
-							rules={[{ required: true, message: 'City' }]}>
+							rules={[{ required: true, message: 'City is required' }]}>
 							<Input type='text' placeholder='City' />
 						</Form.Item>
 					</Col>
@@ -168,7 +236,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='State e.g.CA'
 							name='billing_state'
-							rules={[{ required: true, message: 'State' }]}>
+							rules={[{ required: true, message: 'State is required' }]}>
 							<Input
 								type='text'
 								placeholder='State e.g. CA'
@@ -180,7 +248,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='Zip Code'
 							name='billing_zip'
-							rules={[{ required: true, message: 'Zip Code' }]}>
+							rules={[{ required: true, message: 'Zip Code is required' }]}>
 							<Input type='text' placeholder='Zip Code' />
 						</Form.Item>
 					</Col>
@@ -191,7 +259,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='Country'
 							name='billing_country'
-							rules={[{ required: true, message: 'Country' }]}>
+							rules={[{ required: true, message: 'Country is required' }]}>
 							<Input
 								type='text'
 								placeholder='Country e.g. US'
@@ -214,7 +282,7 @@ function ConnectionSettingsComponent(props) {
 							label='Physical Address'
 							name='physical_address'
 							rules={[
-								{ required: true, message: 'Shipping Address' },
+								{ required: true, message: 'Shipping Address is required' },
 							]}>
 							<Input type='text' placeholder='Shipping Address' />
 						</Form.Item>
@@ -224,7 +292,7 @@ function ConnectionSettingsComponent(props) {
 							// label='City'
 							style={{ marginTop: '2em' }}
 							name='physical_city'
-							rules={[{ required: true, message: 'City' }]}>
+							rules={[{ required: true, message: 'City is required' }]}>
 							<Input type='text' placeholder='City' />
 						</Form.Item>
 					</Col>
@@ -235,7 +303,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='State e.g.CA'
 							name='physical_state'
-							rules={[{ required: true, message: 'State' }]}>
+							rules={[{ required: true, message: 'State is required' }]}>
 							<Input
 								type='text'
 								placeholder='State e.g. CA'
@@ -247,7 +315,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='Zip Code'
 							name='physical_zip'
-							rules={[{ required: true, message: 'Zip Code' }]}>
+							rules={[{ required: true, message: 'Zip Code is required' }]}>
 							<Input type='text' placeholder='Zip Code' />
 						</Form.Item>
 					</Col>
@@ -258,7 +326,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='Country'
 							name='physical_country'
-							rules={[{ required: true, message: 'Country' }]}>
+							rules={[{ required: true, message: 'Country is required' }]}>
 							<Input
 								type='text'
 								placeholder='Country e.g. US'
@@ -275,26 +343,30 @@ function ConnectionSettingsComponent(props) {
 					rules={[
 						{
 							required: accountType === 'thirdParty',
-							message: 'Third Party Account Number',
+							message: 'Third Party Account Number is required',
 						},
 					]}>
 					<Input type='text' />
 				</Form.Item>
 
-				<div>
-					<a
-						href='https://eniture.com/bigcommerce-fedex-freight-api-connection-instructions/'
-						target='_blank'
-						rel='noreferrer'
-					>
-						How to obtain your FedEx Freight API authentication credentials?
-					</a>
-				</div>
+				{FedexLTLApiType == 'new_api' ? (
+					null
+				) : (
+					<div>
+						<a
+							href={url}
+							target='_blank'
+							rel='noreferrer'
+						>
+							How to obtain your FedEx Freight API authentication credentials?
+						</a>
+					</div>
+				)}
 
 				<Form.Item
 					className='mb-0'
 					name='account_type'
-					rules={[{ required: true, message: 'Account Type' }]}>
+					rules={[{ required: false, message: 'Account Type is required' }]}>
 					<Radio.Group defaultValue={accountType}>
 						<Radio
 							value='shipper'

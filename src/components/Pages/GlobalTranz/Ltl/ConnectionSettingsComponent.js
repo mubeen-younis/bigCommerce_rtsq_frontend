@@ -170,7 +170,7 @@ function ConnectionSettingsComponent(props) {
 						<div className={'note-bx'}>
 							<strong>Note!</strong> You must have a Worldwide Express account to
 							use this application. If you do not have one, click{' '}
-							<a href='https://eniture.com/request-worldwide-express-account-number/'
+							<a href='https://wwex.com/our-technology/e-commerce-solutions'
 							target='_blank'
 							rel='noreferrer'>
 							here
@@ -184,7 +184,12 @@ function ConnectionSettingsComponent(props) {
 						<div className={'note-bx'}>
 							<strong>Note!</strong> You must have a GlobalTranz account to use
 							this application. If you do not have one contact GlobalTranz at
-							866-275-1407.
+							866-275-1407 or{' '}
+							<a href='https://www.globaltranz.com/contact/request-a-quote/'
+							target='_blank'
+							rel='noreferrer'>
+							register
+							</a>{' '}online.
 						</div>
 						<PromoCodeNote carrierName='GlobalTranz' />
 					</>

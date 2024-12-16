@@ -58,7 +58,7 @@ export const sendProductsTemplateEmail = (email, token) => {
 	};
 };
 
-export const getCSVDownloadLink = (token, is_link_invisible) => async dispatch => {
+export const getCSVDownloadLink = (token, is_link_invisible = 0) => async dispatch => {
 	try {
 		const config = {
 			headers: {

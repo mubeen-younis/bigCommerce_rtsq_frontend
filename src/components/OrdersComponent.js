@@ -690,7 +690,7 @@ function OrderSettingsComponent(props) {
 															: ''}
 														{widget?.address}
 													</li>
-													<li>
+													<li style={styles.breakAll}>
 														{widget?.shipping_method}:{' '}
 														{widget?.shipping_rate}
 													</li>
@@ -705,16 +705,30 @@ function OrderSettingsComponent(props) {
 												</ul>
 											</div>
 										</Col>
-										<Col span={12}>
-											<div>
-												<h3>Items</h3>
-												<ul>
-													{widget?.items.map(item => (
-														<li>{item}</li>
-													))}
-												</ul>
-											</div>
-										</Col>
+										{widget?.items && widget?.items?.length > 0 ? (
+											<Col span={12}>
+												<div>
+													<h3>Items</h3>
+													<ul>
+														{widget?.items?.map(item => (
+															<li>{item}</li>
+														))}
+													</ul>
+												</div>
+												</Col>
+										) : null}
+										{widget?.freeShippingItems && widget?.freeShippingItems?.length > 0 ? (
+											<Col span={12}>
+												<div>
+													<h3>Flat Rate Shipping Items</h3>
+													<ul>
+														{widget?.freeShippingItems?.map(item => (
+															<li>{item}</li>
+														))}
+													</ul>
+												</div>
+											</Col>
+										) : null}
 										<Col span={24}>{widgetData(widget)}</Col>
 										<Col span={24}>
 											{widgetData(widget, true)}
@@ -782,5 +796,12 @@ const mapDispatchToProps = dispatch => {
 			dispatch(submitOrderSettings(data, token, visibility)),
 	}
 }
+
+const styles = {
+	breakAll: {
+	  wordBreak: 'break-word',
+	  whiteSpace: 'normal',
+	},
+  };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderSettingsComponent)

@@ -1,8 +1,17 @@
 import React from 'react';
 import { Row, Col, Typography, Form, Checkbox, Input } from 'antd';
-import { handlingFeeMarkup } from '../../../../Utilities/numberValidation';
+import { blockSpecialChar, handlingFeeMarkup } from '../../../../Utilities/numberValidation';
 
 const { Title } = Typography;
+
+const LabelAs = () => (
+	<Col className='gutter-row mb-2' xs={14} sm={14} md={14} lg={14} xl={14}>
+	  <label className={'text-gray'}>
+		Service name displays by default. Enter an alternative if you prefer
+		something different.
+	  </label>
+	</Col>
+);
 
 const DomesticServices = ({
   quoteSettingsState,
@@ -62,6 +71,24 @@ const DomesticServices = ({
         </Col>
 
         <Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='ups_ground_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.ups_ground_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='UPS Ground'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+
+        <Col span={14}>
           <Form.Item className={'mb-0'}>
             <Input
               name={'ups_ground_markup'}
@@ -74,7 +101,7 @@ const DomesticServices = ({
           </Form.Item>
         </Col>
 
-        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+        <Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
           <label className={'text-gray'}>
             Markup (e.g Currency 1.00 or percentage 5%)
           </label>
@@ -97,6 +124,24 @@ const DomesticServices = ({
         </Col>
 
         <Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='ups_3_day_select_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.ups_3_day_select_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='UPS 3 Day Select'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+
+        <Col span={14}>
           <Form.Item className={'mb-0'}>
             <Input
               value={
@@ -111,7 +156,7 @@ const DomesticServices = ({
           </Form.Item>
         </Col>
 
-        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+        <Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
           <label className={'text-gray'}>
             Markup (e.g Currency 1.00 or percentage 5%)
           </label>
@@ -134,6 +179,24 @@ const DomesticServices = ({
         </Col>
 
         <Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='ups_2nd_day_air_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.ups_2nd_day_air_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='UPS 2nd Day Air'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+
+        <Col span={14}>
           <Form.Item className={'mb-0'}>
             <Input
               value={
@@ -148,7 +211,7 @@ const DomesticServices = ({
           </Form.Item>
         </Col>
 
-        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+        <Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
           <label className={'text-gray'}>
             Markup (e.g Currency 1.00 or percentage 5%)
           </label>
@@ -169,6 +232,25 @@ const DomesticServices = ({
             ></Checkbox>
           </Form.Item>
         </Col>
+
+        <Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='ups_2nd_day_air_early_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.ups_2nd_day_air_early_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='UPS 2nd Day Air Early'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+
         <Col span={14}>
           <Form.Item className={'mb-0'}>
             <Input
@@ -184,7 +266,7 @@ const DomesticServices = ({
           </Form.Item>
         </Col>
 
-        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+        <Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
           <label className={'text-gray'}>
             Markup (e.g Currency 1.00 or percentage 5%)
           </label>
@@ -209,6 +291,24 @@ const DomesticServices = ({
         </Col>
 
         <Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='ups_2nd_day_air_saver_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.ups_2nd_day_air_saver_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='UPS 2nd Day Air Saver'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+
+        <Col span={14}>
           <Form.Item className={'mb-0'}>
             <Input
               value={
@@ -224,7 +324,7 @@ const DomesticServices = ({
           </Form.Item>
         </Col>
 
-        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+        <Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
           <label className={'text-gray'}>
             Markup (e.g Currency 1.00 or percentage 5%)
           </label>
@@ -249,6 +349,24 @@ const DomesticServices = ({
         </Col>
 
         <Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='ups_next_day_air_saver_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.ups_next_day_air_saver_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='UPS Next Day Air Saver'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+
+        <Col span={14}>
           <Form.Item className={'mb-0'}>
             <Input
               value={
@@ -264,7 +382,7 @@ const DomesticServices = ({
           </Form.Item>
         </Col>
 
-        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+        <Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
           <label className={'text-gray'}>
             Markup (e.g Currency 1.00 or percentage 5%)
           </label>
@@ -285,6 +403,25 @@ const DomesticServices = ({
             ></Checkbox>
           </Form.Item>
         </Col>
+
+        <Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='ups_next_day_air_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.ups_next_day_air_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='UPS Next Day Air'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+
         <Col span={14}>
           <Form.Item className={'mb-0'}>
             <Input
@@ -302,7 +439,7 @@ const DomesticServices = ({
           </Form.Item>
         </Col>
 
-        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+        <Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
           <label className={'text-gray'}>
             Markup (e.g Currency 1.00 or percentage 5%)
           </label>
@@ -325,6 +462,25 @@ const DomesticServices = ({
             ></Checkbox>
           </Form.Item>
         </Col>
+
+        <Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name='ups_next_day_air_early_label'
+							value={
+								quoteSettingsState?.carrier_services
+									?.ups_next_day_air_early_label
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder='UPS Next Day Air Early'
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+
         <Col span={14}>
           <Form.Item className={'mb-0'}>
             <Input
@@ -343,7 +499,7 @@ const DomesticServices = ({
           </Form.Item>
         </Col>
 
-        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+        <Col className='gutter-row' xs={14} sm={14} md={14} lg={14} xl={14}>
           <label className={'text-gray'}>
             Markup (e.g Currency 1.00 or percentage 5%)
           </label>

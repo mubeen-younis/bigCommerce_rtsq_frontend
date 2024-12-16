@@ -1,3 +1,51 @@
+= 2.2.24 2024-12-04 =
+
+* Update - Free shipping only to Contiguous 48 for certain items (new Shipping Rule) (Ticket:15698378014) [#307] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/307)
+
+= 2.2.23 2024-11-12 =
+
+* Update - Feature/sandbox store functionality (Ticket:15856244281) [#304] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/304)
+
+= 2.2.22 2024-11-08 =
+
+* Update - Update CSV export functionality (Ticket:2593063812) [#303] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/303)
+
+= 2.2.21 2024-11-05 =
+
+* Update - Update Functionality of Products Listing, import/export and search/save/update Settings (Ticket:2593063812) [#302] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/302)
+
+= 2.2.20 2024-09-30 =
+
+* Update - Update pallet packaging api (Ticket:2657775383) [#301] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/301)
+
+= 2.2.19 2024-09-23 =
+
+* Update - Update override rates rule functionality in BC (Ticket:2970084986) [#300] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/300)
+
+= 2.2.18 2024-09-18 =
+
+* Update - Update Product API in BC (Ticket:2202219416) [#299] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/299)
+
+= 2.2.17 2024-09-18 =
+
+* Update - Update instore label fields (Ticket:2721818958) [#298] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/298)
+
+= 2.2.16 2024-09-04 =
+
+* Update - Add FedEx LTL New API in BC (Ticket:2294982745) [#297] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/297)
+
+= 2.2.15 2024-08-21 =
+
+* Update - update account form links for carriers (Ticket:2789867699) [#296] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/296)
+
+= 2.2.14 2024-08-19 =
+
+* Update - Add FedEx Parcel New API in BC (Ticket:2294982745) [#294] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/294)
+
+= 2.2.13 2024-07-25 =
+
+* Update - rename parcel shipment services feature (chunk-2) (Ticket:2801730131) [#293] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/293)
+
 = 2.2.12 2024-07-16 =
 
 * Update - introduce "Nesting Products" Fetaure in BC (Ticket:2504095504) [#291] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/291)

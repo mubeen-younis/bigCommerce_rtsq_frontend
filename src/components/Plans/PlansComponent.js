@@ -60,6 +60,7 @@ function PlansComponent() {
   const [updatePaymentMethodCheck, SetUpdatePaymentMethodCheck] =
     useState(false)
   const [trialVisible, SetTrialVisible] = useState(false)
+  const [devPlanVisible, SetDevPlanVisible] = useState(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -90,6 +91,8 @@ function PlansComponent() {
     if (id === 1) {
       SetTrialVisible(true)
       //dispatch(submitPaymentInfo({plan:1}, token, setIsModalVisible))
+    } else if(id === 5) {
+      SetDevPlanVisible(true)
     } else {
       setIsModalVisible(!isModalVisible)
     }
@@ -101,7 +104,7 @@ function PlansComponent() {
         submitPaymentInfo(
           { plan: planid, email: email },
           token,
-          SetTrialVisible
+          planid == 5 ? SetDevPlanVisible : SetTrialVisible,
         )
       )
     } else {
@@ -244,10 +247,25 @@ function PlansComponent() {
   const toggleSubscription = useCallback(() => {
     const data = {
       cancel: currentPlan && currentPlan?.status === 2 ? 0 : 1,
+      isSandboxStore: store?.plan_level && store?.plan_level == 'Sandbox Store' ? 1 : 0,
     }
     dispatch(updateSubscription(token, data))
     SetCancelSubsriptionVisible(false)
   }, [currentPlan, dispatch, token])
+
+  // Move the last entry to the first index
+  let rearrangedPlans = [];
+  if(store?.plan_level == 'Sandbox Store'){
+    rearrangedPlans = (() => {
+      const plansCopy = [...plans]; // Clone the array to avoid mutating the original
+      const lastPlan = plansCopy.pop(); // Remove the last item
+      plansCopy.unshift(lastPlan); // Add it to the start of the array
+      return plansCopy;
+    })();
+  } else {
+    rearrangedPlans = plans
+  }
+  
 
   const updatePaymentMethod = useCallback(() => {
     clearForm()
@@ -257,7 +275,7 @@ function PlansComponent() {
   return plans ? (
     <Fragment>
       <PlanStatusHeading />
-      {currentPlan?.plan_id > 1 && (
+      {((currentPlan?.plan_id == 1 && store?.plan_level == 'Sandbox Store') || currentPlan?.plan_id > 1) && currentPlan?.plan_id != 5 && (
         <Space className={'mb-3'}>
           {currentPlan.status !== 2 ? (
             <Button
@@ -272,9 +290,11 @@ function PlansComponent() {
             </Button>
           )}
 
-          <Button type='primary' onClick={updatePaymentMethod}>
-            Change Payment Method
-          </Button>
+          {store?.plan_level != 'Sandbox Store' && (
+            <Button type='primary' onClick={updatePaymentMethod}>
+              Change Payment Method
+            </Button>
+          )}
 
           <Modal
             title='Cancel Subscription'
@@ -291,9 +311,9 @@ function PlansComponent() {
       )}
       <Space>
         <Modal
-          title='Trial Plan'
-          visible={trialVisible}
-          onCancel={() => SetTrialVisible(false)}
+          title= {devPlanVisible ? 'Development Plan' : 'Trial Plan'}
+          visible={trialVisible || devPlanVisible}
+          onCancel={() => {SetTrialVisible(false); SetDevPlanVisible(false);}}
           centered
           onOk={() => activateTrialPlan()}
           okText='Activate'
@@ -325,7 +345,7 @@ function PlansComponent() {
             okButtonProps={{ style: { display: 'none' } }}
             cancelButtonProps={{ style: { display: 'none' } }}
           >
-            {currentPlan?.plan_id > 1 && (
+            {currentPlan?.plan_id > 1 && currentPlan?.plan_id != 5 && (
               <>
                 <p>Default payment method</p>
                 <Radio
@@ -794,8 +814,10 @@ function PlansComponent() {
       </Space>
 
       <Row gutter={24} >
-        {plans.map((plan, i) =>
-          (plan.id === 1 && currentPlan?.plan_id > 1) ||
+        {rearrangedPlans.map((plan, i) =>
+          (plan.id === 1 && currentPlan?.plan_id > 1) || (plan.id === 1 && store?.plan_level == 'Sandbox Store') || 
+          (plan.id === 5 && store?.plan_level != 'Sandbox Store') || (plan.id === 5 && currentPlan?.plan_id && currentPlan?.plan_id != 5) || 
+          (plan.id === 5 && currentPlan?.plan_id && currentPlan?.status === 2) || 
           ((plan.id === 1 || (plan.name + '').toLowerCase() === 'trial') &&
             currentPlan?.plan_id === 1 &&
             currentPlan?.status === 2) ? null : (
@@ -814,16 +836,17 @@ function PlansComponent() {
                   {currentPlan?.plan_id === plan.id &&
                   !currentPlan?.is_expired ? (
                     <Button size={'large'} className='mt-2'>
-                      ${plan.price} / month
+                      ${plan.price} / {plan.id === 5 ? '5 years' : 'month'} 
                     </Button>
                   ) : (
                     <Button
                       size={'large'}
                       type='primary'
                       className='mt-2'
+                      disabled={plan.id !== 5 && store?.plan_level === 'Sandbox Store'} // Disable condition
                       onClick={() => toggleModal(plan.id)}
                     >
-                      ${plan.price} / month
+                      ${plan.price} / {plan.id === 5 ? '5 years' : 'month'}
                     </Button>
                   )}
                 </div>

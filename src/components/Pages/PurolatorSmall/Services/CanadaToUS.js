@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, Typography, Form, Checkbox, Input } from 'antd'
-import { handlingFeeMarkup } from '../../../../Utilities/numberValidation'
+import { blockSpecialChar, handlingFeeMarkup } from '../../../../Utilities/numberValidation'
 
 const { Title } = Typography
 
@@ -10,6 +10,15 @@ const CanadaToUS_services = [
 	'Purolator Express US 9 AM',
 	'Purolator Express US 10:30 AM',
 ]
+
+const LabelAs = () => (
+	<Col className='gutter-row mb-2' xs={14} sm={14} md={14} lg={14} xl={14}>
+	  <label className={'text-gray'}>
+		Service name displays by default. Enter an alternative if you prefer
+		something different.
+	  </label>
+	</Col>
+);
 
 const CanadaToUS = ({
 	quoteSettingsState,
@@ -63,6 +72,31 @@ const CanadaToUS = ({
 						</Form.Item>
 					</Col>
 					<Col span={14}>
+					<Form.Item className='mb-0'>
+						<Input
+							name={
+								is.toLowerCase().trim().replaceAll(' ', '_').replaceAll(':', '_') +
+								'_label'
+							}
+							value={
+								quoteSettingsState?.carrier_services?.[
+									is
+										.toLowerCase()
+										.trim()
+										.replaceAll(' ', '_')
+										.replaceAll(':', '_') + '_label'
+								]
+							}
+							onChange={onChange}
+							onKeyDown={blockSpecialChar}
+							type='text'
+							placeholder={is}
+							maxLength={50}
+						/>
+					</Form.Item>
+				</Col>
+				<LabelAs />
+					<Col span={14}>
 						<Form.Item className={'mb-0'}>
 							<Input
 								//maxLength='7'
@@ -90,11 +124,11 @@ const CanadaToUS = ({
 
 					<Col
 						className='gutter-row'
-						xs={24}
-						sm={24}
-						md={24}
-						lg={24}
-						xl={24}>
+						xs={14}
+						sm={14}
+						md={14}
+						lg={14}
+						xl={14}>
 						<label className={'text-gray'}>
 							Markup (e.g Currency 1.00 or percentage 5%)
 						</label>

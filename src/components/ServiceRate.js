@@ -1,6 +1,6 @@
 import { Col, Form, Input, Row } from "antd"
 import React from "react"
-import { blockInvalidChar, numberFieldLimit } from "../Utilities/numberValidation"
+import {numberFieldLimit } from "../Utilities/numberValidation"
 
 const ServiceRate = props => {
   const { label, name, placeholder, required, message} = props
@@ -32,7 +32,7 @@ const ServiceRate = props => {
         >
           <Input
             type='number'
-            onKeyDown={(e) => { blockInvalidChar(e); numberFieldLimit(e); }}
+            onKeyDown={numberFieldLimit}
             min='0'
             step='0.01'
             placeholder={placeholder}
