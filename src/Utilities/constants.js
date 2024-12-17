@@ -45,6 +45,7 @@ export const shippingRuleTypes = {
     7: 'Hide Delivery Estimates',
     8: 'Surcharge',
     9: 'Large Cart Settings',
+    10: 'Flat Shipping Rate',
 }
 
 export const accessorialServices = {
