@@ -1437,7 +1437,14 @@ function ShippingRulesComponent() {
                                   carrier?.slug == 'ups-ship-engine' ||
                                   carrier?.slug == 'small-package' ||
                                   carrier?.slug == 'fedex-small' ||
-                                  carrier?.slug == 'priority-one-ltl' ? (
+                                  carrier?.slug == 'priority-one-ltl' || 
+                                  carrier?.slug == 'unishippers-small' ||
+                                  carrier?.slug == 'unishipper-ltl' || 
+                                  carrier?.slug == 'usps-small' || 
+                                  carrier?.slug == 'purolator-small' || 
+                                  carrier?.slug == 'tql-ltl' ||
+                                  carrier?.slug == 'gtz-ltl' ||
+                                  carrier?.slug == 'dayross-ltl' ? (
                                   <Option value={carrier?.slug}>
                                     {carrier.carrier_type == 1
                                       ? carrier.name + ' (LTL Freight Providers)'
