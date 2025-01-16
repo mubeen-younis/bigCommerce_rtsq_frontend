@@ -6,6 +6,8 @@ import { postData } from '../../../Actions/Action'
 import {
 	validateHandlingFeeMarkup,
 	LableAsLimit,
+	checkDigitsAfterDecimal,
+	checkValueLimit,
 } from '../../../Utilities/numberValidation'
 import LiftGateDelivery from '../../LiftGateDelivery'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
@@ -14,6 +16,7 @@ import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import HoldAtTerminal from '../../HoldAtTerminal'
 import ErrorManagment from '../../ErrorManagment'
+import LimitedAccessSettings from '../../LimitedAccessSettings'
 import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
 
 const initialState = {
@@ -44,13 +47,14 @@ function QuoteSettingsComponent(props) {
 	const [loading, setLoading] = useState(true)
 	const [quoteSettingsState, setQuoteSettingsState] = useState(initialState)
 	const dispatch = useDispatch()
-	const { thresholdSetting, staffNoteSettings } = useSelector(state => state)
+	const { thresholdSetting, quoteSettings, staffNoteSettings  } = useSelector(state => state)
 	const [inputValue, setInputValue] = useState(props?.quoteSettings?.label_as);
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
 			getQuoteSettings()
 		}
+		setInputValue(quoteSettings?.label_as)
 		// eslint-disable-next-line
 	}, [props.quoteSettings])
 
@@ -90,6 +94,19 @@ function QuoteSettingsComponent(props) {
 				data?.handling_free_markup,
 				'Handling fee'
 			)
+		}
+
+		if (data?.offer_limited_access_delivery === true || data?.always_limited_access_delivery === true) {
+			if (data?.limited_access_fee === '' || data?.limited_access_fee === undefined) {
+			  errormsg =
+				'Limited access delivery is enabled you must enter limited access delivery fee.'
+			} else if (checkDigitsAfterDecimal(data?.limited_access_fee, 2)) {
+			  errormsg =
+				'Limited access delivery fee only 2 digits are allowed after decimal point.'
+			} else if (checkValueLimit(data?.limited_access_fee, 7)) {
+			  errormsg =
+				'Limited access delivery fee only 7 digits are allowed.'
+			}
 		}
 
 		if (errormsg === '') {
@@ -209,6 +226,12 @@ function QuoteSettingsComponent(props) {
 				  	quoteSettingsState={quoteSettingsState}
 				  	setQuoteSettingsState={setQuoteSettingsState}
 			  	/>
+
+				<LimitedAccessSettings
+			        quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+          			islimitedAccessFee = {true}
+        		/>
 
 				<HoldAtTerminal
 					quoteSettingsState={quoteSettingsState}

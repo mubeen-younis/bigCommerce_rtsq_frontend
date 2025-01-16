@@ -14,6 +14,7 @@ import WeightThreshold from '../../WeightThreshold'
 import TruckloadSettings from '../../TruckloadSettings'
 import { getServices, getAddTabSettings } from '../../../Actions/Carriers'
 import ErrorManagment from '../../ErrorManagment'
+import LimitedAccessSettings from '../../LimitedAccessSettings'
 
 const initialState = {
 	number_of_options: 1,
@@ -185,6 +186,11 @@ function QuoteSettingsComponentWwe(props) {
 					setQuoteSettingsState={setQuoteSettingsState}
 					radStatus={radStatus}
 				/>
+
+				<LimitedAccessSettings
+          			quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
 
 				<WeightThreshold
 					quoteSettingsState={quoteSettingsState}

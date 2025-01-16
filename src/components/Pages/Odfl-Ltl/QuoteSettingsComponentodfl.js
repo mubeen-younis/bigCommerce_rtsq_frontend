@@ -17,6 +17,7 @@ import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
 import ErrorManagment from '../../ErrorManagment'
+import LimitedAccessSettings from '../../LimitedAccessSettings'
 
 const { Option } = Select
 const initialState = {
@@ -243,6 +244,11 @@ function QuoteSettingsComponentWwe(props) {
 					quoteSettingsState={quoteSettingsState}
 				  	setQuoteSettingsState={setQuoteSettingsState}
 			  	/>
+
+				<LimitedAccessSettings
+          			quoteSettingsState={quoteSettingsState}
+          			setQuoteSettingsState={setQuoteSettingsState}
+        		/>
 				
 				<WeightThreshold
 					quoteSettingsState={quoteSettingsState}

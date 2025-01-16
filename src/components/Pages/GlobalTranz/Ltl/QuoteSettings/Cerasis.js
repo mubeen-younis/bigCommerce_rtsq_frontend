@@ -4,6 +4,7 @@ import { LableAsLimit } from '../../../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../../CutOffTime'
 import LiftGateDelivery from '../../../../LiftGateDelivery'
+import LimitedAccessSettings from '../../../../LimitedAccessSettings'
 import { useCallback } from 'react'
 import NotifyBeforeDelivery from '../../../../NotifyBeforeDelivery'
 const { Option } = Select
@@ -540,6 +541,12 @@ const Cerasis = ({
 						quoteSettingsState={quoteSettingsState}
 				  		setQuoteSettingsState={setQuoteSettingsState}
 			  		/>
+
+					{/* <LimitedAccessSettings
+          				quoteSettingsState={quoteSettingsState}
+          				setQuoteSettingsState={setQuoteSettingsState}
+          				islimitedAccessFee = {true}
+        			/> */}
 
 				</Fragment>
 			)}
