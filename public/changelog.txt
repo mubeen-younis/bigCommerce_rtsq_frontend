@@ -1,3 +1,11 @@
+= 2.3.1 2025-01-15 =
+
+* Update - Limited Access delivery chunk 1 (Ticket:1086980911) [#311] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/311)
+
+= 2.3.0 2025-01-14 =
+
+* Update - Shipping Groups (extend hide methods shipping rule functionality) (Ticket:16053853503) [#310] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/310)
+
 = 2.2.24 2024-12-04 =
 
 * Update - Free shipping only to Contiguous 48 for certain items (new Shipping Rule) (Ticket:15698378014) [#307] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/307)
