@@ -1,3 +1,7 @@
+ 2.3.4 2025-01-21 =
+
+* Update - Limited Access delivery chunk 4 (Ticket:1086980911) [#314] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/314)
+
 = 2.3.3 2025-01-21 =
 
 * Update - Limited Access delivery chunk 3 (Ticket:1086980911) [#313] (https://bitbucket.org/eniture/big-commerce-frontend/pull-requests/313)
