@@ -209,6 +209,7 @@ function QuoteSettingsComponent(props) {
         <LimitedAccessSettings
     			quoteSettingsState={quoteSettingsState}
      			setQuoteSettingsState={setQuoteSettingsState}
+          islimitedAccessFee = {true}
     		/>
 
         <WeightThreshold
