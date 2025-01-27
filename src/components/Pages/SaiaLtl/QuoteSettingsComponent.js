@@ -45,7 +45,6 @@ function QuoteSettingsComponent(props) {
 	const { thresholdSetting, quoteSettings, staffNoteSettings } = useSelector(state => state)
 	const [notifyDelivery, setNotifyDelivery] = useState(true)
 	const [inputValue, setInputValue] = useState('');
-	const [limitedDelivery, setLimitedDelivery] = useState(false)
 
 	useEffect(() => {
 		if (props.quoteSettings !== null && props.quoteSettings !== undefined) {
@@ -58,9 +57,8 @@ function QuoteSettingsComponent(props) {
 	useEffect(() => {
 		if (props.carr === 'daylight-ltl') {
 			setNotifyDelivery(false)
-			setLimitedDelivery(false)
 		}
-	  }, [setNotifyDelivery, setLimitedDelivery])
+	  }, [setNotifyDelivery])
 
 	const radCheck = props.installedAddons.find(
 		add => add.short_code === 'RAD' && add.is_enabled === 1
@@ -225,12 +223,10 @@ function QuoteSettingsComponent(props) {
 			  		/>
 				)}
 
-				{limitedDelivery && (
-					<LimitedAccessSettings
-          				quoteSettingsState={quoteSettingsState}
-          				setQuoteSettingsState={setQuoteSettingsState}
-        			/>
-				)}
+				<LimitedAccessSettings
+          			quoteSettingsState={quoteSettingsState}
+        			setQuoteSettingsState={setQuoteSettingsState}
+    			/>
 					
 				<WeightThreshold
 					quoteSettingsState={quoteSettingsState}
