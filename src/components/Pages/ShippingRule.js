@@ -257,7 +257,7 @@ function ShippingRulesComponent() {
     setApplyRuleTo(value)
   };
 
-  const handleProviderServices = (slug) => {
+  const handleProviderServices = (slug, rule_type = '') => {
     if (slug.includes('ltl')) {
       setIsLTL(true)
     } else {
@@ -266,7 +266,7 @@ function ShippingRulesComponent() {
     setCarrierSlug(slug);
     setSelectedServices([]);
     form.resetFields(['filter_services']);
-    if(ruleType == 6){
+    if(ruleType == 6 || rule_type == 6){
       getCarrierServices(slug)
     }
   };
@@ -360,7 +360,7 @@ function ShippingRulesComponent() {
   const updateFormFields = async (text) => {
     setCountryCode(text?.filter_country);
     if(text?.rule_type == 6){
-      handleProviderServices(text?.filter_provider)
+      handleProviderServices(text?.filter_provider, text?.rule_type)
       const applyTo = text?.apply_to == 1 ? setApplyTo(0) : setApplyTo(text?.apply_to);
     } else{
       setApplyTo(text?.apply_to ?? 1)
