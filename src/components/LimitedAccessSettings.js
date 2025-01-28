@@ -79,8 +79,8 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 						/>
 					</Form.Item>
 					<div className={'text-gray'}>
-						Limited access delivery fees may differ depending on the type of facility. 
-						The plugin cannot prompt for the type of facility, so enter the amount you'd like to collect regardless of the facility type.
+						The limited access delivery fees may differ depending on the type of facility. 
+						The app can't prompt for the type of facility. So, enter the amount you'd like to collect regardless of the facility type.
 					</div>
 				</Col>
 			</Row>
