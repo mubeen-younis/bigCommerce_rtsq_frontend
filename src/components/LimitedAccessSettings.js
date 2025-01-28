@@ -67,6 +67,7 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 						<Input
 							maxLength={7}
 							onKeyDown={handlingFeeMarkup}
+							placeholder='Limited access delivery fee'
 							value={quoteSettingsState.limited_access_fee}
 							onChange={e =>
 								setQuoteSettingsState(prevSettings => ({
