@@ -9,7 +9,7 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 	return (<>
 		<Row gutter={30} align='middle' className={islimitedAccessFee ? 'mb-1' : 'mb-3'}>
             <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-				<Title level={4}>Limited access settings</Title>
+				<Title level={4}>Limited access delivery settings</Title>
 			</Col>
 
 			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
