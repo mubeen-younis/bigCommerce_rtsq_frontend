@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, Form, Typography, Checkbox, Input } from 'antd'
-import { handlingFeeMarkup } from '../Utilities/numberValidation'
+import { handlingFeeMarkup, numberFieldLimit } from '../Utilities/numberValidation'
 
 const { Title } = Typography
 
@@ -66,7 +66,7 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 					<Form.Item className={'mb-0'} name='limited_access_fee'>
 						<Input
 							maxLength={7}
-							onKeyDown={handlingFeeMarkup}
+							onKeyDown={(e) => { handlingFeeMarkup(e); numberFieldLimit(e); }}
 							placeholder='Limited access delivery fee'
 							value={quoteSettingsState.limited_access_fee}
 							onChange={e =>
@@ -76,6 +76,8 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 							}))
 							}
 							type='number'
+							min={0.01}
+							step={0.01}
 							disabled={!quoteSettingsState.always_limited_access_delivery && !quoteSettingsState.offer_limited_access_delivery}
 						/>
 					</Form.Item>

@@ -122,8 +122,7 @@ function QuoteSettingsComponentWwe(props) {
       )
     }
 
-    if (carrier_type === 'CRS' && (data?.offer_limited_access_delivery === true || data?.always_limited_access_delivery === true)) {
-      console.log(data?.limited_access_fee)
+    if ((data?.offer_limited_access_delivery === true || data?.always_limited_access_delivery === true)) {
       if (data?.limited_access_fee == '' || data?.limited_access_fee == null || data?.limited_access_fee === undefined) {
         errormsg =
           'Limited access delivery is enabled you must enter limited access delivery fee.'

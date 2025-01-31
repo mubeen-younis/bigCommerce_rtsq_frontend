@@ -93,7 +93,7 @@ function QuoteSettingsComponentWwe(props) {
     )
 
     if (data?.offer_limited_access_delivery === true || data?.always_limited_access_delivery === true) {
-      if (data?.limited_access_fee === '' || data?.limited_access_fee === undefined) {
+      if (data?.limited_access_fee === '' || data?.limited_access_fee === undefined || data?.limited_access_fee === null) {
         errormsg =
           'Limited access delivery is enabled you must enter limited access delivery fee.'
       } else if (checkDigitsAfterDecimal(data?.limited_access_fee, 2)) {
