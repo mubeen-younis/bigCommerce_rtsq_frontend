@@ -9,6 +9,8 @@ import {
 	validateHandlingFeeMarkup,
 	blockInvalidChar,
 	LableAsLimit,
+	checkDigitsAfterDecimal,
+	checkValueLimit,
 } from '../../../Utilities/numberValidation'
 import CutOffTime from '../../CutOffTime'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
@@ -97,6 +99,20 @@ function QuoteSettingsComponentWwe(props) {
 				errormsg = 'Third party postal code should be 5 digit number.'
 			}
 		}
+
+		if (data?.offer_limited_access_delivery === true || data?.always_limited_access_delivery === true) {
+			if (data?.limited_access_fee === '' || data?.limited_access_fee === undefined || data?.limited_access_fee === null) {
+			  errormsg =
+				'Limited access delivery is enabled you must enter limited access delivery fee.'
+			} else if (checkDigitsAfterDecimal(data?.limited_access_fee, 2)) {
+			  errormsg =
+				'Limited access delivery fee only 2 digits are allowed after decimal point.'
+			} else if (checkValueLimit(data?.limited_access_fee, 7)) {
+			  errormsg =
+				'Limited access delivery fee only 7 digits are allowed.'
+			}
+		}
+
 		if (errormsg === '') {
 			errormsg = validateHandlingFeeMarkup(
 				data?.handling_free_markup,
@@ -248,6 +264,7 @@ function QuoteSettingsComponentWwe(props) {
 				<LimitedAccessSettings
           			quoteSettingsState={quoteSettingsState}
           			setQuoteSettingsState={setQuoteSettingsState}
+					islimitedAccessFee = {true}
         		/>
 				
 				<WeightThreshold

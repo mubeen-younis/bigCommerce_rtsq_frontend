@@ -334,6 +334,7 @@ const GlobalTranz = ({
 			<LimitedAccessSettings
         		quoteSettingsState={quoteSettingsState}
           		setQuoteSettingsState={setQuoteSettingsState}
+				islimitedAccessFee = {true}
 			/>
 
 			{/*}

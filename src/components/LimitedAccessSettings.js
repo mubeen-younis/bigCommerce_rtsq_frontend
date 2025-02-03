@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, Form, Typography, Checkbox, Input } from 'antd'
-import { handlingFeeMarkup } from '../Utilities/numberValidation'
+import { handlingFeeMarkup, numberFieldLimit } from '../Utilities/numberValidation'
 
 const { Title } = Typography
 
@@ -9,7 +9,7 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 	return (<>
 		<Row gutter={30} align='middle' className={islimitedAccessFee ? 'mb-1' : 'mb-3'}>
             <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-				<Title level={4}>Limited access settings</Title>
+				<Title level={4}>Limited access delivery settings</Title>
 			</Col>
 
 			<Col className='gutter-row' xs={24} sm={12} md={12} lg={12} xl={6}>
@@ -66,7 +66,8 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 					<Form.Item className={'mb-0'} name='limited_access_fee'>
 						<Input
 							maxLength={7}
-							onKeyDown={handlingFeeMarkup}
+							onKeyDown={(e) => { handlingFeeMarkup(e); numberFieldLimit(e); }}
+							placeholder='Limited access delivery fee'
 							value={quoteSettingsState.limited_access_fee}
 							onChange={e =>
 								setQuoteSettingsState(prevSettings => ({
@@ -75,12 +76,14 @@ const LimitedAccessSettings = ({ quoteSettingsState, setQuoteSettingsState, isli
 							}))
 							}
 							type='number'
+							min={0.01}
+							step={0.01}
 							disabled={!quoteSettingsState.always_limited_access_delivery && !quoteSettingsState.offer_limited_access_delivery}
 						/>
 					</Form.Item>
 					<div className={'text-gray'}>
-						Limited access delivery fees may differ depending on the type of facility. 
-						The plugin cannot prompt for the type of facility, so enter the amount you'd like to collect regardless of the facility type.
+						The limited access delivery fees may differ depending on the type of facility. 
+						The app can't prompt for the type of facility. So, enter the amount you'd like to collect regardless of the facility type.
 					</div>
 				</Col>
 			</Row>

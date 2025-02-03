@@ -7,6 +7,8 @@ import { getQuoteSettings } from '../../../../Actions/Settings'
 import {
   validateHandlingFeeMarkup,
   LableAsLimit,
+  checkDigitsAfterDecimal,
+  checkValueLimit,
 } from '../../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../../DeliveryEstimateOptions'
 import CutOffTime from '../../../CutOffTime'
@@ -102,6 +104,19 @@ function QuoteSettingsComponentWwe(props) {
 			data?.weight_of_handling_unit,
 			'Weight of Handling Unit'
 		)*/
+
+    if (data?.offer_limited_access_delivery === true || data?.always_limited_access_delivery === true) {
+			if (data?.limited_access_fee === '' || data?.limited_access_fee === undefined || data?.limited_access_fee === null) {
+			  errormsg =
+				'Limited access delivery is enabled you must enter limited access delivery fee.'
+			} else if (checkDigitsAfterDecimal(data?.limited_access_fee, 2)) {
+			  errormsg =
+				'Limited access delivery fee only 2 digits are allowed after decimal point.'
+			} else if (checkValueLimit(data?.limited_access_fee, 7)) {
+			  errormsg =
+				'Limited access delivery fee only 7 digits are allowed.'
+			}
+		}
 
     if (errormsg === '') {
       errormsg = validateHandlingFeeMarkup(
