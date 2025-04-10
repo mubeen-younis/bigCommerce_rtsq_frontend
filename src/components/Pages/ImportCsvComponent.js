@@ -63,7 +63,6 @@ function ImportCsvComponent() {
 		maximum_nested_items: '',
 		stacking_property: '',
 
-
 	})
 	const [emailAddress, setEmailAddress] = useState(store.admin_email)
 	const [importEmailAddress, setImportEmailAddress] = useState(store.admin_email)
