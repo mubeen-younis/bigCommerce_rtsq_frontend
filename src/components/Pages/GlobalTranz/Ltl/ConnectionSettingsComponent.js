@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
-import { Form, Input, Button, Space, Skeleton, Select } from 'antd'
+import { Form, Input, Button, Space, Skeleton, Select , Checkbox} from 'antd'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../../Actions/Action'
 import PromoCodeNote from '../../../PromoCodeNote'
@@ -45,12 +45,12 @@ function ConnectionSettingsComponent(props) {
 			Object.keys(props.connectionSettings).length > 1
 		) {
 
-			if(props.connectionSettings?.carrierId !== carrierId){
+			if (props.connectionSettings?.carrierId !== carrierId) {
 				props.connectionSettings.api_type = 'NEWAPI'
 				setIsNewApi(true)
 			}
 
-			props.connectionSettings?.api_type == 'NEWAPI' ? setApiType('NEWAPI') :  props.connectionSettings?.api_type == 'CRS' ? setApiType('CRS') : setApiType('GTZ')
+			props.connectionSettings?.api_type == 'NEWAPI' ? setApiType('NEWAPI') : props.connectionSettings?.api_type == 'CRS' ? setApiType('CRS') : setApiType('GTZ')
 			setState({
 				global_tranz: {
 					...initialValues,
@@ -60,7 +60,7 @@ function ConnectionSettingsComponent(props) {
 				gtz_new_api: { ...initialValues, ...props.connectionSettings?.gtz_new_api },
 				promo_code: props?.connectionSettings?.promo_code || '',
 			})
-			setConnectionState(prevState => ({	
+			setConnectionState(prevState => ({
 				...prevState,
 				skeleton_loading: false,
 			}))
@@ -123,7 +123,7 @@ function ConnectionSettingsComponent(props) {
 				apiType === 'GTZ'
 					? props?.connectionSettings?.global_tranz ?? {}
 					: apiType === 'CRS' ? props?.connectionSettings?.cerasis ?? {}
-					: props?.connectionSettings?.gtz_new_api ?? {}
+						: props?.connectionSettings?.gtz_new_api ?? {}
 
 			form.setFieldsValue({
 				customer_id: data?.customer_id || '',
@@ -146,7 +146,7 @@ function ConnectionSettingsComponent(props) {
 			apiType === 'GTZ'
 				? { ...state.global_tranz, promo_code: state.promo_code }
 				: apiType === 'CRS' ? { ...state.cerasis, promo_code: state.promo_code }
-				: { ...state.gtz_new_api, promo_code: state.promo_code },
+					: { ...state.gtz_new_api, promo_code: state.promo_code },
 		[apiType, state.cerasis, state.global_tranz, state.gtz_new_api, state.promo_code]
 	)
 
@@ -171,9 +171,9 @@ function ConnectionSettingsComponent(props) {
 							<strong>Note!</strong> You must have a Worldwide Express account to
 							use this application. If you do not have one, click{' '}
 							<a href='https://wwex.com/our-technology/e-commerce-solutions'
-							target='_blank'
-							rel='noreferrer'>
-							here
+								target='_blank'
+								rel='noreferrer'>
+								here
 							</a>{' '}
 							to access the new account request form.
 						</div>
@@ -186,14 +186,14 @@ function ConnectionSettingsComponent(props) {
 							this application. If you do not have one contact GlobalTranz at
 							866-275-1407 or{' '}
 							<a href='https://www.globaltranz.com/contact/request-a-quote/'
-							target='_blank'
-							rel='noreferrer'>
-							register
+								target='_blank'
+								rel='noreferrer'>
+								register
 							</a>{' '}online.
 						</div>
 						<PromoCodeNote carrierName='GlobalTranz' />
 					</>
-				)} 
+				)}
 
 				<Form
 					layout='vertical'
@@ -248,7 +248,7 @@ function ConnectionSettingsComponent(props) {
 									onChange={e =>
 										handleStateChange(e, 'global_tranz')
 									}
-									//required
+								//required
 								/>
 							</Form.Item>
 
@@ -364,67 +364,67 @@ function ConnectionSettingsComponent(props) {
 						</>
 					) : (
 						<>
-						<Form.Item
-							label='Client ID'
-							name='clientId'
-							rules={[{ required: true, message: 'Client ID' }]}
-						>
-							<Input 
-								placeholder='Client ID' 
-								maxLength={100}
+							<Form.Item
+								label='Client ID'
 								name='clientId'
-								onChange={e => handleStateChange(e, 'gtz_new_api')}
-
-							/>
-						</Form.Item>
-						<Form.Item
-							className='mb-1'
-							label='Client Secret'
-							name='clientSecret'
-							rules={[{ required: true, message: 'Client Secret' }]}
-						>
-							<Input 
-								placeholder='Client Secret' 
-								maxLength={100} 
-								name='clientSecret'
-								onChange={e => handleStateChange(e, 'gtz_new_api')}
-
-							/>
-						</Form.Item>
-
-						<div>
-							<a
-								href='https://eniture.com/bigcommerce-globaltranz-connection/'
-								target='_blank'
-								rel='noreferrer'
+								rules={[{ required: true, message: 'Client ID' }]}
 							>
-								How to obtain your GlobalTranz Client ID and Client Secret?
-							</a>
-						</div>
+								<Input
+									placeholder='Client ID'
+									maxLength={100}
+									name='clientId'
+									onChange={e => handleStateChange(e, 'gtz_new_api')}
 
-						<Form.Item
-							className='mt-1'
-							label='Username'
-							name='user_name'
-							rules={[{ required: false, message: 'Username' }]}>
-							<Input 
-								placeholder='Username' 
+								/>
+							</Form.Item>
+							<Form.Item
+								className='mb-1'
+								label='Client Secret'
+								name='clientSecret'
+								rules={[{ required: true, message: 'Client Secret' }]}
+							>
+								<Input
+									placeholder='Client Secret'
+									maxLength={100}
+									name='clientSecret'
+									onChange={e => handleStateChange(e, 'gtz_new_api')}
+
+								/>
+							</Form.Item>
+
+							<div>
+								<a
+									href='https://eniture.com/bigcommerce-globaltranz-connection/'
+									target='_blank'
+									rel='noreferrer'
+								>
+									How to obtain your GlobalTranz Client ID and Client Secret?
+								</a>
+							</div>
+
+							<Form.Item
+								className='mt-1'
+								label='Username'
 								name='user_name'
-								onChange={e => handleStateChange(e, 'gtz_new_api')}
+								rules={[{ required: false, message: 'Username' }]}>
+								<Input
+									placeholder='Username'
+									name='user_name'
+									onChange={e => handleStateChange(e, 'gtz_new_api')}
 
-							/>
-						</Form.Item>
-						<Form.Item
-							label='Password'
-							name='password'
-							rules={[{ required: false, message: 'Password' }]}>
-							<Input 
-								type='text' 
-								placeholder='Password' 
+								/>
+							</Form.Item>
+							<Form.Item
+								label='Password'
 								name='password'
-								onChange={e => handleStateChange(e, 'gtz_new_api')}
-							/>
-						</Form.Item>
+								rules={[{ required: false, message: 'Password' }]}>
+								<Input
+									type='text'
+									placeholder='Password'
+									name='password'
+									onChange={e => handleStateChange(e, 'gtz_new_api')}
+								/>
+							</Form.Item>
 						</>
 					)}
 
@@ -441,6 +441,13 @@ function ConnectionSettingsComponent(props) {
 					)}
 
 					<PromoCodeField />
+
+					<Form.Item
+						name="requiresNmfc"
+						valuePropName="checked" // Ensures it works properly as a boolean
+					>
+						<Checkbox>My account requires NMFC numbers</Checkbox>
+					</Form.Item>
 
 					<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 						<Space>

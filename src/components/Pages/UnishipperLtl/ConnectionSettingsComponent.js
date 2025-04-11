@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { Form, Input, Button, Space, Skeleton } from 'antd'
+import { Form, Input, Button, Space, Skeleton, Checkbox } from 'antd'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import PromoCodeNote from '../../PromoCodeNote'
@@ -33,7 +33,7 @@ function ConnectionSettingsComponent(props) {
 	}
 
 	const onFinish = values => {
-		values = { ...connectionSettings, ...values}
+		values = { ...connectionSettings, ...values }
 		values.testType = connectionState.testType
 		values.installed_carrier_id = props.carrierId
 		values.carrierId = props.carrierId
@@ -73,47 +73,54 @@ function ConnectionSettingsComponent(props) {
 				size={'large'}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-						<Form.Item
-							label='Client ID'
-							name='clientId'
-							rules={[{ required: true, message: 'Client ID is required.' }]}
-						>
-							<Input placeholder='Client ID' maxLength={100}/>
-						</Form.Item>
-						<Form.Item
-							className='mb-1'
-							label='Client Secret'
-							name='clientSecret'
-							rules={[{ required: true, message: 'Client Secret is required.' }]}
-						>
-							<Input placeholder='Client Secret' maxLength={256}/>
-						</Form.Item>
+				<Form.Item
+					label='Client ID'
+					name='clientId'
+					rules={[{ required: true, message: 'Client ID is required.' }]}
+				>
+					<Input placeholder='Client ID' maxLength={100} />
+				</Form.Item>
+				<Form.Item
+					className='mb-1'
+					label='Client Secret'
+					name='clientSecret'
+					rules={[{ required: true, message: 'Client Secret is required.' }]}
+				>
+					<Input placeholder='Client Secret' maxLength={256} />
+				</Form.Item>
 
-						<div>
-							<a
-								href='https://eniture.com/bigcommerce-unishippers-api-connection-instructions-2/'
-								target='_blank'
-								rel='noreferrer'
-							>
-								How to obtain your Unishippers Client ID and Client Secret?
-							</a>
-						</div>
+				<div>
+					<a
+						href='https://eniture.com/bigcommerce-unishippers-api-connection-instructions-2/'
+						target='_blank'
+						rel='noreferrer'
+					>
+						How to obtain your Unishippers Client ID and Client Secret?
+					</a>
+				</div>
 
-						<Form.Item
-							className='mt-1'
-							label='Username'
-							name='username'
-							rules={[{ required: false, message: 'Username' }]}>
-							<Input placeholder='Username' maxLength={100} />
-						</Form.Item>
-						<Form.Item
-							label='Password'
-							name='password'
-							rules={[{ required: false, message: 'Password' }]}>
-							<Input type='text' placeholder='Password' maxLength={100} />
-						</Form.Item>
-			
+				<Form.Item
+					className='mt-1'
+					label='Username'
+					name='username'
+					rules={[{ required: false, message: 'Username' }]}>
+					<Input placeholder='Username' maxLength={100} />
+				</Form.Item>
+				<Form.Item
+					label='Password'
+					name='password'
+					rules={[{ required: false, message: 'Password' }]}>
+					<Input type='text' placeholder='Password' maxLength={100} />
+				</Form.Item>
+
 				<PromoCodeField />
+
+				<Form.Item
+					name="requiresNmfc"
+					valuePropName="checked" // Ensures it works properly as a boolean
+				>
+					<Checkbox>My account requires NMFC numbers</Checkbox>
+				</Form.Item>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

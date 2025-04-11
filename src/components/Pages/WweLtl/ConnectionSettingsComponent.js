@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { Form, Input, Button, Space, Skeleton, Select } from 'antd'
+import { Form, Input, Button, Space, Skeleton, Select, Checkbox } from 'antd'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import PromoCodeNote from '../../PromoCodeNote'
@@ -31,7 +31,7 @@ function ConnectionSettingsComponent(props) {
 
 	useEffect(() => {
 		if (connectionSettings) {
-			if(!(connectionSettings?.api_type) && (connectionSettings?.carrierId)){
+			if (!(connectionSettings?.api_type) && (connectionSettings?.carrierId)) {
 				connectionSettings['api_type'] = 'legacy_api'
 			}
 
@@ -47,7 +47,7 @@ function ConnectionSettingsComponent(props) {
 	}
 
 	const onFinish = values => {
-		values = { ...connectionSettings, ...values, api_type: WweLtlApiType}
+		values = { ...connectionSettings, ...values, api_type: WweLtlApiType }
 		values.testType = connectionState.testType
 		values.installed_carrier_id = props.carrierId
 		values.carrierId = props.carrierId
@@ -102,14 +102,14 @@ function ConnectionSettingsComponent(props) {
 						}
 					/>
 				</Form.Item>
-				{ WweLtlApiType == 'new_api' ? (
+				{WweLtlApiType == 'new_api' ? (
 					<>
 						<Form.Item
 							label='Client ID'
 							name='clientId'
 							rules={[{ required: true, message: 'Client ID' }]}
 						>
-							<Input placeholder='Client ID' maxLength={100}/>
+							<Input placeholder='Client ID' maxLength={100} />
 						</Form.Item>
 						<Form.Item
 							className='mb-1'
@@ -117,7 +117,7 @@ function ConnectionSettingsComponent(props) {
 							name='clientSecret'
 							rules={[{ required: true, message: 'Client Secret' }]}
 						>
-							<Input placeholder='Client Secret' maxLength={100}/>
+							<Input placeholder='Client Secret' maxLength={100} />
 						</Form.Item>
 
 						<div>
@@ -174,7 +174,7 @@ function ConnectionSettingsComponent(props) {
 					</>
 				)}
 
-				{ WweLtlApiType != 'new_api' && (
+				{WweLtlApiType != 'new_api' && (
 					<div>
 						<a
 							href='https://eniture.com/bigcommerce-worldwide-express-api-connection-instructions/'
@@ -187,6 +187,13 @@ function ConnectionSettingsComponent(props) {
 				)}
 
 				<PromoCodeField />
+
+				<Form.Item
+					name="requiresNmfc"
+					valuePropName="checked" // Ensures it works properly as a boolean
+				>
+					<Checkbox>My account requires NMFC numbers</Checkbox>
+				</Form.Item>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
