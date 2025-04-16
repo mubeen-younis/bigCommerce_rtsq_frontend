@@ -831,7 +831,7 @@ function ImportCsvComponent() {
 						</Form.Item>
 
 
-						<Form.Item label='Nesting Percentage'>
+						<Form.Item label='Nesting %'>
 							<Select
 								size={'large'}
 								onChange={value => {
