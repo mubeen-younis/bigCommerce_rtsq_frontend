@@ -767,6 +767,31 @@ function ProductSettingsComponent(props) {
       }
     }
 
+    // Nesting % and MAximum Nested Items validation start
+
+ for (const prd of productVariants) {
+  // Check nesting percentage validation
+  if (
+    prd.is_nesting_enabled &&
+    prd.nesting_percentage !== "" &&
+    (prd.nesting_percentage < 0 || prd.nesting_percentage > 100)
+  ) {
+    error = true
+    msg = "Nesting % must be between 0 and 100"
+    break
+  }
+
+  // Check maximum nested items validation
+  if (prd.is_nesting_enabled && prd.max_nested_items && prd.max_nested_items.toString().length > 7) {
+    error = true
+    msg = "Maximum nested items must be 7 digits or less"
+    break
+  }
+}
+
+   // Nesting % and MAximum Nested Items validation end
+
+
     if (!error) {
       onSubmit();
     } else {

@@ -479,65 +479,60 @@ const Settings = ({
 								<Form.Item
 									label='Nesting %'
 									validateStatus={
-										product?.nesting_percentage < 0 || product?.nesting_percentage > 100 ? 'error' : ''
+										product?.nesting_percentage !== '' &&
+											(product?.nesting_percentage < 0 || product?.nesting_percentage > 100)
+											? 'error'
+											: ''
 									}
 									help={
-										product?.nesting_percentage < 0 || product?.nesting_percentage > 100
+										product?.nesting_percentage !== '' &&
+											(product?.nesting_percentage < 0 || product?.nesting_percentage > 100)
 											? 'Value must be between 0 and 100'
 											: ''
 									}
 								>
 									<Input
-										maxLength='3'
 										id={'nesting_percentage' + index}
 										name='nesting_percentage'
 										onKeyDown={handleNumbersOnly}
 										placeholder='Nesting (%) e.g. 80'
 										value={product?.nesting_percentage}
 										onChange={(e) => {
-											const value = e.target.value;
-											// Allow empty input or numbers between 0 and 100
-											if (value === '' || (/^\d*$/.test(value) && Number(value) <= 100)) {
-												onChangeVariant(index, 'nesting_percentage', value);
-											}
+											onChangeVariant(index, 'nesting_percentage', e.target.value);
 										}}
 										type='number'
-										min={0}
-										max={100}
 									/>
 								</Form.Item>
 							</Col>
+
 							<Col span={12} className='mt-0'>
 								<Form.Item
 									label='Maximum nested items'
 									validateStatus={
-										product?.max_nested_items && product?.max_nested_items.length > 7 ? 'error' : ''
+										product?.max_nested_items && product?.max_nested_items.toString().length > 7
+											? 'error'
+											: ''
 									}
 									help={
-										product?.max_nested_items && product?.max_nested_items.length > 7
+										product?.max_nested_items && product?.max_nested_items.toString().length > 7
 											? 'Value must be 7 digits or less'
 											: ''
 									}
 								>
 									<Input
-										maxLength='7'
 										id={'max_nested_items' + index}
 										name='max_nested_items'
 										onKeyDown={handleNumbersOnly}
 										placeholder='e.g. 5'
 										value={product?.max_nested_items}
 										onChange={(e) => {
-											const value = e.target.value;
-											// Allow empty input or numbers up to 7 digits
-											if (value === '' || (/^\d*$/.test(value) && value.length <= 7)) {
-												onChangeVariant(index, 'max_nested_items', value);
-											}
+											onChangeVariant(index, 'max_nested_items', e.target.value);
 										}}
 										type='number'
-										min={0}
 									/>
 								</Form.Item>
 							</Col>
+
 
 							<Col span={12}>
 								<Form.Item label='Stacking property'>
