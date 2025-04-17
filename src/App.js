@@ -1,51 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from 'react-router-dom';
-import { Layout, message, Modal, Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
-import './App.css';
-import './responsive.css';
-import SideMenu from './partials/SideMenu';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { getLocations } from './Actions/Warehouse';
+} from "react-router-dom";
+import { Layout, message, Modal, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import "./App.css";
+import "./responsive.css";
+import SideMenu from "./partials/SideMenu";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { getLocations } from "./Actions/Warehouse";
 import {
   getInstalledCarriers,
   getInstalledAddons,
   getAllCarriers,
   getAllAddons,
-} from './Actions/EnitureStore';
-import { getPlans } from './Actions/Plans';
-import { getRadPlans, getRADSettings } from './Actions/RAD';
-import { getSbsPlans } from './Actions/SBS';
-import { getPalletsPlans } from './Actions/Pallets';
-import RendorCarrier from './components/RendorCarrier';
-import RendorAddon from './components/RenderAddon';
-import ShippingCarriersComponent from './components/Pages/ShippingCarriersComponent';
-import PlansComponent from './components/Plans/PlansComponent';
-import { setStore, getCurrentPlanInfo } from './Actions/Action';
-import { getShippingGroups } from './Actions/ShippingGroupsActions';
-import WarehouseComponent from './components/Pages/WarehouseComponent';
-import FDOComponent from './components/Pages/FDOComponent';
-import AVComponent from './components/Pages/AVComponent';
-import { getFDOCouponInfo } from './Actions/FDOActions';
-import ImportCsvComponent from './components/Pages/ImportCsvComponent';
-import UserGuideComponent from './components/Pages/UserGuideComponent';
-import AppLogs from './components/Pages/AppLogs';
-import { getDbscData } from './Actions/DbscActions';
-import types from './Stores/types';
-import OrdersComponent from './components/OrdersComponent';
-import ShippingGroupsComponent from './components/Pages/ShippingGroup';
-import ShippingRulesComponent from './components/Pages/ShippingRule';
-import RADSettings from './components/Pages/RADSettings';
-import CompareRates from './components/Pages/CompareRates';
-import ProductSettingsComponent from './components/ProductSettingsComponent';
-import PaymentsTabComponent from './components/Pages/PaymentTabComponent';
-import { getCSVDownloadLink } from './Actions/ImportCsv';
-import { getBrands, getCategories } from './Actions/ShippingRulesActions';
+} from "./Actions/EnitureStore";
+import { getPlans } from "./Actions/Plans";
+import { getRadPlans, getRADSettings } from "./Actions/RAD";
+import { getSbsPlans } from "./Actions/SBS";
+import { getPalletsPlans } from "./Actions/Pallets";
+import RendorCarrier from "./components/RendorCarrier";
+import RendorAddon from "./components/RenderAddon";
+import ShippingCarriersComponent from "./components/Pages/ShippingCarriersComponent";
+import PlansComponent from "./components/Plans/PlansComponent";
+import { setStore, getCurrentPlanInfo } from "./Actions/Action";
+import { getShippingGroups } from "./Actions/ShippingGroupsActions";
+import WarehouseComponent from "./components/Pages/WarehouseComponent";
+import FDOComponent from "./components/Pages/FDOComponent";
+import AVComponent from "./components/Pages/AVComponent";
+import { getFDOCouponInfo } from "./Actions/FDOActions";
+import ImportCsvComponent from "./components/Pages/ImportCsvComponent";
+import UserGuideComponent from "./components/Pages/UserGuideComponent";
+import AppLogs from "./components/Pages/AppLogs";
+import { getDbscData } from "./Actions/DbscActions";
+import types from "./Stores/types";
+import OrdersComponent from "./components/OrdersComponent";
+import ShippingGroupsComponent from "./components/Pages/ShippingGroup";
+import ShippingRulesComponent from "./components/Pages/ShippingRule";
+import RADSettings from "./components/Pages/RADSettings";
+import CompareRates from "./components/Pages/CompareRates";
+import ProductSettingsComponent from "./components/ProductSettingsComponent";
+import PaymentsTabComponent from "./components/Pages/PaymentTabComponent";
+import { getCSVDownloadLink } from "./Actions/ImportCsv";
+import { getBrands, getCategories } from "./Actions/ShippingRulesActions";
 
 const { Header, Content } = Layout;
 
@@ -83,7 +83,7 @@ function App(props) {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
 
-    const fetchAppData = (token = '') => {
+    const fetchAppData = (token = "") => {
       setStoreData(token);
       currentPlan(token);
       getRADPlans(token);
@@ -98,7 +98,7 @@ function App(props) {
       getShippingGroups(token);
       dispatch(getFDOCouponInfo(token));
       dispatch(
-        getDbscData('get_shipping_classes', types.GET_DBSC_CLASSES, token)
+        getDbscData("get_shipping_classes", types.GET_DBSC_CLASSES, token)
       );
       dispatch(getRADSettings(token));
       dispatch(getCSVDownloadLink(token, false));
@@ -106,17 +106,17 @@ function App(props) {
       dispatch(getCategories(token));
     };
 
-    const devEnv = process?.env?.NODE_ENV === 'development';
+    const devEnv = process?.env?.NODE_ENV === "development";
     if (devEnv) {
       const localToken =
-        urlParams.get('store') ?? localStorage.getItem('store') ?? null;
+        urlParams.get("store") ?? localStorage.getItem("store") ?? null;
       setToken(localToken);
-      if (!pathName.includes('app_logs')) {
+      if (!pathName.includes("app_logs")) {
         fetchAppData(localToken);
       }
     } else {
-      const prodToken = urlParams.get('store') ?? null;
-      dispatch({ type: 'TOKEN', payload: prodToken });
+      const prodToken = urlParams.get("store") ?? null;
+      dispatch({ type: "TOKEN", payload: prodToken });
       fetchAppData(prodToken);
     }
   }, [
@@ -136,7 +136,7 @@ function App(props) {
   ]);
 
   useEffect(() => {
-    if (pathName.includes('app_logs')) {
+    if (pathName.includes("app_logs")) {
       setLogsRoute(true);
     }
   }, [window.location.pathname]);
@@ -145,22 +145,22 @@ function App(props) {
     maxCount: 1,
   });
 
-  if (pathName.includes('app_logs')) {
+  if (pathName.includes("app_logs")) {
     return <AppLogs />;
   }
-  if (alertMessageType === 'Token Mismatch') {
-    return <h2 text='danger'>Invalid Token! Contact your administrator.</h2>;
+  if (alertMessageType === "Token Mismatch") {
+    return <h2 text="danger">Invalid Token! Contact your administrator.</h2>;
   }
 
   const showMessageNotice = () => {
-    if (alertMessageType === 'success') {
+    if (alertMessageType === "success") {
       message.success(alertMessage);
-    } else if (alertMessageType === 'error') {
+    } else if (alertMessageType === "error") {
       message.error(alertMessage);
-    } else if (alertMessageType === 'warning') {
+    } else if (alertMessageType === "warning") {
       message.warning(alertMessage);
-    } else if (alertMessageType === 'loading') {
-      message.loading('Loading. Please wait...');
+    } else if (alertMessageType === "loading") {
+      message.loading("Loading. Please wait...");
     }
   };
 
@@ -176,8 +176,8 @@ function App(props) {
     return <h1>Invalid store.</h1>;
   }
 
-  if (alertMessageType === 'Token Mismatch') {
-    return <h2 text='danger'>Invalid Token! Contact your administrator.</h2>;
+  if (alertMessageType === "Token Mismatch") {
+    return <h2 text="danger">Invalid Token! Contact your administrator.</h2>;
   }
 
   if (
@@ -190,7 +190,7 @@ function App(props) {
       <LoadingOutlined
         style={{
           fontSize: 60,
-          marginTop: '400px',
+          marginTop: "400px",
         }}
       />
     );
@@ -204,52 +204,52 @@ function App(props) {
         {!logsRoute && <SideMenu />}
 
         <Layout>
-          <Header className={'top-header'} style={{ padding: 0 }} />
-          <Content className={'body-content'}>
+          <Header className={"top-header"} style={{ padding: 0 }} />
+          <Content className={"body-content"}>
             <Switch>
-              <Route path='/app_logs' component={AppLogs} />
-              <Route exact path='/'>
+              <Route path="/app_logs" component={AppLogs} />
+              <Route exact path="/">
                 {cPlan?.plan_id ? (
                   <ShippingCarriersComponent />
                 ) : (
-                  <Redirect to='/plans' />
+                  <Redirect to="/plans" />
                 )}
               </Route>
-              <Route exact path='/plans' component={PlansComponent} />
-              <Route path='/fdo' component={FDOComponent} />
-              <Route path='/importcsv' component={ImportCsvComponent} />
+              <Route exact path="/plans" component={PlansComponent} />
+              <Route path="/fdo" component={FDOComponent} />
+              <Route path="/importcsv" component={ImportCsvComponent} />
               <Route
-                path='/shipping_groups'
+                path="/shipping_groups"
                 component={ShippingGroupsComponent}
               />
               <Route
-                path='/shipping_rules'
+                path="/shipping_rules"
                 component={ShippingRulesComponent}
               />
-              <Route path='/rad_settings' component={RADSettings} />
+              <Route path="/rad_settings" component={RADSettings} />
               <Route
-                path='/product_settings'
+                path="/product_settings"
                 component={ProductSettingsComponent}
               />
-              <Route path='/orders' component={OrdersComponent} />
-              <Route path='/compare_rates' component={CompareRates} />
-              <Route path='/user_guide' component={UserGuideComponent} />
-              <Route path='/av' component={AVComponent} />
-              <Route path='/warehouses' component={WarehouseComponent} />
-              <Route path='/payments' component={PaymentsTabComponent} />
-              <Route path='/addon/:addon_id' component={RendorAddon} />
-              <Route path='/:carrier_id' component={RendorCarrier} />
+              <Route path="/orders" component={OrdersComponent} />
+              <Route path="/compare_rates" component={CompareRates} />
+              <Route path="/user_guide" component={UserGuideComponent} />
+              <Route path="/av" component={AVComponent} />
+              <Route path="/warehouses" component={WarehouseComponent} />
+              <Route path="/payments" component={PaymentsTabComponent} />
+              <Route path="/addon/:addon_id" component={RendorAddon} />
+              <Route path="/:carrier_id" component={RendorCarrier} />
             </Switch>
 
             <Modal
-              title={confirmModal !== null ? confirmModal.title : ''}
+              title={confirmModal !== null ? confirmModal.title : ""}
               visible={confirmModal !== null ? confirmModal.on : false}
               onOk={() => confirmModal(true, false)}
               onCancel={() => confirmModal(false, true)}
-              okText='Confirm'
-              cancelText='Cancel'
+              okText="Confirm"
+              cancelText="Cancel"
             >
-              <p>{confirmModal !== null ? confirmModal.body : ''}</p>
+              <p>{confirmModal !== null ? confirmModal.body : ""}</p>
             </Modal>
           </Content>
         </Layout>
@@ -288,20 +288,20 @@ const mapDispatchToProps = (dispatch) => {
     getStorePlans: () => dispatch(getPlans()),
     getShippingGroups: (token) => dispatch(getShippingGroups(token)),
     setToken: (token) => {
-      localStorage.setItem('store', token);
-      dispatch({ type: 'TOKEN', payload: token });
+      localStorage.setItem("store", token);
+      dispatch({ type: "TOKEN", payload: token });
     },
     setStoreData: (store_token) => dispatch(setStore(store_token)),
     currentPlan: (store_token) => dispatch(getCurrentPlanInfo(store_token)),
     confirmModalAction: (ok, cancel) =>
       dispatch({
-        type: 'CONFIRM_MODAL',
+        type: "CONFIRM_MODAL",
         payload: {
           on: false,
           ok: ok,
           cancel: cancel,
-          title: '',
-          body: '',
+          title: "",
+          body: "",
         },
       }),
   };
