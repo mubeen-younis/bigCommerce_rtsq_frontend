@@ -770,7 +770,7 @@ function ProductSettingsComponent(props) {
     // Nesting % and MAximum Nested Items validation start
 
  for (const prd of productVariants) {
-  // Check nesting percentage validation
+  
   if (
     prd.is_nesting_enabled &&
     prd.nesting_percentage !== "" &&
@@ -781,7 +781,6 @@ function ProductSettingsComponent(props) {
     break
   }
 
-  // Check maximum nested items validation
   if (prd.is_nesting_enabled && prd.max_nested_items && prd.max_nested_items.toString().length > 7) {
     error = true
     msg = "Maximum nested items must be 7 digits or less"

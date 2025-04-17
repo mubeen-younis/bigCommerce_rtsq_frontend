@@ -531,6 +531,7 @@ const Settings = ({
 										type='number'
 									/>
 								</Form.Item>
+								
 							</Col>
 
 
