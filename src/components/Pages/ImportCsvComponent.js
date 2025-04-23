@@ -55,8 +55,8 @@ function ImportCsvComponent() {
 		drop_ship_zip: '',
 		drop_ship_country: '',
 		boxing_property: '',
-		own_pallet: '',
-		pallet_vertical_rotation: '',
+		pallet_property: '',
+		// pallet_vertical_rotation: '',
 		nested_item: '',
 		nested_dimension: '',
 		nesting_percentage: '',
@@ -733,14 +733,14 @@ function ImportCsvComponent() {
 									))}
 							</Select>
 						</Form.Item>
-						<Form.Item label='Ships Own Pallet '>
+						<Form.Item label='Pallet Properties'>
 							<Select
 								size={'large'}
 								onChange={value => {
 									setImportLocalIndex({
-										...importLocalIndex,
-										own_pallet: value,
-									})
+                    ...importLocalIndex,
+                    pallet_property: value,
+                  });
 								}}>
 								{importIndexes &&
 									importIndexes.map(value => (
@@ -751,7 +751,7 @@ function ImportCsvComponent() {
 									))}
 							</Select>
 						</Form.Item>
-						<Form.Item label='Pallet Vertical Rotation'>
+						{/* <Form.Item label='Pallet Vertical Rotation'>
 							<Select
 								size={'large'}
 								onChange={value => {
@@ -768,7 +768,7 @@ function ImportCsvComponent() {
 										</Option>
 									))}
 							</Select>
-						</Form.Item>
+						</Form.Item> */}
 
 
 						<Form.Item label='Markup'>
