@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { Form, Input, Button, Space, Skeleton, Select, Checkbox } from 'antd'
+import { Form, Input, Button, Space, Skeleton, Select, } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import PromoCodeNote from '../../PromoCodeNote'
@@ -218,12 +218,7 @@ function ConnectionSettingsComponent(props) {
 
 				<PromoCodeField />
 
-				<Form.Item
-					name="requiresNmfc"
-					valuePropName="checked" // Ensures it works properly as a boolean
-				>
-					<Checkbox>My account requires NMFC numbers</Checkbox>
-				</Form.Item>
+			
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>

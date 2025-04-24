@@ -189,13 +189,6 @@ function ConnectionSettingsComponent(props) {
 
 				<PromoCodeField />
 
-				<Form.Item
-					name="requiresNmfc"
-					valuePropName="checked" // Ensures it works properly as a boolean
-				>
-					<Checkbox>My account requires NMFC numbers</Checkbox>
-				</Form.Item>
-
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
 						<Button
