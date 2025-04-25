@@ -15,6 +15,7 @@ const initialValues = {
 	access_key: '',
 	clientId: '',
 	clientSecret: '',
+	requiresNmfc: false,
 }
 
 function ConnectionSettingsComponent(props) {
@@ -145,7 +146,9 @@ function ConnectionSettingsComponent(props) {
 		() =>
 			apiType === 'GTZ'
 				? { ...state.global_tranz, promo_code: state.promo_code }
-				: apiType === 'CRS' ? { ...state.cerasis, promo_code: state.promo_code }
+				: apiType === 'CRS' ? { ...state.cerasis, 
+					requiresNmfc: state.gtz_new_api.requiresNmfc,
+					promo_code: state.promo_code }
 					: { ...state.gtz_new_api, promo_code: state.promo_code },
 		[apiType, state.cerasis, state.global_tranz, state.gtz_new_api, state.promo_code]
 	)
@@ -447,7 +450,18 @@ function ConnectionSettingsComponent(props) {
 							name="requiresNmfc"
 							valuePropName="checked" // Ensures it works properly as a boolean
 						>
-							<Checkbox>My account requires NMFC numbers</Checkbox>
+							<Checkbox
+								onChange={(e) => {
+									setState((prevState) => ({
+										...prevState,
+										gtz_new_api: {
+											...prevState.gtz_new_api,
+											requiresNmfc: e.target.checked,
+										},
+									}))
+								}}
+							>
+								My account requires NMFC numbers</Checkbox>
 						</Form.Item>
 					)}
 
