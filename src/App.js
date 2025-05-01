@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import process from "process";
 import {
   BrowserRouter as Router,
   Switch,
