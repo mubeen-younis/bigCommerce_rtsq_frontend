@@ -975,7 +975,7 @@ function ShippingRulesComponent() {
                     </Col>
                   </Row>
                 )}
-                {ruleType == 7 || ruleType == 2 && (
+                {(ruleType == 7 || ruleType == 2) && (
                   <>
                   <ProviderComponent
                      installedCarriers={installedCarriers}
@@ -1444,6 +1444,7 @@ function ShippingRulesComponent() {
                                   carrier?.slug == 'rl-ltl' ||
                                   carrier?.slug == 'southeastern-ltl' ||
                                   carrier?.slug == 'saia-ltl' ||
+                                  carrier?.slug == 'kn-ltl' ||
                                   carrier?.slug == 'freightquote-chr-ltl' ||
                                   carrier?.slug == 'freightquote-ltl' ||
                                   carrier?.slug == 'ups-ship-engine' ||

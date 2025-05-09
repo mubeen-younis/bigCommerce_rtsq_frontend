@@ -51,10 +51,10 @@ function ConnectionSettingsComponent(props) {
   return (
     <Fragment>
       <div className={"note-bx"}>
-        <strong>Note!</strong> You must have a Unishippers Freight account to
+        <strong>Note!</strong> You must have an account with Kuehne+Nagel to
         use this application. If you do not have one, click{" "}
         <a
-          href="https://www.unishippers.com/request-account"
+          href="https://mykn.kuehne-nagel.com/ac/login"
           target="_blank"
           rel="noreferrer"
         >
@@ -71,36 +71,46 @@ function ConnectionSettingsComponent(props) {
         initialValues={props.connectionSettings}
         onFinish={onFinish}
       >
-        <Form.Item
-          label="Nickname"
-          name="nickname"
-          rules={[{ required: true, message: "Nickname is required." }]}
-        >
-          <Input placeholder="Nickname" maxLength={100} />
-        </Form.Item>
+
         <Form.Item
           className="mb-1"
           label="Username"
           // name="clientSecret"
           name="username"
-          rules={[{ required: true, message: "Username is required." }]}
+          rules={[{ required: true, message: "Username is required." },
+            // {
+            //   pattern: /^[a-zA-Z0-9]+$/,
+            //   message: "Username must be alphanumeric (letters and numbers only).",
+            // },
+          ]}
         >
           <Input placeholder="Username" maxLength={100} />
         </Form.Item>
 
 
         <Form.Item
-          className="mt-1"
+          className="mb-1"
           label="Authentication ID"
           name="autId"
-          rules={[{ required: true, message: "Authentication ID is required" }]}
+          rules={[{ required: true, message: "Authentication ID is required" },
+            // {
+            //   pattern: /^[a-zA-Z0-9]+$/,
+            //   message: "Authentication ID must be alphanumeric (letters and numbers only).",
+            // },
+          ]}
         >
           <Input placeholder="Authentication ID" maxLength={128} />
         </Form.Item>
         <Form.Item
+        className="mb-1"
           label="Client Code"
           name="clientCode"
-          rules={[{ required: true, message: "Client Code is required" }]}
+          rules={[{ required: true, message: "Client Code is required" },
+            // {
+            //   pattern: /^[a-zA-Z0-9]+$/,
+            //   message: "Client Code must be alphanumeric (letters and numbers only).",
+            // },
+          ]}
         >
           <Input type="text" placeholder="Client Code" maxLength={100} />
         </Form.Item>

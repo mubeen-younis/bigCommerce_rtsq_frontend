@@ -23,19 +23,43 @@ const WeightThreshold = ({ quoteSettingsState, handleStateChange }) => {
         <label className={'text-gray'}>Weight threshold (lbs)</label>
       </Col>
       <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={18}>
-        <Form.Item className={'mb-0'}>
+
+
+
+        <Form.Item className={'mb-0'}
+          validateStatus={
+            quoteSettingsState.weight_threshold &&
+            !/^(?:[1-9]\d{0,4}|20000)(\.\d{1,3})?$/.test(quoteSettingsState.weight_threshold)
+              ? 'error'
+              : ''
+          }
+          help={
+            quoteSettingsState.weight_threshold &&
+            !/^(?:[1-9]\d{0,4}|20000)(\.\d{1,3})?$/.test(quoteSettingsState.weight_threshold)
+              ? 'Value must be > 0, ≤ 20000, and max 3 decimal digits'
+              : ''
+          }
+        >
           <Input
             maxLength='7'
             value={quoteSettingsState.weight_threshold}
             type='number'
             min='0'
             step='0.001'
-            onChange={(e) =>
-              handleStateChange('weight_threshold', e.target.value)
-            }
-            pattern='[0-9.?(0-9){2}?]+%?$'
-          />
+            onChange={(e) => {
+              const value = e.target.value;
+              // Allow empty value to let user delete input
+              if (
+                value === '' ||
+                (/^(?:[1-9]\d{0,4}|20000)(\.\d{0,3})?$/.test(value) && parseFloat(value) <= 20000)
+              ) {
+                handleStateChange('weight_threshold', value);
+              }
+            }}
+            />
         </Form.Item>
+
+        
 
         <div className={'text-gray'}>
           When the total weight of the products in the shopping cart in the
