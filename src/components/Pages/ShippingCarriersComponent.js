@@ -277,7 +277,7 @@ function ShippingCarriersComponent(props) {
               }
               title={
                 <h3 style={{ fontWeight: 600, marginBottom: 0 }}>
-                  Getting Started
+                  Getting Started Hererrr123456
                 </h3>
               }
               description={
