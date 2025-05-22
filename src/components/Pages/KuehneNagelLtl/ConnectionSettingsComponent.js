@@ -84,7 +84,7 @@ function ConnectionSettingsComponent(props) {
             // },
           ]}
         >
-          <Input placeholder="Username" maxLength={100} />
+          <Input placeholder="Username" maxLength={128} />
         </Form.Item>
 
 
@@ -99,7 +99,7 @@ function ConnectionSettingsComponent(props) {
             // },
           ]}
         >
-          <Input placeholder="Authentication ID" maxLength={128} />
+          <Input placeholder="Authentication ID" maxLength={163} />
         </Form.Item>
         <Form.Item
         className="mb-1"
@@ -112,7 +112,7 @@ function ConnectionSettingsComponent(props) {
             // },
           ]}
         >
-          <Input type="text" placeholder="Client Code" maxLength={100} />
+          <Input type="text" placeholder="Client Code" maxLength={134} />
         </Form.Item>
 
         <Form.Item style={{ textAlign: "right", marginBottom: "0" }}>
