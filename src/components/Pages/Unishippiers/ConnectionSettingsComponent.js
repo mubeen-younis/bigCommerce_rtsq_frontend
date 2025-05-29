@@ -2,8 +2,6 @@ import React, { Fragment, useState, useEffect } from 'react'
 import { Form, Input, Button, Space, Skeleton, Select, } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
-import PromoCodeNote from '../../PromoCodeNote'
-import PromoCodeField from '../../PromoCodeField'
 import { getFDOCouponCarrierInfo } from '../../../Actions/FDOActions'
 import types from '../../../Stores/types'
 
@@ -85,7 +83,6 @@ function ConnectionSettingsComponent(props) {
 						</a>{' '}
 						to access the new account request form.
 					</div>
-					<PromoCodeNote carrierName='Worldwide Express Small' />
 				</>
 			) : (
 				<>
@@ -102,7 +99,6 @@ function ConnectionSettingsComponent(props) {
 						</a>{' '}
 						to access the online new account request form.
 					</div>
-					<PromoCodeNote carrierName='Unishippers Small' />
 				</>
 			)}
 
@@ -215,11 +211,14 @@ function ConnectionSettingsComponent(props) {
 						</a>
 					</div>
 				)}
+<<<<<<< HEAD
 
 				<PromoCodeField />
 
 			
 
+=======
+>>>>>>> da4805e4c13ad9d242335824ab20f0bd537eb1fc
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
 						<Button
