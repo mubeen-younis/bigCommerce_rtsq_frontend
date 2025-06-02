@@ -211,14 +211,6 @@ function ConnectionSettingsComponent(props) {
 						</a>
 					</div>
 				)}
-<<<<<<< HEAD
-
-				<PromoCodeField />
-
-			
-
-=======
->>>>>>> da4805e4c13ad9d242335824ab20f0bd537eb1fc
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
 						<Button

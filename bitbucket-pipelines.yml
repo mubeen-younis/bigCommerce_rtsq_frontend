@@ -30,7 +30,8 @@ pipelines:
                 SSH_USER: 'apx-bc-01'
                 SERVER: '52.87.17.243'
                 MODE: 'command'
-                COMMAND: '/var/www/html/bigcommerce/bc-fe/remote-script.sh'
+                COMMAND: 'cd $STAGING_COMMAND/bigcommerce/bc && git stash && git pull && ./remote-script.sh'
+                # COMMAND: '/var/www/html/bigcommerce/bc-fe/remote-script.sh'
               
     master:
       - step:
