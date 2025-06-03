@@ -70,7 +70,7 @@ function SideMenu(props) {
               warnkey='99'
               onClick={() => setActiveMenu('99')}
             >
-              <Link to='/'>Dashboard</Link>
+              <Link to='/'>Shipping Providers</Link>
             </Menu.Item>
           )}
 

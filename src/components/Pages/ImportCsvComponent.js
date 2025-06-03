@@ -55,8 +55,14 @@ function ImportCsvComponent() {
 		drop_ship_zip: '',
 		drop_ship_country: '',
 		boxing_property: '',
-		own_pallet: '',
-		pallet_vertical_rotation: '',
+		pallet_property: '',
+		// pallet_vertical_rotation: '',
+		nested_item: '',
+		nested_dimension: '',
+		nesting_percentage: '',
+		maximum_nested_items: '',
+		stacking_property: '',
+
 	})
 	const [emailAddress, setEmailAddress] = useState(store.admin_email)
 	const [importEmailAddress, setImportEmailAddress] = useState(store.admin_email)
@@ -520,6 +526,45 @@ function ImportCsvComponent() {
 										</Option>
 									))}
 							</Select>
+						</Form.Item>					
+
+						<Form.Item label='Quote Method'>
+							<Select
+								size={'large'}
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										quote_method: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
+						</Form.Item>
+
+
+						<Form.Item label='Freight Class'>
+							<Select
+								size={'large'}
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										freight_class: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
 						</Form.Item>
 
 						<Form.Item label='NMFC'>
@@ -541,61 +586,6 @@ function ImportCsvComponent() {
 							</Select>
 						</Form.Item>
 
-						<Form.Item label='Markup'>
-							<Select
-								size={'large'}
-								onChange={value => {
-									setImportLocalIndex({
-										...importLocalIndex,
-										product_markup: value,
-									})
-								}}>
-								{importIndexes &&
-									importIndexes.map(value => (
-										<Option value={value} key={value}>
-											{' '}
-											{`${value}`}
-										</Option>
-									))}
-							</Select>
-						</Form.Item>
-
-						<Form.Item label='Quote Method'>
-							<Select
-								size={'large'}
-								onChange={value => {
-									setImportLocalIndex({
-										...importLocalIndex,
-										quote_method: value,
-									})
-								}}>
-								{importIndexes &&
-									importIndexes.map(value => (
-										<Option value={value} key={value}>
-											{' '}
-											{`${value}`}
-										</Option>
-									))}
-							</Select>
-						</Form.Item>
-						<Form.Item label='Freight Class'>
-							<Select
-								size={'large'}
-								onChange={value => {
-									setImportLocalIndex({
-										...importLocalIndex,
-										freight_class: value,
-									})
-								}}>
-								{importIndexes &&
-									importIndexes.map(value => (
-										<Option value={value} key={value}>
-											{' '}
-											{`${value}`}
-										</Option>
-									))}
-							</Select>
-						</Form.Item>
 						<Form.Item label='Hazmat'>
 							<Select
 								size={'large'}
@@ -743,14 +733,14 @@ function ImportCsvComponent() {
 									))}
 							</Select>
 						</Form.Item>
-						<Form.Item label='Ships Own Pallet '>
+						<Form.Item label='Pallet Properties'>
 							<Select
 								size={'large'}
 								onChange={value => {
 									setImportLocalIndex({
-										...importLocalIndex,
-										own_pallet: value,
-									})
+                    ...importLocalIndex,
+                    pallet_property: value,
+                  });
 								}}>
 								{importIndexes &&
 									importIndexes.map(value => (
@@ -761,7 +751,7 @@ function ImportCsvComponent() {
 									))}
 							</Select>
 						</Form.Item>
-						<Form.Item label='Pallet Vertical Rotation'>
+						{/* <Form.Item label='Pallet Vertical Rotation'>
 							<Select
 								size={'large'}
 								onChange={value => {
@@ -778,7 +768,129 @@ function ImportCsvComponent() {
 										</Option>
 									))}
 							</Select>
+						</Form.Item> */}
+
+
+						<Form.Item label='Markup'>
+							<Select
+								size={'large'}
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										product_markup: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
 						</Form.Item>
+
+
+						<Form.Item label='Nested Item'>
+							<Select
+								size={'large'}
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										nested_item: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
+						</Form.Item>
+
+
+						<Form.Item label='Nested Dimension'>
+							<Select
+								size={'large'}
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										nested_dimension: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
+						</Form.Item>
+
+
+						<Form.Item label='Nesting %'>
+							<Select
+								size={'large'}
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										nesting_percentage: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
+						</Form.Item>
+
+
+						<Form.Item label='Maximum Nested Items'>
+							<Select
+								size={'large'}
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										maximum_nested_items: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
+						</Form.Item>
+
+
+						<Form.Item label='Stacking Property'>
+							<Select
+								size={'large'}
+								onChange={value => {
+									setImportLocalIndex({
+										...importLocalIndex,
+										stacking_property: value,
+									})
+								}}>
+								{importIndexes &&
+									importIndexes.map(value => (
+										<Option value={value} key={value}>
+											{' '}
+											{`${value}`}
+										</Option>
+									))}
+							</Select>
+						</Form.Item>
+
+
 						<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 							<Space>
 								<Button

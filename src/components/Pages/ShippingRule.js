@@ -356,7 +356,7 @@ function ShippingRulesComponent() {
       dispatch(dispatchAlert(false, null));
     }
   };
-
+// 
   const updateFormFields = async (text) => {
     setCountryCode(text?.filter_country);
     if(text?.rule_type == 6){
