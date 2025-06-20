@@ -51,16 +51,9 @@ function ConnectionSettingsComponent(props) {
   return (
     <Fragment>
       <div className={"note-bx"}>
-        <strong>Note!</strong> You must have an account with Kuehne+Nagel to
-        use this application. If you do not have one, click{" "}
-        <a
-          href="https://mykn.kuehne-nagel.com/ac/login"
-          target="_blank"
-          rel="noreferrer"
-        >
-          here
-        </a>{" "}
-        to access the new account request form.
+        <strong>Note!</strong> You must have an Kuehne + Nagel International AG account to use this application. If you don't have one, 
+    contact Kuehne + Nagel International AG at +1-201-413-5500, or email 
+    <a href="mailto:info.us@kuehne-nagel.com"> info.us@kuehne-nagel.com</a>.
       </div>
 
       <Form
@@ -84,7 +77,7 @@ function ConnectionSettingsComponent(props) {
             // },
           ]}
         >
-          <Input placeholder="Username" maxLength={128} />
+          <Input placeholder="Username" maxLength={100} />
         </Form.Item>
 
 
@@ -99,8 +92,10 @@ function ConnectionSettingsComponent(props) {
             // },
           ]}
         >
-          <Input placeholder="Authentication ID" maxLength={163} />
+          <Input placeholder="Authentication ID" maxLength={128} />
         </Form.Item>
+
+
         <Form.Item
         className="mb-1"
           label="Client Code"
@@ -112,7 +107,7 @@ function ConnectionSettingsComponent(props) {
             // },
           ]}
         >
-          <Input type="text" placeholder="Client Code" maxLength={134} />
+          <Input type="text" placeholder="Client Code" maxLength={100} />
         </Form.Item>
 
         <Form.Item style={{ textAlign: "right", marginBottom: "0" }}>
