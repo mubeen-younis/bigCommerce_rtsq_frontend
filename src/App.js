@@ -81,6 +81,7 @@ function App(props) {
   const pathName = window.location.pathname;
 
   useEffect(() => {
+    
     const urlParams = new URLSearchParams(window.location.search);
 
     const fetchAppData = (token = "") => {
