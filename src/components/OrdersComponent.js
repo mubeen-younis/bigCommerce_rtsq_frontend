@@ -30,6 +30,7 @@ function OrderSettingsComponent(props) {
 	const [lastPageNo, setLastPageNo] = useState(1)
 	const [countSorting, setCountSorting] = useState(0)
 	const [state, setState] = useState({
+		
 		filteredInfo: null,
 		sortedInfo: null,
 		selectedRowKeys: [],
