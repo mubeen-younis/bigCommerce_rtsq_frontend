@@ -31,7 +31,7 @@ pipelines:
                 SSH_USER: $BC_STAGING_SSH_USER
                 SERVER: $STAGING_SERVER_IP
                 MODE: 'command'
-                COMMAND: 'cd $STAGING_COMMAND/bigcommerce/bc-fe && git stash && git checkout kuehne-nagel-carrier-integration && git pull && export NODE_OPTIONS=--openssl-legacy-provider && npm run build && ./remote-script.sh'
+                COMMAND: 'cd $STAGING_COMMAND/bigcommerce/bc-fe && git stash && git checkout kuehne-nagel-carrier-integration && git pull && export NODE_OPTIONS=--openssl-legacy-provider && npm run build && ./remote-script.sh' 
               
     master:
       - step:
