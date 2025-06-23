@@ -142,12 +142,6 @@ function ConnectionSettingsComponent(props) {
             >
               <Input type="text" placeholder="Password" />
             </Form.Item>
-            <Form.Item
-              name="requiresNmfc"
-              valuePropName="checked"
-            >
-              <Checkbox>My account requires NMFC numbers</Checkbox>
-            </Form.Item>
           </>
         ) : (
           <>
