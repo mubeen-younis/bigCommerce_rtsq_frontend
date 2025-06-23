@@ -70,7 +70,7 @@ function ConnectionSettingsComponent(props) {
           label="Username"
           // name="clientSecret"
           name="username"
-          rules={[{ required: true, message: "Username is required." },
+          rules={[{required: true, message: "Username is required." },
             // {
             //   pattern: /^[a-zA-Z0-9]+$/,
             //   message: "Username must be alphanumeric (letters and numbers only).",

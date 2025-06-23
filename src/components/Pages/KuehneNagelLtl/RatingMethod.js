@@ -118,7 +118,7 @@ const RatingMethod = ({
 						md={24}
 						lg={24}
 						xl={18}>
-						<Form.Item className={'mb-0'} name='label_as'>
+						{/* <Form.Item className={'mb-0'} name='label_as'>
 							<Input
 								name='label_as'
 								value={
@@ -130,7 +130,34 @@ const RatingMethod = ({
 								onChange={(e) => setInputValue(e.target.value)}
 								addonAfter={inputValue ? <span>{`${inputValue?.length}/${20}`}</span> : <span>{`${0}/${20}`}</span>}
 							/>
-						</Form.Item>
+						</Form.Item> */}
+
+<Form.Item
+  className="mb-0"
+  name="label_as"
+  rules={[
+    {
+      validator: (_, value) => {
+        if (!value || value.length <= 20) {
+          return Promise.resolve();
+        }
+        return Promise.reject(
+          new Error("Label must not exceed 20 characters")
+        );
+      },
+    },
+  ]}
+>
+  <Input
+    onChange={(e) => setInputValue(e.target.value)}
+    addonAfter={
+      <span>{`${inputValue?.length || 0}/20`}</span>
+    }
+  />
+</Form.Item>
+
+
+
 						<div className={'text-gray'}>
 							What the user sees during checkout, e.g. "Freight".{' '}
 							{ratingMethod === 1
