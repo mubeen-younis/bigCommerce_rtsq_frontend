@@ -357,7 +357,6 @@ function ProductSettingsComponent(props) {
       };
       index++;
     }
-    
     setRequestBody(createRequestBody)
   }
 

@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Form, Input, Button, Space, Skeleton, Select } from "antd";
+import { Form, Input, Button, Space, Skeleton, Select, Checkbox } from "antd";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { postData } from "../../../Actions/Action";
 import { getFDOCouponCarrierInfo } from "../../../Actions/FDOActions";
@@ -10,11 +10,9 @@ function ConnectionSettingsComponent(props) {
     testType: false,
     skeleton_loading: true,
   });
-  const { fdoCouponInfo, fdoCouponCarrierInfo, token } = useSelector(
-    (state) => state
-  );
+  const { fdoCouponInfo, fdoCouponCarrierInfo, token, connectionSettings, WweSmallApiType } =
+    useSelector((state) => state);
   const dispatch = useDispatch();
-  const { connectionSettings, WweSmallApiType } = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(
@@ -24,16 +22,13 @@ function ConnectionSettingsComponent(props) {
         fdoCouponInfo ? fdoCouponInfo?.code ?? "" : ""
       )
     );
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, token]);
+  }, [dispatch, token, fdoCouponInfo]);
 
   useEffect(() => {
     if (connectionSettings) {
       if (!connectionSettings?.api_type && connectionSettings?.carrierId) {
         connectionSettings["api_type"] = "legacy_api";
       }
-
       dispatch({
         type: types.SET_WWE_SMALL_API_TYPE,
         payload: connectionSettings?.api_type ?? "new_api",
@@ -76,7 +71,7 @@ function ConnectionSettingsComponent(props) {
         >
           here
         </a>{" "}
-        to access the new account request form.
+        to access presenter account request form.
       </div>
 
       <Form
@@ -106,7 +101,7 @@ function ConnectionSettingsComponent(props) {
             }
           />
         </Form.Item>
-        {WweSmallApiType == "new_api" ? (
+        {WweSmallApiType === "new_api" ? (
           <>
             <Form.Item
               label="Client ID"
@@ -123,18 +118,15 @@ function ConnectionSettingsComponent(props) {
             >
               <Input placeholder="Client Secret" maxLength={100} />
             </Form.Item>
-
             <div>
               <a
                 href="https://eniture.com/bigcommerce-worldwide-express-api-connection-instructions/"
                 target="_blank"
                 rel="noreferrer"
               >
-                How to obtain your Worldwide Express Client ID and Client
-                Secret?
+                How to obtain your Worldwide Express Client ID and Client Secret?
               </a>
             </div>
-
             <Form.Item
               className="mt-1"
               label="Username"
@@ -182,19 +174,16 @@ function ConnectionSettingsComponent(props) {
             >
               <Input placeholder="Authentication Key" />
             </Form.Item>
+            <div>
+              <a
+                href="https://eniture.com/bigcommerce-worldwide-express-api-connection-instructions/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                How to obtain your Worldwide Express API credentials?
+              </a>
+            </div>
           </>
-        )}
-
-        {WweSmallApiType != "new_api" && (
-          <div>
-            <a
-              href="https://eniture.com/bigcommerce-worldwide-express-api-connection-instructions/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              How to obtain your Worldwide Express API credentials?
-            </a>
-          </div>
         )}
 
         <Form.Item style={{ textAlign: "right", marginBottom: "0" }}>

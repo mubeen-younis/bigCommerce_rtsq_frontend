@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { Form, Input, Button, Space, Skeleton, Select } from 'antd'
+import { Form, Input, Button, Space, Skeleton, Select, } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getFDOCouponCarrierInfo } from '../../../Actions/FDOActions'
@@ -33,7 +33,7 @@ function ConnectionSettingsComponent(props) {
 
 	useEffect(() => {
 		if (connectionSettings) {
-			if(!(connectionSettings?.api_type) && (connectionSettings?.carrierId)){
+			if (!(connectionSettings?.api_type) && (connectionSettings?.carrierId)) {
 				connectionSettings['api_type'] = 'legacy_api'
 			}
 
@@ -51,7 +51,7 @@ function ConnectionSettingsComponent(props) {
 			carrierId,
 			installed_carrier_id: carrierId,
 		}
-		values = { ...connectionSettings, ...values, api_type: uniShipperSmallApiType}
+		values = { ...connectionSettings, ...values, api_type: uniShipperSmallApiType }
 
 		if (fdoCouponCarrierInfo)
 			values.is_enabled = fdoCouponCarrierInfo.is_enabled ?? false
@@ -75,11 +75,11 @@ function ConnectionSettingsComponent(props) {
 					<div className={'note-bx'}>
 						<strong>Note!</strong> You must have a Worldwide Express account to
 						use this application. If you do not have one, click{' '}
-						<a 
-						href='https://wwex.com/our-technology/e-commerce-solutions'
-						target='_blank'
-						rel='noreferrer'>
-						here
+						<a
+							href='https://wwex.com/our-technology/e-commerce-solutions'
+							target='_blank'
+							rel='noreferrer'>
+							here
 						</a>{' '}
 						to access the new account request form.
 					</div>
@@ -91,16 +91,16 @@ function ConnectionSettingsComponent(props) {
 						account to use this application. If you don’t have one, contact
 						Unishippers at 1-800-999-8721 and ask to be contacted by a sales
 						person from the office serving your area or{' '}
-						<a 
-						href='https://www.unishippers.com/request-shipping-consultation'
-						target='_blank'
-						rel='noreferrer'>
-						click here
+						<a
+							href='https://www.unishippers.com/request-shipping-consultation'
+							target='_blank'
+							rel='noreferrer'>
+							click here
 						</a>{' '}
 						to access the online new account request form.
 					</div>
 				</>
-			)}	
+			)}
 
 			<Form
 				layout='vertical'
@@ -124,14 +124,14 @@ function ConnectionSettingsComponent(props) {
 						}
 					/>
 				</Form.Item>
-				{ uniShipperSmallApiType == 'new_api' ? (
+				{uniShipperSmallApiType == 'new_api' ? (
 					<>
 						<Form.Item
 							label='Client ID'
 							name='clientId'
 							rules={[{ required: true, message: 'Client ID' }]}
 						>
-							<Input placeholder='Client ID' maxLength={100}/>
+							<Input placeholder='Client ID' maxLength={100} />
 						</Form.Item>
 						<Form.Item
 							className='mb-1'
@@ -139,7 +139,7 @@ function ConnectionSettingsComponent(props) {
 							name='clientSecret'
 							rules={[{ required: true, message: 'Client Secret' }]}
 						>
-							<Input placeholder='Client Secret' maxLength={100}/>
+							<Input placeholder='Client Secret' maxLength={100} />
 						</Form.Item>
 
 						<div>
@@ -208,7 +208,7 @@ function ConnectionSettingsComponent(props) {
 							rel='noreferrer'
 						>
 							How to obtain your Unishippers API credentials?
-						</a>	
+						</a>
 					</div>
 				)}
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>

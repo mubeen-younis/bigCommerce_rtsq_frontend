@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Form, Input, Button, Space, Skeleton } from "antd";
+import { Form, Input, Button, Space, Skeleton, Checkbox } from "antd";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { postData } from "../../../Actions/Action";
 import { getFDOCouponCarrierInfo } from "../../../Actions/FDOActions";
@@ -21,9 +21,7 @@ function ConnectionSettingsComponent(props) {
         fdoCouponInfo ? fdoCouponInfo?.code ?? "" : ""
       )
     );
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, token]);
+  }, [dispatch, token, fdoCouponInfo]);
 
   const handleTypeChange = (type) => {
     setConnectionState({ ...connectionState, testType: type });
@@ -111,6 +109,13 @@ function ConnectionSettingsComponent(props) {
           rules={[{ required: false, message: "Password" }]}
         >
           <Input type="text" placeholder="Password" maxLength={100} />
+        </Form.Item>
+
+        <Form.Item
+          name="requiresNmfc"
+          valuePropName="checked"
+        >
+          <Checkbox>My account requires NMFC numbers</Checkbox>
         </Form.Item>
 
         <Form.Item style={{ textAlign: "right", marginBottom: "0" }}>
