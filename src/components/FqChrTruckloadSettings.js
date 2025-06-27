@@ -27,7 +27,7 @@ const FqChrTruckloadSettings = ({
     }
     return true
   }
-
+  
   return !filterService() ? null : (
     <>
       <Row gutter={30} className={"mb-4"}>
@@ -157,6 +157,91 @@ const FqChrTruckloadSettings = ({
           </div>
         </Col>
       </Row>
+
+
+      <Row gutter={30} align="middle" className="mb-3">
+        <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={6}>
+          <label className="text-gray">Truckload Weight Break</label>
+        </Col>
+        <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={18}>
+          <Form.Item className="mb-0">
+            <Input
+              type="number"
+              min="0"
+              step="0.001"
+              placeholder="Leave blank to disable"
+              value={quoteSettingsState.truckload_weight_break}
+              onChange={(e) =>
+                setQuoteSettingsState((prevSettings) => ({
+                  ...prevSettings,
+                  truckload_weight_break: e.target.value,
+                }))
+              }
+            />
+          </Form.Item>
+          <div className="text-gray">
+            The total weight of the cart will be divided by this value to determine the number of truckload shipments required.
+            Leave blank to disable this calculation.
+          </div>
+        </Col>
+      </Row>
+
+       <Row gutter={30} align="middle" className={"mb-3"}>
+        <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={6}>
+          <label className={"text-gray"}>Truckload cubic volume threshold</label>
+        </Col>
+        <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={18}>
+          <Form.Item className={"mb-0"}>
+            <Input
+              maxLength="7"
+              value={quoteSettingsState.truckload_cubic_volume_threshold}
+              type="number"
+              min="0"
+              step="0.001"
+              onChange={e =>
+                setQuoteSettingsState(prevSettings => ({
+                  ...prevSettings,
+                  truckload_cubic_volume_threshold: e.target.value,
+                }))
+              }
+              pattern="[0-9.?(0-9){2}?]+%?$"
+            />
+          </Form.Item>
+          <div className={"text-gray"}>
+            When the cubic volume of the cart is greater than this value then
+            Truckload rate should be returned.
+          </div>
+        </Col>
+      </Row>
+
+
+      <Row gutter={30} align="middle" className="mb-3">
+        <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={6}>
+          <label className="text-gray">Truckload Cubic Volume Break</label>
+        </Col>
+        <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={18}>
+          <Form.Item className="mb-0">
+            <Input
+              type="number"
+              min="0"
+              step="0.001"
+              placeholder="Leave blank to disable"
+              value={quoteSettingsState.truckload_cubic_volume_break}
+              onChange={(e) =>
+                setQuoteSettingsState((prevSettings) => ({
+                  ...prevSettings,
+                  truckload_cubic_volume_break: e.target.value,
+                }))
+              }
+            />
+          </Form.Item>
+          <div className="text-gray">
+            The total cubic volume of cart contents will be divided by this value to determine the number of truckload shipments.
+            Leave blank to disable.
+          </div>
+        </Col>
+      </Row>
+
 
       <Row gutter={30} align="middle" className="mb-2">
         <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={6}>
