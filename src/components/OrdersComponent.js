@@ -30,7 +30,7 @@ function OrderSettingsComponent(props) {
 	const [lastPageNo, setLastPageNo] = useState(1)
 	const [countSorting, setCountSorting] = useState(0)
 	const [state, setState] = useState({
-		
+
 		filteredInfo: null,
 		sortedInfo: null,
 		selectedRowKeys: [],
@@ -382,7 +382,7 @@ function OrderSettingsComponent(props) {
 						<h4>{bin?.items[0]?.['product_name'] ?? ''}</h4>
 						{bin?.weight ? <h4>Box weight:{' '}{bin?.weight ?? 0} lbs</h4> : null}
 						<span style={{ width: '100%', float: 'left' }}>
-						{isPalletWidget ? 'Pallet' : 'Box'}{' '}Dimensions:{' '}
+							{isPalletWidget ? 'Pallet' : 'Box'}{' '}Dimensions:{' '}
 							{bin?.d}
 							{bin?.w}
 							{bin?.h}
@@ -453,9 +453,11 @@ function OrderSettingsComponent(props) {
 
 	const countItems = (shipment) => {
 		let totalItems = 0
-		{shipment?.line_items.map(item => (
-			totalItems +=item.quantity
-		))}
+		{
+			shipment?.line_items.map(item => (
+				totalItems += item.quantity
+			))
+		}
 		return totalItems
 	}
 
@@ -508,13 +510,13 @@ function OrderSettingsComponent(props) {
 										{bin?.number_of_items} <br />
 
 										{bin?.weight ? <> Box weight:{' '}
-										{bin?.weight} lbs<br /> </>: null}
+											{bin?.weight} lbs<br /> </> : null}
 										{bin?.nickname}
 									</strong>
 								</Col>
 								<Col span={16}>
 									<span>
-									{isPalletWidget ? 'Pallet' : 'Box'}{' '}Dimensions:{' '}
+										{isPalletWidget ? 'Pallet' : 'Box'}{' '}Dimensions:{' '}
 										{bin?.d}
 										{bin?.w}
 										{bin?.h}
@@ -535,26 +537,26 @@ function OrderSettingsComponent(props) {
 								</Col>
 								{widget?.sbs?.type !== 'item'
 									? bin?.items.map(box => (
-											<>
-												<Col
-													span={6}
-													style={{ textAlign: 'center' }}>
-													<img
-														src={box?.image_sbs}
-														style={{ margin: '5px' }}
-														alt={box?.image_sbs}
-													/>
-													<br />
-													<span>
-														{box?.product_name} <br />
-														{box?.d + ' x '}
-														{box?.w + ' x '}
-														{box?.h}
-													</span>
-													<br />
-												</Col>
-											</>
-									  ))
+										<>
+											<Col
+												span={6}
+												style={{ textAlign: 'center' }}>
+												<img
+													src={box?.image_sbs}
+													style={{ margin: '5px' }}
+													alt={box?.image_sbs}
+												/>
+												<br />
+												<span>
+													{box?.product_name} <br />
+													{box?.d + ' x '}
+													{box?.w + ' x '}
+													{box?.h}
+												</span>
+												<br />
+											</Col>
+										</>
+									))
 									: ''}
 							</Row>
 						</Col>
@@ -636,9 +638,8 @@ function OrderSettingsComponent(props) {
 
 			{/* ================ */}
 			<Drawer
-				title={`Additional Order Details ${
-					!loadOrder ? ' (' + selectedOrderDetail?.id + ')' : ''
-				}`}
+				title={`Additional Order Details ${!loadOrder ? ' (' + selectedOrderDetail?.id + ')' : ''
+					}`}
 				width={720}
 				onClose={onClose}
 				visible={state.visible}
@@ -703,6 +704,10 @@ function OrderSettingsComponent(props) {
 													{widget?.quoteId && (
 														<li>{'Quote Id: ' + widget?.quoteId}</li>
 													)}
+
+													{widget?.number_of_trucks && widget.number_of_trucks !== '' && (
+														<li>{'Number of Trucks: ' + widget.number_of_trucks}</li>
+													)}
 												</ul>
 											</div>
 										</Col>
@@ -716,7 +721,7 @@ function OrderSettingsComponent(props) {
 														))}
 													</ul>
 												</div>
-												</Col>
+											</Col>
 										) : null}
 										{widget?.freeShippingItems && widget?.freeShippingItems?.length > 0 ? (
 											<Col span={12}>
@@ -750,22 +755,22 @@ function OrderSettingsComponent(props) {
 									</Button>
 									{props?.orderwidget?.fdoShipments?.map((shipment, key) => (
 										<Col span={12} className='float-left mb-1'>
-											<Card 
-												className='mb-0' 
-												style={{ backgroundColor: 'hsl(0deg 12.87% 88.25%)', borderRadius: "10px", height: '100%' }} 
-												bodyStyle={{padding: "10px"}}
+											<Card
+												className='mb-0'
+												style={{ backgroundColor: 'hsl(0deg 12.87% 88.25%)', borderRadius: "10px", height: '100%' }}
+												bodyStyle={{ padding: "10px" }}
 											>
-												<span> <b> {('Shipment #' + (key + 1)) }</b> <br/>{countItems(shipment) == 1 ? (countItems(shipment) + ' item @') : (countItems(shipment) + ' items @')} {(shipment?.shipment_date)} </span> <br/> 
+												<span> <b> {('Shipment #' + (key + 1))}</b> <br />{countItems(shipment) == 1 ? (countItems(shipment) + ' item @') : (countItems(shipment) + ' items @')} {(shipment?.shipment_date)} </span> <br />
 												{shipment?.line_items.map(item => (
-														<>{item.quantity} X {item.product_name} <br/> </>
-													))}
-												<span> Shipping method: {shipment?.shipping_method}</span> <br/>
+													<>{item.quantity} X {item.product_name} <br /> </>
+												))}
+												<span> Shipping method: {shipment?.shipping_method}</span> <br />
 												<span> Tracking # {shipment?.tracking_number}</span>
 											</Card>
 										</Col>
 									))}
 								</Fragment>
-							) : null }
+							) : null}
 						</Row>
 					</Form>
 				)}
@@ -800,9 +805,9 @@ const mapDispatchToProps = dispatch => {
 
 const styles = {
 	breakAll: {
-	  wordBreak: 'break-word',
-	  whiteSpace: 'normal',
+		wordBreak: 'break-word',
+		whiteSpace: 'normal',
 	},
-  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderSettingsComponent)
