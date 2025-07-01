@@ -13,6 +13,7 @@ const { Title } = Typography
 const { Option } = Select
 
 function AutoDetectResidentialComponent(props) {
+	console.log("aaaaaaa", props);
 	const [suspend, setSuspend] = useState(false)
 	const [cancelSubsriptionVisible, SetCancelSubsriptionVisible] = useState(false)
 	const [newPlan, SetNewPlan] = useState({})
