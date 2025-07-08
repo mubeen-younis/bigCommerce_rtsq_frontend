@@ -158,10 +158,31 @@ const FqChrTruckloadSettings = ({
         </Col>
       </Row>
 
+      <Row gutter={30} align="middle" className="mb-2">
+        <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={6}>
+          <label className="text-gray">
+            Quote LTL freight above the truckload weight threshold
+          </label>
+        </Col>
+        <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={18}>
+          <Form.Item className="mb-0">
+            <Checkbox
+              name="quoteltl_and_truckload"
+              checked={quoteSettingsState?.quoteltl_and_truckload}
+              onChange={e =>
+                setQuoteSettingsState(prevSettings => ({
+                  ...prevSettings,
+                  quoteltl_and_truckload: e.target.checked,
+                }))
+              }
+            />
+          </Form.Item>
+        </Col>
+      </Row>
 
       <Row gutter={30} align="middle" className="mb-3">
         <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={6}>
-          <label className="text-gray">Truckload Weight Break</label>
+          <label className="text-gray">Truckload weight break</label>
         </Col>
         <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={18}>
           <Form.Item className="mb-0">
@@ -169,7 +190,7 @@ const FqChrTruckloadSettings = ({
               type="number"
               min="0"
               step="0.001"
-              placeholder="Leave blank to disable"
+              placeholder=""
               value={quoteSettingsState.truckload_weight_break}
               onChange={(e) =>
                 setQuoteSettingsState((prevSettings) => ({
@@ -214,10 +235,32 @@ const FqChrTruckloadSettings = ({
         </Col>
       </Row>
 
+ <Row gutter={30} align="middle" className="mb-2">
+        <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={6}>
+          <label className="text-gray">
+            Quote LTL freight above the truckload cubic volume threshold
+          </label>
+        </Col>
+        <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={18}>
+          <Form.Item className="mb-0">
+            <Checkbox
+              name="quoteltl_and_truckload"
+              checked={quoteSettingsState?.quoteltl_and_cubic_truckload}
+              onChange={e =>
+                setQuoteSettingsState(prevSettings => ({
+                  ...prevSettings,
+                  quoteltl_and_cubic_truckload: e.target.checked,
+                }))
+              }
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+
 
       <Row gutter={30} align="middle" className="mb-3">
         <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={6}>
-          <label className="text-gray">Truckload Cubic Volume Break</label>
+          <label className="text-gray">Truckload cubic volume break</label>
         </Col>
         <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={18}>
           <Form.Item className="mb-0">
@@ -225,7 +268,7 @@ const FqChrTruckloadSettings = ({
               type="number"
               min="0"
               step="0.001"
-              placeholder="Leave blank to disable"
+              placeholder=""
               value={quoteSettingsState.truckload_cubic_volume_break}
               onChange={(e) =>
                 setQuoteSettingsState((prevSettings) => ({
@@ -239,29 +282,6 @@ const FqChrTruckloadSettings = ({
             The total cubic volume of cart contents will be divided by this value to determine the number of truckload shipments.
             Leave blank to disable.
           </div>
-        </Col>
-      </Row>
-
-
-      <Row gutter={30} align="middle" className="mb-2">
-        <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={6}>
-          <label className="text-gray">
-            Quote LTL freight above the truckload weight threshold
-          </label>
-        </Col>
-        <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={18}>
-          <Form.Item className="mb-0">
-            <Checkbox
-              name="quoteltl_and_truckload"
-              checked={quoteSettingsState?.quoteltl_and_truckload}
-              onChange={e =>
-                setQuoteSettingsState(prevSettings => ({
-                  ...prevSettings,
-                  quoteltl_and_truckload: e.target.checked,
-                }))
-              }
-            />
-          </Form.Item>
         </Col>
       </Row>
     </>

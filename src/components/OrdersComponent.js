@@ -708,6 +708,10 @@ function OrderSettingsComponent(props) {
 													{widget?.number_of_trucks && widget.number_of_trucks !== '' && (
 														<li>{'Number of Trucks: ' + widget.number_of_trucks}</li>
 													)}
+
+													{widget?.rate_per_truckload && widget.rate_per_truckload !== '' && (
+														<li>{'Rate per Truckload: ' + widget.rate_per_truckload}</li>
+													)}
 												</ul>
 											</div>
 										</Col>
