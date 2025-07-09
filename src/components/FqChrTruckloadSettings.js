@@ -238,7 +238,7 @@ const FqChrTruckloadSettings = ({
  <Row gutter={30} align="middle" className="mb-2">
         <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={6}>
           <label className="text-gray">
-            Quote LTL freight above the truckload cubic volume threshold
+            Quote LTL freight above the cubic volume threshold
           </label>
         </Col>
         <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={18}>
