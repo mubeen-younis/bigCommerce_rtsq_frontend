@@ -238,7 +238,7 @@ const FqChrTruckloadSettings = ({
  <Row gutter={30} align="middle" className="mb-2">
         <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={6}>
           <label className="text-gray">
-            Quote LTL freight above the cubic volume threshold
+            Quote LTL freight above the cubic volume thresholddddd
           </label>
         </Col>
         <Col className="gutter-row" xs={24} sm={12} md={12} lg={12} xl={18}>
@@ -260,7 +260,7 @@ const FqChrTruckloadSettings = ({
 
       <Row gutter={30} align="middle" className="mb-3">
         <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={6}>
-          <label className="text-gray">Truckload cubic volume break</label>
+          <label className="text-gray">Truckload cubic volume breakkkk</label>
         </Col>
         <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={18}>
           <Form.Item className="mb-0">
