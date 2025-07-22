@@ -277,6 +277,7 @@ const FqChrTruckloadSettings = ({
                 }))
               }
             />
+            
           </Form.Item>
           <div className="text-gray">
             The total cubic volume of cart contents will be divided by this value to determine the number of truckload shipments.
