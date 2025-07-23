@@ -1,7 +1,9 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useState, useRef } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
+import { Radio } from 'antd';
 import { upsBoxTypes, boxDiscription } from '../../Utilities/constants'
 import { Link } from 'react-router-dom'
+import axios from "../../Utilities/authToken"
 import {
 	Select,
 	Typography,
@@ -16,6 +18,7 @@ import {
 	Divider,
 	Modal,
 	Skeleton,
+	Spin,
 } from 'antd'
 
 import {
@@ -51,6 +54,7 @@ const initialState = {
 	box_fee: '',
 	is_available: false,
 	box_type: 1,
+	availability_type: '1',
 }
 
 const productBoxInitialState = {
@@ -148,6 +152,8 @@ function BoxSizesComponent(props) {
 		isUspsSmallCarrier,
 		isUpsSmallCarrier,
 		installedCarriers,
+		storeCategories,
+		storeBrands,
 	} = useSelector(state => state)
 	const [boxSizeForm] = Form.useForm()
 
@@ -338,8 +344,8 @@ function BoxSizesComponent(props) {
 				values?.box_name === 'Merchant defined Box (default)'
 					? 1
 					: (isFedexSmallCarrier && 2) ||
-					  (isUspsSmallCarrier && 3) ||
-					  (isUpsSmallCarrier && 5)
+					(isUspsSmallCarrier && 3) ||
+					(isUpsSmallCarrier && 5)
 
 			const boxName = values?.box_name?.toLowerCase() ?? ''
 			if (boxName?.includes('fedex_')) {
@@ -385,6 +391,111 @@ function BoxSizesComponent(props) {
 		}
 		//setVisibleAddBox(false);
 	}
+
+	// -------------cc-----------------
+
+
+	// Add these new state variables for the apply rule functionality
+	const [applyRuleTo, setApplyRuleTo] = useState(1)
+	const [selectedCategories, setSelectedCategories] = useState([])
+	const [selectedBrands, setSelectedBrands] = useState([])
+	const [selectedProducts, setSelectedProducts] = useState([])
+	const [data, setData] = useState([])
+	const [searchQuery, setSearchQuery] = useState("")
+	const [loading, setLoading] = useState(false)
+	const dropdownRef = useRef()
+
+
+
+	// Fetch products data call when characters length > 2
+	useEffect(() => {
+		if (searchQuery.length > 2) {
+			fetchData()
+		}
+	}, [searchQuery])
+
+	useEffect(() => {
+		// Attach event listener for body click
+		document.body.addEventListener("click", handleBodyClick)
+		// Cleanup event listener on component unmount
+		return () => {
+			document.body.removeEventListener("click", handleBodyClick)
+		}
+	}, [])
+
+
+	// Fetch products on search by name from DB
+	const fetchData = async () => {
+		setLoading(true)
+		try {
+			const config = {
+				headers: {
+					authorization: `Bearer ${props.token}`, // Use props.token since you're using connect
+				},
+				params: {
+					search: searchQuery,
+				},
+			}
+			const response = await axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_shipping_rule_products`, config)
+			setData([...response.data.data])
+		} catch (error) {
+			console.error("Error fetching data:", error)
+		} finally {
+			setLoading(false)
+		}
+	}
+
+	const handleChangeApplyRuleTo = (value) => {
+		boxSizeForm.resetFields(["filter_categories", "filter_brands", "filter_products"])
+		setApplyRuleTo(value)
+	}
+
+	const handleChangeCategories = (selectedValues) => {
+		setSelectedCategories(selectedValues)
+	}
+
+	const filterOptionsCategories = (input, option) => {
+		return (
+			option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
+			!selectedCategories.includes(option.key)
+		)
+	}
+
+	const handleChangeBrands = (selectedValues) => {
+		setSelectedBrands(selectedValues)
+	}
+
+	const filterOptionsBrands = (input, option) => {
+		return (
+			option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
+			!selectedBrands.includes(option.key)
+		)
+	}
+
+	const handleSearch = (value) => {
+		setData([])
+		setSearchQuery(value)
+	}
+
+	const handleChangeProducts = (selectedValues) => {
+		setData([])
+		setSearchQuery("")
+		setSelectedProducts(selectedValues)
+	}
+
+	// Click outside the dropdown, clear data
+	const handleBodyClick = (event) => {
+		if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+			setData([])
+			setSearchQuery("")
+		}
+	}
+
+
+
+
+
+	// ------------cc-----------------
 
 	const addProductBoxSize = useCallback(
 		values => {
@@ -447,6 +558,8 @@ function BoxSizesComponent(props) {
 	const editBoxSize = record => {
 		setOperation(true)
 		setLoadBoxSize(true)
+
+		// Reset the boxSize state with the record data
 		setBoxSize({ ...record })
 
 		if (['UMEB', 'UPMB', 'UFLAT'].includes(record?.box_name)) {
@@ -457,18 +570,20 @@ function BoxSizesComponent(props) {
 					break
 				}
 			}
-
 			let box_name = record.box_name + index
 			boxSizeForm.setFieldsValue({
 				...record,
 				box_name,
+				availability_type: record.availability_type || "1" // Ensure availability_type is set
 			})
 		} else {
-			boxSizeForm.setFieldsValue(record)
+			boxSizeForm.setFieldsValue({
+				...record,
+				availability_type: record.availability_type || "1" // Ensure availability_type is set
+			})
 		}
-		boxSizeForm.setFieldsValue(record)
-		setVisibleAddBox(true)
 
+		setVisibleAddBox(true)
 		setTimeout(() => {
 			setLoadBoxSize(false)
 		}, 1000)
@@ -725,7 +840,10 @@ function BoxSizesComponent(props) {
 										setBoxSize(initialState)
 										setOperation(false)
 										setVisibleAddBox(true)
-										boxSizeForm.setFieldsValue(initialState)
+										boxSizeForm.setFieldsValue({
+											...initialState,
+											availability_type: "1" // Explicitly set default value
+										})
 										setDiscription({})
 									}}>
 									Add Box
@@ -809,18 +927,18 @@ function BoxSizesComponent(props) {
 																		'fedex'
 																	)
 																	? populateBoxValues(
-																			val
-																	  )
+																		val
+																	)
 																	: val
-																			?.toLowerCase()
-																			?.includes(
-																				'ups'
-																			)
-																	? upsBoxInfo(val)
-																	: setUspsBoxFields(
+																		?.toLowerCase()
+																		?.includes(
+																			'ups'
+																		)
+																		? upsBoxInfo(val)
+																		: setUspsBoxFields(
 																			val,
 																			opt
-																	  )
+																		)
 															}>
 															<Option value='Merchant defined Box (default)'>
 																Merchant defined Box
@@ -836,7 +954,7 @@ function BoxSizesComponent(props) {
 																					'usps'
 																				)
 																				? bt.id +
-																				  i
+																				i
 																				: bt.id
 																		}
 																		key={
@@ -846,7 +964,7 @@ function BoxSizesComponent(props) {
 																					'usps'
 																				)
 																				? bt.id +
-																				  i
+																				i
 																				: bt.id
 																		}>
 																		{bt.label}
@@ -859,7 +977,7 @@ function BoxSizesComponent(props) {
 
 												{discription?.dimensions &&
 													discription?.dimensions?.length >
-														0 && (
+													0 && (
 														<Col
 															className='gutter-row note-bx'
 															xs={24}
@@ -900,7 +1018,7 @@ function BoxSizesComponent(props) {
 															min='0'
 															step='0.01'
 															placeholder='Interior Length (in)'
-															//pattern='[0-9.?(0-9){2}?]+%?$'
+														//pattern='[0-9.?(0-9){2}?]+%?$'
 														/>
 													</Form.Item>
 												</Col>
@@ -984,7 +1102,7 @@ function BoxSizesComponent(props) {
 															min='0'
 															step='0.01'
 															placeholder='Exterior Length (in)'
-															//pattern='[0-9.?(0-9){2}?]+%?$'
+														//pattern='[0-9.?(0-9){2}?]+%?$'
 														/>
 													</Form.Item>
 												</Col>
@@ -1118,6 +1236,238 @@ function BoxSizesComponent(props) {
 														/>
 													</Form.Item>
 												</Col>
+
+												{/* --------------------- aaaaaaaa --------------------- */}
+
+
+
+												<Col
+													className='gutter-row'
+													xs={24}
+													sm={24}
+													md={24}
+													lg={24}
+													xl={24}
+												>
+													<Form.Item name="availability_type">
+														<Radio.Group
+															onChange={e =>
+																setBoxSize({
+																	...boxSize,
+																	availability_type: e.target.value,
+																})
+															}
+															style={{ display: 'flex', flexDirection: 'column' }}
+														>
+															<Radio value="1">Universally available for use</Radio>
+															<Radio value="2">For use only with specific products</Radio>
+														</Radio.Group>
+													</Form.Item>
+													{/* 122345 */}
+													{/* 756745 */}
+												</Col>
+
+												{boxSize.availability_type === "2" && (
+													<>
+														<Row gutter={30}>
+															<Col
+																className="gutter-row"
+																xs={24}
+																sm={24}
+																md={24}
+																lg={24}
+																xl={24}
+															></Col>
+
+
+															<Col
+																className="gutter-row"
+																xs={24}
+																sm={24}
+																md={24}
+																lg={24}
+																xl={24}
+															>
+																<div id="apply_rule_to">
+																	<Form.Item
+																		className={"mb-2"}
+																		// label="Apply rule to"
+																		name="apply_rule_to"
+																		rules={[
+																			{
+																				required: false,
+																				message: "Assign box to",
+																			},
+																		]}
+																	>
+																		<Select
+																			placeholder="Assign box to"
+																			onChange={(value) => handleChangeApplyRuleTo(value)}
+																			getPopupContainer={() =>
+																				document.getElementById("apply_rule_to")
+																			}
+																		>
+																			<Option value={1}>Categories</Option>
+																			<Option value={2}>Brands</Option>
+																			<Option value={3}>Individual Products</Option>
+																		</Select>
+																	</Form.Item>
+																</div>
+															</Col>
+
+															{applyRuleTo == 1 ? (
+																<Col
+																	className="gutter-row"
+																	xs={24}
+																	sm={24}
+																	md={24}
+																	lg={24}
+																	xl={24}
+																>
+																	<div id="country_dropdown">
+																		<Form.Item
+																			className={"mb-2"}
+																			// label={"Apply the rule to these categories"}
+																			name="filter_categories"
+																			rules={[
+																				{
+																					required: true,
+																					message: "Categories are required",
+																				},
+																			]}
+																		>
+																			<Select
+																				mode="multiple"
+																				style={{ width: "100%" }}
+																				placeholder={"Select categories"}
+																				value={selectedCategories}
+																				getPopupContainer={() =>
+																					document.getElementById("country_dropdown")
+																				}
+																				allowClear
+																				onChange={handleChangeCategories}
+																				filterOption={filterOptionsCategories}
+																			>
+																				{storeCategories?.map((option) => (
+																					<Option key={option.key} value={option.key}>
+																						{option.value}
+																					</Option>
+																				))}
+																			</Select>
+																		</Form.Item>
+																	</div>
+																</Col>
+															) : applyRuleTo == 2 ? (
+																<Col
+																	className="gutter-row"
+																	xs={24}
+																	sm={24}
+																	md={24}
+																	lg={24}
+																	xl={24}
+																>
+																	<div id="country_dropdown">
+																		<Form.Item
+																			className={"mb-2"}
+																			// label={"Apply the rule to these brands"}
+																			name="filter_brands"
+																			rules={[
+																				{
+																					required: true,
+																					message: "Brands are required",
+																				},
+																			]}
+																		>
+																			<Select
+																				mode="multiple"
+																				style={{ width: "100%" }}
+																				placeholder={"Select brands"}
+																				value={selectedBrands}
+																				getPopupContainer={() =>
+																					document.getElementById("country_dropdown")
+																				}
+																				allowClear
+																				onChange={handleChangeBrands}
+																				filterOption={filterOptionsBrands}
+																			>
+																				{storeBrands?.map((option) => (
+																					<Option key={option.key} value={option.key}>
+																						{option.value}
+																					</Option>
+																				))}
+																			</Select>
+																		</Form.Item>
+																	</div>
+																</Col>
+															) : applyRuleTo == 3 ? (
+																<Col
+																	className="gutter-row"
+																	xs={24}
+																	sm={24}
+																	md={24}
+																	lg={24}
+																	xl={24}
+																>
+																	<div id="country_dropdown">
+																		<div ref={dropdownRef}>
+																			<Form.Item
+																				className={"mb-2"}
+																				// label={"Apply the rule to these products"}
+																				name="filter_products"
+																				rules={[
+																					{
+																						required: true,
+																						message: "Products are required",
+																					},
+																				]}
+																			>
+																				<Select
+																					mode="multiple"
+																					style={{ width: "100%" }}
+																					placeholder={"Search products by name, SKU"}
+																					labelInValue
+																					getPopupContainer={() =>
+																						document.getElementById("country_dropdown")
+																					}
+																					notFoundContent={
+																						loading ? (
+																							<span>
+																								<Spin size="small" />
+																							</span>
+																						) : searchQuery?.length > 2 && data?.length == 0 ? (
+																							<span>Product not found!</span>
+																						) : (
+																							<span>
+																								Please enter a minimum of three characters.
+																							</span>
+																						)
+																					}
+																					value={selectedProducts}
+																					allowClear
+																					onSearch={handleSearch}
+																					onChange={handleChangeProducts}
+																					filterOption={false}
+																				>
+																					{data?.map((option) => (
+																						<Option
+																							key={option?.source_product_id}
+																							value={option?.source_product_id}
+																						>
+																							{option?.name}
+																						</Option>
+																					))}
+																				</Select>
+																			</Form.Item>
+																		</div>
+																	</div>
+																</Col>
+															) : null}
+														</Row>
+													</>
+												)}
+												{/* -------------------------------------------------- */}
+
+
 												<Col
 													className='gutter-row'
 													xs={24}
@@ -1182,8 +1532,8 @@ function BoxSizesComponent(props) {
 							dataSource={
 								props.boxSizes
 									? props.boxSizes?.filter(
-											bs => +bs?.box_type !== 4
-									  )
+										bs => +bs?.box_type !== 4
+									)
 									: []
 							}
 							columns={columns}
@@ -1291,7 +1641,7 @@ function BoxSizesComponent(props) {
 													min='0'
 													step='0.01'
 													placeholder='Length (in)'
-													//pattern='[0-9.?(0-9){2}?]+%?$'
+												//pattern='[0-9.?(0-9){2}?]+%?$'
 												/>
 											</Form.Item>
 										</Col>
