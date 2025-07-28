@@ -55,6 +55,9 @@ const initialState = {
 	is_available: false,
 	box_type: 1,
 	availability_type: '1',
+	filter_products: [],
+	filter_categories:[],
+	filter_brands:[]
 }
 
 const productBoxInitialState = {
@@ -405,8 +408,6 @@ function BoxSizesComponent(props) {
 	const [loading, setLoading] = useState(false)
 	const dropdownRef = useRef()
 
-
-
 	// Fetch products data call when characters length > 2
 	useEffect(() => {
 		if (searchQuery.length > 2) {
@@ -478,6 +479,7 @@ function BoxSizesComponent(props) {
 	}
 
 	const handleChangeProducts = (selectedValues) => {
+		console.log(selectedValues)
 		setData([])
 		setSearchQuery("")
 		setSelectedProducts(selectedValues)
@@ -555,39 +557,77 @@ function BoxSizesComponent(props) {
 		[dispatch, operation, productBoxSize, props.token, recordId]
 	)
 
-	const editBoxSize = record => {
-		setOperation(true)
-		setLoadBoxSize(true)
+// Add this useEffect
+useEffect(() => {
+    if (!loadBoxSize && operation && visible) {
+        // Form is now rendered and ready to receive values
+        const boxAssociatedTo = JSON.parse(boxSize?.box_associated_to || '[]');
+        const productOptions = boxAssociatedTo.map(item => ({
+            key: item.value,
+            label: item.label
+        }));
+        
+        let formValues;
+        if (['UMEB', 'UPMB', 'UFLAT'].includes(boxSize?.box_name)) {
+            let index = 0
+            for (const key in uspsBoxTypes) {
+                if (uspsBoxTypes[key].lable === boxSize.nickname) {
+                    index = key
+                    break
+                }
+            }
+            let box_name = boxSize.box_name + index
+            formValues = {
+                ...boxSize,
+                box_name,
+                availability_type: boxSize.availability_type?.toString() || "1",
+                filter_products: productOptions
+            };
+        } else {
+            formValues = {
+                ...boxSize,
+                availability_type: boxSize.availability_type?.toString() || "1",
+                filter_products: productOptions
+            };
+        }
+        
+        boxSizeForm.setFieldsValue(formValues);
+    }
+}, [loadBoxSize, operation, visible, boxSize])
 
-		// Reset the boxSize state with the record data
-		setBoxSize({ ...record })
-
-		if (['UMEB', 'UPMB', 'UFLAT'].includes(record?.box_name)) {
-			let index = 0
-			for (const key in uspsBoxTypes) {
-				if (uspsBoxTypes[key].lable === record.nickname) {
-					index = key
-					break
-				}
-			}
-			let box_name = record.box_name + index
-			boxSizeForm.setFieldsValue({
-				...record,
-				box_name,
-				availability_type: record.availability_type || "1" // Ensure availability_type is set
-			})
-		} else {
-			boxSizeForm.setFieldsValue({
-				...record,
-				availability_type: record.availability_type || "1" // Ensure availability_type is set
-			})
-		}
-
-		setVisibleAddBox(true)
-		setTimeout(() => {
-			setLoadBoxSize(false)
-		}, 1000)
+// Simplified editBoxSize function
+const editBoxSize = record => {
+    console.log("aaaaa", record);
+    setOperation(true)
+    setLoadBoxSize(true)
+    
+    let boxAssociatedTo;
+	if(record.apply_rule_to==1){
+		boxAssociatedTo = JSON.parse(record?.box_associated_to || '[]');
+	}else if (record.apply_rule_to ==  2){
+		boxAssociatedTo = JSON.parse(record?.box_associated_to || '[]');
+	}else if(record?.apply_rule_to == 3){
+		boxAssociatedTo = JSON.parse(record?.box_associated_to || '[]');
 	}
+    setBoxSize({
+      ...record,
+      filter_products: boxAssociatedTo,
+      filter_categories: boxAssociatedTo,
+      filter_brands: boxAssociatedTo,
+    });
+    handleChangeApplyRuleTo(record?.apply_rule_to)
+    
+    const productOptions = boxAssociatedTo.map(item => ({
+        key: item.value,
+        label: item.label
+    }));
+    setSelectedProducts(productOptions);
+    
+    setVisibleAddBox(true)
+    setTimeout(() => {
+        setLoadBoxSize(false)
+    }, 1000)
+}
 
 	const editProductBoxSize = record => {
 		setOperation(true)
@@ -781,13 +821,12 @@ function BoxSizesComponent(props) {
 			),
 		},
 	]
-
 	return (
-		<Fragment>
-			<Row gutter={30} justify='center' className={'mb-3'}>
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
-					<div>
-						{/* <Form.Item className={'mb-2'}>
+    <Fragment>
+      <Row gutter={30} justify="center" className={"mb-3"}>
+        <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
+          <div>
+            {/* <Form.Item className={'mb-2'}>
 							<Checkbox
 								onChange={e => setCheckEnable(!checkEnable)}
 								name='check_enable'
@@ -824,1025 +863,1025 @@ function BoxSizesComponent(props) {
 
 						<Divider /> */}
 
-						<Row gutter={10} align='middle' justify='center'>
-							<Col
-								className='gutter-row'
-								style={{ textAlign: 'right', marginBottom: '0' }}
-								xs={24}
-								sm={24}
-								md={24}
-								lg={24}
-								xl={24}>
-								<Button
-									style={{ width: '100px' }}
-									type='primary'
-									onClick={() => {
-										setBoxSize(initialState)
-										setOperation(false)
-										setVisibleAddBox(true)
-										boxSizeForm.setFieldsValue({
-											...initialState,
-											availability_type: "1" // Explicitly set default value
-										})
-										setDiscription({})
-									}}>
-									Add Box
-								</Button>
-								<Modal
-									title={
-										<Title className={'mb-0'} level={4}>
-											Box Size
-										</Title>
-									}
-									centered
-									visible={visible}
-									onCancel={() => setVisibleAddBox(false)}
-									afterClose={() => {
-										setBoxSize(initialState)
-										setDiscription({})
-									}}
-									destroyOnClose={true}
-									footer={null}
-									width={800}
-									cancelButtonProps={{
-										style: { display: 'none' },
-									}}>
-									{loadBoxSize ? (
-										<Skeleton active />
-									) : (
-										<Form
-											layout='vertical'
-											name='add_box_sizes'
-											className='form-wrp'
-											size={'large'}
-											initialValues={boxSize}
-											form={boxSizeForm}
-											onFinish={onFinish}>
-											<Row gutter={30}>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={24}
-													xl={24}>
-													<Form.Item
-														className={'mb-2'}
-														label='Nickname'
-														name='nickname'
-														rules={[
-															{
-																required: true,
-																message:
-																	'Nickname Required',
-															},
-														]}>
-														<Input placeholder='Nickname' />
-													</Form.Item>
-												</Col>
+            <Row gutter={10} align="middle" justify="center">
+              <Col
+                className="gutter-row"
+                style={{ textAlign: "right", marginBottom: "0" }}
+                xs={24}
+                sm={24}
+                md={24}
+                lg={24}
+                xl={24}
+              >
+                <Button
+                  style={{ width: "100px" }}
+                  type="primary"
+                  onClick={() => {
+                    setBoxSize(initialState);
+                    setOperation(false);
+                    setVisibleAddBox(true);
+                    boxSizeForm.setFieldsValue({
+                      ...initialState,
+                      availability_type: "1", // Explicitly set default value
+                    });
+                    setDiscription({});
+                  }}
+                >
+                  Add Box
+                </Button>
+                <Modal
+                  title={
+                    <Title className={"mb-0"} level={4}>
+                      Box Size
+                    </Title>
+                  }
+                  centered
+                  visible={visible}
+                  onCancel={() => setVisibleAddBox(false)}
+                  afterClose={() => {
+                    setBoxSize(initialState);
+                    setDiscription({});
+                  }}
+                  destroyOnClose={true}
+                  footer={null}
+                  width={800}
+                  cancelButtonProps={{
+                    style: { display: "none" },
+                  }}
+                >
+                  {loadBoxSize ? (
+                    <Skeleton active />
+                  ) : (
+                    <Form
+                      layout="vertical"
+                      name="add_box_sizes"
+                      className="form-wrp"
+                      size={"large"}
+                      initialValues={boxSize}
+                      form={boxSizeForm}
+                      onFinish={onFinish}
+                    >
+                      <Row gutter={30}>
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Nickname"
+                            name="nickname"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Nickname Required",
+                              },
+                            ]}
+                          >
+                            <Input placeholder="Nickname" />
+                          </Form.Item>
+                        </Col>
 
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={24}
-													xl={24}>
-													<Form.Item
-														className={'mb-2'}
-														label='Box Type'
-														name='box_name'
-														rules={[
-															{
-																required: true,
-																message:
-																	'Box Type Required',
-															},
-														]}>
-														<Select
-															onChange={(val, opt) =>
-																val
-																	?.toLowerCase()
-																	?.includes(
-																		'fedex'
-																	)
-																	? populateBoxValues(
-																		val
-																	)
-																	: val
-																		?.toLowerCase()
-																		?.includes(
-																			'ups'
-																		)
-																		? upsBoxInfo(val)
-																		: setUspsBoxFields(
-																			val,
-																			opt
-																		)
-															}>
-															<Option value='Merchant defined Box (default)'>
-																Merchant defined Box
-																(default)
-															</Option>
-															{handleBoxTypes()?.map(
-																(bt, i) => (
-																	<Option
-																		value={
-																			bt?.label
-																				?.toLowerCase()
-																				?.includes(
-																					'usps'
-																				)
-																				? bt.id +
-																				i
-																				: bt.id
-																		}
-																		key={
-																			bt?.label
-																				?.toLowerCase()
-																				?.includes(
-																					'usps'
-																				)
-																				? bt.id +
-																				i
-																				: bt.id
-																		}>
-																		{bt.label}
-																	</Option>
-																)
-															)}
-														</Select>
-													</Form.Item>
-												</Col>
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Box Type"
+                            name="box_name"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Box Type Required",
+                              },
+                            ]}
+                          >
+                            <Select
+                              onChange={(val, opt) =>
+                                val?.toLowerCase()?.includes("fedex")
+                                  ? populateBoxValues(val)
+                                  : val?.toLowerCase()?.includes("ups")
+                                  ? upsBoxInfo(val)
+                                  : setUspsBoxFields(val, opt)
+                              }
+                            >
+                              <Option value="Merchant defined Box (default)">
+                                Merchant defined Box (default)
+                              </Option>
+                              {handleBoxTypes()?.map((bt, i) => (
+                                <Option
+                                  value={
+                                    bt?.label?.toLowerCase()?.includes("usps")
+                                      ? bt.id + i
+                                      : bt.id
+                                  }
+                                  key={
+                                    bt?.label?.toLowerCase()?.includes("usps")
+                                      ? bt.id + i
+                                      : bt.id
+                                  }
+                                >
+                                  {bt.label}
+                                </Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </Col>
 
-												{discription?.dimensions &&
-													discription?.dimensions?.length >
-													0 && (
-														<Col
-															className='gutter-row note-bx'
-															xs={24}
-															sm={24}
-															md={24}
-															lg={24}
-															xl={24}>
-															<Form.Item>
-																{setDiscriptionText}
-															</Form.Item>
-														</Col>
-													)}
+                        {discription?.dimensions &&
+                          discription?.dimensions?.length > 0 && (
+                            <Col
+                              className="gutter-row note-bx"
+                              xs={24}
+                              sm={24}
+                              md={24}
+                              lg={24}
+                              xl={24}
+                            >
+                              <Form.Item>{setDiscriptionText}</Form.Item>
+                            </Col>
+                          )}
 
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Interior Length (in)'
-														name='length'
-														rules={[
-															{
-																required: true,
-																message:
-																	'Interior Length Required',
-															},
-															pattern,
-														]}>
-														<Input
-															type='number'
-															onKeyDown={
-																blockInvalidChar
-															}
-															min='0'
-															step='0.01'
-															placeholder='Interior Length (in)'
-														//pattern='[0-9.?(0-9){2}?]+%?$'
-														/>
-													</Form.Item>
-												</Col>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Interior Width (in)'
-														name='width'
-														rules={[
-															{
-																required: true,
-																message:
-																	'Interior Width Required',
-															},
-															pattern,
-														]}>
-														<Input
-															type='number'
-															onKeyDown={
-																handlingFeeMarkup
-															}
-															step='0.01'
-															min={0}
-															placeholder='Interior Width (in)'
-														/>
-													</Form.Item>
-												</Col>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Interior Height (in)'
-														name='height'
-														rules={[
-															{
-																required: true,
-																message:
-																	'Interior Height Required',
-															},
-															pattern,
-														]}>
-														<Input
-															type='number'
-															onKeyDown={
-																handlingFeeMarkup
-															}
-															step='0.01'
-															min={0}
-															placeholder='Interior Height (in)'
-														/>
-													</Form.Item>
-												</Col>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Exterior Length (in)'
-														name='ext_length'
-														rules={[pattern]}>
-														<Input
-															type='number'
-															onKeyDown={
-																blockInvalidChar
-															}
-															min='0'
-															step='0.01'
-															placeholder='Exterior Length (in)'
-														//pattern='[0-9.?(0-9){2}?]+%?$'
-														/>
-													</Form.Item>
-												</Col>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Exterior Width (in)'
-														name='ext_width'
-														rules={[pattern]}>
-														<Input
-															type='number'
-															onKeyDown={
-																handlingFeeMarkup
-															}
-															step='0.01'
-															min={0}
-															placeholder='Exterior Width (in)'
-														/>
-													</Form.Item>
-												</Col>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Exterior Height (in)'
-														name='ext_height'
-														rules={[pattern]}>
-														<Input
-															type='number'
-															onKeyDown={
-																handlingFeeMarkup
-															}
-															step='0.01'
-															min={0}
-															placeholder='Exterior Height (in)'
-														/>
-													</Form.Item>
-												</Col>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Max Weight (LBS)'
-														name='max_weight'
-														rules={[
-															{
-																required: true,
-																message:
-																	'Max Weight Required',
-															},
-															pattern,
-														]}>
-														<Input
-															type='number'
-															onKeyDown={
-																handlingFeeMarkup
-															}
-															step='0.01'
-															min={0}
-															placeholder='Max Weight'
-														/>
-													</Form.Item>
-												</Col>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Box Weight (LBS)'
-														name='box_weight'
-														rules={[
-															{
-																required: true,
-																message:
-																	'Box Weight Required',
-															},
-															pattern,
-														]}>
-														<Input
-															type='number'
-															onKeyDown={
-																handlingFeeMarkup
-															}
-															step='0.01'
-															min={0}
-															placeholder='Box Weight'
-														/>
-													</Form.Item>
-												</Col>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={12}
-													xl={12}>
-													<Form.Item
-														className={'mb-2'}
-														label='Box Fee (e.g 1.75)'
-														name='box_fee'
-														rules={[pattern]}>
-														<Input
-															type='number'
-															onKeyDown={
-																handlingFeeMarkup
-															}
-															step='0.01'
-															maxLength='7'
-															min={0}
-															placeholder='Box Fee'
-														/>
-													</Form.Item>
-												</Col>
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={12}
+                          xl={12}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Interior Length (in)"
+                            name="length"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Interior Length Required",
+                              },
+                              pattern,
+                            ]}
+                          >
+                            <Input
+                              type="number"
+                              onKeyDown={blockInvalidChar}
+                              min="0"
+                              step="0.01"
+                              placeholder="Interior Length (in)"
+                              //pattern='[0-9.?(0-9){2}?]+%?$'
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={12}
+                          xl={12}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Interior Width (in)"
+                            name="width"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Interior Width Required",
+                              },
+                              pattern,
+                            ]}
+                          >
+                            <Input
+                              type="number"
+                              onKeyDown={handlingFeeMarkup}
+                              step="0.01"
+                              min={0}
+                              placeholder="Interior Width (in)"
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={12}
+                          xl={12}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Interior Height (in)"
+                            name="height"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Interior Height Required",
+                              },
+                              pattern,
+                            ]}
+                          >
+                            <Input
+                              type="number"
+                              onKeyDown={handlingFeeMarkup}
+                              step="0.01"
+                              min={0}
+                              placeholder="Interior Height (in)"
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={12}
+                          xl={12}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Exterior Length (in)"
+                            name="ext_length"
+                            rules={[pattern]}
+                          >
+                            <Input
+                              type="number"
+                              onKeyDown={blockInvalidChar}
+                              min="0"
+                              step="0.01"
+                              placeholder="Exterior Length (in)"
+                              //pattern='[0-9.?(0-9){2}?]+%?$'
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={12}
+                          xl={12}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Exterior Width (in)"
+                            name="ext_width"
+                            rules={[pattern]}
+                          >
+                            <Input
+                              type="number"
+                              onKeyDown={handlingFeeMarkup}
+                              step="0.01"
+                              min={0}
+                              placeholder="Exterior Width (in)"
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={12}
+                          xl={12}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Exterior Height (in)"
+                            name="ext_height"
+                            rules={[pattern]}
+                          >
+                            <Input
+                              type="number"
+                              onKeyDown={handlingFeeMarkup}
+                              step="0.01"
+                              min={0}
+                              placeholder="Exterior Height (in)"
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={12}
+                          xl={12}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Max Weight (LBS)"
+                            name="max_weight"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Max Weight Required",
+                              },
+                              pattern,
+                            ]}
+                          >
+                            <Input
+                              type="number"
+                              onKeyDown={handlingFeeMarkup}
+                              step="0.01"
+                              min={0}
+                              placeholder="Max Weight"
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={12}
+                          xl={12}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Box Weight (LBS)"
+                            name="box_weight"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Box Weight Required",
+                              },
+                              pattern,
+                            ]}
+                          >
+                            <Input
+                              type="number"
+                              onKeyDown={handlingFeeMarkup}
+                              step="0.01"
+                              min={0}
+                              placeholder="Box Weight"
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={12}
+                          xl={12}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Box Fee (e.g 1.75)"
+                            name="box_fee"
+                            rules={[pattern]}
+                          >
+                            <Input
+                              type="number"
+                              onKeyDown={handlingFeeMarkup}
+                              step="0.01"
+                              maxLength="7"
+                              min={0}
+                              placeholder="Box Fee"
+                            />
+                          </Form.Item>
+                        </Col>
 
-												{/* --------------------- aaaaaaaa --------------------- */}
+                        {/* --------------------- aaaaaaaa --------------------- */}
 
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                        >
+                          <Form.Item name="availability_type">
+                            <Radio.Group
+                              onChange={(e) =>
+                                setBoxSize({
+                                  ...boxSize,
+                                  availability_type: e.target.value,
+                                })
+                              }
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <Radio value="1">
+                                Universally available for use
+                              </Radio>
+                              <Radio value="2">
+                                For use only with specific
+                                product/category/brand
+                              </Radio>
+                            </Radio.Group>
+                          </Form.Item>
+                        </Col>
 
+                        {boxSize.availability_type == "2" && (
+                          <>
+                            <Row gutter={30} style={{ marginLeft: "3px" }}>
+                              <Col
+                                className="gutter-row"
+                                xs={24}
+                                sm={24}
+                                md={24}
+                                lg={24}
+                                xl={24}
+                              ></Col>
 
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={24}
-													xl={24}
-												>
-													<Form.Item name="availability_type">
-														<Radio.Group
-															onChange={e =>
-																setBoxSize({
-																	...boxSize,
-																	availability_type: e.target.value,
-																})
-															}
-															style={{ display: 'flex', flexDirection: 'column' }}
-														>
-															<Radio value="1">Universally available for use</Radio>
-															<Radio value="2">For use only with specific products</Radio>
-														</Radio.Group>
-													</Form.Item>
-													{/* 122345 */}
-													{/* 756745 */}
-												</Col>
+                              <Col
+                                className="gutter-row"
+                                xs={24}
+                                sm={24}
+                                md={24}
+                                lg={24}
+                                xl={24}
+                                style={{ width: "678px" }}
+                              >
+                                <div id="apply_rule_to">
+                                  <Form.Item
+                                    className={"mb-2"}
+                                    label="Box Availablilty"
+                                    name="apply_rule_to"
+                                    rules={[
+                                      {
+                                        required: false,
+                                        message: "Assign box to",
+                                      },
+                                    ]}
+                                  >
+                                    <Select
+                                      placeholder="Assign box to"
+                                      onChange={(value) =>
+                                        handleChangeApplyRuleTo(value)
+                                      }
+                                      getPopupContainer={() =>
+                                        document.getElementById("apply_rule_to")
+                                      }
+                                    >
+                                      <Option value={1}>Categories</Option>
+                                      <Option value={2}>Brands</Option>
+                                      <Option value={3}>
+                                        Individual Products
+                                      </Option>
+                                    </Select>
+                                  </Form.Item>
+                                </div>
+                              </Col>
 
-												{boxSize.availability_type === "2" && (
-													<>
-														<Row gutter={30}>
-															<Col
-																className="gutter-row"
-																xs={24}
-																sm={24}
-																md={24}
-																lg={24}
-																xl={24}
-															></Col>
+                              {applyRuleTo == 1 ? (
+                                <Col
+                                  className="gutter-row"
+                                  xs={24}
+                                  sm={24}
+                                  md={24}
+                                  lg={24}
+                                  xl={24}
+                                >
+                                  <div id="country_dropdown">
+                                    <Form.Item
+                                      className={"mb-2"}
+                                      // label={"Apply the rule to these categories"}
+                                      name="filter_categories"
+                                      rules={[
+                                        {
+                                          required: true,
+                                          message: "Categories are required",
+                                        },
+                                      ]}
+                                    >
+                                      <Select
+                                        mode="multiple"
+                                        style={{ width: "100%" }}
+                                        placeholder={"Select categories"}
+                                        value={selectedCategories}
+                                        getPopupContainer={() =>
+                                          document.getElementById(
+                                            "country_dropdown"
+                                          )
+                                        }
+                                        allowClear
+                                        onChange={handleChangeCategories}
+                                        filterOption={filterOptionsCategories}
+                                      >
+                                        {storeCategories?.map((option) => (
+                                          <Option
+                                            key={option.key}
+                                            value={option.key}
+                                          >
+                                            {option.value}
+                                          </Option>
+                                        ))}
+                                      </Select>
+                                    </Form.Item>
+                                  </div>
+                                </Col>
+                              ) : applyRuleTo == 2 ? (
+                                <Col
+                                  className="gutter-row"
+                                  xs={24}
+                                  sm={24}
+                                  md={24}
+                                  lg={24}
+                                  xl={24}
+                                >
+                                  <div id="country_dropdown">
+                                    <Form.Item
+                                      className={"mb-2"}
+                                      // label={"Apply the rule to these brands"}
+                                      name="filter_brands"
+                                      rules={[
+                                        {
+                                          required: true,
+                                          message: "Brands are required",
+                                        },
+                                      ]}
+                                    >
+                                      <Select
+                                        mode="multiple"
+                                        style={{ width: "100%" }}
+                                        placeholder={"Select brands"}
+                                        value={selectedBrands}
+                                        getPopupContainer={() =>
+                                          document.getElementById(
+                                            "country_dropdown"
+                                          )
+                                        }
+                                        allowClear
+                                        onChange={handleChangeBrands}
+                                        filterOption={filterOptionsBrands}
+                                      >
+                                        {storeBrands?.map((option) => (
+                                          <Option
+                                            key={option.key}
+                                            value={option.key}
+                                          >
+                                            {option.value}
+                                          </Option>
+                                        ))}
+                                      </Select>
+                                    </Form.Item>
+                                  </div>
+                                </Col>
+                              ) : applyRuleTo == 3 ? (
+                                <Col
+                                  className="gutter-row"
+                                  xs={24}
+                                  sm={24}
+                                  md={24}
+                                  lg={24}
+                                  xl={24}
+                                >
+                                  <div id="country_dropdown">
+                                    <div ref={dropdownRef}>
+                                      <Form.Item
+                                        className={"mb-2"}
+                                        // label={"Apply the rule to these products"}
+                                        name="filter_products"
+                                        rules={[
+                                          {
+                                            required: true,
+                                            message: "Products are required",
+                                          },
+                                        ]}
+                                      >
+                                        <Select
+                                          mode="multiple"
+                                          style={{ width: "100%" }}
+                                          placeholder={
+                                            "Search products by name, SKU"
+                                          }
+                                          labelInValue
+                                          getPopupContainer={() =>
+                                            document.getElementById(
+                                              "country_dropdown"
+                                            )
+                                          }
+                                          notFoundContent={
+                                            loading ? (
+                                              <span>
+                                                <Spin size="small" />
+                                              </span>
+                                            ) : searchQuery?.length > 2 &&
+                                              data?.length == 0 ? (
+                                              <span>Product not found!</span>
+                                            ) : (
+                                              <span>
+                                                Please enter a minimum of three
+                                                characters.
+                                              </span>
+                                            )
+                                          }
+                                        //   value={selectedProducts}
+                                          allowClear
+                                          onSearch={handleSearch}
+                                          onChange={handleChangeProducts}
+                                          filterOption={false}
+                                        >
+                                          {data?.map((option) => (
+                                            <Option
+                                              key={option?.source_product_id}
+                                              value={option?.source_product_id}
+                                            >
+                                              {option?.name}
+                                            </Option>
+                                          ))}
+                                        </Select>
+                                      </Form.Item>
+                                    </div>
+                                  </div>
+                                </Col>
+                              ) : null}
+                            </Row>
+                          </>
+                        )}
+                        {/* -------------------------------------------------- */}
 
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                        >
+                          <Form.Item name="is_available">
+                            <Checkbox
+                              //name='is_available'
+                              onChange={(e) =>
+                                setBoxSize({
+                                  ...boxSize,
+                                  is_available: e.target.checked,
+                                })
+                              }
+                              checked={boxSize.is_available ? true : false}
+                            >
+                              Is Available
+                            </Checkbox>
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                      <Row gutter={30} align="middle" className={"mt-3"}>
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                        >
+                          <Form.Item
+                            style={{
+                              textAlign: "right",
+                              marginBottom: "0",
+                            }}
+                          >
+                            <Space>
+                              <Button type="primary" htmlType="submit">
+                                Save
+                              </Button>
+                            </Space>
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    </Form>
+                  )}
+                </Modal>
+              </Col>
+            </Row>
+            <Table
+              className={"custom-table mt-3"}
+              dataSource={
+                props.boxSizes
+                  ? props.boxSizes?.filter((bs) => +bs?.box_type !== 4)
+                  : []
+              }
+              columns={columns}
+            />
 
-															<Col
-																className="gutter-row"
-																xs={24}
-																sm={24}
-																md={24}
-																lg={24}
-																xl={24}
-															>
-																<div id="apply_rule_to">
-																	<Form.Item
-																		className={"mb-2"}
-																		// label="Apply rule to"
-																		name="apply_rule_to"
-																		rules={[
-																			{
-																				required: false,
-																				message: "Assign box to",
-																			},
-																		]}
-																	>
-																		<Select
-																			placeholder="Assign box to"
-																			onChange={(value) => handleChangeApplyRuleTo(value)}
-																			getPopupContainer={() =>
-																				document.getElementById("apply_rule_to")
-																			}
-																		>
-																			<Option value={1}>Categories</Option>
-																			<Option value={2}>Brands</Option>
-																			<Option value={3}>Individual Products</Option>
-																		</Select>
-																	</Form.Item>
-																</div>
-															</Col>
+            <Modal
+              title={
+                <Title className={"mb-0"} level={4}>
+                  Product Box Size
+                </Title>
+              }
+              centered
+              visible={productBoxVisible}
+              onCancel={() => {
+                setVisibleAddBox(false);
+                setProductBoxVisible(false);
+                setRecordId(null);
+              }}
+              afterClose={() => {
+                setBoxSize(initialState);
+                setProductBoxSize(productBoxInitialState);
+                setRecordId(null);
+              }}
+              destroyOnClose={true}
+              footer={null}
+              width={800}
+              cancelButtonProps={{ style: { display: "none" } }}
+            >
+              {loadBoxSize ? (
+                <Skeleton active />
+              ) : (
+                <Form
+                  layout="vertical"
+                  name="add_box_sizes"
+                  className="form-wrp"
+                  size={"large"}
+                  onFinish={addProductBoxSize}
+                  initialValues={productBoxSize}
+                >
+                  <Row gutter={30}>
+                    <Col
+                      className="gutter-row"
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                    >
+                      <Form.Item
+                        className={"mb-2"}
+                        label="Quantity"
+                        name="quantity"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Quantity Required",
+                          },
+                        ]}
+                      >
+                        <Input
+                          type="number"
+                          step="1"
+                          min="1"
+                          placeholder="Quantity"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col
+                      className="gutter-row"
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                    >
+                      <Form.Item
+                        className={"mb-2"}
+                        label="Nickname"
+                        name="nickname"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Nickname Required",
+                          },
+                        ]}
+                      >
+                        <Input placeholder="Nickname" />
+                      </Form.Item>
+                    </Col>
+                    <Col
+                      className="gutter-row"
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={12}
+                      xl={12}
+                    >
+                      <Form.Item
+                        className={"mb-2"}
+                        label="Length (in)"
+                        name="length"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Length Required",
+                          },
+                          pattern,
+                        ]}
+                      >
+                        <Input
+                          type="number"
+                          onKeyDown={blockInvalidChar}
+                          min="0"
+                          step="0.01"
+                          placeholder="Length (in)"
+                          //pattern='[0-9.?(0-9){2}?]+%?$'
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col
+                      className="gutter-row"
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={12}
+                      xl={12}
+                    >
+                      <Form.Item
+                        className={"mb-2"}
+                        label="Width (in)"
+                        name="width"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Width Required",
+                          },
+                          pattern,
+                        ]}
+                      >
+                        <Input
+                          type="number"
+                          onKeyDown={handlingFeeMarkup}
+                          step="0.01"
+                          min={0}
+                          placeholder="Width (in)"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col
+                      className="gutter-row"
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={12}
+                      xl={12}
+                    >
+                      <Form.Item
+                        className={"mb-2"}
+                        label="Height (in)"
+                        name="height"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Height Required",
+                          },
+                          pattern,
+                        ]}
+                      >
+                        <Input
+                          type="number"
+                          onKeyDown={handlingFeeMarkup}
+                          step="0.01"
+                          min={0}
+                          placeholder="Height (in)"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col
+                      className="gutter-row"
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={12}
+                      xl={12}
+                    >
+                      <Form.Item
+                        className={"mb-2"}
+                        label="Weight (LBS)"
+                        name="weight"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Weight Required",
+                          },
+                          pattern,
+                        ]}
+                      >
+                        <Input
+                          type="number"
+                          onKeyDown={handlingFeeMarkup}
+                          step="0.01"
+                          min={0}
+                          placeholder="Weight (pounds)"
+                        />
+                      </Form.Item>
+                    </Col>
 
-															{applyRuleTo == 1 ? (
-																<Col
-																	className="gutter-row"
-																	xs={24}
-																	sm={24}
-																	md={24}
-																	lg={24}
-																	xl={24}
-																>
-																	<div id="country_dropdown">
-																		<Form.Item
-																			className={"mb-2"}
-																			// label={"Apply the rule to these categories"}
-																			name="filter_categories"
-																			rules={[
-																				{
-																					required: true,
-																					message: "Categories are required",
-																				},
-																			]}
-																		>
-																			<Select
-																				mode="multiple"
-																				style={{ width: "100%" }}
-																				placeholder={"Select categories"}
-																				value={selectedCategories}
-																				getPopupContainer={() =>
-																					document.getElementById("country_dropdown")
-																				}
-																				allowClear
-																				onChange={handleChangeCategories}
-																				filterOption={filterOptionsCategories}
-																			>
-																				{storeCategories?.map((option) => (
-																					<Option key={option.key} value={option.key}>
-																						{option.value}
-																					</Option>
-																				))}
-																			</Select>
-																		</Form.Item>
-																	</div>
-																</Col>
-															) : applyRuleTo == 2 ? (
-																<Col
-																	className="gutter-row"
-																	xs={24}
-																	sm={24}
-																	md={24}
-																	lg={24}
-																	xl={24}
-																>
-																	<div id="country_dropdown">
-																		<Form.Item
-																			className={"mb-2"}
-																			// label={"Apply the rule to these brands"}
-																			name="filter_brands"
-																			rules={[
-																				{
-																					required: true,
-																					message: "Brands are required",
-																				},
-																			]}
-																		>
-																			<Select
-																				mode="multiple"
-																				style={{ width: "100%" }}
-																				placeholder={"Select brands"}
-																				value={selectedBrands}
-																				getPopupContainer={() =>
-																					document.getElementById("country_dropdown")
-																				}
-																				allowClear
-																				onChange={handleChangeBrands}
-																				filterOption={filterOptionsBrands}
-																			>
-																				{storeBrands?.map((option) => (
-																					<Option key={option.key} value={option.key}>
-																						{option.value}
-																					</Option>
-																				))}
-																			</Select>
-																		</Form.Item>
-																	</div>
-																</Col>
-															) : applyRuleTo == 3 ? (
-																<Col
-																	className="gutter-row"
-																	xs={24}
-																	sm={24}
-																	md={24}
-																	lg={24}
-																	xl={24}
-																>
-																	<div id="country_dropdown">
-																		<div ref={dropdownRef}>
-																			<Form.Item
-																				className={"mb-2"}
-																				// label={"Apply the rule to these products"}
-																				name="filter_products"
-																				rules={[
-																					{
-																						required: true,
-																						message: "Products are required",
-																					},
-																				]}
-																			>
-																				<Select
-																					mode="multiple"
-																					style={{ width: "100%" }}
-																					placeholder={"Search products by name, SKU"}
-																					labelInValue
-																					getPopupContainer={() =>
-																						document.getElementById("country_dropdown")
-																					}
-																					notFoundContent={
-																						loading ? (
-																							<span>
-																								<Spin size="small" />
-																							</span>
-																						) : searchQuery?.length > 2 && data?.length == 0 ? (
-																							<span>Product not found!</span>
-																						) : (
-																							<span>
-																								Please enter a minimum of three characters.
-																							</span>
-																						)
-																					}
-																					value={selectedProducts}
-																					allowClear
-																					onSearch={handleSearch}
-																					onChange={handleChangeProducts}
-																					filterOption={false}
-																				>
-																					{data?.map((option) => (
-																						<Option
-																							key={option?.source_product_id}
-																							value={option?.source_product_id}
-																						>
-																							{option?.name}
-																						</Option>
-																					))}
-																				</Select>
-																			</Form.Item>
-																		</div>
-																	</div>
-																</Col>
-															) : null}
-														</Row>
-													</>
-												)}
-												{/* -------------------------------------------------- */}
+                    <Col
+                      className="gutter-row"
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={12}
+                      xl={12}
+                    >
+                      <Form.Item
+                        className={"mb-2"}
+                        label="Box Fee (e.g 1.75)"
+                        name="box_fee"
+                        rules={[pattern]}
+                      >
+                        <Input
+                          type="number"
+                          onKeyDown={handlingFeeMarkup}
+                          step="0.01"
+                          maxLength="7"
+                          min={0}
+                          placeholder="Box Fee"
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row gutter={30} align="middle" className={"mt-3"}>
+                    <Col
+                      className="gutter-row"
+                      xs={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                    >
+                      <Form.Item
+                        style={{
+                          textAlign: "right",
+                          marginBottom: "0",
+                        }}
+                      >
+                        <Space>
+                          <Button type="primary" htmlType="submit">
+                            Save
+                          </Button>
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Form>
+              )}
+            </Modal>
 
+            <Title level={5}>Items that ship as multiple packages</Title>
+            <p>
+              In order for an item to appear below, it must have the{" "}
+              <b>This item ships as multiple packages</b> setting enabled on its
+              Product Settings
+            </p>
+            <br />
 
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={24}
-													xl={24}>
-													<Form.Item name='is_available'>
-														<Checkbox
-															//name='is_available'
-															onChange={e =>
-																setBoxSize({
-																	...boxSize,
-																	is_available:
-																		e.target
-																			.checked,
-																})
-															}
-															checked={
-																boxSize.is_available
-																	? true
-																	: false
-															}>
-															Is Available
-														</Checkbox>
-													</Form.Item>
-												</Col>
-											</Row>
-											<Row
-												gutter={30}
-												align='middle'
-												className={'mt-3'}>
-												<Col
-													className='gutter-row'
-													xs={24}
-													sm={24}
-													md={24}
-													lg={24}
-													xl={24}>
-													<Form.Item
-														style={{
-															textAlign: 'right',
-															marginBottom: '0',
-														}}>
-														<Space>
-															<Button
-																type='primary'
-																htmlType='submit'>
-																Save
-															</Button>
-														</Space>
-													</Form.Item>
-												</Col>
-											</Row>
-										</Form>
-									)}
-								</Modal>
-							</Col>
-						</Row>
-						<Table
-							className={'custom-table mt-3'}
-							dataSource={
-								props.boxSizes
-									? props.boxSizes?.filter(
-										bs => +bs?.box_type !== 4
-									)
-									: []
-							}
-							columns={columns}
-						/>
+            {productBoxes?.map((pb) => (
+              <Fragment>
+                <h3>SKU: {pb.sku} </h3>
+                <p>{pb.name} </p>
 
-						<Modal
-							title={
-								<Title className={'mb-0'} level={4}>
-									Product Box Size
-								</Title>
-							}
-							centered
-							visible={productBoxVisible}
-							onCancel={() => {
-								setVisibleAddBox(false)
-								setProductBoxVisible(false)
-								setRecordId(null)
-							}}
-							afterClose={() => {
-								setBoxSize(initialState)
-								setProductBoxSize(productBoxInitialState)
-								setRecordId(null)
-							}}
-							destroyOnClose={true}
-							footer={null}
-							width={800}
-							cancelButtonProps={{ style: { display: 'none' } }}>
-							{loadBoxSize ? (
-								<Skeleton active />
-							) : (
-								<Form
-									layout='vertical'
-									name='add_box_sizes'
-									className='form-wrp'
-									size={'large'}
-									onFinish={addProductBoxSize}
-									initialValues={productBoxSize}>
-									<Row gutter={30}>
-										<Col
-											className='gutter-row'
-											xs={24}
-											sm={24}
-											md={24}
-											lg={24}
-											xl={24}>
-											<Form.Item
-												className={'mb-2'}
-												label='Quantity'
-												name='quantity'
-												rules={[
-													{
-														required: true,
-														message: 'Quantity Required',
-													},
-												]}>
-												<Input
-													type='number'
-													step='1'
-													min='1'
-													placeholder='Quantity'
-												/>
-											</Form.Item>
-										</Col>
-										<Col
-											className='gutter-row'
-											xs={24}
-											sm={24}
-											md={24}
-											lg={24}
-											xl={24}>
-											<Form.Item
-												className={'mb-2'}
-												label='Nickname'
-												name='nickname'
-												rules={[
-													{
-														required: true,
-														message: 'Nickname Required',
-													},
-												]}>
-												<Input placeholder='Nickname' />
-											</Form.Item>
-										</Col>
-										<Col
-											className='gutter-row'
-											xs={24}
-											sm={24}
-											md={24}
-											lg={12}
-											xl={12}>
-											<Form.Item
-												className={'mb-2'}
-												label='Length (in)'
-												name='length'
-												rules={[
-													{
-														required: true,
-														message: 'Length Required',
-													},
-													pattern,
-												]}>
-												<Input
-													type='number'
-													onKeyDown={blockInvalidChar}
-													min='0'
-													step='0.01'
-													placeholder='Length (in)'
-												//pattern='[0-9.?(0-9){2}?]+%?$'
-												/>
-											</Form.Item>
-										</Col>
-										<Col
-											className='gutter-row'
-											xs={24}
-											sm={24}
-											md={24}
-											lg={12}
-											xl={12}>
-											<Form.Item
-												className={'mb-2'}
-												label='Width (in)'
-												name='width'
-												rules={[
-													{
-														required: true,
-														message: 'Width Required',
-													},
-													pattern,
-												]}>
-												<Input
-													type='number'
-													onKeyDown={handlingFeeMarkup}
-													step='0.01'
-													min={0}
-													placeholder='Width (in)'
-												/>
-											</Form.Item>
-										</Col>
-										<Col
-											className='gutter-row'
-											xs={24}
-											sm={24}
-											md={24}
-											lg={12}
-											xl={12}>
-											<Form.Item
-												className={'mb-2'}
-												label='Height (in)'
-												name='height'
-												rules={[
-													{
-														required: true,
-														message: 'Height Required',
-													},
-													pattern,
-												]}>
-												<Input
-													type='number'
-													onKeyDown={handlingFeeMarkup}
-													step='0.01'
-													min={0}
-													placeholder='Height (in)'
-												/>
-											</Form.Item>
-										</Col>
-										<Col
-											className='gutter-row'
-											xs={24}
-											sm={24}
-											md={24}
-											lg={12}
-											xl={12}>
-											<Form.Item
-												className={'mb-2'}
-												label='Weight (LBS)'
-												name='weight'
-												rules={[
-													{
-														required: true,
-														message: 'Weight Required',
-													},
-													pattern,
-												]}>
-												<Input
-													type='number'
-													onKeyDown={handlingFeeMarkup}
-													step='0.01'
-													min={0}
-													placeholder='Weight (pounds)'
-												/>
-											</Form.Item>
-										</Col>
+                {pb?.boxes && pb?.boxes?.length > 0 && (
+                  <Table
+                    className={"custom-table mt-3"}
+                    dataSource={pb.boxes}
+                    columns={productBoxescolumns}
+                    pagination={false}
+                  />
+                )}
+                <br />
+                <Button
+                  style={{ width: "100px" }}
+                  type="primary"
+                  onClick={() => {
+                    setProductBoxVisible(true);
+                    setOperation(false);
+                    setRecordId(pb.id);
+                  }}
+                >
+                  Add Box
+                </Button>
 
-										<Col
-											className='gutter-row'
-											xs={24}
-											sm={24}
-											md={24}
-											lg={12}
-											xl={12}>
-											<Form.Item
-												className={'mb-2'}
-												label='Box Fee (e.g 1.75)'
-												name='box_fee'
-												rules={[pattern]}>
-												<Input
-													type='number'
-													onKeyDown={handlingFeeMarkup}
-													step='0.01'
-													maxLength='7'
-													min={0}
-													placeholder='Box Fee'
-												/>
-											</Form.Item>
-										</Col>
-									</Row>
-									<Row
-										gutter={30}
-										align='middle'
-										className={'mt-3'}>
-										<Col
-											className='gutter-row'
-											xs={24}
-											sm={24}
-											md={24}
-											lg={24}
-											xl={24}>
-											<Form.Item
-												style={{
-													textAlign: 'right',
-													marginBottom: '0',
-												}}>
-												<Space>
-													<Button
-														type='primary'
-														htmlType='submit'>
-														Save
-													</Button>
-												</Space>
-											</Form.Item>
-										</Col>
-									</Row>
-								</Form>
-							)}
-						</Modal>
+                <Divider />
+              </Fragment>
+            ))}
+          </div>
+        </Col>
+      </Row>
 
-						<Title level={5}>Items that ship as multiple packages</Title>
-						<p>
-							In order for an item to appear below, it must have the{' '}
-							<b>This item ships as multiple packages</b> setting
-							enabled on its Product Settings
-						</p>
-						<br />
-
-						{productBoxes?.map(pb => (
-							<Fragment>
-								<h3>SKU: {pb.sku} </h3>
-								<p>{pb.name} </p>
-
-								{pb?.boxes && pb?.boxes?.length > 0 && (
-									<Table
-										className={'custom-table mt-3'}
-										dataSource={pb.boxes}
-										columns={productBoxescolumns}
-										pagination={false}
-									/>
-								)}
-								<br />
-								<Button
-									style={{ width: '100px' }}
-									type='primary'
-									onClick={() => {
-										setProductBoxVisible(true)
-										setOperation(false)
-										setRecordId(pb.id)
-									}}>
-									Add Box
-								</Button>
-
-								<Divider />
-							</Fragment>
-						))}
-					</div>
-				</Col>
-			</Row>
-
-			<Modal
-				title='Confirm Delete'
-				visible={deleteBoxModal}
-				onOk={() => {
-					if (boxType === 'common box') {
-						props.deleteBoxSize(recordId, props.token, setDeleteBoxModal)
-					} else if (boxType === 'product box') {
-						dispatch(
-							deleteProductBoxSize(
-								recordId,
-								props.token,
-								setDeleteBoxModal
-							)
-						)
-					}
-				}}
-				onCancel={() => setDeleteBoxModal(false)}
-				okText='Confirm'
-				cancelButtonProps={{ style: { display: 'none' } }}>
-				<p>Are you sure you want to delete the box?</p>
-			</Modal>
-		</Fragment>
-	)
+      <Modal
+        title="Confirm Delete"
+        visible={deleteBoxModal}
+        onOk={() => {
+          if (boxType === "common box") {
+            props.deleteBoxSize(recordId, props.token, setDeleteBoxModal);
+          } else if (boxType === "product box") {
+            dispatch(
+              deleteProductBoxSize(recordId, props.token, setDeleteBoxModal)
+            );
+          }
+        }}
+        onCancel={() => setDeleteBoxModal(false)}
+        okText="Confirm"
+        cancelButtonProps={{ style: { display: "none" } }}
+      >
+        <p>Are you sure you want to delete the box?</p>
+      </Modal>
+    </Fragment>
+  );
 }
 
 const mapStateToProps = state => ({
