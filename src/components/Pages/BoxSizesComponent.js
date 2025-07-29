@@ -616,19 +616,17 @@ const editBoxSize = record => {
     }
     setOperation(true);
     setLoadBoxSize(true);
-    let boxAssociatedTo = undefined
-    if(record.box_associated_to){
-      const badString = record.box_associated_to;
-      const fixed = badString.replace(/'/g, '"');
-       boxAssociatedTo = JSON.parse(fixed);
+    let boxAssociatedTo = [];
+    try {
+        if (record?.box_associated_to) {
+            const parsed = JSON.parse(record.box_associated_to);
+            if (Array.isArray(parsed)) {
+                boxAssociatedTo = parsed;
+            }
+        }
+    } catch (e) {
+        console.error("Error parsing box_associated_to:", e);
     }
-    
-    console.log(
-     typeof boxAssociatedTo,
-      "boxAssociatedTo",
-      record.apply_rule_to,
-      "record.apply_rule_to"
-    );
 
     if(record.apply_rule_to == 1){
       setBoxSize({
