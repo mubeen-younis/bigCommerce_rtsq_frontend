@@ -148,6 +148,8 @@ function BoxSizesComponent(props) {
 	const [operation, setOperation] = useState(false)
 	const [recordId, setRecordId] = useState(0)
 	const [deleteBoxModal, setDeleteBoxModal] = useState(false)
+  const [boxAssociatedTo, setBoxAssociatedTo] = useState([]);
+
 	const dispatch = useDispatch()
 	const {
 		productBoxes,
