@@ -54,6 +54,7 @@ const initialState = {
 	box_fee: '',
 	is_available: false,
 	box_type: 1,
+  apply_rule_to: 3,
 	availability_type: '1',
 	filter_products: [],
 	filter_categories:[],
