@@ -285,6 +285,7 @@ function BoxSizesComponent(props) {
 			box_weight,
 			box_fee,
 		} = values
+    console.log(values,'finish')
 		let error = ''
 		error = valueLimit(length, 108, 'interior length')
 		error += valueLimit(width, 108, 'interior width')
@@ -490,6 +491,7 @@ function BoxSizesComponent(props) {
 	}
 
 	const handleChangeProducts = (selectedValues) => {
+    console.log(selectedValues,'selectedVlues');
 		setData([])
 		setSearchQuery("")
 		setSelectedProducts(selectedValues)
@@ -591,13 +593,13 @@ useEffect(() => {
                 ...boxSize,
                 box_name,
                 availability_type: boxSize.availability_type?.toString() || "1",
-                filter_products: productOptions
+                filter_products: selectedProducts
             };
         } else {
             formValues = {
                 ...boxSize,
                 availability_type: boxSize.availability_type?.toString() || "1",
-                filter_products: productOptions
+                filter_products: selectedProducts
             };
         }
         
@@ -613,18 +615,16 @@ const editBoxSize = record => {
     }
     setOperation(true);
     setLoadBoxSize(true);
+    const badString = record.box_associated_to;
+    const fixed = badString.replace(/'/g, '"');
+    const boxAssociatedTo = JSON.parse(fixed);
 
-    let boxAssociatedTo = [];
-    try {
-        if (record?.box_associated_to) {
-            const parsed = JSON.parse(record.box_associated_to);
-            if (Array.isArray(parsed)) {
-                boxAssociatedTo = parsed;
-            }
-        }
-    } catch (e) {
-        console.error("Error parsing box_associated_to:", e);
-    }
+    console.log(
+     typeof boxAssociatedTo,
+      "boxAssociatedTo",
+      record.apply_rule_to,
+      "record.apply_rule_to"
+    );
 
     if(record.apply_rule_to == 1){
       setBoxSize({
@@ -645,11 +645,7 @@ const editBoxSize = record => {
 
       handleChangeApplyRuleTo(record?.apply_rule_to);
 
-    const productOptions = boxAssociatedTo.map(item => ({
-        key: item.value,
-        label: item.label
-    })) || [];
-    setSelectedProducts(productOptions);
+    setSelectedProducts(boxAssociatedTo);
 
     setVisibleAddBox(true);
     setTimeout(() => {
