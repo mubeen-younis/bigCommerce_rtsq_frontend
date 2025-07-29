@@ -600,37 +600,45 @@ useEffect(() => {
 
 // Simplified editBoxSize function
 const editBoxSize = record => {
+    if (!record) {
+        console.error("editBoxSize: record is undefined");
+        return;
+    }
     console.log("aaaaa", record);
-    setOperation(true)
-    setLoadBoxSize(true)
-    
-    let boxAssociatedTo;
-	if(record.apply_rule_to==1){
-		boxAssociatedTo = JSON.parse(record?.box_associated_to || '[]');
-	}else if (record.apply_rule_to ==  2){
-		boxAssociatedTo = JSON.parse(record?.box_associated_to || '[]');
-	}else if(record?.apply_rule_to == 3){
-		boxAssociatedTo = JSON.parse(record?.box_associated_to || '[]');
-	}
+    setOperation(true);
+    setLoadBoxSize(true);
+
+    let boxAssociatedTo = [];
+    try {
+        if (record?.box_associated_to) {
+            const parsed = JSON.parse(record.box_associated_to);
+            if (Array.isArray(parsed)) {
+                boxAssociatedTo = parsed;
+            }
+        }
+    } catch (e) {
+        console.error("Error parsing box_associated_to:", e);
+    }
+
     setBoxSize({
-      ...record,
-      filter_products: boxAssociatedTo,
-      filter_categories: boxAssociatedTo,
-      filter_brands: boxAssociatedTo,
+        ...record,
+        filter_products: boxAssociatedTo,
+        filter_categories: boxAssociatedTo,
+        filter_brands: boxAssociatedTo,
     });
-    handleChangeApplyRuleTo(record?.apply_rule_to)
-    
+    handleChangeApplyRuleTo(record?.apply_rule_to);
+
     const productOptions = boxAssociatedTo.map(item => ({
         key: item.value,
         label: item.label
     })) || [];
     setSelectedProducts(productOptions);
-    
-    setVisibleAddBox(true)
+
+    setVisibleAddBox(true);
     setTimeout(() => {
-        setLoadBoxSize(false)
-    }, 1000)
-}
+        setLoadBoxSize(false);
+    }, 1000);
+};
 
 	const editProductBoxSize = record => {
 		setOperation(true)
