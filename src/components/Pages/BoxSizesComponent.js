@@ -616,10 +616,13 @@ const editBoxSize = record => {
     }
     setOperation(true);
     setLoadBoxSize(true);
-    const badString = record.box_associated_to;
-    const fixed = badString.replace(/'/g, '"');
-    const boxAssociatedTo = JSON.parse(fixed);
-
+    let boxAssociatedTo = undefined
+    if(record.box_associated_to){
+      const badString = record.box_associated_to;
+      const fixed = badString.replace(/'/g, '"');
+       boxAssociatedTo = JSON.parse(fixed);
+    }
+    
     console.log(
      typeof boxAssociatedTo,
       "boxAssociatedTo",
