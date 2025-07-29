@@ -193,7 +193,7 @@ function BoxSizesComponent(props) {
 					max_weight = '50'
 				}
 
-        
+
 				const newValues = {
 					nickname: label.substring(0, label.indexOf('(') - 1),
 					length: dimensions[0],
@@ -621,7 +621,7 @@ const editBoxSize = record => {
     const productOptions = boxAssociatedTo.map(item => ({
         key: item.value,
         label: item.label
-    }));
+    })) || [];
     setSelectedProducts(productOptions);
     
     setVisibleAddBox(true)
