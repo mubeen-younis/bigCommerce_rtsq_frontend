@@ -450,7 +450,15 @@ function BoxSizesComponent(props) {
 	}
 
 	const handleChangeApplyRuleTo = (value) => {
-		boxSizeForm.resetFields(["filter_categories", "filter_brands", "filter_products"])
+    boxSizeForm.resetFields([
+      "filter_products",
+      "filter_categories",
+      "filter_brands",
+    ]);
+		// boxSizeForm.setFieldValue("filter_categories", []);
+		// boxSizeForm.setFieldValue("filter_brands", selectedProducts);
+		// boxSizeForm.setFieldValue("filter_products", []);
+
 		setApplyRuleTo(value)
 	}
 
@@ -482,7 +490,6 @@ function BoxSizesComponent(props) {
 	}
 
 	const handleChangeProducts = (selectedValues) => {
-		console.log(selectedValues)
 		setData([])
 		setSearchQuery("")
 		setSelectedProducts(selectedValues)
@@ -604,7 +611,6 @@ const editBoxSize = record => {
         console.error("editBoxSize: record is undefined");
         return;
     }
-    console.log("aaaaa", record);
     setOperation(true);
     setLoadBoxSize(true);
 
@@ -620,13 +626,24 @@ const editBoxSize = record => {
         console.error("Error parsing box_associated_to:", e);
     }
 
-    setBoxSize({
+    if(record.apply_rule_to == 1){
+      setBoxSize({
         ...record,
-        filter_products: boxAssociatedTo,
         filter_categories: boxAssociatedTo,
+      });
+    }else if(record.apply_rule_to == 2){
+      setBoxSize({
+        ...record,
         filter_brands: boxAssociatedTo,
-    });
-    handleChangeApplyRuleTo(record?.apply_rule_to);
+      });
+      
+    }else if(record.apply_rule_to == 3){
+      setBoxSize({
+        ...record,
+        filter_products: boxAssociatedTo
+      })}
+
+      handleChangeApplyRuleTo(record?.apply_rule_to);
 
     const productOptions = boxAssociatedTo.map(item => ({
         key: item.value,
@@ -1347,7 +1364,6 @@ const editBoxSize = record => {
                                   </Form.Item>
                                 </div>
                               </Col>
-
                               {applyRuleTo == 1 ? (
                                 <Col
                                   className="gutter-row"
@@ -1491,7 +1507,7 @@ const editBoxSize = record => {
                                               </span>
                                             )
                                           }
-                                        //   value={selectedProducts}
+                                          //   value={selectedProducts}
                                           allowClear
                                           onSearch={handleSearch}
                                           onChange={handleChangeProducts}
