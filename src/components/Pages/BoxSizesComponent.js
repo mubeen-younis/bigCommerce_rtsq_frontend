@@ -193,6 +193,7 @@ function BoxSizesComponent(props) {
 					max_weight = '50'
 				}
 
+        
 				const newValues = {
 					nickname: label.substring(0, label.indexOf('(') - 1),
 					length: dimensions[0],
