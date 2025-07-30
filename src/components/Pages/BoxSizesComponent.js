@@ -54,7 +54,7 @@ const initialState = {
 	box_fee: '',
 	is_available: false,
 	box_type: 1,
-  apply_rule_to: 3,
+  apply_rule_to: 1,
 	availability_type: '1',
 	filter_products: [],
 	filter_categories:[],
@@ -1287,7 +1287,10 @@ const editBoxSize = record => {
                           lg={24}
                           xl={24}
                         >
-                          <Form.Item name="availability_type">
+                          <Form.Item 
+                          name="availability_type"
+                          label={<span style={{ fontWeight: 'bold' }}>Box Availability</span>}
+                          >
                             <Radio.Group
                               onChange={(e) =>
                                 setBoxSize({
@@ -1313,6 +1316,7 @@ const editBoxSize = record => {
 
                         {boxSize.availability_type == "2" && (
                           <>
+                          <div style={{ width: "98%", maxWidth: "100%" }}>
                             <Row gutter={30} style={{ marginLeft: "3px" }}>
                               <Col
                                 className="gutter-row"
@@ -1330,12 +1334,11 @@ const editBoxSize = record => {
                                 md={24}
                                 lg={24}
                                 xl={24}
-                                style={{ width: "678px" }}
                               >
                                 <div id="apply_rule_to">
                                   <Form.Item
                                     className={"mb-2"}
-                                    label="Box Availablilty"
+                                    // label="Box Availablilty"
                                     name="apply_rule_to"
                                     rules={[
                                       {
@@ -1526,6 +1529,7 @@ const editBoxSize = record => {
                                 </Col>
                               ) : null}
                             </Row>
+                            </div>
                           </>
                         )}
                         {/* -------------------------------------------------- */}
