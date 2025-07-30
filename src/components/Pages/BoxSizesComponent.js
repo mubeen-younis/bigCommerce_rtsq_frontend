@@ -571,89 +571,102 @@ function BoxSizesComponent(props) {
 	)
 
 // Add this useEffect
-useEffect(() => {
-    if (!loadBoxSize && operation && visible) {
-        // Form is now rendered and ready to receive values
-        const boxAssociatedTo = JSON.parse(boxSize?.box_associated_to || '[]');
-        const productOptions = boxAssociatedTo.map(item => ({
-            key: item.value,
-            label: item.label
-        }));
-        
-        let formValues;
-        if (['UMEB', 'UPMB', 'UFLAT'].includes(boxSize?.box_name)) {
-            let index = 0
-            for (const key in uspsBoxTypes) {
-                if (uspsBoxTypes[key].lable === boxSize.nickname) {
-                    index = key
-                    break
-                }
-            }
-            let box_name = boxSize.box_name + index
-            formValues = {
-                ...boxSize,
-                box_name,
-                availability_type: boxSize.availability_type?.toString() || "1",
-                filter_products: selectedProducts
-            };
-        } else {
-            formValues = {
-                ...boxSize,
-                availability_type: boxSize.availability_type?.toString() || "1",
-                filter_products: selectedProducts
-            };
-        }
-        
-        boxSizeForm.setFieldsValue(formValues);
-    }
-}, [loadBoxSize, operation, visible, boxSize])
-
-// Simplified editBoxSize function
 const editBoxSize = record => {
-    if (!record) {
-        console.error("editBoxSize: record is undefined");
-        return;
+  if (!record) {
+    console.error("editBoxSize: record is undefined");
+    return;
+  }
+  setOperation(true);
+  setLoadBoxSize(true);
+
+  let boxAssociatedTo = [];
+  try {
+    if (record?.box_associated_to) {
+      const parsed = JSON.parse(record.box_associated_to);
+      if (Array.isArray(parsed)) {
+        boxAssociatedTo = parsed;
+      }
     }
-    setOperation(true);
-    setLoadBoxSize(true);
-    let boxAssociatedTo = [];
-    try {
-        if (record?.box_associated_to) {
-            const parsed = JSON.parse(record.box_associated_to);
-            if (Array.isArray(parsed)) {
-                boxAssociatedTo = parsed;
-            }
-        }
-    } catch (e) {
-        console.error("Error parsing box_associated_to:", e);
-    }
+  } catch (e) {
+    console.error("Error parsing box_associated_to:", e);
+  }
 
-    if(record.apply_rule_to == 1){
-      setBoxSize({
-        ...record,
-        filter_categories: boxAssociatedTo,
-      });
-    }else if(record.apply_rule_to == 2){
-      setBoxSize({
-        ...record,
-        filter_brands: boxAssociatedTo,
-      });
-      
-    }else if(record.apply_rule_to == 3){
-      setBoxSize({
-        ...record,
-        filter_products: boxAssociatedTo
-      })}
+  // Determine the effective apply_rule_to value
+  // If null or undefined, default to 1 (Categories)
+  const effectiveApplyRuleTo = record.apply_rule_to === null || record.apply_rule_to === undefined
+    ? 1 // Default to Categories if null/undefined
+    : record.apply_rule_to;
 
-      handleChangeApplyRuleTo(record?.apply_rule_to);
+  // Prepare the updated boxSize object
+  let updatedBoxSize = {
+    ...record,
+    availability_type: record.availability_type?.toString() || "1", // Ensure string for Radio.Group
+    apply_rule_to: effectiveApplyRuleTo, // Set the effective rule type
+    // Initialize filter arrays to ensure they are always present
+    filter_categories: [],
+    filter_brands: [],
+    filter_products: [],
+  };
 
-    setSelectedProducts(boxAssociatedTo);
+  // Assign boxAssociatedTo to the correct filter property based on the effective rule type
+  if (effectiveApplyRuleTo == 1) {
+    updatedBoxSize.filter_categories = boxAssociatedTo;
+    setSelectedCategories(boxAssociatedTo); // Update local state for Select component
+    setSelectedBrands([]); // Clear other local states
+    setSelectedProducts([]); // Clear other local states
+  } else if (effectiveApplyRuleTo == 2) {
+    updatedBoxSize.filter_brands = boxAssociatedTo;
+    setSelectedBrands(boxAssociatedTo); // Update local state for Select component
+    setSelectedCategories([]); // Clear other local states
+    setSelectedProducts([]); // Clear other local states
+  } else if (effectiveApplyRuleTo == 3) {
+    updatedBoxSize.filter_products = boxAssociatedTo;
+    setSelectedProducts(boxAssociatedTo); // Update local state for Select component
+    setSelectedCategories([]); // Clear other local states
+    setSelectedBrands([]); // Clear other local states
+  } else {
+    // Handle any other unexpected values for apply_rule_to, if necessary
+    // For now, they will remain empty arrays as initialized above.
+    setSelectedCategories([]);
+    setSelectedBrands([]);
+    setSelectedProducts([]);
+  }
 
-    setVisibleAddBox(true);
-    setTimeout(() => {
-        setLoadBoxSize(false);
-    }, 1000);
+  // Update the component's internal state
+  setBoxSize(updatedBoxSize);
+  setApplyRuleTo(effectiveApplyRuleTo); // Update applyRuleTo state for conditional rendering
+
+  setVisibleAddBox(true);
+  setTimeout(() => {
+    setLoadBoxSize(false);
+  }, 1000);
 };
+
+// Also, ensure your useEffect that sets form values correctly uses the boxSize state
+// and handles the 'label' typo for uspsBoxTypes.
+useEffect(() => {
+  if (!loadBoxSize && operation && visible && boxSize) { // Ensure boxSize is not null/undefined
+    let formValues = {
+      ...boxSize,
+      availability_type: boxSize.availability_type?.toString() || "1",
+      // The apply_rule_to and filter_x fields are already correctly set in boxSize by editBoxSize
+    };
+
+    // Handle specific box_name for USPS if needed
+    if (['UMEB', 'UPMB', 'UFLAT'].includes(boxSize?.box_name)) {
+      let index = 0;
+      for (const key in uspsBoxTypes) {
+        if (uspsBoxTypes[key].label === boxSize.nickname) { // Corrected 'lable' to 'label'
+          index = key;
+          break;
+        }
+      }
+      formValues.box_name = boxSize.box_name + index;
+    }
+
+    boxSizeForm.setFieldsValue(formValues);
+  }
+}, [loadBoxSize, operation, visible, boxSize, boxSizeForm]); // Added boxSizeForm to dependencies
 
 	const editProductBoxSize = record => {
 		setOperation(true)
