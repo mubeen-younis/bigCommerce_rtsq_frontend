@@ -644,8 +644,9 @@ const editBoxSize = record => {
         ...record,
         filter_products: boxAssociatedTo
       })
+    }else{
+      setBoxSize(record)
     }
-    setBoxSize(record)
 
       handleChangeApplyRuleTo(record?.apply_rule_to);
 
