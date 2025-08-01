@@ -404,7 +404,7 @@ function BoxSizesComponent(props) {
 
 
 	// Add these new state variables for the apply rule functionality
-	const [applyRuleTo, setApplyRuleTo] = useState(1)
+	const [applyRuleTo, setApplyRuleTo] = useState(3)
 	const [selectedCategories, setSelectedCategories] = useState([])
 	const [selectedBrands, setSelectedBrands] = useState([])
 	const [selectedProducts, setSelectedProducts] = useState([])
@@ -1387,7 +1387,7 @@ const editBoxSize = record => {
                                     <div id="country_dropdown">
                                       <Form.Item
                                         className={"mb-2"}
-                                        label={"Apply the rule to these categories"}
+                                        label={"Assign the box to these categories"}
                                         name="filter_categories"
                                         rules={[
                                           {
@@ -1434,7 +1434,7 @@ const editBoxSize = record => {
                                     <div id="country_dropdown">
                                       <Form.Item
                                         className={"mb-2"}
-                                        label={"Apply the rule to these brands"}
+                                        label={"Assign the box to these brands"}
                                         name="filter_brands"
                                         rules={[
                                           {
@@ -1482,7 +1482,7 @@ const editBoxSize = record => {
                                       <div ref={dropdownRef}>
                                         <Form.Item
                                           className={"mb-2"}
-                                          label={"Apply the rule to these products"}
+                                          label={"Assign the box to these products"}
                                           name="filter_products"
                                           rules={[
                                             {
