@@ -5,614 +5,614 @@ import { upsBoxTypes, boxDiscription } from '../../Utilities/constants'
 import { Link } from 'react-router-dom'
 import axios from "../../Utilities/authToken"
 import {
-	Select,
-	Typography,
-	Row,
-	Col,
-	Space,
-	Button,
-	Form,
-	Checkbox,
-	Input,
-	Table,
-	Divider,
-	Modal,
-	Skeleton,
-	Spin,
+  Select,
+  Typography,
+  Row,
+  Col,
+  Space,
+  Button,
+  Form,
+  Checkbox,
+  Input,
+  Table,
+  Divider,
+  Modal,
+  Skeleton,
+  Spin,
 } from 'antd'
 
 import {
-	getBoxSizes,
-	addBoxSize,
-	deleteBoxSize,
-	getProductBoxSizes,
-	addProductNewBoxSize,
-	deleteProductBoxSize,
+  getBoxSizes,
+  addBoxSize,
+  deleteBoxSize,
+  getProductBoxSizes,
+  addProductNewBoxSize,
+  deleteProductBoxSize,
 } from '../../Actions/BoxSizes'
 // import addKeysToList from '../../Utilities/addKey'
 import {
-	handlingFeeMarkup,
-	valueLimit,
-	valueLimitAfterDecimal,
-	blockInvalidChar,
+  handlingFeeMarkup,
+  valueLimit,
+  valueLimitAfterDecimal,
+  blockInvalidChar,
 } from '../../Utilities/numberValidation'
 
 const { Option } = Select
 const { Title } = Typography
 
 const initialState = {
-	nickname: '',
-	box_name: 'Merchant defined Box (default)',
-	length: '',
-	width: '',
-	height: '',
-	max_weight: '',
-	ext_length: '',
-	ext_width: '',
-	ext_height: '',
-	box_weight: '',
-	box_fee: '',
-	is_available: false,
-	box_type: 1,
+  nickname: '',
+  box_name: 'Merchant defined Box (default)',
+  length: '',
+  width: '',
+  height: '',
+  max_weight: '',
+  ext_length: '',
+  ext_width: '',
+  ext_height: '',
+  box_weight: '',
+  box_fee: '',
+  is_available: false,
+  box_type: 1,
   apply_rule_to: 3,
-	availability_type: '1',
-	filter_products: [],
-	filter_categories:[],
-	filter_brands:[]
+  availability_type: '1',
+  filter_products: [],
+  filter_categories: [],
+  filter_brands: []
 }
 
 const productBoxInitialState = {
-	quantity: '',
-	nickname: '',
-	length: '',
-	width: '',
-	height: '',
-	weight: '',
-	box_fee: '',
+  quantity: '',
+  nickname: '',
+  length: '',
+  width: '',
+  height: '',
+  weight: '',
+  box_fee: '',
 }
 
 const fedexBoxTypes = [
-	{ label: 'Fedex Envelope (9.5 x 12.5)', id: 'FEDEX_ENVELOPE__19-5_12-5_0-5-1' },
-	{
-		label: 'Fedex Reusable Envelope (9.5 x 15.5)',
-		id: 'FEDEX_ENVELOPE__19-5_12-5_0-5-2',
-	},
-	{
-		label: 'Fedex Pak - Small (10.25 x 12.75 x 1.5)',
-		id: 'FEDEX_PAK__10-25_12-75_1-5-1',
-	},
-	{ label: 'Fedex Pak - Large (12 x 15.5 x 1.5)', id: 'FEDEX_PAK__12_15-5_1-5-2' },
-	{
-		label: 'Fedex Pak - Padded (11.75 x 14.75 x 1.25)',
-		id: 'FEDEX_PAK__11-75_14-75_1-25-1',
-	},
-	{
-		label: 'Fedex Pak - Reusable (10 x 14.5 x 1.25)',
-		id: 'FEDEX_PAK__10_14-5_1-25-1',
-	},
-	{
-		label: 'Fedex Small Box (10.875 x 1.5 x 12.375)',
-		id: 'FEDEX_SMALL_BOX__10-875_1-5_12-375_1',
-	},
-	{
-		label: 'Fedex Small Box (8.75 x 2.625 x 11.25)',
-		id: 'FEDEX_SMALL_BOX__8-75_2-625_11-25_2',
-	},
-	{
-		label: 'Fedex Medium Box (11.5 x 2.375 x 13.25)',
-		id: 'FEDEX_MEDIUM_BOX__11-5_2-375_13-25_1',
-	},
-	{
-		label: 'Fedex Medium Box (8.75 x 4.375 x 11.25)',
-		id: 'FEDEX_MEDIUM_BOX__8-75_4-375_11-25_2',
-	},
-	{
-		label: 'Fedex Large Box (12.375 x 3 x 17.5)',
-		id: 'FEDEX_LARGE_BOX__12-375_3_17-5_1',
-	},
-	{
-		label: 'Fedex Large Box (8.75 x 7.75 x 11.25)',
-		id: 'FEDEX_LARGE_BOX__8-75_7-75_11-25_2',
-	},
-	{
-		label: 'Fedex Extra Large Box (11.875 x 10.75 x 11)',
-		id: 'FEDEX_EXTRA_LARGE_BOX__11-875_10-75_11_1',
-	},
-	{
-		label: 'Fedex Extra Large Box (15.75 x 14.125 x 6)',
-		id: 'FEDEX_EXTRA_LARGE_BOX__15-75_14-125_6_2',
-	},
+  { label: 'Fedex Envelope (9.5 x 12.5)', id: 'FEDEX_ENVELOPE__19-5_12-5_0-5-1' },
+  {
+    label: 'Fedex Reusable Envelope (9.5 x 15.5)',
+    id: 'FEDEX_ENVELOPE__19-5_12-5_0-5-2',
+  },
+  {
+    label: 'Fedex Pak - Small (10.25 x 12.75 x 1.5)',
+    id: 'FEDEX_PAK__10-25_12-75_1-5-1',
+  },
+  { label: 'Fedex Pak - Large (12 x 15.5 x 1.5)', id: 'FEDEX_PAK__12_15-5_1-5-2' },
+  {
+    label: 'Fedex Pak - Padded (11.75 x 14.75 x 1.25)',
+    id: 'FEDEX_PAK__11-75_14-75_1-25-1',
+  },
+  {
+    label: 'Fedex Pak - Reusable (10 x 14.5 x 1.25)',
+    id: 'FEDEX_PAK__10_14-5_1-25-1',
+  },
+  {
+    label: 'Fedex Small Box (10.875 x 1.5 x 12.375)',
+    id: 'FEDEX_SMALL_BOX__10-875_1-5_12-375_1',
+  },
+  {
+    label: 'Fedex Small Box (8.75 x 2.625 x 11.25)',
+    id: 'FEDEX_SMALL_BOX__8-75_2-625_11-25_2',
+  },
+  {
+    label: 'Fedex Medium Box (11.5 x 2.375 x 13.25)',
+    id: 'FEDEX_MEDIUM_BOX__11-5_2-375_13-25_1',
+  },
+  {
+    label: 'Fedex Medium Box (8.75 x 4.375 x 11.25)',
+    id: 'FEDEX_MEDIUM_BOX__8-75_4-375_11-25_2',
+  },
+  {
+    label: 'Fedex Large Box (12.375 x 3 x 17.5)',
+    id: 'FEDEX_LARGE_BOX__12-375_3_17-5_1',
+  },
+  {
+    label: 'Fedex Large Box (8.75 x 7.75 x 11.25)',
+    id: 'FEDEX_LARGE_BOX__8-75_7-75_11-25_2',
+  },
+  {
+    label: 'Fedex Extra Large Box (11.875 x 10.75 x 11)',
+    id: 'FEDEX_EXTRA_LARGE_BOX__11-875_10-75_11_1',
+  },
+  {
+    label: 'Fedex Extra Large Box (15.75 x 14.125 x 6)',
+    id: 'FEDEX_EXTRA_LARGE_BOX__15-75_14-125_6_2',
+  },
 ]
 
 const uspsBoxTypes = [
-	{ label: 'USPS Priority Mail Box', id: 'UPMB' },
-	{ label: 'USPS Priority Mail Express Box', id: 'UMEB' },
-	{ label: 'USPS Priority Mail Large Flat Rate Box', id: 'UFLAT' },
-	{ label: 'USPS Priority Mail Medium Flat Rate Box', id: 'UFLAT' },
-	{ label: 'USPS Priority Mail Small Flat Rate Box', id: 'UFLAT' },
-	{ label: 'USPS Priority Mail Padded Flat Rate Envelope', id: 'UFLAT' },
+  { label: 'USPS Priority Mail Box', id: 'UPMB' },
+  { label: 'USPS Priority Mail Express Box', id: 'UMEB' },
+  { label: 'USPS Priority Mail Large Flat Rate Box', id: 'UFLAT' },
+  { label: 'USPS Priority Mail Medium Flat Rate Box', id: 'UFLAT' },
+  { label: 'USPS Priority Mail Small Flat Rate Box', id: 'UFLAT' },
+  { label: 'USPS Priority Mail Padded Flat Rate Envelope', id: 'UFLAT' },
 ]
 
 const pattern = {
-	pattern: /^\d+(\.\d{1,2})?$/,
-	message: 'There must be two decimal places',
+  pattern: /^\d+(\.\d{1,2})?$/,
+  message: 'There must be two decimal places',
 }
 
 function BoxSizesComponent(props) {
-	const [visible, setVisibleAddBox] = useState(false)
-	const [boxSize, setBoxSize] = useState(initialState)
-	const [productBoxSize, setProductBoxSize] = useState(productBoxInitialState)
-	const [productBoxVisible, setProductBoxVisible] = useState(false)
-	const [loadBoxSize, setLoadBoxSize] = useState(false)
-	const [boxType, setBoxType] = useState('')
-	const [discription, setDiscription] = useState({})
-	const [operation, setOperation] = useState(false)
-	const [recordId, setRecordId] = useState(0)
-	const [deleteBoxModal, setDeleteBoxModal] = useState(false)
+  const [visible, setVisibleAddBox] = useState(false)
+  const [boxSize, setBoxSize] = useState(initialState)
+  const [productBoxSize, setProductBoxSize] = useState(productBoxInitialState)
+  const [productBoxVisible, setProductBoxVisible] = useState(false)
+  const [loadBoxSize, setLoadBoxSize] = useState(false)
+  const [boxType, setBoxType] = useState('')
+  const [discription, setDiscription] = useState({})
+  const [operation, setOperation] = useState(false)
+  const [recordId, setRecordId] = useState(0)
+  const [deleteBoxModal, setDeleteBoxModal] = useState(false)
   const [boxAssociatedTo, setBoxAssociatedTo] = useState([]);
 
-	const dispatch = useDispatch()
-	const {
-		productBoxes,
-		isFedexSmallCarrier,
-		isUspsSmallCarrier,
-		isUpsSmallCarrier,
-		installedCarriers,
-		storeCategories,
-		storeBrands,
-	} = useSelector(state => state)
-	const [boxSizeForm] = Form.useForm()
+  const dispatch = useDispatch()
+  const {
+    productBoxes,
+    isFedexSmallCarrier,
+    isUspsSmallCarrier,
+    isUpsSmallCarrier,
+    installedCarriers,
+    storeCategories,
+    storeBrands,
+  } = useSelector(state => state)
+  const [boxSizeForm] = Form.useForm()
 
-	useEffect(() => {
-		props.getBoxSizes(props.token)
-		dispatch(getProductBoxSizes(props.token))
-		// eslint-disable-next-line
-	}, [dispatch])
+  useEffect(() => {
+    props.getBoxSizes(props.token)
+    dispatch(getProductBoxSizes(props.token))
+    // eslint-disable-next-line
+  }, [dispatch])
 
-	const populateBoxValues = useCallback(
-		(box_id = '') => {
-			setDiscription({})
+  const populateBoxValues = useCallback(
+    (box_id = '') => {
+      setDiscription({})
 
-			if (box_id === 'Merchant defined Box (default)') {
-				setBoxSize(prevState => ({
-					...initialState,
-					...prevState,
-				}))
-				boxSizeForm.setFieldsValue({
-					...initialState,
-				})
-			} else {
-				const { label } = fedexBoxTypes.filter(bt => bt.id === box_id)[0]
-				const dimensions = label
-					.substring(label.indexOf('(') + 1, label.indexOf(')'))
-					.replaceAll(' ', '')
-					.split('x')
+      if (box_id === 'Merchant defined Box (default)') {
+        setBoxSize(prevState => ({
+          ...initialState,
+          ...prevState,
+        }))
+        boxSizeForm.setFieldsValue({
+          ...initialState,
+        })
+      } else {
+        const { label } = fedexBoxTypes.filter(bt => bt.id === box_id)[0]
+        const dimensions = label
+          .substring(label.indexOf('(') + 1, label.indexOf(')'))
+          .replaceAll(' ', '')
+          .split('x')
 
-				let height = '0.5',
-					max_weight = '10'
+        let height = '0.5',
+          max_weight = '10'
 
-				if (dimensions.length > 2) {
-					height = dimensions[2]
-					max_weight = '50'
-				}
-
-
-				const newValues = {
-					nickname: label.substring(0, label.indexOf('(') - 1),
-					length: dimensions[0],
-					width: dimensions[1],
-					height,
-					max_weight,
-					box_weight: 0,
-					box_name: box_id,
-				}
-
-				setBoxSize(prevState => ({
-					...prevState,
-					...newValues,
-				}))
-
-				boxSizeForm.setFieldsValue(newValues)
-			}
-		},
-		[boxSizeForm]
-	)
-
-	const upsBoxInfo = useCallback(
-		(box_id = '') => {
-			setDiscription(boxDiscription[box_id])
-
-			if (box_id === 'Merchant defined Box (default)') {
-				setBoxSize(prevState => ({
-					...initialState,
-					...prevState,
-				}))
-				boxSizeForm.setFieldsValue({
-					...initialState,
-				})
-			} else {
-				const { label } = upsBoxTypes.filter(bt => bt.id === box_id)[0]
-
-				const newValues = {
-					nickname: label,
-				}
-
-				setBoxSize(prevState => ({
-					...prevState,
-					...newValues,
-				}))
-
-				boxSizeForm.setFieldsValue(newValues)
-			}
-		},
-		[boxSizeForm]
-	)
-
-	const setDiscriptionText = (
-		<>
-			<span>Dimensions: {discription?.dimensions}</span>
-			<br />
-			<span>Common Box Dimensions: {discription?.cb_dimensions}</span>
-			<br />
-			<span>Size Samples: {discription?.size_samples}</span>
-		</>
-	)
-
-	const setUspsBoxFields = useCallback(
-		(val = '', opt) => {
-			setDiscription({})
-
-			boxSizeForm.setFieldsValue({
-				nickname: String(opt.children),
-				length: 0,
-				width: 0,
-				height: 0,
-				max_weight: 0,
-				box_weight: 0,
-			})
-		},
-		[boxSizeForm]
-	)
-
-	const onFinish = values => {
-		const {
-			length,
-			width,
-			height,
-			ext_length,
-			ext_width,
-			ext_height,
-			max_weight,
-			box_weight,
-			box_fee,
-		} = values
-    console.log(values,'finish')
-		let error = ''
-		error = valueLimit(length, 108, 'interior length')
-		error += valueLimit(width, 108, 'interior width')
-		error += valueLimit(height, 108, 'interior height')
-		error = valueLimit(ext_length, 108, 'exterior length')
-		error += valueLimit(ext_width, 108, 'exterior width')
-		error += valueLimit(ext_height, 108, 'exterior height')
-
-		error += valueLimit(max_weight, 150, 'max weight')
-
-		error += valueLimitAfterDecimal(length, 2, 'interior length')
-		error += valueLimitAfterDecimal(width, 2, 'interior width')
-		error += valueLimitAfterDecimal(height, 2, 'interior height')
-		error += valueLimitAfterDecimal(ext_length, 2, 'exterior length')
-		error += valueLimitAfterDecimal(ext_width, 2, 'exterior width')
-		error += valueLimitAfterDecimal(ext_height, 2, 'exterior height')
-
-		error += valueLimitAfterDecimal(max_weight, 3, 'max weight')
-		error += valueLimitAfterDecimal(box_weight, 3, 'box weight')
-		error += valueLimitAfterDecimal(box_fee, 3, 'box fee')
-
-		if (+ext_length && +length > +ext_length)
-			error = 'Interior length cannot be greater than exterior length'
-		if (+ext_width && +width > +ext_width)
-			error = 'Interior width cannot be greater than exterior width'
-		if (+ext_height && +height > +ext_height)
-			error = 'Interior height cannot be greater than exterior height'
-
-		const limit = 165
-		const int_girth = 2 * (+width + +height) + +length
-		if (int_girth > limit)
-			error = 'Interior length plus girth cannot exceed ' + limit + '.'
-
-		if (+ext_height && +ext_length && +ext_width) {
-			const ext_girth = 2 * (+ext_width + +ext_height) + +ext_length
-			if (ext_girth > limit)
-				error = 'Exterior length plus girth cannot exceed ' + limit + '.'
-		}
-
-		if (error !== '') {
-			if (error.includes('exploder')) error = error.split('exploder')[0]
-
-			dispatch({
-				type: 'ALERT_MESSAGE',
-				payload: {
-					showAlertMessage: false,
-					alertMessageType: 'loading',
-				},
-			})
-			dispatch({
-				type: 'ALERT_MESSAGE',
-				payload: {
-					alertMessage: error,
-					showAlertMessage: true,
-					alertMessageType: 'error',
-				},
-			})
-		} else {
-			if (isUspsSmallCarrier) {
-				values['box_name'] = values?.box_name?.replace(/[0-9]/, '')
-			}
-			let boxType =
-				values?.box_name === 'Merchant defined Box (default)'
-					? 1
-					: (isFedexSmallCarrier && 2) ||
-					(isUspsSmallCarrier && 3) ||
-					(isUpsSmallCarrier && 5)
-
-			const boxName = values?.box_name?.toLowerCase() ?? ''
-			if (boxName?.includes('fedex_')) {
-				boxType = 2
-			} else if (boxName?.includes('ups')) {
-				boxType = 5
-			} else if (
-				boxName?.includes('upmb') ||
-				boxName?.includes('umeb') ||
-				boxName?.includes('uflat')
-			) {
-				boxType = 3
-			}
-
-			if (!operation) {
-				props.addBoxSize(
-					props.token,
-					{
-						...values,
-						is_available: boxSize.is_available,
-						box_type: boxType,
-						box_name: values?.box_name,
-					},
-					'save_boxsize',
-					'ADD_BOX_SIZE',
-					setVisibleAddBox
-				)
-			} else {
-				props.addBoxSize(
-					props.token,
-					{
-						...values,
-						is_available: boxSize.is_available,
-						id: boxSize.id,
-						box_type: boxType,
-						box_name: values?.box_name,
-					},
-					'update_boxsize',
-					'UPDATE_BOX_SIZE',
-					setVisibleAddBox
-				)
-			}
-		}
-		//setVisibleAddBox(false);
-	}
-
-	// -------------cc-----------------
+        if (dimensions.length > 2) {
+          height = dimensions[2]
+          max_weight = '50'
+        }
 
 
-	// Add these new state variables for the apply rule functionality
-	const [applyRuleTo, setApplyRuleTo] = useState(3)
-	const [selectedCategories, setSelectedCategories] = useState([])
-	const [selectedBrands, setSelectedBrands] = useState([])
-	const [selectedProducts, setSelectedProducts] = useState([])
-	const [data, setData] = useState([])
-	const [searchQuery, setSearchQuery] = useState("")
-	const [loading, setLoading] = useState(false)
-	const dropdownRef = useRef()
+        const newValues = {
+          nickname: label.substring(0, label.indexOf('(') - 1),
+          length: dimensions[0],
+          width: dimensions[1],
+          height,
+          max_weight,
+          box_weight: 0,
+          box_name: box_id,
+        }
 
-	// Fetch products data call when characters length > 2
-	useEffect(() => {
-		if (searchQuery.length > 2) {
-			fetchData()
-		}
-	}, [searchQuery])
+        setBoxSize(prevState => ({
+          ...prevState,
+          ...newValues,
+        }))
 
-	useEffect(() => {
-		// Attach event listener for body click
-		document.body.addEventListener("click", handleBodyClick)
-		// Cleanup event listener on component unmount
-		return () => {
-			document.body.removeEventListener("click", handleBodyClick)
-		}
-	}, [])
+        boxSizeForm.setFieldsValue(newValues)
+      }
+    },
+    [boxSizeForm]
+  )
+
+  const upsBoxInfo = useCallback(
+    (box_id = '') => {
+      setDiscription(boxDiscription[box_id])
+
+      if (box_id === 'Merchant defined Box (default)') {
+        setBoxSize(prevState => ({
+          ...initialState,
+          ...prevState,
+        }))
+        boxSizeForm.setFieldsValue({
+          ...initialState,
+        })
+      } else {
+        const { label } = upsBoxTypes.filter(bt => bt.id === box_id)[0]
+
+        const newValues = {
+          nickname: label,
+        }
+
+        setBoxSize(prevState => ({
+          ...prevState,
+          ...newValues,
+        }))
+
+        boxSizeForm.setFieldsValue(newValues)
+      }
+    },
+    [boxSizeForm]
+  )
+
+  const setDiscriptionText = (
+    <>
+      <span>Dimensions: {discription?.dimensions}</span>
+      <br />
+      <span>Common Box Dimensions: {discription?.cb_dimensions}</span>
+      <br />
+      <span>Size Samples: {discription?.size_samples}</span>
+    </>
+  )
+
+  const setUspsBoxFields = useCallback(
+    (val = '', opt) => {
+      setDiscription({})
+
+      boxSizeForm.setFieldsValue({
+        nickname: String(opt.children),
+        length: 0,
+        width: 0,
+        height: 0,
+        max_weight: 0,
+        box_weight: 0,
+      })
+    },
+    [boxSizeForm]
+  )
+
+  const onFinish = values => {
+    const {
+      length,
+      width,
+      height,
+      ext_length,
+      ext_width,
+      ext_height,
+      max_weight,
+      box_weight,
+      box_fee,
+    } = values
+    console.log(values, 'finish')
+    let error = ''
+    error = valueLimit(length, 108, 'interior length')
+    error += valueLimit(width, 108, 'interior width')
+    error += valueLimit(height, 108, 'interior height')
+    error = valueLimit(ext_length, 108, 'exterior length')
+    error += valueLimit(ext_width, 108, 'exterior width')
+    error += valueLimit(ext_height, 108, 'exterior height')
+
+    error += valueLimit(max_weight, 150, 'max weight')
+
+    error += valueLimitAfterDecimal(length, 2, 'interior length')
+    error += valueLimitAfterDecimal(width, 2, 'interior width')
+    error += valueLimitAfterDecimal(height, 2, 'interior height')
+    error += valueLimitAfterDecimal(ext_length, 2, 'exterior length')
+    error += valueLimitAfterDecimal(ext_width, 2, 'exterior width')
+    error += valueLimitAfterDecimal(ext_height, 2, 'exterior height')
+
+    error += valueLimitAfterDecimal(max_weight, 3, 'max weight')
+    error += valueLimitAfterDecimal(box_weight, 3, 'box weight')
+    error += valueLimitAfterDecimal(box_fee, 3, 'box fee')
+
+    if (+ext_length && +length > +ext_length)
+      error = 'Interior length cannot be greater than exterior length'
+    if (+ext_width && +width > +ext_width)
+      error = 'Interior width cannot be greater than exterior width'
+    if (+ext_height && +height > +ext_height)
+      error = 'Interior height cannot be greater than exterior height'
+
+    const limit = 165
+    const int_girth = 2 * (+width + +height) + +length
+    if (int_girth > limit)
+      error = 'Interior length plus girth cannot exceed ' + limit + '.'
+
+    if (+ext_height && +ext_length && +ext_width) {
+      const ext_girth = 2 * (+ext_width + +ext_height) + +ext_length
+      if (ext_girth > limit)
+        error = 'Exterior length plus girth cannot exceed ' + limit + '.'
+    }
+
+    if (error !== '') {
+      if (error.includes('exploder')) error = error.split('exploder')[0]
+
+      dispatch({
+        type: 'ALERT_MESSAGE',
+        payload: {
+          showAlertMessage: false,
+          alertMessageType: 'loading',
+        },
+      })
+      dispatch({
+        type: 'ALERT_MESSAGE',
+        payload: {
+          alertMessage: error,
+          showAlertMessage: true,
+          alertMessageType: 'error',
+        },
+      })
+    } else {
+      if (isUspsSmallCarrier) {
+        values['box_name'] = values?.box_name?.replace(/[0-9]/, '')
+      }
+      let boxType =
+        values?.box_name === 'Merchant defined Box (default)'
+          ? 1
+          : (isFedexSmallCarrier && 2) ||
+          (isUspsSmallCarrier && 3) ||
+          (isUpsSmallCarrier && 5)
+
+      const boxName = values?.box_name?.toLowerCase() ?? ''
+      if (boxName?.includes('fedex_')) {
+        boxType = 2
+      } else if (boxName?.includes('ups')) {
+        boxType = 5
+      } else if (
+        boxName?.includes('upmb') ||
+        boxName?.includes('umeb') ||
+        boxName?.includes('uflat')
+      ) {
+        boxType = 3
+      }
+
+      if (!operation) {
+        props.addBoxSize(
+          props.token,
+          {
+            ...values,
+            is_available: boxSize.is_available,
+            box_type: boxType,
+            box_name: values?.box_name,
+          },
+          'save_boxsize',
+          'ADD_BOX_SIZE',
+          setVisibleAddBox
+        )
+      } else {
+        props.addBoxSize(
+          props.token,
+          {
+            ...values,
+            is_available: boxSize.is_available,
+            id: boxSize.id,
+            box_type: boxType,
+            box_name: values?.box_name,
+          },
+          'update_boxsize',
+          'UPDATE_BOX_SIZE',
+          setVisibleAddBox
+        )
+      }
+    }
+    //setVisibleAddBox(false);
+  }
+
+  // -------------cc-----------------
 
 
-	// Fetch products on search by name from DB
-	const fetchData = async () => {
-		setLoading(true)
-		try {
-			const config = {
-				headers: {
-					authorization: `Bearer ${props.token}`, // Use props.token since you're using connect
-				},
-				params: {
-					search: searchQuery,
-				},
-			}
-			const response = await axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_shipping_rule_products`, config)
-			setData([...response.data.data])
-		} catch (error) {
-			console.error("Error fetching data:", error)
-		} finally {
-			setLoading(false)
-		}
-	}
+  // Add these new state variables for the apply rule functionality
+  const [applyRuleTo, setApplyRuleTo] = useState(3)
+  const [selectedCategories, setSelectedCategories] = useState([])
+  const [selectedBrands, setSelectedBrands] = useState([])
+  const [selectedProducts, setSelectedProducts] = useState([])
+  const [data, setData] = useState([])
+  const [searchQuery, setSearchQuery] = useState("")
+  const [loading, setLoading] = useState(false)
+  const dropdownRef = useRef()
 
-	const handleChangeApplyRuleTo = (value) => {
+  // Fetch products data call when characters length > 2
+  useEffect(() => {
+    if (searchQuery.length > 2) {
+      fetchData()
+    }
+  }, [searchQuery])
+
+  useEffect(() => {
+    // Attach event listener for body click
+    document.body.addEventListener("click", handleBodyClick)
+    // Cleanup event listener on component unmount
+    return () => {
+      document.body.removeEventListener("click", handleBodyClick)
+    }
+  }, [])
+
+
+  // Fetch products on search by name from DB
+  const fetchData = async () => {
+    setLoading(true)
+    try {
+      const config = {
+        headers: {
+          authorization: `Bearer ${props.token}`, // Use props.token since you're using connect
+        },
+        params: {
+          search: searchQuery,
+        },
+      }
+      const response = await axios.get(`${process.env.REACT_APP_ENITURE_API_URL}/get_shipping_rule_products`, config)
+      setData([...response.data.data])
+    } catch (error) {
+      console.error("Error fetching data:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleChangeApplyRuleTo = (value) => {
     boxSizeForm.resetFields([
       "filter_products",
       "filter_categories",
       "filter_brands",
     ]);
-		// boxSizeForm.setFieldValue("filter_categories", []);
-		// boxSizeForm.setFieldValue("filter_brands", selectedProducts);
-		// boxSizeForm.setFieldValue("filter_products", []);
+    // boxSizeForm.setFieldValue("filter_categories", []);
+    // boxSizeForm.setFieldValue("filter_brands", selectedProducts);
+    // boxSizeForm.setFieldValue("filter_products", []);
 
-		setApplyRuleTo(value)
-	}
+    setApplyRuleTo(value)
+  }
 
-	const handleChangeCategories = (selectedValues) => {
-		setSelectedCategories(selectedValues)
-	}
+  const handleChangeCategories = (selectedValues) => {
+    setSelectedCategories(selectedValues)
+  }
 
-	const filterOptionsCategories = (input, option) => {
-		return (
-			option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
-			!selectedCategories.includes(option.key)
-		)
-	}
+  const filterOptionsCategories = (input, option) => {
+    return (
+      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
+      !selectedCategories.includes(option.key)
+    )
+  }
 
-	const handleChangeBrands = (selectedValues) => {
-		setSelectedBrands(selectedValues)
-	}
+  const handleChangeBrands = (selectedValues) => {
+    setSelectedBrands(selectedValues)
+  }
 
-	const filterOptionsBrands = (input, option) => {
-		return (
-			option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
-			!selectedBrands.includes(option.key)
-		)
-	}
+  const filterOptionsBrands = (input, option) => {
+    return (
+      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 &&
+      !selectedBrands.includes(option.key)
+    )
+  }
 
-	const handleSearch = (value) => {
-		setData([])
-		setSearchQuery(value)
-	}
+  const handleSearch = (value) => {
+    setData([])
+    setSearchQuery(value)
+  }
 
-	const handleChangeProducts = (selectedValues) => {
-    console.log(selectedValues,'selectedVlues');
-		setData([])
-		setSearchQuery("")
-		setSelectedProducts(selectedValues)
-	}
+  const handleChangeProducts = (selectedValues) => {
+    console.log(selectedValues, 'selectedVlues');
+    setData([])
+    setSearchQuery("")
+    setSelectedProducts(selectedValues)
+  }
 
-	// Click outside the dropdown, clear data
-	const handleBodyClick = (event) => {
-		if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-			setData([])
-			setSearchQuery("")
-		}
-	}
-
-
-
-
-
-	// ------------cc-----------------
-
-	const addProductBoxSize = useCallback(
-		values => {
-			let error = valueLimit(values?.length, 108, 'length')
-			error += valueLimit(values?.width, 108, 'width')
-			error += valueLimit(values?.height, 108, 'height')
-			error += valueLimit(values?.weight, 150, 'weight')
-
-			error += valueLimitAfterDecimal(values?.length, 3, 'length')
-			error += valueLimitAfterDecimal(values?.width, 3, 'width')
-			error += valueLimitAfterDecimal(values?.height, 3, 'height')
-			error += valueLimitAfterDecimal(values?.weight, 3, 'weight')
-
-			error += valueLimitAfterDecimal(values?.box_fee, 3, 'box fee')
-
-			if (error !== '') {
-				error = error.split('exploder')[0]
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						showAlertMessage: false,
-						alertMessageType: 'loading',
-					},
-				})
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						alertMessage: error,
-						showAlertMessage: true,
-						alertMessageType: 'error',
-					},
-				})
-			} else {
-				if (!operation) {
-					dispatch(
-						addProductNewBoxSize(
-							props.token,
-							{ ...values, product_id: recordId },
-							'addmultiplepackages',
-							'ADD_PRODUCT_BOX_SIZE',
-							setProductBoxVisible
-						)
-					)
-				} else {
-					dispatch(
-						addProductNewBoxSize(
-							props.token,
-							{ ...productBoxSize, ...values, product_id: recordId },
-							'updatemultiplepackages',
-							'ADD_PRODUCT_BOX_SIZE',
-							setProductBoxVisible
-						)
-					)
-				}
-			}
-		},
-		[dispatch, operation, productBoxSize, props.token, recordId]
-	)
-
-// Add this useEffect
-useEffect(() => {
-    if (!loadBoxSize && operation && visible) {
-        // Form is now rendered and ready to receive values
-        const boxAssociatedTo = JSON.parse(boxSize?.box_associated_to || '[]');
-        const productOptions = boxAssociatedTo.map(item => ({
-            key: item.value,
-            label: item.label
-        }));
-        
-        let formValues;
-        if (['UMEB', 'UPMB', 'UFLAT'].includes(boxSize?.box_name)) {
-            let index = 0
-            for (const key in uspsBoxTypes) {
-                if (uspsBoxTypes[key].lable === boxSize.nickname) {
-                    index = key
-                    break
-                }
-            }
-            let box_name = boxSize.box_name + index
-            formValues = {
-                ...boxSize,
-                box_name,
-                availability_type: boxSize.availability_type?.toString() || "1",
-                filter_products: selectedProducts
-            };
-        } else {
-            formValues = {
-                ...boxSize,
-                availability_type: boxSize.availability_type?.toString() || "1",
-                filter_products: selectedProducts
-            };
-        }
-        
-        boxSizeForm.setFieldsValue(formValues);
+  // Click outside the dropdown, clear data
+  const handleBodyClick = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setData([])
+      setSearchQuery("")
     }
-}, [loadBoxSize, operation, visible, boxSize])
+  }
 
-// Simplified editBoxSize function
-const editBoxSize = record => {
+
+
+
+
+  // ------------cc-----------------
+
+  const addProductBoxSize = useCallback(
+    values => {
+      let error = valueLimit(values?.length, 108, 'length')
+      error += valueLimit(values?.width, 108, 'width')
+      error += valueLimit(values?.height, 108, 'height')
+      error += valueLimit(values?.weight, 150, 'weight')
+
+      error += valueLimitAfterDecimal(values?.length, 3, 'length')
+      error += valueLimitAfterDecimal(values?.width, 3, 'width')
+      error += valueLimitAfterDecimal(values?.height, 3, 'height')
+      error += valueLimitAfterDecimal(values?.weight, 3, 'weight')
+
+      error += valueLimitAfterDecimal(values?.box_fee, 3, 'box fee')
+
+      if (error !== '') {
+        error = error.split('exploder')[0]
+        dispatch({
+          type: 'ALERT_MESSAGE',
+          payload: {
+            showAlertMessage: false,
+            alertMessageType: 'loading',
+          },
+        })
+        dispatch({
+          type: 'ALERT_MESSAGE',
+          payload: {
+            alertMessage: error,
+            showAlertMessage: true,
+            alertMessageType: 'error',
+          },
+        })
+      } else {
+        if (!operation) {
+          dispatch(
+            addProductNewBoxSize(
+              props.token,
+              { ...values, product_id: recordId },
+              'addmultiplepackages',
+              'ADD_PRODUCT_BOX_SIZE',
+              setProductBoxVisible
+            )
+          )
+        } else {
+          dispatch(
+            addProductNewBoxSize(
+              props.token,
+              { ...productBoxSize, ...values, product_id: recordId },
+              'updatemultiplepackages',
+              'ADD_PRODUCT_BOX_SIZE',
+              setProductBoxVisible
+            )
+          )
+        }
+      }
+    },
+    [dispatch, operation, productBoxSize, props.token, recordId]
+  )
+
+  // Add this useEffect
+  useEffect(() => {
+    if (!loadBoxSize && operation && visible) {
+      // Form is now rendered and ready to receive values
+      const boxAssociatedTo = JSON.parse(boxSize?.box_associated_to || '[]');
+      const productOptions = boxAssociatedTo.map(item => ({
+        key: item.value,
+        label: item.label
+      }));
+
+      let formValues;
+      if (['UMEB', 'UPMB', 'UFLAT'].includes(boxSize?.box_name)) {
+        let index = 0
+        for (const key in uspsBoxTypes) {
+          if (uspsBoxTypes[key].lable === boxSize.nickname) {
+            index = key
+            break
+          }
+        }
+        let box_name = boxSize.box_name + index
+        formValues = {
+          ...boxSize,
+          box_name,
+          availability_type: boxSize.availability_type?.toString() || "1",
+          filter_products: selectedProducts
+        };
+      } else {
+        formValues = {
+          ...boxSize,
+          availability_type: boxSize.availability_type?.toString() || "1",
+          filter_products: selectedProducts
+        };
+      }
+
+      boxSizeForm.setFieldsValue(formValues);
+    }
+  }, [loadBoxSize, operation, visible, boxSize])
+
+  // Simplified editBoxSize function
+  const editBoxSize = record => {
     if (!record) {
-        console.error("editBoxSize: record is undefined");
-        return;
+      console.error("editBoxSize: record is undefined");
+      return;
     }
 
     setOperation(true);
@@ -620,32 +620,32 @@ const editBoxSize = record => {
 
     let boxAssociatedTo = [];
     try {
-        if (record?.box_associated_to) {
-            const parsed = JSON.parse(record.box_associated_to);
-            if (Array.isArray(parsed)) {
-                boxAssociatedTo = parsed;
-            }
+      if (record?.box_associated_to) {
+        const parsed = JSON.parse(record.box_associated_to);
+        if (Array.isArray(parsed)) {
+          boxAssociatedTo = parsed;
         }
+      }
     } catch (e) {
-        console.error("Error parsing box_associated_to:", e);
+      console.error("Error parsing box_associated_to:", e);
     }
 
     const applyRuleValue = record?.apply_rule_to ? Number(record.apply_rule_to) : 3;
 
     const updatedBoxSize = {
-        ...record,
-        apply_rule_to: applyRuleValue,
+      ...record,
+      apply_rule_to: applyRuleValue,
     };
 
     if (applyRuleValue === 1) {
-        updatedBoxSize.filter_categories = boxAssociatedTo;
-        setSelectedCategories(boxAssociatedTo);
+      updatedBoxSize.filter_categories = boxAssociatedTo;
+      setSelectedCategories(boxAssociatedTo);
     } else if (applyRuleValue === 2) {
-        updatedBoxSize.filter_brands = boxAssociatedTo;
-        setSelectedBrands(boxAssociatedTo);
+      updatedBoxSize.filter_brands = boxAssociatedTo;
+      setSelectedBrands(boxAssociatedTo);
     } else if (applyRuleValue === 3) {
-        updatedBoxSize.filter_products = boxAssociatedTo;
-        setSelectedProducts(boxAssociatedTo);
+      updatedBoxSize.filter_products = boxAssociatedTo;
+      setSelectedProducts(boxAssociatedTo);
     }
 
     setBoxSize(updatedBoxSize);
@@ -654,204 +654,204 @@ const editBoxSize = record => {
     setVisibleAddBox(true);
 
     setTimeout(() => {
-        setLoadBoxSize(false);
+      setLoadBoxSize(false);
     }, 1000);
-};
+  };
 
 
-	const editProductBoxSize = record => {
-		setOperation(true)
-		setLoadBoxSize(true)
-		setProductBoxSize(record)
-		setProductBoxVisible(true)
+  const editProductBoxSize = record => {
+    setOperation(true)
+    setLoadBoxSize(true)
+    setProductBoxSize(record)
+    setProductBoxVisible(true)
 
-		setTimeout(() => {
-			setLoadBoxSize(false)
-		}, 1000)
-	}
+    setTimeout(() => {
+      setLoadBoxSize(false)
+    }, 1000)
+  }
 
-	const confirmDeleteBox = id => {
-		setRecordId(id)
-		setDeleteBoxModal(true)
-	}
+  const confirmDeleteBox = id => {
+    setRecordId(id)
+    setDeleteBoxModal(true)
+  }
 
-	const handleBoxTypes = useCallback(() => {
-		let boxTypes = []
+  const handleBoxTypes = useCallback(() => {
+    let boxTypes = []
 
-		if (installedCarriers && installedCarriers?.length > 0) {
-			const isFedexSmallEnabled = installedCarriers?.filter(
-				insCarr => insCarr.slug === 'fedex-small' && insCarr.is_enabled
-			)
-			const isUspsSmallEnabled = installedCarriers?.filter(
-				insCarr => insCarr.slug === 'usps-small' && insCarr.is_enabled
-			)
-			const isUpsSmallEnabled = installedCarriers?.filter(
-				insCarr => insCarr.slug === 'ups-small' && insCarr.is_enabled
-			)
+    if (installedCarriers && installedCarriers?.length > 0) {
+      const isFedexSmallEnabled = installedCarriers?.filter(
+        insCarr => insCarr.slug === 'fedex-small' && insCarr.is_enabled
+      )
+      const isUspsSmallEnabled = installedCarriers?.filter(
+        insCarr => insCarr.slug === 'usps-small' && insCarr.is_enabled
+      )
+      const isUpsSmallEnabled = installedCarriers?.filter(
+        insCarr => insCarr.slug === 'ups-small' && insCarr.is_enabled
+      )
 
-			if (isFedexSmallEnabled?.length > 0) {
-				boxTypes = [...boxTypes, ...fedexBoxTypes]
-			}
+      if (isFedexSmallEnabled?.length > 0) {
+        boxTypes = [...boxTypes, ...fedexBoxTypes]
+      }
 
-			if (isUspsSmallEnabled?.length > 0) {
-				boxTypes = [...boxTypes, ...uspsBoxTypes]
-			}
+      if (isUspsSmallEnabled?.length > 0) {
+        boxTypes = [...boxTypes, ...uspsBoxTypes]
+      }
 
-			if (isUpsSmallEnabled?.length > 0) {
-				boxTypes = [...boxTypes, ...upsBoxTypes]
-			}
-		}
+      if (isUpsSmallEnabled?.length > 0) {
+        boxTypes = [...boxTypes, ...upsBoxTypes]
+      }
+    }
 
-		return boxTypes
-	}, [installedCarriers])
+    return boxTypes
+  }, [installedCarriers])
 
-	const columns = [
-		{
-			key: 'nickname',
-			title: 'Nickname',
-			dataIndex: 'nickname',
-		},
-		{
-			key: 'length',
-			title: 'Interior Length(in)',
-			dataIndex: 'length',
-		},
-		{
-			key: 'width',
-			title: 'Interior Width(in)',
-			dataIndex: 'width',
-		},
-		{
-			key: 'height',
-			title: 'Interior Height(in)',
-			dataIndex: 'height',
-		},
-		{
-			key: 'ext_length',
-			title: 'Exterior Length(in)',
-			dataIndex: 'ext_length',
-		},
-		{
-			key: 'ext_width',
-			title: 'Exterior Width(in)',
-			dataIndex: 'ext_width',
-		},
-		{
-			key: 'ext_height',
-			title: 'Exterior Height(in)',
-			dataIndex: 'ext_height',
-		},
-		{
-			key: 'maxWeight',
-			title: 'Max Weight (LBS)',
-			dataIndex: 'max_weight',
-		},
-		{
-			key: 'boxWeight',
-			title: 'Box Weight(LBS)',
-			dataIndex: 'box_weight',
-		},
+  const columns = [
+    {
+      key: 'nickname',
+      title: 'Nickname',
+      dataIndex: 'nickname',
+    },
+    {
+      key: 'length',
+      title: 'Interior Length(in)',
+      dataIndex: 'length',
+    },
+    {
+      key: 'width',
+      title: 'Interior Width(in)',
+      dataIndex: 'width',
+    },
+    {
+      key: 'height',
+      title: 'Interior Height(in)',
+      dataIndex: 'height',
+    },
+    {
+      key: 'ext_length',
+      title: 'Exterior Length(in)',
+      dataIndex: 'ext_length',
+    },
+    {
+      key: 'ext_width',
+      title: 'Exterior Width(in)',
+      dataIndex: 'ext_width',
+    },
+    {
+      key: 'ext_height',
+      title: 'Exterior Height(in)',
+      dataIndex: 'ext_height',
+    },
+    {
+      key: 'maxWeight',
+      title: 'Max Weight (LBS)',
+      dataIndex: 'max_weight',
+    },
+    {
+      key: 'boxWeight',
+      title: 'Box Weight(LBS)',
+      dataIndex: 'box_weight',
+    },
 
-		{
-			key: 'available',
-			title: 'Available',
-			dataIndex: 'availability',
-		},
-		{
-			key: 'actions',
-			title: 'Actions',
-			render: (text, record) => (
-				<Space size='middle'>
-					<a
-						href='#!'
-						onClick={() => {
-							editBoxSize(record)
+    {
+      key: 'available',
+      title: 'Available',
+      dataIndex: 'availability',
+    },
+    {
+      key: 'actions',
+      title: 'Actions',
+      render: (text, record) => (
+        <Space size='middle'>
+          <a
+            href='#!'
+            onClick={() => {
+              editBoxSize(record)
 
-							if (record?.box_name?.toLowerCase()?.includes('ups')) {
-								setDiscription(boxDiscription[record?.box_name])
-							} else {
-								setDiscription({})
-							}
-						}}>
-						Edit
-					</a>
-					<a
-						href='#!'
-						className={'btn-danger'}
-						onClick={
-							() => {
-								confirmDeleteBox(record.id)
-								setBoxType('common box')
-							} /*props.deleteBoxSize(record.id, props.token)*/
-						}>
-						Delete
-					</a>
-				</Space>
-			),
-		},
-	]
+              if (record?.box_name?.toLowerCase()?.includes('ups')) {
+                setDiscription(boxDiscription[record?.box_name])
+              } else {
+                setDiscription({})
+              }
+            }}>
+            Edit
+          </a>
+          <a
+            href='#!'
+            className={'btn-danger'}
+            onClick={
+              () => {
+                confirmDeleteBox(record.id)
+                setBoxType('common box')
+              } /*props.deleteBoxSize(record.id, props.token)*/
+            }>
+            Delete
+          </a>
+        </Space>
+      ),
+    },
+  ]
 
-	const productBoxescolumns = [
-		{
-			key: 'quantity',
-			title: 'Quantity',
-			dataIndex: 'quantity',
-		},
-		{
-			key: 'nickname',
-			title: 'Nickname',
-			dataIndex: 'nickname',
-		},
-		{
-			key: 'length',
-			title: 'Length(in)',
-			dataIndex: 'length',
-		},
-		{
-			key: 'width',
-			title: 'Width(in)',
-			dataIndex: 'width',
-		},
-		{
-			key: 'height',
-			title: 'Height(in)',
-			dataIndex: 'height',
-		},
-		{
-			key: 'Weight',
-			title: 'Weight (LBS)',
-			dataIndex: 'weight',
-		},
-		{
-			key: 'actions',
-			title: 'Actions',
-			render: (text, record) => (
-				<Space size='middle'>
-					<a
-						href='#!'
-						onClick={() => {
-							editProductBoxSize(record)
-							setRecordId(record.product_id)
-						}}>
-						Edit
-					</a>
-					<a
-						href='#!'
-						className={'btn-danger'}
-						onClick={
-							() => {
-								confirmDeleteBox(record.id)
-								setBoxType('product box')
-							}
-							/*props.deleteBoxSize(record.id, props.token)*/
-						}>
-						Delete
-					</a>
-				</Space>
-			),
-		},
-	]
-	return (
+  const productBoxescolumns = [
+    {
+      key: 'quantity',
+      title: 'Quantity',
+      dataIndex: 'quantity',
+    },
+    {
+      key: 'nickname',
+      title: 'Nickname',
+      dataIndex: 'nickname',
+    },
+    {
+      key: 'length',
+      title: 'Length(in)',
+      dataIndex: 'length',
+    },
+    {
+      key: 'width',
+      title: 'Width(in)',
+      dataIndex: 'width',
+    },
+    {
+      key: 'height',
+      title: 'Height(in)',
+      dataIndex: 'height',
+    },
+    {
+      key: 'Weight',
+      title: 'Weight (LBS)',
+      dataIndex: 'weight',
+    },
+    {
+      key: 'actions',
+      title: 'Actions',
+      render: (text, record) => (
+        <Space size='middle'>
+          <a
+            href='#!'
+            onClick={() => {
+              editProductBoxSize(record)
+              setRecordId(record.product_id)
+            }}>
+            Edit
+          </a>
+          <a
+            href='#!'
+            className={'btn-danger'}
+            onClick={
+              () => {
+                confirmDeleteBox(record.id)
+                setBoxType('product box')
+              }
+              /*props.deleteBoxSize(record.id, props.token)*/
+            }>
+            Delete
+          </a>
+        </Space>
+      ),
+    },
+  ]
+  return (
     <Fragment>
       <Row gutter={30} justify="center" className={"mb-3"}>
         <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -910,9 +910,13 @@ const editBoxSize = record => {
                     setBoxSize(initialState);
                     setOperation(false);
                     setVisibleAddBox(true);
+                    setApplyRuleTo(initialState.apply_rule_to); // Add this line
                     boxSizeForm.setFieldsValue({
                       ...initialState,
-                      availability_type: "1", // Explicitly set default value
+                      availability_type: "1",
+                      filter_products: [], // Ensure these are explicitly cleared
+                      filter_categories: [],
+                      filter_brands: []// Explicitly set default value
                     });
                     setDiscription({});
                   }}
@@ -931,6 +935,11 @@ const editBoxSize = record => {
                   afterClose={() => {
                     setBoxSize(initialState);
                     setDiscription({});
+                    setApplyRuleTo(initialState.apply_rule_to); // Add this line
+                    setSelectedCategories([]); // Add this line
+                    setSelectedBrands([]); // Add this line
+                    setSelectedProducts([]); // Add this line
+                    boxSizeForm.resetFields(); // This will reset all form fields based on initialValues
                   }}
                   destroyOnClose={true}
                   footer={null}
@@ -999,8 +1008,8 @@ const editBoxSize = record => {
                                 val?.toLowerCase()?.includes("fedex")
                                   ? populateBoxValues(val)
                                   : val?.toLowerCase()?.includes("ups")
-                                  ? upsBoxInfo(val)
-                                  : setUspsBoxFields(val, opt)
+                                    ? upsBoxInfo(val)
+                                    : setUspsBoxFields(val, opt)
                               }
                             >
                               <Option value="Merchant defined Box (default)">
@@ -1066,7 +1075,7 @@ const editBoxSize = record => {
                               min="0"
                               step="0.01"
                               placeholder="Interior Length (in)"
-                              //pattern='[0-9.?(0-9){2}?]+%?$'
+                            //pattern='[0-9.?(0-9){2}?]+%?$'
                             />
                           </Form.Item>
                         </Col>
@@ -1148,7 +1157,7 @@ const editBoxSize = record => {
                               min="0"
                               step="0.01"
                               placeholder="Exterior Length (in)"
-                              //pattern='[0-9.?(0-9){2}?]+%?$'
+                            //pattern='[0-9.?(0-9){2}?]+%?$'
                             />
                           </Form.Item>
                         </Col>
@@ -1718,7 +1727,7 @@ const editBoxSize = record => {
                           min="0"
                           step="0.01"
                           placeholder="Length (in)"
-                          //pattern='[0-9.?(0-9){2}?]+%?$'
+                        //pattern='[0-9.?(0-9){2}?]+%?$'
                         />
                       </Form.Item>
                     </Col>
@@ -1926,18 +1935,18 @@ const editBoxSize = record => {
 }
 
 const mapStateToProps = state => ({
-	token: state.token,
-	boxSizes: state.boxSizes,
-	installedAddons: state.installedAddons,
-	sbsPlans: state.sbsPlans,
+  token: state.token,
+  boxSizes: state.boxSizes,
+  installedAddons: state.installedAddons,
+  sbsPlans: state.sbsPlans,
 })
 
 const mapDispatchToProps = dispatch => ({
-	addBoxSize: (token, boxSize, url, type, setVisibleAddBox) =>
-		dispatch(addBoxSize(token, boxSize, url, type, setVisibleAddBox)),
-	getBoxSizes: token => dispatch(getBoxSizes(token)),
-	deleteBoxSize: (id, token, setDeleteBoxModal) =>
-		dispatch(deleteBoxSize(id, token, setDeleteBoxModal)),
+  addBoxSize: (token, boxSize, url, type, setVisibleAddBox) =>
+    dispatch(addBoxSize(token, boxSize, url, type, setVisibleAddBox)),
+  getBoxSizes: token => dispatch(getBoxSizes(token)),
+  deleteBoxSize: (id, token, setDeleteBoxModal) =>
+    dispatch(deleteBoxSize(id, token, setDeleteBoxModal)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(BoxSizesComponent)
