@@ -57,6 +57,7 @@ function TabsLayout() {
         'unishipper-ltl',
         'ups-land-cost-small',
         'kn-ltl',
+        'ct-ltl',
         'dbsc',
       ];
 

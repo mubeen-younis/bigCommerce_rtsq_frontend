@@ -27,6 +27,7 @@ export { default as CSUpsShipEngineSmall } from './UpsViaShipEngine/ConnectionSe
 export { default as CSPriorityOneLtl } from './PriorityOneLtl/ConnectionSettingsComponent';
 export { default as CSUnishipperLtl } from './UnishipperLtl/ConnectionSettingsComponent';
 export { default as CSKNLtl } from './KuehneNagelLtl/ConnectionSettingsComponent';
+export { default as CSCTLtl } from './CentralTransportLtl/ConnectionSettingsComponent';
 export { default as CSUpsLandCostApi } from './UpsLandCostApi/ConnectionSettingsComponent';
 
 
@@ -59,5 +60,6 @@ export { default as QSUpsShipEngineSmall } from './UpsViaShipEngine/QuoteSetting
 export { default as QSPriorityOneLtl } from './PriorityOneLtl/QuoteSettingsComponent';
 export { default as QSUnishipperLtl } from './UnishipperLtl/QuoteSettingsComponent';
 export { default as QSKNLtl } from './KuehneNagelLtl/QuoteSettingsComponent';
+export { default as QSCTLtl } from './CentralTransportLtl/QuoteSettingsComponent';
 export { default as QSUpsLandCostApi } from './UpsLandCostApi/QuoteSettingsComponent';
 

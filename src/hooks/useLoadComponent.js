@@ -58,6 +58,8 @@ import {
   QSUpsLandCostApi,
   CSKNLtl,
   QSKNLtl,
+  CSCTLtl,
+  QSCTLtl,
 } from '../components/Pages';
 
 const useLoadComponent = (index) => {
@@ -90,7 +92,8 @@ const useLoadComponent = (index) => {
     <CSPriorityOneLtl />,
     <CSUnishipperLtl />,
     <CSUpsLandCostApi />,
-    <CSKNLtl />
+    <CSKNLtl />,
+    <CSCTLtl />
   ];
   const quoteSettingsList = [
     <QSWweltl />,
@@ -121,7 +124,8 @@ const useLoadComponent = (index) => {
     <QSPriorityOneLtl />,
     <QSUnishipperLtl />,
     <QSUpsLandCostApi />,
-    <QSKNLtl />
+    <QSKNLtl />,
+    <QSCTLtl />
   ];
 
   return [connectionSettigsList[+index], quoteSettingsList[+index]];
