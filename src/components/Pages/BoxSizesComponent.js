@@ -151,6 +151,8 @@ function BoxSizesComponent(props) {
   const [deleteBoxModal, setDeleteBoxModal] = useState(false)
   const [boxAssociatedTo, setBoxAssociatedTo] = useState([]);
 
+  const [isUspsBoxSelected, setIsUspsBoxSelected] = useState(false);
+
   const dispatch = useDispatch()
   const {
     productBoxes,
@@ -1004,14 +1006,22 @@ function BoxSizesComponent(props) {
                             ]}
                           >
                             <Select
-                              onChange={(val, opt) =>
-                                val?.toLowerCase()?.includes("fedex")
-                                  ? populateBoxValues(val)
-                                  : val?.toLowerCase()?.includes("ups")
-                                    ? upsBoxInfo(val)
-                                    : setUspsBoxFields(val, opt)
-                              }
+                              onChange={(val, opt) => {
+                                setBoxSize(prev => ({
+                                  ...prev,
+                                  box_name: val // ensure box_name is always updated
+                                }));
+
+                                if (val?.toLowerCase()?.includes("fedex")) {
+                                  populateBoxValues(val);
+                                } else if (val?.toLowerCase()?.includes("ups")) {
+                                  upsBoxInfo(val);
+                                } else {
+                                  setUspsBoxFields(val, opt);
+                                }
+                              }}
                             >
+
                               <Option value="Merchant defined Box (default)">
                                 Merchant defined Box (default)
                               </Option>
@@ -1291,266 +1301,269 @@ function BoxSizesComponent(props) {
                         </Col>
 
                         {/* --------------------- aaaaaaaa --------------------- */}
-
-                        <Col
-                          className="gutter-row"
-                          xs={24}
-                          sm={24}
-                          md={24}
-                          lg={24}
-                          xl={24}
-                        >
-                          <Form.Item
-                            name="availability_type"
-                            label={
-                              <span style={{ fontWeight: "bold" }}>
-                                Box Availability
-                              </span>
-                            }
-                          >
-                            <Radio.Group
-                              onChange={(e) =>
-                                setBoxSize({
-                                  ...boxSize,
-                                  availability_type: e.target.value,
-                                })
-                              }
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                              }}
-                            >
-                              <Radio value="1" style={{ marginBottom: "10px" }}>
-                                Universally available for use
-                              </Radio>
-                              <Radio value="2">
-                                For use only with specific
-                                product/category/brand
-                              </Radio>
-                            </Radio.Group>
-                          </Form.Item>
-                        </Col>
-
-                        {boxSize.availability_type == "2" && (
+                        {boxSize.box_name === 'Merchant defined Box (default)' && (
                           <>
-                            <div style={{ width: "98%", maxWidth: "100%" }}>
-                              <Row gutter={30} style={{ marginLeft: "3px" }}>
-                                <Col
-                                  className="gutter-row"
-                                  xs={24}
-                                  sm={24}
-                                  md={24}
-                                  lg={24}
-                                  xl={24}
-                                ></Col>
-
-                                <Col
-                                  className="gutter-row"
-                                  xs={24}
-                                  sm={24}
-                                  md={24}
-                                  lg={24}
-                                  xl={24}
+                            <Col
+                              className="gutter-row"
+                              xs={24}
+                              sm={24}
+                              md={24}
+                              lg={24}
+                              xl={24}
+                            >
+                              <Form.Item
+                                name="availability_type"
+                                label={
+                                  <span style={{ fontWeight: "bold" }}>
+                                    Box Availability
+                                  </span>
+                                }
+                              >
+                                <Radio.Group
+                                  onChange={(e) =>
+                                    setBoxSize({
+                                      ...boxSize,
+                                      availability_type: e.target.value,
+                                    })
+                                  }
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                  }}
                                 >
-                                  <div id="apply_rule_to">
-                                    <Form.Item
-                                      className={"mb-2"}
-                                      label="Assign box to"
-                                      name="apply_rule_to"
-                                      rules={[
-                                        {
-                                          required: false,
-                                          message: "Assign box to",
-                                        },
-                                      ]}
+                                  <Radio value="1" style={{ marginBottom: "10px" }}>
+                                    Universally available for use
+                                  </Radio>
+                                  <Radio value="2">
+                                    For use only with specific
+                                    product/category/brand
+                                  </Radio>
+                                </Radio.Group>
+                              </Form.Item>
+                            </Col>
+
+                            {boxSize.availability_type == "2" && (
+                              <>
+                                <div style={{ width: "98%", maxWidth: "100%" }}>
+                                  <Row gutter={30} style={{ marginLeft: "3px" }}>
+                                    <Col
+                                      className="gutter-row"
+                                      xs={24}
+                                      sm={24}
+                                      md={24}
+                                      lg={24}
+                                      xl={24}
+                                    ></Col>
+
+                                    <Col
+                                      className="gutter-row"
+                                      xs={24}
+                                      sm={24}
+                                      md={24}
+                                      lg={24}
+                                      xl={24}
                                     >
-                                      <Select
-                                        placeholder="Assign box to"
-                                        onChange={(value) =>
-                                          handleChangeApplyRuleTo(value)
-                                        }
-                                        getPopupContainer={() =>
-                                          document.getElementById(
-                                            "apply_rule_to"
-                                          )
-                                        }
-                                      >
-                                        <Option value={3}>
-                                          Individual Products
-                                        </Option>
-                                        <Option value={1}>Categories</Option>
-                                        <Option value={2}>Brands</Option>
-                                      </Select>
-                                    </Form.Item>
-                                  </div>
-                                </Col>
-                                {applyRuleTo == 1 ? (
-                                  <Col
-                                    className="gutter-row"
-                                    xs={24}
-                                    sm={24}
-                                    md={24}
-                                    lg={24}
-                                    xl={24}
-                                  >
-                                    <div id="country_dropdown">
-                                      <Form.Item
-                                        className={"mb-2"}
-                                        label={"Assign the box to these categories"}
-                                        name="filter_categories"
-                                        rules={[
-                                          {
-                                            required: true,
-                                            message: "Categories are required",
-                                          },
-                                        ]}
-                                      >
-                                        <Select
-                                          mode="multiple"
-                                          style={{ width: "100%" }}
-                                          placeholder={"Select categories"}
-                                          value={selectedCategories}
-                                          getPopupContainer={() =>
-                                            document.getElementById(
-                                              "country_dropdown"
-                                            )
-                                          }
-                                          allowClear
-                                          onChange={handleChangeCategories}
-                                          filterOption={filterOptionsCategories}
-                                        >
-                                          {storeCategories?.map((option) => (
-                                            <Option
-                                              key={option.key}
-                                              value={option.key}
-                                            >
-                                              {option.value}
-                                            </Option>
-                                          ))}
-                                        </Select>
-                                      </Form.Item>
-                                    </div>
-                                  </Col>
-                                ) : applyRuleTo == 2 ? (
-                                  <Col
-                                    className="gutter-row"
-                                    xs={24}
-                                    sm={24}
-                                    md={24}
-                                    lg={24}
-                                    xl={24}
-                                  >
-                                    <div id="country_dropdown">
-                                      <Form.Item
-                                        className={"mb-2"}
-                                        label={"Assign the box to these brands"}
-                                        name="filter_brands"
-                                        rules={[
-                                          {
-                                            required: true,
-                                            message: "Brands are required",
-                                          },
-                                        ]}
-                                      >
-                                        <Select
-                                          mode="multiple"
-                                          style={{ width: "100%" }}
-                                          placeholder={"Select brands"}
-                                          value={selectedBrands}
-                                          getPopupContainer={() =>
-                                            document.getElementById(
-                                              "country_dropdown"
-                                            )
-                                          }
-                                          allowClear
-                                          onChange={handleChangeBrands}
-                                          filterOption={filterOptionsBrands}
-                                        >
-                                          {storeBrands?.map((option) => (
-                                            <Option
-                                              key={option.key}
-                                              value={option.key}
-                                            >
-                                              {option.value}
-                                            </Option>
-                                          ))}
-                                        </Select>
-                                      </Form.Item>
-                                    </div>
-                                  </Col>
-                                ) : applyRuleTo == 3 ? (
-                                  <Col
-                                    className="gutter-row"
-                                    xs={24}
-                                    sm={24}
-                                    md={24}
-                                    lg={24}
-                                    xl={24}
-                                  >
-                                    <div id="country_dropdown">
-                                      <div ref={dropdownRef}>
+                                      <div id="apply_rule_to">
                                         <Form.Item
                                           className={"mb-2"}
-                                          label={"Assign the box to these products"}
-                                          name="filter_products"
+                                          label="Assign box to"
+                                          name="apply_rule_to"
                                           rules={[
                                             {
-                                              required: true,
-                                              message: "Products are required",
+                                              required: false,
+                                              message: "Assign box to",
                                             },
                                           ]}
                                         >
                                           <Select
-                                            mode="multiple"
-                                            style={{ width: "100%" }}
-                                            placeholder={
-                                              "Search products by name, SKU"
+                                            placeholder="Assign box to"
+                                            onChange={(value) =>
+                                              handleChangeApplyRuleTo(value)
                                             }
-                                            labelInValue
                                             getPopupContainer={() =>
                                               document.getElementById(
-                                                "country_dropdown"
+                                                "apply_rule_to"
                                               )
                                             }
-                                            notFoundContent={
-                                              loading ? (
-                                                <span>
-                                                  <Spin size="small" />
-                                                </span>
-                                              ) : searchQuery?.length > 2 &&
-                                                data?.length == 0 ? (
-                                                <span>Product not found!</span>
-                                              ) : (
-                                                <span>
-                                                  Please enter a minimum of
-                                                  three characters.
-                                                </span>
-                                              )
-                                            }
-                                            //   value={selectedProducts}
-                                            allowClear
-                                            onSearch={handleSearch}
-                                            onChange={handleChangeProducts}
-                                            filterOption={false}
                                           >
-                                            {data?.map((option) => (
-                                              <Option
-                                                key={option?.source_product_id}
-                                                value={
-                                                  option?.source_product_id
-                                                }
-                                              >
-                                                {option?.name}
-                                              </Option>
-                                            ))}
+                                            <Option value={3}>
+                                              Individual Products
+                                            </Option>
+                                            <Option value={1}>Categories</Option>
+                                            <Option value={2}>Brands</Option>
                                           </Select>
                                         </Form.Item>
                                       </div>
-                                    </div>
-                                  </Col>
-                                ) : null}
-                              </Row>
-                            </div>
+                                    </Col>
+                                    {applyRuleTo == 1 ? (
+                                      <Col
+                                        className="gutter-row"
+                                        xs={24}
+                                        sm={24}
+                                        md={24}
+                                        lg={24}
+                                        xl={24}
+                                      >
+                                        <div id="country_dropdown">
+                                          <Form.Item
+                                            className={"mb-2"}
+                                            label={"Assign the box to these categories"}
+                                            name="filter_categories"
+                                            rules={[
+                                              {
+                                                required: true,
+                                                message: "Categories are required",
+                                              },
+                                            ]}
+                                          >
+                                            <Select
+                                              mode="multiple"
+                                              style={{ width: "100%" }}
+                                              placeholder={"Select categories"}
+                                              value={selectedCategories}
+                                              getPopupContainer={() =>
+                                                document.getElementById(
+                                                  "country_dropdown"
+                                                )
+                                              }
+                                              allowClear
+                                              onChange={handleChangeCategories}
+                                              filterOption={filterOptionsCategories}
+                                            >
+                                              {storeCategories?.map((option) => (
+                                                <Option
+                                                  key={option.key}
+                                                  value={option.key}
+                                                >
+                                                  {option.value}
+                                                </Option>
+                                              ))}
+                                            </Select>
+                                          </Form.Item>
+                                        </div>
+                                      </Col>
+                                    ) : applyRuleTo == 2 ? (
+                                      <Col
+                                        className="gutter-row"
+                                        xs={24}
+                                        sm={24}
+                                        md={24}
+                                        lg={24}
+                                        xl={24}
+                                      >
+                                        <div id="country_dropdown">
+                                          <Form.Item
+                                            className={"mb-2"}
+                                            label={"Assign the box to these brands"}
+                                            name="filter_brands"
+                                            rules={[
+                                              {
+                                                required: true,
+                                                message: "Brands are required",
+                                              },
+                                            ]}
+                                          >
+                                            <Select
+                                              mode="multiple"
+                                              style={{ width: "100%" }}
+                                              placeholder={"Select brands"}
+                                              value={selectedBrands}
+                                              getPopupContainer={() =>
+                                                document.getElementById(
+                                                  "country_dropdown"
+                                                )
+                                              }
+                                              allowClear
+                                              onChange={handleChangeBrands}
+                                              filterOption={filterOptionsBrands}
+                                            >
+                                              {storeBrands?.map((option) => (
+                                                <Option
+                                                  key={option.key}
+                                                  value={option.key}
+                                                >
+                                                  {option.value}
+                                                </Option>
+                                              ))}
+                                            </Select>
+                                          </Form.Item>
+                                        </div>
+                                      </Col>
+                                    ) : applyRuleTo == 3 ? (
+                                      <Col
+                                        className="gutter-row"
+                                        xs={24}
+                                        sm={24}
+                                        md={24}
+                                        lg={24}
+                                        xl={24}
+                                      >
+                                        <div id="country_dropdown">
+                                          <div ref={dropdownRef}>
+                                            <Form.Item
+                                              className={"mb-2"}
+                                              label={"Assign the box to these products"}
+                                              name="filter_products"
+                                              rules={[
+                                                {
+                                                  required: true,
+                                                  message: "Products are required",
+                                                },
+                                              ]}
+                                            >
+                                              <Select
+                                                mode="multiple"
+                                                style={{ width: "100%" }}
+                                                placeholder={
+                                                  "Search products by name, SKU"
+                                                }
+                                                labelInValue
+                                                getPopupContainer={() =>
+                                                  document.getElementById(
+                                                    "country_dropdown"
+                                                  )
+                                                }
+                                                notFoundContent={
+                                                  loading ? (
+                                                    <span>
+                                                      <Spin size="small" />
+                                                    </span>
+                                                  ) : searchQuery?.length > 2 &&
+                                                    data?.length == 0 ? (
+                                                    <span>Product not found!</span>
+                                                  ) : (
+                                                    <span>
+                                                      Please enter a minimum of
+                                                      three characters.
+                                                    </span>
+                                                  )
+                                                }
+                                                //   value={selectedProducts}
+                                                allowClear
+                                                onSearch={handleSearch}
+                                                onChange={handleChangeProducts}
+                                                filterOption={false}
+                                              >
+                                                {data?.map((option) => (
+                                                  <Option
+                                                    key={option?.source_product_id}
+                                                    value={
+                                                      option?.source_product_id
+                                                    }
+                                                  >
+                                                    {option?.name}
+                                                  </Option>
+                                                ))}
+                                              </Select>
+                                            </Form.Item>
+                                          </div>
+                                        </div>
+                                      </Col>
+                                    ) : null}
+                                  </Row>
+                                </div>
+                              </>
+                            )}
                           </>
                         )}
                         {/* -------------------------------------------------- */}
