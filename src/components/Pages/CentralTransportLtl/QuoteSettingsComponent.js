@@ -14,9 +14,9 @@ import LiftGateDelivery from '../../LiftGateDelivery'
 import HandlingUnit from '../../HandlingUnit'
 import SaveButton from '../../SaveButton'
 import WeightThreshold from '../../WeightThreshold'
-import HoldAtTerminal from '../../HoldAtTerminal'
+// import HoldAtTerminal from '../../HoldAtTerminal'
 import ErrorManagment from '../../ErrorManagment'
-import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
+// import NotifyBeforeDelivery from '../../NotifyBeforeDelivery'
 
 const initialState = {
   label_as: '',
@@ -40,8 +40,8 @@ const initialState = {
   max_weight_per_handling_unit: '',
   returnRates: false,
   quote_details: 1,
-  always_quote_notify: false,
-  offer_notify_as_option: false,
+  // always_quote_notify: false,
+  // offer_notify_as_option: false,
 }
 
 function QuoteSettingsComponentWwe(props) {
@@ -213,16 +213,16 @@ function QuoteSettingsComponentWwe(props) {
           setQuoteSettingsState={setQuoteSettingsState}
           radStatus={radStatus}
         />
-
+{/* 
         <NotifyBeforeDelivery
 					quoteSettingsState={quoteSettingsState}
 				  setQuoteSettingsState={setQuoteSettingsState}
-			  />
+			  /> */}
         
-        <HoldAtTerminal
+        {/* <HoldAtTerminal
           quoteSettingsState={quoteSettingsState}
           handleChange={handleStateChange}
-        />
+        /> */}
         
         <WeightThreshold
           quoteSettingsState={quoteSettingsState}

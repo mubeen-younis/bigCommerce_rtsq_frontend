@@ -1445,6 +1445,7 @@ function ShippingRulesComponent() {
                                   carrier?.slug == 'southeastern-ltl' ||
                                   carrier?.slug == 'saia-ltl' ||
                                   carrier?.slug == 'kn-ltl' ||
+                                  carrier?.slug == "ct-ltl" ||
                                   carrier?.slug == 'freightquote-chr-ltl' ||
                                   carrier?.slug == 'freightquote-ltl' ||
                                   carrier?.slug == 'ups-ship-engine' ||
