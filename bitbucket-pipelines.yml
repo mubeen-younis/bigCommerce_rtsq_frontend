@@ -36,7 +36,7 @@ pipelines:
             - export TAG_NAME=$STAGING_SERVER_TAG_NAME
             - export COMMAND='["sudo -u apx-bc-01 bash -c \"cd '"${STAGING_COMMAND}"'/bigcommerce/bc-fe && git stash && git fetch && git checkout free_shipping_in_override_rule && git pull && export NODE_OPTIONS=--openssl-legacy-provider && npm run build &&  ./remote-script.sh\""]'
             - chmod +x ./bb-scripts/run-ssm-command.sh
-            - ./bb-scripts/run-ssm-command.sh
+            - ./bb-scripts/run-ssm-command.sh 
             
             
             
