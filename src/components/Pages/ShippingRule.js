@@ -128,7 +128,7 @@ function ShippingRulesComponent() {
     if (ruleType == 3 || ruleType == 4 || ruleType == 10) {
       dispatch(getStatesProvinces(countryCode, token));
     }
-    
+
   }, [dispatch, shippingRules, token, countryCode, ruleType]);
 
   useEffect(() => {
@@ -266,7 +266,7 @@ function ShippingRulesComponent() {
     setCarrierSlug(slug);
     setSelectedServices([]);
     form.resetFields(['filter_services']);
-    if(ruleType == 6 || rule_type == 6){
+    if (ruleType == 6 || rule_type == 6) {
       getCarrierServices(slug)
     }
   };
@@ -316,6 +316,7 @@ function ShippingRulesComponent() {
 
   const editLocation = useCallback(
     (record) => {
+      console.log('Record data being set in form:', record);
       hanldeModalToggling(true, 'edit');
       setShippingRuleId(record.uuid);
       form.setFieldsValue(record);
@@ -356,13 +357,13 @@ function ShippingRulesComponent() {
       dispatch(dispatchAlert(false, null));
     }
   };
-// 
+  // 
   const updateFormFields = async (text) => {
     setCountryCode(text?.filter_country);
-    if(text?.rule_type == 6){
+    if (text?.rule_type == 6) {
       handleProviderServices(text?.filter_provider, text?.rule_type)
       const applyTo = text?.apply_to == 1 ? setApplyTo(0) : setApplyTo(text?.apply_to);
-    } else{
+    } else {
       setApplyTo(text?.apply_to ?? 1)
     }
     if (text?.filter_country == undefined || text?.filter_country == '') {
@@ -385,6 +386,51 @@ function ShippingRulesComponent() {
     setIsFilterQuantity(text?.isFilterQuantity);
     setIsFilterFlatPrice(text?.isFilterFlatPrice);
     setApplyRuleTo(text?.apply_rule_to ?? 1);
+    // -------------
+
+    // Special handling for ruleType 6
+    if (text?.rule_type == 6 && text?.filter_settings) {
+      try {
+        const filterSettings = JSON.parse(text.filter_settings);
+
+        // Extract data from filter_settings for ruleType 6
+        text.filter_country = filterSettings.filter_country || text.filter_country;
+        text.filter_state_province = filterSettings.filter_state_province || text.filter_state_province;
+
+        // Also update the state variables
+        setCountryCode(filterSettings.filter_country || 'US');
+        setSelectedProvinces(filterSettings.filter_state_province || []);
+
+        // Update other fields from filter_settings if needed
+        if (filterSettings.isFilterWeight !== undefined) {
+          text.isFilterWeight = filterSettings.isFilterWeight;
+          text.weight_from = filterSettings.weightFrom || '';
+          text.weight_to = filterSettings.weightTo || '';
+        }
+        if (filterSettings.isFilterPrice !== undefined) {
+          text.isFilterPrice = filterSettings.isFilterPrice;
+          text.price_from = filterSettings.priceFrom || '';
+          text.price_to = filterSettings.priceTo || '';
+        }
+        if (filterSettings.isFilterQuantity !== undefined) {
+          text.isFilterQuantity = filterSettings.isFilterQuantity;
+          text.quantity_from = filterSettings.quantityFrom || '';
+          text.quantity_to = filterSettings.quantityTo || '';
+        }
+
+      } catch (error) {
+        console.error('Error parsing filter_settings:', error);
+      }
+    } else {
+      // For non-ruleType 6, use the existing logic
+      setCountryCode(text?.filter_country || 'US');
+      setSelectedProvinces(text?.filter_state_province || []);
+    }
+
+
+    // ---------------
+
+
     editLocation(text);
   };
   const helptext = ruleType == 6 ? 'Shipment' : 'Cart';
@@ -392,7 +438,7 @@ function ShippingRulesComponent() {
   const onFinish = useCallback(
     (values) => {
       values = { ...values, apply_to: applyTo, available: available };
-      if (values['rule_type'] == 2 || values['rule_type'] == 6 || values['rule_type'] == 8 ) {
+      if (values['rule_type'] == 2 || values['rule_type'] == 6 || values['rule_type'] == 8) {
         values = {
           ...values,
           isFilterWeight: isFilterWeight,
@@ -401,10 +447,10 @@ function ShippingRulesComponent() {
         };
       }
 
-      if (values['rule_type'] == 10 ) {
+      if (values['rule_type'] == 10) {
         values = {
           ...values,
-          isFilterFlatPrice : isFilterFlatPrice,
+          isFilterFlatPrice: isFilterFlatPrice,
         };
       }
 
@@ -504,10 +550,10 @@ function ShippingRulesComponent() {
                 (carrier.carrier_type == 1
                   ? carrier.name + ' (LTL Freight Providers)'
                   : carrier.carrier_type == 2
-                  ? carrier.name + ' (Parcel & Postal Providers)'
-                  : null
+                    ? carrier.name + ' (Parcel & Postal Providers)'
+                    : null
                 )
-              )
+            )
           ) : record?.rule_type == 3 ? (
             <>
               {record.id == recordId ? (
@@ -663,13 +709,13 @@ function ShippingRulesComponent() {
               (carrier) =>
                 carrier.slug == filter_name &&
                 (carrier.carrier_type == 1
-                  ? <span> {carrier.name} (LTL Freight Providers) <br/> {accessorialServices[record?.filter_services]} </span>
+                  ? <span> {carrier.name} (LTL Freight Providers) <br /> {accessorialServices[record?.filter_services]} </span>
                   : carrier.carrier_type == 2
-                  ? <span> {carrier.name} (Parcel & Postal Providers) <br/> {record?.filter_services} </span>
-                  : null
+                    ? <span> {carrier.name} (Parcel & Postal Providers) <br /> {record?.filter_services} </span>
+                    : null
                 )
             )
-           ) : (
+          ) : (
             filter_name
           )}
         </>
@@ -844,7 +890,7 @@ function ShippingRulesComponent() {
                       onChange={(value) => {
                         setRuleType(value);
                         value = value == 6 ? setApplyTo(0) : setApplyTo(1);
-                      }}                    
+                      }}
                       getPopupContainer={() =>
                         document.getElementById('type_dropdown')
                       }
@@ -865,100 +911,100 @@ function ShippingRulesComponent() {
               </Col>
             </Row>
             {ruleType != 9 ? (
-            <Row gutter={30}>
-              <Col
-                className='gutter-row'
-                xs={24}
-                sm={24}
-                md={24}
-                lg={24}
-                xl={24}
-              >
-                <Form.Item
-                  className={'mb-2'}
-                  label='Apply to:'
-                  rules={[
-                    {
-                      required: false,
-                      message: 'Apply to',
-                    },
-                  ]}
+              <Row gutter={30}>
+                <Col
+                  className='gutter-row'
+                  xs={24}
+                  sm={24}
+                  md={24}
+                  lg={24}
+                  xl={24}
                 >
-                {ruleType == 6 ? (
-                  <></>
-                ) : ruleType == 10 ? (
-                  <>
-                    <Radio 
-                      value='0'  
-                      defaultChecked
-                      onChange= {(value) => handleChangeRule(value)}>
-                      Shipment
-                    </Radio>
-                  </>
-                ) : (
-                  <Radio checked={applyTo == 1} value={1} onChange={handleChangeRule}>Cart</Radio>
-                )}
+                  <Form.Item
+                    className={'mb-2'}
+                    label='Apply to:'
+                    rules={[
+                      {
+                        required: false,
+                        message: 'Apply to',
+                      },
+                    ]}
+                  >
+                    {ruleType == 6 ? (
+                      <></>
+                    ) : ruleType == 10 ? (
+                      <>
+                        <Radio
+                          value='0'
+                          defaultChecked
+                          onChange={(value) => handleChangeRule(value)}>
+                          Shipment
+                        </Radio>
+                      </>
+                    ) : (
+                      <Radio checked={applyTo == 1} value={1} onChange={handleChangeRule}>Cart</Radio>
+                    )}
 
-                {(ruleType == 8 || ruleType == 6) && (
-                  <>
-                    <Radio 
-                    checked={applyTo == 0} 
-                    value='0'  
-                    onChange= {(value) => handleChangeRule(value)}
-                    >Shipment</Radio>
-                    <Radio 
-                     checked={applyTo == 2}
-                     value='2'  
-                     onChange= {(value) => handleChangeRule(value)}
-                    >Product/Category/Brand</Radio>
-                  </>
-                )}
+                    {(ruleType == 8 || ruleType == 6) && (
+                      <>
+                        <Radio
+                          checked={applyTo == 0}
+                          value='0'
+                          onChange={(value) => handleChangeRule(value)}
+                        >Shipment</Radio>
+                        <Radio
+                          checked={applyTo == 2}
+                          value='2'
+                          onChange={(value) => handleChangeRule(value)}
+                        >Product/Category/Brand</Radio>
+                      </>
+                    )}
 
-                {(ruleType == 2) && (
-                  <>
-                    <Radio 
-                     checked={applyTo == 2}
-                     value='2'  
-                     onChange= {(value) => handleChangeRule(value)}
-                    >Product/Category/Brand</Radio>
-                  </>
-                )}
+                    {(ruleType == 2) && (
+                      <>
+                        <Radio
+                          checked={applyTo == 2}
+                          value='2'
+                          onChange={(value) => handleChangeRule(value)}
+                        >Product/Category/Brand</Radio>
+                      </>
+                    )}
 
-                </Form.Item>
-              </Col>
-            </Row>
-            ) : null }
+                  </Form.Item>
+                </Col>
+              </Row>
+            ) : null}
             {ruleType == 9 && (
               <LargeCartSettings />
             )}
             {(ruleType == 1 ||
               ruleType == 3 ||
               ruleType == 4 ||
-              ruleType == 5 || ruleType == 7 || ruleType == 10 || 
-              ( applyTo == 2 && (ruleType == 8 || ruleType == 6 || ruleType == 2))) && (
-              <>
-                {ruleType != 5 && ruleType != 6 && ruleType != 7 && ruleType !=8 && ruleType !=2 && (
-                  <Row gutter={30}>
-                    <Col
-                      className='gutter-row'
-                      xs={24}
-                      sm={24}
-                      md={24}
-                      lg={24}
-                      xl={24}
-                    >
-					          <div id='country_dropdown'>
-                      <Form.Item
-                        className={'mb-2'}
-                        label='Countries'
-                        name='filter_country'
-                        rules={[
-                          {
-                            required: false,
-                            message: 'Select Countries',
-                          },
-                        ]}
+              ruleType == 5 || ruleType == 7 || ruleType == 10 ||
+              (applyTo == 2 && (ruleType == 8 || ruleType == 6 || ruleType == 2)) || (applyTo == 0 && ruleType == 6)) && (
+                <>
+                  {ruleType != 5 && ruleType != 7 && ruleType != 8 && ruleType != 2 && (
+                    <Row gutter={30}>
+                      <Col
+                        className='gutter-row'
+                        xs={24}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
                       >
+                        <div id='country_dropdown'>
+                          <Form.Item
+                            className={'mb-2'}
+                            label='Countries'
+                            name='filter_country'
+                            rules={[
+                              {
+                                required: false,
+                                message: 'Select Countries',
+                              },
+                            ]}
+                          >
                             <Select
                               placeholder='Select countries'
                               value={this?.filter_country || undefined}
@@ -967,45 +1013,45 @@ function ShippingRulesComponent() {
                                 document.getElementById('country_dropdown')
                               }
                             >
-                            <Option value={'US'}>US</Option>
-                            <Option value={'CA'}>CA</Option>
-                          </Select>
-                      </Form.Item>
-					          </div>
-                    </Col>
-                  </Row>
-                )}
-                {(ruleType == 7 || ruleType == 2) && (
-                  <>
-                  <ProviderComponent
-                     installedCarriers={installedCarriers}
-                     handleProviderServices={handleProviderServices}
-                     filterProvider={initialState.filter_provider}
-                    />
-                  </>
-                )}
-                {(ruleType == 3 || ruleType == 4 || ruleType == 10) && (
-                  <Row gutter={30}>
-                    <Col
-                      className='gutter-row'
-                      xs={24}
-                      sm={24}
-                      md={24}
-                      lg={24}
-                      xl={24}
-                    >
-					          <div id='state_dropdown'>
-                      <Form.Item
-                        className={'mb-0'}
-                        label='States/Provinces'
-                        name='filter_state_province'
-                        rules={[
-                          {
-                            required: ruleType != 10,
-                            message: 'States/Provinces are required',
-                          },
-                        ]}
+                              <Option value={'US'}>US</Option>
+                              <Option value={'CA'}>CA</Option>
+                            </Select>
+                          </Form.Item>
+                        </div>
+                      </Col>
+                    </Row>
+                  )}
+                  {(ruleType == 7 || ruleType == 2) && (
+                    <>
+                      <ProviderComponent
+                        installedCarriers={installedCarriers}
+                        handleProviderServices={handleProviderServices}
+                        filterProvider={initialState.filter_provider}
+                      />
+                    </>
+                  )}
+                  {(ruleType == 3 || ruleType == 4 || ruleType == 10 || ruleType == 6) && (
+                    <Row gutter={30}>
+                      <Col
+                        className='gutter-row'
+                        xs={24}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
                       >
+                        <div id='state_dropdown'>
+                          <Form.Item
+                            className={'mb-0'}
+                            label='States/Provinces'
+                            name='filter_state_province'
+                            rules={[
+                              {
+                                required: ruleType != 10 && ruleType != 6,
+                                message: 'States/Provinces are required',
+                              },
+                            ]}
+                          >
                             <Select
                               mode='multiple'
                               style={{ width: '100%' }}
@@ -1027,73 +1073,73 @@ function ShippingRulesComponent() {
                           </Form.Item>
                         </div>
                         <div className={'text-gray mb-2'}>
-                            Only customers from these states/provinces will be presented with shipping rates for this provider.
+                          Only customers from these states/provinces will be presented with shipping rates for this provider.
                         </div>
                       </Col>
                     </Row>
                   )}
                   {ruleType == 10 && (
                     <>
-                    <Row gutter={30}>
-                      <Col
-                        className='gutter-row'
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                      >
-                        <Form.Item
-                          className={'mb-3'}
-                          label='Flat Shipping Rate'
-                          name='filter_flat_shipping_rate'
-                          rules={[
-                            {
-                              required: true,
-                              message: 'Flat Shipping Rate is required',
-                            },
-                            {
-                              pattern: /^(\d{0,15}(\.\d{0,2})?)?$/,
-                              message: 'Please enter up to 15 numbers with 2 decimal places.',
-                            },
-                          ]}
+                      <Row gutter={30}>
+                        <Col
+                          className='gutter-row'
+                          xs={12}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
                         >
-                          <Input
-                            type='number'
-                            onKeyDown={blockInvalidChar}
-                            step='0.01'
-                            min={0}
-                            placeholder='Enter flat shipping rate'
-                          /> 
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        className='gutter-row'
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                      >
-                        <Form.Item
-                          className={'mt-4'}
-                          rules={[
-                            {
-                              required: false,
-                              message: 'Multiply flat shipping rate',
-                            },
-                          ]}
-                        >
-                          <Checkbox
-                            name='is_flate_rate_multiply'
-                            checked={isFilterFlatPrice}
-                            onChange={(e) => setIsFilterFlatPrice(e.target.checked)}
+                          <Form.Item
+                            className={'mb-3'}
+                            label='Flat Shipping Rate'
+                            name='filter_flat_shipping_rate'
+                            rules={[
+                              {
+                                required: true,
+                                message: 'Flat Shipping Rate is required',
+                              },
+                              {
+                                pattern: /^(\d{0,15}(\.\d{0,2})?)?$/,
+                                message: 'Please enter up to 15 numbers with 2 decimal places.',
+                              },
+                            ]}
                           >
-                            Multiply flat shipping rate by Cart quantity
-                          </Checkbox>
-                        </Form.Item>
-                      </Col>
-                    </Row>
+                            <Input
+                              type='number'
+                              onKeyDown={blockInvalidChar}
+                              step='0.01'
+                              min={0}
+                              placeholder='Enter flat shipping rate'
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col
+                          className='gutter-row'
+                          xs={12}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                        >
+                          <Form.Item
+                            className={'mt-4'}
+                            rules={[
+                              {
+                                required: false,
+                                message: 'Multiply flat shipping rate',
+                              },
+                            ]}
+                          >
+                            <Checkbox
+                              name='is_flate_rate_multiply'
+                              checked={isFilterFlatPrice}
+                              onChange={(e) => setIsFilterFlatPrice(e.target.checked)}
+                            >
+                              Multiply flat shipping rate by Cart quantity
+                            </Checkbox>
+                          </Form.Item>
+                        </Col>
+                      </Row>
                     </>
                   )}
                   {ruleType == 4 && (
@@ -1195,207 +1241,211 @@ function ShippingRulesComponent() {
                       </Col>
                     </Row>
                   )}
-                  <Row gutter={30}>
-                    <Col
-                      className='gutter-row'
-                      xs={24}
-                      sm={24}
-                      md={24}
-                      lg={24}
-                      xl={24}
-                    >
-                      <div id='apply_rule_to'>
-                        <Form.Item
-                          className={'mb-2'}
-                          label='Apply rule to'
-                          name='apply_rule_to'
-                          rules={[
-                            {
-                              required: false,
-                              message: 'Apply rule to',
-                            },
-                          ]}
+                  {(applyTo != 0) && (
+                    <>
+                      <Row gutter={30}>
+                        <Col
+                          className='gutter-row'
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
                         >
-                          <Select
-                            placeholder='Apply rule to'
-                            onChange={(value) => handleChangeApplyRuleTo(value)}
-                            getPopupContainer={() =>
-                              document.getElementById('apply_rule_to')
-                            }
-                          >
-                            <Option value={1}>Categories</Option>
-                            <Option value={2}>Brands</Option>
-                            <Option value={3}>Individual Products</Option>
-                          </Select>
-                        </Form.Item>
-                      </div>
-                    </Col>
-                  </Row>
-                  {applyRuleTo == 1 ? (
-                    <Row gutter={30}>
-                      <Col
-                        className='gutter-row'
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                      >
-                        <div id='country_dropdown'>
-                          <Form.Item
-                            className={'mb-2'}
-                            label={'Apply the rule to these categories'}
-                            name='filter_categories'
-                            rules={[
-                              {
-                                required: true,
-                                message: 'Categories are required',
-                              },
-                            ]}
-                          >
-                            <Select
-                              mode='multiple'
-                              style={{ width: '100%' }}
-                              placeholder={'Select categories'}
-                              value={selectedCategories}
-                              getPopupContainer={() =>
-                                document.getElementById('country_dropdown')
-                              }
-                              allowClear
-                              onChange={handleChangeCategories}
-                              filterOption={filterOptionsCategories}
-                            >
-                              {storeCategories?.map((option) => (
-                                <Option key={option.key} value={option.key}>
-                                  {option.value}
-                                </Option>
-                              ))}
-                            </Select>
-                          </Form.Item>
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : applyRuleTo == 2 ? (
-                    <Row gutter={30}>
-                      <Col
-                        className='gutter-row'
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                      >
-                        <div id='country_dropdown'>
-                          <Form.Item
-                            className={'mb-2'}
-                            label={'Apply the rule to these brands'}
-                            name='filter_brands'
-                            rules={[
-                              {
-                                required: true,
-                                message: 'Brands are required',
-                              },
-                            ]}
-                          >
-                            <Select
-                              mode='multiple'
-                              style={{ width: '100%' }}
-                              placeholder={'Select brands'}
-                              value={selectedBrands}
-                              getPopupContainer={() =>
-                                document.getElementById('country_dropdown')
-                              }
-                              allowClear
-                              onChange={handleChangeBrands}
-                              filterOption={filterOptionsBrands}
-                            >
-                              {storeBrands?.map((option) => (
-                                <Option key={option.key} value={option.key}>
-                                  {option.value}
-                                </Option>
-                              ))}
-                            </Select>
-                          </Form.Item>
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : applyRuleTo == 3 ? (
-                    <Row gutter={30}>
-                      <Col
-                        className='gutter-row'
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                      >
-                        <div id='country_dropdown'>
-                          <div ref={dropdownRef}>
+                          <div id='apply_rule_to'>
                             <Form.Item
                               className={'mb-2'}
-                              label={'Apply the rule to these products'}
-                              name='filter_products'
+                              label='Apply rule to'
+                              name='apply_rule_to'
                               rules={[
                                 {
-                                  required: true,
-                                  message: 'Products are required',
+                                  required: false,
+                                  message: 'Apply rule to',
                                 },
                               ]}
                             >
                               <Select
-                                mode='multiple'
-                                style={{ width: '100%' }}
-                                placeholder={'Search products by name, SKU'}
-                                labelInValue
+                                placeholder='Apply rule to'
+                                onChange={(value) => handleChangeApplyRuleTo(value)}
                                 getPopupContainer={() =>
-                                  document.getElementById('country_dropdown')
+                                  document.getElementById('apply_rule_to')
                                 }
-                                notFoundContent={
-                                  loading ? (
-                                    <span>
-                                      <Spin size='small' />
-                                    </span>
-                                  ) : searchQuery?.length > 2 &&
-                                    data?.length == 0 ? (
-                                    <span>Product not found!</span>
-                                  ) : (
-                                    <span>
-                                      Please enter a minimum of three characters.
-                                    </span>
-                                  )
-                                }
-                                value={selectedProducts}
-                                allowClear
-                                onSearch={handleSearch}
-                                onChange={handleChangeProducts}
-                                filterOption={false}
                               >
-                                {data?.map((option) => (
-                                  <Option
-                                    key={option?.source_product_id}
-                                    value={option?.source_product_id}
-                                  >
-                                    {option?.name}
-                                  </Option>
-                                ))}
+                                <Option value={1}>Categories</Option>
+                                <Option value={2}>Brands</Option>
+                                <Option value={3}>Individual Products</Option>
                               </Select>
                             </Form.Item>
                           </div>
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : null}
+                        </Col>
+                      </Row>
+                      {applyRuleTo == 1 ? (
+                        <Row gutter={30}>
+                          <Col
+                            className='gutter-row'
+                            xs={24}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                          >
+                            <div id='country_dropdown'>
+                              <Form.Item
+                                className={'mb-2'}
+                                label={'Apply the rule to these categories'}
+                                name='filter_categories'
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: 'Categories are required',
+                                  },
+                                ]}
+                              >
+                                <Select
+                                  mode='multiple'
+                                  style={{ width: '100%' }}
+                                  placeholder={'Select categories'}
+                                  value={selectedCategories}
+                                  getPopupContainer={() =>
+                                    document.getElementById('country_dropdown')
+                                  }
+                                  allowClear
+                                  onChange={handleChangeCategories}
+                                  filterOption={filterOptionsCategories}
+                                >
+                                  {storeCategories?.map((option) => (
+                                    <Option key={option.key} value={option.key}>
+                                      {option.value}
+                                    </Option>
+                                  ))}
+                                </Select>
+                              </Form.Item>
+                            </div>
+                          </Col>
+                        </Row>
+                      ) : applyRuleTo == 2 ? (
+                        <Row gutter={30}>
+                          <Col
+                            className='gutter-row'
+                            xs={24}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                          >
+                            <div id='country_dropdown'>
+                              <Form.Item
+                                className={'mb-2'}
+                                label={'Apply the rule to these brands'}
+                                name='filter_brands'
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: 'Brands are required',
+                                  },
+                                ]}
+                              >
+                                <Select
+                                  mode='multiple'
+                                  style={{ width: '100%' }}
+                                  placeholder={'Select brands'}
+                                  value={selectedBrands}
+                                  getPopupContainer={() =>
+                                    document.getElementById('country_dropdown')
+                                  }
+                                  allowClear
+                                  onChange={handleChangeBrands}
+                                  filterOption={filterOptionsBrands}
+                                >
+                                  {storeBrands?.map((option) => (
+                                    <Option key={option.key} value={option.key}>
+                                      {option.value}
+                                    </Option>
+                                  ))}
+                                </Select>
+                              </Form.Item>
+                            </div>
+                          </Col>
+                        </Row>
+                      ) : applyRuleTo == 3 ? (
+                        <Row gutter={30}>
+                          <Col
+                            className='gutter-row'
+                            xs={24}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                          >
+                            <div id='country_dropdown'>
+                              <div ref={dropdownRef}>
+                                <Form.Item
+                                  className={'mb-2'}
+                                  label={'Apply the rule to these products'}
+                                  name='filter_products'
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: 'Products are required',
+                                    },
+                                  ]}
+                                >
+                                  <Select
+                                    mode='multiple'
+                                    style={{ width: '100%' }}
+                                    placeholder={'Search products by name, SKU'}
+                                    labelInValue
+                                    getPopupContainer={() =>
+                                      document.getElementById('country_dropdown')
+                                    }
+                                    notFoundContent={
+                                      loading ? (
+                                        <span>
+                                          <Spin size='small' />
+                                        </span>
+                                      ) : searchQuery?.length > 2 &&
+                                        data?.length == 0 ? (
+                                        <span>Product not found!</span>
+                                      ) : (
+                                        <span>
+                                          Please enter a minimum of three characters.
+                                        </span>
+                                      )
+                                    }
+                                    value={selectedProducts}
+                                    allowClear
+                                    onSearch={handleSearch}
+                                    onChange={handleChangeProducts}
+                                    filterOption={false}
+                                  >
+                                    {data?.map((option) => (
+                                      <Option
+                                        key={option?.source_product_id}
+                                        value={option?.source_product_id}
+                                      >
+                                        {option?.name}
+                                      </Option>
+                                    ))}
+                                  </Select>
+                                </Form.Item>
+                              </div>
+                            </div>
+                          </Col>
+                        </Row>
+                      ) : null}
+                    </>
+                  )}
                 </>
               )}
 
             {(ruleType == 2 && applyTo == 1 || ruleType == 6 || ruleType == 8) && (
               <>
-                {ruleType == 2  && (
+                {ruleType == 2 && (
                   <>
                     <ProviderComponent
-                     installedCarriers={installedCarriers}
-                     handleProviderServices={handleProviderServices}
-                     filterProvider={initialState.filter_provider}
+                      installedCarriers={installedCarriers}
+                      handleProviderServices={handleProviderServices}
+                      filterProvider={initialState.filter_provider}
                     />
                   </>
                 )}
@@ -1451,11 +1501,11 @@ function ShippingRulesComponent() {
                                   carrier?.slug == 'ups-ship-engine' ||
                                   carrier?.slug == 'small-package' ||
                                   carrier?.slug == 'fedex-small' ||
-                                  carrier?.slug == 'priority-one-ltl' || 
+                                  carrier?.slug == 'priority-one-ltl' ||
                                   carrier?.slug == 'unishippers-small' ||
-                                  carrier?.slug == 'unishipper-ltl' || 
-                                  carrier?.slug == 'usps-small' || 
-                                  carrier?.slug == 'purolator-small' || 
+                                  carrier?.slug == 'unishipper-ltl' ||
+                                  carrier?.slug == 'usps-small' ||
+                                  carrier?.slug == 'purolator-small' ||
                                   carrier?.slug == 'tql-ltl' ||
                                   carrier?.slug == 'gtz-ltl' ||
                                   carrier?.slug == 'dayross-ltl' ? (
@@ -1498,6 +1548,7 @@ function ShippingRulesComponent() {
                                 ]}
                               >
                                 <Select
+                                  mode='multiple'
                                   placeholder='Select service'
                                   value={selectedServices}
                                   onChange={handleChangeServices}
@@ -1511,15 +1562,15 @@ function ShippingRulesComponent() {
                                     accessorial?.accessorial_service_sac == 'lgd' && accessorial?.status ? (
                                       <Option value={'liftgate'}>Lift gate delivery service</Option>
                                     ) :
-                                    accessorial?.accessorial_service_sac == 'nbd' && accessorial?.status ? (
-                                      <Option value={'notify'}>Notify before delivery service</Option>
-                                    ) :
-                                    accessorial?.accessorial_service_sac == 'lad' && accessorial?.status ? (
-                                      <Option value={'limitedAccess'}>Limited access delivery service</Option>
-                                    ) :
-                                    accessorial?.accessorial_service_sac == 'ind' && accessorial?.status ? (
-                                      <Option value={'insideDelivery'}>Inside delivery service</Option>
-                                    ) : null
+                                      accessorial?.accessorial_service_sac == 'nbd' && accessorial?.status ? (
+                                        <Option value={'notify'}>Notify before delivery service</Option>
+                                      ) :
+                                        accessorial?.accessorial_service_sac == 'lad' && accessorial?.status ? (
+                                          <Option value={'limitedAccess'}>Limited access delivery service</Option>
+                                        ) :
+                                          accessorial?.accessorial_service_sac == 'ind' && accessorial?.status ? (
+                                            <Option value={'insideDelivery'}>Inside delivery service</Option>
+                                          ) : null
                                   ))}
                                 </Select>
                               </Form.Item>
@@ -1558,6 +1609,7 @@ function ShippingRulesComponent() {
                                 ]}
                               >
                                 <Select
+                                  mode='multiple'
                                   style={{ width: '100%' }}
                                   placeholder='Select service'
                                   value={selectedServices}
@@ -1600,13 +1652,13 @@ function ShippingRulesComponent() {
                   </>
                 )}
                 {ruleType == 8 && (
-               <ServiceRate
-                  label='Service rate (e.g. 5.25)'
-                  name='service_rates'
-                  placeholder='Enter service rate'
-                  required={true}
-                  message='Service rate is required'
-                />
+                  <ServiceRate
+                    label='Service rate (e.g. 5.25)'
+                    name='service_rates'
+                    placeholder='Enter service rate'
+                    required={true}
+                    message='Service rate is required'
+                  />
                 )}
                 <Row gutter={30}>
                   <Col
@@ -1865,7 +1917,7 @@ function ShippingRulesComponent() {
                 </Row>
               </>
             )}
-             
+
             <Row gutter={30}>
               <Col
                 className='gutter-row'
