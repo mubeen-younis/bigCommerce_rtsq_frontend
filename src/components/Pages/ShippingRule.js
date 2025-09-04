@@ -125,7 +125,7 @@ function ShippingRulesComponent() {
       dispatch(getShippingRules(token));
     }
 
-    if (ruleType == 3 || ruleType == 4 || ruleType == 10) {
+    if (ruleType == 3 || ruleType == 4 || ruleType == 10 || ruleType == 6) {
       dispatch(getStatesProvinces(countryCode, token));
     }
 
