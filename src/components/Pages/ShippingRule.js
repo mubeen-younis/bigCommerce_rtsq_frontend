@@ -537,190 +537,190 @@ function ShippingRulesComponent() {
         <Space size='small'>{shippingRuleTypes[rule_type]}</Space>
       ),
     },
-    {
-      key: 'filter_name',
-      title: 'Filters',
-      dataIndex: 'filter_name',
-      render: (filter_name, record) => (
-        <>
-          {record?.rule_type == 2 || record?.rule_type == 7 ? (
-            installedCarriers?.map(
-              (carrier) =>
-                carrier.slug == filter_name &&
-                (carrier.carrier_type == 1
-                  ? carrier.name + ' (LTL Freight Providers)'
-                  : carrier.carrier_type == 2
-                    ? carrier.name + ' (Parcel & Postal Providers)'
-                    : null
-                )
-            )
-          ) : record?.rule_type == 3 ? (
-            <>
-              {record.id == recordId ? (
-                <>
-                  {record?.filter_state_province?.map((key) => {
-                    return (
-                      <>
-                        <span> {key} </span>
-                        <br />
-                      </>
-                    );
-                  })}
-                  {record?.filter_state_province?.length > 5 ? (
-                    <a
-                      className='btn mt-2'
-                      onClick={() => showMoreItems(null)}
-                    >
-                      show less
-                    </a>
-                  ) : null}
-                </>
-              ) : (
-                <>
-                  {record?.filter_state_province?.map((key, item) => {
-                    if (item < 5) {
-                      return (
-                        <>
-                          <span> {key} </span>
-                          <br />
-                        </>
-                      );
-                    }
-                  })}
-                  {record?.filter_state_province?.length > 5 ? (
-                    <a
-                      className='btn mt-2'
-                      onClick={() => showMoreItems(record.id)}
-                    >
-                      show more
-                    </a>
-                  ) : null}
-                </>
-              )}
-            </>
-          ) : record?.rule_type == 4 ? (
-            <>
-              {record.id == recordId ? (
-                <>
-                  {record?.filter_postal_code?.map((key) => {
-                    return (
-                      <>
-                        <span> {key} </span>
-                        <br />
-                      </>
-                    );
-                  })}
-                  {record?.filter_postal_code?.length > 5 ? (
-                    <a
-                      className='btn mt-2'
-                      onClick={() => showMoreItems(null)}
-                    >
-                      show less
-                    </a>
-                  ) : null}
-                </>
-              ) : (
-                <>
-                  {record?.filter_postal_code?.map((key, item) => {
-                    if (item < 5) {
-                      return (
-                        <>
-                          <span> {key} </span>
-                          <br />
-                        </>
-                      );
-                    }
-                  })}
-                  {record?.filter_postal_code?.length > 5 ? (
-                    <a
-                      className='btn mt-2'
-                      onClick={() => showMoreItems(record.id)}
-                    >
-                      show more
-                    </a>
-                  ) : null}
-                </>
-              )}
-            </>
-          ) : record?.rule_type == 5 ? (
-            <>
-              {record.id == recordId ? (
-                <>
-                  {record?.warehouses?.map((key) => {
-                    return (
-                      <>
-                        <span>
-                          {warehouse
-                            ? warehouse?.map(
-                              (value) =>
-                                value?.zip_code == key &&
-                                `${value?.city + ','} ${value?.state} ${value?.zip_code
-                                }`
-                            )
-                            : null}
-                        </span>
-                        <br />
-                      </>
-                    );
-                  })}
-                  {record?.warehouses?.length > 5 ? (
-                    <a
-                      className='btn mt-2'
-                      onClick={() => showMoreItems(null)}
-                    >
-                      show less
-                    </a>
-                  ) : null}
-                </>
-              ) : (
-                <>
-                  {record?.warehouses?.map((key, item) => {
-                    if (item < 5) {
-                      return (
-                        <>
-                          <span>
-                            {warehouse
-                              ? warehouse?.map(
-                                (value) =>
-                                  value?.zip_code == key &&
-                                  `${value?.city + ','} ${value?.state} ${value?.zip_code
-                                  }`
-                              )
-                              : null}
-                          </span>
-                          <br />
-                        </>
-                      );
-                    }
-                  })}
-                  {record?.warehouses?.length > 5 ? (
-                    <a
-                      className='btn mt-2'
-                      onClick={() => showMoreItems(record.id)}
-                    >
-                      show more
-                    </a>
-                  ) : null}
-                </>
-              )}
-            </>
-          ) : record?.rule_type == 6 ? (
-            installedCarriers?.map(
-              (carrier) =>
-                carrier.slug == filter_name &&
-                (carrier.carrier_type == 1
-                  ? <span> {carrier.name} (LTL Freight Providers) <br /> {accessorialServices[record?.filter_services]} </span>
-                  : carrier.carrier_type == 2
-                    ? <span> {carrier.name} (Parcel & Postal Providers) <br /> {record?.filter_services} </span>
-                    : null
-                )
-            )
-          ) : (
-            filter_name
-          )}
-        </>
-      ),
-    },
+    // {
+    //   key: 'filter_name',
+    //   title: 'Filters',
+    //   dataIndex: 'filter_name',
+    //   render: (filter_name, record) => (
+    //     <>
+    //       {record?.rule_type == 2 || record?.rule_type == 7 ? (
+    //         installedCarriers?.map(
+    //           (carrier) =>
+    //             carrier.slug == filter_name &&
+    //             (carrier.carrier_type == 1
+    //               ? carrier.name + ' (LTL Freight Providers)'
+    //               : carrier.carrier_type == 2
+    //                 ? carrier.name + ' (Parcel & Postal Providers)'
+    //                 : null
+    //             )
+    //         )
+    //       ) : record?.rule_type == 3 ? (
+    //         <>
+    //           {record.id == recordId ? (
+    //             <>
+    //               {record?.filter_state_province?.map((key) => {
+    //                 return (
+    //                   <>
+    //                     <span> {key} </span>
+    //                     <br />
+    //                   </>
+    //                 );
+    //               })}
+    //               {record?.filter_state_province?.length > 5 ? (
+    //                 <a
+    //                   className='btn mt-2'
+    //                   onClick={() => showMoreItems(null)}
+    //                 >
+    //                   show less
+    //                 </a>
+    //               ) : null}
+    //             </>
+    //           ) : (
+    //             <>
+    //               {record?.filter_state_province?.map((key, item) => {
+    //                 if (item < 5) {
+    //                   return (
+    //                     <>
+    //                       <span> {key} </span>
+    //                       <br />
+    //                     </>
+    //                   );
+    //                 }
+    //               })}
+    //               {record?.filter_state_province?.length > 5 ? (
+    //                 <a
+    //                   className='btn mt-2'
+    //                   onClick={() => showMoreItems(record.id)}
+    //                 >
+    //                   show more
+    //                 </a>
+    //               ) : null}
+    //             </>
+    //           )}
+    //         </>
+    //       ) : record?.rule_type == 4 ? (
+    //         <>
+    //           {record.id == recordId ? (
+    //             <>
+    //               {record?.filter_postal_code?.map((key) => {
+    //                 return (
+    //                   <>
+    //                     <span> {key} </span>
+    //                     <br />
+    //                   </>
+    //                 );
+    //               })}
+    //               {record?.filter_postal_code?.length > 5 ? (
+    //                 <a
+    //                   className='btn mt-2'
+    //                   onClick={() => showMoreItems(null)}
+    //                 >
+    //                   show less
+    //                 </a>
+    //               ) : null}
+    //             </>
+    //           ) : (
+    //             <>
+    //               {record?.filter_postal_code?.map((key, item) => {
+    //                 if (item < 5) {
+    //                   return (
+    //                     <>
+    //                       <span> {key} </span>
+    //                       <br />
+    //                     </>
+    //                   );
+    //                 }
+    //               })}
+    //               {record?.filter_postal_code?.length > 5 ? (
+    //                 <a
+    //                   className='btn mt-2'
+    //                   onClick={() => showMoreItems(record.id)}
+    //                 >
+    //                   show more
+    //                 </a>
+    //               ) : null}
+    //             </>
+    //           )}
+    //         </>
+    //       ) : record?.rule_type == 5 ? (
+    //         <>
+    //           {record.id == recordId ? (
+    //             <>
+    //               {record?.warehouses?.map((key) => {
+    //                 return (
+    //                   <>
+    //                     <span>
+    //                       {warehouse
+    //                         ? warehouse?.map(
+    //                           (value) =>
+    //                             value?.zip_code == key &&
+    //                             `${value?.city + ','} ${value?.state} ${value?.zip_code
+    //                             }`
+    //                         )
+    //                         : null}
+    //                     </span>
+    //                     <br />
+    //                   </>
+    //                 );
+    //               })}
+    //               {record?.warehouses?.length > 5 ? (
+    //                 <a
+    //                   className='btn mt-2'
+    //                   onClick={() => showMoreItems(null)}
+    //                 >
+    //                   show less
+    //                 </a>
+    //               ) : null}
+    //             </>
+    //           ) : (
+    //             <>
+    //               {record?.warehouses?.map((key, item) => {
+    //                 if (item < 5) {
+    //                   return (
+    //                     <>
+    //                       <span>
+    //                         {warehouse
+    //                           ? warehouse?.map(
+    //                             (value) =>
+    //                               value?.zip_code == key &&
+    //                               `${value?.city + ','} ${value?.state} ${value?.zip_code
+    //                               }`
+    //                           )
+    //                           : null}
+    //                       </span>
+    //                       <br />
+    //                     </>
+    //                   );
+    //                 }
+    //               })}
+    //               {record?.warehouses?.length > 5 ? (
+    //                 <a
+    //                   className='btn mt-2'
+    //                   onClick={() => showMoreItems(record.id)}
+    //                 >
+    //                   show more
+    //                 </a>
+    //               ) : null}
+    //             </>
+    //           )}
+    //         </>
+    //       ) : record?.rule_type == 6 ? (
+    //         installedCarriers?.map(
+    //           (carrier) =>
+    //             carrier.slug == filter_name &&
+    //             (carrier.carrier_type == 1
+    //               ? <span> {carrier.name} (LTL Freight Providers) <br /> {accessorialServices[record?.filter_services]} </span>
+    //               : carrier.carrier_type == 2
+    //                 ? <span> {carrier.name} (Parcel & Postal Providers) <br /> {record?.filter_services} </span>
+    //                 : null
+    //             )
+    //         )
+    //       ) : (
+    //         filter_name
+    //       )}
+    //     </>
+    //   ),
+    // },
     {
       key: 'available',
       title: 'Available',
