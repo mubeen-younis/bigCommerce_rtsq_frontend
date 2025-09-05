@@ -361,10 +361,10 @@ function ShippingRulesComponent() {
   const updateFormFields = async (text) => {
     setCountryCode(text?.filter_country);
     if (text?.rule_type == 6) {
-      handleProviderServices(text?.filter_provider, text?.rule_type)
-      const applyTo = text?.apply_to == 1 ? setApplyTo(0) : setApplyTo(text?.apply_to);
+      handleProviderServices(text?.filter_provider, text?.rule_type);
+      setApplyTo(Number(text?.apply_to ?? 1));
     } else {
-      setApplyTo(text?.apply_to ?? 1)
+      setApplyTo(Number(text?.apply_to ?? 1));
     }
     if (text?.filter_country == undefined || text?.filter_country == '') {
       setCountryCode('US');
@@ -889,7 +889,7 @@ function ShippingRulesComponent() {
                       placeholder='Type'
                       onChange={(value) => {
                         setRuleType(value);
-                        value = value == 6 ? setApplyTo(0) : setApplyTo(1);
+                        value = value == 6 ? setApplyTo(1) : setApplyTo(1);
                       }}
                       getPopupContainer={() =>
                         document.getElementById('type_dropdown')
@@ -930,9 +930,7 @@ function ShippingRulesComponent() {
                       },
                     ]}
                   >
-                    {ruleType == 6 ? (
-                      <></>
-                    ) : ruleType == 10 ? (
+                    {ruleType == 10 ? (
                       <>
                         <Radio
                           value='0'
@@ -981,7 +979,7 @@ function ShippingRulesComponent() {
               ruleType == 3 ||
               ruleType == 4 ||
               ruleType == 5 || ruleType == 7 || ruleType == 10 ||
-              (applyTo == 2 && (ruleType == 8 || ruleType == 6 || ruleType == 2)) || (applyTo == 0 && ruleType == 6)) && (
+              (applyTo == 2 && (ruleType == 8 || ruleType == 6 || ruleType == 2)) || (applyTo == 0 && ruleType == 6) || (applyTo == 1 && ruleType == 6)) && (
                 <>
                   {ruleType != 5 && ruleType != 7 && ruleType != 8 && ruleType != 2 && (
                     <Row gutter={30}>
@@ -1072,9 +1070,17 @@ function ShippingRulesComponent() {
                             </Select>
                           </Form.Item>
                         </div>
-                        <div className={'text-gray mb-2'}>
-                          Only customers from these states/provinces will be presented with shipping rates for this provider.
-                        </div>
+                        {ruleType != 6 && (
+                          <div className={'text-gray mb-2'}>
+                            Only customers from these states/provinces will be presented with shipping rates for this provider.
+                          </div>
+                        )}
+                        {ruleType == 6 && (
+                          <div className={'text-gray mb-2'}>
+                            The selected states/provinces will determine where this override rate applies.
+                            Customers shipping to other states/provinces will continue to see the normal rates.
+                          </div>
+                        )}
                       </Col>
                     </Row>
                   )}
@@ -1241,7 +1247,7 @@ function ShippingRulesComponent() {
                       </Col>
                     </Row>
                   )}
-                  {(applyTo != 0) && (
+                  {(applyTo != 0) && !(ruleType == 6 && applyTo == 1) && (
                     <>
                       <Row gutter={30}>
                         <Col
