@@ -125,32 +125,13 @@ function ShippingRulesComponent() {
   const urlParams = new URLSearchParams(window.location.search);
   const storeParam = urlParams.get('store'); // hash in production
 
+const allowedHashes = ['d7uldtcemt', 'pos5nwk4rp', 'uann2u', 'Ivadff42ep', '4qm0e35vwt'];
+const allowedStoreIds = [329, 354, 1, 250, 254];
+
 const showOverrideRule =
-  store?.id === 'd7uldtcemt' ||
-  store?.id === 'pos5nwk4rp' ||
-  store?.id === 'uann2u' ||
-  // -------------------
-  store?.id === 'Ivadff42ep' ||
-  store?.id === '4qm0e35vwt' ||
-  // ------------------
-  store?.store_id === 329 ||
-  store?.store_id === 354 ||
-  store?.store_id === 1 ||
-
-  // --------------
-  store?.store_id === 250 ||
-  store?.store_id === 254 ||
-  // -------------
-
-  storeParam === 'd7uldtcemt' ||
-  storeParam === 'pos5nwk4rp' ||
-  storeParam === 'uann2u';  
-
-  // -----------
-  storeParam === 'Ivadff42ep' ||
-  storeParam === '4qm0e35vwt'; 
-  // ----------
-
+  allowedHashes.includes(store?.id) ||
+  allowedStoreIds.includes(Number(store?.store_id)) ||
+  allowedHashes.includes(storeParam);
   useEffect(() => {
     if (!shippingRules) {
       dispatch(getShippingRules(token));
