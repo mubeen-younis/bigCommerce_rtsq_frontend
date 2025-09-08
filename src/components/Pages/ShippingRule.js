@@ -125,7 +125,7 @@ const getStoreHash = () => {
   const m = window.location.hostname.match(/^store-([^.]+)\.mybigcommerce\.com$/);
   return m ? m[1] : null;
 };
-const showOverrideRule = getStoreHash() === 'la19v6orih';
+const showOverrideRule = getStoreHash() === 'lvadff42ep';
 
   useEffect(() => {
     if (!shippingRules) {
@@ -947,7 +947,11 @@ const showOverrideRule = getStoreHash() === 'la19v6orih';
                         </Radio>
                       </>
                     ) : (
+                      <>
+                      {(ruleType != 6 || showOverrideRule) && (
                       <Radio checked={applyTo == 1} value={1} onChange={handleChangeRule}>Cart</Radio>
+                      )}
+                      </>
                     )}
 
                     {(ruleType == 8 || ruleType == 6) && (
