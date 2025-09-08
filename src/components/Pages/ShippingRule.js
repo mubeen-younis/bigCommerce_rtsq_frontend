@@ -1101,7 +1101,9 @@ function ShippingRulesComponent() {
                             Only customers from these states/provinces will be presented with shipping rates for this provider.
                           </div>
                         )}
-                        {ruleType == 6 && showOverrideRule && (
+                        {ruleType == 6
+                        //  && showOverrideRule 
+                         && (
                           <div className={'text-gray mb-2'}>
                             The selected states/provinces will determine where this override rate applies.
                             Customers shipping to other states/provinces will continue to see the normal rates.
