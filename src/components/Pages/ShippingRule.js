@@ -125,7 +125,7 @@ const getStoreHash = () => {
   const m = window.location.hostname.match(/^store-([^.]+)\.mybigcommerce\.com$/);
   return m ? m[1] : null;
 };
-const showOverrideRule = getStoreHash() === 'lvadff42ep';
+const showOverrideRule = getStoreHash() === '4qm0e35vwt';
 
   useEffect(() => {
     if (!shippingRules) {
