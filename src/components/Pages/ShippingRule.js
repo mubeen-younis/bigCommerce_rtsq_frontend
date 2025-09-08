@@ -122,19 +122,19 @@ function ShippingRulesComponent() {
   const dropdownRef = useRef();
 
   // To show location filter in override rule for specific store
-//   const urlParams = new URLSearchParams(window.location.search);
-//   const storeParam = urlParams.get('store'); // hash in production
+  const urlParams = new URLSearchParams(window.location.search);
+  const storeParam = urlParams.get('store'); // hash in production
 
-// const showOverrideRule =
-//   store?.id === 'd7uldtcemt' ||
-//   store?.id === 'pos5nwk4rp' ||
-//   store?.id === 'lvadff42ep' ||
-//   store?.store_id === 329 ||
-//   store?.store_id === 354 ||
-//   store?.store_id === 250 ||
-//   storeParam === 'd7uldtcemt' ||
-//   storeParam === 'pos5nwk4rp' ||
-//   storeParam === 'lvadff42ep';
+const showOverrideRule =
+  store?.id === 'd7uldtcemt' ||
+  store?.id === 'pos5nwk4rp' ||
+  store?.id === 'lvadff42ep' ||
+  store?.store_id === 329 ||
+  store?.store_id === 354 ||
+  store?.store_id === 250 ||
+  storeParam === 'd7uldtcemt' ||
+  storeParam === 'pos5nwk4rp' ||
+  storeParam === 'lvadff42ep';
 
   useEffect(() => {
     if (!shippingRules) {
@@ -957,9 +957,7 @@ function ShippingRulesComponent() {
                       </>
                     ) : (
                       <>
-                        {(ruleType != 6 
-                        // || showOverrideRule
-                      ) && (
+                        {(ruleType != 6 || showOverrideRule) && (
                           <Radio checked={applyTo == 1} value={1} onChange={handleChangeRule}>Cart</Radio>
                         )}
                       </>
@@ -1003,9 +1001,7 @@ function ShippingRulesComponent() {
               ruleType == 5 || ruleType == 7 || ruleType == 10 ||
               (applyTo == 2 && (ruleType == 8 || ruleType == 6 || ruleType == 2)) || (applyTo == 0 && ruleType == 6) || (applyTo == 1 && ruleType == 6)) && (
                 <>
-                  {ruleType != 5 && ruleType != 7 && ruleType != 8 && ruleType != 2 && !(ruleType == 6 
-                  // && !showOverrideRule
-                ) && (
+                  {ruleType != 5 && ruleType != 7 && ruleType != 8 && ruleType != 2 && !(ruleType == 6 && !showOverrideRule) && (
                     <Row gutter={30}>
                       <Col
                         className='gutter-row'
@@ -1052,9 +1048,7 @@ function ShippingRulesComponent() {
                       />
                     </>
                   )}
-                  {(ruleType == 3 || ruleType == 4 || ruleType == 10 || (ruleType == 6 
-                  // && showOverrideRule
-                )) && (
+                  {(ruleType == 3 || ruleType == 4 || ruleType == 10 || (ruleType == 6 && showOverrideRule)) && (
                     <Row gutter={30}>
                       <Col
                         className='gutter-row'
@@ -1096,14 +1090,12 @@ function ShippingRulesComponent() {
                             </Select>
                           </Form.Item>
                         </div>
-                        {ruleType != 6 && (
+                        {ruleType != 6 && showOverrideRule && (
                           <div className={'text-gray mb-2'}>
                             Only customers from these states/provinces will be presented with shipping rates for this provider.
                           </div>
                         )}
-                        {ruleType == 6
-                        //  && showOverrideRule 
-                         && (
+                        {ruleType == 6 && (
                           <div className={'text-gray mb-2'}>
                             The selected states/provinces will determine where this override rate applies.
                             Customers shipping to other states/provinces will continue to see the normal rates.
