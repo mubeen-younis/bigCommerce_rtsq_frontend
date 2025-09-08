@@ -102,6 +102,7 @@ function ShippingRulesComponent() {
     warehouse,
     storeCategories,
     storeBrands,
+    store,
   } = useSelector((state) => state);
   const [selectedServices, setSelectedServices] = useState([]);
   const [carrierId, setCarrierId] = useState();
@@ -121,11 +122,15 @@ function ShippingRulesComponent() {
   const dropdownRef = useRef();
 
   // To show location filter in override rule for specific store
-const getStoreHash = () => {
-  const m = window.location.hostname.match(/^store-([^.]+)\.mybigcommerce\.com$/);
-  return m ? m[1] : null;
-};
-const showOverrideRule = getStoreHash() === '4qm0e35vwt';
+  console.log('sssssss', store);
+  // const showOverrideRule = token === 'lvadff42ep' || store?.id === 250;
+  const urlParams = new URLSearchParams(window.location.search);
+  const storeParam = urlParams.get('store'); // hash in production
+
+  const showOverrideRule =
+    store?.id === 'lvadff42ep' ||     // hash from Redux store
+    store?.store_id === 250 ||        // numeric store_id
+    storeParam === 'lvadff42ep';      // hash from URL
 
   useEffect(() => {
     if (!shippingRules) {
@@ -948,9 +953,9 @@ const showOverrideRule = getStoreHash() === '4qm0e35vwt';
                       </>
                     ) : (
                       <>
-                      {(ruleType != 6 || showOverrideRule) && (
-                      <Radio checked={applyTo == 1} value={1} onChange={handleChangeRule}>Cart</Radio>
-                      )}
+                        {(ruleType != 6 || showOverrideRule) && (
+                          <Radio checked={applyTo == 1} value={1} onChange={handleChangeRule}>Cart</Radio>
+                        )}
                       </>
                     )}
 
