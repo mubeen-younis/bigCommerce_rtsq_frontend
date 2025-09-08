@@ -128,13 +128,13 @@ function ShippingRulesComponent() {
 const showOverrideRule =
   store?.id === 'd7uldtcemt' ||
   store?.id === 'pos5nwk4rp' ||
-  store?.id === 'Ivadff42ep' ||
+  store?.id === 'lvadff42ep' ||
   store?.store_id === 329 ||
   store?.store_id === 354 ||
   store?.store_id === 250 ||
   storeParam === 'd7uldtcemt' ||
   storeParam === 'pos5nwk4rp' ||
-  storeParam === 'Ivadff42ep';  
+  storeParam === 'lvadff42ep';
 
 
 
