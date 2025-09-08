@@ -122,15 +122,19 @@ function ShippingRulesComponent() {
   const dropdownRef = useRef();
 
   // To show location filter in override rule for specific store
-  console.log('sssssss', store);
-  // const showOverrideRule = token === 'lvadff42ep' || store?.id === 250;
   const urlParams = new URLSearchParams(window.location.search);
   const storeParam = urlParams.get('store'); // hash in production
 
-  const showOverrideRule =
-    store?.id === 'lvadff42ep' ||     // hash from Redux store
-    store?.store_id === 250 ||        // numeric store_id
-    storeParam === 'lvadff42ep';      // hash from URL
+const showOverrideRule =
+  store?.id === 'd7uldtcemt' ||
+  store?.id === 'pos5nwk4rp' ||
+  store?.id === 'uann2u' ||
+  store?.store_id === 329 ||
+  store?.store_id === 354 ||
+  store?.store_id === 1 ||
+  storeParam === 'd7uldtcemt' ||
+  storeParam === 'pos5nwk4rp' ||
+  storeParam === 'uann2u';  
 
   useEffect(() => {
     if (!shippingRules) {
