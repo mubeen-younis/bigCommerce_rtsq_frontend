@@ -136,8 +136,6 @@ const showOverrideRule =
   storeParam === 'pos5nwk4rp' ||
   storeParam === 'lvadff42ep';
 
-
-
   useEffect(() => {
     if (!shippingRules) {
       dispatch(getShippingRules(token));
