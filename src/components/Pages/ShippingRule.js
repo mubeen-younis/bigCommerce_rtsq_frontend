@@ -129,12 +129,27 @@ const showOverrideRule =
   store?.id === 'd7uldtcemt' ||
   store?.id === 'pos5nwk4rp' ||
   store?.id === 'uann2u' ||
+  // -------------------
+  store?.id === 'Ivadff42ep' ||
+  store?.id === '4qm0e35vwt' ||
+  // ------------------
   store?.store_id === 329 ||
   store?.store_id === 354 ||
   store?.store_id === 1 ||
+
+  // --------------
+  store?.store_id === 250 ||
+  store?.store_id === 254 ||
+  // -------------
+
   storeParam === 'd7uldtcemt' ||
   storeParam === 'pos5nwk4rp' ||
   storeParam === 'uann2u';  
+
+  // -----------
+  storeParam === 'Ivadff42ep' ||
+  storeParam === '4qm0e35vwt'; 
+  // ----------
 
   useEffect(() => {
     if (!shippingRules) {
