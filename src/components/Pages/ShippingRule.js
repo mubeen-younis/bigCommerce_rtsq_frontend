@@ -120,6 +120,13 @@ function ShippingRulesComponent() {
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef();
 
+  // To show location filter in override rule for specific store
+const getStoreHash = () => {
+  const m = window.location.hostname.match(/^store-([^.]+)\.mybigcommerce\.com$/);
+  return m ? m[1] : null;
+};
+const showOverrideRule = getStoreHash() === 'la19v6orih';
+
   useEffect(() => {
     if (!shippingRules) {
       dispatch(getShippingRules(token));
@@ -981,7 +988,7 @@ function ShippingRulesComponent() {
               ruleType == 5 || ruleType == 7 || ruleType == 10 ||
               (applyTo == 2 && (ruleType == 8 || ruleType == 6 || ruleType == 2)) || (applyTo == 0 && ruleType == 6) || (applyTo == 1 && ruleType == 6)) && (
                 <>
-                  {ruleType != 5 && ruleType != 7 && ruleType != 8 && ruleType != 2 && (
+                  {ruleType != 5 && ruleType != 7 && ruleType != 8 && ruleType != 2 && !(ruleType == 6 && !showOverrideRule) && (
                     <Row gutter={30}>
                       <Col
                         className='gutter-row'
@@ -1028,7 +1035,7 @@ function ShippingRulesComponent() {
                       />
                     </>
                   )}
-                  {(ruleType == 3 || ruleType == 4 || ruleType == 10 || ruleType == 6) && (
+                  {(ruleType == 3 || ruleType == 4 || ruleType == 10 || (ruleType == 6 && showOverrideRule)) && (
                     <Row gutter={30}>
                       <Col
                         className='gutter-row'
@@ -1070,7 +1077,7 @@ function ShippingRulesComponent() {
                             </Select>
                           </Form.Item>
                         </div>
-                        {ruleType != 6 && (
+                        {ruleType != 6 && showOverrideRule && (
                           <div className={'text-gray mb-2'}>
                             Only customers from these states/provinces will be presented with shipping rates for this provider.
                           </div>
