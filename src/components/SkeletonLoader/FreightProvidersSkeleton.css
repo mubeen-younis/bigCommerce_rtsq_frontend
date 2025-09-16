@@ -1,0 +1,140 @@
+/* Freight Providers Skeleton Loader Styles */
+.freight-providers-skeleton {
+  margin-bottom: 24px;
+}
+
+.skeleton-row {
+  padding: 16px 20px;
+  margin: 8px 0;
+}
+
+.skeleton-row-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Avatar/Logo placeholder */
+.skeleton-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  flex-shrink: 0;
+}
+
+/* Content section */
+.skeleton-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Provider name placeholder */
+.skeleton-title {
+  height: 20px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  width: 180px;
+}
+
+/* Status/description placeholder */
+.skeleton-description {
+  height: 16px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  width: 120px;
+}
+
+/* Button placeholder */
+.skeleton-button {
+  width: 80px;
+  height: 32px;
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+/* Bottom border for rows */
+.skeleton-border {
+  height: 1px;
+  background-color: #f0f0f0;
+  margin-top: 16px;
+}
+
+/* Shimmer animation */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0%,
+    #e6e6e6 50%,
+    #f0f0f0 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .skeleton-row-content {
+    gap: 12px;
+  }
+
+  .skeleton-avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .skeleton-title {
+    width: 140px;
+    height: 18px;
+  }
+
+  .skeleton-description {
+    width: 100px;
+    height: 14px;
+  }
+
+  .skeleton-button {
+    width: 70px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .skeleton-row {
+    padding: 12px 16px;
+  }
+
+  .skeleton-row-content {
+    gap: 10px;
+  }
+
+  .skeleton-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .skeleton-title {
+    width: 120px;
+  }
+
+  .skeleton-description {
+    width: 80px;
+  }
+
+  .skeleton-button {
+    width: 60px;
+    height: 24px;
+  }
+}

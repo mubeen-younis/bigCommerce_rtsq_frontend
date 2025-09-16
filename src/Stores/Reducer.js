@@ -83,6 +83,8 @@ const initialState = {
 	radSettings: null,
 	/* Weight Threshold */
 	thresholdSetting: null,
+	/* Available Carriers */
+	availableCarriers: null,
 }
 
 const Reducer = (state = initialState, action) => {
@@ -134,6 +136,13 @@ const Reducer = (state = initialState, action) => {
 			return {
 				...state,
 				carriers: action.payload,
+			}
+
+		case 'GET_ALL_AVAILABLE_CARRIERS':
+			console.log('Reducer: GET_ALL_AVAILABLE_CARRIERS called with payload:', action.payload);
+			return {
+				...state,
+				availableCarriers: action.payload,
 			}
 
 		case types.GET_ADD_TAB_SETTING:

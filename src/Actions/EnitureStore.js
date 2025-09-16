@@ -98,6 +98,87 @@ export const getAllCarriers = data => {
 	}
 }
 
+export const getAllAvailableCarriers = (token) => {
+	return dispatch => {
+		console.log('getAllAvailableCarriers called with token:', token);
+		console.log('API URL:', `${process.env.REACT_APP_ENITURE_API_URL}/getAllCarriers`);
+
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		})
+
+		axios
+			.get(
+				`${process.env.REACT_APP_ENITURE_API_URL}/getAllCarriers`,
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.then(({ data }) => {
+				console.log('getAllCarriers API response:', data);
+				if (!data.error) {
+					console.log('Dispatching carriers to Redux:', data.carriers);
+					dispatch({
+						type: 'GET_ALL_AVAILABLE_CARRIERS',
+						payload: data.carriers,
+					})
+				}
+
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: data.message,
+						showAlertMessage: false,
+						alertMessageType: data.error ? 'error' : 'success',
+					},
+				})
+			})
+			.catch((error) => {
+				console.log('getAllCarriers API error:', error);
+				if (
+					error.response &&
+					error.response.data?.error &&
+					error.response.data?.message === 'Token Mismatch'
+				) {
+					dispatch({
+						type: 'GET_ALL_AVAILABLE_CARRIERS',
+						payload: [],
+					})
+
+					dispatch({
+						type: 'ALERT_MESSAGE',
+						payload: {
+							showAlertMessage: false,
+							alertMessageType: 'Token Mismatch',
+						},
+					})
+
+					return
+				}
+
+				dispatch({
+					type: 'GET_ALL_AVAILABLE_CARRIERS',
+					payload: [],
+				})
+
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: 'Failed to fetch available carriers',
+						showAlertMessage: true,
+						alertMessageType: 'error',
+					},
+				})
+			})
+	}
+}
+
 export const getInstalledCarriers = data => {
 	return dispatch => {
 		axios
