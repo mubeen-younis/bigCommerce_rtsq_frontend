@@ -71,6 +71,13 @@ function ConnectionSettingsComponent(props) {
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
 				<Form.Item
+					className='mb-1'
+					label='Nickname'
+					name='nickname'
+					rules={[{ required: false, message: 'Nickname' }]}>
+					<Input placeholder='e.g., Purolator' />
+				</Form.Item>
+				<Form.Item
 					label='Billing Account Number'
 					name='billingAccount'
 					rules={[{ required: true, message: 'Billing Account Number' }]}>

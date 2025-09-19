@@ -1,5 +1,6 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { Tabs } from 'antd';
 import CarriersComponent from '../components/CarriersComponent';
 import PlanStatusHeading from '../partials/PlanStatusHeading';
@@ -12,18 +13,27 @@ import DisplayLogsPage from '../components/DisplayLogsPage';
 
 const { TabPane } = Tabs;
 
-function TabsLayout() {
+function TabsLayout({ onlyConnection = false, forcedSlug = '' }) {
   const { installedCarriers, carrierId, quoteSettings } = useSelector(state => state);
   const [component, setComponent] = useState(0);
   const [tab, setTab] = useState('1');
   const [carrierSlug, setCarrierSlug] = useState('');
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
-    if (localStorage.getItem('tab')) setTab(localStorage.getItem('tab'));
+    // Check for tab in URL parameters first, then localStorage
+    const urlParams = new URLSearchParams(location.search);
+    const tabFromUrl = urlParams.get('tab');
+
+    if (tabFromUrl) {
+      setTab(tabFromUrl);
+    } else if (localStorage.getItem('tab')) {
+      setTab(localStorage.getItem('tab'));
+    }
 
     return () => localStorage.removeItem('tab');
-  }, [tab]);
+  }, [location.search]);
 
   useEffect(() => {
     const loadComponent = () => {
@@ -61,6 +71,12 @@ function TabsLayout() {
         'dbsc',
       ];
 
+      if (forcedSlug) {
+        setComponent(slugs.indexOf(forcedSlug));
+        setCarrierSlug(forcedSlug);
+        return;
+      }
+
       for (const ic of installedCarriers) {
         if (+ic.id === +carrierId) {
           const isFedexSmallCarrier = ic.slug === 'fedex-small';
@@ -97,7 +113,7 @@ function TabsLayout() {
     };
 
     loadComponent();
-  }, [carrierId, dispatch, installedCarriers]);
+  }, [carrierId, dispatch, installedCarriers, forcedSlug]);
 
   const handleActiveTab = useCallback((key = '') => {
     localStorage.setItem('tab', key);
@@ -107,11 +123,26 @@ function TabsLayout() {
   const [connSettingsComponent, quoteSettingsComponent] =
     useLoadComponent(component);
 
+  if (onlyConnection) {
+    return (
+      <Fragment>
+        <PlanStatusHeading />
+        <Tabs className={'tabs-wrp'} activeKey={tab} onChange={handleActiveTab} type='card'>
+          {carrierSlug !== 'usps-small' && carrierSlug !== 'dbsc' && (
+            <TabPane tab='Connection Settings' key='1'>
+              {connSettingsComponent}
+            </TabPane>
+          )}
+        </Tabs>
+      </Fragment>
+    );
+  }
+
   return (
     <Fragment>
       <PlanStatusHeading />
 
-      <Tabs className={'tabs-wrp'} onChange={handleActiveTab} type='card'>
+      <Tabs className={'tabs-wrp'} activeKey={tab} onChange={handleActiveTab} type='card'>
         {carrierSlug !== 'usps-small' &&
           carrierSlug !== 'dbsc' && (
             <TabPane tab='Connection Settings' key='1'>

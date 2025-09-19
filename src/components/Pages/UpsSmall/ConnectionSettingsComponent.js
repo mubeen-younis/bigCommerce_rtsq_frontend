@@ -71,6 +71,13 @@ function ConnectionSettingsComponent(props) {
 				size={'large'}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
+				<Form.Item
+					className='mb-1'
+					label='Nickname'
+					name='nickname'
+					rules={[{ required: false, message: 'Nickname' }]}>
+					<Input placeholder='e.g., Main UPS account' />
+				</Form.Item>
 				<div className={'note-bx'}>
 					<strong>Note! </strong>
 					{+component === 1 ? (

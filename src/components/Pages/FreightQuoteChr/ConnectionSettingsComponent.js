@@ -62,6 +62,13 @@ function ConnectionSettingsComponent() {
 				onFinish={onFinish}>
 				<Form.Item
 					className='mb-1'
+					label='Nickname'
+					name='nickname'
+					rules={[{ required: false, message: 'Nickname' }]}>
+					<Input type='text' placeholder='e.g., C.H. Robinson' />
+				</Form.Item>
+				<Form.Item
+					className='mb-1'
 					label='Customer Code'
 					name='customer_code'
 					rules={[{ required: true, message: 'Customer Code' }]}>

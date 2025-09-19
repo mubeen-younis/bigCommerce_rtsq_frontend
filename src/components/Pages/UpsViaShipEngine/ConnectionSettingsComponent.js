@@ -52,6 +52,13 @@ function ConnectionSettingsComponent(props) {
 				onFinish={onFinish}
 				onValuesChange={handleFormChange}>
 				<Form.Item
+					className='mb-1'
+					label='Nickname'
+					name='nickname'
+					rules={[{ required: false, message: 'Nickname' }]}>
+					<Input placeholder='e.g., UPS via ShipEngine' maxLength={100}/>
+				</Form.Item>
+				<Form.Item
 					label='Carrier ID'
 					name='shipengine_carrier_id'
 					rules={[{ required: formData?.shipengine_api_key != '' && formData?.shipengine_api_key != null, message: 'Carrier ID is required' }]}>

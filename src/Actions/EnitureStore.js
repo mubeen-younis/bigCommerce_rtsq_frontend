@@ -10,7 +10,7 @@ export const installCarrier = (carrier_id, token) => {
 			},
 		})
 
-		axios
+		return axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/installCarrier`,
 				{
@@ -38,8 +38,13 @@ export const installCarrier = (carrier_id, token) => {
 						alertMessageType: data.error ? 'error' : 'success',
 					},
 				})
+
+				return data;
 			})
-			.catch(error => {})
+			.catch(error => {
+				// Propagate error to caller so UI can decide
+				throw error;
+			})
 	}
 }
 
@@ -396,3 +401,15 @@ export const changeAddonStatus = (addon_id, token) => {
 			})
 	}
 }
+
+// Provision a carrier record in backend without updating Installed list in Redux
+// Note: removed unused provisioning helper to avoid unintended installs
+export const provisionCarrierForSettings = (carrier_id, token) => {
+  return () => {
+    return axios.post(
+      `${process.env.REACT_APP_ENITURE_API_URL}/installCarrier`,
+      { carrier_id },
+      { headers: { authorization: `Bearer ${token}` } }
+    );
+  };
+};

@@ -82,6 +82,14 @@ function ConnectionSettingsComponent(props) {
         initialValues={props.connectionSettings}
         onFinish={onFinish}
       >
+        <Form.Item
+          className="mb-1"
+          label="Nickname"
+          name="nickname"
+          rules={[{ required: false, message: "Nickname" }]}
+        >
+          <Input placeholder="e.g., WWE Small" />
+        </Form.Item>
         <Form.Item label="Which API Will You Connect To?" name="api_type">
           <Select
             defaultValue={

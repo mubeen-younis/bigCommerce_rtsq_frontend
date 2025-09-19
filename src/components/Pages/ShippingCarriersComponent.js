@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Button, Typography, Card, Image, Avatar, List, Input } from 'antd';
+import { Row, Col, Button, Typography, Card, Image, Avatar, List, Input, Modal, Table } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { connect, useDispatch } from 'react-redux';
 import FreightProvidersSkeleton from '../SkeletonLoader/FreightProvidersSkeleton';
@@ -11,6 +11,11 @@ import {
   changeCarrierStatus,
   getAllAvailableCarriers,
 } from '../../Actions/EnitureStore';
+import { getConnectionSettings } from '../../Actions/Connection';
+import { getQuoteSettings, getThresholdSettings, getStaffNoteSettings } from '../../Actions/Settings';
+import { getInsuraceStatus } from '../../Actions/ProductSettings';
+import TabsLayout from '../../tabs_layout/tabs';
+import { provisionCarrierForSettings } from '../../Actions/EnitureStore';
 import Meta from 'antd/lib/card/Meta';
 import PlanStatusHeading from '../../partials/PlanStatusHeading';
 import ExportCSVDownloadStatus from '../../partials/ExportCSVDownloadStatus';
@@ -22,6 +27,10 @@ function ShippingCarriersComponent(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingAvailableCarriers, setIsLoadingAvailableCarriers] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
+  const [activeCarrierId, setActiveCarrierId] = useState(null);
+  const [showArchived, setShowArchived] = useState(false);
+  const [archivedProviders, setArchivedProviders] = useState([]);
 
   useEffect(() => {
     // Fetch available carriers on component mount
@@ -44,34 +53,69 @@ function ShippingCarriersComponent(props) {
     console.log('Loading effect - installedCarriers:', props.installedCarriers);
     console.log('Loading effect - availableCarriers:', props.availableCarriers);
 
-    // Show loading when no data is available, then hide after data loads or timeout
-    if (!props.installedCarriers || props.availableCarriers === null) {
+    // Only show loading on initial load when both are null/empty
+    if ((!props.installedCarriers || props.installedCarriers.length === 0) && props.availableCarriers === null) {
       setIsLoading(true);
       const timer = setTimeout(() => setIsLoading(false), 3000);
       return () => clearTimeout(timer);
     } else {
-      // Data is available, stop loading after short delay
-      const timer = setTimeout(() => setIsLoading(false), 500);
-      return () => clearTimeout(timer);
+      // Data is available, stop loading immediately
+      setIsLoading(false);
     }
   }, [props.installedCarriers, props.availableCarriers]);
+
+  // Monitor when installation modal is closed to refresh carriers if needed
+  useEffect(() => {
+    // If modal was closed and we had an active carrier ID, it might have been installed
+    if (!isInstallModalOpen && activeCarrierId) {
+      const timer = setTimeout(() => {
+        // Only refresh if the carrier might have been installed (not just opened and closed immediately)
+        // We can add a small refresh here since the modal was actually used for installation
+        if (props.token) {
+          props.getInstalledCarriers({ store: props.token });
+        }
+        setActiveCarrierId(null); // Reset active carrier
+      }, 1000); // Longer delay to allow any connection settings save to complete
+      return () => clearTimeout(timer);
+    }
+  }, [isInstallModalOpen, activeCarrierId, props]);
 
   // const { currentPlan } = useSelector(state => state)
 
   // Get all carriers sorted by name, regardless of type
   const getAllCarriers = () => {
-    return props.installedCarriers
-      ?.sort((carr1, carr2) => carr1.name.localeCompare(carr2.name)) || [];
+    const list = Array.isArray(props.installedCarriers)
+      ? props.installedCarriers.filter(Boolean)
+      : [];
+    return list.sort((c1, c2) => (c1?.name || '').localeCompare(c2?.name || ''));
   };
 
   // Get installed (enabled) carriers
   const getInstalledCarriers = () => {
-    return getAllCarriers().filter((carrier) => carrier.is_enabled === 1);
+    return getAllCarriers()
+      .filter((carrier) => carrier.is_enabled === 1)
+      .filter(carrier => !archivedProviders.some(archived => archived.id === carrier.id));
   };
 
   // Get deactivated (disabled) carriers
   const getDeactivatedCarriers = () => {
-    return getAllCarriers().filter((carrier) => carrier.is_enabled === 0);
+    const allDisabled = getAllCarriers().filter((carrier) => carrier.is_enabled === 0);
+    return allDisabled.filter(carrier => !archivedProviders.some(archived => archived.id === carrier.id));
+  };
+
+  // Toggle between deactivated and archived view
+  const toggleArchivedView = () => {
+    setShowArchived(!showArchived);
+  };
+
+  // Archive a provider
+  const archiveProvider = (provider) => {
+    setArchivedProviders(prev => [...prev, provider]);
+  };
+
+  // Restore a provider from archive
+  const restoreProvider = (provider) => {
+    setArchivedProviders(prev => prev.filter(archived => archived.id !== provider.id));
   };
 
   // Get all available carriers from props
@@ -94,91 +138,278 @@ function ShippingCarriersComponent(props) {
     setSearchTerm(e.target.value);
   };
 
-  const renderCarrierListItem = (value) => {
-    const actions = [];
-    
-    if (value.is_enabled === 1) {
-      actions.push(
-        <Link
-          to={`/${value.id}`}
-          style={{ display: 'inline-block' }}
-          key="settings"
-        >
-          <Button
-            type='primary'
-            style={{ marginRight: '6px' }}
-            onClick={() =>
-              dispatch({
-                type: 'SET_ACTIVE_MENU',
-                payload: value.id.toString(),
-              })
-            }
-          >
-            Settings
-          </Button>
-        </Link>
-      );
-    }
-    
-    actions.push(
-      <Button
-        key="toggle"
-        type='primary'
-        onClick={() => {
-          props.changeCarrierStatus(value.id, props.token);
-        }}
-      >
-        {value.is_enabled === 1 ? 'Disable' : 'Enable'}
-      </Button>
-    );
 
-    return (
-      <List.Item actions={actions}>
-        <List.Item.Meta
-          avatar={
-            <Image
-              preview={false}
-              src={`images/${value.logo}`}
-              width={60}
-              height={60}
-            />
-          }
-          title={value.name}
-          description={value.is_enabled === 1 ? 'Enabled' : 'Disabled'}
-        />
-      </List.Item>
-    );
+  const openInstallModalWithSettings = async (carrier) => {
+    setActiveCarrierId(carrier.id);
+    const carrierSlug = props.availableCarriers?.find(c => c.id === carrier.id)?.slug;
+    // Prefer existing installed carrier with same slug to populate saved data
+    const existing = props.installedCarriers?.find(ic => ic.slug === carrierSlug);
+    let installedId = existing?.id || null;
+    if (!installedId) {
+      // Provision on backend to obtain an installed_carrier_id for submit_connection_settings
+      try {
+        const res = await dispatch(provisionCarrierForSettings(carrier.id, props.token));
+        installedId = res?.data?.data?.installed_carrier_id || res?.data?.data?.id || carrier.id;
+      } catch (e) {}
+    }
+    dispatch({ type: 'CARRIER_ID', payload: installedId || carrier.id });
+    dispatch(getConnectionSettings(props.token, installedId || carrier.id));
+    // Do not fetch Quote Settings for install flow
+    // dispatch(getQuoteSettings(props.token, carrier.id));
+    dispatch(getInsuraceStatus(props.token, carrier.id));
+    // Preload optional support data but safe if they require installed carrier
+    if (props.token) {
+      dispatch(getThresholdSettings(props.token));
+      dispatch(getStaffNoteSettings(props.token));
+    }
+    // Mark that we are in install flow so submits send is_installing=1
+    dispatch({ type: 'SET_IS_INSTALLING', payload: true });
+    setIsInstallModalOpen(true);
   };
 
-  const renderAvailableCarrierListItem = (carrier) => {
-    const actions = [
-      <Button
-        key="install"
-        type='primary'
-        onClick={() => props.installCarrier(carrier.id, props.token)}
-        disabled={carrier.status ? false : true}
-      >
-        {carrier.status ? 'Install' : 'Coming Soon'}
-      </Button>
-    ];
+  // Create table columns for providers
+  const getProviderTableColumns = (isArchived = false, isDeactivated = false) => {
+    return [
+      {
+        title: 'Provider Image',
+        dataIndex: 'logo',
+        key: 'logo',
+        width: 150,
+        align: 'center',
+        render: (logo) => (
+          <Image
+            preview={false}
+            src={`images/${logo}`}
+            width={60}
+            height={60}
+          />
+        ),
+      },
+      {
+        title: 'Nickname',
+        dataIndex: 'nickname',
+        key: 'nickname',
+        width: 250,
+        render: (nickname, record) => (
+          <div>
+            <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>
+              {nickname || record.name}
+            </div>
+            {isArchived && (
+              <Button
+                type="link"
+                size="small"
+                style={{ padding: 0, height: 'auto' }}
+                onClick={() => restoreProvider(record)}
+              >
+                Restore
+              </Button>
+            )}
+            {isDeactivated && (
+              <Button
+                type="link"
+                size="small"
+                style={{ padding: 0, height: 'auto' }}
+                onClick={() => archiveProvider(record)}
+              >
+                Archive
+              </Button>
+            )}
+          </div>
+        ),
+      },
+      {
+        title: <div style={{ textAlign: 'center', width: '100%' }}>Actions</div>,
+        key: 'actions',
+        align: 'center',
+        width: 400,
+        render: (_, record) => {
+          const actions = [];
 
-    return (
-      <List.Item actions={actions}>
-        <List.Item.Meta
-          avatar={
-            <Image
-              preview={false}
-              src={`images/${carrier.logo}`}
-              width={60}
-              height={60}
-              fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrkl1AuO+pmgAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAwqADAAQAAAABAAAAwwAAAAD9b/HnAAAHlklEQVR4Ae3dP3Ik1RnG4W+FgYxN..."
-            />
+          // Define 3PL carriers that have carriers tab
+          const carriersTabCarriers = [
+            'ltl-quotes',
+            'freightquote-ltl',
+            'tql-ltl',
+            'echo-ltl',
+            'freightquote-chr-ltl',
+            'priority-one-ltl',
+            'unishipper-ltl',
+            'kn-ltl',
+            'gtz-ltl'
+          ];
+
+          // Check if this carrier has carriers tab
+          const hasCarriersTab = carriersTabCarriers.includes(record.slug);
+
+          // Add Carriers link for 3PL carriers
+          if (hasCarriersTab) {
+            actions.push(
+              <Link
+                to={`/${record.id}?tab=2`}
+                style={{ display: 'inline-block' }}
+                key="carriers"
+              >
+                <Button
+                  type='default'
+                  size='small'
+                  style={{ marginRight: '8px', marginBottom: '4px' }}
+                  onClick={() =>
+                    dispatch({
+                      type: 'SET_ACTIVE_MENU',
+                      payload: record.id.toString(),
+                    })
+                  }
+                >
+                  Carriers
+                </Button>
+              </Link>
+            );
           }
-          title={<strong>{carrier.name}</strong>}
-          description={carrier.status ? 'Available for installation' : 'Coming soon'}
-        />
-      </List.Item>
-    );
+
+          // Add Connection Settings link (not available for usps-small and dbsc)
+          if (record.slug !== 'usps-small' && record.slug !== 'dbsc') {
+            actions.push(
+              <Link
+                to={`/${record.id}?tab=1`}
+                style={{ display: 'inline-block' }}
+                key="connection"
+              >
+                <Button
+                  type='default'
+                  size='small'
+                  style={{ marginRight: '8px', marginBottom: '4px' }}
+                  onClick={() =>
+                    dispatch({
+                      type: 'SET_ACTIVE_MENU',
+                      payload: record.id.toString(),
+                    })
+                  }
+                >
+                  Connection Settings
+                </Button>
+              </Link>
+            );
+          }
+
+          // Add Quote Settings link (not available for dbsc)
+          if (record.slug !== 'dbsc') {
+            actions.push(
+              <Link
+                to={`/${record.id}?tab=5`}
+                style={{ display: 'inline-block' }}
+                key="quote"
+              >
+                <Button
+                  type='default'
+                  size='small'
+                  style={{ marginRight: '8px', marginBottom: '4px' }}
+                  onClick={() =>
+                    dispatch({
+                      type: 'SET_ACTIVE_MENU',
+                      payload: record.id.toString(),
+                    })
+                  }
+                >
+                  Quote Settings
+                </Button>
+              </Link>
+            );
+          }
+
+          // Add Enable/Disable button
+          actions.push(
+            <Button
+              key="toggle"
+              type='primary'
+              size='small'
+              style={{ marginBottom: '4px' }}
+              onClick={() => {
+                props.changeCarrierStatus(record.id, props.token);
+              }}
+              disabled={isArchived}
+            >
+              {record.is_enabled === 1 ? 'Disable' : 'Enable'}
+            </Button>
+          );
+
+          return (
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'flex-end',
+              gap: '4px',
+              alignItems: 'center'
+            }}>
+              {actions}
+            </div>
+          );
+        },
+      },
+    ];
+  };
+
+  // Create table columns for available providers
+  const getAvailableProviderTableColumns = () => {
+    return [
+      {
+        title: 'Provider Image',
+        dataIndex: 'logo',
+        key: 'logo',
+        width: 150,
+        align: 'center',
+        render: (logo) => (
+          <Image
+            preview={false}
+            src={`images/${logo}`}
+            width={60}
+            height={60}
+            fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrkl1AuO+pmgAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAwqADAAQAAAABAAAAwwAAAAD9b/HnAAAHlklEQVR4Ae3dP3Ik1RnG4W+FgYxN..."
+          />
+        ),
+      },
+      {
+        title: 'Provider Name',
+        dataIndex: 'name',
+        key: 'name',
+        width: 250,
+        render: (name, record) => (
+          <div>
+            <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>
+              {name}
+            </div>
+            <div style={{ color: '#666', fontSize: '12px' }}>
+              {record.status ? 'Available for installation' : 'Coming soon'}
+            </div>
+          </div>
+        ),
+      },
+      {
+        title: <div style={{ textAlign: 'center', width: '100%' }}>Actions</div>,
+        key: 'actions',
+        align: 'center',
+        width: 180,
+        render: (_, record) => (
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <Button
+              type='primary'
+              size='small'
+              onClick={() => {
+                // Do NOT install on click; just open connection settings for this carrier
+                openInstallModalWithSettings(record);
+              }}
+              disabled={!record.status}
+            >
+              {record.status ? 'Add Account' : 'Coming Soon'}
+            </Button>
+          </div>
+        ),
+      },
+    ];
   };
 
 
@@ -229,6 +460,21 @@ function ShippingCarriersComponent(props) {
     <Fragment>
       <PlanStatusHeading />
       <ExportCSVDownloadStatus />
+      <Modal
+        title={'Connection Settings'}
+        visible={isInstallModalOpen}
+        onCancel={() => {
+          setIsInstallModalOpen(false);
+          dispatch({ type: 'SET_IS_INSTALLING', payload: false });
+        }}
+        footer={null}
+        width={900}
+        destroyOnClose
+      >
+        {isInstallModalOpen && activeCarrierId ? (
+          <TabsLayout onlyConnection forcedSlug={props.availableCarriers?.find(c => c.id === activeCarrierId)?.slug || ''} />
+        ) : null}
+      </Modal>
       <Row gutter={25}>
         <Col
           className='gutter-row mb-3'
@@ -311,34 +557,70 @@ function ShippingCarriersComponent(props) {
         ) : (
           <>
             <Title level={4}>Installed Providers</Title>
-            {getInstalledCarriers().length > 0 ? (
-              <List
-                bordered
-                dataSource={getInstalledCarriers()}
-                renderItem={renderCarrierListItem}
-              />
-            ) : (
-              <div className={'no-data'}>No Installed Providers</div>
-            )}
+            {(() => {
+              const installedEnabled = (props.installedCarriers || [])
+                .filter(Boolean)
+                .filter(carrier => carrier.is_enabled === 1)
+                .filter(carrier => !archivedProviders.some(archived => archived.id === carrier.id))
+                .sort((c1, c2) => (c1?.name || '').localeCompare(c2?.name || ''));
+              return installedEnabled.length > 0 ? (
+                <Table
+                  columns={getProviderTableColumns(false, false)}
+                  dataSource={installedEnabled}
+                  rowKey="id"
+                  pagination={false}
+                  showHeader={true}
+                />
+              ) : (
+                <div className={'no-data'}>No Installed Providers</div>
+              );
+            })()}
           </>
         )}
       </div>
 
-      {/* Deactivated Providers Section */}
+      {/* Deactivated/Archived Providers Section */}
       <div style={{ marginBottom: '25px' }}>
         {isLoading ? (
-          <FreightProvidersSkeleton title="Deactivated Providers" rows={2} />
+          <FreightProvidersSkeleton title={showArchived ? "Archived Providers" : "Deactivated Providers"} rows={2} />
         ) : (
           <>
-            <Title level={4}>Deactivated Providers</Title>
-            {getDeactivatedCarriers().length > 0 ? (
-              <List
-                bordered
-                dataSource={getDeactivatedCarriers()}
-                renderItem={renderCarrierListItem}
-              />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <Title level={4} style={{ margin: 0 }}>
+                {showArchived ? 'Archived Providers' : 'Deactivated Providers'}
+              </Title>
+              <Button
+                type="link"
+                onClick={toggleArchivedView}
+                style={{ padding: '0', height: 'auto', fontSize: '14px' }}
+              >
+                {showArchived ? 'View Inactive' : 'View Archives'}
+              </Button>
+            </div>
+            {showArchived ? (
+              archivedProviders.length > 0 ? (
+                <Table
+                  columns={getProviderTableColumns(true, false)}
+                  dataSource={archivedProviders}
+                  rowKey="id"
+                  pagination={false}
+                  showHeader={true}
+                />
+              ) : (
+                <div className={'no-data'}>No Archived Providers</div>
+              )
             ) : (
-              <div className={'no-data'}>No Deactivated Providers</div>
+              getDeactivatedCarriers().length > 0 ? (
+                <Table
+                  columns={getProviderTableColumns(false, true)}
+                  dataSource={getDeactivatedCarriers()}
+                  rowKey="id"
+                  pagination={false}
+                  showHeader={true}
+                />
+              ) : (
+                <div className={'no-data'}>No Deactivated Providers</div>
+              )
             )}
           </>
         )}
@@ -375,10 +657,12 @@ function ShippingCarriersComponent(props) {
               />
             </div>
             {getFilteredAvailableCarriers().length > 0 ? (
-              <List
-                bordered
+              <Table
+                columns={getAvailableProviderTableColumns()}
                 dataSource={getFilteredAvailableCarriers()}
-                renderItem={renderAvailableCarrierListItem}
+                rowKey="id"
+                pagination={false}
+                showHeader={true}
                 style={{
                   backgroundColor: '#fff',
                   borderRadius: '8px',
@@ -457,7 +741,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getInstalledCarriers: () => dispatch(getInstalledCarriers()),
+    getInstalledCarriers: (storeToken) => dispatch(getInstalledCarriers({ store: storeToken })),
     changeCarrierStatus: (data, token) =>
       dispatch(changeCarrierStatus(data, token)),
     installCarrier: (id, token) => dispatch(installCarrier(id, token)),

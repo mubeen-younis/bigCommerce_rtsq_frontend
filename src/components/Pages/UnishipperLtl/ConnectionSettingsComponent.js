@@ -70,6 +70,14 @@ function ConnectionSettingsComponent(props) {
         onFinish={onFinish}
       >
         <Form.Item
+          className="mb-1"
+          label="Nickname"
+          name="nickname"
+          rules={[{ required: false, message: "Nickname" }]}
+        >
+          <Input placeholder="e.g., Unishippers LTL" />
+        </Form.Item>
+        <Form.Item
           label="Client ID"
           name="clientId"
           rules={[{ required: true, message: "Client ID is required." }]}

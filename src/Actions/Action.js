@@ -23,6 +23,14 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 					typeof data[elem] == 'string' ? data[elem].trim() : data[elem])
 		)
 
+		// If we are in install flow, add is_installing=1
+		try {
+			const state = window?.store?.getState ? window.store.getState() : null
+			if (state?.isInstalling && (url === 'submit_connection_settings')) {
+				data = { ...data, is_installing: 1 }
+			}
+		} catch (e) {}
+
 		axios
 			.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data, config)
 			.then(({ data }) => {

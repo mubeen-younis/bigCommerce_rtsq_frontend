@@ -109,6 +109,13 @@ function ConnectionSettingsComponent(props) {
 				size='large'
 				initialValues={connectionSettings}
 				onFinish={onFinish}>
+				<Form.Item
+					className='mb-1'
+					label='Nickname'
+					name='nickname'
+					rules={[{ required: false, message: 'Nickname' }]}>
+					<Input placeholder='e.g., Unishippers Small' />
+				</Form.Item>
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>
 					<Select
 						defaultValue={!connectionSettings?.api_type && connectionSettings?.carrierId ? 'legacy_api' : 'new_api'}

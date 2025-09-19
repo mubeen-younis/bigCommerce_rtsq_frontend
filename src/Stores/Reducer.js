@@ -85,10 +85,18 @@ const initialState = {
 	thresholdSetting: null,
 	/* Available Carriers */
 	availableCarriers: null,
+	/* UI flags */
+	isInstalling: false,
 }
 
 const Reducer = (state = initialState, action) => {
 	switch (action.type) {
+		case types.SET_IS_INSTALLING:
+			return {
+				...state,
+				isInstalling: action.payload,
+			}
+
 		case types.STORE:
 			return {
 				...state,
@@ -167,7 +175,9 @@ const Reducer = (state = initialState, action) => {
 		case types.INSTALL_CARRIER:
 			let newInstalledCarrier = {}
 
-			state.carriers.forEach(carr => {
+			// Look in both carriers and availableCarriers to find the carrier details
+			const allCarriers = [...(state.carriers || []), ...(state.availableCarriers || [])];
+			allCarriers.forEach(carr => {
 				if (carr.id === action.payload.carrier_id) {
 					newInstalledCarrier = {
 						...action.payload,
@@ -181,10 +191,10 @@ const Reducer = (state = initialState, action) => {
 
 			return {
 				...state,
-				installedCarriers: [...state.installedCarriers, newInstalledCarrier],
-				carriers: state.carriers.filter(
+				installedCarriers: [...(state.installedCarriers || []), newInstalledCarrier],
+				carriers: state.carriers ? state.carriers.filter(
 					carrier => carrier.id !== action.payload.carrier_id
-				),
+				) : [],
 			}
 
 		case types.GET_INSTALLED_CARRIERS:
@@ -196,7 +206,7 @@ const Reducer = (state = initialState, action) => {
 		case types.CHANGE_CARRIER_STATUS:
 			return {
 				...state,
-				installedCarriers: state.installedCarriers.map(ic =>
+				installedCarriers: (state.installedCarriers || []).map(ic =>
 					ic.id === action.payload.id
 						? { ...ic, is_enabled: action.payload.is_enabled }
 						: ic
