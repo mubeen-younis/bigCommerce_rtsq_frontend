@@ -15,7 +15,6 @@ import { getConnectionSettings } from '../../Actions/Connection';
 import { getQuoteSettings, getThresholdSettings, getStaffNoteSettings } from '../../Actions/Settings';
 import { getInsuraceStatus } from '../../Actions/ProductSettings';
 import TabsLayout from '../../tabs_layout/tabs';
-import { provisionCarrierForSettings } from '../../Actions/EnitureStore';
 import Meta from 'antd/lib/card/Meta';
 import PlanStatusHeading from '../../partials/PlanStatusHeading';
 import ExportCSVDownloadStatus from '../../partials/ExportCSVDownloadStatus';
@@ -68,17 +67,10 @@ function ShippingCarriersComponent(props) {
   useEffect(() => {
     // If modal was closed and we had an active carrier ID, it might have been installed
     if (!isInstallModalOpen && activeCarrierId) {
-      const timer = setTimeout(() => {
-        // Only refresh if the carrier might have been installed (not just opened and closed immediately)
-        // We can add a small refresh here since the modal was actually used for installation
-        if (props.token) {
-          props.getInstalledCarriers({ store: props.token });
-        }
-        setActiveCarrierId(null); // Reset active carrier
-      }, 1000); // Longer delay to allow any connection settings save to complete
-      return () => clearTimeout(timer);
+      // Reset active carrier without refreshing data to prevent unwanted reloading
+      setActiveCarrierId(null);
     }
-  }, [isInstallModalOpen, activeCarrierId, props]);
+  }, [isInstallModalOpen, activeCarrierId]);
 
   // const { currentPlan } = useSelector(state => state)
 
@@ -145,17 +137,15 @@ function ShippingCarriersComponent(props) {
     // Prefer existing installed carrier with same slug to populate saved data
     const existing = props.installedCarriers?.find(ic => ic.slug === carrierSlug);
     let installedId = existing?.id || null;
+
+    // For available carriers (not yet installed), use the carrier.id directly
+    // without provisioning to avoid auto-enabling the carrier
     if (!installedId) {
-      // Provision on backend to obtain an installed_carrier_id for submit_connection_settings
-      try {
-        const res = await dispatch(provisionCarrierForSettings(carrier.id, props.token));
-        installedId = res?.data?.data?.installed_carrier_id || res?.data?.data?.id || carrier.id;
-      } catch (e) {}
+      installedId = carrier.id;
     }
-    dispatch({ type: 'CARRIER_ID', payload: installedId || carrier.id });
-    dispatch(getConnectionSettings(props.token, installedId || carrier.id));
-    // Do not fetch Quote Settings for install flow
-    // dispatch(getQuoteSettings(props.token, carrier.id));
+
+    dispatch({ type: 'CARRIER_ID', payload: installedId });
+    dispatch(getConnectionSettings(props.token, installedId));
     dispatch(getInsuraceStatus(props.token, carrier.id));
     // Preload optional support data but safe if they require installed carrier
     if (props.token) {

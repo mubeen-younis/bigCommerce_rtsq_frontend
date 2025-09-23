@@ -72,8 +72,15 @@ function TabsLayout({ onlyConnection = false, forcedSlug = '' }) {
       ];
 
       if (forcedSlug) {
-        setComponent(slugs.indexOf(forcedSlug));
-        setCarrierSlug(forcedSlug);
+        const componentIndex = slugs.indexOf(forcedSlug);
+        if (componentIndex >= 0) {
+          setComponent(componentIndex);
+          setCarrierSlug(forcedSlug);
+        } else {
+          // Fallback to first component for unknown slugs
+          setComponent(0);
+          setCarrierSlug('ltl-quotes');
+        }
         return;
       }
 
@@ -105,7 +112,8 @@ function TabsLayout({ onlyConnection = false, forcedSlug = '' }) {
                 : isUpsSmallCarrier,
           });
 
-          setComponent(slugs.indexOf(ic.slug));
+          const componentIndex = slugs.indexOf(ic.slug);
+          setComponent(componentIndex >= 0 ? componentIndex : 0);
           setCarrierSlug(ic.slug);
           break;
         }
