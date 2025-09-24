@@ -178,6 +178,123 @@ export const getCurrentPlanInfo = store => {
 	}
 }
 
+export const installCarrierAndSaveSettings = (data, token, availableCarrierId) => {
+	const config = {
+		headers: {
+			authorization: `Bearer ${token}`,
+		},
+	}
+
+	return dispatch => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		})
+
+		// Prepare data for nickname-based installation
+		const installData = {
+			...data,
+			carrierId: availableCarrierId,
+			installed_carrier_id: availableCarrierId,
+			is_installing: 1, // Flag for backend to handle installation via nickname
+		}
+
+		// Remove the test flag since we're saving, not testing
+		delete installData.testType
+
+
+		// Save connection settings with installation flag and nickname
+		return axios
+			.post(
+				`${process.env.REACT_APP_ENITURE_API_URL}/submit_connection_settings`,
+				installData,
+				config
+			)
+			.then(({ data: settingsData }) => {
+				if (!settingsData.error) {
+
+					// Update connection settings in store
+					if (settingsData?.data?.value) {
+						dispatch({
+							type: 'GET_CONNECTION_SETTINGS',
+							payload: JSON.parse(settingsData.data.value),
+						})
+					}
+
+					// Dispatch success event for modal close and optimistic update
+
+					// Create carrier object from installation response
+					// Try to get additional info from available carriers if possible
+					let availableCarrierInfo = {}
+					try {
+						const state = window?.store?.getState ? window.store.getState() : null
+						const availableCarriers = state?.availableCarriers || []
+						const matchingAvailableCarrier = availableCarriers.find(ac => ac.id === availableCarrierId)
+						if (matchingAvailableCarrier) {
+							availableCarrierInfo = {
+								name: matchingAvailableCarrier.name,
+								slug: matchingAvailableCarrier.slug,
+								logo: matchingAvailableCarrier.logo
+							}
+						}
+					} catch (e) {
+						// Silent fallback
+					}
+
+					const newCarrier = {
+						id: settingsData.data.id,
+						carrier_id: settingsData.data.carrier_id,
+						nickname: settingsData.data.nickname,
+						is_enabled: settingsData.data.is_enabled,
+						name: availableCarrierInfo.name || settingsData.data.nickname || 'New Carrier',
+						slug: availableCarrierInfo.slug || '',
+						logo: availableCarrierInfo.logo || '',
+						...settingsData.data // Include any other fields from response
+					}
+
+					console.log('🔍 DEBUG ACTION: About to dispatch CARRIER_INSTALLATION_SUCCESS');
+					console.log('🔍 DEBUG ACTION: newCarrier object:', newCarrier);
+					console.log('🔍 DEBUG ACTION: availableCarrierId:', availableCarrierId);
+
+					dispatch({
+						type: 'CARRIER_INSTALLATION_SUCCESS',
+						payload: {
+							carrierId: availableCarrierId,
+							newCarrier: newCarrier
+						}
+					})
+
+					console.log('🔍 DEBUG ACTION: CARRIER_INSTALLATION_SUCCESS dispatched');
+
+					dispatch({
+						type: 'ALERT_MESSAGE',
+						payload: {
+							alertMessage: 'Carrier installed and configured successfully',
+							showAlertMessage: true,
+							alertMessageType: 'success',
+						},
+					})
+				} else {
+					throw new Error(settingsData.message || 'Failed to save connection settings')
+				}
+			})
+			.catch(error => {
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: error.message || 'Failed to install and configure carrier',
+						showAlertMessage: true,
+						alertMessageType: 'error',
+					},
+				})
+				throw error
+			})
+	}
+}
+
 export const submitCompareRates = (values, token, setLoading = false, handleClick) => async dispatch => {
 	try {
 		dispatch({

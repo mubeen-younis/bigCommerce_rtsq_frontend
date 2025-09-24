@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button, Typography, Card, Image, Avatar, List, Input, Modal, Table } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import FreightProvidersSkeleton from '../SkeletonLoader/FreightProvidersSkeleton';
 
 import {
@@ -22,6 +22,9 @@ const { Title } = Typography;
 // const { Meta } = Card;
 
 function ShippingCarriersComponent(props) {
+  console.log('🔍 DEBUG RENDER: ShippingCarriersComponent re-render triggered');
+  console.log('🔍 DEBUG RENDER: props.installedCarriers length:', props.installedCarriers?.length);
+
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingAvailableCarriers, setIsLoadingAvailableCarriers] = useState(true);
@@ -29,7 +32,24 @@ function ShippingCarriersComponent(props) {
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [activeCarrierId, setActiveCarrierId] = useState(null);
   const [showArchived, setShowArchived] = useState(false);
-  const [archivedProviders, setArchivedProviders] = useState([]);
+
+  // Get carrier installation success state from Redux
+  const { carrierInstallationSuccess } = useSelector(state => state);
+
+  // DEBUG: Track installedCarriers state changes
+  useEffect(() => {
+    console.log('🔍 DEBUG: installedCarriers state changed:', props.installedCarriers);
+    console.log('🔍 DEBUG: Number of installed carriers:', props.installedCarriers?.length || 0);
+    if (props.installedCarriers?.length > 0) {
+      console.log('🔍 DEBUG: Installed carriers details:', props.installedCarriers.map(c => ({
+        id: c.id,
+        name: c.name,
+        nickname: c.nickname,
+        is_enabled: c.is_enabled,
+        slug: c.slug
+      })));
+    }
+  }, [props.installedCarriers]);
 
   useEffect(() => {
     // Fetch available carriers on component mount
@@ -49,8 +69,8 @@ function ShippingCarriersComponent(props) {
   }, [props.availableCarriers]);
 
   useEffect(() => {
-    console.log('Loading effect - installedCarriers:', props.installedCarriers);
-    console.log('Loading effect - availableCarriers:', props.availableCarriers);
+    console.log('🔍 DEBUG: Loading effect - installedCarriers:', props.installedCarriers);
+    console.log('🔍 DEBUG: Loading effect - availableCarriers:', props.availableCarriers);
 
     // Only show loading on initial load when both are null/empty
     if ((!props.installedCarriers || props.installedCarriers.length === 0) && props.availableCarriers === null) {
@@ -72,42 +92,72 @@ function ShippingCarriersComponent(props) {
     }
   }, [isInstallModalOpen, activeCarrierId]);
 
+  // DEBUG: Handle successful carrier installation
+  useEffect(() => {
+    console.log('🔍 DEBUG: carrierInstallationSuccess changed:', carrierInstallationSuccess)
+    if (carrierInstallationSuccess) {
+      console.log('🔍 DEBUG: Handling carrier installation success - closing modal');
+      console.log('🔍 DEBUG: Installation success data:', carrierInstallationSuccess);
+      console.log('🔍 DEBUG: New carrier to be added:', carrierInstallationSuccess.newCarrier);
+      console.log('🔍 DEBUG: Current installedCarriers:', props.installedCarriers);
+
+      // Close the modal
+      setIsInstallModalOpen(false);
+      dispatch({ type: 'SET_IS_INSTALLING', payload: false });
+      dispatch({ type: 'SET_AVAILABLE_CARRIER_ID', payload: null });
+      setActiveCarrierId(null);
+
+      // No need to refresh carriers list - using optimistic update from installation response
+      console.log('🔍 DEBUG: Using optimistic update - no API call needed');
+
+      // Clear the success state
+      console.log('🔍 DEBUG: Clearing CARRIER_INSTALLATION_SUCCESS state');
+      dispatch({ type: 'CLEAR_CARRIER_INSTALLATION_SUCCESS' });
+    }
+  }, [carrierInstallationSuccess, dispatch, props]);
+
   // const { currentPlan } = useSelector(state => state)
 
-  // Get all carriers sorted by name, regardless of type
+  // DEBUG: Get all carriers sorted by name, regardless of type
   const getAllCarriers = () => {
     const list = Array.isArray(props.installedCarriers)
       ? props.installedCarriers.filter(Boolean)
       : [];
+    console.log('🔍 DEBUG: getAllCarriers - raw props.installedCarriers:', props.installedCarriers);
+    console.log('🔍 DEBUG: getAllCarriers - filtered list:', list);
     return list.sort((c1, c2) => (c1?.name || '').localeCompare(c2?.name || ''));
   };
 
-  // Get installed (enabled) carriers
-  const getInstalledCarriers = () => {
-    return getAllCarriers()
-      .filter((carrier) => carrier.is_enabled === 1)
-      .filter(carrier => !archivedProviders.some(archived => archived.id === carrier.id));
+  // DEBUG: Get installed (enabled) carriers
+  const getEnabledCarriers = () => {
+    const allCarriers = getAllCarriers();
+    console.log('🔍 DEBUG: getEnabledCarriers - all carriers:', allCarriers);
+
+    const enabledCarriers = allCarriers.filter((carrier) => {
+      const isEnabled = carrier.is_enabled === 1 || carrier.is_enabled === '1';
+      console.log(`🔍 DEBUG: Carrier ${carrier.nickname || carrier.name}: is_enabled = ${carrier.is_enabled} (${typeof carrier.is_enabled}), passes filter: ${isEnabled}`);
+      return isEnabled;
+    });
+
+    console.log('🔍 DEBUG: getEnabledCarriers - filtered enabled carriers:', enabledCarriers);
+    console.log('🔍 DEBUG: getEnabledCarriers - enabled carriers count:', enabledCarriers.length);
+
+    return enabledCarriers;
   };
 
   // Get deactivated (disabled) carriers
   const getDeactivatedCarriers = () => {
-    const allDisabled = getAllCarriers().filter((carrier) => carrier.is_enabled === 0);
-    return allDisabled.filter(carrier => !archivedProviders.some(archived => archived.id === carrier.id));
+    return getAllCarriers().filter((carrier) => carrier.is_enabled === 0);
+  };
+
+  // Get archived carriers
+  const getArchivedCarriers = () => {
+    return getAllCarriers().filter((carrier) => carrier.is_enabled === 2);
   };
 
   // Toggle between deactivated and archived view
   const toggleArchivedView = () => {
     setShowArchived(!showArchived);
-  };
-
-  // Archive a provider
-  const archiveProvider = (provider) => {
-    setArchivedProviders(prev => [...prev, provider]);
-  };
-
-  // Restore a provider from archive
-  const restoreProvider = (provider) => {
-    setArchivedProviders(prev => prev.filter(archived => archived.id !== provider.id));
   };
 
   // Get all available carriers from props
@@ -145,6 +195,8 @@ function ShippingCarriersComponent(props) {
     }
 
     dispatch({ type: 'CARRIER_ID', payload: installedId });
+    // Store the original available carrier ID for installation purposes
+    dispatch({ type: 'SET_AVAILABLE_CARRIER_ID', payload: carrier.id });
     dispatch(getConnectionSettings(props.token, installedId));
     dispatch(getInsuraceStatus(props.token, carrier.id));
     // Preload optional support data but safe if they require installed carrier
@@ -190,7 +242,9 @@ function ShippingCarriersComponent(props) {
                 type="link"
                 size="small"
                 style={{ padding: 0, height: 'auto' }}
-                onClick={() => restoreProvider(record)}
+                onClick={() => {
+                  props.changeCarrierStatus(record.id, props.token, 0); // Restore (status = 0)
+                }}
               >
                 Restore
               </Button>
@@ -200,7 +254,9 @@ function ShippingCarriersComponent(props) {
                 type="link"
                 size="small"
                 style={{ padding: 0, height: 'auto' }}
-                onClick={() => archiveProvider(record)}
+                onClick={() => {
+                  props.changeCarrierStatus(record.id, props.token, 2); // Archive (status = 2)
+                }}
               >
                 Archive
               </Button>
@@ -315,7 +371,8 @@ function ShippingCarriersComponent(props) {
               size='small'
               style={{ marginBottom: '4px' }}
               onClick={() => {
-                props.changeCarrierStatus(record.id, props.token);
+                const newStatus = record.is_enabled === 1 ? 0 : 1; // Toggle between Enable (1) and Disable (0)
+                props.changeCarrierStatus(record.id, props.token, newStatus);
               }}
               disabled={isArchived}
             >
@@ -456,6 +513,7 @@ function ShippingCarriersComponent(props) {
         onCancel={() => {
           setIsInstallModalOpen(false);
           dispatch({ type: 'SET_IS_INSTALLING', payload: false });
+          dispatch({ type: 'SET_AVAILABLE_CARRIER_ID', payload: null });
         }}
         footer={null}
         width={900}
@@ -548,15 +606,14 @@ function ShippingCarriersComponent(props) {
           <>
             <Title level={4}>Installed Providers</Title>
             {(() => {
-              const installedEnabled = (props.installedCarriers || [])
-                .filter(Boolean)
-                .filter(carrier => carrier.is_enabled === 1)
-                .filter(carrier => !archivedProviders.some(archived => archived.id === carrier.id))
-                .sort((c1, c2) => (c1?.name || '').localeCompare(c2?.name || ''));
-              return installedEnabled.length > 0 ? (
+              const installedProviders = getEnabledCarriers();
+              console.log('🔍 DEBUG RENDER: Installed Providers render called, count:', installedProviders.length);
+              console.log('🔍 DEBUG RENDER: Installed Providers data:', installedProviders);
+              return installedProviders.length > 0 ? (
                 <Table
+                  key={`installed-${installedProviders.length}-${installedProviders.map(p => p.id).join('-')}`}
                   columns={getProviderTableColumns(false, false)}
-                  dataSource={installedEnabled}
+                  dataSource={installedProviders}
                   rowKey="id"
                   pagination={false}
                   showHeader={true}
@@ -588,29 +645,35 @@ function ShippingCarriersComponent(props) {
               </Button>
             </div>
             {showArchived ? (
-              archivedProviders.length > 0 ? (
-                <Table
-                  columns={getProviderTableColumns(true, false)}
-                  dataSource={archivedProviders}
-                  rowKey="id"
-                  pagination={false}
-                  showHeader={true}
-                />
-              ) : (
-                <div className={'no-data'}>No Archived Providers</div>
-              )
+              (() => {
+                const archivedProviders = getArchivedCarriers();
+                return archivedProviders.length > 0 ? (
+                  <Table
+                    columns={getProviderTableColumns(true, false)}
+                    dataSource={archivedProviders}
+                    rowKey="id"
+                    pagination={false}
+                    showHeader={true}
+                  />
+                ) : (
+                  <div className={'no-data'}>No Archived Providers</div>
+                );
+              })()
             ) : (
-              getDeactivatedCarriers().length > 0 ? (
-                <Table
-                  columns={getProviderTableColumns(false, true)}
-                  dataSource={getDeactivatedCarriers()}
-                  rowKey="id"
-                  pagination={false}
-                  showHeader={true}
-                />
-              ) : (
-                <div className={'no-data'}>No Deactivated Providers</div>
-              )
+              (() => {
+                const deactivatedProviders = getDeactivatedCarriers();
+                return deactivatedProviders.length > 0 ? (
+                  <Table
+                    columns={getProviderTableColumns(false, true)}
+                    dataSource={deactivatedProviders}
+                    rowKey="id"
+                    pagination={false}
+                    showHeader={true}
+                  />
+                ) : (
+                  <div className={'no-data'}>No Deactivated Providers</div>
+                );
+              })()
             )}
           </>
         )}
@@ -732,8 +795,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getInstalledCarriers: (storeToken) => dispatch(getInstalledCarriers({ store: storeToken })),
-    changeCarrierStatus: (data, token) =>
-      dispatch(changeCarrierStatus(data, token)),
+    changeCarrierStatus: (data, token, status) =>
+      dispatch(changeCarrierStatus(data, token, status)),
     installCarrier: (id, token) => dispatch(installCarrier(id, token)),
     getAllAvailableCarriers: (token) => dispatch(getAllAvailableCarriers(token)),
   };

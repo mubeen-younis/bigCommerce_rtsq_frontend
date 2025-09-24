@@ -6,7 +6,7 @@ import { postData } from '../../../Actions/Action'
 function ConnectionSettingsComponent(props) {
 	const [testType, setTestType] = useState(false)
 	const dispatch = useDispatch()
-	const { connectionSettings, token, carrierId } = useSelector(state => state)
+    const { connectionSettings, token, carrierId, isInstalling } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
 
@@ -51,24 +51,24 @@ function ConnectionSettingsComponent(props) {
 				size='large'
 				initialValues={connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					className='mb-1'
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}> 
 					<Input placeholder='e.g., SAIA' />
 				</Form.Item>
 				<Form.Item
 					label='Account Number'
 					name='account_number'
-					rules={[{ required: true, message: 'Account Number' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Account Number' }]}> 
 					<Input placeholder='Account Number' />
 				</Form.Item>
 				<Form.Item
 					label='Account Number Postal Code'
 					name='original_postal_code'
 					rules={[
-						{ required: true, message: 'Account Number Postal Code' },
+                        { required: isInstalling ? testType : true, message: 'Account Number Postal Code' },
 					]}>
 					<Input placeholder='Account Number Postal Code' />
 				</Form.Item>
@@ -77,17 +77,17 @@ function ConnectionSettingsComponent(props) {
 					name='third_party_account_number'>
 					<Input placeholder='Third Party Account Number' />
 				</Form.Item>
-				<Form.Item
-					label='Username'
-					name='userID'
-					rules={[{ required: true, message: 'Username' }]}>
+                <Form.Item
+                    label='Username'
+                    name='userID'
+                    rules={[{ required: isInstalling ? testType : true, message: 'Username' }]}> 
 					<Input placeholder='Username' />
 				</Form.Item>
 				<Form.Item
 					className='mb-1'
 					label='Password'
 					name='password'
-					rules={[{ required: true, message: 'Password' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Password' }]}> 
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 

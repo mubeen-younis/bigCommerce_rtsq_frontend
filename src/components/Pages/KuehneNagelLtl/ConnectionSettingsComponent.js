@@ -9,7 +9,7 @@ function ConnectionSettingsComponent(props) {
     testType: false,
     skeleton_loading: true,
   });
-  const { fdoCouponInfo, fdoCouponCarrierInfo, token, connectionSettings } =
+  const { fdoCouponInfo, fdoCouponCarrierInfo, token, connectionSettings, isInstalling } =
     useSelector((state) => state);
   const dispatch = useDispatch();
 
@@ -68,7 +68,7 @@ function ConnectionSettingsComponent(props) {
           className="mb-1"
           label="Nickname"
           name="nickname"
-          rules={[{ required: false, message: "Nickname" }]}
+          rules={[{ required: isInstalling ? !connectionState.testType : false, message: "Nickname" }]}
         >
           <Input placeholder="e.g., Kuehne + Nagel" />
         </Form.Item>
@@ -78,7 +78,7 @@ function ConnectionSettingsComponent(props) {
           label="Username"
           // name="clientSecret"
           name="username"
-          rules={[{required: true, message: "Username is required." },
+          rules={[{required: isInstalling ? connectionState.testType : true, message: "Username is required." },
             // {
             //   pattern: /^[a-zA-Z0-9]+$/,
             //   message: "Username must be alphanumeric (letters and numbers only).",
@@ -93,7 +93,7 @@ function ConnectionSettingsComponent(props) {
           className="mb-1"
           label="Authentication ID"
           name="autId"
-          rules={[{ required: true, message: "Authentication ID is required" },
+          rules={[{ required: isInstalling ? connectionState.testType : true, message: "Authentication ID is required" },
             // {
             //   pattern: /^[a-zA-Z0-9]+$/,
             //   message: "Authentication ID must be alphanumeric (letters and numbers only).",
@@ -108,7 +108,7 @@ function ConnectionSettingsComponent(props) {
         className="mb-1"
           label="Client Code"
           name="clientCode"
-          rules={[{ required: true, message: "Client Code is required" },
+          rules={[{ required: isInstalling ? connectionState.testType : true, message: "Client Code is required" },
             // {
             //   pattern: /^[a-zA-Z0-9]+$/,
             //   message: "Client Code must be alphanumeric (letters and numbers only).",

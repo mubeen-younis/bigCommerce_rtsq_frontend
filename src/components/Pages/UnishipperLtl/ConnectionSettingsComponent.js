@@ -9,7 +9,7 @@ function ConnectionSettingsComponent(props) {
     testType: false,
     skeleton_loading: true,
   });
-  const { fdoCouponInfo, fdoCouponCarrierInfo, token, connectionSettings } =
+  const { fdoCouponInfo, fdoCouponCarrierInfo, token, connectionSettings, isInstalling } =
     useSelector((state) => state);
   const dispatch = useDispatch();
 
@@ -73,14 +73,14 @@ function ConnectionSettingsComponent(props) {
           className="mb-1"
           label="Nickname"
           name="nickname"
-          rules={[{ required: false, message: "Nickname" }]}
+          rules={[{ required: isInstalling ? !connectionState.testType : false, message: "Nickname" }]}
         >
           <Input placeholder="e.g., Unishippers LTL" />
         </Form.Item>
         <Form.Item
           label="Client ID"
           name="clientId"
-          rules={[{ required: true, message: "Client ID is required." }]}
+          rules={[{ required: isInstalling ? connectionState.testType : true, message: "Client ID is required." }]}
         >
           <Input placeholder="Client ID" maxLength={100} />
         </Form.Item>
@@ -88,7 +88,7 @@ function ConnectionSettingsComponent(props) {
           className="mb-1"
           label="Client Secret"
           name="clientSecret"
-          rules={[{ required: true, message: "Client Secret is required." }]}
+          rules={[{ required: isInstalling ? connectionState.testType : true, message: "Client Secret is required." }]}
         >
           <Input placeholder="Client Secret" maxLength={256} />
         </Form.Item>
@@ -107,14 +107,14 @@ function ConnectionSettingsComponent(props) {
           className="mt-1"
           label="Username"
           name="username"
-          rules={[{ required: false, message: "Username" }]}
+          rules={[{ required: isInstalling ? connectionState.testType : false, message: "Username" }]}
         >
           <Input placeholder="Username" maxLength={100} />
         </Form.Item>
         <Form.Item
           label="Password"
           name="password"
-          rules={[{ required: false, message: "Password" }]}
+          rules={[{ required: isInstalling ? connectionState.testType : false, message: "Password" }]}
         >
           <Input type="text" placeholder="Password" maxLength={100} />
         </Form.Item>

@@ -11,7 +11,7 @@ const initialState = {
 function ConnectionSettingsComponent() {
 	const [testType, setTestType] = useState(false)
 	const dispatch = useDispatch()
-	const { connectionSettings, token, carrierId } = useSelector(state => state)
+    const { connectionSettings, token, carrierId, isInstalling } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
 
@@ -60,18 +60,18 @@ function ConnectionSettingsComponent() {
 				scrollToFirstError
 				role='form'
 				onFinish={onFinish}>
-				<Form.Item
-					className='mb-1'
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}> 
 					<Input type='text' placeholder='e.g., C.H. Robinson' />
 				</Form.Item>
 				<Form.Item
 					className='mb-1'
 					label='Customer Code'
 					name='customer_code'
-					rules={[{ required: true, message: 'Customer Code' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Customer Code' }]}> 
 					<Input type='text' placeholder='Customer Code' />
 				</Form.Item>
 

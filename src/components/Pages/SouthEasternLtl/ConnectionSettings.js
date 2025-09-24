@@ -49,50 +49,50 @@ function ConnectionSettingsComponent(props) {
 				form={form}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					className='mb-1'
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: props.isInstalling ? !connectionState.testType : false, message: 'Nickname' }]}> 
 					<Input placeholder='e.g., Southeastern LTL' />
 				</Form.Item>
 				<Form.Item
 					label='Customer Account Number'
 					name='customer_account_number'
-					rules={[{ required: true, message: 'Customer Account Number' }]}>
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Customer Account Number' }]}> 
 					<Input placeholder='Customer Account Number' />
 				</Form.Item>
 
-				<Form.Item
-					label='Username'
-					name='username'
-					rules={[{ required: true, message: 'Username' }]}>
+                <Form.Item
+                    label='Username'
+                    name='username'
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Username' }]}> 
 					<Input placeholder='Username' />
 				</Form.Item>
 
-				<Form.Item
-					label='Password'
-					name='password'
-					rules={[{ required: true, message: 'Password' }]}>
+                <Form.Item
+                    label='Password'
+                    name='password'
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Password' }]}> 
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
 				<Row gutter={30}>
 					<Col span={12}>
-						<Form.Item
+                        <Form.Item
 							label='Customer Address'
 							name='customer_name'
-							rules={[{ required: true, message: 'Customer Name' }]}>
+                            rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Customer Name' }]}> 
 							<Input type='text' placeholder='Customer Name' />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item
+                        <Form.Item
 							style={{ marginTop: '2em' }}
 							name='customer_street_address'
 							rules={[
 								{
-									required: true,
+                                    required: props.isInstalling ? connectionState.testType : true,
 									message: 'Customer Street Address',
 								},
 							]}>
@@ -106,17 +106,17 @@ function ConnectionSettingsComponent(props) {
 
 				<Row gutter={30}>
 					<Col span={12}>
-						<Form.Item
+                        <Form.Item
 							name='customer_city'
-							rules={[{ required: true, message: 'Customer City' }]}>
+                            rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Customer City' }]}> 
 							<Input type='text' placeholder='Customer City' />
 						</Form.Item>
 					</Col>
 
 					<Col span={12}>
-						<Form.Item
+                        <Form.Item
 							name='customer_state'
-							rules={[{ required: true, message: 'Customer State' }]}>
+                            rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Customer State' }]}> 
 							<Input
 								type='text'
 								placeholder='Customer State e.g. LA'
@@ -128,11 +128,11 @@ function ConnectionSettingsComponent(props) {
 
 				<Row gutter={30}>
 					<Col span={12}>
-						<Form.Item
+                        <Form.Item
 							name='customer_zip_code'
-							rules={[
-								{ required: true, message: 'Customer Zip Code' },
-							]}>
+                            rules={[
+                                { required: props.isInstalling ? connectionState.testType : true, message: 'Customer Zip Code' },
+                            ]}> 
 							<Input type='text' placeholder='Customer Zip Code' />
 						</Form.Item>
 					</Col>
@@ -213,7 +213,8 @@ const mapStateToProps = state => {
 		connectionSettings: state.connectionSettings,
 		skeleton_loading: state.skeleton_loading,
 		token: state.token,
-		carrierId: state.carrierId,
+        carrierId: state.carrierId,
+        isInstalling: state.isInstalling,
 	}
 }
 

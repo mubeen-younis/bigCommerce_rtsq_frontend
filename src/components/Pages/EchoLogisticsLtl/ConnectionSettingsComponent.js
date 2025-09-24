@@ -6,7 +6,7 @@ import { postData } from '../../../Actions/Action'
 function ConnectionSettingsComponent() {
 	const [testType, setTestType] = useState(false)
 	const dispatch = useDispatch()
-	const { connectionSettings, token, carrierId } = useSelector(state => state)
+    const { connectionSettings, token, carrierId, isInstalling } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
 
@@ -47,24 +47,24 @@ function ConnectionSettingsComponent() {
 				size='large'
 				initialValues={connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					className='mb-1'
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}> 
 					<Input placeholder='e.g., Echo' />
 				</Form.Item>
 				<Form.Item
 					label='Account Number'
 					name='account_number'
-					rules={[{ required: true, message: 'Account Number' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Account Number' }]}> 
 					<Input placeholder='Account Number' />
 				</Form.Item>
 				<Form.Item
 					className='mb-1'
 					label='API Key'
 					name='api_key'
-					rules={[{ required: true, message: 'API Key' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'API Key' }]}> 
 					<Input placeholder='API Key' />
 				</Form.Item>
 

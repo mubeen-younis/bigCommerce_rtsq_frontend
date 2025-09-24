@@ -6,7 +6,7 @@ import { postData } from '../../../Actions/Action'
 function ConnectionSettingsComponent(props) {
 	const [testType, setTestType] = useState(false)
 	const dispatch = useDispatch()
-	const { connectionSettings, token, carrierId } = useSelector(state => state)
+    const { connectionSettings, token, carrierId, isInstalling } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
 
@@ -47,42 +47,42 @@ function ConnectionSettingsComponent(props) {
 				size='large'
 				initialValues={connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					className='mb-1'
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}> 
 					<Input placeholder='e.g., TQL' />
 				</Form.Item>
 				<Form.Item
 					label='Client ID'
 					name='clientId'
-					rules={[{ required: true, message: 'Client ID' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Client ID' }]}> 
 					<Input placeholder='Client ID' />
 				</Form.Item>
 				<Form.Item
 					label='Client Secret'
 					name='clientSecret'
-					rules={[{ required: false, message: 'Client Secret' }]}>
+                    rules={[{ required: isInstalling ? testType : false, message: 'Client Secret' }]}> 
 					<Input placeholder='Client Secret' />
 				</Form.Item>
 				<Form.Item
 					label='Username'
 					name='traxUsername'
-					rules={[{ required: true, message: 'Username' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Username' }]}> 
 					<Input placeholder='Username' />
 				</Form.Item>
 				<Form.Item
 					label='Password'
 					name='traxPassword'
-					rules={[{ required: true, message: 'Password' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Password' }]}> 
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 				<Form.Item
 					className='mb-1'
 					label='Subscription Key'
 					name='subscriptionKey'
-					rules={[{ required: true, message: 'Subscription Key' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Subscription Key' }]}> 
 					<Input type='text' placeholder='Subscription Key' />
 				</Form.Item>
 

@@ -30,7 +30,7 @@ function ConnectionSettingsComponent(props) {
   });
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const { fdoCouponInfo, fdoCouponCarrierInfo, token, carrier_type, carrierId } =
+  const { fdoCouponInfo, fdoCouponCarrierInfo, token, carrier_type, carrierId, isInstalling } =
     useSelector((state) => state);
   const [mounted, setMounted] = useState(false);
 
@@ -212,7 +212,7 @@ function ConnectionSettingsComponent(props) {
             className="mb-1"
             label="Nickname"
             name="nickname"
-            rules={[{ required: false, message: "Nickname" }]}
+            rules={[{ required: isInstalling ? !connectionState.testType : false, message: "Nickname" }]}
           >
             <Input placeholder="e.g., GlobalTranz" />
           </Form.Item>
@@ -250,7 +250,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Customer ID"
                 name="customer_id"
-                rules={[{ required: true, message: "Customer ID" }]}
+                rules={[{ required: isInstalling ? connectionState.testType : true, message: "Customer ID" }]}
                 requiredMark
               >
                 <Input
@@ -262,7 +262,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Username"
                 name="user_name"
-                rules={[{ required: true, message: "Username" }]}
+                rules={[{ required: isInstalling ? connectionState.testType : true, message: "Username" }]}
                 requiredMark
               >
                 <Input
@@ -274,7 +274,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Password"
                 name="password"
-                rules={[{ required: true, message: "Password" }]}
+                rules={[{ required: isInstalling ? connectionState.testType : true, message: "Password" }]}
                 requiredMark
               >
                 <Input
@@ -288,7 +288,7 @@ function ConnectionSettingsComponent(props) {
                 className="mb-1"
                 label="Access Key"
                 name="access_key"
-                rules={[{ required: true, message: "Access Key" }]}
+                rules={[{ required: isInstalling ? connectionState.testType : true, message: "Access Key" }]}
                 requiredMark
               >
                 <Input
@@ -303,7 +303,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Shipper ID"
                 name="customer_id"
-                rules={[{ required: true, message: "Shipper ID" }]}
+                rules={[{ required: isInstalling ? connectionState.testType : true, message: "Shipper ID" }]}
                 requiredMark
               >
                 <Input
@@ -315,7 +315,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Username"
                 name="user_name"
-                rules={[{ required: true, message: "Username" }]}
+                rules={[{ required: isInstalling ? connectionState.testType : true, message: "Username" }]}
                 requiredMark
               >
                 <Input
@@ -327,7 +327,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Password"
                 name="password"
-                rules={[{ required: true, message: "Password" }]}
+                rules={[{ required: isInstalling ? connectionState.testType : true, message: "Password" }]}
                 requiredMark
               >
                 <Input
@@ -341,7 +341,7 @@ function ConnectionSettingsComponent(props) {
                 className="mb-1"
                 label="Access Key"
                 name="access_key"
-                rules={[{ required: true, message: "Access Key" }]}
+                rules={[{ required: isInstalling ? connectionState.testType : true, message: "Access Key" }]}
                 requiredMark
               >
                 <Input
@@ -356,7 +356,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Client ID"
                 name="clientId"
-                rules={[{ required: true, message: "Client ID" }]}
+                rules={[{ required: isInstalling ? connectionState.testType : true, message: "Client ID" }]}
               >
                 <Input
                   placeholder="Client ID"
@@ -369,7 +369,7 @@ function ConnectionSettingsComponent(props) {
                 className="mb-1"
                 label="Client Secret"
                 name="clientSecret"
-                rules={[{ required: true, message: "Client Secret" }]}
+                rules={[{ required: isInstalling ? connectionState.testType : true, message: "Client Secret" }]}
               >
                 <Input
                   placeholder="Client Secret"

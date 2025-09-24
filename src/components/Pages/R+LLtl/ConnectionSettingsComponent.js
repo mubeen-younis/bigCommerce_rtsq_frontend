@@ -54,33 +54,33 @@ function ConnectionSettingsComponent(props) {
 				size={'large'}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					className='mb-1'
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: props.isInstalling ? !connectionState.testType : false, message: 'Nickname' }]}> 
 					<Input placeholder='e.g., R+L Carriers' />
 				</Form.Item>
 					
-				<Form.Item
-					label='Username'
-					name='username'
-					rules={[{ required: false, message: 'Username' }]}>
+                <Form.Item
+                    label='Username'
+                    name='username'
+                    rules={[{ required: props.isInstalling ? connectionState.testType : false, message: 'Username' }]}> 
 					<Input placeholder='Username' />
 				</Form.Item>
 
-				<Form.Item
-					label='Password'
-					name='password'
-					rules={[{ required: false, message: 'Password' }]}>
+                <Form.Item
+                    label='Password'
+                    name='password'
+                    rules={[{ required: props.isInstalling ? connectionState.testType : false, message: 'Password' }]}> 
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
-				<Form.Item
-					className='mb-1'
-					label='API Key'
-					name='api_key'
-					rules={[{ required: true, message: 'API Key Is Required ' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='API Key'
+                    name='api_key'
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'API Key Is Required ' }]}> 
 					<Input placeholder='API Key' />
 				</Form.Item>
 

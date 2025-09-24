@@ -7,7 +7,7 @@ function ConnectionSettingsComponent(props) {
 	const [testType, setTestType] = useState(false)
 	const [rates, setRates] = useState(0)
 	const dispatch = useDispatch()
-	const { connectionSettings, token, carrierId } = useSelector(state => state)
+    const { connectionSettings, token, carrierId, isInstalling } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
 
@@ -49,29 +49,29 @@ function ConnectionSettingsComponent(props) {
 				size='large'
 				initialValues={connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					className='mb-1'
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}> 
 					<Input placeholder='e.g., YRC National' />
 				</Form.Item>
 				<Form.Item
 					label='Business ID'
 					name='business_id'
-					rules={[{ required: true, message: 'Business ID' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Business ID' }]}> 
 					<Input placeholder='Business ID' />
 				</Form.Item>
 				<Form.Item
 					label='Username'
 					name='username'
-					rules={[{ required: true, message: 'Username' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Username' }]}> 
 					<Input placeholder='Username' />
 				</Form.Item>
 				<Form.Item
 					label='Password'
 					name='password'
-					rules={[{ required: true, message: 'Password' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Password' }]}> 
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 

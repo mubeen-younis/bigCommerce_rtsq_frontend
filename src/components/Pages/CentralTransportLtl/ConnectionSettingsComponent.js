@@ -5,10 +5,52 @@ import { postData } from '../../../Actions/Action'
 
 function ConnectionSettingsComponent(props) {
   const [testType, setTestType] = useState(false)
+  const [form] = Form.useForm()
   const dispatch = useDispatch()
   const { connectionSettings, token, carrierId } = useSelector(state => state)
 
-  const handleTypeChange = type => setTestType(type)
+  const handleTypeChange = type => {
+    setTestType(type)
+
+    // Check if we're in Add Account modal (no existing carrierId means new installation)
+    const isAddAccountModal = !carrierId;
+
+    if (isAddAccountModal) {
+      // Add Account Modal logic
+      if (type) {
+        // Test Connection: nickname not required, other fields required
+        form.setFields([
+          { name: 'nickname', rules: [{ required: false, message: 'Nickname' }], errors: [] },
+          { name: 'customer_number', rules: [
+            { required: true, message: "Customer Number is required" },
+            { max: 100, message: "Customer Number must be at most 100 characters" },
+            { pattern: /^[a-zA-Z0-9]*$/, message: "Customer Number must be alphanumeric" }
+          ]},
+          { name: 'access_code', rules: [
+            { required: true, message: "Access Code is required" },
+            { max: 100, message: "Access Code must be at most 100 characters" },
+            { pattern: /^[\w!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|`~]+$/, message: "Access Code can include letters, numbers, and special characters" }
+          ]}
+        ]);
+      } else {
+        // Save Settings: only nickname required, other fields optional
+        form.setFields([
+          { name: 'nickname', rules: [{ required: true, message: 'Nickname is required when saving' }] },
+          { name: 'customer_number', rules: [
+            { required: false, message: "Customer Number is required" },
+            { max: 100, message: "Customer Number must be at most 100 characters" },
+            { pattern: /^[a-zA-Z0-9]*$/, message: "Customer Number must be alphanumeric" }
+          ]},
+          { name: 'access_code', rules: [
+            { required: false, message: "Access Code is required" },
+            { max: 100, message: "Access Code must be at most 100 characters" },
+            { pattern: /^[\w!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|`~]+$/, message: "Access Code can include letters, numbers, and special characters" }
+          ]}
+        ]);
+      }
+    }
+    // For existing carriers, keep original validation (don't change anything)
+  }
 
   useEffect(() => { }, [props.connectionSettings])
 
@@ -47,6 +89,7 @@ function ConnectionSettingsComponent(props) {
         </a>
       </div>
       <Form
+        form={form}
         layout="vertical"
         name="connection_settings"
         className="connection-settings"
@@ -58,7 +101,7 @@ function ConnectionSettingsComponent(props) {
           className='mb-1'
           label='Nickname'
           name='nickname'
-          rules={[{ required: false, message: 'Nickname' }]}
+          rules={[{ required: !carrierId ? true : false, message: 'Nickname is required when saving' }]}
         >
           <Input placeholder='e.g., Central Transport' />
         </Form.Item>
@@ -66,7 +109,7 @@ function ConnectionSettingsComponent(props) {
           label="Customer Number"
           name="customer_number"
           rules={[
-            { required: true, message: "Customer Number is required" },
+            { required: !carrierId ? false : true, message: "Customer Number is required" },
             { max: 100, message: "Customer Number must be at most 100 characters" },
             {
               pattern: /^[a-zA-Z0-9]*$/,
@@ -81,7 +124,7 @@ function ConnectionSettingsComponent(props) {
           label="Access Code"
           name="access_code"
           rules={[
-            { required: true, message: "Access Code is required" },
+            { required: !carrierId ? false : true, message: "Access Code is required" },
             { max: 100, message: "Access Code must be at most 100 characters" },
             {
               pattern: /^[\w!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|`~]+$/,

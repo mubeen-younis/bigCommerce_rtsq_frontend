@@ -45,7 +45,7 @@ function ConnectionSettingsComponent(props) {
 		skeleton_loading: true,
 	})
 	const dispatch = useDispatch()
-	const { connectionSettings, token, FedexSmallApiType } = useSelector(state => state)
+    const { connectionSettings, token, FedexSmallApiType, isInstalling } = useSelector(state => state)
 	const url = 'https://eniture.com/bigcommerce-fedex-api-connection-instructions/'
 
 	useEffect(() => {
@@ -104,11 +104,11 @@ function ConnectionSettingsComponent(props) {
 				size={'large'}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					className='mb-1'
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: isInstalling ? !connectionState.testType : false, message: 'Nickname' }]}> 
 					<Input placeholder='e.g., FedEx Small' />
 				</Form.Item>
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>
@@ -128,28 +128,28 @@ function ConnectionSettingsComponent(props) {
 				</Form.Item>
 				{ FedexSmallApiType == 'new_api' ? (
 						<>
-							<Form.Item
-								label='Account Number'
-								name='new_api_account_number'
-								rules={[{ required: true, message: 'Account Number is required' }]}
-							>
+                            <Form.Item
+                                label='Account Number'
+                                name='new_api_account_number'
+                                rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Account Number is required' }]}
+                            >
 								<Input placeholder='Account Number' maxLength={50}/>
 							</Form.Item>
 
-							<Form.Item
-								label='API Key'
-								name='clientId'
-								rules={[{ required: true, message: 'API Key is required' }]}
-							>
+                            <Form.Item
+                                label='API Key'
+                                name='clientId'
+                                rules={[{ required: isInstalling ? connectionState.testType : true, message: 'API Key is required' }]}
+                            >
 								<Input placeholder='API Key' maxLength={100}/>
 							</Form.Item>
 
-							<Form.Item
-								className='mb-1'
-								label='Secret Key'
-								name='clientSecret'
-								rules={[{ required: true, message: 'Secret Key is required' }]}
-							>
+                            <Form.Item
+                                className='mb-1'
+                                label='Secret Key'
+                                name='clientSecret'
+                                rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Secret Key is required' }]}
+                            >
 								<Input placeholder='Secret Key' maxLength={100}/>
 							</Form.Item>
 
@@ -165,31 +165,31 @@ function ConnectionSettingsComponent(props) {
 						</>
 				) : (
 					<>
-						<Form.Item
-							label='Account Number'
-							name='account_number'
-							rules={[{ required: true, message: 'Account Number is required' }]}>
+                        <Form.Item
+                            label='Account Number'
+                            name='account_number'
+                            rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Account Number is required' }]}> 
 							<Input placeholder='Account Number' maxLength={50} />
 						</Form.Item>
 
-						<Form.Item
-							label='Meter Number'
-							name='meter_number'
-							rules={[{ required: true, message: 'Meter Number is required' }]}>
+                        <Form.Item
+                            label='Meter Number'
+                            name='meter_number'
+                            rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Meter Number is required' }]}> 
 							<Input placeholder='Meter Number' maxLength={50} />
 						</Form.Item>
 
-						<Form.Item
-							label='Password'
-							name='password'
-							rules={[{ required: true, message: 'Password is required' }]}>
+                        <Form.Item
+                            label='Password'
+                            name='password'
+                            rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Password is required' }]}> 
 							<Input type='text' placeholder='Password' maxLength={100} />
 						</Form.Item>
 
-						<Form.Item
-							label='Authentication Key'
-							name='api_access_key'
-							rules={[{ required: true, message: 'Authentication Key is required' }]}>
+                        <Form.Item
+                            label='Authentication Key'
+                            name='api_access_key'
+                            rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Authentication Key is required' }]}> 
 							<Input placeholder='Authentication Key' />
 						</Form.Item>
 

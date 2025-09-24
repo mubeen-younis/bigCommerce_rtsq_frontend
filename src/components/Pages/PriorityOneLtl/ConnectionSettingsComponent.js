@@ -8,7 +8,7 @@ function ConnectionSettingsComponent(props) {
 		testType: false,
 		skeleton_loading: true,
 	})
-	const { connectionSettings} = useSelector(state => state)
+    const { connectionSettings, isInstalling } = useSelector(state => state)
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
@@ -43,19 +43,19 @@ function ConnectionSettingsComponent(props) {
 				size={'large'}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					className='mb-1'
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: isInstalling ? !connectionState.testType : false, message: 'Nickname' }]}> 
 					<Input placeholder='e.g., Priority One' />
 				</Form.Item>
 				
-				<Form.Item
-					className='mb-1'
-					label='API Key'
-					name='api_key'
-					rules={[{ required: true, message: 'API Key' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='API Key'
+                    name='api_key'
+                    rules={[{ required: isInstalling ? connectionState.testType : true, message: 'API Key' }]}> 
 					<Input placeholder='API Key' maxLength={256}/>
 				</Form.Item>
 

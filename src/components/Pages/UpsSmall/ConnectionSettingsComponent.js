@@ -24,7 +24,7 @@ function ConnectionSettingsComponent(props) {
 	})
 	const [component /* setComponent */] = useState(1)
 	const dispatch = useDispatch()
-	const { connectionSettings, token, UpsSmallApiType } = useSelector(state => state)
+    const { connectionSettings, token, UpsSmallApiType, isInstalling } = useSelector(state => state)
 
 	useEffect(() => {
 		if (connectionSettings) {
@@ -71,11 +71,11 @@ function ConnectionSettingsComponent(props) {
 				size={'large'}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					className='mb-1'
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: isInstalling ? !connectionState.testType : false, message: 'Nickname' }]}> 
 					<Input placeholder='e.g., Main UPS account' />
 				</Form.Item>
 				<div className={'note-bx'}>
@@ -121,28 +121,28 @@ function ConnectionSettingsComponent(props) {
 
 						{ UpsSmallApiType == 'new_api' ? (
 						<>
-							<Form.Item
-								label='Account Number'
-								name='new_api_account_number'
-								rules={[{ required:true, message: 'Account Number' }]}
-							>
+                            <Form.Item
+                                label='Account Number'
+                                name='new_api_account_number'
+                                rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Account Number' }]}
+                            >
 								<Input placeholder='Account Number' maxLength={8}/>
 							</Form.Item>
 
-							<Form.Item
-								label='Client ID'
-								name='clientId'
-								rules={[{ required: true, message: 'Client ID' }]}
-							>
+                            <Form.Item
+                                label='Client ID'
+                                name='clientId'
+                                rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Client ID' }]}
+                            >
 								<Input placeholder='Client ID' maxLength={100}/>
 							</Form.Item>
 
-							<Form.Item
-								className='mb-1'
-								label='Client Secret'
-								name='clientSecret'
-								rules={[{ required: true, message: 'Client Secret' }]}
-							>
+                            <Form.Item
+                                className='mb-1'
+                                label='Client Secret'
+                                name='clientSecret'
+                                rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Client Secret' }]}
+                            >
 								<Input placeholder='Client Secret' maxLength={100}/>
 							</Form.Item>
 
@@ -158,32 +158,32 @@ function ConnectionSettingsComponent(props) {
 						</>
 						) : (
 						<>
-							<Form.Item
-								label='Account Number'
-								name='account_number'
-								rules={[{ required: true, message: 'Account Number' }]}>
+                            <Form.Item
+                                label='Account Number'
+                                name='account_number'
+                                rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Account Number' }]}> 
 								<Input placeholder='Account Number' />
 							</Form.Item>
 
-							<Form.Item
-								label='Username'
-								name='username'
-								rules={[{ required: true, message: 'Username' }]}>
+                            <Form.Item
+                                label='Username'
+                                name='username'
+                                rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Username' }]}> 
 								<Input placeholder='Username' />
 							</Form.Item>
 
-							<Form.Item
-								label='Password'
-								name='password'
-								rules={[{ required: true, message: 'Password' }]}>
+                            <Form.Item
+                                label='Password'
+                                name='password'
+                                rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Password' }]}> 
 								<Input type='text' placeholder='Password' />
 							</Form.Item>
 
-							<Form.Item
-								className='mb-1'
-								label='API Access Key '
-								name='ups_api_access_key'
-								rules={[{ required: true, message: 'API Access Key' }]}>
+                            <Form.Item
+                                className='mb-1'
+                                label='API Access Key '
+                                name='ups_api_access_key'
+                                rules={[{ required: isInstalling ? connectionState.testType : true, message: 'API Access Key' }]}> 
 								<Input placeholder='API Access Key' />
 							</Form.Item>
 

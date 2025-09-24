@@ -60,60 +60,60 @@ function ConnectionSettingsComponent(props) {
 				size={'large'}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					className='mb-1'
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: props.isInstalling ? !connectionState.testType : false, message: 'Nickname' }]}> 
 					<Input placeholder='e.g., XPO' />
 				</Form.Item>
 				<Form.Item
 					label='Pickup/Delivery Account Number'
 					name='delivery_account_number'
 					rules={[
-						{
-							required: true,
-							message: 'Pickup/Delivery Account Number',
-						},
+                        {
+                            required: props.isInstalling ? connectionState.testType : true,
+                            message: 'Pickup/Delivery Account Number',
+                        },
 					]}>
 					<Input placeholder='Pickup/Delivery Account Number' />
 				</Form.Item>
 
-				<Form.Item
-					label='Username'
-					name='username'
-					rules={[{ required: true, message: 'Username' }]}>
+                <Form.Item
+                    label='Username'
+                    name='username'
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Username' }]}> 
 					<Input placeholder='Username' />
 				</Form.Item>
 
-				<Form.Item
-					label='Password'
-					name='password'
-					rules={[{ required: true, message: 'Password' }]}>
+                <Form.Item
+                    label='Password'
+                    name='password'
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Password' }]}> 
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
-				<Form.Item
-					label='Pickup/Delivery Postal Code'
-					name='delivery_postal_code'
-					rules={[
-						{
-							required: true,
-							message: 'Pickup/Delivery Postal Code',
-						},
-					]}>
+                <Form.Item
+                    label='Pickup/Delivery Postal Code'
+                    name='delivery_postal_code'
+                    rules={[
+                        {
+                            required: props.isInstalling ? connectionState.testType : true,
+                            message: 'Pickup/Delivery Postal Code',
+                        },
+                    ]}>
 					<Input placeholder='Pickup/Delivery Postal Code' />
 				</Form.Item>
 
-				<Form.Item
-					label='Bill To Account Number '
-					name='bill_to_account_number'
-					rules={[
-						{
-							required: accessType === 2,
-							message: 'Bill To Account Number',
-						},
-					]}>
+                <Form.Item
+                    label='Bill To Account Number '
+                    name='bill_to_account_number'
+                    rules={[
+                        {
+                            required: accessType === 2,
+                            message: 'Bill To Account Number',
+                        },
+                    ]}>
 					<Input placeholder='Bill To Account Number ' />
 				</Form.Item>
 

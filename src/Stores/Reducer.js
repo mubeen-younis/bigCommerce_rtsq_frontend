@@ -87,6 +87,8 @@ const initialState = {
 	availableCarriers: null,
 	/* UI flags */
 	isInstalling: false,
+	carrierInstallationSuccess: false,
+	availableCarrierId: null,
 }
 
 const Reducer = (state = initialState, action) => {
@@ -1146,7 +1148,32 @@ const Reducer = (state = initialState, action) => {
 				return {
 					...state,
 				compareRates: action.payload,
-				}		
+				}
+		case 'CARRIER_INSTALLATION_SUCCESS':
+			// DEBUG: Optimistically add the new carrier to installedCarriers
+			const currentCarriers = state.installedCarriers || []
+			console.log('🔍 DEBUG REDUCER: CARRIER_INSTALLATION_SUCCESS - current carriers:', currentCarriers)
+			console.log('🔍 DEBUG REDUCER: CARRIER_INSTALLATION_SUCCESS - new carrier to add:', action.payload.newCarrier)
+
+			const updatedCarriers = [...currentCarriers, action.payload.newCarrier]
+			console.log('🔍 DEBUG REDUCER: CARRIER_INSTALLATION_SUCCESS - updated carriers list:', updatedCarriers)
+
+			return {
+				...state,
+				carrierInstallationSuccess: true,
+				installedCarriers: updatedCarriers,
+			}
+		case 'CLEAR_CARRIER_INSTALLATION_SUCCESS':
+			console.log('🔍 DEBUG REDUCER: CLEAR_CARRIER_INSTALLATION_SUCCESS - clearing installation success flag')
+			return {
+				...state,
+				carrierInstallationSuccess: false,
+			}
+		case 'SET_AVAILABLE_CARRIER_ID':
+			return {
+				...state,
+				availableCarrierId: action.payload,
+			}
 		default:
 			return state
 	}

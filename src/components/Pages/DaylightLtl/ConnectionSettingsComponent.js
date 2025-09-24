@@ -6,7 +6,7 @@ import { postData } from '../../../Actions/Action'
 function ConnectionSettingsComponent(props) {
 	const [testType, setTestType] = useState(false)
 	const dispatch = useDispatch()
-	const { connectionSettings, token, carrierId } = useSelector(state => state)
+    const { connectionSettings, token, carrierId, isInstalling } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
 
@@ -44,24 +44,24 @@ function ConnectionSettingsComponent(props) {
 				size='large'
 				initialValues={connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					label='Username'
-					name='username'
-					rules={[{ required: true, message: 'Username' }]}>
+                <Form.Item
+                    label='Username'
+                    name='username'
+                    rules={[{ required: isInstalling ? testType : true, message: 'Username' }]}> 
 					<Input placeholder='Username' />
 				</Form.Item>
 				<Form.Item
 					label='Password'
 					name='password'
-					rules={[{ required: true, message: 'Password' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Password' }]}> 
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
-				<Form.Item
-					className='mb-1'
-					label='Account Number'
-					name='account_number'
-					rules={[{ required: true, message: 'Account Number' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Account Number'
+                    name='account_number'
+                    rules={[{ required: isInstalling ? testType : true, message: 'Account Number' }]}> 
 					<Input placeholder='Account Number' />
 				</Form.Item>
 

@@ -105,9 +105,6 @@ export const getAllCarriers = data => {
 
 export const getAllAvailableCarriers = (token) => {
 	return dispatch => {
-		console.log('getAllAvailableCarriers called with token:', token);
-		console.log('API URL:', `${process.env.REACT_APP_ENITURE_API_URL}/getAllCarriers`);
-
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
@@ -126,9 +123,7 @@ export const getAllAvailableCarriers = (token) => {
 				}
 			)
 			.then(({ data }) => {
-				console.log('getAllCarriers API response:', data);
 				if (!data.error) {
-					console.log('Dispatching carriers to Redux:', data.carriers);
 					dispatch({
 						type: 'GET_ALL_AVAILABLE_CARRIERS',
 						payload: data.carriers,
@@ -145,7 +140,6 @@ export const getAllAvailableCarriers = (token) => {
 				})
 			})
 			.catch((error) => {
-				console.log('getAllCarriers API error:', error);
 				if (
 					error.response &&
 					error.response.data?.error &&
@@ -222,7 +216,7 @@ export const getInstalledCarriers = data => {
 	}
 }
 
-export const changeCarrierStatus = (carrier_id, token) => {
+export const changeCarrierStatus = (carrier_id, token, status_value = null) => {
 	return dispatch => {
 		dispatch({
 			type: 'ALERT_MESSAGE',
@@ -232,12 +226,15 @@ export const changeCarrierStatus = (carrier_id, token) => {
 			},
 		})
 
+		const payload = { carrier_id }
+		if (status_value !== null) {
+			payload.status = status_value
+		}
+
 		axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/changeCarrierStatus`,
-				{
-					carrier_id,
-				},
+				payload,
 				{
 					headers: {
 						authorization: `Bearer ${token}`,
@@ -260,9 +257,7 @@ export const changeCarrierStatus = (carrier_id, token) => {
 					},
 				})
 			})
-			.catch(err => {
-				console.log(err)
-			})
+			.catch(err => {})
 	}
 }
 
@@ -396,9 +391,7 @@ export const changeAddonStatus = (addon_id, token) => {
 					},
 				})
 			})
-			.catch(err => {
-				console.log(err)
-			})
+			.catch(err => {})
 	}
 }
 

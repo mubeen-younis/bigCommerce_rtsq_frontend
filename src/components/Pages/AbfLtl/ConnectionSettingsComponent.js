@@ -8,7 +8,7 @@ function ConnectionSettingsComponent(props) {
 	const dispatch = useDispatch()
 	const [rates, setRates] = useState('ShipAff')
 	const [ratesAccount, setRatesAccount] = useState('0')
-	const { connectionSettings, token, carrierId } = useSelector(state => state)
+    const { connectionSettings, token, carrierId, isInstalling } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
 
@@ -54,18 +54,18 @@ function ConnectionSettingsComponent(props) {
 				size='large'
 				initialValues={connectionSettings}
 				onFinish={onFinish}>
-				<Form.Item
-					className='mb-1'
-					label='Nickname'
-					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+                <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}> 
 					<Input placeholder='e.g., Warehouse ABF' />
 				</Form.Item>
 				<Form.Item
 					className='mb-1'
 					label='ID'
 					name='business_id'
-					rules={[{ required: true, message: 'Business ID' }]}>
+                    rules={[{ required: isInstalling ? testType : true, message: 'Business ID' }]}> 
 					<Input placeholder='Business ID' />
 				</Form.Item>	
 
