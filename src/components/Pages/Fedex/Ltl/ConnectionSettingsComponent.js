@@ -223,7 +223,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='Billing Address'
 							name='billing_address'
-							rules={[{ required: true, message: 'Billing Address is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Billing Address is required' }]}>
 							<Input type='text' placeholder='Billing Address' />
 						</Form.Item>
 					</Col>
@@ -232,7 +232,7 @@ function ConnectionSettingsComponent(props) {
 							// label='City'
 							style={{ marginTop: '2em' }}
 							name='billing_city'
-							rules={[{ required: true, message: 'City is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : true, message: 'City is required' }]}>
 							<Input type='text' placeholder='City' />
 						</Form.Item>
 					</Col>
@@ -243,7 +243,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='State e.g.CA'
 							name='billing_state'
-							rules={[{ required: true, message: 'State is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : true, message: 'State is required' }]}>
 							<Input
 								type='text'
 								placeholder='State e.g. CA'
@@ -255,7 +255,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='Zip Code'
 							name='billing_zip'
-							rules={[{ required: true, message: 'Zip Code is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Zip Code is required' }]}>
 							<Input type='text' placeholder='Zip Code' />
 						</Form.Item>
 					</Col>
@@ -266,7 +266,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='Country'
 							name='billing_country'
-							rules={[{ required: true, message: 'Country is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Country is required' }]}>
 							<Input
 								type='text'
 								placeholder='Country e.g. US'
@@ -289,7 +289,7 @@ function ConnectionSettingsComponent(props) {
 							label='Physical Address'
 							name='physical_address'
 							rules={[
-								{ required: true, message: 'Shipping Address is required' },
+								{ required: isInstalling ? connectionState.testType : true, message: 'Shipping Address is required' },
 							]}>
 							<Input type='text' placeholder='Shipping Address' />
 						</Form.Item>
@@ -299,7 +299,7 @@ function ConnectionSettingsComponent(props) {
 							// label='City'
 							style={{ marginTop: '2em' }}
 							name='physical_city'
-							rules={[{ required: true, message: 'City is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : true, message: 'City is required' }]}>
 							<Input type='text' placeholder='City' />
 						</Form.Item>
 					</Col>
@@ -310,7 +310,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='State e.g.CA'
 							name='physical_state'
-							rules={[{ required: true, message: 'State is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : true, message: 'State is required' }]}>
 							<Input
 								type='text'
 								placeholder='State e.g. CA'
@@ -322,7 +322,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='Zip Code'
 							name='physical_zip'
-							rules={[{ required: true, message: 'Zip Code is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Zip Code is required' }]}>
 							<Input type='text' placeholder='Zip Code' />
 						</Form.Item>
 					</Col>
@@ -333,7 +333,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='Country'
 							name='physical_country'
-							rules={[{ required: true, message: 'Country is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : true, message: 'Country is required' }]}>
 							<Input
 								type='text'
 								placeholder='Country e.g. US'

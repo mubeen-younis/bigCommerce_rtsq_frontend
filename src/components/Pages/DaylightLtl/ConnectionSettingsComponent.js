@@ -44,6 +44,13 @@ function ConnectionSettingsComponent(props) {
 				size='large'
 				initialValues={connectionSettings}
 				onFinish={onFinish}>
+				<Form.Item
+					className='mb-1'
+					label='Nickname'
+					name='nickname'
+					rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}>
+					<Input placeholder='e.g., Daylight LTL' />
+				</Form.Item>
                 <Form.Item
                     label='Username'
                     name='username'
