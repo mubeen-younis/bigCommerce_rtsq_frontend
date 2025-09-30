@@ -298,7 +298,7 @@ function SideMenu(props) {
 
                 return add.is_enabled === 0;
               }) ? (
-                <Menu.Item>No Add-on is Installed/Enabled</Menu.Item>
+                <Menu.Item></Menu.Item>
               ) : null}
 
               {props?.installedAddons?.map((addon) => {
