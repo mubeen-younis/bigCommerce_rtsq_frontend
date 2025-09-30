@@ -364,7 +364,7 @@ export const changeAddonStatus = (addon_id, token) => {
 			},
 		})
 
-		axios
+		return axios
 			.post(
 				`${process.env.REACT_APP_ENITURE_API_URL}/changeAddonStatus`,
 				{
@@ -390,8 +390,20 @@ export const changeAddonStatus = (addon_id, token) => {
 						alertMessageType: data.error ? 'error' : 'success',
 					},
 				})
+
+				return data
 			})
-			.catch(err => {})
+			.catch(err => {
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: 'Failed to change addon status',
+						showAlertMessage: true,
+						alertMessageType: 'error',
+					},
+				})
+				throw err
+			})
 	}
 }
 

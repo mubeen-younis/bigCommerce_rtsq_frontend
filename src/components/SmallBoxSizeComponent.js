@@ -3,6 +3,7 @@ import { Row, Col, Checkbox, Typography, Card, Select, Skeleton, Modal, Form, Ra
 import { connect, useDispatch, useSelector } from 'react-redux'
 // import { useParams } from 'react-router-dom'
 import { getSbsPlans, changePlan, changeAddonSuspendStatus, changeBinsPackagingMode } from '../Actions/SBS'
+import { changeAddonStatus } from '../Actions/EnitureStore'
 import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
 
 const { Title } = Typography
@@ -14,8 +15,12 @@ function AutoDetectResidentialComponent(props) {
 	const [cancelSubsriptionVisible, SetCancelSubsriptionVisible] = useState(false)
 	const [newPlan, SetNewPlan] = useState(0)
 	const dispatch = useDispatch()
-	const { sbsPlans, getSbsPlans, token } = props
+	const { sbsPlans, getSbsPlans, token, installedAddons } = props
 	const { store } = useSelector(state => state)
+
+	// Find the SBS addon to get its current status
+	const sbsAddon = installedAddons?.find(addon => addon.name?.trim() === 'Standard Box Sizes')
+	const [isAddonEnabled, setIsAddonEnabled] = useState(sbsAddon?.is_enabled || false)
 
 	useEffect(() => {
 		if (!sbsPlans) {
@@ -26,6 +31,12 @@ function AutoDetectResidentialComponent(props) {
 			ia.id === +addon_id ? setSuspend(ia.is_suspend) : null
 		);*/
 	}, [getSbsPlans, sbsPlans, token])
+
+	// Update addon enabled state when installedAddons changes
+	useEffect(() => {
+		const updatedSbsAddon = installedAddons?.find(addon => addon.name?.trim() === 'Standard Box Sizes')
+		setIsAddonEnabled(updatedSbsAddon?.is_enabled || false)
+	}, [installedAddons])
 
 	const changePlan = () => {
 		props.changePlan(props.token, newPlan?.id, SetCancelSubsriptionVisible)
@@ -70,7 +81,7 @@ function AutoDetectResidentialComponent(props) {
 		//setSuspend(true)
 	}
 
-	const changeAddonStatus = value => {
+	const changeLocalAddonStatus = value => {
 		//setSuspend(value)
 		let action = value ? 3 : 1
 		dispatch(
@@ -94,6 +105,12 @@ function AutoDetectResidentialComponent(props) {
 			payload: {...sbsPlans, binPackMode : value},
 		});
 	}
+
+	const handleAddonToggle = (checked) => {
+		// Always send addon_id: 2 for Box Sizes
+		dispatch(changeAddonStatus(2, token))
+		// Don't set local state - let Redux store update drive the UI
+	}
 	
 	return (
 		<Fragment>
@@ -108,6 +125,30 @@ function AutoDetectResidentialComponent(props) {
 					<Title level={3} style={{ textAlign: 'center' }}>
 						Standard Box Sizes
 					</Title>
+				</Col>
+			</Row>
+
+			{/* Enable/Disable Checkbox */}
+			<Row gutter={24}>
+				<Col
+					className='gutter-row mb-3'
+					xs={24}
+					sm={24}
+					md={24}
+					lg={24}
+					xl={24}>
+					<Card>
+						<Checkbox
+							checked={isAddonEnabled}
+							onChange={(e) => handleAddonToggle(e.target.checked)}
+							style={{ fontSize: '16px', fontWeight: '600' }}
+						>
+							Enable Standard Box Sizes
+						</Checkbox>
+						<p style={{ marginTop: '8px', marginBottom: '0', color: '#666', fontSize: '13px' }}>
+							Toggle this to enable or disable the Standard Box Sizes addon functionality.
+						</p>
+					</Card>
 				</Col>
 			</Row>
 			<Modal
@@ -313,7 +354,7 @@ function AutoDetectResidentialComponent(props) {
 											}}>
 											<Checkbox
 												onChange={e => {
-													changeAddonStatus(
+													changeLocalAddonStatus(
 														e.target.checked
 													)
 													setSuspend(e.target.checked)

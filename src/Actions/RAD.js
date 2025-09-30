@@ -1,6 +1,7 @@
 import axios from 'axios'
 import types from '../Stores/types'
 import { dispatchAlert } from '../Utilities/dispatchAlert'
+import { changeAddonStatus as changeAddonStatusFromStore } from './EnitureStore'
 
 const reqConfig = token => {
 	const config = {
@@ -141,48 +142,7 @@ export const changePlan = (token, plan_package, SetCancelSubsriptionVisible) => 
 }
 
 export const changeAddonSuspendStatus = (addon_id, token, action) => {
-	return dispatch => {
-		dispatch({
-			type: 'ALERT_MESSAGE',
-			payload: {
-				showAlertMessage: true,
-				alertMessageType: 'loading',
-			},
-		})
-
-		axios
-			.post(
-				`${process.env.REACT_APP_ENITURE_API_URL}/suspend-use-addon`,
-				{
-					package: addon_id,
-					addon_type: 'RAD',
-					suspend: action,
-				},
-				{
-					headers: {
-						authorization: `Bearer ${token}`,
-					},
-				}
-			)
-			.then(({ data }) => {
-				dispatch({
-					type: 'RAD_PLANS',
-					payload: data.data,
-				})
-
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						alertMessage: data.message,
-						showAlertMessage: true,
-						alertMessageType: data.error ? 'error' : 'success',
-					},
-				})
-			})
-			.catch(err => {
-				console.log(err)
-			})
-	}
+	return changeAddonStatusFromStore(2, token)
 }
 
 export const getAddonAddressSettings = (addon_id, token) => {

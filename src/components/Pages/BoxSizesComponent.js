@@ -36,6 +36,7 @@ import {
   valueLimitAfterDecimal,
   blockInvalidChar,
 } from '../../Utilities/numberValidation'
+import BoxSizesPackagingMethod from '../BoxSizesPackagingMethod'
 
 const { Option } = Select
 const { Title } = Typography
@@ -894,6 +895,9 @@ function BoxSizesComponent(props) {
 						</Row>
 
 						<Divider /> */}
+
+            {/* Packaging Method Options */}
+            <BoxSizesPackagingMethod />
 
             <Row gutter={10} align="middle" justify="center">
               <Col

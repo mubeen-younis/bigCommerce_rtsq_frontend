@@ -149,7 +149,7 @@ function SideMenu(props) {
 
               {props?.installedCarriers?.map((carrier) =>
                 carrier.slug === 'small-package' &&
-                carrier.is_enabled &&
+                carrier.is_enabled === 1 &&
                 carrier.carrier_type === 2 ? (
                   <Menu.Item
                     key='109'
@@ -168,6 +168,61 @@ function SideMenu(props) {
               >
                 <Link to={`/shipping_rules`}>Shipping Rules</Link>
               </Menu.Item>
+
+              {/* Box Sizes and Pallets options */}
+              {props?.installedAddons?.map((addon) => {
+                const isSBSAddon = addon.name?.trim() === 'Standard Box Sizes';
+                const isPalletPackagingAddon = addon.name?.trim() === 'Pallet Packaging';
+
+                // If it's SBS addon, only show it when at least one Small carrier is enabled (exclude archived)
+                if (isSBSAddon) {
+                  const hasEnabledSmallCarrier = props?.installedCarriers?.some(carrier =>
+                    carrier.is_enabled === 1 && (
+                      carrier.slug === 'ups-small' ||
+                      carrier.slug === 'fedex-small' ||
+                      carrier.slug === 'usps-small' ||
+                      carrier.slug === 'unishippers-small' ||
+                      carrier.slug === 'purolator-small' ||
+                      carrier.slug === 'ups-land-cost-small' ||
+                      carrier.slug.includes('-small')
+                    )
+                  );
+
+                  return hasEnabledSmallCarrier ? (
+                    <Menu.Item
+                      key={'addon-' + addon.id.toString()}
+                      warnkey={'addon-' + addon.id.toString()}
+                      onClick={() =>
+                        setActiveMenu('addon-' + addon.id.toString())
+                      }
+                    >
+                      <Link to={`/addon/${addon.id}`}>Box Sizes</Link>
+                    </Menu.Item>
+                  ) : null;
+                }
+
+                // If it's Pallet Packaging addon, only show it when at least one LTL carrier is enabled (exclude archived)
+                if (isPalletPackagingAddon) {
+                  const hasEnabledLTLCarrier = props?.installedCarriers?.some(carrier =>
+                    carrier.is_enabled === 1 && carrier.carrier_type === 1
+                  );
+
+                  return hasEnabledLTLCarrier ? (
+                    <Menu.Item
+                      key={'addon-' + addon.id.toString()}
+                      warnkey={'addon-' + addon.id.toString()}
+                      onClick={() =>
+                        setActiveMenu('addon-' + addon.id.toString())
+                      }
+                    >
+                      <Link to={`/addon/${addon.id}`}>Pallets</Link>
+                    </Menu.Item>
+                  ) : null;
+                }
+
+                return null;
+              })}
+
               <Menu.Item
                 key='112'
                 warnkey={112}
@@ -195,7 +250,7 @@ function SideMenu(props) {
               ) : null}
 
               {props?.installedCarriers?.map((carrier) =>
-                carrier.is_enabled && carrier.carrier_type === 1 ? (
+                carrier.is_enabled === 1 && carrier.carrier_type === 1 ? (
                   <Menu.Item
                     key={carrier.id.toString()}
                     warnkey={carrier.id.toString()}
@@ -218,7 +273,7 @@ function SideMenu(props) {
               ) : null}
 
               {props?.installedCarriers?.map((carrier) =>
-                carrier.is_enabled && carrier.carrier_type === 2 ? (
+                carrier.is_enabled === 1 && carrier.carrier_type === 2 ? (
                   <Menu.Item
                     key={carrier.id.toString()}
                     warnkey={carrier.id.toString()}
@@ -230,16 +285,34 @@ function SideMenu(props) {
                 ) : null
               )}
 
-              <Title className={'carriers-name'} level={5}>
-                Add-ons
-              </Title>
+              {/* Other addons */}
+              {props?.installedAddons?.every((add) => {
+                const isSBSAddon = add.name?.trim() === 'Standard Box Sizes';
+                const isPalletPackagingAddon = add.name?.trim() === 'Pallet Packaging';
+                const isRADAddon = add.name?.trim() === 'Residential Address Detection';
 
-              {props?.installedAddons?.every((add) => add.is_enabled === 0) ? (
+                // Skip SBS, Pallet Packaging, and RAD as they're handled elsewhere or excluded
+                if (isSBSAddon || isPalletPackagingAddon || isRADAddon) {
+                  return true; // Don't count these for "No Add-on" message
+                }
+
+                return add.is_enabled === 0;
+              }) ? (
                 <Menu.Item>No Add-on is Installed/Enabled</Menu.Item>
               ) : null}
 
-              {props?.installedAddons?.map((addon) =>
-                addon.is_enabled ? (
+              {props?.installedAddons?.map((addon) => {
+                const isSBSAddon = addon.name?.trim() === 'Standard Box Sizes';
+                const isPalletPackagingAddon = addon.name?.trim() === 'Pallet Packaging';
+                const isRADAddon = addon.name?.trim() === 'Residential Address Detection';
+
+                // Skip SBS, Pallet Packaging, and RAD
+                if (isSBSAddon || isPalletPackagingAddon || isRADAddon) {
+                  return null;
+                }
+
+                // For other addons, show if enabled as before
+                return addon.is_enabled ? (
                   <Menu.Item
                     key={'addon-' + addon.id.toString()}
                     warnkey={'addon-' + addon.id.toString()}
@@ -249,8 +322,8 @@ function SideMenu(props) {
                   >
                     <Link to={`/addon/${addon.id}`}>{addon.name}</Link>
                   </Menu.Item>
-                ) : null
-              )}
+                ) : null;
+              })}
             </>
           )}
         </Menu>

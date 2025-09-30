@@ -6,6 +6,7 @@ import {
 	changePlan,
 	changeAddonSuspendStatus,
 } from '../../Actions/Pallets'
+import { changeAddonStatus } from '../../Actions/EnitureStore'
 import { useCallback } from 'react'
 import PalletBoxSizesComponent from './PalletBoxSizesComponent'
 
@@ -18,11 +19,21 @@ function AutoDetectResidentialComponent(props) {
 	const [cancelSubsriptionVisible, SetCancelSubsriptionVisible] = useState(false)
 	const [newPlan, SetNewPlan] = useState({})
 	const dispatch = useDispatch()
-	const { token, palletPlans, store } = useSelector(state => state)
+	const { token, palletPlans, store, installedAddons } = useSelector(state => state)
+
+	// Find the Pallet Packaging addon to get its current status
+	const palletAddon = installedAddons?.find(addon => addon.name?.trim() === 'Pallet Packaging')
+	const [isAddonEnabled, setIsAddonEnabled] = useState(palletAddon?.is_enabled || false)
 
 	useEffect(() => {
 		if (!palletPlans) dispatch(getPalletsPlans(token))
 	}, [token, dispatch, palletPlans])
+
+	// Update addon enabled state when installedAddons changes
+	useEffect(() => {
+		const updatedPalletAddon = installedAddons?.find(addon => addon.name?.trim() === 'Pallet Packaging')
+		setIsAddonEnabled(updatedPalletAddon?.is_enabled || false)
+	}, [installedAddons])
 
 	const changePalletPlan = useCallback(() => {
 		dispatch(changePlan(token, newPlan?.id, SetCancelSubsriptionVisible))
@@ -46,7 +57,7 @@ function AutoDetectResidentialComponent(props) {
 		[dispatch, token, palletPlans]
 	)
 
-	const changeAddonStatus = useCallback(
+	const changePalletAddonSuspendStatus = useCallback(
 		value => {
 			let action = value ? 3 : 1
 			dispatch(
@@ -59,6 +70,12 @@ function AutoDetectResidentialComponent(props) {
 		},
 		[dispatch, token, palletPlans]
 	)
+
+	const handleAddonToggle = (checked) => {
+		// Always send addon_id: 3 for Pallet Packaging
+		dispatch(changeAddonStatus(3, token))
+		// Don't set local state - let Redux store update drive the UI
+	}
 
 	if (!palletPlans) return <Skeleton active />
 
@@ -75,6 +92,30 @@ function AutoDetectResidentialComponent(props) {
 					<Title level={3} style={{ textAlign: 'center' }}>
 						Pallet Packaging
 					</Title>
+				</Col>
+			</Row>
+
+			{/* Enable/Disable Checkbox */}
+			<Row gutter={24}>
+				<Col
+					className='gutter-row mb-3'
+					xs={24}
+					sm={24}
+					md={24}
+					lg={24}
+					xl={24}>
+					<Card>
+						<Checkbox
+							checked={isAddonEnabled}
+							onChange={(e) => handleAddonToggle(e.target.checked)}
+							style={{ fontSize: '16px', fontWeight: '600' }}
+						>
+							Enable Pallet Packaging
+						</Checkbox>
+						<p style={{ marginTop: '8px', marginBottom: '0', color: '#666', fontSize: '13px' }}>
+							Toggle this to enable or disable the Pallet Packaging addon functionality.
+						</p>
+					</Card>
 				</Col>
 			</Row>
 			<Modal
@@ -283,7 +324,7 @@ function AutoDetectResidentialComponent(props) {
 											}}>
 											<Checkbox
 												onChange={e => {
-													changeAddonStatus(
+													changePalletAddonSuspendStatus(
 														e.target.checked
 													)
 													setSuspend(e.target.checked)
