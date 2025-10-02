@@ -136,7 +136,7 @@ function TabsLayout({ onlyConnection = false, forcedSlug = '' }) {
       <Fragment>
         <PlanStatusHeading />
         <Tabs className={'tabs-wrp'} activeKey={tab} onChange={handleActiveTab} type='card'>
-          {carrierSlug !== 'usps-small' && carrierSlug !== 'dbsc' && (
+          {carrierSlug !== 'dbsc' && (
             <TabPane tab='Connection Settings' key='1'>
               {connSettingsComponent}
             </TabPane>
@@ -151,12 +151,11 @@ function TabsLayout({ onlyConnection = false, forcedSlug = '' }) {
       <PlanStatusHeading />
 
       <Tabs className={'tabs-wrp'} activeKey={tab} onChange={handleActiveTab} type='card'>
-        {carrierSlug !== 'usps-small' &&
-          carrierSlug !== 'dbsc' && (
-            <TabPane tab='Connection Settings' key='1'>
-              {connSettingsComponent}
-            </TabPane>
-          )}
+        {carrierSlug !== 'dbsc' && (
+          <TabPane tab='Connection Settings' key='1'>
+            {connSettingsComponent}
+          </TabPane>
+        )}
         {[
           'ltl-quotes',
           'freightquote-ltl',

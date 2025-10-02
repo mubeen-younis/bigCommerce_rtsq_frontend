@@ -33,32 +33,76 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 
 		axios
 			.post(`${process.env.REACT_APP_ENITURE_API_URL}/${url}`, data, config)
-			.then(({ data }) => {
-				if (!data.error) {
-					if (data?.data?.value) {
+			.then(({ data: responseData }) => {
+				if (!responseData.error) {
+					if (responseData?.data?.value) {
 						dispatch({
 							type: type,
-							payload: JSON.parse(data?.data?.value),
+							payload: JSON.parse(responseData?.data?.value),
 						})
 
 						if (
 							url === 'submit_connection_settings' &&
-							data?.data['fdoCouponCarrierInfo'] !== undefined
+							responseData?.data['fdoCouponCarrierInfo'] !== undefined
 						) {
 							dispatch({
 								type: 'GET_FDO_COUPON_CARRIER_INFO',
-								payload: data?.data?.fdoCouponCarrierInfo,
+								payload: responseData?.data?.fdoCouponCarrierInfo,
 							})
 						}
-					} else if (data?.data && !isTestConnection) {
+					} else if (responseData?.data && !isTestConnection) {
 						dispatch({
 							type: type,
-							payload: data?.data,
+							payload: responseData?.data,
 						})
 					}
 
 					if (type === 'SAVE_LOCATION') {
 						setVisibleWarehouse(false)
+					}
+
+					// Handle carrier installation success
+					if (url === 'submit_connection_settings' && data.is_installing === 1 && !isTestConnection && !responseData.error) {
+						try {
+							const state = window?.store?.getState ? window.store.getState() : null
+							const availableCarrierId = state?.availableCarrierId
+
+							// Get available carrier info
+							let availableCarrierInfo = {}
+							if (state?.availableCarriers && availableCarrierId) {
+								const matchingCarrier = state.availableCarriers.find(ac => ac.id === availableCarrierId)
+								if (matchingCarrier) {
+									availableCarrierInfo = {
+										name: matchingCarrier.name,
+										slug: matchingCarrier.slug,
+										logo: matchingCarrier.logo,
+										carrier_type: matchingCarrier.carrier_type
+									}
+								}
+							}
+
+							const newCarrier = {
+								id: responseData.data.id,
+								carrier_id: responseData.data.carrier_id || availableCarrierId,
+								nickname: responseData.data.nickname,
+								is_enabled: responseData.data.is_enabled !== undefined ? responseData.data.is_enabled : 1,
+								name: availableCarrierInfo.name || responseData.data.nickname || 'New Carrier',
+								slug: availableCarrierInfo.slug || '',
+								logo: availableCarrierInfo.logo || '',
+								carrier_type: availableCarrierInfo.carrier_type,
+								...responseData.data
+							}
+
+							dispatch({
+								type: 'CARRIER_INSTALLATION_SUCCESS',
+								payload: {
+									carrierId: availableCarrierId,
+									newCarrier: newCarrier
+								}
+							})
+						} catch (e) {
+							console.error('Error handling carrier installation success:', e)
+						}
 					}
 				}
 
@@ -66,9 +110,9 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 					dispatch({
 						type: 'ALERT_MESSAGE',
 						payload: {
-							alertMessage: data.message,
+							alertMessage: responseData.message,
 							showAlertMessage: true,
-							alertMessageType: data.error ? 'error' : 'success',
+							alertMessageType: responseData.error ? 'error' : 'success',
 						},
 					})
 				}

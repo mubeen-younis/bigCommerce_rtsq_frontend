@@ -72,8 +72,10 @@ function AutoDetectResidentialComponent(props) {
 	)
 
 	const handleAddonToggle = (checked) => {
-		// Always send addon_id: 3 for Pallet Packaging
-		dispatch(changeAddonStatus(3, token))
+		// Send the actual Pallet Packaging addon ID
+		if (palletAddon?.id) {
+			dispatch(changeAddonStatus(palletAddon.id, token))
+		}
 		// Don't set local state - let Redux store update drive the UI
 	}
 

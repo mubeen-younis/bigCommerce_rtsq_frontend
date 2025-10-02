@@ -8,7 +8,6 @@ import {
 	validateHandlingFeeMarkup,
 } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions'
-import PackageRatingMethod from "../../PackageRatingMethod"
 import CutOffTime from '../../CutOffTime'
 import GroundTransit from '../../GroundTransit'
 import HazardousMaterial from '../../HazardousMaterial'
@@ -428,10 +427,6 @@ function QuoteSettingsComponentWweSmall(props) {
           
         		</Row>
 				
-				<PackageRatingMethod
-          			quoteSettingsState={quoteSettingsState}
-          			setQuoteSettingsState={setQuoteSettingsState}
-        		/>
 
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}

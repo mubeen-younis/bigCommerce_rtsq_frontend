@@ -5,7 +5,6 @@ import { postData } from '../../../Actions/Action'
 import { getQuoteSettings } from '../../../Actions/Settings'
 import { handlingFeeMarkup, validateHandlingFeeMarkup } from '../../../Utilities/numberValidation'
 import DeliveryEstimateOptions from '../../DeliveryEstimateOptions';
-import PackageRatingMethod from "../../PackageRatingMethod"
 import CutOffTime from '../../CutOffTime';
 import DomesticServices from './Services/DomesticServices'
 import InternationalServices from './Services/InternationalServices'
@@ -546,10 +545,6 @@ function QuoteSettingsComponentWweSmall(props) {
 					isUpsNewAPI = {UpsSmallApiType == 'new_api'}
         		/>
 
-				<PackageRatingMethod
-          			quoteSettingsState={quoteSettingsState}
-          			setQuoteSettingsState={setQuoteSettingsState}
-        		/>
 				<DeliveryEstimateOptions
 					quoteSettingsState={quoteSettingsState}
 					setQuoteSettingsState={setQuoteSettingsState}

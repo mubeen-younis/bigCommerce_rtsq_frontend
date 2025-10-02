@@ -6,12 +6,13 @@ import { postData } from '../../../Actions/Action'
 function ConnectionSettingsComponent() {
 	const [testType, setTestType] = useState(false)
 	const dispatch = useDispatch()
-	const { connectionSettings, token, carrierId } = useSelector(state => state)
+	const { connectionSettings, token, carrierId, isInstalling } = useSelector(state => state)
 
 	const handleTypeChange = type => setTestType(type)
 
 	const onFinish = values => {
 		values = {
+			...connectionSettings,
 			...values,
 			testType,
 			carrierId,
@@ -28,7 +29,9 @@ function ConnectionSettingsComponent() {
 		)
 	}
 
-	if (!connectionSettings) return <Skeleton active />
+	if (connectionSettings === null || connectionSettings === undefined) {
+		return <Skeleton active />
+	}
 
 	return (
 		<Fragment>
@@ -36,6 +39,42 @@ function ConnectionSettingsComponent() {
 				<strong>Note!</strong> You must have a USPS Small account to use this
 				application.
 			</div>
+			<Form
+				layout='vertical'
+				name='connection_settings'
+				className='connection-settings'
+				size='large'
+				initialValues={connectionSettings}
+				onFinish={onFinish}>
+				<Form.Item
+					className='mb-1'
+					label='Nickname'
+					name='nickname'
+					rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}>
+					<Input placeholder='e.g., Main USPS account' />
+				</Form.Item>
+
+				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
+					<Space>
+						<Button
+							type='primary'
+							size='large'
+							htmlType='submit'
+							name='test'
+							onClick={() => handleTypeChange(true)}>
+							Test Connection
+						</Button>
+						<Button
+							type='primary'
+							size='large'
+							htmlType='submit'
+							name='save'
+							onClick={() => handleTypeChange(false)}>
+							Save Settings
+						</Button>
+					</Space>
+				</Form.Item>
+			</Form>
 		</Fragment>
 	)
 }
