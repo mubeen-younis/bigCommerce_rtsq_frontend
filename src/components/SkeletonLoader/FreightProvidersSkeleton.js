@@ -18,11 +18,9 @@ const FreightProvidersSkeleton = ({ rows = 5, title = "Freight Providers" }) => 
         {/* Header */}
         <div style={{
           padding: '20px 24px 16px',
-          borderBottom: '1px solid #f0f0f0',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          borderRadius: '12px 12px 0 0'
+          borderBottom: '1px solid #f0f0f0'
         }}>
-          <Title level={4} style={{ margin: 0, color: '#fff' }}>
+          <Title level={4} style={{ margin: 0 }}>
             {title}
           </Title>
         </div>
