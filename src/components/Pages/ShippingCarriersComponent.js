@@ -293,22 +293,21 @@ function ShippingCarriersComponent(props) {
             actions.push(
               <Link
                 to={`/${record.id}?tab=2`}
-                style={{ display: 'inline-block' }}
+                style={{
+                  display: 'inline-block',
+                  color: '#1890ff',
+                  marginRight: '12px',
+                  marginBottom: '4px'
+                }}
                 key="carriers"
+                onClick={() =>
+                  dispatch({
+                    type: 'SET_ACTIVE_MENU',
+                    payload: record.id.toString(),
+                  })
+                }
               >
-                <Button
-                  type='default'
-                  size='small'
-                  style={{ marginRight: '8px', marginBottom: '4px' }}
-                  onClick={() =>
-                    dispatch({
-                      type: 'SET_ACTIVE_MENU',
-                      payload: record.id.toString(),
-                    })
-                  }
-                >
-                  Carriers
-                </Button>
+                Carriers
               </Link>
             );
           }
@@ -318,22 +317,21 @@ function ShippingCarriersComponent(props) {
             actions.push(
               <Link
                 to={`/${record.id}?tab=1`}
-                style={{ display: 'inline-block' }}
+                style={{
+                  display: 'inline-block',
+                  color: '#1890ff',
+                  marginRight: '12px',
+                  marginBottom: '4px'
+                }}
                 key="connection"
+                onClick={() =>
+                  dispatch({
+                    type: 'SET_ACTIVE_MENU',
+                    payload: record.id.toString(),
+                  })
+                }
               >
-                <Button
-                  type='default'
-                  size='small'
-                  style={{ marginRight: '8px', marginBottom: '4px' }}
-                  onClick={() =>
-                    dispatch({
-                      type: 'SET_ACTIVE_MENU',
-                      payload: record.id.toString(),
-                    })
-                  }
-                >
-                  Connection Settings
-                </Button>
+                Connection Settings
               </Link>
             );
           }
@@ -343,27 +341,26 @@ function ShippingCarriersComponent(props) {
             actions.push(
               <Link
                 to={`/${record.id}?tab=5`}
-                style={{ display: 'inline-block' }}
+                style={{
+                  display: 'inline-block',
+                  color: '#1890ff',
+                  marginRight: '12px',
+                  marginBottom: '4px'
+                }}
                 key="quote"
+                onClick={() =>
+                  dispatch({
+                    type: 'SET_ACTIVE_MENU',
+                    payload: record.id.toString(),
+                  })
+                }
               >
-                <Button
-                  type='default'
-                  size='small'
-                  style={{ marginRight: '8px', marginBottom: '4px' }}
-                  onClick={() =>
-                    dispatch({
-                      type: 'SET_ACTIVE_MENU',
-                      payload: record.id.toString(),
-                    })
-                  }
-                >
-                  Quote Settings
-                </Button>
+                Quote Settings
               </Link>
             );
           }
 
-          // Add Enable/Disable button
+          // Add Activate/Deactivate button
           actions.push(
             <Button
               key="toggle"
@@ -371,12 +368,12 @@ function ShippingCarriersComponent(props) {
               size='small'
               style={{ marginBottom: '4px' }}
               onClick={() => {
-                const newStatus = record.is_enabled === 1 ? 0 : 1; // Toggle between Enable (1) and Disable (0)
+                const newStatus = record.is_enabled === 1 ? 0 : 1; // Toggle between Activate (1) and Deactivate (0)
                 props.changeCarrierStatus(record.id, props.token, newStatus);
               }}
               disabled={isArchived}
             >
-              {record.is_enabled === 1 ? 'Disable' : 'Enable'}
+              {record.is_enabled === 1 ? 'Deactivate' : 'Activate'}
             </Button>
           );
 
@@ -442,17 +439,22 @@ function ShippingCarriersComponent(props) {
             justifyContent: 'center',
             alignItems: 'center'
           }}>
-            <Button
-              type='primary'
-              size='small'
-              onClick={() => {
-                // Do NOT install on click; just open connection settings for this carrier
-                openInstallModalWithSettings(record);
-              }}
-              disabled={!record.status}
-            >
-              {record.status ? 'Add Account' : 'Coming Soon'}
-            </Button>
+            {record.status ? (
+              <a
+                style={{
+                  color: '#1890ff',
+                  cursor: 'pointer'
+                }}
+                onClick={() => {
+                  // Do NOT install on click; just open connection settings for this carrier
+                  openInstallModalWithSettings(record);
+                }}
+              >
+                Add Account
+              </a>
+            ) : (
+              <span style={{ color: '#999' }}>Coming Soon</span>
+            )}
           </div>
         ),
       },
@@ -641,7 +643,7 @@ function ShippingCarriersComponent(props) {
                 onClick={toggleArchivedView}
                 style={{ padding: '0', height: 'auto', fontSize: '14px' }}
               >
-                {showArchived ? 'View Inactive' : 'View Archives'}
+                {showArchived ? 'View Inactive' : 'View Archive'}
               </Button>
             </div>
             {showArchived ? (
@@ -679,13 +681,13 @@ function ShippingCarriersComponent(props) {
         )}
       </div>
 
-      {/* Available Providers Section */}
+      {/* All Providers Section */}
       <div style={{ marginBottom: '25px' }}>
         {isLoadingAvailableCarriers ? (
-          <FreightProvidersSkeleton title="Available Providers" rows={6} />
+          <FreightProvidersSkeleton title="All Providers" rows={6} />
         ) : (
           <>
-            <Title level={4}>Available Providers</Title>
+            <Title level={4}>All Providers</Title>
             <div style={{
               marginBottom: '16px',
               padding: '0 4px',
@@ -724,7 +726,7 @@ function ShippingCarriersComponent(props) {
               />
             ) : (
               <div className={'no-data'}>
-                {searchTerm ? `No providers found matching "${searchTerm}"` : 'No Available Providers'}
+                {searchTerm ? `No providers found matching "${searchTerm}"` : 'No Providers Available'}
               </div>
             )}
           </>

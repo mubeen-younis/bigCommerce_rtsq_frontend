@@ -16,6 +16,7 @@ import {
 } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { submitRADSettings, getRADSettings, getRadPlans, changePlan, changeAddonSuspendStatus, changeDefaultAddress, getAddonAddressSettings } from "../../Actions/RAD"
+import { changeAddonStatus } from "../../Actions/EnitureStore"
 
 const { Title } = Typography
 const { Option } = Select
@@ -107,7 +108,13 @@ function ShippingGroupsComponent() {
   }
 
   const chanePlanAction = (plan_value) => {
-    if (plan_value === 'disable' || plan_value === 7 || plan_value === 22) {
+    if (plan_value === 'disable_addon') {
+      // Disable the RAD addon
+      const radAddon = installedAddons?.find(add => add.short_code === RAD_ADDON)
+      if (radAddon?.id) {
+        dispatch(changeAddonStatus(radAddon.id, token))
+      }
+    } else if (plan_value === 'disable' || plan_value === 7 || plan_value === 22) {
       dispatch(changePlan(token, plan_value, SetCancelSubsriptionVisible))
     } else {
       SetNewPlan(
@@ -117,7 +124,7 @@ function ShippingGroupsComponent() {
     }
   }
 
-  const changeAddonStatus = (value) => {
+  const handleAddonSuspendStatus = (value) => {
     let action = value ? 3 : 1
     dispatch(
       changeAddonSuspendStatus(
@@ -178,11 +185,11 @@ function ShippingGroupsComponent() {
             </Col>
 
             <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-              <div className="mb-3">
-                <label className="text-gray mb-2" style={{ display: 'block', fontWeight: 'bold' }}>
+              <div className="mb-1 mt-3">
+                <label className="text-gray mb-1" style={{ display: 'block', fontWeight: 'bold' }}>
                   Residential Address Detection Plan Management
                 </label>
-                <p className="text-gray mb-3" style={{ fontSize: '13px', lineHeight: '1.4' }}>
+                <p className="text-gray mb-2" style={{ fontSize: '13px', lineHeight: '1.4' }}>
                   When enabled, the address type of the ship-to address will be retrieved from a database sourced from the USPS.
                   The enabled shipping providers will be informed if the address is residential so that their residential delivery
                   fee is included in their shipping rate estimates. Refer to the{' '}
@@ -206,12 +213,12 @@ function ShippingGroupsComponent() {
                 <Select
                   defaultValue={
                     radPlans?.currentPackage === null
-                      ? 'Select Plan'
+                      ? 'disable_addon'
                       : radPlans?.currentPackage
                           ?.package_to_be_charge_status === 1
                       ? radPlans?.currentPackage?.to_be_charge_package_id
                       : radPlans?.currentPackage?.status === 0
-                      ? null
+                      ? 'disable_addon'
                       : radPlans?.currentPackage
                           ?.package_to_be_charge_status === 'Trial'
                       ? '100/15 days ($0)'
@@ -227,6 +234,9 @@ function ShippingGroupsComponent() {
                   name='plan_value'
                   size="small"
                 >
+                  <Option key='disable_addon' value='disable_addon'>
+                    Disable (default)
+                  </Option>
                   {radPlans?.currentPackage !== null &&
                   radPlans?.currentPackage?.current_package_name !==
                     'Trial' && radPlans?.currentPackage?.current_package_name !==
@@ -300,7 +310,7 @@ function ShippingGroupsComponent() {
                         <div className="mb-0">
                           <Checkbox
                             onChange={(e) => {
-                              changeAddonStatus(e.target.checked);
+                              handleAddonSuspendStatus(e.target.checked);
                               setSuspend(e.target.checked);
                             }}
                             checked={suspend || radPlans?.currentPackage?.status === 3}
