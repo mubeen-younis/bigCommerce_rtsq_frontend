@@ -38,6 +38,7 @@ function ShippingGroupsComponent() {
   const [cancelSubsriptionVisible, SetCancelSubsriptionVisible] = useState(false)
   const [newPlan, SetNewPlan] = useState(0)
   const [address, setAddress] = useState(1)
+  const [isAddonDisabled, setIsAddonDisabled] = useState(false)
   const RAD_ADDON = 'RAD'
 
   useEffect(() => {
@@ -74,7 +75,8 @@ function ShippingGroupsComponent() {
 
   const isRadSuspend = radPlans?.currentPackage?.status === null || radPlans?.currentPackage?.status === 3 || radPlans?.currentPackage?.status === 0
 
-  const isRadInstalled = installedAddons?.find(add => add.short_code === RAD_ADDON && add.is_enabled == 1) && !isRadSuspend
+  const isRadInstalled = ((installedAddons?.find(add => add.short_code === RAD_ADDON && add.is_enabled == 1) && !isRadSuspend) ||
+    (radPlans?.currentPackage !== null && radPlans?.currentPackage?.status !== 0)) && !isAddonDisabled
 		? true
 		: false
 
@@ -114,13 +116,17 @@ function ShippingGroupsComponent() {
       if (radAddon?.id) {
         dispatch(changeAddonStatus(radAddon.id, token))
       }
-    } else if (plan_value === 'disable' || plan_value === 7 || plan_value === 22) {
-      dispatch(changePlan(token, plan_value, SetCancelSubsriptionVisible))
+      setIsAddonDisabled(true)
     } else {
-      SetNewPlan(
-        radPlans?.allRadPackages.find(({ id }) => id === plan_value)
-      )
-      SetCancelSubsriptionVisible(true)
+      setIsAddonDisabled(false)
+      if (plan_value === 'disable' || plan_value === 7 || plan_value === 22) {
+        dispatch(changePlan(token, plan_value, SetCancelSubsriptionVisible))
+      } else {
+        SetNewPlan(
+          radPlans?.allRadPackages.find(({ id }) => id === plan_value)
+        )
+        SetCancelSubsriptionVisible(true)
+      }
     }
   }
 
@@ -250,12 +256,12 @@ function ShippingGroupsComponent() {
                     ? radPlans?.allRadPackages?.map(plan =>
                         plan?.status && (
                           plan.cost !== 0
-                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store'}>
+                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Storecc'}>
                               {Intl.NumberFormat('en-US').format(
                                 plan.htis
                               )}/mo (${plan.cost})
                               </Option>
-                            : (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Store')
+                            : (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Storecc')
                             ? <Option key={plan.id} value={plan.id}>
                               {Intl.NumberFormat('en-US').format(
                                 plan.htis
@@ -263,8 +269,8 @@ function ShippingGroupsComponent() {
                                 plan.cost
                               })
                               </Option>
-                            : (plan.name == 'Trial' && store?.plan_level != 'Sandbox Store')
-                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store'}>
+                            : (plan.name == 'Trial' && store?.plan_level != 'Sandboxcc Store')
+                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandboxcc Store'}>
                                 {Intl.NumberFormat('en-US').format(
                                   plan.htis
                                 )}/15 days (${plan.cost})
