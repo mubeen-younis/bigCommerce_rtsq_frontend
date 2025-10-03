@@ -256,12 +256,12 @@ function ShippingGroupsComponent() {
                     ? radPlans?.allRadPackages?.map(plan =>
                         plan?.status && (
                           plan.cost !== 0
-                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Storecc'}>
+                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store'}>
                               {Intl.NumberFormat('en-US').format(
                                 plan.htis
                               )}/mo (${plan.cost})
                               </Option>
-                            : (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Storecc')
+                            : (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Store')
                             ? <Option key={plan.id} value={plan.id}>
                               {Intl.NumberFormat('en-US').format(
                                 plan.htis
@@ -269,8 +269,8 @@ function ShippingGroupsComponent() {
                                 plan.cost
                               })
                               </Option>
-                            : (plan.name == 'Trial' && store?.plan_level != 'Sandboxcc Store')
-                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandboxcc Store'}>
+                            : (plan.name == 'Trial' && store?.plan_level != 'Sandbox Store')
+                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store'}>
                                 {Intl.NumberFormat('en-US').format(
                                   plan.htis
                                 )}/15 days (${plan.cost})
