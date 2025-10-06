@@ -215,13 +215,13 @@ function ShippingGroupsComponent() {
                 </label>
                 <Select
                   value={
-                    radPlans?.currentPackage === null
+                    !radPlans?.currentPackage || radPlans?.currentPackage === null
+                      ? 'disable_addon'
+                      : radPlans?.currentPackage?.status === 0
                       ? 'disable_addon'
                       : radPlans?.currentPackage
                           ?.package_to_be_charge_status === 1
                       ? radPlans?.currentPackage?.to_be_charge_package_id
-                      : radPlans?.currentPackage?.status === 0
-                      ? 'disable_addon'
                       : radPlans?.currentPackage
                           ?.package_to_be_charge_status === 'Trial'
                       ? '100/15 days ($0) - Trial'
@@ -230,7 +230,9 @@ function ShippingGroupsComponent() {
                       ? radPlans?.currentPackage
                           ?.total_hits  + '/' + radPlans?.currentPackage
                           ?.current_package_period + ' Development Plan ($0)'
-                      : radPlans?.currentPackage?.package_to_be_charge_status
+                      : typeof radPlans?.currentPackage?.package_to_be_charge_status === 'number'
+                      ? radPlans?.currentPackage?.package_to_be_charge_status
+                      : 'disable_addon'
                   }
                   style={{ width: '100%' }}
                   onChange={chanePlanAction}

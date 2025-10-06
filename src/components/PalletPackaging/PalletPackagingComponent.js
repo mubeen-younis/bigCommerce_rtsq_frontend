@@ -155,15 +155,14 @@ function AutoDetectResidentialComponent(props) {
 						</label>
 						<Select
 							value={
-								props?.palletPlans?.currentPackage === null
+								!props?.palletPlans?.currentPackage || props?.palletPlans?.currentPackage === null
+									? 'disable_addon'
+									: props?.palletPlans?.currentPackage?.status === 0
 									? 'disable_addon'
 									: props?.palletPlans?.currentPackage
 											?.package_to_be_charge_status === 1
 									? props?.palletPlans?.currentPackage
 											?.to_be_charge_package_id
-									: props?.palletPlans?.currentPackage?.status ===
-									  0
-									? 'disable_addon'
 									: props?.palletPlans?.currentPackage
 											?.package_to_be_charge_status === 'Trial'
 									? '100/15 days ($0) - Trial'
@@ -172,8 +171,9 @@ function AutoDetectResidentialComponent(props) {
 									? props?.palletPlans?.currentPackage
 											?.total_hits  + '/' + props?.palletPlans?.currentPackage
 											?.current_package_period + ' Development Plan ($0)'
-									: props?.palletPlans?.currentPackage
-											?.package_to_be_charge_status
+									: typeof props?.palletPlans?.currentPackage?.package_to_be_charge_status === 'number'
+									? props?.palletPlans?.currentPackage?.package_to_be_charge_status
+									: 'disable_addon'
 							}
 							style={{ width: '100%', marginBottom: '20px' }}
 							onChange={chanePlanAction}
