@@ -41,7 +41,10 @@ function AutoDetectResidentialComponent(props) {
 
 	const chanePlanAction = useCallback(
 		plan_value => {
-			if (plan_value === 'disable' || plan_value === 15 || plan_value === 23) {
+			if (plan_value === 'disable_addon') {
+				// Send package: 0 to backend for Disable (default)
+				dispatch(changePlan(token, 0, SetCancelSubsriptionVisible))
+			} else if (plan_value === 'disable' || plan_value === 15 || plan_value === 23) {
 				dispatch(changePlan(token, plan_value, SetCancelSubsriptionVisible))
 			} else {
 				const plan = palletPlans
@@ -151,16 +154,16 @@ function AutoDetectResidentialComponent(props) {
 							<strong>Auto-renew</strong>
 						</label>
 						<Select
-							defaultValue={
+							value={
 								props?.palletPlans?.currentPackage === null
-									? 'Select Plan'
+									? 'disable_addon'
 									: props?.palletPlans?.currentPackage
 											?.package_to_be_charge_status === 1
 									? props?.palletPlans?.currentPackage
 											?.to_be_charge_package_id
 									: props?.palletPlans?.currentPackage?.status ===
 									  0
-									? null
+									? 'disable_addon'
 									: props?.palletPlans?.currentPackage
 											?.package_to_be_charge_status === 'Trial'
 									? '100/15 days ($0) - Trial'
@@ -175,6 +178,9 @@ function AutoDetectResidentialComponent(props) {
 							style={{ width: '100%', marginBottom: '20px' }}
 							onChange={chanePlanAction}
 							name='plan_value'>
+							<Option key='disable_addon' value='disable_addon'>
+								Disable (default)
+							</Option>
 							{props?.palletPlans?.currentPackage !== null &&
 							props?.palletPlans?.currentPackage
 								?.current_package_name !== 'Trial' && props?.palletPlans?.currentPackage

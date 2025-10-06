@@ -111,11 +111,8 @@ function ShippingGroupsComponent() {
 
   const chanePlanAction = (plan_value) => {
     if (plan_value === 'disable_addon') {
-      // Disable the RAD addon
-      const radAddon = installedAddons?.find(add => add.short_code === RAD_ADDON)
-      if (radAddon?.id) {
-        dispatch(changeAddonStatus(radAddon.id, token))
-      }
+      // Send package: 0 to backend for Disable (default)
+      dispatch(changePlan(token, 0, SetCancelSubsriptionVisible))
       setIsAddonDisabled(true)
     } else {
       setIsAddonDisabled(false)
@@ -217,7 +214,7 @@ function ShippingGroupsComponent() {
                   Auto-renew Plan:
                 </label>
                 <Select
-                  defaultValue={
+                  value={
                     radPlans?.currentPackage === null
                       ? 'disable_addon'
                       : radPlans?.currentPackage

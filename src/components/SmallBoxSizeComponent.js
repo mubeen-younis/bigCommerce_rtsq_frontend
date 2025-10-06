@@ -43,7 +43,10 @@ function AutoDetectResidentialComponent(props) {
 	}
 
 	const chanePlanAction = plan_value => {
-		if (plan_value === 'disable' || plan_value === 1 || plan_value === 21) {
+		if (plan_value === 'disable_addon') {
+			// Send package: 0 to backend for Disable (default)
+			props.changePlan(props.token, 0, SetCancelSubsriptionVisible)
+		} else if (plan_value === 'disable' || plan_value === 1 || plan_value === 21) {
 			props.changePlan(props.token, plan_value, SetCancelSubsriptionVisible)
 		} else {
 			SetNewPlan(
@@ -182,20 +185,20 @@ function AutoDetectResidentialComponent(props) {
 							<strong>Auto-renew</strong>
 						</label>
 						<Select
-							defaultValue={
+							value={
 								props?.sbsPlans?.currentPackage === null
-									? 'Select Plan'
+									? 'disable_addon'
 									: props?.sbsPlans?.currentPackage
 											?.package_to_be_charge_status === 1
 									? props?.sbsPlans?.currentPackage
 											?.to_be_charge_package_id
 									: props?.sbsPlans?.currentPackage?.status === 0
-									? null
+									? 'disable_addon'
 									: props?.sbsPlans?.currentPackage
 											?.package_to_be_charge_status === 'Trial'
 									? '100/15 days ($0) - Trial'
 									: props?.sbsPlans?.currentPackage
-											?.package_to_be_charge_status === 'Development Plan' 
+											?.package_to_be_charge_status === 'Development Plan'
 									? props?.sbsPlans?.currentPackage
 											?.total_hits  + '/' + props?.sbsPlans?.currentPackage
 											?.current_package_period + ' Development Plan ($0)'
@@ -205,6 +208,9 @@ function AutoDetectResidentialComponent(props) {
 							style={{ width: '100%', marginBottom: '20px' }}
 							onChange={chanePlanAction}
 							name='plan_value'>
+							<Option key='disable_addon' value='disable_addon'>
+								Disable (default)
+							</Option>
 							{props?.sbsPlans?.currentPackage !== null &&
 							props?.sbsPlans?.currentPackage?.current_package_name !==
 								'Trial' && props?.sbsPlans?.currentPackage?.current_package_name !==
