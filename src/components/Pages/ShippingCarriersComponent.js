@@ -41,6 +41,16 @@ function ShippingCarriersComponent(props) {
   // Get carrier installation success state from Redux
   const { carrierInstallationSuccess, currentPlan } = useSelector(state => state);
 
+  // Debug: Log currentPlan to see its structure
+  useEffect(() => {
+    if (currentPlan) {
+      console.log('📊 Current Plan Data:', currentPlan);
+      console.log('📊 Plan Name:', currentPlan.name);
+      console.log('📊 Max Enabled Carriers:', currentPlan.max_enabled_carriers);
+      console.log('📊 All Current Plan Keys:', Object.keys(currentPlan));
+    }
+  }, [currentPlan]);
+
   // DEBUG: Track installedCarriers state changes
   useEffect(() => {
     console.log('🔍 DEBUG: installedCarriers state changed:', props.installedCarriers);
@@ -581,10 +591,10 @@ function ShippingCarriersComponent(props) {
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <div>
-                  <strong>Current plan:</strong> {currentPlan.plan_name || 'N/A'}
+                  <strong>Current plan:</strong> {currentPlan.name || 'N/A'}
                 </div>
                 <div>
-                  <strong>Enable upto {currentPlan.allowed_enabled_carriers || 0} providers</strong>
+                  <strong>Enable upto {currentPlan.max_enabled_carriers || currentPlan.allowed_enabled_carriers || 0} providers</strong>
                 </div>
               </div>
             </Card>
