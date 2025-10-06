@@ -39,7 +39,7 @@ function ShippingCarriersComponent(props) {
   const [selectedModalTab, setSelectedModalTab] = useState('1');
 
   // Get carrier installation success state from Redux
-  const { carrierInstallationSuccess } = useSelector(state => state);
+  const { carrierInstallationSuccess, currentPlan } = useSelector(state => state);
 
   // DEBUG: Track installedCarriers state changes
   useEffect(() => {
@@ -558,6 +558,40 @@ function ShippingCarriersComponent(props) {
     <Fragment>
       <PlanStatusHeading />
       <ExportCSVDownloadStatus />
+
+      {/* Current Plan Information */}
+      {currentPlan && (
+        <Row gutter={25}>
+          <Col
+            className='gutter-row mb-3'
+            xs={24}
+            sm={24}
+            md={24}
+            lg={24}
+            xl={24}
+          >
+            <Card
+              size='default'
+              style={{
+                borderRadius: '5px',
+                border: 'none',
+                fontSize: '1em',
+                backgroundColor: '#f0f5ff',
+              }}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div>
+                  <strong>Current plan:</strong> {currentPlan.plan_name || 'N/A'}
+                </div>
+                <div>
+                  <strong>Enable upto {currentPlan.allowed_enabled_carriers || 0} providers</strong>
+                </div>
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      )}
+
       <Modal
         title={'Connection Settings'}
         visible={isInstallModalOpen}
