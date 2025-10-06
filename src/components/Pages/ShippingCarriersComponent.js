@@ -39,17 +39,22 @@ function ShippingCarriersComponent(props) {
   const [selectedModalTab, setSelectedModalTab] = useState('1');
 
   // Get carrier installation success state from Redux
-  const { carrierInstallationSuccess, currentPlan } = useSelector(state => state);
+  const { carrierInstallationSuccess, currentPlan, plans } = useSelector(state => state);
+
+  // Get current plan details from plans array
+  const currentPlanDetails = plans?.find(p => p.id === currentPlan?.plan_id);
 
   // Debug: Log currentPlan to see its structure
   useEffect(() => {
     if (currentPlan) {
       console.log('📊 Current Plan Data:', currentPlan);
       console.log('📊 Plan Name:', currentPlan.name);
-      console.log('📊 Max Enabled Carriers:', currentPlan.max_enabled_carriers);
+      console.log('📊 Plan ID:', currentPlan.plan_id);
+      console.log('📊 Plans Array:', plans);
+      console.log('📊 Current Plan Details:', currentPlanDetails);
       console.log('📊 All Current Plan Keys:', Object.keys(currentPlan));
     }
-  }, [currentPlan]);
+  }, [currentPlan, plans, currentPlanDetails]);
 
   // DEBUG: Track installedCarriers state changes
   useEffect(() => {
@@ -591,10 +596,10 @@ function ShippingCarriersComponent(props) {
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <div>
-                  <strong>Current plan:</strong> {currentPlan.name || 'N/A'}
+                  <strong>Current plan:</strong> {currentPlan.name || currentPlanDetails?.name || 'N/A'}
                 </div>
                 <div>
-                  <strong>Enable upto {currentPlan.max_enabled_carriers || currentPlan.allowed_enabled_carriers || 0} providers</strong>
+                  <strong>Enable upto {currentPlanDetails?.max_enabled_carriers || currentPlan.max_enabled_carriers || currentPlan.allowed_enabled_carriers || 0} providers</strong>
                 </div>
               </div>
             </Card>
