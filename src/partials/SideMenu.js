@@ -239,52 +239,6 @@ function SideMenu(props) {
                 <Link to={`/user_guide`}>User Guide</Link>
               </Menu.Item>
 
-              <Title className={'carriers-name'} level={5}>
-                LTL Freight Providers
-              </Title>
-
-              {props?.installedCarriers
-                ?.filter((car) => car.carrier_type === 1)
-                .every((carr) => carr.is_enabled === 0) ? (
-                <Menu.Item>No Carrier is Installed/Enabled</Menu.Item>
-              ) : null}
-
-              {props?.installedCarriers?.map((carrier) =>
-                carrier.is_enabled === 1 && carrier.carrier_type === 1 ? (
-                  <Menu.Item
-                    key={carrier.id.toString()}
-                    warnkey={carrier.id.toString()}
-                    active='true'
-                    onClick={() => setActiveMenu(carrier.id.toString())}
-                  >
-                    <Link to={`/${carrier.id}`}>{carrier.name}</Link>
-                  </Menu.Item>
-                ) : null
-              )}
-
-              <Title className={'carriers-name'} level={5}>
-                Parcel & Postal Providers
-              </Title>
-
-              {props?.installedCarriers
-                ?.filter((car) => car.carrier_type === 2)
-                .every((carr) => carr.is_enabled === 0) ? (
-                <Menu.Item>No Carrier is Installed/Enabled</Menu.Item>
-              ) : null}
-
-              {props?.installedCarriers?.map((carrier) =>
-                carrier.is_enabled === 1 && carrier.carrier_type === 2 ? (
-                  <Menu.Item
-                    key={carrier.id.toString()}
-                    warnkey={carrier.id.toString()}
-                    onClick={() => setActiveMenu(carrier.id.toString())}
-                    active='true'
-                  >
-                    <Link to={`/${carrier.id}`}>{carrier.name}</Link>
-                  </Menu.Item>
-                ) : null
-              )}
-
               {/* Other addons */}
               {props?.installedAddons?.every((add) => {
                 const isSBSAddon = add.name?.trim() === 'Standard Box Sizes';
