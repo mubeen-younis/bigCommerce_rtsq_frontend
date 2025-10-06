@@ -122,10 +122,10 @@ function ShippingGroupsComponent() {
 
       // Send package: 0 to backend for Disable (default)
       dispatch(changePlan(token, 0, SetCancelSubsriptionVisible))
-        .then(() => {
-          // Refetch plans to ensure allRadPackages is updated
-          dispatch(getRadPlans(token))
-        })
+      // Refetch plans to ensure allRadPackages is updated
+      setTimeout(() => {
+        dispatch(getRadPlans(token))
+      }, 500)
       setIsAddonDisabled(true)
     } else {
       setIsAddonDisabled(false)
@@ -268,12 +268,12 @@ function ShippingGroupsComponent() {
                     ? radPlans?.allRadPackages?.map(plan =>
                         plan?.status && (
                           plan.cost !== 0
-                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store'}>
+                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store11'}>
                               {Intl.NumberFormat('en-US').format(
                                 plan.htis
                               )}/mo (${plan.cost})
                               </Option>
-                            : (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Store')
+                            : (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Store11')
                             ? <Option key={plan.id} value={plan.id}>
                               {Intl.NumberFormat('en-US').format(
                                 plan.htis
@@ -281,8 +281,8 @@ function ShippingGroupsComponent() {
                                 plan.cost
                               })
                               </Option>
-                            : (plan.name == 'Trial' && store?.plan_level != 'Sandbox Store')
-                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store'}>
+                            : (plan.name == 'Trial' && store?.plan_level != 'Sandbox Store11')
+                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store11'}>
                                 {Intl.NumberFormat('en-US').format(
                                   plan.htis
                                 )}/15 days (${plan.cost})

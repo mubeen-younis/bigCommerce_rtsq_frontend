@@ -53,10 +53,10 @@ function AutoDetectResidentialComponent(props) {
 
 				// Send package: 0 to backend for Disable (default)
 				dispatch(changePlan(token, 0, SetCancelSubsriptionVisible))
-					.then(() => {
-						// Refetch plans to ensure allPalletPackages is updated
-						dispatch(getPalletsPlans(token))
-					})
+				// Refetch plans to ensure allPalletPackages is updated
+				setTimeout(() => {
+					dispatch(getPalletsPlans(token))
+				}, 500)
 			} else if (plan_value === 'disable' || plan_value === 15 || plan_value === 23) {
 				dispatch(changePlan(token, plan_value, SetCancelSubsriptionVisible))
 			} else {
@@ -209,21 +209,21 @@ function AutoDetectResidentialComponent(props) {
 											<>
 											
 												{plan.cost !== 0
-													? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store'}>
+													? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store11'}>
 														{Intl.NumberFormat('en-US').format(
 															plan.htis)}/mo (${
 															plan.cost
 													  	})
 													  </Option>
-													: (plan.name == 'Development Plan' && store.plan_level == 'Sandbox Store')
+													: (plan.name == 'Development Plan' && store.plan_level == 'Sandbox Store11')
                           							? <Option key={plan.id} value={plan.id}>
                             							{Intl.NumberFormat('en-US').format(
                               								plan.htis)}/5 years {plan.name} (${
                               								plan.cost
                             							})
                             							</Option>
-                          							: (plan.name == 'Trial' && store.plan_level != 'Sandbox Store')
-                          							? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store'}>
+                          							: (plan.name == 'Trial' && store.plan_level != 'Sandbox Store11')
+                          							? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store11'}>
                               							{Intl.NumberFormat('en-US').format(
 															plan.htis)}/15 days (${plan.cost
 														})
