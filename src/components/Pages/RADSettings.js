@@ -110,33 +110,13 @@ function ShippingGroupsComponent() {
   }
 
   const chanePlanAction = (plan_value) => {
-    if (plan_value === 'disable_addon') {
-      // Optimistically update the state to show "no plan" message immediately
-      dispatch({
-        type: 'RAD_PLANS',
-        payload: {
-          ...radPlans,
-          currentPackage: null,
-        },
-      })
-
-      // Send package: 0 to backend for Disable (default)
-      dispatch(changePlan(token, 0, SetCancelSubsriptionVisible))
-      // Refetch plans to ensure allRadPackages is updated
-      setTimeout(() => {
-        dispatch(getRadPlans(token))
-      }, 500)
-      setIsAddonDisabled(true)
+    if (plan_value === 'disable' || plan_value === 7 || plan_value === 22) {
+      dispatch(changePlan(token, plan_value, SetCancelSubsriptionVisible))
     } else {
-      setIsAddonDisabled(false)
-      if (plan_value === 'disable' || plan_value === 7 || plan_value === 22) {
-        dispatch(changePlan(token, plan_value, SetCancelSubsriptionVisible))
-      } else {
-        SetNewPlan(
-          radPlans?.allRadPackages.find(({ id }) => id === plan_value)
-        )
-        SetCancelSubsriptionVisible(true)
-      }
+      SetNewPlan(
+        radPlans?.allRadPackages.find(({ id }) => id === plan_value)
+      )
+      SetCancelSubsriptionVisible(true)
     }
   }
 
@@ -229,9 +209,9 @@ function ShippingGroupsComponent() {
                 <Select
                   value={
                     !radPlans?.currentPackage || radPlans?.currentPackage === null
-                      ? 'disable_addon'
+                      ? 'disable'
                       : radPlans?.currentPackage?.status === 0
-                      ? 'disable_addon'
+                      ? 'disable'
                       : radPlans?.currentPackage
                           ?.package_to_be_charge_status === 1
                       ? radPlans?.currentPackage?.to_be_charge_package_id
@@ -245,25 +225,16 @@ function ShippingGroupsComponent() {
                           ?.current_package_period + ' Development Plan ($0)'
                       : typeof radPlans?.currentPackage?.package_to_be_charge_status === 'number'
                       ? radPlans?.currentPackage?.package_to_be_charge_status
-                      : 'disable_addon'
+                      : 'disable'
                   }
                   style={{ width: '100%' }}
                   onChange={chanePlanAction}
                   name='plan_value'
                   size="small"
                 >
-                  <Option key='disable_addon' value='disable_addon'>
+                  <Option key='disable' value='disable'>
                     Disable (default)
                   </Option>
-                  {radPlans?.currentPackage !== null &&
-                  radPlans?.currentPackage?.current_package_name !==
-                    'Trial' && radPlans?.currentPackage?.current_package_name !==
-                    'Development Plan' &&
-                  radPlans?.currentPackage?.status !== 0 ? (
-                    <Option key='disable' value='disable'>
-                      Disable
-                    </Option>
-                  ) : null}
                   {radPlans?.allRadPackages?.length > 0
                     ? radPlans?.allRadPackages?.map(plan =>
                         plan?.status && (
@@ -285,7 +256,7 @@ function ShippingGroupsComponent() {
                             ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store11'}>
                                 {Intl.NumberFormat('en-US').format(
                                   plan.htis
-                                )}/15 days (${plan.cost})
+                                )}/15 days (${plan.cost}) - Trial
                               </Option>
                             : null
                         )

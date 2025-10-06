@@ -43,23 +43,7 @@ function AutoDetectResidentialComponent(props) {
 	}
 
 	const chanePlanAction = plan_value => {
-		if (plan_value === 'disable_addon') {
-			// Optimistically update the state to show "no plan" message immediately
-			dispatch({
-				type: 'SBS_PLANS',
-				payload: {
-					...props.sbsPlans,
-					currentPackage: null,
-				},
-			})
-
-			// Send package: 0 to backend for Disable (default)
-			props.changePlan(props.token, 0, SetCancelSubsriptionVisible)
-			// Refetch plans to ensure allSbsPackages is updated
-			setTimeout(() => {
-				props.getSbsPlans(props.token)
-			}, 500)
-		} else if (plan_value === 'disable' || plan_value === 1 || plan_value === 21) {
+		if (plan_value === 'disable' || plan_value === 1 || plan_value === 21) {
 			props.changePlan(props.token, plan_value, SetCancelSubsriptionVisible)
 		} else {
 			SetNewPlan(
@@ -162,19 +146,6 @@ function AutoDetectResidentialComponent(props) {
 				anytime.
 			</Modal>
 
-			{/* Enable/Disable Checkbox */}
-			<Row gutter={24} justify='center' style={{ marginBottom: '15px' }}>
-				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={22}>
-					<Checkbox
-						checked={isAddonEnabled}
-						onChange={(e) => handleAddonToggle(e.target.checked)}
-						style={{ fontSize: '16px', fontWeight: '600' }}
-					>
-						Enable
-					</Checkbox>
-				</Col>
-			</Row>
-
 			<Row gutter={24} justify='center' className={'mb-3'}>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={22}>
 					<Card style={{ width: '100%' }}>
@@ -200,9 +171,9 @@ function AutoDetectResidentialComponent(props) {
 						<Select
 							value={
 								!props?.sbsPlans?.currentPackage || props?.sbsPlans?.currentPackage === null
-									? 'disable_addon'
+									? 'disable'
 									: props?.sbsPlans?.currentPackage?.status === 0
-									? 'disable_addon'
+									? 'disable'
 									: props?.sbsPlans?.currentPackage
 											?.package_to_be_charge_status === 1
 									? props?.sbsPlans?.currentPackage
@@ -217,35 +188,26 @@ function AutoDetectResidentialComponent(props) {
 											?.current_package_period + ' Development Plan ($0)'
 									: typeof props?.sbsPlans?.currentPackage?.package_to_be_charge_status === 'number'
 									? props?.sbsPlans?.currentPackage?.package_to_be_charge_status
-									: 'disable_addon'
+									: 'disable'
 							}
 							style={{ width: '100%', marginBottom: '20px' }}
 							onChange={chanePlanAction}
 							name='plan_value'>
-							<Option key='disable_addon' value='disable_addon'>
+							<Option key='disable' value='disable'>
 								Disable (default)
 							</Option>
-							{props?.sbsPlans?.currentPackage !== null &&
-							props?.sbsPlans?.currentPackage?.current_package_name !==
-								'Trial' && props?.sbsPlans?.currentPackage?.current_package_name !==
-								'Development Plan' &&
-							props?.sbsPlans?.currentPackage?.status !== 0 ? (
-								<Option key='disable' value='disable'>
-									Disable
-								</Option>
-							) : null}
 							{props?.sbsPlans?.allSbsPackages?.length > 0
 								? props?.sbsPlans?.allSbsPackages?.map(plan => (
 										<>
 											{plan.cost !== 0
-												? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store11'}>
+												? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store'}>
 													{Intl.NumberFormat(
 														'en-US'
 												  ).format(plan.htis)}/mo (${
 														plan.cost
 												  })
 												  </Option>
-												: (plan.name == 'Development Plan' && store.plan_level == 'Sandbox Store11')
+												: (plan.name == 'Development Plan' && store.plan_level == 'Sandbox Store')
 												? <Option key={plan.id} value={plan.id}>
 													{Intl.NumberFormat(
 														'en-US'
@@ -253,13 +215,13 @@ function AutoDetectResidentialComponent(props) {
 														plan.cost
 												  })
 													</Option>
-												: (plan.name == 'Trial' && store.plan_level != 'Sandbox Store11')
-												? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store11'}>
+												: (plan.name == 'Trial' && store.plan_level != 'Sandbox Store')
+												? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store'}>
 													{Intl.NumberFormat(
 														'en-US'
 												  ).format(plan.htis)}/15 days (${
 														plan.cost
-												  })
+												  }) - Trial
 												</Option>
 												: null
 											}
