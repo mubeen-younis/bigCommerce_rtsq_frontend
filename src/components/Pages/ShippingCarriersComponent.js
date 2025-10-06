@@ -44,6 +44,24 @@ function ShippingCarriersComponent(props) {
   // Get current plan details from plans array
   const currentPlanDetails = plans?.find(p => p.id === currentPlan?.plan_id);
 
+  // Plan ID to max carriers mapping
+  const planCarriersMapping = {
+    0: 0,  // No plan
+    1: 1,  // Trial - 1 carrier
+    2: 3,  // Basic - 3 carriers
+    3: 5,  // Standard - 5 carriers
+    4: 10, // Advanced - 10 carriers (unlimited)
+    5: 1,  // Development - 1 carrier
+  };
+
+  // Get max carriers allowed for current plan
+  const maxCarriers = currentPlan?.total_allowed_carriers
+    || currentPlanDetails?.max_enabled_carriers
+    || currentPlan?.max_enabled_carriers
+    || currentPlan?.allowed_enabled_carriers
+    || planCarriersMapping[currentPlan?.plan_id]
+    || 0;
+
   // Debug: Log currentPlan to see its structure
   useEffect(() => {
     if (currentPlan) {
@@ -52,9 +70,10 @@ function ShippingCarriersComponent(props) {
       console.log('📊 Plan ID:', currentPlan.plan_id);
       console.log('📊 Plans Array:', plans);
       console.log('📊 Current Plan Details:', currentPlanDetails);
+      console.log('📊 Max Carriers:', maxCarriers);
       console.log('📊 All Current Plan Keys:', Object.keys(currentPlan));
     }
-  }, [currentPlan, plans, currentPlanDetails]);
+  }, [currentPlan, plans, currentPlanDetails, maxCarriers]);
 
   // DEBUG: Track installedCarriers state changes
   useEffect(() => {
@@ -599,7 +618,7 @@ function ShippingCarriersComponent(props) {
                   <strong>Current plan:</strong> {currentPlan.name || currentPlanDetails?.name || 'N/A'}
                 </div>
                 <div>
-                  <strong>Enable upto {currentPlanDetails?.max_enabled_carriers || currentPlan.max_enabled_carriers || currentPlan.allowed_enabled_carriers || 0} providers</strong>
+                  <strong>Enable upto {maxCarriers} providers</strong>
                 </div>
               </div>
             </Card>
