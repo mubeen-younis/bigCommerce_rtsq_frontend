@@ -111,8 +111,21 @@ function ShippingGroupsComponent() {
 
   const chanePlanAction = (plan_value) => {
     if (plan_value === 'disable_addon') {
+      // Optimistically update the state to show "no plan" message immediately
+      dispatch({
+        type: 'RAD_PLANS',
+        payload: {
+          ...radPlans,
+          currentPackage: null,
+        },
+      })
+
       // Send package: 0 to backend for Disable (default)
       dispatch(changePlan(token, 0, SetCancelSubsriptionVisible))
+        .then(() => {
+          // Refetch plans to ensure allRadPackages is updated
+          dispatch(getRadPlans(token))
+        })
       setIsAddonDisabled(true)
     } else {
       setIsAddonDisabled(false)

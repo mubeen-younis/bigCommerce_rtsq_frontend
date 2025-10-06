@@ -42,8 +42,21 @@ function AutoDetectResidentialComponent(props) {
 	const chanePlanAction = useCallback(
 		plan_value => {
 			if (plan_value === 'disable_addon') {
+				// Optimistically update the state to show "no plan" message immediately
+				dispatch({
+					type: 'PLT_PLANS',
+					payload: {
+						...palletPlans,
+						currentPackage: null,
+					},
+				})
+
 				// Send package: 0 to backend for Disable (default)
 				dispatch(changePlan(token, 0, SetCancelSubsriptionVisible))
+					.then(() => {
+						// Refetch plans to ensure allPalletPackages is updated
+						dispatch(getPalletsPlans(token))
+					})
 			} else if (plan_value === 'disable' || plan_value === 15 || plan_value === 23) {
 				dispatch(changePlan(token, plan_value, SetCancelSubsriptionVisible))
 			} else {

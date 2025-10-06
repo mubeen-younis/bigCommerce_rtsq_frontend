@@ -44,8 +44,21 @@ function AutoDetectResidentialComponent(props) {
 
 	const chanePlanAction = plan_value => {
 		if (plan_value === 'disable_addon') {
+			// Optimistically update the state to show "no plan" message immediately
+			dispatch({
+				type: 'SBS_PLANS',
+				payload: {
+					...props.sbsPlans,
+					currentPackage: null,
+				},
+			})
+
 			// Send package: 0 to backend for Disable (default)
 			props.changePlan(props.token, 0, SetCancelSubsriptionVisible)
+			// Refetch plans to ensure allSbsPackages is updated
+			setTimeout(() => {
+				props.getSbsPlans(props.token)
+			}, 500)
 		} else if (plan_value === 'disable' || plan_value === 1 || plan_value === 21) {
 			props.changePlan(props.token, plan_value, SetCancelSubsriptionVisible)
 		} else {
