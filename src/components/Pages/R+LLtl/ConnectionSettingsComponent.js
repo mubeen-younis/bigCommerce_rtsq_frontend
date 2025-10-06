@@ -58,21 +58,21 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: props.isInstalling ? !connectionState.testType : false, message: 'Nickname' }]}> 
+                    rules={[{ required: props.isInstalling ? !connectionState.testType : false, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., R+L Carriers' />
 				</Form.Item>
-					
+
                 <Form.Item
                     label='Username'
                     name='username'
-                    rules={[{ required: props.isInstalling ? connectionState.testType : false, message: 'Username' }]}> 
+                    rules={[{ required: props.isInstalling ? connectionState.testType : false, message: 'Username is required' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
 
                 <Form.Item
                     label='Password'
                     name='password'
-                    rules={[{ required: props.isInstalling ? connectionState.testType : false, message: 'Password' }]}> 
+                    rules={[{ required: props.isInstalling ? connectionState.testType : false, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
@@ -80,7 +80,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='API Key'
                     name='api_key'
-                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'API Key Is Required ' }]}> 
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'API Key is required' }]}>
 					<Input placeholder='API Key' />
 				</Form.Item>
 

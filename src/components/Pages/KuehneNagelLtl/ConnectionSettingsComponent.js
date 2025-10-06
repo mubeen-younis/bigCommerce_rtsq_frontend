@@ -68,7 +68,7 @@ function ConnectionSettingsComponent(props) {
           className="mb-1"
           label="Nickname"
           name="nickname"
-          rules={[{ required: isInstalling ? !connectionState.testType : false, message: "Nickname" }]}
+          rules={[{ required: isInstalling ? !connectionState.testType : false, message: "Nickname is required" }]}
         >
           <Input placeholder="e.g., Kuehne + Nagel" />
         </Form.Item>

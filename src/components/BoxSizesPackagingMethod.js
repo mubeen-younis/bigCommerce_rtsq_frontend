@@ -168,11 +168,11 @@ const BoxSizesPackagingMethod = () => {
 		console.log('⚠️  No enabled small carriers found - component will not render')
 		console.log('Available carriers:', installedCarriers?.map(c => ({ name: c.name, slug: c.slug, enabled: c.is_enabled })))
 		return (
-			<Row gutter={24} justify="center" className="mb-3">
-				<Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={22}>
+			<Row gutter={30} justify="center" className="mb-3">
+				<Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
+					<Title level={4}>Packaging method when standard box sizes is disabled</Title>
 					<Card>
-						<Title level={4}>Packaging method when standard box sizes is disabled</Title>
-						<p style={{ color: 'orange' }}>
+						<p style={{ color: 'orange', marginBottom: 0 }}>
 							⚠️ No enabled small carriers detected. Enable at least one small carrier (UPS Small, FedEx Small, USPS Small, etc.) to use this feature.
 						</p>
 					</Card>
@@ -186,10 +186,10 @@ const BoxSizesPackagingMethod = () => {
 	}
 
 	return (
-		<Row gutter={24} justify="center" className="mb-3">
-			<Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={22}>
+		<Row gutter={30} justify="center" className="mb-3">
+			<Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
+				<Title level={4}>Packaging method when standard box sizes is disabled</Title>
 				<Card>
-					<Title level={4}>Packaging method when standard box sizes is disabled</Title>
 					<p style={{ marginBottom: '20px', color: '#666' }}>
 						These settings apply to all small carriers when standard box sizes are disabled.
 					</p>

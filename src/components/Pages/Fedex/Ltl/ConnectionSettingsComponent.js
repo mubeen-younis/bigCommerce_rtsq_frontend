@@ -126,7 +126,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: isInstalling ? !connectionState.testType : false, message: 'Nickname' }]}> 
+                    rules={[{ required: isInstalling ? !connectionState.testType : false, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., FedEx LTL' />
 				</Form.Item>
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>

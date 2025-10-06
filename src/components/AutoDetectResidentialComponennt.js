@@ -158,7 +158,7 @@ function AutoDetectResidentialComponent(props) {
                   ? null
                   : props?.radPlans?.currentPackage
                       ?.package_to_be_charge_status === 'Trial'
-                  ? '100/15 days ($0)'
+                  ? '100/15 days ($0) - Trial'
                   : props?.radPlans?.currentPackage
 											?.package_to_be_charge_status === 'Development Plan'
 									? props?.radPlans?.currentPackage

@@ -51,38 +51,38 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}> 
+                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., TQL' />
 				</Form.Item>
 				<Form.Item
 					label='Client ID'
 					name='clientId'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Client ID' }]}> 
+                    rules={[{ required: isInstalling ? testType : true, message: 'Client ID is required' }]}>
 					<Input placeholder='Client ID' />
 				</Form.Item>
 				<Form.Item
 					label='Client Secret'
 					name='clientSecret'
-                    rules={[{ required: isInstalling ? testType : false, message: 'Client Secret' }]}> 
+                    rules={[{ required: isInstalling ? testType : false, message: 'Client Secret is required' }]}>
 					<Input placeholder='Client Secret' />
 				</Form.Item>
 				<Form.Item
 					label='Username'
 					name='traxUsername'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Username' }]}> 
+                    rules={[{ required: isInstalling ? testType : true, message: 'Username is required' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
 				<Form.Item
 					label='Password'
 					name='traxPassword'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Password' }]}> 
+                    rules={[{ required: isInstalling ? testType : true, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 				<Form.Item
 					className='mb-1'
 					label='Subscription Key'
 					name='subscriptionKey'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Subscription Key' }]}> 
+                    rules={[{ required: isInstalling ? testType : true, message: 'Subscription Key is required' }]}>
 					<Input type='text' placeholder='Subscription Key' />
 				</Form.Item>
 

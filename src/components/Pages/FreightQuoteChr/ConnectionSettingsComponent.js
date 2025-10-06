@@ -64,14 +64,14 @@ function ConnectionSettingsComponent() {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}> 
+                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname is required' }]}>
 					<Input type='text' placeholder='e.g., C.H. Robinson' />
 				</Form.Item>
 				<Form.Item
 					className='mb-1'
 					label='Customer Code'
 					name='customer_code'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Customer Code' }]}> 
+                    rules={[{ required: isInstalling ? testType : true, message: 'Customer Code is required' }]}>
 					<Input type='text' placeholder='Customer Code' />
 				</Form.Item>
 

@@ -13,10 +13,10 @@ import DisplayLogsPage from '../components/DisplayLogsPage';
 
 const { TabPane } = Tabs;
 
-function TabsLayout({ onlyConnection = false, forcedSlug = '' }) {
+function TabsLayout({ onlyConnection = false, forcedSlug = '', initialTab = '1', hideHeader = false, hideTabs = false }) {
   const { installedCarriers, carrierId, quoteSettings } = useSelector(state => state);
   const [component, setComponent] = useState(0);
-  const [tab, setTab] = useState('1');
+  const [tab, setTab] = useState(initialTab);
   const [carrierSlug, setCarrierSlug] = useState('');
   const dispatch = useDispatch();
   const location = useLocation();
@@ -134,73 +134,93 @@ function TabsLayout({ onlyConnection = false, forcedSlug = '' }) {
   if (onlyConnection) {
     return (
       <Fragment>
-        <PlanStatusHeading />
-        <Tabs className={'tabs-wrp'} activeKey={tab} onChange={handleActiveTab} type='card'>
-          {carrierSlug !== 'dbsc' && (
-            <TabPane tab='Connection Settings' key='1'>
-              {connSettingsComponent}
-            </TabPane>
-          )}
-        </Tabs>
+        {!hideHeader && <PlanStatusHeading />}
+        {hideTabs ? (
+          connSettingsComponent
+        ) : (
+          <Tabs className={'tabs-wrp'} activeKey={tab} onChange={handleActiveTab} type='card'>
+            {carrierSlug !== 'dbsc' && (
+              <TabPane tab='Connection Settings' key='1'>
+                {connSettingsComponent}
+              </TabPane>
+            )}
+          </Tabs>
+        )}
       </Fragment>
     );
   }
 
   return (
     <Fragment>
-      <PlanStatusHeading />
+      {!hideHeader && <PlanStatusHeading />}
 
-      <Tabs className={'tabs-wrp'} activeKey={tab} onChange={handleActiveTab} type='card'>
-        {carrierSlug !== 'dbsc' && (
-          <TabPane tab='Connection Settings' key='1'>
-            {connSettingsComponent}
-          </TabPane>
-        )}
-        {[
-          'ltl-quotes',
-          'freightquote-ltl',
-          'tql-ltl',
-          'echo-ltl',
-          'freightquote-chr-ltl',
-          'priority-one-ltl',
-          'unishipper-ltl',
-          'kn-ltl'
-        ].includes(carrierSlug) && (
-          <TabPane tab='Carriers' key='2'>
-            <CarriersComponent />
-          </TabPane>
-        )}
-        {['gtz-ltl'].includes(carrierSlug) && (
-          <TabPane tab='Carriers' key='2'>
-            <GTZCarriersComponent />
-          </TabPane>
-        )}
-        {['dbsc'].includes(carrierSlug) && (
-          <>
-            <TabPane tab='Shipping Rates' key='9'>
-              <ShippingRatesComponent />
+      {hideTabs ? (
+        // Render content directly without tabs based on initialTab
+        <>
+          {initialTab === '1' && connSettingsComponent}
+          {initialTab === '2' && (
+            ['ltl-quotes', 'freightquote-ltl', 'tql-ltl', 'echo-ltl', 'freightquote-chr-ltl', 'priority-one-ltl', 'unishipper-ltl', 'kn-ltl'].includes(carrierSlug) ? (
+              <CarriersComponent />
+            ) : ['gtz-ltl'].includes(carrierSlug) ? (
+              <GTZCarriersComponent />
+            ) : null
+          )}
+          {initialTab === '5' && quoteSettingsComponent}
+          {initialTab === '7' && quoteSettings?.isEnableLogs && <DisplayLogsPage />}
+        </>
+      ) : (
+        <Tabs className={'tabs-wrp'} activeKey={tab} onChange={handleActiveTab} type='card'>
+          {carrierSlug !== 'dbsc' && (
+            <TabPane tab='Connection Settings' key='1'>
+              {connSettingsComponent}
             </TabPane>
-            <TabPane tab='Other Settings' key='10'>
-              <OtherSettings />
+          )}
+          {[
+            'ltl-quotes',
+            'freightquote-ltl',
+            'tql-ltl',
+            'echo-ltl',
+            'freightquote-chr-ltl',
+            'priority-one-ltl',
+            'unishipper-ltl',
+            'kn-ltl'
+          ].includes(carrierSlug) && (
+            <TabPane tab='Carriers' key='2'>
+              <CarriersComponent />
             </TabPane>
-            <TabPane tab='Shipping Classes' key='11'>
-              <ShippingClassesComponent />
+          )}
+          {['gtz-ltl'].includes(carrierSlug) && (
+            <TabPane tab='Carriers' key='2'>
+              <GTZCarriersComponent />
             </TabPane>
-          </>
-        )}
+          )}
+          {['dbsc'].includes(carrierSlug) && (
+            <>
+              <TabPane tab='Shipping Rates' key='9'>
+                <ShippingRatesComponent />
+              </TabPane>
+              <TabPane tab='Other Settings' key='10'>
+                <OtherSettings />
+              </TabPane>
+              <TabPane tab='Shipping Classes' key='11'>
+                <ShippingClassesComponent />
+              </TabPane>
+            </>
+          )}
 
-				{!['dbsc'].includes(carrierSlug) && (
-					<TabPane tab='Quote Settings' key='5'>
-						{quoteSettingsComponent}
-					</TabPane>
-				)}
-				
-				{quoteSettings?.isEnableLogs && (
-					<TabPane tab='Logs' key='7'>
-						<DisplayLogsPage />
-					</TabPane>
-				)}
-			</Tabs>
+          {!['dbsc'].includes(carrierSlug) && (
+            <TabPane tab='Quote Settings' key='5'>
+              {quoteSettingsComponent}
+            </TabPane>
+          )}
+
+          {quoteSettings?.isEnableLogs && (
+            <TabPane tab='Logs' key='7'>
+              <DisplayLogsPage />
+            </TabPane>
+          )}
+        </Tabs>
+      )}
 		</Fragment>
 	)
 }

@@ -65,20 +65,20 @@ function ConnectionSettingsComponent() {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}> 
+                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., FreightQuote' />
 				</Form.Item>
 				<Form.Item
 					label='Username'
 					name='username'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Username' }]}> 
+                    rules={[{ required: isInstalling ? testType : true, message: 'Username is required' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
 				<Form.Item
 					className='mb-1'
 					label='Password'
 					name='password'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Password' }]}> 
+                    rules={[{ required: isInstalling ? testType : true, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 

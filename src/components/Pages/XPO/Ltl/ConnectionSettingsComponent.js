@@ -64,7 +64,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: props.isInstalling ? !connectionState.testType : false, message: 'Nickname' }]}> 
+                    rules={[{ required: props.isInstalling ? !connectionState.testType : false, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., XPO' />
 				</Form.Item>
 				<Form.Item
@@ -73,7 +73,7 @@ function ConnectionSettingsComponent(props) {
 					rules={[
                         {
                             required: props.isInstalling ? connectionState.testType : true,
-                            message: 'Pickup/Delivery Account Number',
+                            message: 'Pickup/Delivery Account Number is required',
                         },
 					]}>
 					<Input placeholder='Pickup/Delivery Account Number' />
@@ -82,14 +82,14 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Username'
                     name='username'
-                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Username' }]}> 
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Username is required' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
 
                 <Form.Item
                     label='Password'
                     name='password'
-                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Password' }]}> 
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
@@ -99,7 +99,7 @@ function ConnectionSettingsComponent(props) {
                     rules={[
                         {
                             required: props.isInstalling ? connectionState.testType : true,
-                            message: 'Pickup/Delivery Postal Code',
+                            message: 'Pickup/Delivery Postal Code is required',
                         },
                     ]}>
 					<Input placeholder='Pickup/Delivery Postal Code' />
@@ -111,7 +111,7 @@ function ConnectionSettingsComponent(props) {
                     rules={[
                         {
                             required: accessType === 2,
-                            message: 'Bill To Account Number',
+                            message: 'Bill To Account Number is required',
                         },
                     ]}>
 					<Input placeholder='Bill To Account Number ' />
@@ -134,7 +134,7 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item
 					name='access_level'
 					// label='Access Level'
-					rules={[{ required: false, message: 'Access Level' }]}>
+					rules={[{ required: false, message: 'Access Level is required' }]}>
 					<Radio.Group>
 						<Radio onChange={() => setAccessType(1)} value='test'>
 							Test Account Number

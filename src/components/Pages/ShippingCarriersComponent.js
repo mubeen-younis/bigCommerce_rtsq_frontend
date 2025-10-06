@@ -32,6 +32,11 @@ function ShippingCarriersComponent(props) {
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [activeCarrierId, setActiveCarrierId] = useState(null);
   const [showArchived, setShowArchived] = useState(false);
+  const [isConnectionModalOpen, setIsConnectionModalOpen] = useState(false);
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [isCarriersModalOpen, setIsCarriersModalOpen] = useState(false);
+  const [selectedCarrierForModal, setSelectedCarrierForModal] = useState(null);
+  const [selectedModalTab, setSelectedModalTab] = useState('1');
 
   // Get carrier installation success state from Redux
   const { carrierInstallationSuccess } = useSelector(state => state);
@@ -209,6 +214,54 @@ function ShippingCarriersComponent(props) {
     setIsInstallModalOpen(true);
   };
 
+  const openConnectionSettingsModal = async (carrier) => {
+    setSelectedCarrierForModal(carrier);
+    setSelectedModalTab('1');
+    dispatch({ type: 'CARRIER_ID', payload: carrier.id });
+    dispatch(getConnectionSettings(props.token, carrier.id));
+    dispatch(getInsuraceStatus(props.token, carrier.id));
+    if (props.token) {
+      dispatch(getThresholdSettings(props.token));
+      dispatch(getStaffNoteSettings(props.token));
+    }
+    setIsConnectionModalOpen(true);
+  };
+
+  const openQuoteSettingsModal = async (carrier) => {
+    setSelectedCarrierForModal(carrier);
+    setSelectedModalTab('5');
+    dispatch({ type: 'CARRIER_ID', payload: carrier.id });
+    dispatch(getConnectionSettings(props.token, carrier.id));
+    dispatch(getQuoteSettings(props.token, carrier.id));
+    dispatch(getInsuraceStatus(props.token, carrier.id));
+    if (props.token) {
+      dispatch(getThresholdSettings(props.token));
+      dispatch(getStaffNoteSettings(props.token));
+    }
+    setIsQuoteModalOpen(true);
+  };
+
+  const openCarriersModal = async (carrier) => {
+    setSelectedCarrierForModal(carrier);
+    setSelectedModalTab('2');
+    dispatch({ type: 'CARRIER_ID', payload: carrier.id });
+    dispatch(getConnectionSettings(props.token, carrier.id));
+    dispatch(getQuoteSettings(props.token, carrier.id));
+    dispatch(getInsuraceStatus(props.token, carrier.id));
+    if (props.token) {
+      dispatch(getThresholdSettings(props.token));
+      dispatch(getStaffNoteSettings(props.token));
+    }
+    setIsCarriersModalOpen(true);
+  };
+
+  const closeAllModals = () => {
+    setIsConnectionModalOpen(false);
+    setIsQuoteModalOpen(false);
+    setIsCarriersModalOpen(false);
+    setSelectedCarrierForModal(null);
+  };
+
   // Create table columns for providers
   const getProviderTableColumns = (isArchived = false, isDeactivated = false) => {
     return [
@@ -291,72 +344,66 @@ function ShippingCarriersComponent(props) {
           // Add Carriers link for 3PL carriers
           if (hasCarriersTab) {
             actions.push(
-              <Link
-                to={`/${record.id}?tab=2`}
+              <a
                 style={{
                   display: 'inline-block',
                   color: '#1890ff',
                   marginRight: '12px',
-                  marginBottom: '4px'
+                  marginBottom: '4px',
+                  cursor: 'pointer'
                 }}
                 key="carriers"
-                onClick={() =>
-                  dispatch({
-                    type: 'SET_ACTIVE_MENU',
-                    payload: record.id.toString(),
-                  })
-                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  openCarriersModal(record);
+                }}
               >
                 Carriers
-              </Link>
-            );
-          }
-
-          // Add Connection Settings link (not available for usps-small and dbsc)
-          if (record.slug !== 'usps-small' && record.slug !== 'dbsc') {
-            actions.push(
-              <Link
-                to={`/${record.id}?tab=1`}
-                style={{
-                  display: 'inline-block',
-                  color: '#1890ff',
-                  marginRight: '12px',
-                  marginBottom: '4px'
-                }}
-                key="connection"
-                onClick={() =>
-                  dispatch({
-                    type: 'SET_ACTIVE_MENU',
-                    payload: record.id.toString(),
-                  })
-                }
-              >
-                Connection Settings
-              </Link>
+              </a>
             );
           }
 
           // Add Quote Settings link (not available for dbsc)
           if (record.slug !== 'dbsc') {
             actions.push(
-              <Link
-                to={`/${record.id}?tab=5`}
+              <a
                 style={{
                   display: 'inline-block',
                   color: '#1890ff',
                   marginRight: '12px',
-                  marginBottom: '4px'
+                  marginBottom: '4px',
+                  cursor: 'pointer'
                 }}
                 key="quote"
-                onClick={() =>
-                  dispatch({
-                    type: 'SET_ACTIVE_MENU',
-                    payload: record.id.toString(),
-                  })
-                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  openQuoteSettingsModal(record);
+                }}
               >
                 Quote Settings
-              </Link>
+              </a>
+            );
+          }
+
+          // Add Connection Settings link (not available for usps-small and dbsc)
+          if (record.slug !== 'usps-small' && record.slug !== 'dbsc') {
+            actions.push(
+              <a
+                style={{
+                  display: 'inline-block',
+                  color: '#1890ff',
+                  marginRight: '12px',
+                  marginBottom: '4px',
+                  cursor: 'pointer'
+                }}
+                key="connection"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openConnectionSettingsModal(record);
+                }}
+              >
+                Connection Settings
+              </a>
             );
           }
 
@@ -419,12 +466,14 @@ function ShippingCarriersComponent(props) {
         width: 250,
         render: (name, record) => (
           <div>
-            <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>
+            <div style={{ fontWeight: 'bold' }}>
               {name}
             </div>
-            <div style={{ color: '#666', fontSize: '12px' }}>
-              {record.status ? 'Available for installation' : 'Coming soon'}
-            </div>
+            {!record.status && (
+              <div style={{ color: '#666', fontSize: '12px' }}>
+                Coming soon
+              </div>
+            )}
           </div>
         ),
       },
@@ -522,7 +571,49 @@ function ShippingCarriersComponent(props) {
         destroyOnClose
       >
         {isInstallModalOpen && activeCarrierId ? (
-          <TabsLayout onlyConnection forcedSlug={props.availableCarriers?.find(c => c.id === activeCarrierId)?.slug || ''} />
+          <TabsLayout onlyConnection forcedSlug={props.availableCarriers?.find(c => c.id === activeCarrierId)?.slug || ''} hideHeader={true} hideTabs={true} />
+        ) : null}
+      </Modal>
+
+      {/* Connection Settings Modal */}
+      <Modal
+        title={`Connection Settings - ${selectedCarrierForModal?.nickname || selectedCarrierForModal?.name || ''}`}
+        visible={isConnectionModalOpen}
+        onCancel={closeAllModals}
+        footer={null}
+        width={900}
+        destroyOnClose
+      >
+        {isConnectionModalOpen && selectedCarrierForModal ? (
+          <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="1" hideHeader={true} hideTabs={true} />
+        ) : null}
+      </Modal>
+
+      {/* Quote Settings Modal */}
+      <Modal
+        title={`Quote Settings - ${selectedCarrierForModal?.nickname || selectedCarrierForModal?.name || ''}`}
+        visible={isQuoteModalOpen}
+        onCancel={closeAllModals}
+        footer={null}
+        width={900}
+        destroyOnClose
+      >
+        {isQuoteModalOpen && selectedCarrierForModal ? (
+          <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="5" hideHeader={true} hideTabs={true} />
+        ) : null}
+      </Modal>
+
+      {/* Carriers Modal */}
+      <Modal
+        title={`Carriers - ${selectedCarrierForModal?.nickname || selectedCarrierForModal?.name || ''}`}
+        visible={isCarriersModalOpen}
+        onCancel={closeAllModals}
+        footer={null}
+        width={900}
+        destroyOnClose
+      >
+        {isCarriersModalOpen && selectedCarrierForModal ? (
+          <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="2" hideHeader={true} hideTabs={true} />
         ) : null}
       </Modal>
       <Row gutter={25}>
@@ -628,15 +719,15 @@ function ShippingCarriersComponent(props) {
         )}
       </div>
 
-      {/* Deactivated/Archived Providers Section */}
+      {/* Inactive Installed/Archived Providers Section */}
       <div style={{ marginBottom: '25px' }}>
         {isLoading ? (
-          <FreightProvidersSkeleton title={showArchived ? "Archived Providers" : "Deactivated Providers"} rows={2} />
+          <FreightProvidersSkeleton title={showArchived ? "Archived Providers" : "Inactive Installed Providers"} rows={2} />
         ) : (
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <Title level={4} style={{ margin: 0 }}>
-                {showArchived ? 'Archived Providers' : 'Deactivated Providers'}
+                {showArchived ? 'Archived Providers' : 'Inactive Installed Providers'}
               </Title>
               <Button
                 type="link"
@@ -673,7 +764,7 @@ function ShippingCarriersComponent(props) {
                     showHeader={true}
                   />
                 ) : (
-                  <div className={'no-data'}>No Deactivated Providers</div>
+                  <div className={'no-data'}>No Inactive Installed Providers</div>
                 );
               })()
             )}

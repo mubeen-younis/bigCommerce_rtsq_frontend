@@ -73,7 +73,7 @@ function ConnectionSettingsComponent(props) {
           className="mb-1"
           label="Nickname"
           name="nickname"
-          rules={[{ required: isInstalling ? !connectionState.testType : false, message: "Nickname" }]}
+          rules={[{ required: isInstalling ? !connectionState.testType : false, message: "Nickname is required" }]}
         >
           <Input placeholder="e.g., Unishippers LTL" />
         </Form.Item>
@@ -107,14 +107,14 @@ function ConnectionSettingsComponent(props) {
           className="mt-1"
           label="Username"
           name="username"
-          rules={[{ required: isInstalling ? connectionState.testType : false, message: "Username" }]}
+          rules={[{ required: isInstalling ? connectionState.testType : false, message: "Username is required" }]}
         >
           <Input placeholder="Username" maxLength={100} />
         </Form.Item>
         <Form.Item
           label="Password"
           name="password"
-          rules={[{ required: isInstalling ? connectionState.testType : false, message: "Password" }]}
+          rules={[{ required: isInstalling ? connectionState.testType : false, message: "Password is required" }]}
         >
           <Input type="text" placeholder="Password" maxLength={100} />
         </Form.Item>

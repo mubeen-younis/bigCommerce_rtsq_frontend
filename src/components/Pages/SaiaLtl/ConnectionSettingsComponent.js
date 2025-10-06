@@ -55,20 +55,20 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}> 
+                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., SAIA' />
 				</Form.Item>
 				<Form.Item
 					label='Account Number'
 					name='account_number'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Account Number' }]}> 
+                    rules={[{ required: isInstalling ? testType : true, message: 'Account Number is required' }]}>
 					<Input placeholder='Account Number' />
 				</Form.Item>
 				<Form.Item
 					label='Account Number Postal Code'
 					name='original_postal_code'
 					rules={[
-                        { required: isInstalling ? testType : true, message: 'Account Number Postal Code' },
+                        { required: isInstalling ? testType : true, message: 'Account Number Postal Code is required' },
 					]}>
 					<Input placeholder='Account Number Postal Code' />
 				</Form.Item>
@@ -80,14 +80,14 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Username'
                     name='userID'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Username' }]}> 
+                    rules={[{ required: isInstalling ? testType : true, message: 'Username is required' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
 				<Form.Item
 					className='mb-1'
 					label='Password'
 					name='password'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Password' }]}> 
+                    rules={[{ required: isInstalling ? testType : true, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 

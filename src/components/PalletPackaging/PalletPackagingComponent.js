@@ -83,43 +83,20 @@ function AutoDetectResidentialComponent(props) {
 
 	return (
 		<Fragment>
-			<Row gutter={24}>
+			<Row gutter={24} justify='center'>
 				<Col
 					className='gutter-row mb-3'
 					xs={24}
 					sm={24}
 					md={24}
 					lg={24}
-					xl={24}>
-					<Title level={3} style={{ textAlign: 'center' }}>
+					xl={22}>
+					<Title level={3}>
 						Pallet Packaging
 					</Title>
 				</Col>
 			</Row>
 
-			{/* Enable/Disable Checkbox */}
-			<Row gutter={24}>
-				<Col
-					className='gutter-row mb-3'
-					xs={24}
-					sm={24}
-					md={24}
-					lg={24}
-					xl={24}>
-					<Card>
-						<Checkbox
-							checked={isAddonEnabled}
-							onChange={(e) => handleAddonToggle(e.target.checked)}
-							style={{ fontSize: '16px', fontWeight: '600' }}
-						>
-							Enable Pallet Packaging
-						</Checkbox>
-						<p style={{ marginTop: '8px', marginBottom: '0', color: '#666', fontSize: '13px' }}>
-							Toggle this to enable or disable the Pallet Packaging addon functionality.
-						</p>
-					</Card>
-				</Col>
-			</Row>
 			<Modal
 				title='Note!'
 				visible={cancelSubsriptionVisible}
@@ -137,6 +114,19 @@ function AutoDetectResidentialComponent(props) {
 				on the next renewal date by updating the selection on this page at
 				anytime.
 			</Modal>
+
+			{/* Enable/Disable Checkbox */}
+			<Row gutter={24} justify='center' style={{ marginBottom: '15px' }}>
+				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={22}>
+					<Checkbox
+						checked={isAddonEnabled}
+						onChange={(e) => handleAddonToggle(e.target.checked)}
+						style={{ fontSize: '16px', fontWeight: '600' }}
+					>
+						Enable
+					</Checkbox>
+				</Col>
+			</Row>
 
 			<Row gutter={24} justify='center' className={'mb-3'}>
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={22}>
@@ -173,7 +163,7 @@ function AutoDetectResidentialComponent(props) {
 									? null
 									: props?.palletPlans?.currentPackage
 											?.package_to_be_charge_status === 'Trial'
-									? '100/15 days ($0)'
+									? '100/15 days ($0) - Trial'
 									: props?.palletPlans?.currentPackage
 											?.package_to_be_charge_status === 'Development Plan'
 									? props?.palletPlans?.currentPackage

@@ -52,14 +52,14 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: props.isInstalling ? !connectionState.testType : false, message: 'Nickname' }]}
+                    rules={[{ required: props.isInstalling ? !connectionState.testType : false, message: 'Nickname is required' }]}
                 >
 					<Input placeholder='e.g., ODFL' />
 				</Form.Item>
 				<Form.Item
 					label='Account Number'
 					name='customer_number'
-                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Account Number' }]}
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Account Number is required' }]}
 				>
 					<Input placeholder='Account Number' />
 				</Form.Item>
@@ -67,7 +67,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Username'
                     name='username'
-                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Username' }]}
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Username is required' }]}
                 >
 					<Input placeholder='Username' />
 				</Form.Item>
@@ -75,7 +75,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Password'
                     name='password'
-                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Password' }]}
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Password is required' }]}
                 >
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
@@ -84,7 +84,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Billing Postal Code'
                     name='billing_postal_Code'
-                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Billing Postal Code' }]}
+                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Billing Postal Code is required' }]}
                 >
 					<Input placeholder='Billing Postal Code' />
 				</Form.Item>

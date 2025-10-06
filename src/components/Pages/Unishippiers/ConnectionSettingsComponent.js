@@ -113,7 +113,7 @@ function ConnectionSettingsComponent(props) {
 					className='mb-1'
 					label='Nickname'
 					name='nickname'
-					rules={[{ required: false, message: 'Nickname' }]}>
+					rules={[{ required: false, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., Unishippers Small' />
 				</Form.Item>
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>
@@ -136,7 +136,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='Client ID'
 							name='clientId'
-							rules={[{ required: true, message: 'Client ID' }]}
+							rules={[{ required: true, message: 'Client ID is required' }]}
 						>
 							<Input placeholder='Client ID' maxLength={100} />
 						</Form.Item>
@@ -144,7 +144,7 @@ function ConnectionSettingsComponent(props) {
 							className='mb-1'
 							label='Client Secret'
 							name='clientSecret'
-							rules={[{ required: true, message: 'Client Secret' }]}
+							rules={[{ required: true, message: 'Client Secret is required' }]}
 						>
 							<Input placeholder='Client Secret' maxLength={100} />
 						</Form.Item>
@@ -163,13 +163,13 @@ function ConnectionSettingsComponent(props) {
 							className='mt-1'
 							label='Username'
 							name='new_api_username'
-							rules={[{ required: false, message: 'Username' }]}>
+							rules={[{ required: false, message: 'Username is required' }]}>
 							<Input placeholder='Username' />
 						</Form.Item>
 						<Form.Item
 							label='Password'
 							name='new_api_password'
-							rules={[{ required: false, message: 'Password' }]}>
+							rules={[{ required: false, message: 'Password is required' }]}>
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
 					</>
@@ -179,26 +179,26 @@ function ConnectionSettingsComponent(props) {
 							label='Unishippers Customer Number'
 							name='unishippers_customer_number'
 							rules={[
-								{ required: true, message: 'Unishippers Customer Number' },
+								{ required: true, message: 'Unishippers Customer Number is required' },
 							]}>
 							<Input placeholder='Unishippers Customer Number' />
 						</Form.Item>
 						<Form.Item
 							label='UPS Account Number'
 							name='ups_account_number'
-							rules={[{ required: true, message: 'UPS Account Number' }]}>
+							rules={[{ required: true, message: 'UPS Account Number is required' }]}>
 							<Input placeholder='UPS Account Number' />
 						</Form.Item>
 						<Form.Item
 							label='Username'
 							name='username'
-							rules={[{ required: true, message: 'Username' }]}>
+							rules={[{ required: true, message: 'Username is required' }]}>
 							<Input placeholder='Username' />
 						</Form.Item>
 						<Form.Item
 							label='Password'
 							name='password'
-							rules={[{ required: true, message: 'Password' }]}>
+							rules={[{ required: true, message: 'Password is required' }]}>
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
 						<Form.Item label='Request Key' name='request_key' className='mb-1'>
