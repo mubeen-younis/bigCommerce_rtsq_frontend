@@ -58,14 +58,14 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname is required' }]}>
+                    rules={[{ required: !testType, message: 'Nickname is required when saving' }]}>
 					<Input placeholder='e.g., Warehouse ABF' />
 				</Form.Item>
 				<Form.Item
 					className='mb-1'
 					label='ID'
 					name='business_id'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Business ID is required' }]}>
+                    rules={[{ required: testType, message: 'Business ID is required' }]}>
 					<Input placeholder='Business ID' />
 				</Form.Item>	
 

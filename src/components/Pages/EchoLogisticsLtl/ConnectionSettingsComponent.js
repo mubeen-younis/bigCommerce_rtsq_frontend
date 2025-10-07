@@ -51,20 +51,20 @@ function ConnectionSettingsComponent() {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname is required' }]}>
+                    rules={[{ required: !testType, message: 'Nickname is required when saving' }]}>
 					<Input placeholder='e.g., Echo' />
 				</Form.Item>
 				<Form.Item
 					label='Account Number'
 					name='account_number'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Account Number is required' }]}>
+                    rules={[{ required: testType, message: 'Account Number is required' }]}>
 					<Input placeholder='Account Number' />
 				</Form.Item>
 				<Form.Item
 					className='mb-1'
 					label='API Key'
 					name='api_key'
-                    rules={[{ required: isInstalling ? testType : true, message: 'API Key is required' }]}>
+                    rules={[{ required: testType, message: 'API Key is required' }]}>
 					<Input placeholder='API Key' />
 				</Form.Item>
 

@@ -67,7 +67,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname' }]}> 
+                    rules={[{ required: !testType, message: 'Nickname is required when saving' }]}>
 					<Input placeholder='e.g., Day & Ross' />
 				</Form.Item>
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>
@@ -88,7 +88,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Billing Account Number'
                     name='billing_account_number'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Billing Account Number' }]}> 
+                    rules={[{ required: testType, message: 'Billing Account Number is required' }]}>
 					<Input placeholder='Billing Account Number' />
 				</Form.Item>
 				<Form.Item
@@ -99,14 +99,14 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Email'
                     name='email'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Email' }]}> 
+                    rules={[{ required: testType, message: 'Email is required' }]}>
 					<Input placeholder='Email' />
 				</Form.Item>
                 <Form.Item
                     className='mb-1'
                     label='Password'
                     name='password'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Password' }]}> 
+                    rules={[{ required: testType, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 

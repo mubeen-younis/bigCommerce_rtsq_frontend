@@ -64,7 +64,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: props.isInstalling ? !connectionState.testType : false, message: 'Nickname is required' }]}>
+                    rules={[{ required: !connectionState.testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., XPO' />
 				</Form.Item>
 				<Form.Item
@@ -72,7 +72,7 @@ function ConnectionSettingsComponent(props) {
 					name='delivery_account_number'
 					rules={[
                         {
-                            required: props.isInstalling ? connectionState.testType : true,
+                            required: props.connectionState.testType,
                             message: 'Pickup/Delivery Account Number is required',
                         },
 					]}>
@@ -82,14 +82,14 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Username'
                     name='username'
-                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Username is required' }]}>
+                    rules={[{ required: props.connectionState.testType, message: 'Username is required' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
 
                 <Form.Item
                     label='Password'
                     name='password'
-                    rules={[{ required: props.isInstalling ? connectionState.testType : true, message: 'Password is required' }]}>
+                    rules={[{ required: props.connectionState.testType, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
@@ -98,7 +98,7 @@ function ConnectionSettingsComponent(props) {
                     name='delivery_postal_code'
                     rules={[
                         {
-                            required: props.isInstalling ? connectionState.testType : true,
+                            required: props.connectionState.testType,
                             message: 'Pickup/Delivery Postal Code is required',
                         },
                     ]}>

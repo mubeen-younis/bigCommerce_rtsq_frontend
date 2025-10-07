@@ -68,7 +68,7 @@ function ConnectionSettingsComponent(props) {
           className="mb-1"
           label="Nickname"
           name="nickname"
-          rules={[{ required: isInstalling ? !connectionState.testType : false, message: "Nickname is required" }]}
+          rules={[{ required: !connectionState.testType, message: "Nickname is required" }]}
         >
           <Input placeholder="e.g., Kuehne + Nagel" />
         </Form.Item>
@@ -78,7 +78,7 @@ function ConnectionSettingsComponent(props) {
           label="Username"
           // name="clientSecret"
           name="username"
-          rules={[{required: isInstalling ? connectionState.testType : true, message: "Username is required." },
+          rules={[{required: connectionState.testType, message: "Username is required." },
             // {
             //   pattern: /^[a-zA-Z0-9]+$/,
             //   message: "Username must be alphanumeric (letters and numbers only).",
@@ -93,7 +93,7 @@ function ConnectionSettingsComponent(props) {
           className="mb-1"
           label="Authentication ID"
           name="autId"
-          rules={[{ required: isInstalling ? connectionState.testType : true, message: "Authentication ID is required" },
+          rules={[{ required: connectionState.testType, message: "Authentication ID is required" },
             // {
             //   pattern: /^[a-zA-Z0-9]+$/,
             //   message: "Authentication ID must be alphanumeric (letters and numbers only).",
@@ -108,7 +108,7 @@ function ConnectionSettingsComponent(props) {
         className="mb-1"
           label="Client Code"
           name="clientCode"
-          rules={[{ required: isInstalling ? connectionState.testType : true, message: "Client Code is required" },
+          rules={[{ required: connectionState.testType, message: "Client Code is required" },
             // {
             //   pattern: /^[a-zA-Z0-9]+$/,
             //   message: "Client Code must be alphanumeric (letters and numbers only).",

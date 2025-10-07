@@ -50,7 +50,7 @@ function ConnectionSettingsComponent() {
 					className='mb-1'
 					label='Nickname'
 					name='nickname'
-					rules={[{ required: isInstalling ? !testType : false, message: 'Nickname is required' }]}>
+					rules={[{ required: !testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., Main USPS account' />
 				</Form.Item>
 

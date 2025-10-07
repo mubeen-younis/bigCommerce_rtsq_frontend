@@ -57,26 +57,26 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: isInstalling ? !testType : false, message: 'Nickname is required' }]}>
+                    rules={[{ required: !testType, message: 'Nickname is required when saving' }]}>
 					<Input placeholder='e.g., Estes West' />
 				</Form.Item>
 				<Form.Item
 					label='Customer Number'
 					name='customer_number'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Customer Number is required' }]}>
+                    rules={[{ required: testType, message: 'Customer Number is required' }]}>
 					<Input placeholder='Customer Number' />
 				</Form.Item>
 				<Form.Item
 					label='Username'
 					name='username'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Username is required' }]}>
+                    rules={[{ required: testType, message: 'Username is required' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
 				<Form.Item
 					className='mb-1'
 					label='Password'
 					name='password'
-                    rules={[{ required: isInstalling ? testType : true, message: 'Password is required' }]}>
+                    rules={[{ required: testType, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 

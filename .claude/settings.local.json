@@ -5,7 +5,11 @@
       "Bash(timeout 30 npm run build)",
       "Bash(npx eslint:*)",
       "Bash(npx tsc:*)",
-      "Bash(timeout 10 npm run build)"
+      "Bash(timeout 10 npm run build)",
+      "Bash(for:*)",
+      "Bash(do sed -i \"s/isInstalling ? !connectionState\\.testType : false/!connectionState.testType/g; s/isInstalling ? connectionState\\.testType : true/connectionState.testType/g; s/isInstalling ? !testType : false/!testType/g; s/isInstalling ? testType : true/testType/g\" \"$file\")",
+      "Bash(echo:*)",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

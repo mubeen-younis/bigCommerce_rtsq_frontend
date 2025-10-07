@@ -58,7 +58,7 @@ function ConnectionSettingsComponent(props) {
           className='mb-1'
           label='Nickname'
           name='nickname'
-          rules={[{ required: isInstalling ? !testType : false, message: 'Nickname is required' }]}
+          rules={[{ required: !testType, message: 'Nickname is required when saving' }]}
         >
           <Input placeholder='e.g., Central Transport' />
         </Form.Item>
@@ -66,7 +66,7 @@ function ConnectionSettingsComponent(props) {
           label="Customer Number"
           name="customer_number"
           rules={[
-            { required: isInstalling ? testType : true, message: "Customer Number is required" },
+            { required: testType, message: "Customer Number is required" },
             { max: 100, message: "Customer Number must be at most 100 characters" },
             {
               pattern: /^[a-zA-Z0-9]*$/,
@@ -81,7 +81,7 @@ function ConnectionSettingsComponent(props) {
           label="Access Code"
           name="access_code"
           rules={[
-            { required: isInstalling ? testType : true, message: "Access Code is required" },
+            { required: testType, message: "Access Code is required" },
             { max: 100, message: "Access Code must be at most 100 characters" },
             {
               pattern: /^[\w!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|`~]+$/,
