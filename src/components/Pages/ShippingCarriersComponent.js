@@ -124,6 +124,23 @@ function ShippingCarriersComponent(props) {
     }
   }, [carrierInstallationSuccess, dispatch, props]);
 
+  // Initialize view based on available providers and auto-switch when needed
+  useEffect(() => {
+    if (props.installedCarriers) {
+      const archivedCount = props.installedCarriers.filter(c => c.is_enabled === 2).length;
+      const deactivatedCount = props.installedCarriers.filter(c => c.is_enabled === 0).length;
+
+      // If viewing archived but no archived providers remain and there are inactive providers, switch to inactive view
+      if (showArchived && archivedCount === 0 && deactivatedCount > 0) {
+        setShowArchived(false);
+      }
+      // If viewing inactive but no inactive providers remain and there are archived providers, switch to archived view
+      else if (!showArchived && deactivatedCount === 0 && archivedCount > 0) {
+        setShowArchived(true);
+      }
+    }
+  }, [props.installedCarriers, showArchived]);
+
   // const { currentPlan } = useSelector(state => state)
 
   // Get all carriers sorted by name, regardless of type
@@ -268,7 +285,7 @@ function ShippingCarriersComponent(props) {
           <Image
             preview={false}
             src={`images/${logo}`}
-            style={{ width: '60px', height: '60px', objectFit: 'contain' }}
+            style={{ width: '80px', height: '80px', objectFit: 'contain' }}
           />
         ),
       },
@@ -280,8 +297,8 @@ function ShippingCarriersComponent(props) {
         render: (nickname, record) => {
           console.log('🔍 NICKNAME DEBUG: Rendering carrier - nickname:', nickname, 'name:', record.name, 'will display:', nickname || record.name);
           return (
-            <div>
-              <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ fontWeight: 'bold' }}>
                 {nickname || record.name}
               </div>
               {isArchived && (
@@ -442,13 +459,13 @@ function ShippingCarriersComponent(props) {
         title: 'Provider Image',
         dataIndex: 'logo',
         key: 'logo',
-        width: 150,
-        align: 'center',
+        width: 380,
+        align: 'left',
         render: (logo) => (
           <Image
             preview={false}
             src={`images/${logo}`}
-            style={{ width: '60px', height: '60px', objectFit: 'contain' }}
+            style={{ width: '80px', height: '80px', objectFit: 'contain' }}
             fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrkl1AuO+pmgAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAwqADAAQAAAABAAAAwwAAAAD9b/HnAAAHlklEQVR4Ae3dP3Ik1RnG4W+FgYxN..."
           />
         ),
@@ -457,7 +474,7 @@ function ShippingCarriersComponent(props) {
         title: 'Provider Name',
         dataIndex: 'name',
         key: 'name',
-        width: 250,
+        width: 500,
         render: (name, record) => (
           <div>
             <div style={{ fontWeight: 'bold' }}>
@@ -472,16 +489,10 @@ function ShippingCarriersComponent(props) {
         ),
       },
       {
-        title: <div style={{ textAlign: 'center', width: '100%' }}>Actions</div>,
+        title: <div style={{ paddingLeft: '80px' }}>Actions</div>,
         key: 'actions',
-        align: 'center',
-        width: 180,
         render: (_, record) => (
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
+          <div style={{ paddingLeft: '80px' }}>
             {record.status ? (
               <a
                 style={{
@@ -605,7 +616,7 @@ function ShippingCarriersComponent(props) {
 
       {/* Connection Settings Modal */}
       <Modal
-        title={`Connection Settings - ${selectedCarrierForModal?.nickname || selectedCarrierForModal?.name || ''}`}
+        title={`Connect Provider - ${selectedCarrierForModal?.name || selectedCarrierForModal?.nickname || ''}`}
         visible={isConnectionModalOpen}
         onCancel={closeAllModals}
         footer={null}
@@ -747,55 +758,58 @@ function ShippingCarriersComponent(props) {
         return null;
       })()}
 
-      {/* Inactive Installed/Archived Providers Section */}
-      <div style={{ marginBottom: '25px' }}>
-        {isLoading ? (
-          <FreightProvidersSkeleton title={showArchived ? "Archived Providers" : "Inactive Installed Providers"} rows={2} />
-        ) : (
-          <>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <Title level={4} style={{ margin: 0 }}>
-                {showArchived ? 'Archived Providers' : 'Inactive Installed Providers'}
-              </Title>
-              {(() => {
-                const archivedProviders = getArchivedCarriers();
-                // Only show toggle button if there are archived providers
-                if (archivedProviders.length > 0) {
-                  return (
+      {/* Inactive Installed Providers / Archived Providers Section */}
+      {(() => {
+        const deactivatedProviders = getDeactivatedCarriers();
+        const archivedProviders = getArchivedCarriers();
+
+        // Determine which view to show:
+        // - If only archived providers exist (no inactive), force archived view
+        // - Otherwise, respect the showArchived state
+        const hasOnlyArchived = archivedProviders.length > 0 && deactivatedProviders.length === 0;
+        const effectiveShowArchived = hasOnlyArchived ? true : showArchived;
+
+        // Only show this section if there are any inactive or archived providers
+        const shouldShowSection = isLoading || deactivatedProviders.length > 0 || archivedProviders.length > 0;
+
+        if (!shouldShowSection) {
+          return null;
+        }
+
+        return (
+          <div style={{ marginBottom: '25px' }}>
+            {isLoading ? (
+              <FreightProvidersSkeleton title={effectiveShowArchived ? "Archived Providers" : "Inactive Installed Providers"} rows={2} />
+            ) : (
+              <>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <Title level={4} style={{ margin: 0 }}>
+                    {effectiveShowArchived ? 'Archived Providers' : 'Inactive Installed Providers'}
+                  </Title>
+                  {archivedProviders.length > 0 && deactivatedProviders.length > 0 && (
                     <Button
                       type="link"
                       onClick={toggleArchivedView}
                       style={{ padding: '0', height: 'auto', fontSize: '14px' }}
                     >
-                      {showArchived ? 'View Inactive' : 'View Archive'}
+                      {effectiveShowArchived ? 'View Inactive' : 'View Archive'}
                     </Button>
-                  );
-                }
-                return null;
-              })()}
-            </div>
-            {showArchived ? (
-              (() => {
-                const archivedProviders = getArchivedCarriers();
-                return archivedProviders.length > 0 ? (
-                  <Table
-                    columns={getProviderTableColumns(true, false)}
-                    dataSource={archivedProviders}
-                    rowKey="id"
-                    pagination={false}
-                    showHeader={true}
-                  />
+                  )}
+                </div>
+                {effectiveShowArchived ? (
+                  archivedProviders.length > 0 ? (
+                    <Table
+                      columns={getProviderTableColumns(true, false)}
+                      dataSource={archivedProviders}
+                      rowKey="id"
+                      pagination={false}
+                      showHeader={true}
+                    />
+                  ) : (
+                    <div className={'no-data'}>No Archived Providers</div>
+                  )
                 ) : (
-                  <div className={'no-data'}>No Archived Providers</div>
-                );
-              })()
-            ) : (
-              (() => {
-                const deactivatedProviders = getDeactivatedCarriers();
-
-                // Show table if there are deactivated providers
-                if (deactivatedProviders.length > 0) {
-                  return (
+                  deactivatedProviders.length > 0 ? (
                     <Table
                       columns={getProviderTableColumns(false, true)}
                       dataSource={deactivatedProviders}
@@ -803,16 +817,15 @@ function ShippingCarriersComponent(props) {
                       pagination={false}
                       showHeader={true}
                     />
-                  );
-                }
-
-                // Show the beautiful empty state when no inactive providers
-                return <NoProvidersEmptyState />;
-              })()
+                  ) : (
+                    <NoProvidersEmptyState />
+                  )
+                )}
+              </>
             )}
-          </>
-        )}
-      </div>
+          </div>
+        );
+      })()}
 
       {/* All Providers Section */}
       <div style={{ marginBottom: '25px' }}>
@@ -823,8 +836,7 @@ function ShippingCarriersComponent(props) {
             <Title level={4}>All Providers</Title>
             <div style={{
               marginBottom: '16px',
-              display: 'flex',
-              justifyContent: 'flex-start'
+              width: '100%'
             }}>
               <Input
                 placeholder="Search providers..."
@@ -832,8 +844,7 @@ function ShippingCarriersComponent(props) {
                 value={searchTerm}
                 onChange={handleSearchChange}
                 style={{
-                  maxWidth: '400px',
-                  minWidth: '280px',
+                  width: '100%',
                   borderRadius: '8px',
                   border: '1px solid #d9d9d9',
                   boxShadow: 'none',

@@ -22,7 +22,7 @@ export const submitConnectionSettings = (data) => {
 };
 
 export const getConnectionSettings = (token, carrierId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: 'ALERT_MESSAGE',
       payload: {
@@ -46,17 +46,32 @@ export const getConnectionSettings = (token, carrierId) => {
         },
       })
       .then(({ data }) => {
+        let connectionSettings = null;
+
         if (data.data && data.data.value) {
-          dispatch({
-            type: 'GET_CONNECTION_SETTINGS',
-            payload: JSON.parse(data.data.value),
-          });
+          connectionSettings = JSON.parse(data.data.value);
         } else {
-          dispatch({
-            type: 'GET_CONNECTION_SETTINGS',
-            payload: { test: true, connectionSetting: true },
-          });
+          connectionSettings = { test: true, connectionSetting: true };
         }
+
+        // Merge nickname from installedCarriers if missing in connection settings
+        try {
+          const state = getState();
+          const installedCarrier = state.installedCarriers?.find(c => c.id === carrierId);
+          if (installedCarrier?.nickname && !connectionSettings.nickname) {
+            connectionSettings = {
+              ...connectionSettings,
+              nickname: installedCarrier.nickname
+            };
+          }
+        } catch (e) {
+          console.error('Error merging nickname:', e);
+        }
+
+        dispatch({
+          type: 'GET_CONNECTION_SETTINGS',
+          payload: connectionSettings,
+        });
 
         dispatch({
           type: 'SKELETON_LOADING',

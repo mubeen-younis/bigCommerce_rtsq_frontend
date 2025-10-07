@@ -310,7 +310,7 @@ function AutoDetectResidentialComponent(props) {
                         }
                         defaultValue={props?.radPlans?.currentPackage?.status}
                       >
-                        Suspend Use
+                        Suspend use
                       </Checkbox>
                     </div>
                   </Fragment>

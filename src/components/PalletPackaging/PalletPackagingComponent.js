@@ -92,7 +92,7 @@ function AutoDetectResidentialComponent(props) {
 					lg={24}
 					xl={22}>
 					<Title level={3}>
-						Pallet Packaging
+						Pallets
 					</Title>
 				</Col>
 			</Row>
@@ -119,11 +119,10 @@ function AutoDetectResidentialComponent(props) {
 				<Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={22}>
 					<Card style={{ width: '100%' }}>
 						<p>
-							The Pallet Size feature calculates the optimal packaging
-							solution based on your pallet sizes. The solution is
-							available graphically to assist order fulfillment. The
-							next subscription begins when the current one expires or
-							is depleted, which ever comes first. Refer to the{' '}
+							The Pallet Size feature calculates the optimal packaging solution based on 
+							your standard Pallet size. The solution is available graphically to assist 
+							order fulfillment. The next subscription begins when the current one expires 
+							or is depleted, which ever comes first. Refer to the{' '}
 							<a
 								href='https://eniture.com/woocommerce-pallet-packaging/#documentation'
 								target='_blank'
@@ -312,7 +311,7 @@ function AutoDetectResidentialComponent(props) {
 													props?.palletPlans
 														?.currentPackage?.status
 												}>
-												Suspend Use
+												Suspend use
 											</Checkbox>
 										</div>
 									</Fragment>

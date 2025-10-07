@@ -32,7 +32,7 @@ const initialState = {
 function ShippingGroupsComponent() {
   const [settings, setSettings] = useState(initialState)
   const dispatch = useDispatch()
-  const { token, radSettings, installedCarriers, installedAddons, radPlans, store, addonSettings} = useSelector(state => state)
+  const { token, radSettings, installedCarriers, installedAddons, radPlans, store, addonSettings } = useSelector(state => state)
   const [pickup, setPickup] = useState(true)
   const [suspend, setSuspend] = useState(false)
   const [cancelSubsriptionVisible, SetCancelSubsriptionVisible] = useState(false)
@@ -77,8 +77,8 @@ function ShippingGroupsComponent() {
 
   const isRadInstalled = ((installedAddons?.find(add => add.short_code === RAD_ADDON && add.is_enabled == 1) && !isRadSuspend) ||
     (radPlans?.currentPackage !== null && radPlans?.currentPackage?.status !== 0)) && !isAddonDisabled
-		? true
-		: false
+    ? true
+    : false
 
   const handleStateChange = useCallback(e => {
     const { name, checked } = e.target
@@ -91,7 +91,7 @@ function ShippingGroupsComponent() {
 
   const onFinish = useCallback(() => {
 
-    if(settings.residential_delivery_auto_detect){
+    if (settings.residential_delivery_auto_detect) {
       settings.residential_delivery_auto_detect = isRadInstalled
     }
     dispatch(
@@ -140,16 +140,25 @@ function ShippingGroupsComponent() {
 
   return (
     <Fragment>
-      <Space direction="vertical" size={"large"} className={"w-100"}>
-        <Row>
-          <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-            <Title level={4}>Address Type Settings</Title>
-          </Col>
-        </Row>
+      <Row gutter={24} justify='center'>
+        <Col
+          className='gutter-row mb-3'
+          xs={24}
+          sm={24}
+          md={24}
+          lg={24}
+          xl={22}>
+          <Title level={3}>
+            Address Type Settings
+          </Title>
+        </Col>
+      </Row>
 
-        <Card>
-          <Row gutter={30}>
-          <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
+      <Row gutter={24} justify='center' className={'mb-3'}>
+        <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={22}>
+          <Card style={{ width: '100%' }}>
+            <Row gutter={30}>
+              <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item className="mb-0">
                 <Checkbox
                   name="return_rates"
@@ -161,7 +170,7 @@ function ShippingGroupsComponent() {
                 </Checkbox>
               </Form.Item>
             </Col>
-            
+
             <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item className={"mb-0"}>
                 <Checkbox
@@ -182,133 +191,127 @@ function ShippingGroupsComponent() {
 
             <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
               <div className="mb-1 mt-3">
-                <label className="text-gray mb-1" style={{ display: 'block', fontWeight: 'bold' }}>
-                  Residential Address Detection Plan Management
-                </label>
-                <p className="text-gray mb-2" style={{ fontSize: '13px', lineHeight: '1.4' }}>
-                  When enabled, the address type of the ship-to address will be retrieved from a database sourced from the USPS.
-                  The enabled shipping providers will be informed if the address is residential so that their residential delivery
-                  fee is included in their shipping rate estimates. Refer to the{' '}
-                  <a
-                    href='https://eniture.com/bigcommerce-real-time-shipping-quotes/#documentation'
-                    target='_blank'
-                    rel='noreferrer'
-                  >
-                    User's Guide
-                  </a>{' '}
-                  for more information.
+                <p style={{ marginBottom: '10px' }}>
+                  When enabled, for ship-to addresses in the USA only, the app will automatically detect the
+                  address type and inform the shipping provider of the result. The shipping provider will include
+                  its residential delivery fee if the address type is residential. If the ship-to address is not
+                  in the USA, the visitor will be offered options that include residential delivery. Ship-to addresses
+                  not in the USA will not decrement the current subscription plan. The next subscription begins when
+                  the current one expires or is depleted, which ever comes first.
                 </p>
               </div>
             </Col>
 
-            <Col className="gutter-row" xs={24} sm={12} md={10} lg={8} xl={6}>
+            <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item className="mb-2">
-                <label className="text-gray" style={{ fontSize: '13px', fontWeight: '600' }}>
-                  Auto-renew Plan:
+                <label>
+                  <strong>Auto-renew</strong>
                 </label>
                 <Select
                   value={
                     !radPlans?.currentPackage || radPlans?.currentPackage === null
                       ? 'disable'
                       : radPlans?.currentPackage?.status === 0
-                      ? 'disable'
-                      : radPlans?.currentPackage
+                        ? 'disable'
+                        : radPlans?.currentPackage
                           ?.package_to_be_charge_status === 1
-                      ? radPlans?.currentPackage?.to_be_charge_package_id
-                      : radPlans?.currentPackage
-                          ?.package_to_be_charge_status === 'Trial'
-                      ? '100/15 days ($0) - Trial'
-                      : radPlans?.currentPackage
-                          ?.package_to_be_charge_status === 'Development Plan'
-                      ? radPlans?.currentPackage
-                          ?.total_hits  + '/' + radPlans?.currentPackage
-                          ?.current_package_period + ' Development Plan ($0)'
-                      : typeof radPlans?.currentPackage?.package_to_be_charge_status === 'number'
-                      ? radPlans?.currentPackage?.package_to_be_charge_status
-                      : 'disable'
+                          ? radPlans?.currentPackage?.to_be_charge_package_id
+                          : radPlans?.currentPackage
+                            ?.package_to_be_charge_status === 'Trial'
+                            ? '100/15 days ($0) - Trial'
+                            : radPlans?.currentPackage
+                              ?.package_to_be_charge_status === 'Development Plan'
+                              ? radPlans?.currentPackage
+                                ?.total_hits + '/' + radPlans?.currentPackage
+                                ?.current_package_period + ' Development Plan ($0)'
+                              : typeof radPlans?.currentPackage?.package_to_be_charge_status === 'number'
+                                ? radPlans?.currentPackage?.package_to_be_charge_status
+                                : 'disable'
                   }
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', marginBottom: '20px' }}
                   onChange={chanePlanAction}
                   name='plan_value'
-                  size="small"
                 >
                   <Option key='disable' value='disable'>
                     Disable (default)
                   </Option>
                   {radPlans?.allRadPackages?.length > 0
                     ? radPlans?.allRadPackages?.map(plan =>
-                        plan?.status && (
-                          plan.cost !== 0
-                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store11'}>
-                              {Intl.NumberFormat('en-US').format(
-                                plan.htis
-                              )}/mo (${plan.cost})
-                              </Option>
-                            : (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Store11')
+                      plan?.status && (
+                        plan.cost !== 0
+                          ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store11'}>
+                            {Intl.NumberFormat('en-US').format(
+                              plan.htis
+                            )}/mo (${plan.cost})
+                          </Option>
+                          : (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Store11')
                             ? <Option key={plan.id} value={plan.id}>
                               {Intl.NumberFormat('en-US').format(
                                 plan.htis
                               )}/5 years {plan.name} (${
                                 plan.cost
                               })
-                              </Option>
+                            </Option>
                             : (plan.name == 'Trial' && store?.plan_level != 'Sandbox Store11')
-                            ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store11'}>
+                              ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store11'}>
                                 {Intl.NumberFormat('en-US').format(
                                   plan.htis
                                 )}/15 days (${plan.cost}) - Trial
                               </Option>
-                            : null
-                        )
+                              : null
                       )
+                    )
                     : null
                   }
                 </Select>
 
                 {radPlans?.currentPackage === null ? (
-                  <p className="text-gray" style={{ fontSize: '13px', marginTop: '8px' }}>
+                  <p>
                     <strong>You have not activated any plan. Select plan from dropdown.</strong>
                   </p>
                 ) : (
                   <Fragment>
                     {radPlans?.currentPackage?.current_package_name === null ? (
-                      <p className="text-gray" style={{ fontSize: '13px', marginTop: '8px' }}>
-                        <strong>No plan is activated.</strong>
-                      </p>
+                      <h1 className='mb-2'>
+                        <b>No plan is activated.</b>
+                      </h1>
                     ) : radPlans?.currentPackage?.status === 0 ? (
-                      <p className="text-gray" style={{ fontSize: '13px', marginTop: '8px' }}>
-                        <strong>Your current subscription is expired.</strong>
-                      </p>
+                      <h1 className='mb-2'>
+                        <b>Your current subscription is expired.</b>
+                      </h1>
                     ) : (
-                      <div style={{ marginTop: '8px' }}>
-                        <div className="mb-1">
-                          <span className="text-gray" style={{ fontSize: '13px', fontWeight: '600' }}>Current plan: </span>
-                          <span className="text-gray" style={{ fontSize: '13px' }}>
+                      <Fragment>
+                        <label>
+                          <strong>Current plan</strong>
+                        </label>
+
+                        <div
+                          style={{
+                            width: '100%',
+                            marginBottom: '20px',
+                          }}>
+                          <p style={{ marginBottom: '0' }}>
                             ${radPlans?.currentPackage?.current_package_cost}/{radPlans?.currentPackage?.current_package_period}
-                          </span>
-                        </div>
-                        <div className="mb-2">
-                          <span className="text-gray" style={{ fontSize: '13px', fontWeight: '600' }}>Usage: </span>
-                          <span className="text-gray" style={{ fontSize: '13px' }}>
-                            {Intl.NumberFormat('en-US').format(radPlans?.currentPackage?.consumed_hits)}/
+                          </p>
+                          <p style={{ marginBottom: '0' }}>
+                            Usage: {Intl.NumberFormat('en-US').format(radPlans?.currentPackage?.consumed_hits)}/
                             {Intl.NumberFormat('en-US').format(radPlans?.currentPackage?.total_allowed_hits)}
                             {radPlans?.currentPackage?.total_allowed_hits !== 'Unlimited' &&
                               ` (${radPlans?.currentPackage?.consumed_hits_in_per}%)`}
-                          </span>
+                          </p>
                         </div>
-                        <div className="mb-0">
-                          <Checkbox
-                            onChange={(e) => {
-                              handleAddonSuspendStatus(e.target.checked);
-                              setSuspend(e.target.checked);
-                            }}
-                            checked={suspend || radPlans?.currentPackage?.status === 3}
-                            defaultValue={radPlans?.currentPackage?.status}
-                          >
-                            Suspend Use
-                          </Checkbox>
-                        </div>
-                      </div>
+
+                        <Checkbox
+                          onChange={(e) => {
+                            handleAddonSuspendStatus(e.target.checked);
+                            setSuspend(e.target.checked);
+                          }}
+                          checked={suspend || radPlans?.currentPackage?.status === 3}
+                          defaultValue={radPlans?.currentPackage?.status}
+                        >
+                          Suspend use
+                        </Checkbox>
+                      </Fragment>
                     )}
                   </Fragment>
                 )}
@@ -334,11 +337,10 @@ function ShippingGroupsComponent() {
                 </Checkbox>
                 {!isRadInstalled && (
                   <span
-								    style={{
-									    'font-size': '10px',
-								    }}>
-								    <i>(To utilize this feature, you need the Residential Address Detection add-on. Navigate to the Dashboard and go to add-ons to activate/install this extension.)</i>
-						      </span>
+                    style={{
+                      'font-size': '10px',
+                    }}>
+                  </span>
                 )}
               </Form.Item>
             </Col>
@@ -351,9 +353,10 @@ function ShippingGroupsComponent() {
               xl={8}
             >
               <label
-                className="text-gray ml-5"
+                className="ml-5"
                 style={{
                   marginLeft: "1.5em",
+                  color: (settings?.residential_delivery_auto_detect && isRadInstalled && !suspend && radPlans?.currentPackage?.status !== 3) ? '#262626' : 'rgba(0, 0, 0, 0.25)',
                 }}
               >
                 Default unconfirmed address types to:
@@ -393,9 +396,10 @@ function ShippingGroupsComponent() {
             </Col>
             <Col className="gutter-row" xs={14} sm={14} md={12} lg={12} xl={8}>
               <label
-                className="text-gray ml-5"
+                className="ml-5"
                 style={{
                   marginLeft: "1.5em",
+                  color: (settings?.residential_delivery_auto_detect && isRadInstalled && !suspend && radPlans?.currentPackage?.status !== 3) ? '#262626' : 'rgba(0, 0, 0, 0.25)',
                 }}
               >
                 Address type disclosure:
@@ -452,7 +456,8 @@ function ShippingGroupsComponent() {
             </Col>
           </Row>
         </Card>
-      </Space>
+        </Col>
+      </Row>
 
       <Modal
         title='Note!'

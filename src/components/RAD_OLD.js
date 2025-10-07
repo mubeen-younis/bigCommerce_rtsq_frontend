@@ -185,7 +185,7 @@ function AutoDetectResidentialComponent(props) {
 								}}
 								checked={suspend}
 							>
-								Suspend Use
+								Suspend use
 							</Checkbox>
 						</div>
 

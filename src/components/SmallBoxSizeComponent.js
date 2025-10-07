@@ -351,7 +351,7 @@ function AutoDetectResidentialComponent(props) {
 													props?.sbsPlans?.currentPackage
 														?.status
 												}>
-												Suspend Use
+												Suspend use
 											</Checkbox>
 										</div>
 										<label>

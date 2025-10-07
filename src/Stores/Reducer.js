@@ -200,9 +200,30 @@ const Reducer = (state = initialState, action) => {
 			}
 
 		case types.GET_INSTALLED_CARRIERS:
+			// Enrich installed carriers with logo and other info from available carriers
+			let enrichedCarriers = action.payload;
+			if (Array.isArray(action.payload) && state.availableCarriers) {
+				enrichedCarriers = action.payload.map(installedCarrier => {
+					// Find matching available carrier by carrier_id or slug
+					const matchingAvailable = state.availableCarriers.find(
+						ac => ac.id === installedCarrier.carrier_id || ac.slug === installedCarrier.slug
+					);
+
+					if (matchingAvailable) {
+						return {
+							...installedCarrier,
+							logo: installedCarrier.logo || matchingAvailable.logo,
+							name: installedCarrier.name || matchingAvailable.name,
+							slug: installedCarrier.slug || matchingAvailable.slug,
+						};
+					}
+					return installedCarrier;
+				});
+			}
+
 			return {
 				...state,
-				installedCarriers: action.payload,
+				installedCarriers: enrichedCarriers,
 			}
 
 		case types.CHANGE_CARRIER_STATUS:
