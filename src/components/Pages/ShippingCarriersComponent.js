@@ -18,6 +18,7 @@ import TabsLayout from '../../tabs_layout/tabs';
 import Meta from 'antd/lib/card/Meta';
 import PlanStatusHeading from '../../partials/PlanStatusHeading';
 import ExportCSVDownloadStatus from '../../partials/ExportCSVDownloadStatus';
+import NoProvidersEmptyState from '../EmptyState/NoProvidersEmptyState';
 const { Title } = Typography;
 // const { Meta } = Card;
 
@@ -719,30 +720,32 @@ function ShippingCarriersComponent(props) {
       </Row>
 
       {/* Installed Providers Section */}
-      <div style={{ marginBottom: '25px' }}>
-        {isLoading ? (
-          <FreightProvidersSkeleton title="Installed Providers" rows={3} />
-        ) : (
-          <>
-            <Title level={4}>Installed Providers</Title>
-            {(() => {
-              const installedProviders = getEnabledCarriers();
-              return installedProviders.length > 0 ? (
-                <Table
-                  key={`installed-${installedProviders.length}-${installedProviders.map(p => p.id).join('-')}`}
-                  columns={getProviderTableColumns(false, false)}
-                  dataSource={installedProviders}
-                  rowKey="id"
-                  pagination={false}
-                  showHeader={true}
-                />
+      {(() => {
+        const installedProviders = getEnabledCarriers();
+        // Only show section if there are active providers or still loading
+        if (isLoading || installedProviders.length > 0) {
+          return (
+            <div style={{ marginBottom: '25px' }}>
+              {isLoading ? (
+                <FreightProvidersSkeleton title="Installed Providers" rows={3} />
               ) : (
-                <div className={'no-data'}>No Installed Providers</div>
-              );
-            })()}
-          </>
-        )}
-      </div>
+                <>
+                  <Title level={4}>Installed Providers</Title>
+                  <Table
+                    key={`installed-${installedProviders.length}-${installedProviders.map(p => p.id).join('-')}`}
+                    columns={getProviderTableColumns(false, false)}
+                    dataSource={installedProviders}
+                    rowKey="id"
+                    pagination={false}
+                    showHeader={true}
+                  />
+                </>
+              )}
+            </div>
+          );
+        }
+        return null;
+      })()}
 
       {/* Inactive Installed/Archived Providers Section */}
       <div style={{ marginBottom: '25px' }}>
@@ -754,13 +757,22 @@ function ShippingCarriersComponent(props) {
               <Title level={4} style={{ margin: 0 }}>
                 {showArchived ? 'Archived Providers' : 'Inactive Installed Providers'}
               </Title>
-              <Button
-                type="link"
-                onClick={toggleArchivedView}
-                style={{ padding: '0', height: 'auto', fontSize: '14px' }}
-              >
-                {showArchived ? 'View Inactive' : 'View Archive'}
-              </Button>
+              {(() => {
+                const archivedProviders = getArchivedCarriers();
+                // Only show toggle button if there are archived providers
+                if (archivedProviders.length > 0) {
+                  return (
+                    <Button
+                      type="link"
+                      onClick={toggleArchivedView}
+                      style={{ padding: '0', height: 'auto', fontSize: '14px' }}
+                    >
+                      {showArchived ? 'View Inactive' : 'View Archive'}
+                    </Button>
+                  );
+                }
+                return null;
+              })()}
             </div>
             {showArchived ? (
               (() => {
@@ -780,17 +792,22 @@ function ShippingCarriersComponent(props) {
             ) : (
               (() => {
                 const deactivatedProviders = getDeactivatedCarriers();
-                return deactivatedProviders.length > 0 ? (
-                  <Table
-                    columns={getProviderTableColumns(false, true)}
-                    dataSource={deactivatedProviders}
-                    rowKey="id"
-                    pagination={false}
-                    showHeader={true}
-                  />
-                ) : (
-                  <div className={'no-data'}>No Inactive Installed Providers</div>
-                );
+
+                // Show table if there are deactivated providers
+                if (deactivatedProviders.length > 0) {
+                  return (
+                    <Table
+                      columns={getProviderTableColumns(false, true)}
+                      dataSource={deactivatedProviders}
+                      rowKey="id"
+                      pagination={false}
+                      showHeader={true}
+                    />
+                  );
+                }
+
+                // Show the beautiful empty state when no inactive providers
+                return <NoProvidersEmptyState />;
               })()
             )}
           </>
@@ -806,7 +823,6 @@ function ShippingCarriersComponent(props) {
             <Title level={4}>All Providers</Title>
             <div style={{
               marginBottom: '16px',
-              padding: '0 4px',
               display: 'flex',
               justifyContent: 'flex-start'
             }}>
@@ -834,11 +850,7 @@ function ShippingCarriersComponent(props) {
                 rowKey="id"
                 pagination={false}
                 showHeader={true}
-                style={{
-                  backgroundColor: '#fff',
-                  borderRadius: '8px',
-                  overflow: 'hidden'
-                }}
+                className="aligned-providers-table"
               />
             ) : (
               <div className={'no-data'}>

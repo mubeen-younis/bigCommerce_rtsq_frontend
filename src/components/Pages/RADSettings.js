@@ -321,7 +321,7 @@ function ShippingGroupsComponent() {
                 <Checkbox
                   name="residential_delivery_auto_detect"
                   checked={settings.residential_delivery_auto_detect && isRadInstalled}
-                  disabled={!isRadInstalled}
+                  disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
                   onChange={e => {
                     handleStateChange(e)
                     setSettings(prevSettings => ({
@@ -377,13 +377,13 @@ function ShippingGroupsComponent() {
                   }}
                 >
                   <Radio
-                    disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled}
+                    disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
                     value={1}
                   >
                     Residential
                   </Radio>
                   <Radio
-                    disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled}
+                    disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
                     value={2}
                   >
                     Commercial
@@ -419,14 +419,14 @@ function ShippingGroupsComponent() {
                   }}
                 >
                   <Radio
-                    disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled}
+                    disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
                     value={1}
                   >
                     Inform the shopper when the ship-to address is identified as
                     residential address
                   </Radio>
                   <Radio
-                    disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled}
+                    disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
                     value={0}
                   >
                     Don't disclose the address type to the shopper
