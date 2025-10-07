@@ -187,6 +187,22 @@ export const getInstalledCarriers = data => {
 				},
 			})
 			.then(({ data }) => {
+				console.log('🔍 DEBUG: getInstalledCarriers API response:', data);
+				console.log('🔍 DEBUG: installedCarriers data:', data.data.installedCarriers || data.data);
+
+				// Log each carrier to see if nickname exists
+				const carriers = data.data.installedCarriers || data.data;
+				if (Array.isArray(carriers)) {
+					carriers.forEach((carrier, index) => {
+						console.log(`🔍 DEBUG: Carrier ${index}:`, {
+							id: carrier.id,
+							name: carrier.name,
+							nickname: carrier.nickname,
+							hasNickname: !!carrier.nickname
+						});
+					});
+				}
+
 				if (data.data.installedCarriers) {
 					dispatch({
 						type: 'GET_INSTALLED_CARRIERS',

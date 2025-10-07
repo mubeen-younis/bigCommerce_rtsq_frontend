@@ -299,9 +299,7 @@ export const installCarrierAndSaveSettings = (data, token, availableCarrierId) =
 						...settingsData.data // Include any other fields from response
 					}
 
-					console.log('🔍 DEBUG ACTION: About to dispatch CARRIER_INSTALLATION_SUCCESS');
-					console.log('🔍 DEBUG ACTION: newCarrier object:', newCarrier);
-					console.log('🔍 DEBUG ACTION: availableCarrierId:', availableCarrierId);
+					console.log('🔍 NICKNAME DEBUG: Carrier installed with nickname:', newCarrier.nickname);
 
 					dispatch({
 						type: 'CARRIER_INSTALLATION_SUCCESS',
@@ -310,8 +308,6 @@ export const installCarrierAndSaveSettings = (data, token, availableCarrierId) =
 							newCarrier: newCarrier
 						}
 					})
-
-					console.log('🔍 DEBUG ACTION: CARRIER_INSTALLATION_SUCCESS dispatched');
 
 					dispatch({
 						type: 'ALERT_MESSAGE',

@@ -22,9 +22,6 @@ const { Title } = Typography;
 // const { Meta } = Card;
 
 function ShippingCarriersComponent(props) {
-  console.log('🔍 DEBUG RENDER: ShippingCarriersComponent re-render triggered');
-  console.log('🔍 DEBUG RENDER: props.installedCarriers length:', props.installedCarriers?.length);
-
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingAvailableCarriers, setIsLoadingAvailableCarriers] = useState(true);
@@ -62,30 +59,14 @@ function ShippingCarriersComponent(props) {
     || planCarriersMapping[currentPlan?.plan_id]
     || 0;
 
-  // Debug: Log currentPlan to see its structure
+  // Track installedCarriers state changes for nickname debugging
   useEffect(() => {
-    if (currentPlan) {
-      console.log('📊 Current Plan Data:', currentPlan);
-      console.log('📊 Plan Name:', currentPlan.name);
-      console.log('📊 Plan ID:', currentPlan.plan_id);
-      console.log('📊 Plans Array:', plans);
-      console.log('📊 Current Plan Details:', currentPlanDetails);
-      console.log('📊 Max Carriers:', maxCarriers);
-      console.log('📊 All Current Plan Keys:', Object.keys(currentPlan));
-    }
-  }, [currentPlan, plans, currentPlanDetails, maxCarriers]);
-
-  // DEBUG: Track installedCarriers state changes
-  useEffect(() => {
-    console.log('🔍 DEBUG: installedCarriers state changed:', props.installedCarriers);
-    console.log('🔍 DEBUG: Number of installed carriers:', props.installedCarriers?.length || 0);
     if (props.installedCarriers?.length > 0) {
-      console.log('🔍 DEBUG: Installed carriers details:', props.installedCarriers.map(c => ({
+      console.log('🔍 NICKNAME DEBUG: Installed carriers with nicknames:', props.installedCarriers.map(c => ({
         id: c.id,
         name: c.name,
         nickname: c.nickname,
-        is_enabled: c.is_enabled,
-        slug: c.slug
+        hasNickname: !!c.nickname
       })));
     }
   }, [props.installedCarriers]);
@@ -93,7 +74,6 @@ function ShippingCarriersComponent(props) {
   useEffect(() => {
     // Fetch available carriers on component mount
     if (props.token) {
-      console.log('Dispatching getAllAvailableCarriers with token:', props.token);
       setIsLoadingAvailableCarriers(true);
       dispatch(getAllAvailableCarriers(props.token));
     }
@@ -102,15 +82,11 @@ function ShippingCarriersComponent(props) {
   // Separate effect for available carriers loading
   useEffect(() => {
     if (props.availableCarriers !== null) {
-      console.log('Available carriers received, stopping loading:', props.availableCarriers);
       setIsLoadingAvailableCarriers(false);
     }
   }, [props.availableCarriers]);
 
   useEffect(() => {
-    console.log('🔍 DEBUG: Loading effect - installedCarriers:', props.installedCarriers);
-    console.log('🔍 DEBUG: Loading effect - availableCarriers:', props.availableCarriers);
-
     // Only show loading on initial load when both are null/empty
     if ((!props.installedCarriers || props.installedCarriers.length === 0) && props.availableCarriers === null) {
       setIsLoading(true);
@@ -131,14 +107,10 @@ function ShippingCarriersComponent(props) {
     }
   }, [isInstallModalOpen, activeCarrierId]);
 
-  // DEBUG: Handle successful carrier installation
+  // Handle successful carrier installation
   useEffect(() => {
-    console.log('🔍 DEBUG: carrierInstallationSuccess changed:', carrierInstallationSuccess)
     if (carrierInstallationSuccess) {
-      console.log('🔍 DEBUG: Handling carrier installation success - closing modal');
-      console.log('🔍 DEBUG: Installation success data:', carrierInstallationSuccess);
-      console.log('🔍 DEBUG: New carrier to be added:', carrierInstallationSuccess.newCarrier);
-      console.log('🔍 DEBUG: Current installedCarriers:', props.installedCarriers);
+      console.log('🔍 NICKNAME DEBUG: New carrier installed with nickname:', carrierInstallationSuccess.newCarrier?.nickname);
 
       // Close the modal
       setIsInstallModalOpen(false);
@@ -146,41 +118,28 @@ function ShippingCarriersComponent(props) {
       dispatch({ type: 'SET_AVAILABLE_CARRIER_ID', payload: null });
       setActiveCarrierId(null);
 
-      // No need to refresh carriers list - using optimistic update from installation response
-      console.log('🔍 DEBUG: Using optimistic update - no API call needed');
-
       // Clear the success state
-      console.log('🔍 DEBUG: Clearing CARRIER_INSTALLATION_SUCCESS state');
       dispatch({ type: 'CLEAR_CARRIER_INSTALLATION_SUCCESS' });
     }
   }, [carrierInstallationSuccess, dispatch, props]);
 
   // const { currentPlan } = useSelector(state => state)
 
-  // DEBUG: Get all carriers sorted by name, regardless of type
+  // Get all carriers sorted by name, regardless of type
   const getAllCarriers = () => {
     const list = Array.isArray(props.installedCarriers)
       ? props.installedCarriers.filter(Boolean)
       : [];
-    console.log('🔍 DEBUG: getAllCarriers - raw props.installedCarriers:', props.installedCarriers);
-    console.log('🔍 DEBUG: getAllCarriers - filtered list:', list);
     return list.sort((c1, c2) => (c1?.name || '').localeCompare(c2?.name || ''));
   };
 
-  // DEBUG: Get installed (enabled) carriers
+  // Get installed (enabled) carriers
   const getEnabledCarriers = () => {
     const allCarriers = getAllCarriers();
-    console.log('🔍 DEBUG: getEnabledCarriers - all carriers:', allCarriers);
-
     const enabledCarriers = allCarriers.filter((carrier) => {
       const isEnabled = carrier.is_enabled === 1 || carrier.is_enabled === '1';
-      console.log(`🔍 DEBUG: Carrier ${carrier.nickname || carrier.name}: is_enabled = ${carrier.is_enabled} (${typeof carrier.is_enabled}), passes filter: ${isEnabled}`);
       return isEnabled;
     });
-
-    console.log('🔍 DEBUG: getEnabledCarriers - filtered enabled carriers:', enabledCarriers);
-    console.log('🔍 DEBUG: getEnabledCarriers - enabled carriers count:', enabledCarriers.length);
-
     return enabledCarriers;
   };
 
@@ -201,7 +160,6 @@ function ShippingCarriersComponent(props) {
 
   // Get all available carriers from props
   const getAvailableCarriers = () => {
-    console.log('Available carriers from props:', props.availableCarriers);
     return props.availableCarriers?.sort((carr1, carr2) => carr1.name.localeCompare(carr2.name)) || [];
   };
 
@@ -318,37 +276,40 @@ function ShippingCarriersComponent(props) {
         dataIndex: 'nickname',
         key: 'nickname',
         width: 250,
-        render: (nickname, record) => (
-          <div>
-            <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>
-              {nickname || record.name}
+        render: (nickname, record) => {
+          console.log('🔍 NICKNAME DEBUG: Rendering carrier - nickname:', nickname, 'name:', record.name, 'will display:', nickname || record.name);
+          return (
+            <div>
+              <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>
+                {nickname || record.name}
+              </div>
+              {isArchived && (
+                <Button
+                  type="link"
+                  size="small"
+                  style={{ padding: 0, height: 'auto' }}
+                  onClick={() => {
+                    props.changeCarrierStatus(record.id, props.token, 0); // Restore (status = 0)
+                  }}
+                >
+                  Restore
+                </Button>
+              )}
+              {isDeactivated && (
+                <Button
+                  type="link"
+                  size="small"
+                  style={{ padding: 0, height: 'auto' }}
+                  onClick={() => {
+                    props.changeCarrierStatus(record.id, props.token, 2); // Archive (status = 2)
+                  }}
+                >
+                  Archive
+                </Button>
+              )}
             </div>
-            {isArchived && (
-              <Button
-                type="link"
-                size="small"
-                style={{ padding: 0, height: 'auto' }}
-                onClick={() => {
-                  props.changeCarrierStatus(record.id, props.token, 0); // Restore (status = 0)
-                }}
-              >
-                Restore
-              </Button>
-            )}
-            {isDeactivated && (
-              <Button
-                type="link"
-                size="small"
-                style={{ padding: 0, height: 'auto' }}
-                onClick={() => {
-                  props.changeCarrierStatus(record.id, props.token, 2); // Archive (status = 2)
-                }}
-              >
-                Archive
-              </Button>
-            )}
-          </div>
-        ),
+          );
+        },
       },
       {
         title: <div style={{ textAlign: 'center', width: '100%' }}>Actions</div>,
@@ -766,8 +727,6 @@ function ShippingCarriersComponent(props) {
             <Title level={4}>Installed Providers</Title>
             {(() => {
               const installedProviders = getEnabledCarriers();
-              console.log('🔍 DEBUG RENDER: Installed Providers render called, count:', installedProviders.length);
-              console.log('🔍 DEBUG RENDER: Installed Providers data:', installedProviders);
               return installedProviders.length > 0 ? (
                 <Table
                   key={`installed-${installedProviders.length}-${installedProviders.map(p => p.id).join('-')}`}

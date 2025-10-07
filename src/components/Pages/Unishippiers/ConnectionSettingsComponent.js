@@ -3,10 +3,15 @@ import { Form, Input, Button, Space, Skeleton, Select, } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { postData } from '../../../Actions/Action'
 import { getFDOCouponCarrierInfo } from '../../../Actions/FDOActions'
+import { useConnectionSettings } from '../../../hooks/useConnectionSettings'
 import types from '../../../Stores/types'
 
 function ConnectionSettingsComponent(props) {
-	const [testType, setTestType] = useState(false)
+	const [connectionState, setConnectionState] = useState({
+		testType: false,
+		skeleton_loading: true,
+	})
+	const [form] = Form.useForm()
 	const dispatch = useDispatch()
 	const {
 		connectionSettings,
@@ -14,10 +19,14 @@ function ConnectionSettingsComponent(props) {
 		carrierId,
 		fdoCouponInfo,
 		fdoCouponCarrierInfo,
-		uniShipperSmallApiType
+		uniShipperSmallApiType,
+		isInstalling
 	} = useSelector(state => state)
+	const { submitConnectionSettings } = useConnectionSettings()
 
-	const handleTypeChange = type => setTestType(type)
+	const handleTypeChange = type => {
+		setConnectionState({ ...connectionState, testType: type })
+	}
 
 	useEffect(() => {
 		dispatch(
@@ -46,22 +55,25 @@ function ConnectionSettingsComponent(props) {
 
 	const onFinish = values => {
 		values = {
+			...connectionSettings,
 			...values,
-			testType,
+			testType: connectionState.testType,
 			carrierId,
 			installed_carrier_id: carrierId,
+			api_type: uniShipperSmallApiType
 		}
-		values = { ...connectionSettings, ...values, api_type: uniShipperSmallApiType }
 
 		if (fdoCouponCarrierInfo)
 			values.is_enabled = fdoCouponCarrierInfo.is_enabled ?? false
 
-		dispatch(
-			postData(
-				values,
-				'GET_CONNECTION_SETTINGS',
-				'submit_connection_settings',
-				token
+		submitConnectionSettings(values, (vals, tkn) =>
+			dispatch(
+				postData(
+					vals,
+					'GET_CONNECTION_SETTINGS',
+					'submit_connection_settings',
+					tkn
+				)
 			)
 		)
 	}
@@ -88,7 +100,7 @@ function ConnectionSettingsComponent(props) {
 				<>
 					<div className={'note-bx'}>
 						<strong>Note!</strong> You must have a Unishippers (unishippers.com)
-						account to use this application. If you don’t have one, contact
+						account to use this application. If you don't have one, contact
 						Unishippers at 1-800-999-8721 and ask to be contacted by a sales
 						person from the office serving your area or{' '}
 						<a
@@ -103,6 +115,7 @@ function ConnectionSettingsComponent(props) {
 			)}
 
 			<Form
+				form={form}
 				layout='vertical'
 				name='connection_settings'
 				className='connection-settings'
@@ -113,7 +126,7 @@ function ConnectionSettingsComponent(props) {
 					className='mb-1'
 					label='Nickname'
 					name='nickname'
-					rules={[{ required: false, message: 'Nickname is required' }]}>
+					rules={[{ required: isInstalling ? !connectionState.testType : (!carrierId ? true : false), message: 'Nickname is required when saving' }]}>
 					<Input placeholder='e.g., Unishippers Small' />
 				</Form.Item>
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>
@@ -136,7 +149,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='Client ID'
 							name='clientId'
-							rules={[{ required: true, message: 'Client ID is required' }]}
+							rules={[{ required: isInstalling ? connectionState.testType : (!carrierId ? false : true), message: 'Client ID is required' }]}
 						>
 							<Input placeholder='Client ID' maxLength={100} />
 						</Form.Item>
@@ -144,7 +157,7 @@ function ConnectionSettingsComponent(props) {
 							className='mb-1'
 							label='Client Secret'
 							name='clientSecret'
-							rules={[{ required: true, message: 'Client Secret is required' }]}
+							rules={[{ required: isInstalling ? connectionState.testType : (!carrierId ? false : true), message: 'Client Secret is required' }]}
 						>
 							<Input placeholder='Client Secret' maxLength={100} />
 						</Form.Item>
@@ -163,13 +176,13 @@ function ConnectionSettingsComponent(props) {
 							className='mt-1'
 							label='Username'
 							name='new_api_username'
-							rules={[{ required: false, message: 'Username is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : false, message: 'Username is required' }]}>
 							<Input placeholder='Username' />
 						</Form.Item>
 						<Form.Item
 							label='Password'
 							name='new_api_password'
-							rules={[{ required: false, message: 'Password is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : false, message: 'Password is required' }]}>
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
 					</>
@@ -179,26 +192,26 @@ function ConnectionSettingsComponent(props) {
 							label='Unishippers Customer Number'
 							name='unishippers_customer_number'
 							rules={[
-								{ required: true, message: 'Unishippers Customer Number is required' },
+								{ required: isInstalling ? connectionState.testType : (!carrierId ? false : true), message: 'Unishippers Customer Number is required' },
 							]}>
 							<Input placeholder='Unishippers Customer Number' />
 						</Form.Item>
 						<Form.Item
 							label='UPS Account Number'
 							name='ups_account_number'
-							rules={[{ required: true, message: 'UPS Account Number is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : (!carrierId ? false : true), message: 'UPS Account Number is required' }]}>
 							<Input placeholder='UPS Account Number' />
 						</Form.Item>
 						<Form.Item
 							label='Username'
 							name='username'
-							rules={[{ required: true, message: 'Username is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : (!carrierId ? false : true), message: 'Username is required' }]}>
 							<Input placeholder='Username' />
 						</Form.Item>
 						<Form.Item
 							label='Password'
 							name='password'
-							rules={[{ required: true, message: 'Password is required' }]}>
+							rules={[{ required: isInstalling ? connectionState.testType : (!carrierId ? false : true), message: 'Password is required' }]}>
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
 						<Form.Item label='Request Key' name='request_key' className='mb-1'>
