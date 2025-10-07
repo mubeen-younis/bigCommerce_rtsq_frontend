@@ -38,6 +38,16 @@ function AutoDetectResidentialComponent(props) {
 		setIsAddonEnabled(updatedSbsAddon?.is_enabled || false)
 	}, [installedAddons])
 
+	// Initialize binPackMode to 1 (Minimize packages) if undefined
+	useEffect(() => {
+		if (sbsPlans && (sbsPlans.binPackMode === undefined || sbsPlans.binPackMode === null)) {
+			dispatch({
+				type: 'SBS_PLANS',
+				payload: {...sbsPlans, binPackMode: 1},
+			})
+		}
+	}, [sbsPlans, dispatch])
+
 	const changePlan = () => {
 		props.changePlan(props.token, newPlan?.id, SetCancelSubsriptionVisible)
 	}
@@ -372,7 +382,7 @@ function AutoDetectResidentialComponent(props) {
 													)
 												}}
 												checked={
-													props?.sbsPlans?.binPackMode === 1 || props?.sbsPlans?.binPackMode === undefined || props?.sbsPlans?.binPackMode === null
+													props?.sbsPlans?.binPackMode === 0 ? false : true
 												}
 											>
 												Minimize the number of packages.

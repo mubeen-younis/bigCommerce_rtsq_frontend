@@ -126,7 +126,7 @@ function ConnectionSettingsComponent(props) {
 					className='mb-1'
 					label='Nickname'
 					name='nickname'
-					rules={[{ required: isInstalling ? !connectionState.testType : (!carrierId ? true : false), message: 'Nickname is required when saving' }]}>
+					rules={[{ required: isInstalling ? !connectionState.testType : (!carrierId ? true : false), message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., Unishippers Small' />
 				</Form.Item>
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>

@@ -46,6 +46,19 @@ const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId, 
 
   const columns = [
     {
+      title: 'Action',
+      dataIndex: 'source_product_id',
+      key: 'action',
+      width: 80,
+      render: (source_product_id, record) => (
+        <Space size='middle'>
+          <Dropdown overlay={actionMenu(source_product_id, record)} trigger={['hover']} placement="bottomRight">
+          <Button type="text" icon={<EllipsisOutlined className="large-ellipsis-icon" />} />
+        </Dropdown>
+        </Space>
+      ),
+    },
+    {
       title: 'Product Name',
       dataIndex: 'name',
       key: 'name',
@@ -159,18 +172,6 @@ const makeColumns = (sortProducts, showProductDetails, showMoreItems, recordId, 
           <span>{JSON.parse(settings)?.freightParcelEnabled ? 'Both' : JSON.parse(settings)?.freight_enabled ? 'LTL' : JSON.parse(settings)?.parcel_enabled ? 'Parcel' : ''}</span>
         </>
       )
-    },
-    {
-      title: 'Action',
-      dataIndex: 'source_product_id',
-      key: 'source_product_id',
-      render: (source_product_id, record) => (
-        <Space size='middle'>
-          <Dropdown overlay={actionMenu(source_product_id, record)} trigger={['hover']} placement="bottomRight">
-          <Button type="text" icon={<EllipsisOutlined className="large-ellipsis-icon" />} />
-        </Dropdown>
-        </Space>
-      ),
     },
   ];
 
