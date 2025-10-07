@@ -5,6 +5,7 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { getSbsPlans, changePlan, changeAddonSuspendStatus, changeBinsPackagingMode } from '../Actions/SBS'
 import { changeAddonStatus } from '../Actions/EnitureStore'
 import BoxSizesComponent from '../components/Pages/BoxSizesComponent'
+import BoxSizesPackagingMethod from './BoxSizesPackagingMethod'
 
 const { Title } = Typography
 const { Option } = Select
@@ -133,7 +134,7 @@ function AutoDetectResidentialComponent(props) {
 					lg={24}
 					xl={22}>
 					<Title level={3}>
-						Standard Box Sizes
+						Box Sizes
 					</Title>
 				</Col>
 			</Row>
@@ -370,7 +371,7 @@ function AutoDetectResidentialComponent(props) {
 											>
 												Maximize space utilization
 												<div className={'text-gray'}>
-													Will utilize maximum space from the box during packaging.
+													Prioritizes the choice of boxes to minimize the amount of unused space.
         										</div>
 											</Radio>
 										</Form.Item>
@@ -387,7 +388,7 @@ function AutoDetectResidentialComponent(props) {
 											>
 												Minimize the number of packages.
 												<div className={'text-gray'}>
-													Minimize the number of packages made during packaging.
+													Use the fewest number of boxes for the packaging solution.
         										</div>
 											</Radio>
 										</Form.Item>
@@ -395,6 +396,10 @@ function AutoDetectResidentialComponent(props) {
 								)}
 							</Fragment>
 						)}
+
+						<div style={{ marginTop: '20px' }}>
+							<BoxSizesPackagingMethod />
+						</div>
 					</Card>
 				</Col>
 			</Row>

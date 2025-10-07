@@ -35,11 +35,13 @@ function ConnectionSettingsComponent(props) {
 		props.connectionSettings === undefined
 	) {
 		return <Skeleton active />
-	} else {
-		if (Object.keys(props.connectionSettings)?.length === 0) {
-			props.connectionSettings.access_level = 'pro'
-		}
 	}
+
+	// Clean initial values - only keep values if carrierId matches current carrier
+	const cleanedInitialValues = props.connectionSettings?.carrierId === props.carrierId
+		? props.connectionSettings
+		: { access_level: 'pro' };
+
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
@@ -58,7 +60,7 @@ function ConnectionSettingsComponent(props) {
 				name='connection_settings'
 				className='connection-settings'
 				size={'large'}
-				initialValues={props.connectionSettings}
+				initialValues={cleanedInitialValues}
 				onFinish={onFinish}>
                 <Form.Item
                     className='mb-1'
@@ -72,7 +74,7 @@ function ConnectionSettingsComponent(props) {
 					name='delivery_account_number'
 					rules={[
                         {
-                            required: props.connectionState.testType,
+                            required: connectionState.testType,
                             message: 'Pickup/Delivery Account Number is required',
                         },
 					]}>
@@ -82,14 +84,14 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Username'
                     name='username'
-                    rules={[{ required: props.connectionState.testType, message: 'Username is required' }]}>
+                    rules={[{ required: connectionState.testType, message: 'Username is required' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
 
                 <Form.Item
                     label='Password'
                     name='password'
-                    rules={[{ required: props.connectionState.testType, message: 'Password is required' }]}>
+                    rules={[{ required: connectionState.testType, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
@@ -98,7 +100,7 @@ function ConnectionSettingsComponent(props) {
                     name='delivery_postal_code'
                     rules={[
                         {
-                            required: props.connectionState.testType,
+                            required: connectionState.testType,
                             message: 'Pickup/Delivery Postal Code is required',
                         },
                     ]}>

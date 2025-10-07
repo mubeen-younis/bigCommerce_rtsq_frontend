@@ -13,9 +13,15 @@ function ConnectionSettingsComponent(props) {
 
 	useEffect(() => {
 		if (connectionSettings) {
+			// Only use api_type if it's a valid Day & Ross option
+			const validApiTypes = ['general_freight', 'sameday'];
+			const apiType = validApiTypes.includes(connectionSettings?.api_type)
+				? connectionSettings.api_type
+				: 'general_freight';
+
 			dispatch({
 				type: types.SET_DAYROSS_API_TYPE,
-				payload: connectionSettings?.api_type ?? 'general_freight',
+				payload: apiType,
 			})
 		}
 	}, [connectionSettings, dispatch])
@@ -42,6 +48,15 @@ function ConnectionSettingsComponent(props) {
 
 	if (!connectionSettings) return <Skeleton active />
 
+	// Clean the initial values to ensure api_type is valid
+	const validApiTypes = ['general_freight', 'sameday'];
+	const cleanedInitialValues = {
+		...connectionSettings,
+		api_type: validApiTypes.includes(connectionSettings?.api_type)
+			? connectionSettings.api_type
+			: 'general_freight'
+	};
+
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
@@ -61,18 +76,17 @@ function ConnectionSettingsComponent(props) {
 				name='connection_settings'
 				className='connection-settings'
 				size='large'
-				initialValues={connectionSettings}
+				initialValues={cleanedInitialValues}
 				onFinish={onFinish}>
                 <Form.Item
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: !testType, message: 'Nickname is required when saving' }]}>
+                    rules={[{ required: !testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., Day & Ross' />
 				</Form.Item>
-				<Form.Item label='Which API Will You Connect To?' name='api_type'>
+				<Form.Item label='Which API Will You Connect To?' name='api_type' initialValue='general_freight'>
 					<Select
-						defaultValue='general_freight'
 						options={[
 							{ label: 'General Freight', value: 'general_freight' },
 							{ label: 'Sameday', value: 'sameday' },

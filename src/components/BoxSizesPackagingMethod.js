@@ -168,16 +168,14 @@ const BoxSizesPackagingMethod = () => {
 		console.log('⚠️  No enabled small carriers found - component will not render')
 		console.log('Available carriers:', installedCarriers?.map(c => ({ name: c.name, slug: c.slug, enabled: c.is_enabled })))
 		return (
-			<Row gutter={30} justify="center" className="mb-3">
-				<Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-					<Title level={4}>Packaging method when standard box sizes is disabled</Title>
-					<Card>
-						<p style={{ color: 'orange', marginBottom: 0 }}>
-							⚠️ No enabled small carriers detected. Enable at least one small carrier (UPS Small, FedEx Small, USPS Small, etc.) to use this feature.
-						</p>
-					</Card>
-				</Col>
-			</Row>
+			<>
+				<label>
+					<strong>Packaging method when standard box sizes is disabled</strong>
+				</label>
+				<p style={{ color: 'orange', marginBottom: '20px' }}>
+					⚠️ No enabled small carriers detected. Enable at least one small carrier (UPS Small, FedEx Small, USPS Small, etc.) to use this feature.
+				</p>
+			</>
 		)
 	}
 
@@ -186,47 +184,37 @@ const BoxSizesPackagingMethod = () => {
 	}
 
 	return (
-		<Row gutter={30} justify="center" className="mb-3">
-			<Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-				<Title level={4}>Packaging method when standard box sizes is disabled</Title>
-				<Card>
-					<p style={{ marginBottom: '20px', color: '#666' }}>
-						These settings apply to all small carriers when standard box sizes are disabled.
-					</p>
+		<>
+			<label>
+				<strong>Packaging method when standard box sizes is disabled</strong>
+			</label>
+			<div style={{ marginBottom: '16px', marginTop: '8px' }}>
+				<Radio
+					checked={commonPackagingMethod === 1}
+					onChange={() => updatePackagingMethod(1)}
+				>
+					Quote each item as shipping as its own package
+				</Radio>
+			</div>
 
-					<Row gutter={24}>
-						<Col xs={24} sm={24} md={24} lg={24} xl={24}>
-							<div style={{ marginBottom: '16px' }}>
-								<Radio
-									checked={commonPackagingMethod === 1}
-									onChange={() => updatePackagingMethod(1)}
-								>
-									Quote each item as shipping as its own package
-								</Radio>
-							</div>
+			<div style={{ marginBottom: '16px' }}>
+				<Radio
+					checked={commonPackagingMethod === 3}
+					onChange={() => updatePackagingMethod(3)}
+				>
+					Quote shipping as all items are in one package, using weight only
+				</Radio>
+			</div>
 
-							<div style={{ marginBottom: '16px' }}>
-								<Radio
-									checked={commonPackagingMethod === 3}
-									onChange={() => updatePackagingMethod(3)}
-								>
-									Quote shipping as all items are in one package
-								</Radio>
-							</div>
-
-							<div style={{ marginBottom: '16px' }}>
-								<Radio
-									checked={commonPackagingMethod === 2}
-									onChange={() => updatePackagingMethod(2)}
-								>
-									Combine the weight of all items without dimensions and quote them as one package while quoting each item with dimensions as shipping as its own package
-								</Radio>
-							</div>
-						</Col>
-					</Row>
-				</Card>
-			</Col>
-		</Row>
+			<div style={{ marginBottom: '16px' }}>
+				<Radio
+					checked={commonPackagingMethod === 2}
+					onChange={() => updatePackagingMethod(2)}
+				>
+					Combine the weight of all items without dimensions and quote them as one package while quoting each item with dimensions as shipping as its own package
+				</Radio>
+			</div>
+		</>
 	)
 }
 

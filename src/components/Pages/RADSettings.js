@@ -294,10 +294,36 @@ function ShippingGroupsComponent() {
                             ${radPlans?.currentPackage?.current_package_cost}/{radPlans?.currentPackage?.current_package_period}
                           </p>
                           <p style={{ marginBottom: '0' }}>
-                            Usage: {Intl.NumberFormat('en-US').format(radPlans?.currentPackage?.consumed_hits)}/
-                            {Intl.NumberFormat('en-US').format(radPlans?.currentPackage?.total_allowed_hits)}
-                            {radPlans?.currentPackage?.total_allowed_hits !== 'Unlimited' &&
-                              ` (${radPlans?.currentPackage?.consumed_hits_in_per}%)`}
+                            Start date:{' '}
+                            {new Date(
+                              radPlans?.currentPackage?.subscription_time
+                            )
+                              .toDateString()
+                              .substring(4)}{' '}
+                          </p>
+                          <p style={{ marginBottom: '0' }}>
+                            End date:{' '}
+                            {new Date(
+                              radPlans?.currentPackage?.expiry_time
+                            )
+                              .toDateString()
+                              .substring(4)}
+                          </p>
+                        </div>
+
+                        <label>
+                          <strong>Current usage</strong>
+                        </label>
+
+                        <div
+                          style={{
+                            width: '100%',
+                            marginBottom: '20px',
+                          }}>
+                          <p style={{ marginBottom: '0' }}>
+                            {Intl.NumberFormat('en-US').format(radPlans?.currentPackage?.consumed_hits)}/
+                            {Intl.NumberFormat('en-US').format(radPlans?.currentPackage?.total_allowed_hits)}{' '}
+                            {radPlans?.currentPackage?.consumed_hits_in_per}%{' '}
                           </p>
                         </div>
 

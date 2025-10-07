@@ -92,14 +92,6 @@ function SideMenu(props) {
               </Menu.Item>
 
               <Menu.Item
-                key='106'
-                warnkey={106}
-                onClick={() => setActiveMenu('106')}
-              >
-                <Link to={`/shipping_groups`}>Shipping Groups</Link>
-              </Menu.Item>
-
-              <Menu.Item
                 key='108'
                 warnkey={108}
                 onClick={() => setActiveMenu('108')}
@@ -108,58 +100,12 @@ function SideMenu(props) {
               </Menu.Item>
 
               <Menu.Item
-                key='102'
-                warnkey={102}
-                onClick={() => setActiveMenu('102')}
+                key='106'
+                warnkey={106}
+                onClick={() => setActiveMenu('106')}
               >
-                <Link to={`/fdo`}>FreightDesk Online</Link>
+                <Link to={`/shipping_groups`}>Shipping Groups</Link>
               </Menu.Item>
-
-              <Menu.Item
-                key='103'
-                warnkey={103}
-                onClick={() => setActiveMenu('103')}
-              >
-                <Link to={`/av`}>Address Validation</Link>
-              </Menu.Item>
-
-              <Menu.Item
-                key='111'
-                warnkey={111}
-                onClick={() => setActiveMenu('111')}
-              >
-                <Link to={`/product_settings`}>Product Settings</Link>
-              </Menu.Item>
-
-              <Menu.Item
-                key='104'
-                warnkey={104}
-                onClick={() => setActiveMenu('104')}
-              >
-                <Link to={`/importcsv`}>Import CSV</Link>
-              </Menu.Item>
-
-              <Menu.Item
-                key='107'
-                warnkey={107}
-                onClick={() => setActiveMenu('107')}
-              >
-                <Link to={`/orders`}>Orders</Link>
-              </Menu.Item>
-
-              {props?.installedCarriers?.map((carrier) =>
-                carrier.slug === 'small-package' &&
-                carrier.is_enabled === 1 &&
-                carrier.carrier_type === 2 ? (
-                  <Menu.Item
-                    key='109'
-                    warnkey={109}
-                    onClick={() => setActiveMenu('109')}
-                  >
-                    <Link to={`/compare_rates`}>Compare Rates</Link>
-                  </Menu.Item>
-                ) : null
-              )}
 
               <Menu.Item
                 key='110'
@@ -222,6 +168,46 @@ function SideMenu(props) {
 
                 return null;
               })}
+
+              <Menu.Item
+                key='111'
+                warnkey={111}
+                onClick={() => setActiveMenu('111')}
+              >
+                <Link to={`/product_settings`}>Product Settings</Link>
+              </Menu.Item>
+
+              <Menu.Item
+                key='104'
+                warnkey={104}
+                onClick={() => setActiveMenu('104')}
+              >
+                <Link to={`/importcsv`}>Import CSV</Link>
+              </Menu.Item>
+
+              <Menu.Item
+                key='107'
+                warnkey={107}
+                onClick={() => setActiveMenu('107')}
+              >
+                <Link to={`/orders`}>Orders</Link>
+              </Menu.Item>
+
+              <Menu.Item
+                key='102'
+                warnkey={102}
+                onClick={() => setActiveMenu('102')}
+              >
+                <Link to={`/fdo`}>FreightDesk Online</Link>
+              </Menu.Item>
+
+              <Menu.Item
+                key='103'
+                warnkey={103}
+                onClick={() => setActiveMenu('103')}
+              >
+                <Link to={`/av`}>Address Validation</Link>
+              </Menu.Item>
 
               <Menu.Item
                 key='112'

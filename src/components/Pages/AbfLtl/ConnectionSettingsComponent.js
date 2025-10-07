@@ -58,7 +58,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: !testType, message: 'Nickname is required when saving' }]}>
+                    rules={[{ required: !testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., Warehouse ABF' />
 				</Form.Item>
 				<Form.Item

@@ -419,22 +419,45 @@ function ShippingCarriersComponent(props) {
             );
           }
 
-          // Add Activate/Deactivate button
-          actions.push(
-            <Button
-              key="toggle"
-              type='primary'
-              size='small'
-              style={{ marginBottom: '4px' }}
-              onClick={() => {
-                const newStatus = record.is_enabled === 1 ? 0 : 1; // Toggle between Activate (1) and Deactivate (0)
-                props.changeCarrierStatus(record.id, props.token, newStatus);
-              }}
-              disabled={isArchived}
-            >
-              {record.is_enabled === 1 ? 'Deactivate' : 'Activate'}
-            </Button>
-          );
+          // Add Activate/Deactivate button (only if not archived)
+          if (!isArchived) {
+            const isActive = record.is_enabled === 1;
+            actions.push(
+              <Button
+                key="toggle"
+                size='small'
+                style={{
+                  marginBottom: '4px',
+                  backgroundColor: isActive ? '#c8102e' : '#007f66',
+                  color: 'white',
+                  fontWeight: '600',
+                  border: isActive ? '1px solid #a00d24' : '1px solid #006652',
+                  borderRadius: '8px',
+                  padding: '8px 16px',
+                  height: 'auto',
+                  lineHeight: 'normal',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = isActive ? '#a00d24' : '#006652';
+                  e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = isActive ? '#c8102e' : '#007f66';
+                  e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                }}
+                onClick={() => {
+                  const newStatus = record.is_enabled === 1 ? 0 : 1; // Toggle between Activate (1) and Deactivate (0)
+                  props.changeCarrierStatus(record.id, props.token, newStatus);
+                }}
+              >
+                <span style={{ color: 'white', fontWeight: '600' }}>
+                  {record.is_enabled === 1 ? 'Deactivate' : 'Activate'}
+                </span>
+              </Button>
+            );
+          }
 
           return (
             <div style={{
@@ -839,8 +862,7 @@ function ShippingCarriersComponent(props) {
               width: '100%'
             }}>
               <Input
-                placeholder="Search providers..."
-                prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />}
+                placeholder="Search providers"
                 value={searchTerm}
                 onChange={handleSearchChange}
                 style={{

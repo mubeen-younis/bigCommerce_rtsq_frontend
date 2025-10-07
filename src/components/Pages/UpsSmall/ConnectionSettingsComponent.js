@@ -71,13 +71,7 @@ function ConnectionSettingsComponent(props) {
 				size={'large'}
 				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
-                <Form.Item
-                    className='mb-1'
-                    label='Nickname'
-                    name='nickname'
-                    rules={[{ required: !connectionState.testType, message: 'Nickname is required' }]}>
-					<Input placeholder='e.g., Main UPS account' />
-				</Form.Item>
+               
 				<div className={'note-bx'}>
 					<strong>Note! </strong>
 					{+component === 1 ? (
@@ -101,11 +95,19 @@ function ConnectionSettingsComponent(props) {
 					)}
 				</div>
 
+				 <Form.Item
+                    className='mb-1'
+                    label='Nickname'
+                    name='nickname'
+                    rules={[{ required: !connectionState.testType, message: 'Nickname is required' }]}>
+					<Input placeholder='e.g., Main UPS account' />
+				</Form.Item>
+
 				{+component === 1 ? (
 					<>
 						<Form.Item label='Which API Will You Connect To?' name='api_type'>
 							<Select
-								defaultValue={!connectionSettings?.api_type && connectionSettings?.carrierId ? 'legacy_api' : 'new_api'}
+								defaultValue='legacy_api'
 								options={[
 									{ label: 'Legacy API', value: 'legacy_api' },
 									{ label: 'New API', value: 'new_api' },

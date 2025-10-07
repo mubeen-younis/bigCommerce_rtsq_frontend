@@ -52,7 +52,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: !connectionState.testType, message: 'Nickname is required when saving' }]}
+                    rules={[{ required: !connectionState.testType, message: 'Nickname is required' }]}
                 >
 					<Input placeholder='e.g., ODFL' />
 				</Form.Item>

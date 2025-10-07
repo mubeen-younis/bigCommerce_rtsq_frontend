@@ -85,7 +85,48 @@ export const changePlan = (token, plan_package, SetCancelSubsriptionVisible) => 
 };
 
 export const changeAddonSuspendStatus = (addon_id, token, action) => {
-	return changeAddonStatusFromStore(2, token);
+	return dispatch => {
+		dispatch({
+			type: 'ALERT_MESSAGE',
+			payload: {
+				showAlertMessage: true,
+				alertMessageType: 'loading',
+			},
+		});
+
+		axios
+			.post(
+				`${process.env.REACT_APP_ENITURE_API_URL}/suspend-use-addon`,
+				{
+					package: addon_id,
+					addon_type: 'SBS',
+					suspend: action
+				},
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.then(({ data }) => {
+				dispatch({
+					type: 'SBS_PLANS',
+					payload: data.data,
+				});
+
+				dispatch({
+					type: 'ALERT_MESSAGE',
+					payload: {
+						alertMessage: data.message,
+						showAlertMessage: true,
+						alertMessageType: data.error ? 'error' : 'success',
+					},
+				});
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	};
 };
 
 export const changeBinsPackagingMode = (token, action) => {

@@ -32,11 +32,19 @@ function ConnectionSettingsComponent(props) {
 
 	if (!connectionSettings) return <Skeleton active />
 
+	// Clean initial values to remove default password
+	const cleanedInitialValues = {
+		...connectionSettings,
+		password: connectionSettings?.password === 'RLSsKFvFmcFUFpvzZtaMmySP2'
+			? ''
+			: connectionSettings?.password
+	};
+
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
 				<strong>Note!</strong> You must have a Estes Express
-				account to use this application. If you don’t have one, contact
+				account to use this application. If you don't have one, contact
 				Estes Express at 866-378-3748 , or email {' '}
 				<a
 					href='mailto:customercare@estes-express.com'
@@ -51,13 +59,13 @@ function ConnectionSettingsComponent(props) {
 				name='connection_settings'
 				className='connection-settings'
 				size='large'
-				initialValues={connectionSettings}
+				initialValues={cleanedInitialValues}
 				onFinish={onFinish}>
                 <Form.Item
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: !testType, message: 'Nickname is required when saving' }]}>
+                    rules={[{ required: !testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., Estes West' />
 				</Form.Item>
 				<Form.Item
