@@ -166,6 +166,9 @@ function TabsLayout({ onlyConnection = false, forcedSlug = '', initialTab = '1',
           )}
           {initialTab === '5' && quoteSettingsComponent}
           {initialTab === '7' && quoteSettings?.isEnableLogs && <DisplayLogsPage />}
+          {initialTab === '9' && carrierSlug === 'dbsc' && <ShippingRatesComponent />}
+          {initialTab === '10' && carrierSlug === 'dbsc' && <OtherSettings />}
+          {initialTab === '11' && carrierSlug === 'dbsc' && <ShippingClassesComponent />}
         </>
       ) : (
         <Tabs className={'tabs-wrp'} activeKey={tab} onChange={handleActiveTab} type='card'>

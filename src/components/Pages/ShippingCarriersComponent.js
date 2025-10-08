@@ -33,6 +33,9 @@ function ShippingCarriersComponent(props) {
   const [isConnectionModalOpen, setIsConnectionModalOpen] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [isCarriersModalOpen, setIsCarriersModalOpen] = useState(false);
+  const [isDBSCShippingRatesModalOpen, setIsDBSCShippingRatesModalOpen] = useState(false);
+  const [isDBSCOtherSettingsModalOpen, setIsDBSCOtherSettingsModalOpen] = useState(false);
+  const [isDBSCShippingClassesModalOpen, setIsDBSCShippingClassesModalOpen] = useState(false);
   const [selectedCarrierForModal, setSelectedCarrierForModal] = useState(null);
   const [selectedModalTab, setSelectedModalTab] = useState('1');
 
@@ -265,10 +268,37 @@ function ShippingCarriersComponent(props) {
     setIsCarriersModalOpen(true);
   };
 
+  const openDBSCShippingRatesModal = async (carrier) => {
+    setSelectedCarrierForModal(carrier);
+    dispatch({ type: 'CARRIER_ID', payload: carrier.id });
+    // Clear existing data to force refresh
+    dispatch({ type: 'GET_DBSC_PROFILES', payload: null });
+    setIsDBSCShippingRatesModalOpen(true);
+  };
+
+  const openDBSCOtherSettingsModal = async (carrier) => {
+    setSelectedCarrierForModal(carrier);
+    dispatch({ type: 'CARRIER_ID', payload: carrier.id });
+    // Clear existing data to force refresh
+    dispatch({ type: 'GET_DBSC_OTHER_SETTINGS', payload: null });
+    setIsDBSCOtherSettingsModalOpen(true);
+  };
+
+  const openDBSCShippingClassesModal = async (carrier) => {
+    setSelectedCarrierForModal(carrier);
+    dispatch({ type: 'CARRIER_ID', payload: carrier.id });
+    // Clear existing data to force refresh
+    dispatch({ type: 'GET_DBSC_CLASSES', payload: null });
+    setIsDBSCShippingClassesModalOpen(true);
+  };
+
   const closeAllModals = () => {
     setIsConnectionModalOpen(false);
     setIsQuoteModalOpen(false);
     setIsCarriersModalOpen(false);
+    setIsDBSCShippingRatesModalOpen(false);
+    setIsDBSCOtherSettingsModalOpen(false);
+    setIsDBSCShippingClassesModalOpen(false);
     setSelectedCarrierForModal(null);
   };
 
@@ -415,6 +445,64 @@ function ShippingCarriersComponent(props) {
                 }}
               >
                 Connection Settings
+              </a>
+            );
+          }
+
+          // Add DBSC-specific links
+          if (record.slug === 'dbsc') {
+            actions.push(
+              <a
+                style={{
+                  display: 'inline-block',
+                  color: '#1890ff',
+                  marginRight: '12px',
+                  marginBottom: '4px',
+                  cursor: 'pointer'
+                }}
+                key="shipping-rates"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openDBSCShippingRatesModal(record);
+                }}
+              >
+                Shipping Rates
+              </a>
+            );
+            actions.push(
+              <a
+                style={{
+                  display: 'inline-block',
+                  color: '#1890ff',
+                  marginRight: '12px',
+                  marginBottom: '4px',
+                  cursor: 'pointer'
+                }}
+                key="other-settings"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openDBSCOtherSettingsModal(record);
+                }}
+              >
+                Other Settings
+              </a>
+            );
+            actions.push(
+              <a
+                style={{
+                  display: 'inline-block',
+                  color: '#1890ff',
+                  marginRight: '12px',
+                  marginBottom: '4px',
+                  cursor: 'pointer'
+                }}
+                key="shipping-classes"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openDBSCShippingClassesModal(record);
+                }}
+              >
+                Shipping Classes
               </a>
             );
           }
@@ -676,6 +764,52 @@ function ShippingCarriersComponent(props) {
       >
         {isCarriersModalOpen && selectedCarrierForModal ? (
           <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="2" hideHeader={true} hideTabs={true} />
+        ) : null}
+      </Modal>
+
+      {/* DBSC Shipping Rates Modal */}
+      <Modal
+        title={`Shipping Rates - ${selectedCarrierForModal?.nickname || selectedCarrierForModal?.name || ''}`}
+        visible={isDBSCShippingRatesModalOpen}
+        onCancel={closeAllModals}
+        footer={null}
+        width="90%"
+        style={{ top: 20, maxWidth: '1400px' }}
+        bodyStyle={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}
+        destroyOnClose
+      >
+        {isDBSCShippingRatesModalOpen && selectedCarrierForModal ? (
+          <div style={{ width: '100%', overflow: 'hidden' }}>
+            <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="9" hideHeader={true} hideTabs={true} />
+          </div>
+        ) : null}
+      </Modal>
+
+      {/* DBSC Other Settings Modal */}
+      <Modal
+        title={`Other Settings - ${selectedCarrierForModal?.nickname || selectedCarrierForModal?.name || ''}`}
+        visible={isDBSCOtherSettingsModalOpen}
+        onCancel={closeAllModals}
+        footer={null}
+        width={900}
+        destroyOnClose
+      >
+        {isDBSCOtherSettingsModalOpen && selectedCarrierForModal ? (
+          <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="10" hideHeader={true} hideTabs={true} />
+        ) : null}
+      </Modal>
+
+      {/* DBSC Shipping Classes Modal */}
+      <Modal
+        title={`Shipping Classes - ${selectedCarrierForModal?.nickname || selectedCarrierForModal?.name || ''}`}
+        visible={isDBSCShippingClassesModalOpen}
+        onCancel={closeAllModals}
+        footer={null}
+        width={900}
+        destroyOnClose
+      >
+        {isDBSCShippingClassesModalOpen && selectedCarrierForModal ? (
+          <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="11" hideHeader={true} hideTabs={true} />
         ) : null}
       </Modal>
       {/* <Row gutter={25}>

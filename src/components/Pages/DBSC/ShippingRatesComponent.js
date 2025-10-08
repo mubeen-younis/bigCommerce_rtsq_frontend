@@ -2,6 +2,7 @@ import { Button, Col, Row, Skeleton, Typography } from 'antd'
 import React, { useState, useCallback, useEffect, memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AddProfile from './ShippingProfile/AddProfile'
+import ProfilesList from './ShippingProfile/ProfilesList'
 import types from '../../../Stores/types'
 import { getDbscData, getDbscZones } from '../../../Actions/DbscActions'
 
@@ -35,7 +36,7 @@ const ShippingRatesComponent = () => {
 	if (!shippingProfiles) return <Skeleton active />
 
 	return (
-		<>
+		<div style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
 			<Row gutter={30} className='mb-2'>
 				<Col className='gutter-row' xs={12} sm={12} md={12} lg={12} xl={12}>
 					<Title level={4}>Shipping Profiles</Title>
@@ -65,11 +66,13 @@ const ShippingRatesComponent = () => {
 				</Col>
 			</Row>
 
+			<ProfilesList />
+
 			<AddProfile
 				toggleAddProfileModal={toggleAddProfileModal}
 				visible={addProfileModal}
 			/>
-		</>
+		</div>
 	)
 }
 

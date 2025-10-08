@@ -240,6 +240,15 @@ export const getDbscOtherSettings = token => async dispatch => {
 				type: types.GET_DBSC_OTHER_SETTINGS,
 				payload: data.data,
 			})
+		} else {
+			// Set empty data on error to prevent infinite loading
+			dispatch({
+				type: types.GET_DBSC_OTHER_SETTINGS,
+				payload: {
+					multi_label: '',
+					multishipment_preference: 1,
+				},
+			})
 		}
 
 		dispatch({
@@ -251,6 +260,14 @@ export const getDbscOtherSettings = token => async dispatch => {
 			},
 		})
 	} catch (err) {
+		// Set empty data on error to prevent infinite loading
+		dispatch({
+			type: types.GET_DBSC_OTHER_SETTINGS,
+			payload: {
+				multi_label: '',
+				multishipment_preference: 1,
+			},
+		})
 		dispatch({
 			type: 'ALERT_MESSAGE',
 			payload: {
