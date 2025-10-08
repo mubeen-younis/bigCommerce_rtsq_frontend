@@ -9,6 +9,7 @@ import useLoadComponent from '../hooks/useLoadComponent';
 import ShippingRatesComponent from '../components/Pages/DBSC/ShippingRatesComponent';
 import ShippingClassesComponent from '../components/Pages/DBSC/ShippingClassesComponent';
 import OtherSettings from '../components/Pages/DBSC/OtherSettings';
+import DBSCConnectionSettingsComponent from '../components/Pages/DBSC/ConnectionSettingsComponent';
 import DisplayLogsPage from '../components/DisplayLogsPage';
 
 const { TabPane } = Tabs;
@@ -136,14 +137,12 @@ function TabsLayout({ onlyConnection = false, forcedSlug = '', initialTab = '1',
       <Fragment>
         {!hideHeader && <PlanStatusHeading />}
         {hideTabs ? (
-          connSettingsComponent
+          carrierSlug === 'dbsc' ? <DBSCConnectionSettingsComponent /> : connSettingsComponent
         ) : (
           <Tabs className={'tabs-wrp'} activeKey={tab} onChange={handleActiveTab} type='card'>
-            {carrierSlug !== 'dbsc' && (
-              <TabPane tab='Connection Settings' key='1'>
-                {connSettingsComponent}
-              </TabPane>
-            )}
+            <TabPane tab='Connection Settings' key='1'>
+              {carrierSlug === 'dbsc' ? <DBSCConnectionSettingsComponent /> : connSettingsComponent}
+            </TabPane>
           </Tabs>
         )}
       </Fragment>
@@ -157,7 +156,7 @@ function TabsLayout({ onlyConnection = false, forcedSlug = '', initialTab = '1',
       {hideTabs ? (
         // Render content directly without tabs based on initialTab
         <>
-          {initialTab === '1' && connSettingsComponent}
+          {initialTab === '1' && (carrierSlug === 'dbsc' ? <DBSCConnectionSettingsComponent /> : connSettingsComponent)}
           {initialTab === '2' && (
             ['ltl-quotes', 'freightquote-ltl', 'tql-ltl', 'echo-ltl', 'freightquote-chr-ltl', 'priority-one-ltl', 'unishipper-ltl', 'kn-ltl'].includes(carrierSlug) ? (
               <CarriersComponent />
@@ -170,11 +169,9 @@ function TabsLayout({ onlyConnection = false, forcedSlug = '', initialTab = '1',
         </>
       ) : (
         <Tabs className={'tabs-wrp'} activeKey={tab} onChange={handleActiveTab} type='card'>
-          {carrierSlug !== 'dbsc' && (
-            <TabPane tab='Connection Settings' key='1'>
-              {connSettingsComponent}
-            </TabPane>
-          )}
+          <TabPane tab='Connection Settings' key='1'>
+            {carrierSlug === 'dbsc' ? <DBSCConnectionSettingsComponent /> : connSettingsComponent}
+          </TabPane>
           {[
             'ltl-quotes',
             'freightquote-ltl',

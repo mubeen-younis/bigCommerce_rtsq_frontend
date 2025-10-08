@@ -38,7 +38,8 @@ function PlanStatusHeading() {
 					You don't have an active plan. On the Plans page, choose the
 					Trial plan or one of the paid plans to get started.
 				</div>
-			) : currentPlan?.plan_id === 1 ? (
+			) : null}
+			{/* currentPlan?.plan_id === 1 ? (
 				<div className='note-bx'>{trailPlanCheck}</div>
 			) : currentPlan?.plan_id === 5 ? (
 				<div className='note-bx'>{devPlanCheck}</div>
@@ -69,7 +70,7 @@ function PlanStatusHeading() {
 						  '.'
 						: ' It will auto-renew on ' + currentPlan?.ends_at + '.'}
 				</div>
-			) : null}
+			) : null} */}
 		</Fragment>
 	)
 }

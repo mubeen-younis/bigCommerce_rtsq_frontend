@@ -279,8 +279,8 @@ function ShippingCarriersComponent(props) {
         title: 'Provider Image',
         dataIndex: 'logo',
         key: 'logo',
-        width: 150,
-        align: 'center',
+        width: 110,
+        align: 'left',
         render: (logo) => (
           <Image
             preview={false}
@@ -432,10 +432,11 @@ function ShippingCarriersComponent(props) {
                   color: 'white',
                   fontWeight: '600',
                   border: isActive ? '1px solid #a00d24' : '1px solid #006652',
-                  borderRadius: '8px',
-                  padding: '8px 16px',
+                  borderRadius: '6px',
+                  padding: '4px 12px',
                   height: 'auto',
                   lineHeight: 'normal',
+                  fontSize: '13px',
                   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                   transition: 'all 0.3s ease',
                 }}
@@ -497,7 +498,7 @@ function ShippingCarriersComponent(props) {
         title: 'Provider Name',
         dataIndex: 'name',
         key: 'name',
-        width: 500,
+        width: 450,
         render: (name, record) => (
           <div>
             <div style={{ fontWeight: 'bold' }}>
@@ -512,10 +513,11 @@ function ShippingCarriersComponent(props) {
         ),
       },
       {
-        title: <div style={{ paddingLeft: '80px' }}>Actions</div>,
+        title: 'Actions',
         key: 'actions',
+        width: 200,
         render: (_, record) => (
-          <div style={{ paddingLeft: '80px' }}>
+          <div style={{ paddingRight: '50px', whiteSpace: 'nowrap' }}>
             {record.status ? (
               <a
                 style={{
@@ -584,8 +586,16 @@ function ShippingCarriersComponent(props) {
 
   return (
     <Fragment>
-      <PlanStatusHeading />
-      <ExportCSVDownloadStatus />
+      <div style={{ backgroundColor: '#f5f5f5', minHeight: '100vh', padding: '20px' }}>
+        <PlanStatusHeading />
+        <ExportCSVDownloadStatus />
+
+        {/* Page Heading */}
+        <Row gutter={25}>
+          <Col xs={24} style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '20px' }}>
+            <Title level={3} style={{ margin: 0 }}>Providers</Title>
+          </Col>
+        </Row>
 
       {/* Current Plan Information */}
       {currentPlan && (
@@ -598,24 +608,14 @@ function ShippingCarriersComponent(props) {
             lg={24}
             xl={24}
           >
-            <Card
-              size='default'
-              style={{
-                borderRadius: '5px',
-                border: 'none',
-                fontSize: '1em',
-                backgroundColor: '#f0f5ff',
-              }}
-            >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div>
-                  <strong>Current plan:</strong> {currentPlan.name || currentPlanDetails?.name || 'N/A'}
-                </div>
-                <div>
-                  <strong>Enable upto {maxCarriers} providers</strong>
-                </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div>
+                <strong>Current plan:</strong> {currentPlan.name || currentPlanDetails?.name || 'N/A'}
               </div>
-            </Card>
+              <div>
+                <strong>Enable upto {maxCarriers} providers</strong>
+              </div>
+            </div>
           </Col>
         </Row>
       )}
@@ -678,7 +678,7 @@ function ShippingCarriersComponent(props) {
           <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="2" hideHeader={true} hideTabs={true} />
         ) : null}
       </Modal>
-      <Row gutter={25}>
+      {/* <Row gutter={25}>
         <Col
           className='gutter-row mb-3'
           xs={24}
@@ -713,45 +713,45 @@ function ShippingCarriersComponent(props) {
                   }
                 />
               }
-              title={
-                <h3 style={{ fontWeight: 600, marginBottom: 0 }}>
-                  Getting Started
-                </h3>
-              }
-              description={
-                <p>
-                  Below is a list of supported shipping providers. The plan you
-                  subscribe to will dictate how many shipping providers you can
-                  enable. Click on Plans in the navigation menu to review and
-                  select a plan. To enable a provider, click on the Enable
-                  button. Afterward, use the{' '}
-                  <a
-                    target='_blank'
-                    href='https://eniture.com/bigcommerce-real-time-shipping-quotes/'
-                    rel='noreferrer'
-                  >
-                    User’s Guide
-                  </a>{' '}
-                  for instructions on how to connect to your account and perform
-                  the other steps necessary to make the integration functional.
-                  If you require customer support you can open a support ticket
-                  by emailing support@eniture.com or by calling 404-369-0680
-                  extension 2. You can also check our{' '}
-                  <a
-                    target='_blank'
-                    href='https://support.eniture.com/'
-                    rel='noreferrer'
-                  >
-                    Knowledge Base
-                  </a>{' '}
-                  to see if there is an article that provides an answer to your
-                  question.
-                </p>
-              }
+              // title={
+              //   <h3 style={{ fontWeight: 600, marginBottom: 0 }}>
+              //     Getting Started
+              //   </h3>
+              // }
+              // description={
+              //   <p>
+              //     Below is a list of supported shipping providers. The plan you
+              //     subscribe to will dictate how many shipping providers you can
+              //     enable. Click on Plans in the navigation menu to review and
+              //     select a plan. To enable a provider, click on the Enable
+              //     button. Afterward, use the{' '}
+              //     <a
+              //       target='_blank'
+              //       href='https://eniture.com/bigcommerce-real-time-shipping-quotes/'
+              //       rel='noreferrer'
+              //     >
+              //       User’s Guide
+              //     </a>{' '}
+              //     for instructions on how to connect to your account and perform
+              //     the other steps necessary to make the integration functional.
+              //     If you require customer support you can open a support ticket
+              //     by emailing support@eniture.com or by calling 404-369-0680
+              //     extension 2. You can also check our{' '}
+              //     <a
+              //       target='_blank'
+              //       href='https://support.eniture.com/'
+              //       rel='noreferrer'
+              //     >
+              //       Knowledge Base
+              //     </a>{' '}
+              //     to see if there is an article that provides an answer to your
+              //     question.
+              //   </p>
+              // }
             />
           </Card>
         </Col>
-      </Row>
+      </Row> */}
 
       {/* Installed Providers Section */}
       {(() => {
@@ -765,14 +765,21 @@ function ShippingCarriersComponent(props) {
               ) : (
                 <>
                   <Title level={4}>Installed Providers</Title>
-                  <Table
-                    key={`installed-${installedProviders.length}-${installedProviders.map(p => p.id).join('-')}`}
-                    columns={getProviderTableColumns(false, false)}
-                    dataSource={installedProviders}
-                    rowKey="id"
-                    pagination={false}
-                    showHeader={true}
-                  />
+                  <div style={{
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #d9d9d9',
+                    borderRadius: '8px',
+                    padding: '16px'
+                  }}>
+                    <Table
+                      key={`installed-${installedProviders.length}-${installedProviders.map(p => p.id).join('-')}`}
+                      columns={getProviderTableColumns(false, false)}
+                      dataSource={installedProviders}
+                      rowKey="id"
+                      pagination={false}
+                      showHeader={true}
+                    />
+                  </div>
                 </>
               )}
             </div>
@@ -819,31 +826,38 @@ function ShippingCarriersComponent(props) {
                     </Button>
                   )}
                 </div>
-                {effectiveShowArchived ? (
-                  archivedProviders.length > 0 ? (
-                    <Table
-                      columns={getProviderTableColumns(true, false)}
-                      dataSource={archivedProviders}
-                      rowKey="id"
-                      pagination={false}
-                      showHeader={true}
-                    />
+                <div style={{
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #d9d9d9',
+                  borderRadius: '8px',
+                  padding: '16px'
+                }}>
+                  {effectiveShowArchived ? (
+                    archivedProviders.length > 0 ? (
+                      <Table
+                        columns={getProviderTableColumns(true, false)}
+                        dataSource={archivedProviders}
+                        rowKey="id"
+                        pagination={false}
+                        showHeader={true}
+                      />
+                    ) : (
+                      <div className={'no-data'}>No Archived Providers</div>
+                    )
                   ) : (
-                    <div className={'no-data'}>No Archived Providers</div>
-                  )
-                ) : (
-                  deactivatedProviders.length > 0 ? (
-                    <Table
-                      columns={getProviderTableColumns(false, true)}
-                      dataSource={deactivatedProviders}
-                      rowKey="id"
-                      pagination={false}
-                      showHeader={true}
-                    />
-                  ) : (
-                    <NoProvidersEmptyState />
-                  )
-                )}
+                    deactivatedProviders.length > 0 ? (
+                      <Table
+                        columns={getProviderTableColumns(false, true)}
+                        dataSource={deactivatedProviders}
+                        rowKey="id"
+                        pagination={false}
+                        showHeader={true}
+                      />
+                    ) : (
+                      <NoProvidersEmptyState />
+                    )
+                  )}
+                </div>
               </>
             )}
           </div>
@@ -858,38 +872,45 @@ function ShippingCarriersComponent(props) {
           <>
             <Title level={4}>All Providers</Title>
             <div style={{
-              marginBottom: '16px',
-              width: '100%'
+              backgroundColor: '#ffffff',
+              border: '1px solid #d9d9d9',
+              borderRadius: '8px',
+              padding: '16px'
             }}>
-              <Input
-                placeholder="Search providers"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                style={{
-                  width: '100%',
-                  borderRadius: '8px',
-                  border: '1px solid #d9d9d9',
-                  boxShadow: 'none',
-                  fontSize: '14px'
-                }}
-                size="large"
-                allowClear
-              />
-            </div>
-            {getFilteredAvailableCarriers().length > 0 ? (
-              <Table
-                columns={getAvailableProviderTableColumns()}
-                dataSource={getFilteredAvailableCarriers()}
-                rowKey="id"
-                pagination={false}
-                showHeader={true}
-                className="aligned-providers-table"
-              />
-            ) : (
-              <div className={'no-data'}>
-                {searchTerm ? `No providers found matching "${searchTerm}"` : 'No Providers Available'}
+              <div style={{
+                marginBottom: '16px',
+                width: '100%'
+              }}>
+                <Input
+                  placeholder="Search providers"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  style={{
+                    width: '100%',
+                    borderRadius: '8px',
+                    border: '1px solid #d9d9d9',
+                    boxShadow: 'none',
+                    fontSize: '14px'
+                  }}
+                  size="large"
+                  allowClear
+                />
               </div>
-            )}
+              {getFilteredAvailableCarriers().length > 0 ? (
+                <Table
+                  columns={getAvailableProviderTableColumns()}
+                  dataSource={getFilteredAvailableCarriers()}
+                  rowKey="id"
+                  pagination={false}
+                  showHeader={true}
+                  className="aligned-providers-table"
+                />
+              ) : (
+                <div className={'no-data'}>
+                  {searchTerm ? `No providers found matching "${searchTerm}"` : 'No Providers Available'}
+                </div>
+              )}
+            </div>
           </>
         )}
       </div>
@@ -940,6 +961,7 @@ function ShippingCarriersComponent(props) {
         )}
       </Row> */}
 
+      </div>
     </Fragment>
   );
 }

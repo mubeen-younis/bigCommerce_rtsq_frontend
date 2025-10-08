@@ -236,31 +236,31 @@ function ShippingGroupsComponent() {
                     Disable (default)
                   </Option>
                   {radPlans?.allRadPackages?.length > 0
-                    ? radPlans?.allRadPackages?.map(plan =>
-                      plan?.status && (
-                        plan.cost !== 0
-                          ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store11'}>
-                            {Intl.NumberFormat('en-US').format(
-                              plan.htis
-                            )}/mo (${plan.cost})
+                    ? radPlans?.allRadPackages?.map(plan => {
+                      if (plan.cost !== 0) {
+                        const htisDisplay = typeof plan.htis === 'number'
+                          ? Intl.NumberFormat('en-US').format(plan.htis)
+                          : 'NaN';
+                        return (
+                          <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store'}>
+                            {htisDisplay}/mo (${plan.cost})
                           </Option>
-                          : (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Store11')
-                            ? <Option key={plan.id} value={plan.id}>
-                              {Intl.NumberFormat('en-US').format(
-                                plan.htis
-                              )}/5 years {plan.name} (${
-                                plan.cost
-                              })
-                            </Option>
-                            : (plan.name == 'Trial' && store?.plan_level != 'Sandbox Store11')
-                              ? <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store11'}>
-                                {Intl.NumberFormat('en-US').format(
-                                  plan.htis
-                                )}/15 days (${plan.cost}) - Trial
-                              </Option>
-                              : null
-                      )
-                    )
+                        );
+                      } else if (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Store') {
+                        return (
+                          <Option key={plan.id} value={plan.id}>
+                            {Intl.NumberFormat('en-US').format(plan.htis)}/5 years {plan.name} (${plan.cost})
+                          </Option>
+                        );
+                      } else if (plan.name == 'Trial' && store?.plan_level != 'Sandbox Store') {
+                        return (
+                          <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store'}>
+                            {Intl.NumberFormat('en-US').format(plan.htis)}/15 days (${plan.cost}) - Trial
+                          </Option>
+                        );
+                      }
+                      return null;
+                    })
                     : null
                   }
                 </Select>
