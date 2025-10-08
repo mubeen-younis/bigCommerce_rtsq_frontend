@@ -64,15 +64,13 @@ function ConnectionSettingsComponent(props) {
 
                 <Form.Item
                     label='Username'
-                    name='username'
-                    rules={[{ required: connectionState.testType, message: 'Username is required' }]}>
+                    name='username'>
 					<Input placeholder='Username' />
 				</Form.Item>
 
                 <Form.Item
                     label='Password'
-                    name='password'
-                    rules={[{ required: connectionState.testType, message: 'Password is required' }]}>
+                    name='password'>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 

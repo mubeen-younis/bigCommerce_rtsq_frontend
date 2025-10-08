@@ -118,9 +118,20 @@ const Reducer = (state = initialState, action) => {
 			}
 
 		case types.GET_CONNECTION_SETTINGS:
+			// When connection settings are saved/updated, also update the nickname in installedCarriers
+			let updatedInstalledCarriers = state.installedCarriers
+			if (action.payload && action.payload.nickname && state.carrierId) {
+				updatedInstalledCarriers = (state.installedCarriers || []).map(carrier =>
+					carrier.id === state.carrierId
+						? { ...carrier, nickname: action.payload.nickname }
+						: carrier
+				)
+			}
+
 			return {
 				...state,
 				connectionSettings: action.payload,
+				installedCarriers: updatedInstalledCarriers,
 			}
 
 		case types.GET_QUOTE_SETTINGS:
@@ -215,6 +226,8 @@ const Reducer = (state = initialState, action) => {
 							logo: installedCarrier.logo || matchingAvailable.logo,
 							name: installedCarrier.name || matchingAvailable.name,
 							slug: installedCarrier.slug || matchingAvailable.slug,
+							// Explicitly preserve nickname from installed carrier
+							nickname: installedCarrier.nickname || '',
 						};
 					}
 					return installedCarrier;

@@ -216,18 +216,13 @@ function ShippingCarriersComponent(props) {
     // Store the original available carrier ID for installation purposes
     dispatch({ type: 'SET_AVAILABLE_CARRIER_ID', payload: carrier.id });
 
-    // Clear connection settings first to prevent showing stale/default data
-    // Set to null first to force the component to re-render
+    // Clear connection settings to ensure "Add Account" modal always shows empty fields
+    // This is intentional - "Add Account" is for new installations, not editing existing credentials
     dispatch({ type: 'GET_CONNECTION_SETTINGS', payload: null });
 
     // Use setTimeout to ensure the null state is applied before setting empty values
     setTimeout(() => {
       dispatch({ type: 'GET_CONNECTION_SETTINGS', payload: { nickname: '' } });
-
-      // Only fetch connection settings if carrier is already installed
-      if (existing) {
-        dispatch(getConnectionSettings(props.token, installedId));
-      }
     }, 0);
 
     dispatch(getInsuraceStatus(props.token, carrier.id));
@@ -731,7 +726,7 @@ function ShippingCarriersComponent(props) {
           dispatch({ type: 'SET_AVAILABLE_CARRIER_ID', payload: null });
         }}
         footer={null}
-        width={900}
+        width={1200}
         destroyOnClose
       >
         {isInstallModalOpen && activeCarrierId ? (
@@ -745,7 +740,7 @@ function ShippingCarriersComponent(props) {
         visible={isConnectionModalOpen}
         onCancel={closeAllModals}
         footer={null}
-        width={900}
+        width={1200}
         destroyOnClose
       >
         {isConnectionModalOpen && selectedCarrierForModal ? (
@@ -759,7 +754,7 @@ function ShippingCarriersComponent(props) {
         visible={isQuoteModalOpen}
         onCancel={closeAllModals}
         footer={null}
-        width={900}
+        width={1200}
         destroyOnClose
       >
         {isQuoteModalOpen && selectedCarrierForModal ? (

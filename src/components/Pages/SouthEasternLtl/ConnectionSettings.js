@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useState } from 'react'
+import React, { Fragment, useCallback, useState, useEffect } from 'react'
 import { Form, Input, Button, Space, Skeleton, Row, Col, Radio } from 'antd'
 import { connect } from 'react-redux'
 
@@ -11,6 +11,13 @@ function ConnectionSettingsComponent(props) {
 	})
 	const [form] = Form.useForm()
 	const [thirdPartyCheck, setThirdPartyCheck] = useState(false)
+
+	useEffect(() => {
+		if (props.connectionSettings) {
+			// Reset form fields when connectionSettings changes
+			form.setFieldsValue(props.connectionSettings)
+		}
+	}, [props.connectionSettings, form])
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
@@ -59,21 +66,21 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item
 					label='Customer Account Number'
 					name='customer_account_number'
-                    rules={[{ required: props.connectionState.testType, message: 'Customer Account Number is required' }]}>
+                    rules={[{ required: connectionState.testType, message: 'Customer Account Number is required' }]}>
 					<Input placeholder='Customer Account Number' />
 				</Form.Item>
 
                 <Form.Item
                     label='Username'
                     name='username'
-                    rules={[{ required: props.connectionState.testType, message: 'Username is required' }]}>
+                    rules={[{ required: connectionState.testType, message: 'Username is required' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
 
                 <Form.Item
                     label='Password'
                     name='password'
-                    rules={[{ required: props.connectionState.testType, message: 'Password is required' }]}>
+                    rules={[{ required: connectionState.testType, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
 
@@ -82,7 +89,7 @@ function ConnectionSettingsComponent(props) {
                         <Form.Item
 							label='Customer Address'
 							name='customer_name'
-                            rules={[{ required: props.connectionState.testType, message: 'Customer Name is required' }]}>
+                            rules={[{ required: connectionState.testType, message: 'Customer Name is required' }]}>
 							<Input type='text' placeholder='Customer Name' />
 						</Form.Item>
 					</Col>
@@ -92,7 +99,7 @@ function ConnectionSettingsComponent(props) {
 							name='customer_street_address'
 							rules={[
 								{
-                                    required: props.connectionState.testType,
+                                    required: connectionState.testType,
 									message: 'Customer Street Address is required',
 								},
 							]}>
@@ -108,7 +115,7 @@ function ConnectionSettingsComponent(props) {
 					<Col span={12}>
                         <Form.Item
 							name='customer_city'
-                            rules={[{ required: props.connectionState.testType, message: 'Customer City is required' }]}>
+                            rules={[{ required: connectionState.testType, message: 'Customer City is required' }]}>
 							<Input type='text' placeholder='Customer City' />
 						</Form.Item>
 					</Col>
@@ -116,7 +123,7 @@ function ConnectionSettingsComponent(props) {
 					<Col span={12}>
                         <Form.Item
 							name='customer_state'
-                            rules={[{ required: props.connectionState.testType, message: 'Customer State is required' }]}>
+                            rules={[{ required: connectionState.testType, message: 'Customer State is required' }]}>
 							<Input
 								type='text'
 								placeholder='Customer State e.g. LA'
@@ -131,7 +138,7 @@ function ConnectionSettingsComponent(props) {
                         <Form.Item
 							name='customer_zip_code'
                             rules={[
-                                { required: props.connectionState.testType, message: 'Customer Zip Code is required' },
+                                { required: connectionState.testType, message: 'Customer Zip Code is required' },
                             ]}>
 							<Input type='text' placeholder='Customer Zip Code' />
 						</Form.Item>
@@ -167,7 +174,7 @@ function ConnectionSettingsComponent(props) {
 					className='mt-1'
 					name='access_level'
 					label='Access Level'
-					rules={[{ required: true, message: 'Access Level is required' }]}>
+					rules={[{ required: connectionState.testType, message: 'Access Level is required' }]}>
 					<Radio.Group>
 						<Radio
 							value='Shipper'

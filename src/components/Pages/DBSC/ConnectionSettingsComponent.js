@@ -54,24 +54,14 @@ function ConnectionSettingsComponent() {
 				</Form.Item>
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
-					<Space>
-						<Button
-							type='primary'
-							size='large'
-							htmlType='submit'
-							name='test'
-							onClick={() => handleTypeChange(true)}>
-							Test Connection
-						</Button>
-						<Button
-							type='primary'
-							size='large'
-							htmlType='submit'
-							name='save'
-							onClick={() => handleTypeChange(false)}>
-							Save Settings
-						</Button>
-					</Space>
+					<Button
+						type='primary'
+						size='large'
+						htmlType='submit'
+						name='save'
+						onClick={() => handleTypeChange(false)}>
+						Save Settings
+					</Button>
 				</Form.Item>
 			</Form>
 		</Fragment>
