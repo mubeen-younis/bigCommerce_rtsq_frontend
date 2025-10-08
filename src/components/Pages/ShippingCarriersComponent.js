@@ -38,9 +38,10 @@ function ShippingCarriersComponent(props) {
   const [isDBSCShippingClassesModalOpen, setIsDBSCShippingClassesModalOpen] = useState(false);
   const [selectedCarrierForModal, setSelectedCarrierForModal] = useState(null);
   const [selectedModalTab, setSelectedModalTab] = useState('1');
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   // Get carrier installation success state from Redux
-  const { carrierInstallationSuccess, currentPlan, plans } = useSelector(state => state);
+  const { carrierInstallationSuccess, currentPlan, plans, alertMessageType, showAlertMessage } = useSelector(state => state);
 
   // Get current plan details from plans array
   const currentPlanDetails = plans?.find(p => p.id === currentPlan?.plan_id);
@@ -62,6 +63,15 @@ function ShippingCarriersComponent(props) {
     || currentPlan?.allowed_enabled_carriers
     || planCarriersMapping[currentPlan?.plan_id]
     || 0;
+
+  // Track screen size for responsive design
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Track installedCarriers state changes for nickname debugging
   useEffect(() => {
@@ -126,6 +136,39 @@ function ShippingCarriersComponent(props) {
       dispatch({ type: 'CLEAR_CARRIER_INSTALLATION_SUCCESS' });
     }
   }, [carrierInstallationSuccess, dispatch, props]);
+
+  // Auto-close Connection Settings modal on successful save
+  useEffect(() => {
+    if (isConnectionModalOpen && alertMessageType === 'success' && showAlertMessage) {
+      // Use a small delay to allow the success message to be visible
+      const timer = setTimeout(() => {
+        closeAllModals();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isConnectionModalOpen, alertMessageType, showAlertMessage]);
+
+  // Auto-close Quote Settings modal on successful save
+  useEffect(() => {
+    if (isQuoteModalOpen && alertMessageType === 'success' && showAlertMessage) {
+      // Use a small delay to allow the success message to be visible
+      const timer = setTimeout(() => {
+        closeAllModals();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isQuoteModalOpen, alertMessageType, showAlertMessage]);
+
+  // Auto-close Carriers modal on successful save
+  useEffect(() => {
+    if (isCarriersModalOpen && alertMessageType === 'success' && showAlertMessage) {
+      // Use a small delay to allow the success message to be visible
+      const timer = setTimeout(() => {
+        closeAllModals();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isCarriersModalOpen, alertMessageType, showAlertMessage]);
 
   // Initialize view based on available providers and auto-switch when needed
   useEffect(() => {
@@ -318,13 +361,14 @@ function ShippingCarriersComponent(props) {
         title: 'Provider Image',
         dataIndex: 'logo',
         key: 'logo',
-        width: 110,
+        width: isMobile ? 80 : 110,
         align: 'left',
+        responsive: ['sm'],
         render: (logo) => (
           <Image
             preview={false}
             src={`images/${logo}`}
-            style={{ width: '80px', height: '80px', objectFit: 'contain' }}
+            style={{ width: isMobile ? '60px' : '80px', height: isMobile ? '60px' : '80px', objectFit: 'contain' }}
           />
         ),
       },
@@ -332,47 +376,58 @@ function ShippingCarriersComponent(props) {
         title: 'Nickname',
         dataIndex: 'nickname',
         key: 'nickname',
-        width: 250,
+        width: isMobile ? undefined : 250,
         render: (nickname, record) => {
           console.log('🔍 NICKNAME DEBUG: Rendering carrier - nickname:', nickname, 'name:', record.name, 'will display:', nickname || record.name);
           return (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ fontWeight: 'bold' }}>
-                {nickname || record.name}
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? '8px' : '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {isMobile && (
+                  <Image
+                    preview={false}
+                    src={`images/${record.logo}`}
+                    style={{ width: '40px', height: '40px', objectFit: 'contain' }}
+                  />
+                )}
+                <div style={{ fontWeight: 'bold' }}>
+                  {nickname || record.name}
+                </div>
               </div>
-              {isArchived && (
-                <Button
-                  type="link"
-                  size="small"
-                  style={{ padding: 0, height: 'auto' }}
-                  onClick={() => {
-                    props.changeCarrierStatus(record.id, props.token, 0); // Restore (status = 0)
-                  }}
-                >
-                  Restore
-                </Button>
-              )}
-              {isDeactivated && (
-                <Button
-                  type="link"
-                  size="small"
-                  style={{ padding: 0, height: 'auto' }}
-                  onClick={() => {
-                    props.changeCarrierStatus(record.id, props.token, 2); // Archive (status = 2)
-                  }}
-                >
-                  Archive
-                </Button>
-              )}
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {isArchived && (
+                  <Button
+                    type="link"
+                    size="small"
+                    style={{ padding: 0, height: 'auto' }}
+                    onClick={() => {
+                      props.changeCarrierStatus(record.id, props.token, 0); // Restore (status = 0)
+                    }}
+                  >
+                    Restore
+                  </Button>
+                )}
+                {isDeactivated && (
+                  <Button
+                    type="link"
+                    size="small"
+                    style={{ padding: 0, height: 'auto' }}
+                    onClick={() => {
+                      props.changeCarrierStatus(record.id, props.token, 2); // Archive (status = 2)
+                    }}
+                  >
+                    Archive
+                  </Button>
+                )}
+              </div>
             </div>
           );
         },
       },
       {
-        title: <div style={{ textAlign: 'center', width: '100%' }}>Actions</div>,
+        title: <div style={{ textAlign: isMobile ? 'left' : 'center', width: '100%' }}>Actions</div>,
         key: 'actions',
-        align: 'center',
-        width: 400,
+        align: isMobile ? 'left' : 'center',
+        width: isMobile ? undefined : 400,
         render: (_, record) => {
           const actions = [];
 
@@ -399,9 +454,10 @@ function ShippingCarriersComponent(props) {
                 style={{
                   display: 'inline-block',
                   color: '#1890ff',
-                  marginRight: '12px',
+                  marginRight: isMobile ? '8px' : '12px',
                   marginBottom: '4px',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  fontSize: isMobile ? '12px' : '14px'
                 }}
                 key="carriers"
                 onClick={(e) => {
@@ -421,9 +477,10 @@ function ShippingCarriersComponent(props) {
                 style={{
                   display: 'inline-block',
                   color: '#1890ff',
-                  marginRight: '12px',
+                  marginRight: isMobile ? '8px' : '12px',
                   marginBottom: '4px',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  fontSize: isMobile ? '12px' : '14px'
                 }}
                 key="quote"
                 onClick={(e) => {
@@ -443,9 +500,10 @@ function ShippingCarriersComponent(props) {
                 style={{
                   display: 'inline-block',
                   color: '#1890ff',
-                  marginRight: '12px',
+                  marginRight: isMobile ? '8px' : '12px',
                   marginBottom: '4px',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  fontSize: isMobile ? '12px' : '14px'
                 }}
                 key="connection"
                 onClick={(e) => {
@@ -465,9 +523,10 @@ function ShippingCarriersComponent(props) {
                 style={{
                   display: 'inline-block',
                   color: '#1890ff',
-                  marginRight: '12px',
+                  marginRight: isMobile ? '8px' : '12px',
                   marginBottom: '4px',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  fontSize: isMobile ? '12px' : '14px'
                 }}
                 key="shipping-rates"
                 onClick={(e) => {
@@ -483,9 +542,10 @@ function ShippingCarriersComponent(props) {
                 style={{
                   display: 'inline-block',
                   color: '#1890ff',
-                  marginRight: '12px',
+                  marginRight: isMobile ? '8px' : '12px',
                   marginBottom: '4px',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  fontSize: isMobile ? '12px' : '14px'
                 }}
                 key="other-settings"
                 onClick={(e) => {
@@ -501,9 +561,10 @@ function ShippingCarriersComponent(props) {
                 style={{
                   display: 'inline-block',
                   color: '#1890ff',
-                  marginRight: '12px',
+                  marginRight: isMobile ? '8px' : '12px',
                   marginBottom: '4px',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  fontSize: isMobile ? '12px' : '14px'
                 }}
                 key="shipping-classes"
                 onClick={(e) => {
@@ -522,7 +583,7 @@ function ShippingCarriersComponent(props) {
             actions.push(
               <Button
                 key="toggle"
-                size='small'
+                size={isMobile ? 'small' : 'small'}
                 style={{
                   marginBottom: '4px',
                   backgroundColor: isActive ? '#c8102e' : '#007f66',
@@ -530,10 +591,10 @@ function ShippingCarriersComponent(props) {
                   fontWeight: '600',
                   border: isActive ? '1px solid #a00d24' : '1px solid #006652',
                   borderRadius: '6px',
-                  padding: '4px 12px',
+                  padding: isMobile ? '2px 8px' : '4px 12px',
                   height: 'auto',
                   lineHeight: 'normal',
-                  fontSize: '13px',
+                  fontSize: isMobile ? '11px' : '13px',
                   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                   transition: 'all 0.3s ease',
                 }}
@@ -561,7 +622,7 @@ function ShippingCarriersComponent(props) {
             <div style={{
               display: 'flex',
               flexWrap: 'wrap',
-              justifyContent: 'flex-end',
+              justifyContent: isMobile ? 'flex-start' : 'flex-end',
               gap: '4px',
               alignItems: 'center'
             }}>
@@ -580,13 +641,14 @@ function ShippingCarriersComponent(props) {
         title: 'Provider Image',
         dataIndex: 'logo',
         key: 'logo',
-        width: 380,
+        width: isMobile ? 80 : 380,
         align: 'left',
+        responsive: ['sm'],
         render: (logo) => (
           <Image
             preview={false}
             src={`images/${logo}`}
-            style={{ width: '80px', height: '80px', objectFit: 'contain' }}
+            style={{ width: isMobile ? '60px' : '80px', height: isMobile ? '60px' : '80px', objectFit: 'contain' }}
             fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrkl1AuO+pmgAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAwqADAAQAAAABAAAAwwAAAAD9b/HnAAAHlklEQVR4Ae3dP3Ik1RnG4W+FgYxN..."
           />
         ),
@@ -595,31 +657,42 @@ function ShippingCarriersComponent(props) {
         title: 'Provider Name',
         dataIndex: 'name',
         key: 'name',
-        width: 450,
+        width: isMobile ? undefined : 450,
         render: (name, record) => (
-          <div>
-            <div style={{ fontWeight: 'bold' }}>
-              {name}
-            </div>
-            {!record.status && (
-              <div style={{ color: '#666', fontSize: '12px' }}>
-                Coming soon
-              </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {isMobile && (
+              <Image
+                preview={false}
+                src={`images/${record.logo}`}
+                style={{ width: '40px', height: '40px', objectFit: 'contain' }}
+                fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrkl1AuO+pmgAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAwqADAAQAAAABAAAAwwAAAAD9b/HnAAAHlklEQVR4Ae3dP3Ik1RnG4W+FgYxN..."
+              />
             )}
+            <div>
+              <div style={{ fontWeight: 'bold', fontSize: isMobile ? '14px' : '16px' }}>
+                {name}
+              </div>
+              {!record.status && (
+                <div style={{ color: '#666', fontSize: isMobile ? '11px' : '12px' }}>
+                  Coming soon
+                </div>
+              )}
+            </div>
           </div>
         ),
       },
       {
         title: 'Actions',
         key: 'actions',
-        width: 200,
+        width: isMobile ? undefined : 200,
         render: (_, record) => (
-          <div style={{ paddingRight: '50px', whiteSpace: 'nowrap' }}>
+          <div style={{ paddingRight: isMobile ? '0' : '50px', whiteSpace: 'nowrap' }}>
             {record.status ? (
               <a
                 style={{
                   color: '#1890ff',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  fontSize: isMobile ? '12px' : '14px'
                 }}
                 onClick={() => {
                   // Do NOT install on click; just open connection settings for this carrier
@@ -629,7 +702,7 @@ function ShippingCarriersComponent(props) {
                 Add Account
               </a>
             ) : (
-              <span style={{ color: '#999' }}>Coming Soon</span>
+              <span style={{ color: '#999', fontSize: isMobile ? '12px' : '14px' }}>Coming Soon</span>
             )}
           </div>
         ),
@@ -683,20 +756,20 @@ function ShippingCarriersComponent(props) {
 
   return (
     <Fragment>
-      <div style={{ backgroundColor: '#f5f5f5', minHeight: '100vh', padding: '20px' }}>
+      <div style={{ backgroundColor: '#f5f5f5', minHeight: '100vh', padding: isMobile ? '10px' : '20px' }}>
         <PlanStatusHeading />
         <ExportCSVDownloadStatus />
 
         {/* Page Heading */}
-        <Row gutter={25}>
-          <Col xs={24} style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '20px' }}>
-            <Title level={3} style={{ margin: 0 }}>Providers</Title>
+        <Row gutter={isMobile ? [10, 10] : 25}>
+          <Col xs={24} style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: isMobile ? '10px' : '20px' }}>
+            <Title level={isMobile ? 4 : 3} style={{ margin: 0 }}>Providers</Title>
           </Col>
         </Row>
 
       {/* Current Plan Information */}
       {currentPlan && (
-        <Row gutter={25}>
+        <Row gutter={isMobile ? [10, 10] : 25}>
           <Col
             className='gutter-row mb-3'
             xs={24}
@@ -705,7 +778,7 @@ function ShippingCarriersComponent(props) {
             lg={24}
             xl={24}
           >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: isMobile ? '13px' : '14px' }}>
               <div>
                 <strong>Current plan:</strong> {currentPlan.name || currentPlanDetails?.name || 'N/A'}
               </div>
@@ -726,8 +799,10 @@ function ShippingCarriersComponent(props) {
           dispatch({ type: 'SET_AVAILABLE_CARRIER_ID', payload: null });
         }}
         footer={null}
-        width={1200}
+        width={isMobile ? '95%' : 1200}
         destroyOnClose
+        style={isMobile ? { top: 20 } : {}}
+        bodyStyle={isMobile ? { maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' } : {}}
       >
         {isInstallModalOpen && activeCarrierId ? (
           <TabsLayout onlyConnection forcedSlug={props.availableCarriers?.find(c => c.id === activeCarrierId)?.slug || ''} hideHeader={true} hideTabs={true} />
@@ -740,8 +815,10 @@ function ShippingCarriersComponent(props) {
         visible={isConnectionModalOpen}
         onCancel={closeAllModals}
         footer={null}
-        width={1200}
+        width={isMobile ? '95%' : 1200}
         destroyOnClose
+        style={isMobile ? { top: 20 } : {}}
+        bodyStyle={isMobile ? { maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' } : {}}
       >
         {isConnectionModalOpen && selectedCarrierForModal ? (
           <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="1" hideHeader={true} hideTabs={true} />
@@ -754,8 +831,10 @@ function ShippingCarriersComponent(props) {
         visible={isQuoteModalOpen}
         onCancel={closeAllModals}
         footer={null}
-        width={1200}
+        width={isMobile ? '95%' : 1200}
         destroyOnClose
+        style={isMobile ? { top: 20 } : {}}
+        bodyStyle={isMobile ? { maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' } : {}}
       >
         {isQuoteModalOpen && selectedCarrierForModal ? (
           <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="5" hideHeader={true} hideTabs={true} />
@@ -768,8 +847,10 @@ function ShippingCarriersComponent(props) {
         visible={isCarriersModalOpen}
         onCancel={closeAllModals}
         footer={null}
-        width={900}
+        width={isMobile ? '95%' : 900}
         destroyOnClose
+        style={isMobile ? { top: 20 } : {}}
+        bodyStyle={isMobile ? { maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' } : {}}
       >
         {isCarriersModalOpen && selectedCarrierForModal ? (
           <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="2" hideHeader={true} hideTabs={true} />
@@ -782,8 +863,8 @@ function ShippingCarriersComponent(props) {
         visible={isDBSCShippingRatesModalOpen}
         onCancel={closeAllModals}
         footer={null}
-        width="90%"
-        style={{ top: 20, maxWidth: '1400px' }}
+        width={isMobile ? '95%' : '90%'}
+        style={isMobile ? { top: 20 } : { top: 20, maxWidth: '1400px' }}
         bodyStyle={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}
         destroyOnClose
       >
@@ -800,8 +881,10 @@ function ShippingCarriersComponent(props) {
         visible={isDBSCOtherSettingsModalOpen}
         onCancel={closeAllModals}
         footer={null}
-        width={900}
+        width={isMobile ? '95%' : 900}
         destroyOnClose
+        style={isMobile ? { top: 20 } : {}}
+        bodyStyle={isMobile ? { maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' } : {}}
       >
         {isDBSCOtherSettingsModalOpen && selectedCarrierForModal ? (
           <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="10" hideHeader={true} hideTabs={true} />
@@ -814,8 +897,10 @@ function ShippingCarriersComponent(props) {
         visible={isDBSCShippingClassesModalOpen}
         onCancel={closeAllModals}
         footer={null}
-        width={900}
+        width={isMobile ? '95%' : 900}
         destroyOnClose
+        style={isMobile ? { top: 20 } : {}}
+        bodyStyle={isMobile ? { maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' } : {}}
       >
         {isDBSCShippingClassesModalOpen && selectedCarrierForModal ? (
           <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="11" hideHeader={true} hideTabs={true} />
@@ -902,17 +987,18 @@ function ShippingCarriersComponent(props) {
         // Only show section if there are active providers or still loading
         if (isLoading || installedProviders.length > 0) {
           return (
-            <div style={{ marginBottom: '25px' }}>
+            <div style={{ marginBottom: isMobile ? '15px' : '25px' }}>
               {isLoading ? (
                 <FreightProvidersSkeleton title="Installed Providers" rows={3} />
               ) : (
                 <>
-                  <Title level={4}>Installed Providers</Title>
+                  <Title level={isMobile ? 5 : 4}>Installed Providers</Title>
                   <div style={{
                     backgroundColor: '#ffffff',
                     border: '1px solid #d9d9d9',
                     borderRadius: '8px',
-                    padding: '16px'
+                    padding: isMobile ? '8px' : '16px',
+                    overflowX: 'auto'
                   }}>
                     <Table
                       key={`installed-${installedProviders.length}-${installedProviders.map(p => p.id).join('-')}`}
@@ -920,7 +1006,8 @@ function ShippingCarriersComponent(props) {
                       dataSource={installedProviders}
                       rowKey="id"
                       pagination={false}
-                      showHeader={true}
+                      showHeader={!isMobile}
+                      scroll={isMobile ? { x: 'max-content' } : undefined}
                     />
                   </div>
                 </>
@@ -950,20 +1037,20 @@ function ShippingCarriersComponent(props) {
         }
 
         return (
-          <div style={{ marginBottom: '25px' }}>
+          <div style={{ marginBottom: isMobile ? '15px' : '25px' }}>
             {isLoading ? (
               <FreightProvidersSkeleton title={effectiveShowArchived ? "Archived Providers" : "Inactive Installed Providers"} rows={2} />
             ) : (
               <>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <Title level={4} style={{ margin: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: isMobile ? '8px' : '16px', flexWrap: 'wrap', gap: '8px' }}>
+                  <Title level={isMobile ? 5 : 4} style={{ margin: 0 }}>
                     {effectiveShowArchived ? 'Archived Providers' : 'Inactive Installed Providers'}
                   </Title>
                   {archivedProviders.length > 0 && deactivatedProviders.length > 0 && (
                     <Button
                       type="link"
                       onClick={toggleArchivedView}
-                      style={{ padding: '0', height: 'auto', fontSize: '14px' }}
+                      style={{ padding: '0', height: 'auto', fontSize: isMobile ? '12px' : '14px' }}
                     >
                       {effectiveShowArchived ? 'View Inactive' : 'View Archive'}
                     </Button>
@@ -973,7 +1060,8 @@ function ShippingCarriersComponent(props) {
                   backgroundColor: '#ffffff',
                   border: '1px solid #d9d9d9',
                   borderRadius: '8px',
-                  padding: '16px'
+                  padding: isMobile ? '8px' : '16px',
+                  overflowX: 'auto'
                 }}>
                   {effectiveShowArchived ? (
                     archivedProviders.length > 0 ? (
@@ -982,7 +1070,8 @@ function ShippingCarriersComponent(props) {
                         dataSource={archivedProviders}
                         rowKey="id"
                         pagination={false}
-                        showHeader={true}
+                        showHeader={!isMobile}
+                        scroll={isMobile ? { x: 'max-content' } : undefined}
                       />
                     ) : (
                       <div className={'no-data'}>No Archived Providers</div>
@@ -994,7 +1083,8 @@ function ShippingCarriersComponent(props) {
                         dataSource={deactivatedProviders}
                         rowKey="id"
                         pagination={false}
-                        showHeader={true}
+                        showHeader={!isMobile}
+                        scroll={isMobile ? { x: 'max-content' } : undefined}
                       />
                     ) : (
                       <NoProvidersEmptyState />
@@ -1008,20 +1098,20 @@ function ShippingCarriersComponent(props) {
       })()}
 
       {/* All Providers Section */}
-      <div style={{ marginBottom: '25px' }}>
+      <div style={{ marginBottom: isMobile ? '15px' : '25px' }}>
         {isLoadingAvailableCarriers ? (
           <FreightProvidersSkeleton title="All Providers" rows={6} />
         ) : (
           <>
-            <Title level={4}>All Providers</Title>
+            <Title level={isMobile ? 5 : 4}>All Providers</Title>
             <div style={{
               backgroundColor: '#ffffff',
               border: '1px solid #d9d9d9',
               borderRadius: '8px',
-              padding: '16px'
+              padding: isMobile ? '8px' : '16px'
             }}>
               <div style={{
-                marginBottom: '16px',
+                marginBottom: isMobile ? '8px' : '16px',
                 width: '100%'
               }}>
                 <Input
@@ -1033,26 +1123,29 @@ function ShippingCarriersComponent(props) {
                     borderRadius: '8px',
                     border: '1px solid #d9d9d9',
                     boxShadow: 'none',
-                    fontSize: '14px'
+                    fontSize: isMobile ? '13px' : '14px'
                   }}
-                  size="large"
+                  size={isMobile ? 'middle' : 'large'}
                   allowClear
                 />
               </div>
-              {getFilteredAvailableCarriers().length > 0 ? (
-                <Table
-                  columns={getAvailableProviderTableColumns()}
-                  dataSource={getFilteredAvailableCarriers()}
-                  rowKey="id"
-                  pagination={false}
-                  showHeader={true}
-                  className="aligned-providers-table"
-                />
-              ) : (
-                <div className={'no-data'}>
-                  {searchTerm ? `No providers found matching "${searchTerm}"` : 'No Providers Available'}
-                </div>
-              )}
+              <div style={{ overflowX: 'auto' }}>
+                {getFilteredAvailableCarriers().length > 0 ? (
+                  <Table
+                    columns={getAvailableProviderTableColumns()}
+                    dataSource={getFilteredAvailableCarriers()}
+                    rowKey="id"
+                    pagination={false}
+                    showHeader={!isMobile}
+                    className="aligned-providers-table"
+                    scroll={isMobile ? { x: 'max-content' } : undefined}
+                  />
+                ) : (
+                  <div className={'no-data'}>
+                    {searchTerm ? `No providers found matching "${searchTerm}"` : 'No Providers Available'}
+                  </div>
+                )}
+              </div>
             </div>
           </>
         )}
