@@ -210,12 +210,19 @@ function ShippingCarriersComponent(props) {
     // without provisioning to avoid auto-enabling the carrier
     if (!installedId) {
       installedId = carrier.id;
+      // Clear connection settings for fresh installation
+      dispatch({ type: 'GET_CONNECTION_SETTINGS', payload: { nickname: '' } });
     }
 
     dispatch({ type: 'CARRIER_ID', payload: installedId });
     // Store the original available carrier ID for installation purposes
     dispatch({ type: 'SET_AVAILABLE_CARRIER_ID', payload: carrier.id });
-    dispatch(getConnectionSettings(props.token, installedId));
+
+    // Only fetch connection settings if carrier is already installed
+    if (existing) {
+      dispatch(getConnectionSettings(props.token, installedId));
+    }
+
     dispatch(getInsuraceStatus(props.token, carrier.id));
     // Preload optional support data but safe if they require installed carrier
     if (props.token) {
