@@ -50,8 +50,11 @@ function ConnectionSettingsComponent(props) {
 				type: types.SET_UNISHIPPER_API_TYPE,
 				payload: connectionSettings?.api_type ?? 'new_api',
 			})
+
+			// Reset form fields when connectionSettings changes
+			form.setFieldsValue(connectionSettings)
 		}
-	}, [connectionSettings, dispatch])
+	}, [connectionSettings, dispatch, form])
 
 	const onFinish = values => {
 		values = {

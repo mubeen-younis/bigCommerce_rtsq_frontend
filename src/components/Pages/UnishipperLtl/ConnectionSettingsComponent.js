@@ -9,6 +9,7 @@ function ConnectionSettingsComponent(props) {
     testType: false,
     skeleton_loading: true,
   });
+  const [form] = Form.useForm();
   const { fdoCouponInfo, fdoCouponCarrierInfo, token, connectionSettings, isInstalling } =
     useSelector((state) => state);
   const dispatch = useDispatch();
@@ -22,6 +23,13 @@ function ConnectionSettingsComponent(props) {
       )
     );
   }, [dispatch, token, fdoCouponInfo]);
+
+  useEffect(() => {
+    if (connectionSettings) {
+      // Reset form fields when connectionSettings changes
+      form.setFieldsValue(connectionSettings);
+    }
+  }, [connectionSettings, form]);
 
   const handleTypeChange = (type) => {
     setConnectionState({ ...connectionState, testType: type });
@@ -62,6 +70,7 @@ function ConnectionSettingsComponent(props) {
       </div>
 
       <Form
+        form={form}
         layout="vertical"
         name="connection_settings"
         className="connection-settings"
