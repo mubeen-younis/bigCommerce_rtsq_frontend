@@ -119,8 +119,9 @@ const Reducer = (state = initialState, action) => {
 
 		case types.GET_CONNECTION_SETTINGS:
 			// When connection settings are saved/updated, also update the nickname in installedCarriers
+			// Only update if we're NOT in the installing flow (to prevent overwriting newly installed carriers)
 			let updatedInstalledCarriers = state.installedCarriers
-			if (action.payload && action.payload.nickname && state.carrierId) {
+			if (action.payload && action.payload.nickname && state.carrierId && !state.isInstalling) {
 				updatedInstalledCarriers = (state.installedCarriers || []).map(carrier =>
 					carrier.id === state.carrierId
 						? { ...carrier, nickname: action.payload.nickname }

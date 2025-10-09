@@ -126,6 +126,11 @@ function ShippingCarriersComponent(props) {
     if (carrierInstallationSuccess) {
       console.log('🔍 NICKNAME DEBUG: New carrier installed with nickname:', carrierInstallationSuccess.newCarrier?.nickname);
 
+      // Update carrier ID to the newly installed carrier's ID
+      if (carrierInstallationSuccess.newCarrier?.id) {
+        dispatch({ type: 'CARRIER_ID', payload: carrierInstallationSuccess.newCarrier.id });
+      }
+
       // Close the modal
       setIsInstallModalOpen(false);
       dispatch({ type: 'SET_IS_INSTALLING', payload: false });
@@ -244,18 +249,10 @@ function ShippingCarriersComponent(props) {
 
   const openInstallModalWithSettings = async (carrier) => {
     setActiveCarrierId(carrier.id);
-    const carrierSlug = props.availableCarriers?.find(c => c.id === carrier.id)?.slug;
-    // Prefer existing installed carrier with same slug to populate saved data
-    const existing = props.installedCarriers?.find(ic => ic.slug === carrierSlug);
-    let installedId = existing?.id || null;
 
-    // For available carriers (not yet installed), use the carrier.id directly
-    // without provisioning to avoid auto-enabling the carrier
-    if (!installedId) {
-      installedId = carrier.id;
-    }
-
-    dispatch({ type: 'CARRIER_ID', payload: installedId });
+    // For new installations, don't set a carrierId - this prevents updating existing carriers
+    // The carrierId will be set after successful installation with the new carrier's ID
+    dispatch({ type: 'CARRIER_ID', payload: null });
     // Store the original available carrier ID for installation purposes
     dispatch({ type: 'SET_AVAILABLE_CARRIER_ID', payload: carrier.id });
 
@@ -847,7 +844,7 @@ function ShippingCarriersComponent(props) {
         visible={isCarriersModalOpen}
         onCancel={closeAllModals}
         footer={null}
-        width={isMobile ? '95%' : 900}
+        width={isMobile ? '95%' : 1200}
         destroyOnClose
         style={isMobile ? { top: 20 } : {}}
         bodyStyle={isMobile ? { maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' } : {}}
@@ -863,9 +860,9 @@ function ShippingCarriersComponent(props) {
         visible={isDBSCShippingRatesModalOpen}
         onCancel={closeAllModals}
         footer={null}
-        width={isMobile ? '95%' : '90%'}
-        style={isMobile ? { top: 20 } : { top: 20, maxWidth: '1400px' }}
-        bodyStyle={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}
+        width={isMobile ? '95%' : 1200}
+        style={isMobile ? { top: 20 } : {}}
+        bodyStyle={isMobile ? { maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' } : {}}
         destroyOnClose
       >
         {isDBSCShippingRatesModalOpen && selectedCarrierForModal ? (
@@ -881,7 +878,7 @@ function ShippingCarriersComponent(props) {
         visible={isDBSCOtherSettingsModalOpen}
         onCancel={closeAllModals}
         footer={null}
-        width={isMobile ? '95%' : 900}
+        width={isMobile ? '95%' : 1200}
         destroyOnClose
         style={isMobile ? { top: 20 } : {}}
         bodyStyle={isMobile ? { maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' } : {}}
@@ -897,7 +894,7 @@ function ShippingCarriersComponent(props) {
         visible={isDBSCShippingClassesModalOpen}
         onCancel={closeAllModals}
         footer={null}
-        width={isMobile ? '95%' : 900}
+        width={isMobile ? '95%' : 1200}
         destroyOnClose
         style={isMobile ? { top: 20 } : {}}
         bodyStyle={isMobile ? { maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' } : {}}

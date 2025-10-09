@@ -23,11 +23,15 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 					typeof data[elem] == 'string' ? data[elem].trim() : data[elem])
 		)
 
-		// If we are in install flow, add is_installing=1
+		// If we are in install flow, add is_installing=1 and carrier_id from availableCarrierId
 		try {
 			const state = window?.store?.getState ? window.store.getState() : null
 			if (state?.isInstalling && (url === 'submit_connection_settings')) {
-				data = { ...data, is_installing: 1 }
+				data = {
+					...data,
+					is_installing: 1,
+					carrierId: state?.availableCarrierId || data.carrierId
+				}
 			}
 		} catch (e) {}
 
