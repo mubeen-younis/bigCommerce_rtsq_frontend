@@ -736,7 +736,7 @@ function ShippingCarriersComponent(props) {
 
   return (
     <Fragment>
-      <div style={{ backgroundColor: '#f5f5f5', minHeight: '100vh', padding: isMobile ? '10px' : '20px' }}>
+      <div style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', padding: isMobile ? '10px' : '20px' }}>
         <PlanStatusHeading />
         <ExportCSVDownloadStatus />
 
