@@ -36,6 +36,8 @@ function ShippingCarriersComponent(props) {
   const [isDBSCShippingRatesModalOpen, setIsDBSCShippingRatesModalOpen] = useState(false);
   const [isDBSCOtherSettingsModalOpen, setIsDBSCOtherSettingsModalOpen] = useState(false);
   const [isDBSCShippingClassesModalOpen, setIsDBSCShippingClassesModalOpen] = useState(false);
+  const [isDBSCSettingsModalOpen, setIsDBSCSettingsModalOpen] = useState(false);
+  const [dbscActiveTab, setDbscActiveTab] = useState('shipping-rates');
   const [selectedCarrierForModal, setSelectedCarrierForModal] = useState(null);
   const [selectedModalTab, setSelectedModalTab] = useState('1');
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -346,6 +348,17 @@ function ShippingCarriersComponent(props) {
     setIsDBSCShippingClassesModalOpen(true);
   };
 
+  const openDBSCSettingsModal = async (carrier) => {
+    setSelectedCarrierForModal(carrier);
+    dispatch({ type: 'CARRIER_ID', payload: carrier.id });
+    // Clear existing data to force refresh
+    dispatch({ type: 'GET_DBSC_PROFILES', payload: null });
+    dispatch({ type: 'GET_DBSC_OTHER_SETTINGS', payload: null });
+    dispatch({ type: 'GET_DBSC_CLASSES', payload: null });
+    setDbscActiveTab('shipping-rates');
+    setIsDBSCSettingsModalOpen(true);
+  };
+
   const closeAllModals = () => {
     setIsConnectionModalOpen(false);
     setIsQuoteModalOpen(false);
@@ -353,6 +366,7 @@ function ShippingCarriersComponent(props) {
     setIsDBSCShippingRatesModalOpen(false);
     setIsDBSCOtherSettingsModalOpen(false);
     setIsDBSCShippingClassesModalOpen(false);
+    setIsDBSCSettingsModalOpen(false);
     setSelectedCarrierForModal(null);
   };
 
@@ -360,7 +374,7 @@ function ShippingCarriersComponent(props) {
   const getProviderTableColumns = (isArchived = false, isDeactivated = false) => {
     return [
       {
-        title: 'Provider Image',
+        title: <span style={{ fontWeight: 'bold' }}>Provider Image</span>,
         dataIndex: 'logo',
         key: 'logo',
         width: isMobile ? 80 : 110,
@@ -375,7 +389,7 @@ function ShippingCarriersComponent(props) {
         ),
       },
       {
-        title: 'Nickname',
+        title: <span style={{ fontWeight: 'bold' }}>Nickname</span>,
         dataIndex: 'nickname',
         key: 'nickname',
         width: isMobile ? undefined : 250,
@@ -426,7 +440,7 @@ function ShippingCarriersComponent(props) {
         },
       },
       {
-        title: <div style={{ textAlign: isMobile ? 'left' : 'center', width: '100%' }}>Actions</div>,
+        title: <div style={{ textAlign: isMobile ? 'left' : 'center', width: '100%', fontWeight: 'bold' }}>Actions</div>,
         key: 'actions',
         align: isMobile ? 'left' : 'center',
         width: isMobile ? undefined : 400,
@@ -518,7 +532,7 @@ function ShippingCarriersComponent(props) {
             );
           }
 
-          // Add DBSC-specific links
+          // Add DBSC-specific link
           if (record.slug === 'dbsc') {
             actions.push(
               <a
@@ -530,51 +544,13 @@ function ShippingCarriersComponent(props) {
                   cursor: 'pointer',
                   fontSize: isMobile ? '12px' : '14px'
                 }}
-                key="shipping-rates"
+                key="dbsc-settings"
                 onClick={(e) => {
                   e.preventDefault();
-                  openDBSCShippingRatesModal(record);
+                  openDBSCSettingsModal(record);
                 }}
               >
-                Shipping Rates
-              </a>
-            );
-            actions.push(
-              <a
-                style={{
-                  display: 'inline-block',
-                  color: '#1890ff',
-                  marginRight: isMobile ? '8px' : '12px',
-                  marginBottom: '4px',
-                  cursor: 'pointer',
-                  fontSize: isMobile ? '12px' : '14px'
-                }}
-                key="other-settings"
-                onClick={(e) => {
-                  e.preventDefault();
-                  openDBSCOtherSettingsModal(record);
-                }}
-              >
-                Other Settings
-              </a>
-            );
-            actions.push(
-              <a
-                style={{
-                  display: 'inline-block',
-                  color: '#1890ff',
-                  marginRight: isMobile ? '8px' : '12px',
-                  marginBottom: '4px',
-                  cursor: 'pointer',
-                  fontSize: isMobile ? '12px' : '14px'
-                }}
-                key="shipping-classes"
-                onClick={(e) => {
-                  e.preventDefault();
-                  openDBSCShippingClassesModal(record);
-                }}
-              >
-                Shipping Classes
+                Settings
               </a>
             );
           }
@@ -640,7 +616,7 @@ function ShippingCarriersComponent(props) {
   const getAvailableProviderTableColumns = () => {
     return [
       {
-        title: <div style={{ marginLeft: '20px' }}>Provider Image</div>,
+        title: <div style={{ marginLeft: '20px', fontWeight: 'bold' }}>Provider Image</div>,
         dataIndex: 'logo',
         key: 'logo',
         width: isMobile ? 80 : 380,
@@ -658,7 +634,7 @@ function ShippingCarriersComponent(props) {
         ),
       },
       {
-        title: 'Provider Name',
+        title: <span style={{ fontWeight: 'bold' }}>Provider Name</span>,
         dataIndex: 'name',
         key: 'name',
         width: isMobile ? undefined : 450,
@@ -686,7 +662,7 @@ function ShippingCarriersComponent(props) {
         ),
       },
       {
-        title: 'Actions',
+        title: <span style={{ fontWeight: 'bold' }}>Actions</span>,
         key: 'actions',
         width: isMobile ? undefined : 200,
         render: (_, record) => (
@@ -908,6 +884,57 @@ function ShippingCarriersComponent(props) {
       >
         {isDBSCShippingClassesModalOpen && selectedCarrierForModal ? (
           <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="11" hideHeader={true} hideTabs={true} />
+        ) : null}
+      </Modal>
+
+      {/* DBSC Settings Modal with Tabs */}
+      <Modal
+        title={`Settings - ${selectedCarrierForModal?.nickname || selectedCarrierForModal?.name || ''}`}
+        visible={isDBSCSettingsModalOpen}
+        onCancel={closeAllModals}
+        footer={null}
+        width={isMobile ? '95%' : '95%'}
+        style={isMobile ? { top: 20 } : { top: 20, maxWidth: '1600px' }}
+        bodyStyle={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto', overflowX: 'auto' }}
+        destroyOnClose
+      >
+        {isDBSCSettingsModalOpen && selectedCarrierForModal ? (
+          <div style={{ width: '100%', minWidth: '1200px' }}>
+            {/* Tab buttons at the top */}
+            <div style={{ marginBottom: '20px', borderBottom: '1px solid #d9d9d9', paddingBottom: '10px' }}>
+              <Button
+                type={dbscActiveTab === 'shipping-rates' ? 'primary' : 'default'}
+                onClick={() => setDbscActiveTab('shipping-rates')}
+                style={{ marginRight: '10px' }}
+              >
+                Shipping Rates
+              </Button>
+              <Button
+                type={dbscActiveTab === 'other-settings' ? 'primary' : 'default'}
+                onClick={() => setDbscActiveTab('other-settings')}
+                style={{ marginRight: '10px' }}
+              >
+                Other Settings
+              </Button>
+              <Button
+                type={dbscActiveTab === 'shipping-classes' ? 'primary' : 'default'}
+                onClick={() => setDbscActiveTab('shipping-classes')}
+              >
+                Shipping Classes
+              </Button>
+            </div>
+
+            {/* Tab content */}
+            {dbscActiveTab === 'shipping-rates' && (
+              <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="9" hideHeader={true} hideTabs={true} />
+            )}
+            {dbscActiveTab === 'other-settings' && (
+              <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="10" hideHeader={true} hideTabs={true} />
+            )}
+            {dbscActiveTab === 'shipping-classes' && (
+              <TabsLayout forcedSlug={selectedCarrierForModal.slug} initialTab="11" hideHeader={true} hideTabs={true} />
+            )}
+          </div>
         ) : null}
       </Modal>
       {/* <Row gutter={25}>

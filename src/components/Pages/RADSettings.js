@@ -240,7 +240,7 @@ function ShippingGroupsComponent() {
                         if (plan.cost !== 0) {
                           const htisDisplay = typeof plan.htis === 'number'
                             ? Intl.NumberFormat('en-US').format(plan.htis)
-                            : 'NaN';
+                            : 'Unlimited';
                           return (
                             <Option key={plan.id} value={plan.id} disabled={store?.plan_level === 'Sandbox Store'}>
                               {htisDisplay}/mo (${plan.cost})
