@@ -760,7 +760,7 @@ function ShippingCarriersComponent(props) {
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: isMobile ? '13px' : '14px' }}>
               <div>
-                <strong>Current plan:</strong> {currentPlan.name || currentPlanDetails?.name || 'N/A'}
+                <strong>Current plan:</strong> <strong>{currentPlan.name || currentPlanDetails?.name || 'N/A'}</strong>
               </div>
               <div>
                 <strong>Enable upto {maxCarriers} providers</strong>
@@ -1023,7 +1023,7 @@ function ShippingCarriersComponent(props) {
                 <FreightProvidersSkeleton title="Installed Providers" rows={3} />
               ) : (
                 <>
-                  <Title level={isMobile ? 5 : 4}>Installed Providers</Title>
+                  <Title level={5}>Installed Providers</Title>
                   <div style={{
                     backgroundColor: '#ffffff',
                     border: '1px solid #d9d9d9',
@@ -1078,7 +1078,7 @@ function ShippingCarriersComponent(props) {
             ) : (
               <>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: isMobile ? '8px' : '16px', flexWrap: 'wrap', gap: '8px' }}>
-                  <Title level={isMobile ? 5 : 4} style={{ margin: 0 }}>
+                  <Title level={5} style={{ margin: 0 }}>
                     {effectiveShowArchived ? 'Archived Providers' : 'Inactive Installed Providers'}
                   </Title>
                   {archivedProviders.length > 0 && deactivatedProviders.length > 0 && (
@@ -1138,7 +1138,7 @@ function ShippingCarriersComponent(props) {
           <FreightProvidersSkeleton title="All Providers" rows={6} />
         ) : (
           <>
-            <Title level={isMobile ? 5 : 4}>All Providers</Title>
+            <Title level={5}>All Providers</Title>
             <div style={{
               backgroundColor: '#ffffff',
               border: '1px solid #d9d9d9',
