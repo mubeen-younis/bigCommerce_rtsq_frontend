@@ -24,14 +24,19 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 		)
 
 		// If we are in install flow, add is_installing=1 and carrier_id from availableCarrierId
+		// But NEVER add it during test connections
 		try {
 			const state = window?.store?.getState ? window.store.getState() : null
-			if (state?.isInstalling && (url === 'submit_connection_settings')) {
+			if (state?.isInstalling && (url === 'submit_connection_settings') && !data.testType) {
 				data = {
 					...data,
 					is_installing: 1,
 					carrierId: state?.availableCarrierId || data.carrierId
 				}
+			} else if (isTestConnection) {
+				// Explicitly remove is_installing during test connections
+				const { is_installing, ...cleanData } = data
+				data = cleanData
 			}
 		} catch (e) {}
 

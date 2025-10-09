@@ -38,8 +38,7 @@ function ConnectionSettingsComponent(props) {
     if (
       props.connectionSettings &&
       props.connectionSettings !== null &&
-      typeof props.connectionSettings === "object" &&
-      Object.keys(props.connectionSettings).length > 1
+      typeof props.connectionSettings === "object"
     ) {
       if (props.connectionSettings?.carrierId !== carrierId) {
         props.connectionSettings.api_type = "NEWAPI";
@@ -110,6 +109,11 @@ function ConnectionSettingsComponent(props) {
 
     if (fdoCouponCarrierInfo)
       values.is_enabled = fdoCouponCarrierInfo.is_enabled ?? false;
+
+    // Remove is_installing flag during test connections
+    if (connectionState.testType) {
+      delete values.is_installing;
+    }
 
     props.postData(values, props.token);
   };

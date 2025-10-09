@@ -9,7 +9,8 @@
       "Bash(for:*)",
       "Bash(do sed -i \"s/isInstalling ? !connectionState\\.testType : false/!connectionState.testType/g; s/isInstalling ? connectionState\\.testType : true/connectionState.testType/g; s/isInstalling ? !testType : false/!testType/g; s/isInstalling ? testType : true/testType/g\" \"$file\")",
       "Bash(echo:*)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

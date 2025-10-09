@@ -68,6 +68,12 @@ export const getConnectionSettings = (token, carrierId) => {
           console.error('Error merging nickname:', e);
         }
 
+        // Remove is_installing flag - this should only be used during installation flow
+        // and should not persist in stored connection settings
+        if (connectionSettings.is_installing !== undefined) {
+          delete connectionSettings.is_installing;
+        }
+
         dispatch({
           type: 'GET_CONNECTION_SETTINGS',
           payload: connectionSettings,

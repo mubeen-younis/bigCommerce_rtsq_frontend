@@ -87,6 +87,11 @@ function ConnectionSettingsComponent(props) {
 		values.carrierId = props.carrierId
 		values.account_type = accountType
 
+		// Remove is_installing flag during test connections
+		if (connectionState.testType) {
+			delete values.is_installing
+		}
+
 		props.postData(values, props.token)
 	}
 
@@ -126,7 +131,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: !connectionState.testType, message: 'Nickname is required' }]}>
+                    rules={[{ required: true, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., FedEx LTL' />
 				</Form.Item>
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>
@@ -211,7 +216,7 @@ function ConnectionSettingsComponent(props) {
 					name='shipping_account_number'
 					rules={[
 						{
-							required: accountType === 'shipper',
+							required: connectionState.testType && accountType === 'shipper',
 							message: 'Shipper Account Number is required',
 						},
 					]}>
