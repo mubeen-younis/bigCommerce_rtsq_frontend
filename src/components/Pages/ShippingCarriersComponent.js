@@ -382,15 +382,15 @@ function ShippingCarriersComponent(props) {
         responsive: ['sm'],
         render: (logo) => (
           <div style={{
-            width: '136px',
-            height: '133px',
+            width: '100px',
+            height: '100px',
             backgroundColor: '#ffffff',
             borderRadius: '12px',
             border: '1px solid #e0e0e0',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '12px',
+            padding: '10px',
             boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
           }}>
             <Image
@@ -638,15 +638,15 @@ function ShippingCarriersComponent(props) {
         render: (logo) => (
           <div style={{ marginLeft: '20px' }}>
             <div style={{
-              width: '136px',
-              height: '133px',
+              width: '100px',
+              height: '100px',
               backgroundColor: '#ffffff',
               borderRadius: '12px',
               border: '1px solid #e0e0e0',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '12px',
+              padding: '10px',
               boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
             }}>
               <Image
