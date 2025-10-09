@@ -41,7 +41,7 @@ function ShippingCarriersComponent(props) {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   // Get carrier installation success state from Redux
-  const { carrierInstallationSuccess, currentPlan, plans, alertMessageType, showAlertMessage } = useSelector(state => state);
+  const { carrierInstallationSuccess, currentPlan, plans, alertMessageType, showAlertMessage, alertMessage } = useSelector(state => state);
 
   // Get current plan details from plans array
   const currentPlanDetails = plans?.find(p => p.id === currentPlan?.plan_id);
@@ -142,16 +142,21 @@ function ShippingCarriersComponent(props) {
     }
   }, [carrierInstallationSuccess, dispatch, props]);
 
-  // Auto-close Connection Settings modal on successful save
+  // Auto-close Connection Settings modal on successful save (but not on test connection)
   useEffect(() => {
-    if (isConnectionModalOpen && alertMessageType === 'success' && showAlertMessage) {
-      // Use a small delay to allow the success message to be visible
-      const timer = setTimeout(() => {
-        closeAllModals();
-      }, 500);
-      return () => clearTimeout(timer);
+    if (isConnectionModalOpen && alertMessageType === 'success' && showAlertMessage && alertMessage) {
+      // Only close modal if it's NOT a test connection success message
+      const isTestConnection = alertMessage.toLowerCase().includes('test') || alertMessage.toLowerCase().includes('credential');
+
+      if (!isTestConnection) {
+        // Use a small delay to allow the success message to be visible
+        const timer = setTimeout(() => {
+          closeAllModals();
+        }, 500);
+        return () => clearTimeout(timer);
+      }
     }
-  }, [isConnectionModalOpen, alertMessageType, showAlertMessage]);
+  }, [isConnectionModalOpen, alertMessageType, showAlertMessage, alertMessage]);
 
   // Auto-close Quote Settings modal on successful save
   useEffect(() => {
@@ -1021,6 +1026,7 @@ function ShippingCarriersComponent(props) {
       {(() => {
         const deactivatedProviders = getDeactivatedCarriers();
         const archivedProviders = getArchivedCarriers();
+        const installedProviders = getEnabledCarriers();
 
         // Determine which view to show:
         // - If only archived providers exist (no inactive), force archived view
@@ -1028,8 +1034,11 @@ function ShippingCarriersComponent(props) {
         const hasOnlyArchived = archivedProviders.length > 0 && deactivatedProviders.length === 0;
         const effectiveShowArchived = hasOnlyArchived ? true : showArchived;
 
-        // Only show this section if there are any inactive or archived providers
-        const shouldShowSection = isLoading || deactivatedProviders.length > 0 || archivedProviders.length > 0;
+        // Show this section if:
+        // 1. Loading, OR
+        // 2. There are inactive/archived providers, OR
+        // 3. There are NO installed providers (to show empty state)
+        const shouldShowSection = isLoading || deactivatedProviders.length > 0 || archivedProviders.length > 0 || installedProviders.length === 0;
 
         if (!shouldShowSection) {
           return null;
