@@ -21,12 +21,12 @@ const makeColumns = (sortLogs, showLogDetails, showMoreItems, recordId) => {
     },
     {
       title: "Integration",
-      dataIndex: "carrier_name",
-      key: "carrier_name",
+      dataIndex: "nickname",
+      key: "nickname",
       align: "left",
       ellipsis: true,
       width: 150,
-      render: (carrier_name) => carrier_name || 'N/A',
+      render: (nickname) => nickname || 'N/A',
     },
     {
       title: "Request Time",
