@@ -2,7 +2,8 @@ import React, { Fragment, useState, useEffect, useCallback } from "react"
 import { connect, useDispatch, useSelector } from "react-redux"
 import ReactJson from "react-json-view"
 import { getAllLogs } from "../../Actions/DisplayLogs"
-import { Table, Space, Drawer, Skeleton, Typography } from "antd"
+import { Table, Space, Drawer, Skeleton, Typography, Card } from "antd"
+import { SearchOutlined } from "@ant-design/icons"
 import addKeysToList from "../../Utilities/addKey"
 import { isFireFox } from "../../Utilities/browserName"
 
@@ -400,10 +401,33 @@ function AllProvidersLogsPage(props) {
           scroll={{ x: 1500 }}
         />
       ) : (
-        <div style={{ textAlign: "center", padding: "50px" }}>
-          <Title level={4}>No logs available</Title>
-          <p>Logs will appear here once quote requests are made through the enabled providers.</p>
-        </div>
+        <Card
+          style={{
+            borderRadius: "8px",
+            textAlign: "center",
+            padding: "60px 20px",
+            backgroundColor: "#fafafa",
+            border: "1px solid #e8e8e8",
+          }}
+        >
+          <SearchOutlined
+            style={{
+              fontSize: "80px",
+              color: "#bfbfbf",
+              marginBottom: "20px",
+            }}
+          />
+          <Title
+            level={4}
+            style={{
+              color: "#262626",
+              fontWeight: "bold",
+              margin: 0,
+            }}
+          >
+            No logs found
+          </Title>
+        </Card>
       )}
 
       {/* =======Logs Response Model========= */}
