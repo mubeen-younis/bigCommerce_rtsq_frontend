@@ -762,7 +762,7 @@ function ShippingCarriersComponent(props) {
 
   return (
     <Fragment>
-      <div style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', padding: isMobile ? '10px' : '20px' }}>
+      <div style={{ minHeight: '100vh', padding: isMobile ? '10px' : '20px' }}>
         <PlanStatusHeading />
         <ExportCSVDownloadStatus />
 
@@ -1103,20 +1103,23 @@ function ShippingCarriersComponent(props) {
               <FreightProvidersSkeleton title={effectiveShowArchived ? "Archived Providers" : "Inactive Installed Providers"} rows={2} />
             ) : (
               <>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: isMobile ? '8px' : '16px', flexWrap: 'wrap', gap: '8px' }}>
-                  <Title level={5} style={{ margin: 0 }}>
-                    {effectiveShowArchived ? 'Archived Providers' : 'Inactive Installed Providers'}
-                  </Title>
-                  {archivedProviders.length > 0 && deactivatedProviders.length > 0 && (
-                    <Button
-                      type="link"
-                      onClick={toggleArchivedView}
-                      style={{ padding: '0', height: 'auto', fontSize: isMobile ? '12px' : '14px', color: '#1890ff' }}
-                    >
-                      {effectiveShowArchived ? 'View Inactive' : 'View Archive'}
-                    </Button>
-                  )}
-                </div>
+                {/* Only show heading if there are actual providers (not showing empty state) */}
+                {(effectiveShowArchived ? archivedProviders.length > 0 : deactivatedProviders.length > 0) && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: isMobile ? '8px' : '16px', flexWrap: 'wrap', gap: '8px' }}>
+                    <Title level={5} style={{ margin: 0 }}>
+                      {effectiveShowArchived ? 'Archived Providers' : 'Inactive Installed Providers'}
+                    </Title>
+                    {archivedProviders.length > 0 && deactivatedProviders.length > 0 && (
+                      <Button
+                        type="link"
+                        onClick={toggleArchivedView}
+                        style={{ padding: '0', height: 'auto', fontSize: isMobile ? '12px' : '14px', color: '#1890ff' }}
+                      >
+                        {effectiveShowArchived ? 'View Inactive' : 'View Archive'}
+                      </Button>
+                    )}
+                  </div>
+                )}
                 <div style={{
                   backgroundColor: '#ffffff',
                   border: '1px solid #d9d9d9',
