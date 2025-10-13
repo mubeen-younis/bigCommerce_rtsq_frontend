@@ -427,7 +427,7 @@ function ShippingCarriersComponent(props) {
                   <Button
                     type="link"
                     size="small"
-                    style={{ padding: 0, height: 'auto' }}
+                    style={{ padding: 0, height: 'auto', color: '#1890ff' }}
                     onClick={() => {
                       props.changeCarrierStatus(record.id, props.token, 0); // Restore (status = 0)
                     }}
@@ -439,7 +439,7 @@ function ShippingCarriersComponent(props) {
                   <Button
                     type="link"
                     size="small"
-                    style={{ padding: 0, height: 'auto' }}
+                    style={{ padding: 0, height: 'auto', color: '#1890ff' }}
                     onClick={() => {
                       props.changeCarrierStatus(record.id, props.token, 2); // Archive (status = 2)
                     }}
@@ -1111,7 +1111,7 @@ function ShippingCarriersComponent(props) {
                     <Button
                       type="link"
                       onClick={toggleArchivedView}
-                      style={{ padding: '0', height: 'auto', fontSize: isMobile ? '12px' : '14px' }}
+                      style={{ padding: '0', height: 'auto', fontSize: isMobile ? '12px' : '14px', color: '#1890ff' }}
                     >
                       {effectiveShowArchived ? 'View Inactive' : 'View Archive'}
                     </Button>
