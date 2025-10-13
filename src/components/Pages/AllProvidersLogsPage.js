@@ -25,6 +25,7 @@ const makeColumns = (sortLogs, showLogDetails, showMoreItems, recordId) => {
       align: "left",
       ellipsis: true,
       width: 150,
+      render: (carrier_name) => carrier_name || 'N/A',
     },
     {
       title: "Request Time",
@@ -236,6 +237,10 @@ function AllProvidersLogsPage(props) {
 
   useEffect(() => {
     if (allLogs !== null && allLogs !== undefined) {
+      console.log('AllProvidersLogs - Data received:', allLogs)
+      if (allLogs.length > 0) {
+        console.log('Sample log entry:', allLogs[0])
+      }
       setLoading(false)
     }
   }, [allLogs])
