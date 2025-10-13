@@ -12,8 +12,8 @@ const makeColumns = (sortLogs, showLogDetails, showMoreItems, recordId) => {
   const columns = [
     {
       title: "Log ID",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "log_id",
+      key: "log_id",
       align: "center",
       ellipsis: true,
       width: 100,
