@@ -128,6 +128,7 @@ function ConnectionSettingsComponent(props) {
           : props?.connectionSettings?.gtz_new_api ?? {};
 
       form.setFieldsValue({
+        nickname: props?.connectionSettings?.nickname || "",
         customer_id: data?.customer_id || "",
         user_name: data?.user_name || "",
         password: data?.password || "",
@@ -139,6 +140,7 @@ function ConnectionSettingsComponent(props) {
     },
     [
       form,
+      props?.connectionSettings?.nickname,
       props?.connectionSettings?.cerasis,
       props?.connectionSettings?.global_tranz,
       props?.connectionSettings?.gtz_new_api,
@@ -148,11 +150,11 @@ function ConnectionSettingsComponent(props) {
   const populateInitialValues = useCallback(
     () =>
       apiType === "GTZ"
-        ? { ...state.global_tranz }
+        ? { nickname: props?.connectionSettings?.nickname, ...state.global_tranz }
         : apiType === "CRS"
-        ? { ...state.cerasis, requiresNmfc: state.gtz_new_api.requiresNmfc }
-        : { ...state.gtz_new_api },
-    [apiType, state.cerasis, state.global_tranz, state.gtz_new_api]
+        ? { nickname: props?.connectionSettings?.nickname, ...state.cerasis, requiresNmfc: state.gtz_new_api.requiresNmfc }
+        : { nickname: props?.connectionSettings?.nickname, ...state.gtz_new_api },
+    [apiType, state.cerasis, state.global_tranz, state.gtz_new_api, props?.connectionSettings?.nickname]
   );
 
   if (
@@ -216,6 +218,7 @@ function ConnectionSettingsComponent(props) {
             className="mb-1"
             label="Nickname"
             name="nickname"
+            required={true}
             rules={[{ required: !connectionState.testType, message: "Nickname is required" }]}
           >
             <Input placeholder="e.g., GlobalTranz" />
@@ -254,6 +257,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Customer ID"
                 name="customer_id"
+                required={true}
                 rules={[{ required: connectionState.testType, message: "Customer ID is required" }]}
                 requiredMark
               >
@@ -266,6 +270,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Username"
                 name="user_name"
+                required={true}
                 rules={[{ required: connectionState.testType, message: "Username is required" }]}
                 requiredMark
               >
@@ -278,6 +283,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Password"
                 name="password"
+                required={true}
                 rules={[{ required: connectionState.testType, message: "Password is required" }]}
                 requiredMark
               >
@@ -292,6 +298,7 @@ function ConnectionSettingsComponent(props) {
                 className="mb-1"
                 label="Access Key"
                 name="access_key"
+                required={true}
                 rules={[{ required: connectionState.testType, message: "Access Key is required" }]}
                 requiredMark
               >
@@ -307,6 +314,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Shipper ID"
                 name="customer_id"
+                required={true}
                 rules={[{ required: connectionState.testType, message: "Shipper ID is required" }]}
                 requiredMark
               >
@@ -319,6 +327,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Username"
                 name="user_name"
+                required={true}
                 rules={[{ required: connectionState.testType, message: "Username is required" }]}
                 requiredMark
               >
@@ -331,6 +340,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Password"
                 name="password"
+                required={true}
                 rules={[{ required: connectionState.testType, message: "Password is required" }]}
                 requiredMark
               >
@@ -345,6 +355,7 @@ function ConnectionSettingsComponent(props) {
                 className="mb-1"
                 label="Access Key"
                 name="access_key"
+                required={true}
                 rules={[{ required: connectionState.testType, message: "Access Key is required" }]}
                 requiredMark
               >
@@ -360,6 +371,7 @@ function ConnectionSettingsComponent(props) {
               <Form.Item
                 label="Client ID"
                 name="clientId"
+                required={true}
                 rules={[{ required: connectionState.testType, message: "Client ID is required" }]}
               >
                 <Input
@@ -373,6 +385,7 @@ function ConnectionSettingsComponent(props) {
                 className="mb-1"
                 label="Client Secret"
                 name="clientSecret"
+                required={true}
                 rules={[{ required: connectionState.testType, message: "Client Secret is required" }]}
               >
                 <Input

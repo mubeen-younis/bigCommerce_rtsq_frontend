@@ -47,6 +47,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
+                    required={true}
                     rules={[{ required: !connectionState.testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., Priority One' />
 				</Form.Item>
@@ -55,6 +56,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='API Key'
                     name='api_key'
+                    required={true}
                     rules={[{ required: connectionState.testType, message: 'API Key is required' }]}>
 					<Input placeholder='API Key' maxLength={256}/>
 				</Form.Item>

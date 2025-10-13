@@ -55,18 +55,21 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
+                    required={true}
                     rules={[{ required: !testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., SAIA' />
 				</Form.Item>
 				<Form.Item
 					label='Account Number'
 					name='account_number'
+                    required={true}
                     rules={[{ required: testType, message: 'Account Number is required' }]}>
 					<Input placeholder='Account Number' />
 				</Form.Item>
 				<Form.Item
 					label='Account Number Postal Code'
 					name='original_postal_code'
+					required={true}
 					rules={[
                         { required: testType, message: 'Account Number Postal Code is required' },
 					]}>
@@ -80,6 +83,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Username'
                     name='userID'
+                    required={true}
                     rules={[{ required: testType, message: 'Username is required' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
@@ -87,6 +91,7 @@ function ConnectionSettingsComponent(props) {
 					className='mb-1'
 					label='Password'
 					name='password'
+                    required={true}
                     rules={[{ required: testType, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>

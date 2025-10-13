@@ -45,6 +45,7 @@ import RADSettings from "./components/Pages/RADSettings";
 import CompareRates from "./components/Pages/CompareRates";
 import ProductSettingsComponent from "./components/ProductSettingsComponent";
 import PaymentsTabComponent from "./components/Pages/PaymentTabComponent";
+import AllProvidersLogsPage from "./components/Pages/AllProvidersLogsPage";
 import { getCSVDownloadLink } from "./Actions/ImportCsv";
 import { getBrands, getCategories } from "./Actions/ShippingRulesActions";
 
@@ -239,6 +240,7 @@ function App(props) {
               <Route path="/av" component={AVComponent} />
               <Route path="/warehouses" component={WarehouseComponent} />
               <Route path="/payments" component={PaymentsTabComponent} />
+              <Route path="/logs" component={AllProvidersLogsPage} />
               <Route path="/addon/:addon_id" component={RendorAddon} />
               <Route path="/:carrier_id" component={RendorCarrier} />
             </Switch>

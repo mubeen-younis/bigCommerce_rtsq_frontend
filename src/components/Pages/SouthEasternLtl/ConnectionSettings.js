@@ -60,12 +60,14 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
+                    required={true}
                     rules={[{ required: !connectionState.testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., Southeastern LTL' />
 				</Form.Item>
 				<Form.Item
 					label='Customer Account Number'
 					name='customer_account_number'
+                    required={true}
                     rules={[{ required: connectionState.testType, message: 'Customer Account Number is required' }]}>
 					<Input placeholder='Customer Account Number' />
 				</Form.Item>
@@ -73,6 +75,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Username'
                     name='username'
+                    required={true}
                     rules={[{ required: connectionState.testType, message: 'Username is required' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
@@ -80,6 +83,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Password'
                     name='password'
+                    required={true}
                     rules={[{ required: connectionState.testType, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
@@ -89,6 +93,7 @@ function ConnectionSettingsComponent(props) {
                         <Form.Item
 							label='Customer Address'
 							name='customer_name'
+                            required={true}
                             rules={[{ required: connectionState.testType, message: 'Customer Name is required' }]}>
 							<Input type='text' placeholder='Customer Name' />
 						</Form.Item>
@@ -97,6 +102,7 @@ function ConnectionSettingsComponent(props) {
                         <Form.Item
 							style={{ marginTop: '2em' }}
 							name='customer_street_address'
+                            required={true}
 							rules={[
 								{
                                     required: connectionState.testType,
@@ -115,6 +121,7 @@ function ConnectionSettingsComponent(props) {
 					<Col span={12}>
                         <Form.Item
 							name='customer_city'
+                            required={true}
                             rules={[{ required: connectionState.testType, message: 'Customer City is required' }]}>
 							<Input type='text' placeholder='Customer City' />
 						</Form.Item>
@@ -123,6 +130,7 @@ function ConnectionSettingsComponent(props) {
 					<Col span={12}>
                         <Form.Item
 							name='customer_state'
+                            required={true}
                             rules={[{ required: connectionState.testType, message: 'Customer State is required' }]}>
 							<Input
 								type='text'
@@ -137,6 +145,7 @@ function ConnectionSettingsComponent(props) {
 					<Col span={12}>
                         <Form.Item
 							name='customer_zip_code'
+                            required={true}
                             rules={[
                                 { required: connectionState.testType, message: 'Customer Zip Code is required' },
                             ]}>
@@ -149,6 +158,7 @@ function ConnectionSettingsComponent(props) {
 					className='mb-1'
 					label='Third Party Account Number'
 					name='third_party_account_number'
+                    required={thirdPartyCheck}
 					rules={[
 						{
 							required: thirdPartyCheck,
@@ -174,6 +184,7 @@ function ConnectionSettingsComponent(props) {
 					className='mt-1'
 					name='access_level'
 					label='Access Level'
+                    required={true}
 					rules={[{ required: connectionState.testType, message: 'Access Level is required' }]}>
 					<Radio.Group>
 						<Radio

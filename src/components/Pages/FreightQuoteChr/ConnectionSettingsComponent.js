@@ -64,6 +64,7 @@ function ConnectionSettingsComponent() {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
+                    required={true}
                     rules={[{ required: !testType, message: 'Nickname is required' }]}>
 					<Input type='text' placeholder='e.g., C.H. Robinson' />
 				</Form.Item>
@@ -71,6 +72,7 @@ function ConnectionSettingsComponent() {
 					className='mb-1'
 					label='Customer Code'
 					name='customer_code'
+                    required={true}
                     rules={[{ required: testType, message: 'Customer Code is required' }]}>
 					<Input type='text' placeholder='Customer Code' />
 				</Form.Item>

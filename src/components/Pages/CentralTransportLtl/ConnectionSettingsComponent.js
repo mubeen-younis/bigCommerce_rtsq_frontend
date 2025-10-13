@@ -58,6 +58,7 @@ function ConnectionSettingsComponent(props) {
           className='mb-1'
           label='Nickname'
           name='nickname'
+          required={true}
           rules={[{ required: !testType, message: 'Nickname is required' }]}
         >
           <Input placeholder='e.g., Central Transport' />
@@ -65,6 +66,7 @@ function ConnectionSettingsComponent(props) {
         <Form.Item
           label="Customer Number"
           name="customer_number"
+          required={true}
           rules={[
             { required: testType, message: "Customer Number is required" },
             { max: 100, message: "Customer Number must be at most 100 characters" },
@@ -80,6 +82,7 @@ function ConnectionSettingsComponent(props) {
         <Form.Item
           label="Access Code"
           name="access_code"
+          required={true}
           rules={[
             { required: testType, message: "Access Code is required" },
             { max: 100, message: "Access Code must be at most 100 characters" },

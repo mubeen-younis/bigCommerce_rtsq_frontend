@@ -58,6 +58,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
+                    required={true}
                     rules={[{ required: !testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., Warehouse ABF' />
 				</Form.Item>
@@ -65,6 +66,7 @@ function ConnectionSettingsComponent(props) {
 					className='mb-1'
 					label='ID'
 					name='business_id'
+                    required={true}
                     rules={[{ required: testType, message: 'Business ID is required' }]}>
 					<Input placeholder='Business ID' />
 				</Form.Item>	

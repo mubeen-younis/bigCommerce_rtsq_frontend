@@ -131,7 +131,8 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
-                    rules={[{ required: true, message: 'Nickname is required' }]}>
+                    required={true}
+                    rules={[{ required: !connectionState.testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., FedEx LTL' />
 				</Form.Item>
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>
@@ -155,6 +156,7 @@ function ConnectionSettingsComponent(props) {
                         <Form.Item
                             label='API Key'
                             name='clientId'
+                            required={true}
                             rules={[{ required: connectionState.testType, message: 'API Key is required' }]}
                         >
 							<Input placeholder='API Key' maxLength={100} />
@@ -164,6 +166,7 @@ function ConnectionSettingsComponent(props) {
                             className='mb-0'
                             label='Secret Key'
                             name='clientSecret'
+                            required={true}
                             rules={[{ required: connectionState.testType, message: 'Secret Key is required' }]}
                         >
 							<Input placeholder='Secret Key' maxLength={100} />
@@ -184,28 +187,32 @@ function ConnectionSettingsComponent(props) {
                         <Form.Item
                             label='Billing Account Number'
                             name='account_number'
-                            rules={[{ required: connectionState.testType, message: 'Billing Account Number is required' }]}> 
+                            required={true}
+                            rules={[{ required: connectionState.testType, message: 'Billing Account Number is required' }]}>
 							<Input placeholder='Billing Account Number' maxLength={50} />
 						</Form.Item>
 
                         <Form.Item
                             label='Meter Number'
                             name='meter_number'
-                            rules={[{ required: connectionState.testType, message: 'Meter Number is required' }]}> 
+                            required={true}
+                            rules={[{ required: connectionState.testType, message: 'Meter Number is required' }]}>
 							<Input placeholder='Meter Number' maxLength={50} />
 						</Form.Item>
 
                         <Form.Item
                             label='Password'
                             name='password'
-                            rules={[{ required: connectionState.testType, message: 'Password is required' }]}> 
+                            required={true}
+                            rules={[{ required: connectionState.testType, message: 'Password is required' }]}>
 							<Input type='text' placeholder='Password' maxLength={100} />
 						</Form.Item>
 
                         <Form.Item
                             label='Authentication Key'
                             name='api_access_key'
-                            rules={[{ required: connectionState.testType, message: 'Authentication Key is required' }]}> 
+                            required={true}
+                            rules={[{ required: connectionState.testType, message: 'Authentication Key is required' }]}>
 							<Input placeholder='Authentication Key' />
 						</Form.Item>
 					</>
@@ -214,6 +221,7 @@ function ConnectionSettingsComponent(props) {
 				<Form.Item
 					label='Shipper Account Number'
 					name='shipping_account_number'
+					required={true}
 					rules={[
 						{
 							required: connectionState.testType && accountType === 'shipper',
@@ -228,6 +236,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='Billing Address'
 							name='billing_address'
+							required={true}
 							rules={[{ required: connectionState.testType, message: 'Billing Address is required' }]}>
 							<Input type='text' placeholder='Billing Address' />
 						</Form.Item>
@@ -237,6 +246,7 @@ function ConnectionSettingsComponent(props) {
 							// label='City'
 							style={{ marginTop: '2em' }}
 							name='billing_city'
+							required={true}
 							rules={[{ required: connectionState.testType, message: 'City is required' }]}>
 							<Input type='text' placeholder='City' />
 						</Form.Item>
@@ -248,6 +258,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='State e.g.CA'
 							name='billing_state'
+							required={true}
 							rules={[{ required: connectionState.testType, message: 'State is required' }]}>
 							<Input
 								type='text'
@@ -260,6 +271,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='Zip Code'
 							name='billing_zip'
+							required={true}
 							rules={[{ required: connectionState.testType, message: 'Zip Code is required' }]}>
 							<Input type='text' placeholder='Zip Code' />
 						</Form.Item>
@@ -271,6 +283,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='Country'
 							name='billing_country'
+							required={true}
 							rules={[{ required: connectionState.testType, message: 'Country is required' }]}>
 							<Input
 								type='text'
@@ -293,6 +306,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='Physical Address'
 							name='physical_address'
+							required={true}
 							rules={[
 								{ required: connectionState.testType, message: 'Shipping Address is required' },
 							]}>
@@ -304,6 +318,7 @@ function ConnectionSettingsComponent(props) {
 							// label='City'
 							style={{ marginTop: '2em' }}
 							name='physical_city'
+							required={true}
 							rules={[{ required: connectionState.testType, message: 'City is required' }]}>
 							<Input type='text' placeholder='City' />
 						</Form.Item>
@@ -315,6 +330,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='State e.g.CA'
 							name='physical_state'
+							required={true}
 							rules={[{ required: connectionState.testType, message: 'State is required' }]}>
 							<Input
 								type='text'
@@ -327,6 +343,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='Zip Code'
 							name='physical_zip'
+							required={true}
 							rules={[{ required: connectionState.testType, message: 'Zip Code is required' }]}>
 							<Input type='text' placeholder='Zip Code' />
 						</Form.Item>
@@ -338,6 +355,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							// label='Country'
 							name='physical_country'
+							required={true}
 							rules={[{ required: connectionState.testType, message: 'Country is required' }]}>
 							<Input
 								type='text'

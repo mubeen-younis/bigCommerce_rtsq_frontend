@@ -10,17 +10,22 @@ function ConnectionSettingsComponent(props) {
 		skeleton_loading: true,
 	})
 	const [accessType, setAccessType] = useState(0)
+	const [form] = Form.useForm()
 
 	const handleTypeChange = type => {
 		setConnectionState({ ...connectionState, testType: type })
 	}
 
 	useEffect(() => {
-		if (props.connectionSettings && accessType === 0) {
-			setAccessType(props?.connectionSettings?.access_level === 'pro' ? 2 : 1)
+		if (props.connectionSettings) {
+			if (accessType === 0) {
+				setAccessType(props?.connectionSettings?.access_level === 'pro' ? 2 : 1)
+			}
+			// Update form fields when connectionSettings changes
+			form.setFieldsValue(props.connectionSettings)
 		}
 		// eslint-disable-next-line
-	}, [props.connectionSettings])
+	}, [props.connectionSettings, form])
 
 	const onFinish = values => {
 		values.testType = connectionState.testType
@@ -37,11 +42,6 @@ function ConnectionSettingsComponent(props) {
 		return <Skeleton active />
 	}
 
-	// Clean initial values - only keep values if carrierId matches current carrier
-	const cleanedInitialValues = props.connectionSettings?.carrierId === props.carrierId
-		? props.connectionSettings
-		: { access_level: 'pro' };
-
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
@@ -56,22 +56,25 @@ function ConnectionSettingsComponent(props) {
 				.
 			</div>
 			<Form
+				form={form}
 				layout='vertical'
 				name='connection_settings'
 				className='connection-settings'
 				size={'large'}
-				initialValues={cleanedInitialValues}
+				initialValues={props.connectionSettings}
 				onFinish={onFinish}>
                 <Form.Item
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
+                    required={true}
                     rules={[{ required: !connectionState.testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., XPO' />
 				</Form.Item>
 				<Form.Item
 					label='Pickup/Delivery Account Number'
 					name='delivery_account_number'
+					required={true}
 					rules={[
                         {
                             required: connectionState.testType,
@@ -84,6 +87,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Username'
                     name='username'
+                    required={true}
                     rules={[{ required: connectionState.testType, message: 'Username is required' }]}>
 					<Input placeholder='Username' />
 				</Form.Item>
@@ -91,6 +95,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Password'
                     name='password'
+                    required={true}
                     rules={[{ required: connectionState.testType, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
@@ -98,6 +103,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Pickup/Delivery Postal Code'
                     name='delivery_postal_code'
+                    required={true}
                     rules={[
                         {
                             required: connectionState.testType,
@@ -110,6 +116,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Bill To Account Number '
                     name='bill_to_account_number'
+                    required={true}
                     rules={[
                         {
                             required: accessType === 2,

@@ -129,6 +129,7 @@ function ConnectionSettingsComponent(props) {
 					className='mb-1'
 					label='Nickname'
 					name='nickname'
+					required={true}
 					rules={[{ required: !connectionState.testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., Unishippers Small' />
 				</Form.Item>
@@ -152,6 +153,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='Client ID'
 							name='clientId'
+							required={true}
 							rules={[{ required: connectionState.testType, message: 'Client ID is required' }]}
 						>
 							<Input placeholder='Client ID' maxLength={100} />
@@ -160,6 +162,7 @@ function ConnectionSettingsComponent(props) {
 							className='mb-1'
 							label='Client Secret'
 							name='clientSecret'
+							required={true}
 							rules={[{ required: connectionState.testType, message: 'Client Secret is required' }]}
 						>
 							<Input placeholder='Client Secret' maxLength={100} />
@@ -179,13 +182,13 @@ function ConnectionSettingsComponent(props) {
 							className='mt-1'
 							label='Username'
 							name='new_api_username'
-							rules={[{ required: connectionState.testType, message: 'Username is required' }]}>
+							rules={[{ required: false, message: 'Username is required' }]}>
 							<Input placeholder='Username' />
 						</Form.Item>
 						<Form.Item
 							label='Password'
 							name='new_api_password'
-							rules={[{ required: connectionState.testType, message: 'Password is required' }]}>
+							rules={[{ required: false, message: 'Password is required' }]}>
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
 					</>
@@ -194,6 +197,7 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='Unishippers Customer Number'
 							name='unishippers_customer_number'
+							required={true}
 							rules={[
 								{ required: connectionState.testType, message: 'Unishippers Customer Number is required' },
 							]}>
@@ -202,19 +206,20 @@ function ConnectionSettingsComponent(props) {
 						<Form.Item
 							label='UPS Account Number'
 							name='ups_account_number'
+							required={true}
 							rules={[{ required: connectionState.testType, message: 'UPS Account Number is required' }]}>
 							<Input placeholder='UPS Account Number' />
 						</Form.Item>
 						<Form.Item
 							label='Username'
 							name='username'
-							rules={[{ required: connectionState.testType, message: 'Username is required' }]}>
+							rules={[{ required: false, message: 'Username is required' }]}>
 							<Input placeholder='Username' />
 						</Form.Item>
 						<Form.Item
 							label='Password'
 							name='password'
-							rules={[{ required: connectionState.testType, message: 'Password is required' }]}>
+							rules={[{ required: false, message: 'Password is required' }]}>
 							<Input type='text' placeholder='Password' />
 						</Form.Item>
 						<Form.Item label='Request Key' name='request_key' className='mb-1'>

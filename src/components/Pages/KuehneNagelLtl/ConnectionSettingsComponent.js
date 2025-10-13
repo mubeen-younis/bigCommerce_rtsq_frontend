@@ -68,6 +68,7 @@ function ConnectionSettingsComponent(props) {
           className="mb-1"
           label="Nickname"
           name="nickname"
+          required={true}
           rules={[{ required: !connectionState.testType, message: "Nickname is required" }]}
         >
           <Input placeholder="e.g., Kuehne + Nagel" />
@@ -78,6 +79,7 @@ function ConnectionSettingsComponent(props) {
           label="Username"
           // name="clientSecret"
           name="username"
+          required={true}
           rules={[{required: connectionState.testType, message: "Username is required." },
             // {
             //   pattern: /^[a-zA-Z0-9]+$/,
@@ -93,6 +95,7 @@ function ConnectionSettingsComponent(props) {
           className="mb-1"
           label="Authentication ID"
           name="autId"
+          required={true}
           rules={[{ required: connectionState.testType, message: "Authentication ID is required" },
             // {
             //   pattern: /^[a-zA-Z0-9]+$/,
@@ -108,6 +111,7 @@ function ConnectionSettingsComponent(props) {
         className="mb-1"
           label="Client Code"
           name="clientCode"
+          required={true}
           rules={[{ required: connectionState.testType, message: "Client Code is required" },
             // {
             //   pattern: /^[a-zA-Z0-9]+$/,

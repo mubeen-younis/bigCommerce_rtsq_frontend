@@ -51,12 +51,14 @@ function ConnectionSettingsComponent() {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
+                    required={true}
                     rules={[{ required: !testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., Echo' />
 				</Form.Item>
 				<Form.Item
 					label='Account Number'
 					name='account_number'
+                    required={true}
                     rules={[{ required: testType, message: 'Account Number is required' }]}>
 					<Input placeholder='Account Number' />
 				</Form.Item>
@@ -64,6 +66,7 @@ function ConnectionSettingsComponent() {
 					className='mb-1'
 					label='API Key'
 					name='api_key'
+                    required={true}
                     rules={[{ required: testType, message: 'API Key is required' }]}>
 					<Input placeholder='API Key' />
 				</Form.Item>

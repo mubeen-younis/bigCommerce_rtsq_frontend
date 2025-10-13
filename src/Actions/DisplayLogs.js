@@ -7,19 +7,25 @@ export const getAllLogs = (
 	sortProd,
 	setLogsLoading,
 	search = null,
-	carrier,
+	carrier = null,
 ) => {
+	const params = {
+		page: current,
+		perpage,
+		sortProd: sortProd,
+		search,
+	}
+
+	// Only add carrier_slug if carrier is provided (not null)
+	if (carrier) {
+		params.carrier_slug = carrier
+	}
+
 	const config = {
 		headers: {
 			authorization: `Bearer ${token}`,
 		},
-		params: {
-			carrier_slug : carrier,
-			page: current,
-			perpage,
-			sortProd: sortProd,
-			search,
-		},
+		params,
 	}
 	return dispatch => {
 		setLogsLoading(true)

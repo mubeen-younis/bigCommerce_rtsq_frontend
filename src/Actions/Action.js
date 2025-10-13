@@ -23,20 +23,27 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 					typeof data[elem] == 'string' ? data[elem].trim() : data[elem])
 		)
 
-		// If we are in install flow, add is_installing=1 and carrier_id from availableCarrierId
-		// But NEVER add it during test connections
+		// Handle is_installing flag based on context
+		// Add Account modal: is_installing = 1
+		// Connection Settings modal (Installed/Inactive/Archived): is_installing = 0
+		// This applies to both save and test connection
 		try {
 			const state = window?.store?.getState ? window.store.getState() : null
-			if (state?.isInstalling && (url === 'submit_connection_settings') && !data.testType) {
-				data = {
-					...data,
-					is_installing: 1,
-					carrierId: state?.availableCarrierId || data.carrierId
+			if (url === 'submit_connection_settings') {
+				if (state?.isInstalling) {
+					// Add Account modal - set is_installing = 1
+					data = {
+						...data,
+						is_installing: 1,
+						carrierId: state?.availableCarrierId || data.carrierId
+					}
+				} else {
+					// Connection Settings modal (Installed/Inactive/Archived providers) - set is_installing = 0
+					data = {
+						...data,
+						is_installing: 0
+					}
 				}
-			} else if (isTestConnection) {
-				// Explicitly remove is_installing during test connections
-				const { is_installing, ...cleanData } = data
-				data = cleanData
 			}
 		} catch (e) {}
 

@@ -36,6 +36,7 @@ function SideMenu(props) {
     else if (name.includes('shipping_rules')) setActiveMenu('110');
     else if (name.includes('payments')) setActiveMenu('112');
     else if (name.includes('user_guide')) setActiveMenu('105');
+    else if (name.includes('logs')) setActiveMenu('113');
     else if (name.includes('addon'))
       setActiveMenu('addon-' + name.substring(name.lastIndexOf('/') + 1));
     else setActiveMenu(name.substring(name.lastIndexOf('/') + 1));
@@ -223,6 +224,14 @@ function SideMenu(props) {
                 onClick={() => setActiveMenu('105')}
               >
                 <Link to={`/user_guide`}>User Guide</Link>
+              </Menu.Item>
+
+              <Menu.Item
+                key='113'
+                warnkey={113}
+                onClick={() => setActiveMenu('113')}
+              >
+                <Link to={`/logs`}>Logs</Link>
               </Menu.Item>
 
               {/* Other addons */}

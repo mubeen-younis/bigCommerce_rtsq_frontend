@@ -73,13 +73,14 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
+                    required={true}
                     rules={[{ required: !connectionState.testType, message: 'Nickname is required' }]}
                 >
-					<Input placeholder='e.g., UPS LTL' />
+					<Input placeholder='e.g., TForce LTL' />
 				</Form.Item>
 				<Form.Item label='Which API Will You Connect To?' name='api_type'>
 					<Select
-						defaultValue={!connectionSettings?.api_type && connectionSettings?.carrierId ? 'legacy_api' : 'new_api'}
+						defaultValue='new_api'
 						options={[
 							{ label: 'Legacy API', value: 'legacy_api' },
 							{ label: 'New API', value: 'new_api' },
@@ -99,6 +100,7 @@ function ConnectionSettingsComponent(props) {
                     <Form.Item
                         label='Client ID'
                         name='clientId'
+                        required={true}
                         rules={[{ required: connectionState.testType, message: 'Client ID is required' }]}
                     >
 						<Input placeholder='Client ID' maxLength={100}/>
@@ -108,6 +110,7 @@ function ConnectionSettingsComponent(props) {
                         className='mb-1'
                         label='Client Secret'
                         name='clientSecret'
+                        required={true}
                         rules={[{ required: connectionState.testType, message: 'Client Secret is required' }]}
                     >
 						<Input placeholder='Client Secret' maxLength={100}/>
@@ -127,6 +130,7 @@ function ConnectionSettingsComponent(props) {
                         className='mt-1'
                         label='Username'
                         name='username'
+                        required={true}
                         rules={[{ required: connectionState.testType, message: 'Username is required' }]}
                     >
 						<Input placeholder='Username' maxLength={100}/>
@@ -135,6 +139,7 @@ function ConnectionSettingsComponent(props) {
                     <Form.Item
                         label='Password'
                         name='password'
+                        required={true}
                         rules={[{ required: connectionState.testType, message: 'Password is required' }]}
                     >
 						<Input type='text' placeholder='Password' maxLength={100}/>
@@ -147,6 +152,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Account Number'
                     name='account_number'
+                    required={true}
                     rules={[{ required: connectionState.testType, message: 'Account Number is required' }]}
                 >
 					<Input placeholder='Account Number' />
@@ -155,6 +161,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Username'
                     name='username'
+                    required={true}
                     rules={[{ required: connectionState.testType, message: 'Username is required' }]}
                 >
 					<Input placeholder='Username' maxLength={100}/>
@@ -163,6 +170,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Password'
                     name='password'
+                    required={true}
                     rules={[{ required: connectionState.testType, message: 'Password is required' }]}
                 >
 					<Input type='text' placeholder='Password' maxLength={100}/>
@@ -171,6 +179,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='API Access Key'
                     name='ups_api_access_key'
+                    required={true}
                     rules={[{ required: connectionState.testType, message: 'API Access Key is required' }]}
                 >
 					<Input placeholder='API Access Key' />

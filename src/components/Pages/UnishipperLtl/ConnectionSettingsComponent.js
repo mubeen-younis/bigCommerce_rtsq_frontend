@@ -82,6 +82,7 @@ function ConnectionSettingsComponent(props) {
           className="mb-1"
           label="Nickname"
           name="nickname"
+          required={true}
           rules={[{ required: !connectionState.testType, message: "Nickname is required" }]}
         >
           <Input placeholder="e.g., Unishippers LTL" />
@@ -89,6 +90,7 @@ function ConnectionSettingsComponent(props) {
         <Form.Item
           label="Client ID"
           name="clientId"
+          required={true}
           rules={[{ required: connectionState.testType, message: "Client ID is required." }]}
         >
           <Input placeholder="Client ID" maxLength={100} />
@@ -97,6 +99,7 @@ function ConnectionSettingsComponent(props) {
           className="mb-1"
           label="Client Secret"
           name="clientSecret"
+          required={true}
           rules={[{ required: connectionState.testType, message: "Client Secret is required." }]}
         >
           <Input placeholder="Client Secret" maxLength={256} />
@@ -116,14 +119,14 @@ function ConnectionSettingsComponent(props) {
           className="mt-1"
           label="Username"
           name="username"
-          rules={[{ required: connectionState.testType, message: "Username is required" }]}
+          // rules={[{ required: connectionState.testType, message: "Username is required" }]}
         >
           <Input placeholder="Username" maxLength={100} />
         </Form.Item>
         <Form.Item
           label="Password"
           name="password"
-          rules={[{ required: connectionState.testType, message: "Password is required" }]}
+          // rules={[{ required: connectionState.testType, message: "Password is required" }]}
         >
           <Input type="text" placeholder="Password" maxLength={100} />
         </Form.Item>

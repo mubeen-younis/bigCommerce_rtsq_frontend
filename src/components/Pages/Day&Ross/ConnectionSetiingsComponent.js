@@ -82,6 +82,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Nickname'
                     name='nickname'
+                    required={true}
                     rules={[{ required: !testType, message: 'Nickname is required' }]}>
 					<Input placeholder='e.g., Day & Ross' />
 				</Form.Item>
@@ -102,6 +103,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Billing Account Number'
                     name='billing_account_number'
+                    required={true}
                     rules={[{ required: testType, message: 'Billing Account Number is required' }]}>
 					<Input placeholder='Billing Account Number' />
 				</Form.Item>
@@ -113,6 +115,7 @@ function ConnectionSettingsComponent(props) {
                 <Form.Item
                     label='Email'
                     name='email'
+                    required={true}
                     rules={[{ required: testType, message: 'Email is required' }]}>
 					<Input placeholder='Email' />
 				</Form.Item>
@@ -120,6 +123,7 @@ function ConnectionSettingsComponent(props) {
                     className='mb-1'
                     label='Password'
                     name='password'
+                    required={true}
                     rules={[{ required: testType, message: 'Password is required' }]}>
 					<Input type='text' placeholder='Password' />
 				</Form.Item>
