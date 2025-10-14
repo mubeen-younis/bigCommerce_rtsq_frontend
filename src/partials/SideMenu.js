@@ -121,7 +121,17 @@ function SideMenu(props) {
                 const isSBSAddon = addon.name?.trim() === 'Standard Box Sizes';
                 const isPalletPackagingAddon = addon.name?.trim() === 'Pallet Packaging';
 
-                // If it's SBS addon, only show it when at least one Small carrier is enabled (exclude archived)
+                // Check if DBSC is enabled at all
+                const isDBSCEnabled = props?.installedCarriers?.some(carrier =>
+                  carrier.is_enabled === 1 && carrier.slug === 'dbsc'
+                );
+
+                // Check if ONLY DBSC is enabled (no other carriers)
+                const onlyDBSCEnabled = props?.installedCarriers?.every(carrier =>
+                  carrier.is_enabled === 0 || carrier.slug === 'dbsc'
+                ) && isDBSCEnabled;
+
+                // If it's SBS addon, only show it when at least one Small carrier is enabled (exclude DBSC-only case)
                 if (isSBSAddon) {
                   const hasEnabledSmallCarrier = props?.installedCarriers?.some(carrier =>
                     carrier.is_enabled === 1 && (
@@ -137,7 +147,7 @@ function SideMenu(props) {
                     )
                   );
 
-                  return hasEnabledSmallCarrier ? (
+                  return hasEnabledSmallCarrier && !onlyDBSCEnabled ? (
                     <Menu.Item
                       key={'addon-' + addon.id.toString()}
                       warnkey={'addon-' + addon.id.toString()}
@@ -150,10 +160,10 @@ function SideMenu(props) {
                   ) : null;
                 }
 
-                // If it's Pallet Packaging addon, only show it when at least one LTL carrier is enabled (exclude archived)
+                // If it's Pallet Packaging addon, show it when at least one LTL carrier (excluding DBSC) is enabled
                 if (isPalletPackagingAddon) {
                   const hasEnabledLTLCarrier = props?.installedCarriers?.some(carrier =>
-                    carrier.is_enabled === 1 && carrier.carrier_type === 1
+                    carrier.is_enabled === 1 && carrier.carrier_type === 1 && carrier.slug !== 'dbsc'
                   );
 
                   return hasEnabledLTLCarrier ? (

@@ -124,7 +124,7 @@ function AutoDetectResidentialComponent(props) {
 							order fulfillment. The next subscription begins when the current one expires 
 							or is depleted, which ever comes first. Refer to the{' '}
 							<a
-								href='https://eniture.com/woocommerce-pallet-packaging/#documentation'
+								href='https://eniture.com/bigcommerce-real-time-shipping-quotes/#pallet-packaging'
 								target='_blank'
 								rel='noreferrer'>
 								{' '}
