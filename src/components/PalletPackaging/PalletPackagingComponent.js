@@ -148,12 +148,12 @@ function AutoDetectResidentialComponent(props) {
 											?.to_be_charge_package_id
 									: props?.palletPlans?.currentPackage
 											?.package_to_be_charge_status === 'Trial'
-									? '100/15 days ($0) - Trial'
+									? props?.palletPlans?.currentPackage
+											?.to_be_charge_package_id
 									: props?.palletPlans?.currentPackage
 											?.package_to_be_charge_status === 'Development Plan'
 									? props?.palletPlans?.currentPackage
-											?.total_hits  + '/' + props?.palletPlans?.currentPackage
-											?.current_package_period + ' Development Plan ($0)'
+											?.to_be_charge_package_id
 									: typeof props?.palletPlans?.currentPackage?.package_to_be_charge_status === 'number'
 									? props?.palletPlans?.currentPackage?.package_to_be_charge_status
 									: 'disable'
