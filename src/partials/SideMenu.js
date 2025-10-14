@@ -131,6 +131,8 @@ function SideMenu(props) {
                       carrier.slug === 'unishippers-small' ||
                       carrier.slug === 'purolator-small' ||
                       carrier.slug === 'ups-land-cost-small' ||
+                      carrier.slug === 'small-package' ||
+                      carrier.slug === 'ups-ship-engine' ||
                       carrier.slug.includes('-small')
                     )
                   );
