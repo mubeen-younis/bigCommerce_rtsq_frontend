@@ -143,6 +143,9 @@ function AutoDetectResidentialComponent(props) {
 									: props?.palletPlans?.currentPackage?.status === 0
 									? 'disable'
 									: props?.palletPlans?.currentPackage
+											?.package_to_be_charge_status === 0
+									? 'disable'
+									: props?.palletPlans?.currentPackage
 											?.package_to_be_charge_status === 1
 									? props?.palletPlans?.currentPackage
 											?.to_be_charge_package_id
