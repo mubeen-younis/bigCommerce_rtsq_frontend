@@ -15,7 +15,7 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 	return (
 		<Space direction='vertical' size='large' className='w-100'>
 			{shippingProfiles?.map(pf => (
-				<Card key={pf.p_nickname} className='card-border'>
+				<Card key={pf.id} className='card-border'>
 					<Row gutter={30} className='mb-1'>
 						<Col
 							className='gutter-row'
@@ -110,7 +110,7 @@ const ShippingProfile = ({ editProfile, shippingProfiles }) => {
 									</p>
 									{pf?.shipping_classes &&
 										JSON.parse(pf?.shipping_classes)?.map(
-											cls => <p key={pf?.id}>{cls}</p>
+											(cls, index) => <p key={`${pf?.id}-${cls}-${index}`}>{cls}</p>
 										)}
 								</>
 							)}
