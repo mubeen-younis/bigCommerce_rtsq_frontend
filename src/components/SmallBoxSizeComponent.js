@@ -355,47 +355,53 @@ function AutoDetectResidentialComponent(props) {
 												Suspend use
 											</Checkbox>
 										</div>
-										<label>
-											<strong>Optimization mode</strong>
-										</label>
-										<Form.Item className={'mb-1 mt-1'}>
-											<Radio
-												onChange={e => {
-													binsPackagingMode(
-														e.target.value = 0
-													)
-												}}
-												checked={
-													props?.sbsPlans?.binPackMode === 0
-												}
-											>
-												Maximize space utilization
-												<div className={'text-gray'}>
-													Prioritizes the choice of boxes to minimize the amount of unused space.
-        										</div>
-											</Radio>
-										</Form.Item>
-										<Form.Item className={'mb-0'}>
-											<Radio
-												onChange={e => {
-													binsPackagingMode(
-														e.target.value = 1
-													)
-												}}
-												checked={
-													props?.sbsPlans?.binPackMode === 0 ? false : true
-												}
-											>
-												Minimize the number of packages.
-												<div className={'text-gray'}>
-													Use the fewest number of boxes for the packaging solution.
-        										</div>
-											</Radio>
-										</Form.Item>
 									</Fragment>
 								)}
 							</Fragment>
 						)}
+
+						{/* Optimization mode - always visible */}
+						<div style={{ marginTop: '20px' }}>
+							<label>
+								<strong>Optimization mode</strong>
+							</label>
+							<Form.Item className={'mb-1 mt-1'}>
+								<Radio
+									onChange={e => {
+										binsPackagingMode(
+											e.target.value = 0
+										)
+									}}
+									checked={
+										props?.sbsPlans?.binPackMode === 0
+									}
+									disabled={suspend || props?.sbsPlans?.currentPackage?.status === 3}
+								>
+									Maximize space utilization
+									<div className={'text-gray'}>
+										Prioritizes the choice of boxes to minimize the amount of unused space.
+									</div>
+								</Radio>
+							</Form.Item>
+							<Form.Item className={'mb-0'}>
+								<Radio
+									onChange={e => {
+										binsPackagingMode(
+											e.target.value = 1
+										)
+									}}
+									checked={
+										props?.sbsPlans?.binPackMode === 0 ? false : true
+									}
+									disabled={suspend || props?.sbsPlans?.currentPackage?.status === 3}
+								>
+									Minimize the number of packages.
+									<div className={'text-gray'}>
+										Use the fewest number of boxes for the packaging solution.
+									</div>
+								</Radio>
+							</Form.Item>
+						</div>
 
 						<div style={{ marginTop: '20px' }}>
 							<BoxSizesPackagingMethod />

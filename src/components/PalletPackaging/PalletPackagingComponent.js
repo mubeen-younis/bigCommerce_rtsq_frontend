@@ -235,17 +235,17 @@ function AutoDetectResidentialComponent(props) {
 	
 											if (plan.cost !== 0) {
 												return (
-													<Option key={String(plan.id)} value={String(plan.id)} disabled={store?.plan_level === 'Sandbox Store11'}>
+													<Option key={String(plan.id)} value={String(plan.id)} disabled={store?.plan_level === 'Sandbox Store'}>
 														{Intl.NumberFormat('en-US').format(plan.htis)}/mo (${plan.cost})
 													</Option>
 												)
-											} else if (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Store11') {
+											} else if (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Store') {
 												return (
 													<Option key={String(plan.id)} value={String(plan.id)}>
 														{Intl.NumberFormat('en-US').format(plan.htis)}/5 years {plan.name} (${plan.cost})
 													</Option>
 												)
-											} else if (plan.name == 'Trial' && store?.plan_level != 'Sandbox Store11') {
+											} else if (plan.name == 'Trial' && store?.plan_level != 'Sandbox Store') {
 												return (
 													<Option key={String(plan.id)} value={String(plan.id)}>
 														{Intl.NumberFormat('en-US').format(plan.htis)}/15 days (${plan.cost}) - Trial

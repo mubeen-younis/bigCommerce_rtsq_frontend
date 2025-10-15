@@ -162,9 +162,8 @@ function App(props) {
       message.error(alertMessage);
     } else if (alertMessageType === "warning") {
       message.warning(alertMessage);
-    } else if (alertMessageType === "loading") {
-      message.loading("Loading. Please wait...");
     }
+    // Loading message removed - using skeleton loaders instead
   };
 
   if (showAlertMessage) {
