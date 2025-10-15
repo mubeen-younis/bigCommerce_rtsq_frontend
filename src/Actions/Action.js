@@ -67,13 +67,19 @@ export const postData = (data, type, url, token, setVisibleWarehouse = null) => 
 							})
 						}
 					} else if (responseData?.data && !isTestConnection) {
+						// For SAVE_LOCATION, extract the origin object from the response
+						let payload = responseData?.data
+						if (type === 'SAVE_LOCATION' && responseData?.data?.origin) {
+							payload = responseData.data.origin
+						}
+
 						dispatch({
 							type: type,
-							payload: responseData?.data,
+							payload: payload,
 						})
 					}
 
-					if (type === 'SAVE_LOCATION') {
+					if (type === 'SAVE_LOCATION' && setVisibleWarehouse) {
 						setVisibleWarehouse(false)
 					}
 
