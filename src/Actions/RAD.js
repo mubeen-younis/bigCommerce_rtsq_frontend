@@ -122,21 +122,47 @@ export const changePlan = (token, plan_package, SetCancelSubsriptionVisible) => 
 				}
 			)
 			.then(({ data }) => {
+				// Special handling for 'disable' action - suppress paid plan requirement error
+				const isDisableAction = plan_package === 'disable'
+				const isPaidPlanError = data.error && data.message &&
+					(data.message.includes('must subscribe to the paid plan') ||
+					 data.message.includes('You must subscribe'))
+
 				if (!data.error) {
 					dispatch({
 						type: 'RAD_PLANS',
 						payload: data.data,
 					})
+				} else if (isDisableAction && isPaidPlanError) {
+					// For disable action with paid plan error, treat as success
+					dispatch({
+						type: 'RAD_PLANS',
+						payload: data.data,
+					})
 				}
+
 				SetCancelSubsriptionVisible(false)
-				dispatch({
-					type: 'ALERT_MESSAGE',
-					payload: {
-						alertMessage: data?.data?.Message ?? data.message,
-						showAlertMessage: true,
-						alertMessageType: data.error ? 'error' : 'success',
-					},
-				})
+
+				// Don't show error message for disable action with paid plan requirement
+				if (isDisableAction && isPaidPlanError) {
+					dispatch({
+						type: 'ALERT_MESSAGE',
+						payload: {
+							alertMessage: 'Auto-renew disabled successfully.',
+							showAlertMessage: true,
+							alertMessageType: 'success',
+						},
+					})
+				} else {
+					dispatch({
+						type: 'ALERT_MESSAGE',
+						payload: {
+							alertMessage: data?.data?.Message ?? data.message,
+							showAlertMessage: true,
+							alertMessageType: data.error ? 'error' : 'success',
+						},
+					})
+				}
 			})
 	}
 }

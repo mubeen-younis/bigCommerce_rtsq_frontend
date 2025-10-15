@@ -350,7 +350,7 @@ function ShippingGroupsComponent() {
                   <Checkbox
                     name="residential_delivery_auto_detect"
                     checked={settings.residential_delivery_auto_detect && isRadInstalled}
-                    disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
+                    disabled={suspend || radPlans?.currentPackage?.status === 3}
                     onChange={e => {
                       handleStateChange(e)
                       setSettings(prevSettings => ({
