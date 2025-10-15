@@ -14,10 +14,10 @@ const { Title } = Typography
 const { Option } = Select
 
 function AutoDetectResidentialComponent(props) {
-	console.log("aaaaaaa", props);
 	const [suspend, setSuspend] = useState(false)
 	const [cancelSubsriptionVisible, SetCancelSubsriptionVisible] = useState(false)
 	const [newPlan, SetNewPlan] = useState({})
+	const [selectedValue, setSelectedValue] = useState(null)
 	const dispatch = useDispatch()
 	const { token, palletPlans, store, installedAddons } = useSelector(state => state)
 
@@ -41,12 +41,14 @@ function AutoDetectResidentialComponent(props) {
 
 	const chanePlanAction = useCallback(
 		plan_value => {
-			if (plan_value === 'disable' || plan_value === 15 || plan_value === 23) {
+			const stringValue = String(plan_value)
+			setSelectedValue(stringValue)
+			if (plan_value === 'disable') {
 				dispatch(changePlan(token, plan_value, SetCancelSubsriptionVisible))
 			} else {
 				const plan = palletPlans
 					? palletPlans?.allPalletPackages?.find(
-							({ id }) => id === plan_value
+							({ id }) => String(id) === String(plan_value)
 					  )
 					: []
 
@@ -70,6 +72,34 @@ function AutoDetectResidentialComponent(props) {
 		},
 		[dispatch, token, palletPlans]
 	)
+
+	// Compute backend value
+	const getBackendValue = useCallback(() => {
+		const cp = props?.palletPlans?.currentPackage
+		if (!cp || cp === null) return 'disable'
+		const status = cp?.package_to_be_charge_status
+		if (status === 0 || status === '0' || status === null || status === undefined) return 'disable'
+		if (status === 1 || status === '1' || status === 'Trial' || status === 'Development Plan') {
+			return cp?.to_be_charge_package_id ? String(cp.to_be_charge_package_id) : 'disable'
+		}
+		if (typeof status === 'number') return String(status)
+		if (typeof status === 'string' && /^\d+$/.test(status)) return status
+		return 'disable'
+	}, [props?.palletPlans?.currentPackage])
+
+	// Sync selectedValue with backend when data changes
+	useEffect(() => {
+		const backendValue = getBackendValue()
+		if (selectedValue === null) {
+			setSelectedValue(backendValue)
+		}
+	}, [getBackendValue, selectedValue])
+
+	// Get the current Select value
+	const getCurrentValue = () => {
+		const value = selectedValue !== null ? selectedValue : getBackendValue()
+		return value
+	}
 
 	const handleAddonToggle = (checked) => {
 		// Send the actual Pallet Packaging addon ID
@@ -105,14 +135,34 @@ function AutoDetectResidentialComponent(props) {
 				onOk={changePalletPlan}
 				okText='Confirm'
 				cancelButtonProps={{ style: { display: 'none' } }}>
-				You have elected to enable the Pallet Packaging feature. By
-				confirming this election you will be charged for the{' '}
-				{Intl.NumberFormat('en-US').format(newPlan?.htis)}/mo ($
-				{newPlan?.cost}.00) plan. To ensure service continuity the plan will
-				automatically renew each month, or when the plan is depleted,
-				whichever comes first. You can change which plan is put into effect
-				on the next renewal date by updating the selection on this page at
-				anytime.
+				{newPlan?.name === 'Trial' ? (
+					<>
+						You have elected to enable the Pallet Packaging feature with a Trial plan. By
+						confirming this election you will receive{' '}
+						{Intl.NumberFormat('en-US').format(newPlan?.htis)} hits for 15 days at no cost.
+						You can change which plan is put into effect on the next renewal date by updating
+						the selection on this page at anytime.
+					</>
+				) : newPlan?.name === 'Development Plan' ? (
+					<>
+						You have elected to enable the Pallet Packaging feature with a Development Plan. By
+						confirming this election you will receive{' '}
+						{Intl.NumberFormat('en-US').format(newPlan?.htis)} hits for 5 years at no cost.
+						You can change which plan is put into effect on the next renewal date by updating
+						the selection on this page at anytime.
+					</>
+				) : (
+					<>
+						You have elected to enable the Pallet Packaging feature. By
+						confirming this election you will be charged for the{' '}
+						{Intl.NumberFormat('en-US').format(newPlan?.htis)}/mo ($
+						{newPlan?.cost}.00) plan. To ensure service continuity the plan will
+						automatically renew each month, or when the plan is depleted,
+						whichever comes first. You can change which plan is put into effect
+						on the next renewal date by updating the selection on this page at
+						anytime.
+					</>
+				)}
 			</Modal>
 
 			<Row gutter={24} justify='center' className={'mb-3'}>
@@ -137,66 +187,73 @@ function AutoDetectResidentialComponent(props) {
 							<strong>Auto-renew</strong>
 						</label>
 						<Select
-							value={
-								!props?.palletPlans?.currentPackage || props?.palletPlans?.currentPackage === null
-									? 'disable'
-									: props?.palletPlans?.currentPackage?.status === 0
-									? 'disable'
-									: props?.palletPlans?.currentPackage
-											?.package_to_be_charge_status === 0
-									? 'disable'
-									: props?.palletPlans?.currentPackage
-											?.package_to_be_charge_status === 1
-									? props?.palletPlans?.currentPackage
-											?.to_be_charge_package_id
-									: props?.palletPlans?.currentPackage
-											?.package_to_be_charge_status === 'Trial'
-									? props?.palletPlans?.currentPackage
-											?.to_be_charge_package_id
-									: props?.palletPlans?.currentPackage
-											?.package_to_be_charge_status === 'Development Plan'
-									? props?.palletPlans?.currentPackage
-											?.to_be_charge_package_id
-									: typeof props?.palletPlans?.currentPackage?.package_to_be_charge_status === 'number'
-									? props?.palletPlans?.currentPackage?.package_to_be_charge_status
-									: 'disable'
-							}
+							value={getCurrentValue()}
 							style={{ width: '100%', marginBottom: '20px' }}
 							onChange={chanePlanAction}
 							name='plan_value'>
 							<Option key='disable' value='disable'>
 								Disable (default)
 							</Option>
+
+							{/* If current selection is not in the allPalletPackages list, add it from currentPackage */}
+							{(() => {
+								const currentValue = getCurrentValue()
+								const currentPackage = props?.palletPlans?.currentPackage
+
+								// Check if current value exists in allPalletPackages
+								const existsInList = props?.palletPlans?.allPalletPackages?.some(p => String(p.id) === String(currentValue))
+
+								// If not in list but we have currentPackage data, render it
+								if (!existsInList && currentValue !== 'disable' && currentPackage?.current_package_name) {
+									// Build the full label based on package details
+									let label = ''
+									const packageName = currentPackage.current_package_name
+									const totalHits = currentPackage.total_allowed_hits
+
+									if (packageName === 'Trial') {
+										label = `${Intl.NumberFormat('en-US').format(totalHits)}/15 days ($0) - Trial`
+									} else if (packageName === 'Development Plan') {
+										label = `${Intl.NumberFormat('en-US').format(totalHits)}/5 years ${packageName} ($0)`
+									} else {
+										// For paid plans, extract cost from current_package_cost
+										const cost = currentPackage.current_package_cost || 0
+										label = `${Intl.NumberFormat('en-US').format(totalHits)}/mo ($${cost})`
+									}
+
+									return (
+										<Option key={String(currentValue)} value={String(currentValue)}>
+											{label}
+										</Option>
+									)
+								}
+								return null
+							})()}
+
 							{props?.palletPlans?.allPalletPackages?.length > 0
 								? props?.palletPlans?.allPalletPackages?.map(
-										plan => (
-											<>
-											
-												{plan.cost !== 0
-													? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store11'}>
-														{Intl.NumberFormat('en-US').format(
-															plan.htis)}/mo (${
-															plan.cost
-													  	})
-													  </Option>
-													: (plan.name == 'Development Plan' && store.plan_level == 'Sandbox Store11')
-                          							? <Option key={plan.id} value={plan.id}>
-                            							{Intl.NumberFormat('en-US').format(
-                              								plan.htis)}/5 years {plan.name} (${
-                              								plan.cost
-                            							})
-                            							</Option>
-                          							: (plan.name == 'Trial' && store.plan_level != 'Sandbox Store11')
-                          							? <Option key={plan.id} value={plan.id} disabled={store.plan_level === 'Sandbox Store11'}>
-                              							{Intl.NumberFormat('en-US').format(
-															plan.htis)}/15 days (${plan.cost
-														}) - Trial
-														</Option>
-                          							: null
-												}
-											
-											</>
-										)
+										(plan, index) => {
+	
+											if (plan.cost !== 0) {
+												return (
+													<Option key={String(plan.id)} value={String(plan.id)} disabled={store?.plan_level === 'Sandbox Store11'}>
+														{Intl.NumberFormat('en-US').format(plan.htis)}/mo (${plan.cost})
+													</Option>
+												)
+											} else if (plan.name == 'Development Plan' && store?.plan_level == 'Sandbox Store11') {
+												return (
+													<Option key={String(plan.id)} value={String(plan.id)}>
+														{Intl.NumberFormat('en-US').format(plan.htis)}/5 years {plan.name} (${plan.cost})
+													</Option>
+												)
+											} else if (plan.name == 'Trial' && store?.plan_level != 'Sandbox Store11') {
+												return (
+													<Option key={String(plan.id)} value={String(plan.id)}>
+														{Intl.NumberFormat('en-US').format(plan.htis)}/15 days (${plan.cost}) - Trial
+													</Option>
+												)
+											}
+											return null
+										}
 								  	)
 								: null}
 						</Select>
