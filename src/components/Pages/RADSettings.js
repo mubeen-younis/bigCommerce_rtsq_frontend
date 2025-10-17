@@ -136,6 +136,27 @@ function ShippingGroupsComponent() {
     dispatch(changeDefaultAddress('addon_id', token, e.target.value))
   }
 
+  // Get the dropdown value based on backend data
+  const getDropdownValue = () => {
+    const cp = radPlans?.currentPackage
+    if (!cp || cp === null) return 'disable'
+    if (cp.status === 0) return 'disable'
+
+    const status = cp.package_to_be_charge_status
+    if (status === 0 || status === '0' || status === null || status === undefined) return 'disable'
+
+    // For all cases where auto-renew is enabled, return the plan ID
+    if (status === 1 || status === '1' || status === 'Trial' || status === 'Development Plan') {
+      return cp.to_be_charge_package_id ? cp.to_be_charge_package_id : 'disable'
+    }
+
+    // If status is a numeric ID, return it
+    if (typeof status === 'number') return status
+    if (typeof status === 'string' && /^\d+$/.test(status)) return parseInt(status)
+
+    return 'disable'
+  }
+
   if (!radSettings) return <Skeleton active />
 
   return (
@@ -208,26 +229,7 @@ function ShippingGroupsComponent() {
                     <strong>Auto-renew</strong>
                   </label>
                   <Select
-                    value={
-                      !radPlans?.currentPackage || radPlans?.currentPackage === null
-                        ? 'disable'
-                        : radPlans?.currentPackage?.status === 0
-                          ? 'disable'
-                          : radPlans?.currentPackage
-                            ?.package_to_be_charge_status === 1
-                            ? radPlans?.currentPackage?.to_be_charge_package_id
-                            : radPlans?.currentPackage
-                              ?.package_to_be_charge_status === 'Trial'
-                              ? '100/15 days ($0) - Trial'
-                              : radPlans?.currentPackage
-                                ?.package_to_be_charge_status === 'Development Plan'
-                                ? radPlans?.currentPackage
-                                  ?.total_hits + '/' + radPlans?.currentPackage
-                                  ?.current_package_period + ' Development Plan ($0)'
-                                : typeof radPlans?.currentPackage?.package_to_be_charge_status === 'number'
-                                  ? radPlans?.currentPackage?.package_to_be_charge_status
-                                  : 'disable'
-                    }
+                    value={getDropdownValue()}
                     style={{ width: '100%', marginBottom: '20px' }}
                     onChange={chanePlanAction}
                     name='plan_value'
@@ -235,6 +237,41 @@ function ShippingGroupsComponent() {
                     <Option key='disable' value='disable'>
                       Disable (default)
                     </Option>
+
+                    {/* If current selection is not in the allRadPackages list, add it from currentPackage */}
+                    {(() => {
+                      const currentValue = getDropdownValue()
+                      const currentPackage = radPlans?.currentPackage
+
+                      // Check if current value exists in allRadPackages
+                      const existsInList = radPlans?.allRadPackages?.some(p => String(p.id) === String(currentValue))
+
+                      // If not in list but we have currentPackage data, render it
+                      if (!existsInList && currentValue !== 'disable' && currentPackage?.current_package_name) {
+                        // Build the full label based on package details
+                        let label = ''
+                        const packageName = currentPackage.current_package_name
+                        const totalHits = currentPackage.total_allowed_hits
+
+                        if (packageName === 'Trial') {
+                          label = `${Intl.NumberFormat('en-US').format(totalHits)}/15 days ($0) - Trial`
+                        } else if (packageName === 'Development Plan') {
+                          label = `${Intl.NumberFormat('en-US').format(totalHits)}/5 years ${packageName} ($0)`
+                        } else {
+                          // For paid plans, extract cost from current_package_cost
+                          const cost = currentPackage.current_package_cost || 0
+                          label = `${Intl.NumberFormat('en-US').format(totalHits)}/mo ($${cost})`
+                        }
+
+                        return (
+                          <Option key={String(currentValue)} value={currentValue}>
+                            {label}
+                          </Option>
+                        )
+                      }
+                      return null
+                    })()}
+
                     {radPlans?.allRadPackages?.length > 0
                       ? radPlans?.allRadPackages?.map(plan => {
                         if (plan.cost !== 0) {
