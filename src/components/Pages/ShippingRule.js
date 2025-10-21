@@ -40,7 +40,6 @@ import {
   blockInvalidChar,
   handleNumbersOnly,
 } from '../../Utilities/numberValidation';
-import ProviderComponent from './ProvidersComponent';
 import ServiceRate from '../ServiceRate';
 import LargeCartSettings from '../LargeCartSettings';
 
@@ -1129,11 +1128,49 @@ const showOverrideRule =
                   )}
                   {(ruleType == 7 || ruleType == 2) && (
                     <>
-                      <ProviderComponent
-                        installedCarriers={installedCarriers}
-                        handleProviderServices={handleProviderServices}
-                        filterProvider={initialState.filter_provider}
-                      />
+                      <Row gutter={30}>
+                        <Col
+                          className='gutter-row'
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                        >
+                          <div id='provider_dropdown'>
+                            <Form.Item
+                              className={'mb-2'}
+                              label='Provider'
+                              name='filter_provider'
+                              rules={[
+                                {
+                                  required: true,
+                                  message: 'Provider is required',
+                                },
+                              ]}
+                            >
+                              <Select
+                                placeholder='Select provider'
+                                value={this?.filter_provider || undefined}
+                                onChange={handleProviderServices}
+                                getPopupContainer={() =>
+                                  document.getElementById('provider_dropdown')
+                                }
+                              >
+                                {installedCarriers?.filter(carrier => carrier.is_enabled === 1).map((carrier) => (
+                                  <Option key={carrier?.slug} value={carrier?.slug}>
+                                    {carrier.carrier_type == 1
+                                      ? carrier.name + ' (LTL Freight Providers)'
+                                      : carrier.carrier_type == 2
+                                        ? carrier.name + ' (Parcel & Postal Providers)'
+                                        : carrier.name}
+                                  </Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          </div>
+                        </Col>
+                      </Row>
                     </>
                   )}
                   {(ruleType == 3 || ruleType == 4 || ruleType == 10 || (ruleType == 6 && showOverrideRule)) && (
@@ -1556,11 +1593,49 @@ const showOverrideRule =
               <>
                 {ruleType == 2 && (
                   <>
-                    <ProviderComponent
-                      installedCarriers={installedCarriers}
-                      handleProviderServices={handleProviderServices}
-                      filterProvider={initialState.filter_provider}
-                    />
+                    <Row gutter={30}>
+                      <Col
+                        className='gutter-row'
+                        xs={24}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                      >
+                        <div id='provider_dropdown_2'>
+                          <Form.Item
+                            className={'mb-2'}
+                            label='Provider'
+                            name='filter_provider'
+                            rules={[
+                              {
+                                required: true,
+                                message: 'Provider is required',
+                              },
+                            ]}
+                          >
+                            <Select
+                              placeholder='Select provider'
+                              value={this?.filter_provider || undefined}
+                              onChange={handleProviderServices}
+                              getPopupContainer={() =>
+                                document.getElementById('provider_dropdown_2')
+                              }
+                            >
+                              {installedCarriers?.filter(carrier => carrier.is_enabled === 1).map((carrier) => (
+                                <Option key={carrier?.slug} value={carrier?.slug}>
+                                  {carrier.carrier_type == 1
+                                    ? carrier.name + ' (LTL Freight Providers)'
+                                    : carrier.carrier_type == 2
+                                      ? carrier.name + ' (Parcel & Postal Providers)'
+                                      : carrier.name}
+                                </Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </div>
+                      </Col>
+                    </Row>
                   </>
                 )}
                 {ruleType == 6 && (
@@ -1594,7 +1669,7 @@ const showOverrideRule =
                                 document.getElementById('country_dropdown')
                               }
                             >
-                              {installedCarriers?.map((carrier) =>
+                              {installedCarriers?.filter(carrier => carrier.is_enabled === 1).map((carrier) =>
                                 carrier?.slug == 'estes-ltl' ||
                                   carrier?.slug == 'abf-ltl' ||
                                   carrier?.slug == 'xpo-ltl' ||
