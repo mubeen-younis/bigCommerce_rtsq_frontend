@@ -40,7 +40,6 @@ import {
   blockInvalidChar,
   handleNumbersOnly,
 } from '../../Utilities/numberValidation';
-import ProviderComponent from './ProvidersComponent';
 import ServiceRate from '../ServiceRate';
 import LargeCartSettings from '../LargeCartSettings';
 
@@ -771,8 +770,96 @@ const showOverrideRule =
     },
   ];
 
-  if (!shippingRules) return <Skeleton active />;
+  // ----Skelton---------
+  if (!shippingRules) return (
+    <Fragment>
+      <Space direction='vertical' size={'large'} className={'w-100'}>
+        <Row gutter={30}>
+          <Col className='gutter-row' xs={24} sm={24} md={24} lg={24} xl={24}>
+            {/* Header Area */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+              <Skeleton.Input active style={{ width: 200, height: 38 }} />
+              <Skeleton.Button active shape="round" style={{ width: 80, height: 38 }} />
+            </div>
 
+            {/* Description Text */}
+            <Skeleton
+              active
+              paragraph={{ rows: 1, width: '65%' }}
+              title={false}
+              style={{ marginBottom: '24px' }}
+            />
+
+            {/* Rules Table Area */}
+            <div style={{ border: '1px solid #f0f0f0', borderRadius: '2px', overflow: 'hidden' }}>
+              {/* Table Header Row */}
+              <div style={{
+                display: 'flex',
+                gap: '24px',
+                padding: '16px',
+                backgroundColor: '#fafafa',
+                borderBottom: '1px solid #f0f0f0'
+              }}>
+                <Skeleton.Input active style={{ width: '35%', height: 16 }} />
+                <Skeleton.Input active style={{ width: '20%', height: 16 }} />
+                <Skeleton.Input active style={{ width: '15%', height: 16 }} />
+                <Skeleton.Input active style={{ width: '20%', height: 16 }} />
+              </div>
+
+              {/* Table Rows */}
+              {[1, 2, 3, 4].map((item) => (
+                <div
+                  key={item}
+                  style={{
+                    display: 'flex',
+                    gap: '24px',
+                    padding: '16px',
+                    borderBottom: item !== 4 ? '1px solid #f0f0f0' : 'none'
+                  }}
+                >
+                  {/* Rule Name Column */}
+                  <div style={{ width: '35%' }}>
+                    <Skeleton.Input active style={{ width: '90%', height: 20 }} />
+                  </div>
+
+                  {/* Type Column */}
+                  <div style={{ width: '20%' }}>
+                    <Skeleton.Input active style={{ width: '80%', height: 20 }} />
+                  </div>
+
+                  {/* Available Column */}
+                  <div style={{ width: '15%' }}>
+                    <Skeleton.Input active style={{ width: '40%', height: 20 }} />
+                  </div>
+
+                  {/* Action Column */}
+                  <div style={{ width: '20%', display: 'flex', gap: '8px' }}>
+                    <Skeleton.Button active shape="round" style={{ width: 65, height: 32 }} />
+                    <Skeleton.Button active shape="round" style={{ width: 65, height: 32 }} />
+                  </div>
+                </div>
+              ))}
+
+              {/* Pagination Area */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                padding: '16px',
+                borderTop: '1px solid #f0f0f0'
+              }}>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <Skeleton.Button active style={{ width: 32, height: 32 }} />
+                  <Skeleton.Button active style={{ width: 32, height: 32 }} />
+                  <Skeleton.Button active style={{ width: 32, height: 32 }} />
+                </div>
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Space>
+    </Fragment>
+  );
+// ----Skelton---------
   return (
     <Fragment>
       <Space direction='vertical' size={'large'} className={'w-100'}>
@@ -1041,11 +1128,49 @@ const showOverrideRule =
                   )}
                   {(ruleType == 7 || ruleType == 2) && (
                     <>
-                      <ProviderComponent
-                        installedCarriers={installedCarriers}
-                        handleProviderServices={handleProviderServices}
-                        filterProvider={initialState.filter_provider}
-                      />
+                      <Row gutter={30}>
+                        <Col
+                          className='gutter-row'
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                        >
+                          <div id='provider_dropdown'>
+                            <Form.Item
+                              className={'mb-2'}
+                              label='Provider'
+                              name='filter_provider'
+                              rules={[
+                                {
+                                  required: true,
+                                  message: 'Provider is required',
+                                },
+                              ]}
+                            >
+                              <Select
+                                placeholder='Select provider'
+                                value={this?.filter_provider || undefined}
+                                onChange={handleProviderServices}
+                                getPopupContainer={() =>
+                                  document.getElementById('provider_dropdown')
+                                }
+                              >
+                                {installedCarriers?.filter(carrier => carrier.is_enabled === 1).map((carrier) => (
+                                  <Option key={carrier?.slug} value={carrier?.slug}>
+                                    {carrier.carrier_type == 1
+                                      ? carrier.name + ' (LTL Freight Providers)'
+                                      : carrier.carrier_type == 2
+                                        ? carrier.name + ' (Parcel & Postal Providers)'
+                                        : carrier.name}
+                                  </Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          </div>
+                        </Col>
+                      </Row>
                     </>
                   )}
                   {(ruleType == 3 || ruleType == 4 || ruleType == 10 || (ruleType == 6 && showOverrideRule)) && (
@@ -1468,11 +1593,49 @@ const showOverrideRule =
               <>
                 {ruleType == 2 && (
                   <>
-                    <ProviderComponent
-                      installedCarriers={installedCarriers}
-                      handleProviderServices={handleProviderServices}
-                      filterProvider={initialState.filter_provider}
-                    />
+                    <Row gutter={30}>
+                      <Col
+                        className='gutter-row'
+                        xs={24}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                      >
+                        <div id='provider_dropdown_2'>
+                          <Form.Item
+                            className={'mb-2'}
+                            label='Provider'
+                            name='filter_provider'
+                            rules={[
+                              {
+                                required: true,
+                                message: 'Provider is required',
+                              },
+                            ]}
+                          >
+                            <Select
+                              placeholder='Select provider'
+                              value={this?.filter_provider || undefined}
+                              onChange={handleProviderServices}
+                              getPopupContainer={() =>
+                                document.getElementById('provider_dropdown_2')
+                              }
+                            >
+                              {installedCarriers?.filter(carrier => carrier.is_enabled === 1).map((carrier) => (
+                                <Option key={carrier?.slug} value={carrier?.slug}>
+                                  {carrier.carrier_type == 1
+                                    ? carrier.name + ' (LTL Freight Providers)'
+                                    : carrier.carrier_type == 2
+                                      ? carrier.name + ' (Parcel & Postal Providers)'
+                                      : carrier.name}
+                                </Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </div>
+                      </Col>
+                    </Row>
                   </>
                 )}
                 {ruleType == 6 && (
@@ -1506,7 +1669,7 @@ const showOverrideRule =
                                 document.getElementById('country_dropdown')
                               }
                             >
-                              {installedCarriers?.map((carrier) =>
+                              {installedCarriers?.filter(carrier => carrier.is_enabled === 1).map((carrier) =>
                                 carrier?.slug == 'estes-ltl' ||
                                   carrier?.slug == 'abf-ltl' ||
                                   carrier?.slug == 'xpo-ltl' ||
