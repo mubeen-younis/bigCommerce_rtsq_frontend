@@ -57,16 +57,6 @@ function ConnectionSettingsComponent() {
 
 				<Form.Item style={{ textAlign: 'right', marginBottom: '0' }}>
 					<Space>
-						{!isInstalling && (
-							<Button
-								type='primary'
-								size='large'
-								htmlType='submit'
-								name='test'
-								onClick={() => handleTypeChange(true)}>
-								Test Connection
-							</Button>
-						)}
 						<Button
 							type='primary'
 							size='large'

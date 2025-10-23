@@ -61,11 +61,45 @@ function BoxSizesComponent(props) {
 	const dispatch = useDispatch()
 	const [boxSizeForm] = Form.useForm()
 
+	// Watch form values for real-time calculations
+	const maxHeight = Form.useWatch('height', boxSizeForm)
+	const palletHeight = Form.useWatch('ext_height', boxSizeForm)
+	const maxWeight = Form.useWatch('max_weight', boxSizeForm)
+	const palletWeight = Form.useWatch('box_weight', boxSizeForm)
+
 	useEffect(() => {
 		props.getBoxSizes(props.token)
 		dispatch(getProductBoxSizes(props.token))
 		// eslint-disable-next-line
 	}, [dispatch])
+
+	// Calculate and update Max Height w/ Pallet in real-time
+	useEffect(() => {
+		const height = parseFloat(maxHeight) || 0
+		const extHeight = parseFloat(palletHeight) || 0
+		const total = height + extHeight
+
+		// Only update if the form is initialized
+		if (boxSizeForm) {
+			boxSizeForm.setFieldsValue({
+				heightWithPallet: total > 0 ? total.toFixed(2) : ''
+			})
+		}
+	}, [maxHeight, palletHeight, boxSizeForm])
+
+	// Calculate and update Max Weight w/ Pallet in real-time
+	useEffect(() => {
+		const weight = parseFloat(maxWeight) || 0
+		const boxWeight = parseFloat(palletWeight) || 0
+		const total = weight + boxWeight
+
+		// Only update if the form is initialized
+		if (boxSizeForm) {
+			boxSizeForm.setFieldsValue({
+				weightWithPallet: total > 0 ? total.toFixed(2) : ''
+			})
+		}
+	}, [maxWeight, palletWeight, boxSizeForm])
 
 	const onFinish = values => {
 		const { length, width, height, max_weight, box_weight, box_fee } = values
@@ -538,13 +572,13 @@ function BoxSizesComponent(props) {
 													xl={12}>
 													<Form.Item
 														className={'mb-2'}
-														label='Max Heigh w/ Pallet'
+														label='Max Height w/ Pallet'
 														name='heightWithPallet'
 														rules={[pattern]}>
 														<Input
 															type='number'
 															disabled
-															placeholder='Max Heigh w/ Pallet'
+															placeholder='Max Height w/ Pallet'
 														/>
 													</Form.Item>
 												</Col>

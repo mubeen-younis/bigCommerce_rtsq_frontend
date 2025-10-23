@@ -91,9 +91,9 @@ function ShippingGroupsComponent() {
 
   const onFinish = useCallback(() => {
 
-    if (settings.residential_delivery_auto_detect) {
-      settings.residential_delivery_auto_detect = isRadInstalled
-    }
+    // Always set residential_delivery_auto_detect to true
+    settings.residential_delivery_auto_detect = true
+
     dispatch(
       submitRADSettings(
         {
@@ -197,13 +197,7 @@ function ShippingGroupsComponent() {
                   <Checkbox
                     name="always_quote_residential_delivery"
                     checked={settings.always_quote_residential_delivery}
-                    onChange={e => {
-                      handleStateChange(e)
-                      setSettings(prevSettings => ({
-                        ...prevSettings,
-                        residential_delivery_auto_detect: false,
-                      }))
-                    }}
+                    onChange={e => handleStateChange(e)}
                   >
                     Always quote residential delivery
                   </Checkbox>
@@ -382,31 +376,7 @@ function ShippingGroupsComponent() {
               </Col>
 
 
-              <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
-                <Form.Item className={"mb-0"}>
-                  <Checkbox
-                    name="residential_delivery_auto_detect"
-                    checked={settings.residential_delivery_auto_detect && isRadInstalled}
-                    disabled={suspend || radPlans?.currentPackage?.status === 3}
-                    onChange={e => {
-                      handleStateChange(e)
-                      setSettings(prevSettings => ({
-                        ...prevSettings,
-                        always_quote_residential_delivery: false,
-                      }))
-                    }}
-                  >
-                    Auto-detect residential addresses{" "}
-                  </Checkbox>
-                  {!isRadInstalled && (
-                    <span
-                      style={{
-                        'font-size': '10px',
-                      }}>
-                    </span>
-                  )}
-                </Form.Item>
-              </Col>
+              {/* Auto-detect residential addresses checkbox hidden - always set to true */}
               <Col
                 className="gutter-row mt-1"
                 xs={24}
@@ -418,8 +388,8 @@ function ShippingGroupsComponent() {
                 <label
                   className="ml-5"
                   style={{
-                    marginLeft: "1.5em",
-                    color: (settings?.residential_delivery_auto_detect && isRadInstalled && !suspend && radPlans?.currentPackage?.status !== 3) ? '#262626' : 'rgba(0, 0, 0, 0.25)',
+                    marginLeft: "",
+                    color: (isRadInstalled && !suspend && radPlans?.currentPackage?.status !== 3) ? '#262626' : 'rgba(0, 0, 0, 0.25)',
                   }}
                 >
                   Default unconfirmed address types to:
@@ -443,13 +413,13 @@ function ShippingGroupsComponent() {
                     }}
                   >
                     <Radio
-                      disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
+                      disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
                       value={1}
                     >
                       Residential
                     </Radio>
                     <Radio
-                      disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
+                      disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
                       value={2}
                     >
                       Commercial
@@ -461,8 +431,8 @@ function ShippingGroupsComponent() {
                 <label
                   className="ml-5"
                   style={{
-                    marginLeft: "1.5em",
-                    color: (settings?.residential_delivery_auto_detect && isRadInstalled && !suspend && radPlans?.currentPackage?.status !== 3) ? '#262626' : 'rgba(0, 0, 0, 0.25)',
+                    marginLeft: "",
+                    color: (isRadInstalled && !suspend && radPlans?.currentPackage?.status !== 3) ? '#262626' : 'rgba(0, 0, 0, 0.25)',
                   }}
                 >
                   Address type disclosure:
@@ -486,14 +456,14 @@ function ShippingGroupsComponent() {
                     }}
                   >
                     <Radio
-                      disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
+                      disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
                       value={1}
                     >
                       Inform the shopper when the ship-to address is identified as
                       residential address
                     </Radio>
                     <Radio
-                      disabled={!settings?.residential_delivery_auto_detect || !isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
+                      disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
                       value={0}
                     >
                       Don't disclose the address type to the shopper

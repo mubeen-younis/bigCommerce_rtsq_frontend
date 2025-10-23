@@ -287,6 +287,7 @@ function ShippingCarriersComponent(props) {
     setSelectedCarrierForModal(carrier);
     setSelectedModalTab('1');
     dispatch({ type: 'CARRIER_ID', payload: carrier.id });
+    dispatch({ type: 'SET_IS_INSTALLING', payload: false }); // Set is_installing to 0
     dispatch(getConnectionSettings(props.token, carrier.id));
     dispatch(getInsuraceStatus(props.token, carrier.id));
     if (props.token) {
@@ -522,28 +523,26 @@ function ShippingCarriersComponent(props) {
             );
           }
 
-          // Add Connection Settings link (not available for usps-small and dbsc)
-          if (record.slug !== 'usps-small' && record.slug !== 'dbsc') {
-            actions.push(
-              <a
-                style={{
-                  display: 'inline-block',
-                  color: '#1890ff',
-                  marginRight: isMobile ? '8px' : '12px',
-                  marginBottom: '4px',
-                  cursor: 'pointer',
-                  fontSize: isMobile ? '12px' : '14px'
-                }}
-                key="connection"
-                onClick={(e) => {
-                  e.preventDefault();
-                  openConnectionSettingsModal(record);
-                }}
-              >
-                Connection Settings
-              </a>
-            );
-          }
+          // Add Connection Settings link (now available for all carriers including DBSC and USPS)
+          actions.push(
+            <a
+              style={{
+                display: 'inline-block',
+                color: '#1890ff',
+                marginRight: isMobile ? '8px' : '12px',
+                marginBottom: '4px',
+                cursor: 'pointer',
+                fontSize: isMobile ? '12px' : '14px'
+              }}
+              key="connection"
+              onClick={(e) => {
+                e.preventDefault();
+                openConnectionSettingsModal(record);
+              }}
+            >
+              Connection Settings
+            </a>
+          );
 
           // Add DBSC-specific link
           if (record.slug === 'dbsc') {
