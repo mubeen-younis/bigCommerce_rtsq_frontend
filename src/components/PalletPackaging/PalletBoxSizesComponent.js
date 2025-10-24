@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { connect, useDispatch } from 'react-redux'
+import { EllipsisOutlined } from '@ant-design/icons'
 import {
 	Typography,
 	Row,
@@ -12,6 +13,8 @@ import {
 	Table,
 	Modal,
 	Skeleton,
+	Menu,
+	Dropdown,
 } from 'antd'
 import {
 	getBoxSizes,
@@ -181,7 +184,39 @@ function BoxSizesComponent(props) {
 		setDeleteBoxModal(true)
 	}
 
+	const limitInputLength = (maxLength) => (e) => {
+		if (e.target.value.length > maxLength) {
+			e.target.value = e.target.value.slice(0, maxLength)
+		}
+	}
+
+	const actionMenu = (record) => (
+		<Menu>
+			<Menu.Item key="1" onClick={() => editBoxSize(record)}>
+				Edit
+			</Menu.Item>
+			<Menu.Item key="2" onClick={() => {
+				confirmDeleteBox(record.id)
+				setBoxType('common box')
+			}}>
+				Delete
+			</Menu.Item>
+		</Menu>
+	)
+
 	const columns = [
+		{
+			title: 'Action',
+			key: 'action',
+			width: 80,
+			render: (text, record) => (
+				<Space size='middle'>
+					<Dropdown overlay={actionMenu(record)} trigger={['hover']} placement="bottomRight">
+						<Button type="text" icon={<EllipsisOutlined className="large-ellipsis-icon" />} />
+					</Dropdown>
+				</Space>
+			),
+		},
 		{
 			ellipsis: true,
 			key: 'nickname',
@@ -246,26 +281,6 @@ function BoxSizesComponent(props) {
 			key: 'available',
 			title: 'Available',
 			dataIndex: 'availability',
-		},
-		{
-			key: 'actions',
-			title: 'Actions',
-			render: (text, record) => (
-				<Space size='middle'>
-					<a href='#!' onClick={() => editBoxSize(record)}>
-						Edit
-					</a>
-					<a
-						href='#!'
-						className={'btn-danger'}
-						onClick={() => {
-							confirmDeleteBox(record.id)
-							setBoxType('common box')
-						}}>
-						Delete
-					</a>
-				</Space>
-			),
 		},
 	]
 
@@ -376,6 +391,7 @@ function BoxSizesComponent(props) {
 															onKeyDown={
 																blockInvalidChar
 															}
+															onInput={limitInputLength(3)}
 															min='0'
 															step='0.01'
 															placeholder='Length (in)'
@@ -407,6 +423,7 @@ function BoxSizesComponent(props) {
 															onKeyDown={
 																handlingFeeMarkup
 															}
+															onInput={limitInputLength(3)}
 															step='0.01'
 															min={0}
 															placeholder='Width (in)'
@@ -438,6 +455,7 @@ function BoxSizesComponent(props) {
 															onKeyDown={
 																handlingFeeMarkup
 															}
+															onInput={limitInputLength(3)}
 															step='0.01'
 															min={0}
 															placeholder='Max Height (in)'
@@ -469,6 +487,7 @@ function BoxSizesComponent(props) {
 															onKeyDown={
 																blockInvalidChar
 															}
+															onInput={limitInputLength(3)}
 															min='0'
 															step='0.01'
 															placeholder='Pallet Height (in)'
@@ -500,6 +519,7 @@ function BoxSizesComponent(props) {
 															onKeyDown={
 																handlingFeeMarkup
 															}
+															onInput={limitInputLength(4)}
 															step='0.01'
 															min={0}
 															placeholder='Max Weight'
@@ -531,6 +551,7 @@ function BoxSizesComponent(props) {
 															onKeyDown={
 																handlingFeeMarkup
 															}
+															onInput={limitInputLength(4)}
 															step='0.01'
 															min={0}
 															placeholder='Pallet Weight'
@@ -555,8 +576,8 @@ function BoxSizesComponent(props) {
 															onKeyDown={
 																handlingFeeMarkup
 															}
+															onInput={limitInputLength(5)}
 															step='0.01'
-															maxLength='7'
 															min={0}
 															placeholder='Pallet Fee'
 														/>

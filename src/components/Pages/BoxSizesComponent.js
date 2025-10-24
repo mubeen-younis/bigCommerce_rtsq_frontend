@@ -1,6 +1,7 @@
 import React, { Fragment, useCallback, useEffect, useState, useRef } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { Radio } from 'antd';
+import { EllipsisOutlined } from '@ant-design/icons'
 import { upsBoxTypes, boxDiscription } from '../../Utilities/constants'
 import { Link } from 'react-router-dom'
 import axios from "../../Utilities/authToken"
@@ -19,6 +20,8 @@ import {
   Modal,
   Skeleton,
   Spin,
+  Menu,
+  Dropdown,
 } from 'antd'
 
 import {
@@ -677,6 +680,12 @@ function BoxSizesComponent(props) {
     setDeleteBoxModal(true)
   }
 
+  const limitInputLength = (maxLength) => (e) => {
+    if (e.target.value.length > maxLength) {
+      e.target.value = e.target.value.slice(0, maxLength)
+    }
+  }
+
   const handleBoxTypes = useCallback(() => {
     let boxTypes = []
 
@@ -707,7 +716,41 @@ function BoxSizesComponent(props) {
     return boxTypes
   }, [installedCarriers])
 
+  const actionMenu = (record) => (
+    <Menu>
+      <Menu.Item key="1" onClick={() => {
+        editBoxSize(record)
+
+        if (record?.box_name?.toLowerCase()?.includes('ups')) {
+          setDiscription(boxDiscription[record?.box_name])
+        } else {
+          setDiscription({})
+        }
+      }}>
+        Edit
+      </Menu.Item>
+      <Menu.Item key="2" onClick={() => {
+        confirmDeleteBox(record.id)
+        setBoxType('common box')
+      }}>
+        Delete
+      </Menu.Item>
+    </Menu>
+  )
+
   const columns = [
+    {
+      title: 'Action',
+      key: 'action',
+      width: 80,
+      render: (text, record) => (
+        <Space size='middle'>
+          <Dropdown overlay={actionMenu(record)} trigger={['hover']} placement="bottomRight">
+            <Button type="text" icon={<EllipsisOutlined className="large-ellipsis-icon" />} />
+          </Dropdown>
+        </Space>
+      ),
+    },
     {
       key: 'nickname',
       title: 'Nickname',
@@ -759,41 +802,38 @@ function BoxSizesComponent(props) {
       title: 'Available',
       dataIndex: 'availability',
     },
+  ]
+
+  const productBoxActionMenu = (record) => (
+    <Menu>
+      <Menu.Item key="1" onClick={() => {
+        editProductBoxSize(record)
+        setRecordId(record.product_id)
+      }}>
+        Edit
+      </Menu.Item>
+      <Menu.Item key="2" onClick={() => {
+        confirmDeleteBox(record.id)
+        setBoxType('product box')
+      }}>
+        Delete
+      </Menu.Item>
+    </Menu>
+  )
+
+  const productBoxescolumns = [
     {
-      key: 'actions',
-      title: 'Actions',
+      title: 'Action',
+      key: 'action',
+      width: 80,
       render: (text, record) => (
         <Space size='middle'>
-          <a
-            href='#!'
-            onClick={() => {
-              editBoxSize(record)
-
-              if (record?.box_name?.toLowerCase()?.includes('ups')) {
-                setDiscription(boxDiscription[record?.box_name])
-              } else {
-                setDiscription({})
-              }
-            }}>
-            Edit
-          </a>
-          <a
-            href='#!'
-            className={'btn-danger'}
-            onClick={
-              () => {
-                confirmDeleteBox(record.id)
-                setBoxType('common box')
-              } /*props.deleteBoxSize(record.id, props.token)*/
-            }>
-            Delete
-          </a>
+          <Dropdown overlay={productBoxActionMenu(record)} trigger={['hover']} placement="bottomRight">
+            <Button type="text" icon={<EllipsisOutlined className="large-ellipsis-icon" />} />
+          </Dropdown>
         </Space>
       ),
     },
-  ]
-
-  const productBoxescolumns = [
     {
       key: 'quantity',
       title: 'Quantity',
@@ -823,34 +863,6 @@ function BoxSizesComponent(props) {
       key: 'Weight',
       title: 'Weight (LBS)',
       dataIndex: 'weight',
-    },
-    {
-      key: 'actions',
-      title: 'Actions',
-      render: (text, record) => (
-        <Space size='middle'>
-          <a
-            href='#!'
-            onClick={() => {
-              editProductBoxSize(record)
-              setRecordId(record.product_id)
-            }}>
-            Edit
-          </a>
-          <a
-            href='#!'
-            className={'btn-danger'}
-            onClick={
-              () => {
-                confirmDeleteBox(record.id)
-                setBoxType('product box')
-              }
-              /*props.deleteBoxSize(record.id, props.token)*/
-            }>
-            Delete
-          </a>
-        </Space>
-      ),
     },
   ]
   return (
@@ -1082,6 +1094,7 @@ function BoxSizesComponent(props) {
                             <Input
                               type="number"
                               onKeyDown={blockInvalidChar}
+                              onInput={limitInputLength(3)}
                               min="0"
                               step="0.01"
                               placeholder="Interior Length (in)"
@@ -1112,6 +1125,7 @@ function BoxSizesComponent(props) {
                             <Input
                               type="number"
                               onKeyDown={handlingFeeMarkup}
+                              onInput={limitInputLength(3)}
                               step="0.01"
                               min={0}
                               placeholder="Interior Width (in)"
@@ -1141,6 +1155,7 @@ function BoxSizesComponent(props) {
                             <Input
                               type="number"
                               onKeyDown={handlingFeeMarkup}
+                              onInput={limitInputLength(3)}
                               step="0.01"
                               min={0}
                               placeholder="Interior Height (in)"
@@ -1164,6 +1179,7 @@ function BoxSizesComponent(props) {
                             <Input
                               type="number"
                               onKeyDown={blockInvalidChar}
+                              onInput={limitInputLength(3)}
                               min="0"
                               step="0.01"
                               placeholder="Exterior Length (in)"
@@ -1188,6 +1204,7 @@ function BoxSizesComponent(props) {
                             <Input
                               type="number"
                               onKeyDown={handlingFeeMarkup}
+                              onInput={limitInputLength(3)}
                               step="0.01"
                               min={0}
                               placeholder="Exterior Width (in)"
@@ -1211,6 +1228,7 @@ function BoxSizesComponent(props) {
                             <Input
                               type="number"
                               onKeyDown={handlingFeeMarkup}
+                              onInput={limitInputLength(3)}
                               step="0.01"
                               min={0}
                               placeholder="Exterior Height (in)"
@@ -1240,6 +1258,7 @@ function BoxSizesComponent(props) {
                             <Input
                               type="number"
                               onKeyDown={handlingFeeMarkup}
+                              onInput={limitInputLength(4)}
                               step="0.01"
                               min={0}
                               placeholder="Max Weight"
@@ -1269,6 +1288,7 @@ function BoxSizesComponent(props) {
                             <Input
                               type="number"
                               onKeyDown={handlingFeeMarkup}
+                              onInput={limitInputLength(4)}
                               step="0.01"
                               min={0}
                               placeholder="Box Weight"
@@ -1292,8 +1312,8 @@ function BoxSizesComponent(props) {
                             <Input
                               type="number"
                               onKeyDown={handlingFeeMarkup}
+                              onInput={limitInputLength(5)}
                               step="0.01"
-                              maxLength="7"
                               min={0}
                               placeholder="Box Fee"
                             />
