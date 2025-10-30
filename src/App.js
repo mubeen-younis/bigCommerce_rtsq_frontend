@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import process from "process";
 import {
   BrowserRouter as Router,
   Switch,
@@ -44,7 +45,6 @@ import RADSettings from "./components/Pages/RADSettings";
 import CompareRates from "./components/Pages/CompareRates";
 import ProductSettingsComponent from "./components/ProductSettingsComponent";
 import PaymentsTabComponent from "./components/Pages/PaymentTabComponent";
-import AllProvidersLogsPage from "./components/Pages/AllProvidersLogsPage";
 import { getCSVDownloadLink } from "./Actions/ImportCsv";
 import { getBrands, getCategories } from "./Actions/ShippingRulesActions";
 
@@ -161,8 +161,9 @@ function App(props) {
       message.error(alertMessage);
     } else if (alertMessageType === "warning") {
       message.warning(alertMessage);
+    } else if (alertMessageType === "loading") {
+      message.loading("Loading. Please wait...");
     }
-    // Loading message removed - using skeleton loaders instead
   };
 
   if (showAlertMessage) {
@@ -238,7 +239,6 @@ function App(props) {
               <Route path="/av" component={AVComponent} />
               <Route path="/warehouses" component={WarehouseComponent} />
               <Route path="/payments" component={PaymentsTabComponent} />
-              <Route path="/logs" component={AllProvidersLogsPage} />
               <Route path="/addon/:addon_id" component={RendorAddon} />
               <Route path="/:carrier_id" component={RendorCarrier} />
             </Switch>

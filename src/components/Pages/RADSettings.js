@@ -91,8 +91,8 @@ function ShippingGroupsComponent() {
 
   const onFinish = useCallback(() => {
 
-    // Always set residential_delivery_auto_detect to true
-    settings.residential_delivery_auto_detect = true
+    // Set residential_delivery_auto_detect as opposite of always_quote_residential_delivery
+    settings.residential_delivery_auto_detect = !settings.always_quote_residential_delivery
 
     dispatch(
       submitRADSettings(
@@ -389,7 +389,7 @@ function ShippingGroupsComponent() {
                   className="ml-5"
                   style={{
                     marginLeft: "",
-                    color: (isRadInstalled && !suspend && radPlans?.currentPackage?.status !== 3) ? '#262626' : 'rgba(0, 0, 0, 0.25)',
+                    color: (isRadInstalled && !suspend && radPlans?.currentPackage?.status !== 3 && !settings.always_quote_residential_delivery) ? '#262626' : 'rgba(0, 0, 0, 0.25)',
                   }}
                 >
                   Default unconfirmed address types to:
@@ -413,13 +413,13 @@ function ShippingGroupsComponent() {
                     }}
                   >
                     <Radio
-                      disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
+                      disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3 || settings.always_quote_residential_delivery}
                       value={1}
                     >
                       Residential
                     </Radio>
                     <Radio
-                      disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
+                      disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3 || settings.always_quote_residential_delivery}
                       value={2}
                     >
                       Commercial
@@ -432,7 +432,7 @@ function ShippingGroupsComponent() {
                   className="ml-5"
                   style={{
                     marginLeft: "",
-                    color: (isRadInstalled && !suspend && radPlans?.currentPackage?.status !== 3) ? '#262626' : 'rgba(0, 0, 0, 0.25)',
+                    color: (isRadInstalled && !suspend && radPlans?.currentPackage?.status !== 3 && !settings.always_quote_residential_delivery) ? '#262626' : 'rgba(0, 0, 0, 0.25)',
                   }}
                 >
                   Address type disclosure:
@@ -456,14 +456,14 @@ function ShippingGroupsComponent() {
                     }}
                   >
                     <Radio
-                      disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
+                      disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3 || settings.always_quote_residential_delivery}
                       value={1}
                     >
                       Inform the shopper when the ship-to address is identified as
                       residential address
                     </Radio>
                     <Radio
-                      disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3}
+                      disabled={!isRadInstalled || suspend || radPlans?.currentPackage?.status === 3 || settings.always_quote_residential_delivery}
                       value={0}
                     >
                       Don't disclose the address type to the shopper

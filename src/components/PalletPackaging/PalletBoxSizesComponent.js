@@ -53,6 +53,18 @@ const pattern = {
 	message: 'There must be two decimal places',
 }
 
+// Pattern for dimension fields: max 3 digits before decimal, max 3 digits after decimal
+const dimensionPattern = {
+	pattern: /^\d{1,3}(\.\d{1,3})?$/,
+	message: 'Maximum 3 digits before decimal point and 3 digits after (e.g., 123.456)',
+}
+
+// Pattern for weight fields: max 4 digits before decimal, max 3 digits after decimal
+const weightPattern = {
+	pattern: /^\d{1,4}(\.\d{1,3})?$/,
+	message: 'Maximum 4 digits before decimal point and 3 digits after (e.g., 1234.567)',
+}
+
 function BoxSizesComponent(props) {
 	const [visible, setVisibleAddBox] = useState(false)
 	const [boxSize, setBoxSize] = useState(initialState)
@@ -384,16 +396,16 @@ function BoxSizesComponent(props) {
 																message:
 																	'Length (in) is required',
 															},
-															pattern,
+															dimensionPattern,
 														]}>
 														<Input
 															type='number'
 															onKeyDown={
 																blockInvalidChar
 															}
-															onInput={limitInputLength(3)}
+															onInput={limitInputLength(7)}
 															min='0'
-															step='0.01'
+															step='0.001'
 															placeholder='Length (in)'
 														/>
 													</Form.Item>
@@ -416,15 +428,15 @@ function BoxSizesComponent(props) {
 																message:
 																	'Width (in) is required',
 															},
-															pattern,
+															dimensionPattern,
 														]}>
 														<Input
 															type='number'
 															onKeyDown={
 																handlingFeeMarkup
 															}
-															onInput={limitInputLength(3)}
-															step='0.01'
+															onInput={limitInputLength(7)}
+															step='0.001'
 															min={0}
 															placeholder='Width (in)'
 														/>
@@ -448,15 +460,15 @@ function BoxSizesComponent(props) {
 																message:
 																	'Max Height (in) is required',
 															},
-															pattern,
+															dimensionPattern,
 														]}>
 														<Input
 															type='number'
 															onKeyDown={
 																handlingFeeMarkup
 															}
-															onInput={limitInputLength(3)}
-															step='0.01'
+															onInput={limitInputLength(7)}
+															step='0.001'
 															min={0}
 															placeholder='Max Height (in)'
 														/>
@@ -475,7 +487,7 @@ function BoxSizesComponent(props) {
 														label='Pallet Height (in)'
 														name='ext_height'
 														rules={[
-															pattern,
+															dimensionPattern,
 															{
 																required: true,
 																message:
@@ -487,9 +499,9 @@ function BoxSizesComponent(props) {
 															onKeyDown={
 																blockInvalidChar
 															}
-															onInput={limitInputLength(3)}
+															onInput={limitInputLength(7)}
 															min='0'
-															step='0.01'
+															step='0.001'
 															placeholder='Pallet Height (in)'
 														/>
 													</Form.Item>
@@ -512,15 +524,15 @@ function BoxSizesComponent(props) {
 																message:
 																	'Max Weight (LBS) is required',
 															},
-															pattern,
+															weightPattern,
 														]}>
 														<Input
 															type='number'
 															onKeyDown={
 																handlingFeeMarkup
 															}
-															onInput={limitInputLength(4)}
-															step='0.01'
+															onInput={limitInputLength(8)}
+															step='0.001'
 															min={0}
 															placeholder='Max Weight'
 														/>
@@ -544,15 +556,15 @@ function BoxSizesComponent(props) {
 																message:
 																	'Pallet Weight (LBS) is required',
 															},
-															pattern,
+															weightPattern,
 														]}>
 														<Input
 															type='number'
 															onKeyDown={
 																handlingFeeMarkup
 															}
-															onInput={limitInputLength(4)}
-															step='0.01'
+															onInput={limitInputLength(8)}
+															step='0.001'
 															min={0}
 															placeholder='Pallet Weight'
 														/>
@@ -570,7 +582,17 @@ function BoxSizesComponent(props) {
 														className={'mb-2'}
 														label='Pallet Fee (e.g 1.75)'
 														name='box_fee'
-														rules={[pattern]}>
+														rules={[
+															pattern,
+															{
+																validator: (_, value) => {
+																	if (value && (value < 0 || value > 10000)) {
+																		return Promise.reject(new Error('Pallet Fee must be between 0 and 10000'))
+																	}
+																	return Promise.resolve()
+																}
+															}
+														]}>
 														<Input
 															type='number'
 															onKeyDown={
@@ -579,6 +601,7 @@ function BoxSizesComponent(props) {
 															onInput={limitInputLength(5)}
 															step='0.01'
 															min={0}
+															max={10000}
 															placeholder='Pallet Fee'
 														/>
 													</Form.Item>

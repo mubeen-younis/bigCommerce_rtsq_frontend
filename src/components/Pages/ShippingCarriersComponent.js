@@ -500,52 +500,9 @@ function ShippingCarriersComponent(props) {
             );
           }
 
-          // Add Quote Settings link (not available for dbsc)
-          if (record.slug !== 'dbsc') {
-            actions.push(
-              <a
-                style={{
-                  display: 'inline-block',
-                  color: '#1890ff',
-                  marginRight: isMobile ? '8px' : '12px',
-                  marginBottom: '4px',
-                  cursor: 'pointer',
-                  fontSize: isMobile ? '12px' : '14px'
-                }}
-                key="quote"
-                onClick={(e) => {
-                  e.preventDefault();
-                  openQuoteSettingsModal(record);
-                }}
-              >
-                Quote Settings
-              </a>
-            );
-          }
-
-          // Add Connection Settings link (now available for all carriers including DBSC and USPS)
-          actions.push(
-            <a
-              style={{
-                display: 'inline-block',
-                color: '#1890ff',
-                marginRight: isMobile ? '8px' : '12px',
-                marginBottom: '4px',
-                cursor: 'pointer',
-                fontSize: isMobile ? '12px' : '14px'
-              }}
-              key="connection"
-              onClick={(e) => {
-                e.preventDefault();
-                openConnectionSettingsModal(record);
-              }}
-            >
-              Connection Settings
-            </a>
-          );
-
-          // Add DBSC-specific link
+          // For DBSC: Settings | Connection Settings | Activate/Deactivate
           if (record.slug === 'dbsc') {
+            // Add Settings link first
             actions.push(
               <a
                 style={{
@@ -565,47 +522,151 @@ function ShippingCarriersComponent(props) {
                 Settings
               </a>
             );
-          }
 
-          // Add Activate/Deactivate button (only if not archived)
-          if (!isArchived) {
-            const isActive = record.is_enabled === 1;
+            // Add Connection Settings second
             actions.push(
-              <Button
-                key="toggle"
-                size={isMobile ? 'small' : 'small'}
+              <a
                 style={{
+                  display: 'inline-block',
+                  color: '#1890ff',
+                  marginRight: isMobile ? '8px' : '12px',
                   marginBottom: '4px',
-                  backgroundColor: isActive ? '#c8102e' : '#007f66',
-                  color: 'white',
-                  fontWeight: '600',
-                  border: isActive ? '1px solid #a00d24' : '1px solid #006652',
-                  borderRadius: '6px',
-                  padding: isMobile ? '2px 8px' : '4px 12px',
-                  height: 'auto',
-                  lineHeight: 'normal',
-                  fontSize: isMobile ? '11px' : '13px',
-                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                  transition: 'all 0.3s ease',
+                  cursor: 'pointer',
+                  fontSize: isMobile ? '12px' : '14px'
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = isActive ? '#a00d24' : '#006652';
-                  e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = isActive ? '#c8102e' : '#007f66';
-                  e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
-                }}
-                onClick={() => {
-                  const newStatus = record.is_enabled === 1 ? 0 : 1; // Toggle between Activate (1) and Deactivate (0)
-                  props.changeCarrierStatus(record.id, props.token, newStatus);
+                key="connection"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openConnectionSettingsModal(record);
                 }}
               >
-                <span style={{ color: 'white', fontWeight: '600' }}>
-                  {record.is_enabled === 1 ? 'Deactivate' : 'Activate'}
-                </span>
-              </Button>
+                Connection Settings
+              </a>
             );
+
+            // Add Activate/Deactivate button last (only if not archived)
+            if (!isArchived) {
+              const isActive = record.is_enabled === 1;
+              actions.push(
+                <Button
+                  key="toggle"
+                  size={isMobile ? 'small' : 'small'}
+                  style={{
+                    marginBottom: '4px',
+                    backgroundColor: isActive ? '#c8102e' : '#007f66',
+                    color: 'white',
+                    fontWeight: '600',
+                    border: isActive ? '1px solid #a00d24' : '1px solid #006652',
+                    borderRadius: '6px',
+                    padding: isMobile ? '2px 8px' : '4px 12px',
+                    height: 'auto',
+                    lineHeight: 'normal',
+                    fontSize: isMobile ? '11px' : '13px',
+                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                    transition: 'all 0.3s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = isActive ? '#a00d24' : '#006652';
+                    e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = isActive ? '#c8102e' : '#007f66';
+                    e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                  }}
+                  onClick={() => {
+                    const newStatus = record.is_enabled === 1 ? 0 : 1;
+                    props.changeCarrierStatus(record.id, props.token, newStatus);
+                  }}
+                >
+                  <span style={{ color: 'white', fontWeight: '600' }}>
+                    {record.is_enabled === 1 ? 'Deactivate' : 'Activate'}
+                  </span>
+                </Button>
+              );
+            }
+          } else {
+            // For other carriers: Quote Settings | Connection Settings | Activate/Deactivate
+            actions.push(
+              <a
+                style={{
+                  display: 'inline-block',
+                  color: '#1890ff',
+                  marginRight: isMobile ? '8px' : '12px',
+                  marginBottom: '4px',
+                  cursor: 'pointer',
+                  fontSize: isMobile ? '12px' : '14px'
+                }}
+                key="quote"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openQuoteSettingsModal(record);
+                }}
+              >
+                Quote Settings
+              </a>
+            );
+
+            // Add Connection Settings for non-DBSC carriers
+            actions.push(
+              <a
+                style={{
+                  display: 'inline-block',
+                  color: '#1890ff',
+                  marginRight: isMobile ? '8px' : '12px',
+                  marginBottom: '4px',
+                  cursor: 'pointer',
+                  fontSize: isMobile ? '12px' : '14px'
+                }}
+                key="connection"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openConnectionSettingsModal(record);
+                }}
+              >
+                Connection Settings
+              </a>
+            );
+
+            // Add Activate/Deactivate button for non-DBSC carriers (only if not archived)
+            if (!isArchived) {
+              const isActive = record.is_enabled === 1;
+              actions.push(
+                <Button
+                  key="toggle"
+                  size={isMobile ? 'small' : 'small'}
+                  style={{
+                    marginBottom: '4px',
+                    backgroundColor: isActive ? '#c8102e' : '#007f66',
+                    color: 'white',
+                    fontWeight: '600',
+                    border: isActive ? '1px solid #a00d24' : '1px solid #006652',
+                    borderRadius: '6px',
+                    padding: isMobile ? '2px 8px' : '4px 12px',
+                    height: 'auto',
+                    lineHeight: 'normal',
+                    fontSize: isMobile ? '11px' : '13px',
+                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                    transition: 'all 0.3s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = isActive ? '#a00d24' : '#006652';
+                    e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = isActive ? '#c8102e' : '#007f66';
+                    e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                  }}
+                  onClick={() => {
+                    const newStatus = record.is_enabled === 1 ? 0 : 1; // Toggle between Activate (1) and Deactivate (0)
+                    props.changeCarrierStatus(record.id, props.token, newStatus);
+                  }}
+                >
+                  <span style={{ color: 'white', fontWeight: '600' }}>
+                    {record.is_enabled === 1 ? 'Deactivate' : 'Activate'}
+                  </span>
+                </Button>
+              );
+            }
           }
 
           return (

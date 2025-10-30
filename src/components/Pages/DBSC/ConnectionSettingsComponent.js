@@ -36,7 +36,7 @@ function ConnectionSettingsComponent() {
 	return (
 		<Fragment>
 			<div className={'note-bx'}>
-				<strong>Note!</strong> Distance-Based Shipping Calculator (DBSC) allows you to configure custom shipping rates based on distance.
+				<strong>Note!</strong> Distance Based Shipping Rates allows you to configure custom shipping rates based on distance.
 			</div>
 			<Form
 				layout='vertical'
