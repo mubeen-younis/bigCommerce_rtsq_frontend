@@ -1062,7 +1062,7 @@ function BoxSizesComponent(props) {
                             rules={[
                               {
                                 required: true,
-                                message: "Nickname is Required",
+                                message: "Nickname is required",
                               },
                             ]}
                           >
@@ -1085,7 +1085,7 @@ function BoxSizesComponent(props) {
                             rules={[
                               {
                                 required: true,
-                                message: "Box Type is Required",
+                                message: "Box Type is required",
                               },
                             ]}
                           >
@@ -1403,7 +1403,7 @@ function BoxSizesComponent(props) {
                           </Form.Item>
                         </Col>
 
-                        <Col
+                        {/* <Col
                           className="gutter-row"
                           xs={24}
                           sm={24}
@@ -1443,7 +1443,7 @@ function BoxSizesComponent(props) {
                               placeholder="Max Weight w/ Box"
                             />
                           </Form.Item>
-                        </Col>
+                        </Col> */}
 
                         {/* --------------------- aaaaaaaa --------------------- */}
                         {boxSize.box_name === 'Merchant defined Box (default)' && (
@@ -1825,7 +1825,7 @@ function BoxSizesComponent(props) {
                         rules={[
                           {
                             required: true,
-                            message: "Quantity is Required",
+                            message: "Quantity is required",
                           },
                         ]}
                       >
@@ -1852,7 +1852,7 @@ function BoxSizesComponent(props) {
                         rules={[
                           {
                             required: true,
-                            message: "Nickname is Required",
+                            message: "Nickname is required",
                           },
                         ]}
                       >
@@ -1874,7 +1874,7 @@ function BoxSizesComponent(props) {
                         rules={[
                           {
                             required: true,
-                            message: "Length (in) is Required",
+                            message: "Length (in) is required",
                           },
                           dimensionPattern,
                         ]}
@@ -1905,7 +1905,7 @@ function BoxSizesComponent(props) {
                         rules={[
                           {
                             required: true,
-                            message: "Width (in) is Required",
+                            message: "Width (in) is required",
                           },
                           dimensionPattern,
                         ]}
@@ -1935,7 +1935,7 @@ function BoxSizesComponent(props) {
                         rules={[
                           {
                             required: true,
-                            message: "Height (in) is Required",
+                            message: "Height (in) is required",
                           },
                           dimensionPattern,
                         ]}
@@ -1965,7 +1965,7 @@ function BoxSizesComponent(props) {
                         rules={[
                           {
                             required: true,
-                            message: "Weight (LBS) is Required",
+                            message: "Weight (LBS) is required",
                           },
                           weightPattern,
                         ]}

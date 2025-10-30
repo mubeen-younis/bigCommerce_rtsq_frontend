@@ -641,8 +641,7 @@ function BoxSizesComponent(props) {
 													<Form.Item
 														className={'mb-2'}
 														label='Max Height w/ Pallet'
-														name='heightWithPallet'
-														rules={[pattern]}>
+														name='heightWithPallet'>
 														<Input
 															type='number'
 															disabled
@@ -661,8 +660,7 @@ function BoxSizesComponent(props) {
 													<Form.Item
 														className={'mb-2'}
 														label='Max Weight w/ Pallet'
-														name='weightWithPallet'
-														rules={[pattern]}>
+														name='weightWithPallet'>
 														<Input
 															type='number'
 															disabled
