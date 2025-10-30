@@ -61,7 +61,9 @@ const initialState = {
   availability_type: '1',
   filter_products: [],
   filter_categories: [],
-  filter_brands: []
+  filter_brands: [],
+  heightWithBox: '',
+  weightWithBox: ''
 }
 
 const productBoxInitialState = {
@@ -147,10 +149,16 @@ const dimensionPattern = {
   message: 'Maximum 3 digits before decimal point and 3 digits after (e.g., 123.456)',
 }
 
-// Pattern for weight fields: max 4 digits before decimal, max 3 digits after decimal
+// Pattern for weight fields: max 5 digits before decimal, max 3 digits after decimal
 const weightPattern = {
-  pattern: /^\d{1,4}(\.\d{1,3})?$/,
-  message: 'Maximum 4 digits before decimal point and 3 digits after (e.g., 1234.567)',
+  pattern: /^\d{1,5}(\.\d{1,3})?$/,
+  message: 'Maximum 5 digits before decimal point and 3 digits after (e.g., 12345.678)',
+}
+
+// Pattern for box fee: max 3 digits before decimal, max 2 digits after decimal
+const boxFeePattern = {
+  pattern: /^\d{1,3}(\.\d{1,2})?$/,
+  message: 'Maximum 3 digits before decimal point and 2 digits after (e.g., 123.45)',
 }
 
 function BoxSizesComponent(props) {
@@ -180,11 +188,63 @@ function BoxSizesComponent(props) {
   } = useSelector(state => state)
   const [boxSizeForm] = Form.useForm()
 
+  // Watch form values for real-time calculations
+  const interiorHeight = Form.useWatch('height', boxSizeForm)
+  const exteriorHeight = Form.useWatch('ext_height', boxSizeForm)
+  const maxWeight = Form.useWatch('max_weight', boxSizeForm)
+  const boxWeight = Form.useWatch('box_weight', boxSizeForm)
+
   useEffect(() => {
     props.getBoxSizes(props.token)
     dispatch(getProductBoxSizes(props.token))
     // eslint-disable-next-line
   }, [dispatch])
+
+  // Calculate and update Max Height w/ Box in real-time
+  useEffect(() => {
+    const intHeight = parseFloat(interiorHeight) || 0
+    const extHeight = parseFloat(exteriorHeight) || 0
+    const total = intHeight + extHeight
+
+    // Check if any input has 3 decimal places
+    const hasThreeDecimals = (value) => {
+      const str = String(value)
+      const decimalIndex = str.indexOf('.')
+      return decimalIndex !== -1 && str.length - decimalIndex - 1 === 3
+    }
+
+    const decimalPlaces = (hasThreeDecimals(interiorHeight) || hasThreeDecimals(exteriorHeight)) ? 3 : 2
+
+    // Only update if the form is initialized
+    if (boxSizeForm) {
+      boxSizeForm.setFieldsValue({
+        heightWithBox: total > 0 ? total.toFixed(decimalPlaces) : ''
+      })
+    }
+  }, [interiorHeight, exteriorHeight, boxSizeForm])
+
+  // Calculate and update Max Weight w/ Box in real-time
+  useEffect(() => {
+    const weight = parseFloat(maxWeight) || 0
+    const boxWt = parseFloat(boxWeight) || 0
+    const total = weight + boxWt
+
+    // Check if any input has 3 decimal places
+    const hasThreeDecimals = (value) => {
+      const str = String(value)
+      const decimalIndex = str.indexOf('.')
+      return decimalIndex !== -1 && str.length - decimalIndex - 1 === 3
+    }
+
+    const decimalPlaces = (hasThreeDecimals(maxWeight) || hasThreeDecimals(boxWeight)) ? 3 : 2
+
+    // Only update if the form is initialized
+    if (boxSizeForm) {
+      boxSizeForm.setFieldsValue({
+        weightWithBox: total > 0 ? total.toFixed(decimalPlaces) : ''
+      })
+    }
+  }, [maxWeight, boxWeight, boxSizeForm])
 
   const populateBoxValues = useCallback(
     (box_id = '') => {
@@ -1270,7 +1330,7 @@ function BoxSizesComponent(props) {
                             <Input
                               type="number"
                               onKeyDown={handlingFeeMarkup}
-                              onInput={limitInputLength(8)}
+                              onInput={limitInputLength(9)}
                               step="0.001"
                               min={0}
                               placeholder="Max Weight"
@@ -1300,7 +1360,7 @@ function BoxSizesComponent(props) {
                             <Input
                               type="number"
                               onKeyDown={handlingFeeMarkup}
-                              onInput={limitInputLength(8)}
+                              onInput={limitInputLength(9)}
                               step="0.001"
                               min={0}
                               placeholder="Box Weight"
@@ -1320,11 +1380,11 @@ function BoxSizesComponent(props) {
                             label="Box Fee (e.g 1.75)"
                             name="box_fee"
                             rules={[
-                              pattern,
+                              boxFeePattern,
                               {
                                 validator: (_, value) => {
-                                  if (value && (value < 0 || value > 10000)) {
-                                    return Promise.reject(new Error('Box Fee must be between 0 and 10000'))
+                                  if (value && (value < 0 || value > 999.99)) {
+                                    return Promise.reject(new Error('Box Fee must be between 0 and 999.99'))
                                   }
                                   return Promise.resolve()
                                 }
@@ -1334,11 +1394,53 @@ function BoxSizesComponent(props) {
                             <Input
                               type="number"
                               onKeyDown={handlingFeeMarkup}
-                              onInput={limitInputLength(5)}
+                              onInput={limitInputLength(6)}
                               step="0.01"
                               min={0}
-                              max={10000}
+                              max={999.99}
                               placeholder="Box Fee"
+                            />
+                          </Form.Item>
+                        </Col>
+
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={12}
+                          xl={12}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Max Height w/ Box"
+                            name="heightWithBox"
+                          >
+                            <Input
+                              type="number"
+                              disabled
+                              placeholder="Max Height w/ Box"
+                            />
+                          </Form.Item>
+                        </Col>
+
+                        <Col
+                          className="gutter-row"
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={12}
+                          xl={12}
+                        >
+                          <Form.Item
+                            className={"mb-2"}
+                            label="Max Weight w/ Box"
+                            name="weightWithBox"
+                          >
+                            <Input
+                              type="number"
+                              disabled
+                              placeholder="Max Weight w/ Box"
                             />
                           </Form.Item>
                         </Col>
@@ -1723,7 +1825,7 @@ function BoxSizesComponent(props) {
                         rules={[
                           {
                             required: true,
-                            message: "Quantity Required",
+                            message: "Quantity is Required",
                           },
                         ]}
                       >
@@ -1750,7 +1852,7 @@ function BoxSizesComponent(props) {
                         rules={[
                           {
                             required: true,
-                            message: "Nickname Required",
+                            message: "Nickname is Required",
                           },
                         ]}
                       >
@@ -1892,11 +1994,11 @@ function BoxSizesComponent(props) {
                         label="Box Fee (e.g 1.75)"
                         name="box_fee"
                         rules={[
-                          pattern,
+                          boxFeePattern,
                           {
                             validator: (_, value) => {
-                              if (value && (value < 0 || value > 10000)) {
-                                return Promise.reject(new Error('Box Fee must be between 0 and 10000'))
+                              if (value && (value < 0 || value > 999.99)) {
+                                return Promise.reject(new Error('Box Fee must be between 0 and 999.99'))
                               }
                               return Promise.resolve()
                             }
@@ -1906,10 +2008,10 @@ function BoxSizesComponent(props) {
                         <Input
                           type="number"
                           onKeyDown={handlingFeeMarkup}
-                          onInput={limitInputLength(5)}
+                          onInput={limitInputLength(6)}
                           step="0.01"
                           min={0}
-                          max={10000}
+                          max={999.99}
                           placeholder="Box Fee"
                         />
                       </Form.Item>

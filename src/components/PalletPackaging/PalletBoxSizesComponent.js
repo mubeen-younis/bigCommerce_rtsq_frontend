@@ -59,10 +59,16 @@ const dimensionPattern = {
 	message: 'Maximum 3 digits before decimal point and 3 digits after (e.g., 123.456)',
 }
 
-// Pattern for weight fields: max 4 digits before decimal, max 3 digits after decimal
+// Pattern for weight fields: max 5 digits before decimal, max 3 digits after decimal
 const weightPattern = {
-	pattern: /^\d{1,4}(\.\d{1,3})?$/,
-	message: 'Maximum 4 digits before decimal point and 3 digits after (e.g., 1234.567)',
+	pattern: /^\d{1,5}(\.\d{1,3})?$/,
+	message: 'Maximum 5 digits before decimal point and 3 digits after (e.g., 12345.678)',
+}
+
+// Pattern for pallet fee: max 3 digits before decimal, max 2 digits after decimal
+const palletFeePattern = {
+	pattern: /^\d{1,3}(\.\d{1,2})?$/,
+	message: 'Maximum 3 digits before decimal point and 2 digits after (e.g., 123.45)',
 }
 
 function BoxSizesComponent(props) {
@@ -94,10 +100,19 @@ function BoxSizesComponent(props) {
 		const extHeight = parseFloat(palletHeight) || 0
 		const total = height + extHeight
 
+		// Check if any input has 3 decimal places
+		const hasThreeDecimals = (value) => {
+			const str = String(value)
+			const decimalIndex = str.indexOf('.')
+			return decimalIndex !== -1 && str.length - decimalIndex - 1 === 3
+		}
+
+		const decimalPlaces = (hasThreeDecimals(maxHeight) || hasThreeDecimals(palletHeight)) ? 3 : 2
+
 		// Only update if the form is initialized
 		if (boxSizeForm) {
 			boxSizeForm.setFieldsValue({
-				heightWithPallet: total > 0 ? total.toFixed(2) : ''
+				heightWithPallet: total > 0 ? total.toFixed(decimalPlaces) : ''
 			})
 		}
 	}, [maxHeight, palletHeight, boxSizeForm])
@@ -108,10 +123,19 @@ function BoxSizesComponent(props) {
 		const boxWeight = parseFloat(palletWeight) || 0
 		const total = weight + boxWeight
 
+		// Check if any input has 3 decimal places
+		const hasThreeDecimals = (value) => {
+			const str = String(value)
+			const decimalIndex = str.indexOf('.')
+			return decimalIndex !== -1 && str.length - decimalIndex - 1 === 3
+		}
+
+		const decimalPlaces = (hasThreeDecimals(maxWeight) || hasThreeDecimals(palletWeight)) ? 3 : 2
+
 		// Only update if the form is initialized
 		if (boxSizeForm) {
 			boxSizeForm.setFieldsValue({
-				weightWithPallet: total > 0 ? total.toFixed(2) : ''
+				weightWithPallet: total > 0 ? total.toFixed(decimalPlaces) : ''
 			})
 		}
 	}, [maxWeight, palletWeight, boxSizeForm])
@@ -120,13 +144,13 @@ function BoxSizesComponent(props) {
 		const { length, width, height, max_weight, box_weight, box_fee } = values
 		let error = ''
 
-		error += valueLimitAfterDecimal(length, 2, 'length')
-		error += valueLimitAfterDecimal(width, 2, 'width')
-		error += valueLimitAfterDecimal(height, 2, 'height')
+		error += valueLimitAfterDecimal(length, 3, 'length')
+		error += valueLimitAfterDecimal(width, 3, 'width')
+		error += valueLimitAfterDecimal(height, 3, 'height')
 
 		error += valueLimitAfterDecimal(max_weight, 3, 'max weight')
 		error += valueLimitAfterDecimal(box_weight, 3, 'pallet weight')
-		error += valueLimitAfterDecimal(box_fee, 3, 'pallet fee')
+		error += valueLimitAfterDecimal(box_fee, 2, 'pallet fee')
 
 		if (error !== '') {
 			if (error.includes('exploder')) error = error.split('exploder')[0]
@@ -531,7 +555,7 @@ function BoxSizesComponent(props) {
 															onKeyDown={
 																handlingFeeMarkup
 															}
-															onInput={limitInputLength(8)}
+															onInput={limitInputLength(9)}
 															step='0.001'
 															min={0}
 															placeholder='Max Weight'
@@ -563,7 +587,7 @@ function BoxSizesComponent(props) {
 															onKeyDown={
 																handlingFeeMarkup
 															}
-															onInput={limitInputLength(8)}
+															onInput={limitInputLength(9)}
 															step='0.001'
 															min={0}
 															placeholder='Pallet Weight'
@@ -583,11 +607,11 @@ function BoxSizesComponent(props) {
 														label='Pallet Fee (e.g 1.75)'
 														name='box_fee'
 														rules={[
-															pattern,
+															palletFeePattern,
 															{
 																validator: (_, value) => {
-																	if (value && (value < 0 || value > 10000)) {
-																		return Promise.reject(new Error('Pallet Fee must be between 0 and 10000'))
+																	if (value && (value < 0 || value > 999.99)) {
+																		return Promise.reject(new Error('Pallet Fee must be between 0 and 999.99'))
 																	}
 																	return Promise.resolve()
 																}
@@ -598,10 +622,10 @@ function BoxSizesComponent(props) {
 															onKeyDown={
 																handlingFeeMarkup
 															}
-															onInput={limitInputLength(5)}
+															onInput={limitInputLength(6)}
 															step='0.01'
 															min={0}
-															max={10000}
+															max={999.99}
 															placeholder='Pallet Fee'
 														/>
 													</Form.Item>
