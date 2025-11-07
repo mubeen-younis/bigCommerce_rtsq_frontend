@@ -28,7 +28,7 @@ pipelines:
             - ./bb-scripts/run-ssm-command.sh 
 
             
-    dbsc_usps_rad_pallet_ui_changes:
+    adding_adsense_script:
       - step:
           name: Deploy from Staging Branch
           script:
@@ -36,6 +36,6 @@ pipelines:
             - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
             - export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
             - export TAG_NAME=$STAGING_SERVER_TAG_NAME
-            - export COMMAND='["sudo -u apx-bc-01 bash -c \"cd '"${STAGING_COMMAND}"'/bigcommerce/bc-fe && git stash && git fetch && git checkout dbsc_usps_rad_pallet_ui_changes && git pull && export NODE_OPTIONS=--openssl-legacy-provider && npm run build &&  ./remote-script.sh\""]'
+            - export COMMAND='["sudo -u apx-bc-01 bash -c \"cd '"${STAGING_COMMAND}"'/bigcommerce/bc-fe && git stash && git fetch && git checkout adding_adsense_script && git pull && export NODE_OPTIONS=--openssl-legacy-provider && npm run build &&  ./remote-script.sh\""]'
             - chmod +x ./bb-scripts/run-ssm-command.sh
             - ./bb-scripts/run-ssm-command.sh 
