@@ -71,34 +71,34 @@ function PlansComponent() {
 
   // addsense script
   // Load Google Analytics and track app installation conversion event
-  useEffect(() => {
-    // Create and inject gtag.js script
-    const gtagScript = document.createElement('script')
-    gtagScript.async = true
-    gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=AW-781085343'
-    document.head.appendChild(gtagScript)
+  // useEffect(() => {
+  //   // Create and inject gtag.js script
+  //   const gtagScript = document.createElement('script')
+  //   gtagScript.async = true
+  //   gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=AW-781085343'
+  //   document.head.appendChild(gtagScript)
 
-    // Initialize gtag after script loads
-    gtagScript.onload = () => {
-      window.dataLayer = window.dataLayer || []
-      function gtag() {
-        window.dataLayer.push(arguments)
-      }
-      window.gtag = gtag
-      gtag('js', new Date())
-      gtag('config', 'AW-781085343')
+  //   // Initialize gtag after script loads
+  //   gtagScript.onload = () => {
+  //     window.dataLayer = window.dataLayer || []
+  //     function gtag() {
+  //       window.dataLayer.push(arguments)
+  //     }
+  //     window.gtag = gtag
+  //     gtag('js', new Date())
+  //     gtag('config', 'AW-781085343')
 
-      // Fire conversion event for app installation
-      gtag('event', 'conversion', { 'send_to': 'AW-781085343' })
-    }
+  //     // Fire conversion event for app installation
+  //     gtag('event', 'conversion', { 'send_to': 'AW-781085343' })
+  //   }
 
-    // Cleanup function to remove script on unmount
-    return () => {
-      if (document.head.contains(gtagScript)) {
-        document.head.removeChild(gtagScript)
-      }
-    }
-  }, [])
+  //   // Cleanup function to remove script on unmount
+  //   return () => {
+  //     if (document.head.contains(gtagScript)) {
+  //       document.head.removeChild(gtagScript)
+  //     }
+  //   }
+  // }, [])
 
   // addsense script
 
