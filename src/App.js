@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import process from "process";
 import {
   BrowserRouter as Router,
   Switch,
@@ -47,6 +48,7 @@ import PaymentsTabComponent from "./components/Pages/PaymentTabComponent";
 import AllProvidersLogsPage from "./components/Pages/AllProvidersLogsPage";
 import { getCSVDownloadLink } from "./Actions/ImportCsv";
 import { getBrands, getCategories } from "./Actions/ShippingRulesActions";
+import GTMPageView from "./components/GTMPageView";
 
 const { Header, Content } = Layout;
 
@@ -82,7 +84,7 @@ function App(props) {
   const pathName = window.location.pathname;
 
   useEffect(() => {
-    
+
     const urlParams = new URLSearchParams(window.location.search);
 
     const fetchAppData = (token = "") => {
@@ -203,7 +205,7 @@ function App(props) {
     <Router>
       <Layout>
         {!logsRoute && <SideMenu />}
-
+        <GTMPageView />
         <Layout>
           <Header className={"top-header"} style={{ padding: 0 }} />
           <Content className={"body-content"}>
