@@ -23,6 +23,7 @@ export const getPlans = () => dispatch => {
 }
 
 export const submitPaymentInfo = (data, token, setIsModalVisible) => dispatch => {
+
     const config = {
         headers: {
             authorization: `Bearer ${token}`,
@@ -40,7 +41,6 @@ export const submitPaymentInfo = (data, token, setIsModalVisible) => dispatch =>
             dispatch({type: 'ALERT_MESSAGE', payload: {showAlertMessage: false}})
             // if success, and there is no error, then get the current subscription and hide the subscription modal.
             if (!data.error) {
-
                 const planDetails = data.data;
 
                 // Trigger the Google Tag Manager event for subscription success.
@@ -52,6 +52,11 @@ export const submitPaymentInfo = (data, token, setIsModalVisible) => dispatch =>
 
                 dispatch({type: 'GET_CURRENT_PLAN', payload: data.data})
                 setIsModalVisible(false)
+            } else {
+                // Trigger the Google Tag Manager event for subscription error.
+                triggerGoogleTagManagerEvent('plan_subscription_bc_error', {
+                    'plan_subscription_bc_error_message': data.message,
+                })
             }
 
             dispatch({
